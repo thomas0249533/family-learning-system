@@ -57,3 +57,20 @@
 - **唯一残留字面量**：`Home.vue:437` `filter: drop-shadow(0 4px 8px rgba(0,0,0,.15))`（`$shadow-*` 是 box-shadow 简写，无法用于 `filter`；白名单禁新增 token）。
 - **本机沙箱新增坑**：`npm run build` 除提权外还需 **`CODEBUDDY_SAFE_DELETE_ENABLED=0`**，否则 vite 清 `dist/assets`（103 文件 > 阈值 50）会被 safe-delete shim 拦成 `SAFE_DELETE_BULK_CONFIRM_REQUIRED`（环境拦截，非代码错）。
 - **易漏点**：PWA manifest 的 `theme_color`/`background_color` 在 **`vite.config.ts`**（不在 src 里），改色时容易漏。
+
+## D:/study v1.9.0（多学段主题 + 成就扩充 + 质量门禁 = 路线图 V1.1 批次，2026-10-16）
+- **文档**：需求 `doc/后续迭代方向.txt`（4 轮：V1.1 质量门禁→V1.2 设计系统2.0→V1.3 学习闭环→V1.4 平台化）；本轮产物 `docs/prd-v1.1.md`（PRD）、`docs/system_design-v1.1.md`（设计）、`docs/视觉回归清单.md`。上一轮设计 `docs/system_design.md` 的 §8 约定仍有效。
+- **git 已引入**（路线图点名"最高工程风险"已解除）：tag `v1.9.0`；`/*.exe`、`node_modules`、`dist`、`src-tauri/target` 均不入库。**改动可 `git diff <commit> HEAD` 审阅，回滚不必再靠目录快照**。
+- **6 组主题（学段 × 明暗）**：`palette.ts` 由 `{light,dark}` 改为 **`presets.{primary,junior,senior}.{light,dark}`**；`buildThemeOverrides(palette, preset, theme, sizes)`（**签名已变**）+ `FONT_SIZE_MAPS`。
+  CSS 层：`:root`(0,1,0)=初中浅兜底 ｜ `body[data-theme-preset="X"]`(0,1,1)=小学/高中浅 ｜ `body.dark-mode`(0,1,1)=初中深 ｜ **`body[data-theme-preset="X"].dark-mode`(0,2,1)=小学/高中深**。
+  ⚠️ **铁律：组合深色块必须存在**，漏写会让深色串成学段浅色（正是上轮 `index.scss` 那类真 bug 的同型陷阱）。**初中色值与 1.8.0 逐字节相同（零回归）**。维度拆分：preset 块只管色相（primary 族/语义色/bg/card/text/border/`--gradient-primary`）；shadow/band/code-color/非主色渐变/on-strong **跨学段恒定**只随明暗变。
+- **持久化**：`localStorage['fls:theme']` = `{preset,mode,fontSize,presetManual}`；**防 FOUC 双保险** = `index.html` `<body>` 内联脚本 + store setup 同步 hydrate。年级推断纯函数 `src/core/theme/presetInference.ts`（众数→并列取最新→空默认 junior）；`presetManual=true` 后永久停止自动覆盖。
+- **字号单一源（B1 已修）**：**已移除 `documentElement.style.fontSize` 写入**，只保留 naive-ui `themeOverrides`（`FONT_SIZE_MAPS`）；全库 **0 处 rem/em 字号** → 无双缩放。
+- **JS 取色服务层**：`src/core/theme/useThemeTokens.ts`（读生效 CSS 变量）+ `useChartTheme.ts`（echarts 主题）+ `presetPreview.ts`（设置页色带预览）。**`src/views|modules|components` 禁止直接 `import { palette }`**（唯例外：`ThemeProvider.vue` 是主题装配组件）。
+- **App.vue 已拆分（B5）**：`src/components/ThemeProvider.vue`（封装 n-config-provider + themeOverrides）+ `AppShell.vue`（布局骨架，**版本徽章 V1.9 在这两处**）。
+- **成就 28 枚**（`src/core/motivation/achievements.ts`）：M 精熟 8 / G 成长型 7 / B 行为阶梯 8 / E 探索 5；隐藏 3（`comeback`/`early-bird`/`night-owl`，未解锁前只显示剪影 `？？？`，**零泄露**）；连环 4（`chains.ts`）。`AchievementDef` 增 `category/hidden/chain/order`；`AchievementContext` 增 `packages`/`dailyStats`/`attemptedTypes`。存储升级 `{id,unlockedAt}[]` 且**读时兼容旧 `string[]`**，只增不减。
+- **`dailyStats` 埋点**：`src/core/motivation/dailyStats.ts`，**内存聚合 + 1500ms 防抖 + 隐藏/卸载 flush**，保留 60 天，本地日期。**口径 = "题"级**，走 `recordAnswerEvent`，**绝不放进 `recordProgress`**（TopicDetail 有 for 循环会多 KP 重复计数）。
+- **质量门禁**：`npm run lint:styles`（stylelint@17 + postcss-html/postcss-scss）+ `npm run check:hex`（自研 `scripts/check-hex.mjs`，扫 `views|modules|components` 下 hex/rgb/hsl，白名单 `core/styles/**`，行级豁免 `// check-hex-allow`，**纯黑 `rgba(0,0,0,…)` 片段自动剔除**）。**视觉回归** `npx playwright test`（`tests/e2e/visual.spec.ts`，16 张 `docs/screenshots/{页面}-{light|dark}.png`，**已用 `addInitScript` 冻结时钟确定化**，但**绑定时区**）+ 人工清单 `docs/视觉回归清单.md`。
+- **测试 13 文件 / 395 用例**；一致性测试 `tests/palette-consistency.test.ts` **208 例**（含"原始块级深色覆盖 + preset 子集"断言，堵住"dark-mode 漏写非 hero token"盲区）。
+- **check-hex 已知残留绕过面（低危，已决定不继续修）**：`#abcdefg`（hex 后紧贴词字符）、`hsl (…)`（函数名与括号间空格）、命名色 `white/red`（范围外）。**理由：修漏洞的改动自身引入过新绕过面，继续微调有负期望收益。**
+- **下一轮 = V1.2 设计系统 2.0**（单源 token 生成 `tokens.ts` / 三层 token / UI 基元封装 / 多主题与 a11y AA / 组件文档预览）。路线图关键决策点 #1 = **是否引入构建脚本做单源生成**（尚未定）。
