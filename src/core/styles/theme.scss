@@ -1,9 +1,30 @@
 // =====================================================================
 // 主题变量（唯一来源）
 // ---------------------------------------------------------------------
-// 浅色定义在 :root，深色定义在 body.dark-mode。
-// 两者必须保持「同名变量、成对出现」——新增一个颜色时两边都要加。
-// 组件侧一律 var(--x)，不得写死色值。
+// 本文件是本项目「颜色」的唯一 CSS 源。变量分两轴：
+//   · 维度 A（preset · 换色相）：--primary-*、语义色族、--bg-color/-hover、
+//     --card-bg、--surface-2、--text-*、--text-on-primary、--border-*、
+//     --gradient-primary。
+//   · 维度 B（mode · 换明度 + 中性）：--shadow-*、--band-*、--code-color、
+//     --gradient-warm/cool/success/sunset、--on-strong(-rgb)。
+// 决策：维度 B 跨学段恒定（与色相无关的语义/中性值），只随明暗变；
+//       仅 --gradient-primary 随学段变。
+//
+// 六组选择器与特异性（严格按下表，勿改）：
+//   :root                                            (0,1,0)  恒        初中·浅全量 + 维度 B 浅
+//   body[data-theme-preset="primary"]                (0,1,1)  primary    小学·浅（preset 覆盖）
+//   body[data-theme-preset="senior"]                 (0,1,1)  senior     高中·浅（preset 覆盖）
+//   body.dark-mode                                   (0,1,1)  有 class   初中·深全量 + 维度 B 深
+//   body[data-theme-preset="primary"].dark-mode      (0,2,1)  both       小学·深（组合覆盖）
+//   body[data-theme-preset="senior"].dark-mode       (0,2,1)  both       高中·深（组合覆盖）
+//
+// ⚠️ 关键不变量（防历史「特异性 bug」复发）：
+//   1. --bg-color / --card-bg / 所有主题色变量只在本文件定义；
+//      index.scss 不得再引入任何定义主题变量的选择器。
+//   2. 深色 + 非默认学段必须命中 (0,2,1) 组合选择器（比单维 (0,1,1) 高），
+//      因此两个组合块「必须存在且非空」——漏写 → 深色串成学段浅色。
+//   3. 属性=junior/缺失时不命中任何 preset 规则，body 直接继承 :root。
+//   4. 组件侧一律 var(--x)，不得写死色值。
 // =====================================================================
 
 /* ==================== 尺寸 / 字号 / 动效（不随主题变）==================== */
@@ -62,7 +83,7 @@
   --duration-slower: 450ms;
 }
 
-/* ==================== 浅色主题（默认）==================== */
+/* ==================== 初中·浅（默认 · 现状原值 · 零回归）==================== */
 :root {
   /* 品牌色：深松绿 */
   --primary-color: #2d6a4f;
@@ -140,7 +161,97 @@
   --gradient-sunset: linear-gradient(135deg, #e8871e 0%, #d4537e 100%);
 }
 
-/* ==================== 深色主题 ==================== */
+/* ==================== 小学·浅（阳光橙 · preset 覆盖）==================== */
+body[data-theme-preset="primary"] {
+  --primary-color: #f2760c;
+  --primary-hover: #d96706;
+  --primary-pressed: #bd5a05;
+  --primary-light: #ffeede;
+  --primary-soft: rgba(242, 118, 12, 0.10);
+  --primary-soft-strong: rgba(242, 118, 12, 0.18);
+
+  --success-color: #16a34a;
+  --success-light: #e7f8ee;
+  --success-soft: rgba(22, 163, 74, 0.10);
+
+  --warning-color: #c9820a;
+  --warning-light: #fbf1e0;
+  --warning-soft: rgba(201, 130, 10, 0.10);
+
+  --danger-color: #dc2626;
+  --danger-light: #fdeded;
+  --danger-soft: rgba(220, 38, 38, 0.10);
+
+  --info-color: #2563eb;
+  --info-light: #eaf1fe;
+  --info-soft: rgba(37, 99, 235, 0.10);
+
+  --primary-rgb: 242, 118, 12;
+  --success-rgb: 22, 163, 74;
+  --warning-rgb: 201, 130, 10;
+  --danger-rgb: 220, 38, 38;
+  --info-rgb: 37, 99, 235;
+
+  --bg-color: #fff8f1;
+  --bg-color-hover: #f7ebdf;
+  --card-bg: #ffffff;
+  --surface-2: #fffcf9;
+  --text-main: #2c1f12;
+  --text-sub: #5c4a38;
+  --text-muted: #877665;
+  --text-on-primary: #ffffff;
+  --border-color: #f0ddc8;
+  --border-light: #f7ecdd;
+
+  --gradient-primary: linear-gradient(135deg, #f2760c 0%, #ffa447 100%);
+}
+
+/* ==================== 高中·浅（沉静蓝灰 · preset 覆盖）==================== */
+body[data-theme-preset="senior"] {
+  --primary-color: #3b5b7a;
+  --primary-hover: #2f4a63;
+  --primary-pressed: #263c50;
+  --primary-light: #e8eef4;
+  --primary-soft: rgba(59, 91, 122, 0.10);
+  --primary-soft-strong: rgba(59, 91, 122, 0.18);
+
+  --success-color: #15803d;
+  --success-light: #e9f8ef;
+  --success-soft: rgba(21, 128, 61, 0.10);
+
+  --warning-color: #b45309;
+  --warning-light: #fdf4e7;
+  --warning-soft: rgba(180, 83, 9, 0.10);
+
+  --danger-color: #dc2626;
+  --danger-light: #fdeded;
+  --danger-soft: rgba(220, 38, 38, 0.10);
+
+  --info-color: #2563eb;
+  --info-light: #eaf1fe;
+  --info-soft: rgba(37, 99, 235, 0.10);
+
+  --primary-rgb: 59, 91, 122;
+  --success-rgb: 21, 128, 61;
+  --warning-rgb: 180, 83, 9;
+  --danger-rgb: 220, 38, 38;
+  --info-rgb: 37, 99, 235;
+
+  --bg-color: #f4f6f9;
+  --bg-color-hover: #e9edf2;
+  --card-bg: #ffffff;
+  --surface-2: #fafbfd;
+  --text-main: #1c2530;
+  --text-sub: #44515f;
+  --text-muted: #66717d;
+  --text-on-primary: #ffffff;
+  --border-color: #d3dbe3;
+  --border-light: #e6ebf0;
+
+  --gradient-primary: linear-gradient(135deg, #3b5b7a 0%, #7fa3c4 100%);
+}
+
+/* ==================== 初中·深（默认深色 · 现状原值 · 零回归）==================== */
 body.dark-mode {
   --primary-color: #4fa57f;
   --primary-hover: #5fb88f;
@@ -208,6 +319,56 @@ body.dark-mode {
   --gradient-sunset: linear-gradient(135deg, #c26a15 0%, #b0436a 100%);
 }
 
+/* ==================== 小学·深（组合 (0,2,1) · 必须存在且非空）==================== */
+body[data-theme-preset="primary"].dark-mode {
+  --primary-color: #ffa447;
+  --primary-hover: #ffb368;
+  --primary-pressed: #e58a2f;
+  --primary-light: #3a2415;
+  --primary-soft: rgba(255, 164, 71, 0.14);
+  --primary-soft-strong: rgba(255, 164, 71, 0.24);
+
+  --primary-rgb: 255, 164, 71;
+
+  --bg-color: #1a130c;
+  --bg-color-hover: #2a1e12;
+  --card-bg: #241a11;
+  --surface-2: #2b2014;
+  --text-main: #f6ede1;
+  --text-sub: #cdbcab;
+  --text-muted: #9c8b79;
+  --text-on-primary: #1a1005;
+  --border-color: #3d2e1f;
+  --border-light: #2b2013;
+
+  --gradient-primary: linear-gradient(135deg, #e58a2f 0%, #ffa447 100%);
+}
+
+/* ==================== 高中·深（组合 (0,2,1) · 必须存在且非空）==================== */
+body[data-theme-preset="senior"].dark-mode {
+  --primary-color: #7fa3c4;
+  --primary-hover: #93b3d0;
+  --primary-pressed: #6a8dae;
+  --primary-light: #1e2a36;
+  --primary-soft: rgba(127, 163, 196, 0.14);
+  --primary-soft-strong: rgba(127, 163, 196, 0.24);
+
+  --primary-rgb: 127, 163, 196;
+
+  --bg-color: #0e1319;
+  --bg-color-hover: #1b232e;
+  --card-bg: #161e27;
+  --surface-2: #1c2530;
+  --text-main: #e9eef4;
+  --text-sub: #b5c0cc;
+  --text-muted: #8a95a1;
+  --text-on-primary: #0a0f14;
+  --border-color: #28333f;
+  --border-light: #1a222b;
+
+  --gradient-primary: linear-gradient(135deg, #5b7d9e 0%, #7fa3c4 100%);
+}
+
 /* ==================== 全局基底 ==================== */
 body {
   background-color: var(--bg-color);
@@ -255,5 +416,12 @@ body.dark-mode {
   .section-count {
     background: var(--bg-color-hover);
     color: var(--text-sub);
+  }
+}
+
+/* ==================== 打印固定浅色（CSS 兜底，JS 为主）==================== */
+@media print {
+  body {
+    color-scheme: light;
   }
 }
