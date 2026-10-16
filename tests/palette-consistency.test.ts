@@ -169,6 +169,7 @@ const FIELD_TO_VAR: Record<Exclude<keyof typeof palette.presets.junior.light, 'p
   primary: '--primary-color',
   primaryHover: '--primary-hover',
   primaryPressed: '--primary-pressed',
+  primaryText: '--primary-text',
   success: '--success-color',
   warning: '--warning-color',
   danger: '--danger-color',
@@ -178,6 +179,7 @@ const FIELD_TO_VAR: Record<Exclude<keyof typeof palette.presets.junior.light, 'p
   textMain: '--text-main',
   textSub: '--text-sub',
   textMuted: '--text-muted',
+  textOnPrimary: '--text-on-primary',
   border: '--border-color',
   borderLight: '--border-light',
 }

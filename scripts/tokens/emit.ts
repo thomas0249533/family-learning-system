@@ -119,25 +119,27 @@ function themeRootPrimitives(): string[] {
   return L
 }
 
-/** 四个语义色族（success / warning / danger / info）的 color/light/soft 三连。 */
+/** 四个语义色族（success / warning / danger / info）的 color/light/text/soft 四连。 */
 function semanticColorTriples(sem: SemanticTokens): string[] {
   const L: string[] = []
   for (const g of ['success', 'warning', 'danger', 'info']) {
     L.push(vline(`${g}-color`, sem[`${g}-color`]))
     L.push(vline(`${g}-light`, sem[`${g}-light`]))
+    L.push(vline(`${g}-text`, sem[`${g}-text`]))
     L.push(vline(`${g}-soft`, sem[`${g}-soft`]))
     L.push('')
   }
   return L
 }
 
-/** 品牌色 6 连（color/hover/pressed/light/soft/soft-strong）。 */
+/** 品牌色 7 连（color/hover/pressed/light/text/soft/soft-strong）。 */
 function primarySix(sem: SemanticTokens): string[] {
   return [
     vline('primary-color', sem['primary-color']),
     vline('primary-hover', sem['primary-hover']),
     vline('primary-pressed', sem['primary-pressed']),
     vline('primary-light', sem['primary-light']),
+    vline('primary-text', sem['primary-text']),
     vline('primary-soft', sem['primary-soft']),
     vline('primary-soft-strong', sem['primary-soft-strong']),
   ]
@@ -319,6 +321,7 @@ function themeColorFields(preset: ThemePreset, mode: ThemeMode): Array<[string, 
     ['primaryHover', h.brandHover],
     ['primaryPressed', h.brandPressed],
     ['primarySuppl', h.brandHover],
+    ['primaryText', h.brandText],
     ['success', h.success],
     ['warning', h.warning],
     ['danger', h.danger],
@@ -328,6 +331,7 @@ function themeColorFields(preset: ThemePreset, mode: ThemeMode): Array<[string, 
     ['textMain', h.textMain],
     ['textSub', h.textSub],
     ['textMuted', h.textMuted],
+    ['textOnPrimary', h.textOnPrimary],
     ['border', h.border],
     ['borderLight', h.borderLight],
   ]
@@ -400,6 +404,8 @@ export function generatePaletteTs(): string {
     '  primaryPressed: string',
     '  /** naive-ui primaryColorSuppl（无独立 CSS 变量，取 hover 值） */',
     '  primarySuppl: string',
+    '  /** --primary-text（AA 文字色 / 主按钮底色） */',
+    '  primaryText: string',
     '  /** --success-color */',
     '  success: string',
     '  /** --warning-color */',
@@ -418,6 +424,8 @@ export function generatePaletteTs(): string {
     '  textSub: string',
     '  /** --text-muted */',
     '  textMuted: string',
+    '  /** --text-on-primary（主色实心底上的文字色） */',
+    '  textOnPrimary: string',
     '  /** --border-color */',
     '  border: string',
     '  /** --border-light（★ 本轮新增：图表轴需要） */',
@@ -581,6 +589,18 @@ export function generatePaletteTs(): string {
     "      borderRadiusMedium: '10px',",
     "      fontWeight: '600',",
     "      fontWeightStrong: '700',",
+    '      // 主按钮前景/背景：底色取 --primary-text、文字取 --text-on-primary，',
+    '      // 使 6 组（3 学段 × 浅深）的主按钮文字对比度全部 ≥ 4.5（AA）。',
+    '      // 本应用用 body.dark-mode + 自定义覆盖而非 naive darkTheme，故 naive',
+    '      // 会误判为浅色、给深色主题的 primary 按钮配白字（对比度不足），需显式指定。',
+    '      colorPrimary: c.primaryText,',
+    '      colorHoverPrimary: c.primaryText,',
+    '      colorPressedPrimary: c.primaryText,',
+    '      colorFocusPrimary: c.primaryText,',
+    '      textColorPrimary: c.textOnPrimary,',
+    '      textColorHoverPrimary: c.textOnPrimary,',
+    '      textColorPressedPrimary: c.textOnPrimary,',
+    '      textColorFocusPrimary: c.textOnPrimary,',
     '    },',
     '    Input: {',
     "      borderRadius: '10px',",

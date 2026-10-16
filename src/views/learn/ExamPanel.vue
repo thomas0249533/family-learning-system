@@ -604,8 +604,8 @@ function backToIntro() {
     font-weight: 700;
     padding: 2px 8px;
     border-radius: 12px;
-    &.wrong-badge { background: $danger-color; color: $on-strong; }
-    &.correct-badge { background: $success-color; color: $on-strong; }
+    &.wrong-badge { background: var(--danger-text); color: var(--text-on-primary); }
+    &.correct-badge { background: var(--success-text); color: var(--text-on-primary); }
   }
 
   .detail-question {

@@ -109,7 +109,7 @@ withDefaults(defineProps<StatCardProps>(), {
 }
 
 .stat-card--primary .stat-card__value {
-  color: var(--primary-color);
+  color: var(--primary-text);
 }
 .stat-card--success .stat-card__value {
   color: var(--success-color);

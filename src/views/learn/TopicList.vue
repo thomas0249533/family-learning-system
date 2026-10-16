@@ -169,8 +169,8 @@ function selectTopic(topic: any) {
     }
 
     .topic-card-index {
-      background: $primary-color;
-      color: $on-strong;
+      background: var(--primary-text);
+      color: var(--text-on-primary);
     }
   }
 

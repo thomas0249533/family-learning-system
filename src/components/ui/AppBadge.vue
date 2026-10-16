@@ -92,54 +92,54 @@ function onClose(): void {
 }
 .app-badge--primary {
   background: var(--badge-primary-bg);
-  color: var(--primary-color);
+  color: var(--primary-text);
 }
 .app-badge--success {
   background: var(--badge-success-bg);
-  color: var(--success-color);
+  color: var(--success-text);
 }
 .app-badge--warning {
   background: var(--badge-warning-bg);
-  color: var(--warning-color);
+  color: var(--warning-text);
 }
 .app-badge--danger {
   background: var(--badge-danger-bg);
-  color: var(--danger-color);
+  color: var(--danger-text);
 }
 .app-badge--info {
   background: var(--badge-info-bg);
-  color: var(--info-color);
+  color: var(--info-text);
 }
 
 /* ---- 实心态（--solid）---- */
 .app-badge--solid {
-  color: var(--on-strong);
+  color: var(--text-on-primary);
 }
 .app-badge--solid.app-badge--neutral {
   background: var(--text-sub);
 }
 .app-badge--solid.app-badge--primary {
-  background: var(--primary-color);
+  background: var(--primary-text);
 }
 .app-badge--solid.app-badge--success {
-  background: var(--success-color);
+  background: var(--success-text);
 }
 .app-badge--solid.app-badge--warning {
-  background: var(--warning-color);
+  background: var(--warning-text);
 }
 .app-badge--solid.app-badge--danger {
-  background: var(--danger-color);
+  background: var(--danger-text);
 }
 .app-badge--solid.app-badge--info {
-  background: var(--info-color);
+  background: var(--info-text);
 }
-/* 实心态下语义色字在语义色底上不可读 → 统一白字（上面已设） */
+/* 实心态下文字统一用 --text-on-primary（对语义色实心底达标；深浅自适应） */
 .app-badge--solid.app-badge--primary,
 .app-badge--solid.app-badge--success,
 .app-badge--solid.app-badge--warning,
 .app-badge--solid.app-badge--danger,
 .app-badge--solid.app-badge--info {
-  color: var(--on-strong);
+  color: var(--text-on-primary);
 }
 
 .app-badge__close {

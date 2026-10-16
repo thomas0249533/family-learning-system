@@ -36,6 +36,8 @@ export interface ThemeColors {
   primaryPressed: string
   /** naive-ui primaryColorSuppl（无独立 CSS 变量，取 hover 值） */
   primarySuppl: string
+  /** --primary-text（AA 文字色 / 主按钮底色） */
+  primaryText: string
   /** --success-color */
   success: string
   /** --warning-color */
@@ -54,6 +56,8 @@ export interface ThemeColors {
   textSub: string
   /** --text-muted */
   textMuted: string
+  /** --text-on-primary（主色实心底上的文字色） */
+  textOnPrimary: string
   /** --border-color */
   border: string
   /** --border-light（★ 本轮新增：图表轴需要） */
@@ -126,6 +130,7 @@ export const palette: ThemePalette = {
         primaryHover: '#d96706',
         primaryPressed: '#bd5a05',
         primarySuppl: '#d96706',
+        primaryText: '#ae5509',
         success: '#16a34a',
         warning: '#c9820a',
         danger: '#dc2626',
@@ -134,7 +139,8 @@ export const palette: ThemePalette = {
         bgColor: '#fff8f1',
         textMain: '#2c1f12',
         textSub: '#5c4a38',
-        textMuted: '#877665',
+        textMuted: '#807060',
+        textOnPrimary: '#ffffff',
         border: '#f0ddc8',
         borderLight: '#f7ecdd',
       },
@@ -143,6 +149,7 @@ export const palette: ThemePalette = {
         primaryHover: '#ffb368',
         primaryPressed: '#e58a2f',
         primarySuppl: '#ffb368',
+        primaryText: '#ffa447',
         success: '#4ade80',
         warning: '#fbbf24',
         danger: '#f87171',
@@ -152,6 +159,7 @@ export const palette: ThemePalette = {
         textMain: '#f6ede1',
         textSub: '#cdbcab',
         textMuted: '#9c8b79',
+        textOnPrimary: '#1a1005',
         border: '#3d2e1f',
         borderLight: '#2b2013',
       },
@@ -163,6 +171,7 @@ export const palette: ThemePalette = {
         primaryHover: '#245741',
         primaryPressed: '#1c4633',
         primarySuppl: '#245741',
+        primaryText: '#2d6a4f',
         success: '#15803d',
         warning: '#b45309',
         danger: '#dc2626',
@@ -172,6 +181,7 @@ export const palette: ThemePalette = {
         textMain: '#16261f',
         textSub: '#3f574c',
         textMuted: '#5f756a',
+        textOnPrimary: '#ffffff',
         border: '#cfdcd5',
         borderLight: '#e5ede8',
       },
@@ -180,6 +190,7 @@ export const palette: ThemePalette = {
         primaryHover: '#5fb88f',
         primaryPressed: '#3f8a69',
         primarySuppl: '#5fb88f',
+        primaryText: '#53ad85',
         success: '#4ade80',
         warning: '#fbbf24',
         danger: '#f87171',
@@ -189,6 +200,7 @@ export const palette: ThemePalette = {
         textMain: '#e8f1ec',
         textSub: '#b6c8bf',
         textMuted: '#8b9c93',
+        textOnPrimary: '#08120e',
         border: '#2a3b34',
         borderLight: '#1f2e28',
       },
@@ -200,6 +212,7 @@ export const palette: ThemePalette = {
         primaryHover: '#2f4a63',
         primaryPressed: '#263c50',
         primarySuppl: '#2f4a63',
+        primaryText: '#3b5b7a',
         success: '#15803d',
         warning: '#b45309',
         danger: '#dc2626',
@@ -209,6 +222,7 @@ export const palette: ThemePalette = {
         textMain: '#1c2530',
         textSub: '#44515f',
         textMuted: '#66717d',
+        textOnPrimary: '#ffffff',
         border: '#d3dbe3',
         borderLight: '#e6ebf0',
       },
@@ -217,6 +231,7 @@ export const palette: ThemePalette = {
         primaryHover: '#93b3d0',
         primaryPressed: '#6a8dae',
         primarySuppl: '#93b3d0',
+        primaryText: '#7fa3c4',
         success: '#4ade80',
         warning: '#fbbf24',
         danger: '#f87171',
@@ -226,6 +241,7 @@ export const palette: ThemePalette = {
         textMain: '#e9eef4',
         textSub: '#b5c0cc',
         textMuted: '#8a95a1',
+        textOnPrimary: '#0a0f14',
         border: '#28333f',
         borderLight: '#1a222b',
       },
@@ -311,6 +327,18 @@ export function buildThemeOverrides(
       borderRadiusMedium: '10px',
       fontWeight: '600',
       fontWeightStrong: '700',
+      // 主按钮前景/背景：底色取 --primary-text、文字取 --text-on-primary，
+      // 使 6 组（3 学段 × 浅深）的主按钮文字对比度全部 ≥ 4.5（AA）。
+      // 本应用用 body.dark-mode + 自定义覆盖而非 naive darkTheme，故 naive
+      // 会误判为浅色、给深色主题的 primary 按钮配白字（对比度不足），需显式指定。
+      colorPrimary: c.primaryText,
+      colorHoverPrimary: c.primaryText,
+      colorPressedPrimary: c.primaryText,
+      colorFocusPrimary: c.primaryText,
+      textColorPrimary: c.textOnPrimary,
+      textColorHoverPrimary: c.textOnPrimary,
+      textColorPressedPrimary: c.textOnPrimary,
+      textColorFocusPrimary: c.textOnPrimary,
     },
     Input: {
       borderRadius: '10px',

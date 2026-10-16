@@ -137,8 +137,8 @@ function selectUnit(ru: ResolvedUnit) {
     }
 
     .unit-card-index {
-      background: $primary-color;
-      color: $on-strong;
+      background: var(--primary-text);
+      color: var(--text-on-primary);
     }
   }
 

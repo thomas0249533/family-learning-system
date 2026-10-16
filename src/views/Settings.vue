@@ -371,8 +371,8 @@ function clearAllData() {
     align-items: center;
     justify-content: center;
     border-radius: $radius-full;
-    background: $primary-color;
-    color: $on-strong;
+    background: var(--primary-text);
+    color: var(--text-on-primary);
     font-size: 12px;
     font-weight: 800;
   }

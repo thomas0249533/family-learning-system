@@ -231,8 +231,8 @@ const todayText = computed(() => {
       font-weight: 700;
 
       .sidebar-icon {
-        background: $primary-color;
-        color: $on-strong;
+        background: var(--primary-text);
+        color: var(--text-on-primary);
         box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
       }
     }

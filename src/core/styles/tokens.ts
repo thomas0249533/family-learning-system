@@ -14,9 +14,9 @@
 // 派生 vs 显式（§1.2「可证等价者派生，手工调校者显式」）：
 //   · 派生：--{primary,success,warning,danger,info}-rgb（5）
 //            --{…}-soft（5）、--primary-soft-strong（1） = 11 个/组。
-//   · 显式：-light 五色、bg-color-hover、surface-2、text-on-primary、
-//            border-light、gradient-primary、band-*×6、shadow-*、code-color、
-//            on-strong、非主色 gradient（+ 其余全部）。
+//   · 显式：-light 五色、**-text 五色（AA 手调）**、bg-color-hover、surface-2、
+//            text-on-primary、border-light、gradient-primary、band-*×6、shadow-*、
+//            code-color、on-strong、非主色 gradient（+ 其余全部）。
 //   **禁止「全量派生」**——会把现有手调色值改成公式结果，破坏视觉零变化。
 //
 // 维度 A/B（§8.4 不变量 4）：
@@ -51,22 +51,32 @@ export interface HuePrimitives {
   brandPressed: string
   /** --primary-light（手调浅底 · 显式） */
   brandLight: string
+  /** --primary-text（AA 文字色 · 显式手调；可作文字 / 实心底 / 自身软底上文字） */
+  brandText: string
   /** --success-color */
   success: string
   /** --success-light */
   successLight: string
+  /** --success-text（AA 文字色 · 显式；多数组与 success 同值） */
+  successText: string
   /** --warning-color */
   warning: string
   /** --warning-light */
   warningLight: string
+  /** --warning-text（AA 文字色 · 显式） */
+  warningText: string
   /** --danger-color */
   danger: string
   /** --danger-light */
   dangerLight: string
+  /** --danger-text（AA 文字色 · 显式；浅色组较 danger 加深以满足 AA） */
+  dangerText: string
   /** --info-color */
   info: string
   /** --info-light */
   infoLight: string
+  /** --info-text（AA 文字色 · 显式；多数组与 info 同值） */
+  infoText: string
   /** --bg-color */
   bg: string
   /** --bg-color-hover */
@@ -100,22 +110,22 @@ export interface HuePrimitives {
 export const HUES: Record<ThemePreset, Record<ThemeMode, HuePrimitives>> = {
   primary: {
     light: {
-      brand: '#f2760c', brandHover: '#d96706', brandPressed: '#bd5a05', brandLight: '#ffeede',
-      success: '#16a34a', successLight: '#e7f8ee',
-      warning: '#c9820a', warningLight: '#fbf1e0',
-      danger: '#dc2626', dangerLight: '#fdeded',
-      info: '#2563eb', infoLight: '#eaf1fe',
+      brand: '#f2760c', brandHover: '#d96706', brandPressed: '#bd5a05', brandLight: '#ffeede', brandText: '#ae5509',
+      success: '#16a34a', successLight: '#e7f8ee', successText: '#11813b',
+      warning: '#c9820a', warningLight: '#fbf1e0', warningText: '#9a6308',
+      danger: '#dc2626', dangerLight: '#fdeded', dangerText: '#d42525',
+      info: '#2563eb', infoLight: '#eaf1fe', infoText: '#2563eb',
       bg: '#fff8f1', bgHover: '#f7ebdf', card: '#ffffff', surface2: '#fffcf9',
-      textMain: '#2c1f12', textSub: '#5c4a38', textMuted: '#877665', textOnPrimary: '#ffffff',
+      textMain: '#2c1f12', textSub: '#5c4a38', textMuted: '#807060', textOnPrimary: '#ffffff',
       border: '#f0ddc8', borderLight: '#f7ecdd',
       gradientPrimary: 'linear-gradient(135deg, #f2760c 0%, #ffa447 100%)',
     },
     dark: {
-      brand: '#ffa447', brandHover: '#ffb368', brandPressed: '#e58a2f', brandLight: '#3a2415',
-      success: '#4ade80', successLight: '#14301f',
-      warning: '#fbbf24', warningLight: '#3a2a12',
-      danger: '#f87171', dangerLight: '#3a1a1a',
-      info: '#60a5fa', infoLight: '#16243e',
+      brand: '#ffa447', brandHover: '#ffb368', brandPressed: '#e58a2f', brandLight: '#3a2415', brandText: '#ffa447',
+      success: '#4ade80', successLight: '#14301f', successText: '#4ade80',
+      warning: '#fbbf24', warningLight: '#3a2a12', warningText: '#fbbf24',
+      danger: '#f87171', dangerLight: '#3a1a1a', dangerText: '#f87171',
+      info: '#60a5fa', infoLight: '#16243e', infoText: '#60a5fa',
       bg: '#1a130c', bgHover: '#2a1e12', card: '#241a11', surface2: '#2b2014',
       textMain: '#f6ede1', textSub: '#cdbcab', textMuted: '#9c8b79', textOnPrimary: '#1a1005',
       border: '#3d2e1f', borderLight: '#2b2013',
@@ -124,22 +134,22 @@ export const HUES: Record<ThemePreset, Record<ThemeMode, HuePrimitives>> = {
   },
   junior: {
     light: {
-      brand: '#2d6a4f', brandHover: '#245741', brandPressed: '#1c4633', brandLight: '#e7f3ed',
-      success: '#15803d', successLight: '#e9f8ef',
-      warning: '#b45309', warningLight: '#fdf4e7',
-      danger: '#dc2626', dangerLight: '#fdeded',
-      info: '#2563eb', infoLight: '#eaf1fe',
+      brand: '#2d6a4f', brandHover: '#245741', brandPressed: '#1c4633', brandLight: '#e7f3ed', brandText: '#2d6a4f',
+      success: '#15803d', successLight: '#e9f8ef', successText: '#15803d',
+      warning: '#b45309', warningLight: '#fdf4e7', warningText: '#b45309',
+      danger: '#dc2626', dangerLight: '#fdeded', dangerText: '#d42525',
+      info: '#2563eb', infoLight: '#eaf1fe', infoText: '#2563eb',
       bg: '#f6f8f5', bgHover: '#ebf0ec', card: '#ffffff', surface2: '#f9fbf9',
       textMain: '#16261f', textSub: '#3f574c', textMuted: '#5f756a', textOnPrimary: '#ffffff',
       border: '#cfdcd5', borderLight: '#e5ede8',
       gradientPrimary: 'linear-gradient(135deg, #2d6a4f 0%, #4fa57f 100%)',
     },
     dark: {
-      brand: '#4fa57f', brandHover: '#5fb88f', brandPressed: '#3f8a69', brandLight: '#1c3a2c',
-      success: '#4ade80', successLight: '#14301f',
-      warning: '#fbbf24', warningLight: '#3a2a12',
-      danger: '#f87171', dangerLight: '#3a1a1a',
-      info: '#60a5fa', infoLight: '#16243e',
+      brand: '#4fa57f', brandHover: '#5fb88f', brandPressed: '#3f8a69', brandLight: '#1c3a2c', brandText: '#53ad85',
+      success: '#4ade80', successLight: '#14301f', successText: '#4ade80',
+      warning: '#fbbf24', warningLight: '#3a2a12', warningText: '#fbbf24',
+      danger: '#f87171', dangerLight: '#3a1a1a', dangerText: '#f87171',
+      info: '#60a5fa', infoLight: '#16243e', infoText: '#60a5fa',
       bg: '#0d1613', bgHover: '#1b2a24', card: '#15211c', surface2: '#1a2822',
       textMain: '#e8f1ec', textSub: '#b6c8bf', textMuted: '#8b9c93', textOnPrimary: '#08120e',
       border: '#2a3b34', borderLight: '#1f2e28',
@@ -148,22 +158,22 @@ export const HUES: Record<ThemePreset, Record<ThemeMode, HuePrimitives>> = {
   },
   senior: {
     light: {
-      brand: '#3b5b7a', brandHover: '#2f4a63', brandPressed: '#263c50', brandLight: '#e8eef4',
-      success: '#15803d', successLight: '#e9f8ef',
-      warning: '#b45309', warningLight: '#fdf4e7',
-      danger: '#dc2626', dangerLight: '#fdeded',
-      info: '#2563eb', infoLight: '#eaf1fe',
+      brand: '#3b5b7a', brandHover: '#2f4a63', brandPressed: '#263c50', brandLight: '#e8eef4', brandText: '#3b5b7a',
+      success: '#15803d', successLight: '#e9f8ef', successText: '#15803d',
+      warning: '#b45309', warningLight: '#fdf4e7', warningText: '#b45309',
+      danger: '#dc2626', dangerLight: '#fdeded', dangerText: '#d42525',
+      info: '#2563eb', infoLight: '#eaf1fe', infoText: '#2563eb',
       bg: '#f4f6f9', bgHover: '#e9edf2', card: '#ffffff', surface2: '#fafbfd',
       textMain: '#1c2530', textSub: '#44515f', textMuted: '#66717d', textOnPrimary: '#ffffff',
       border: '#d3dbe3', borderLight: '#e6ebf0',
       gradientPrimary: 'linear-gradient(135deg, #3b5b7a 0%, #7fa3c4 100%)',
     },
     dark: {
-      brand: '#7fa3c4', brandHover: '#93b3d0', brandPressed: '#6a8dae', brandLight: '#1e2a36',
-      success: '#4ade80', successLight: '#14301f',
-      warning: '#fbbf24', warningLight: '#3a2a12',
-      danger: '#f87171', dangerLight: '#3a1a1a',
-      info: '#60a5fa', infoLight: '#16243e',
+      brand: '#7fa3c4', brandHover: '#93b3d0', brandPressed: '#6a8dae', brandLight: '#1e2a36', brandText: '#7fa3c4',
+      success: '#4ade80', successLight: '#14301f', successText: '#4ade80',
+      warning: '#fbbf24', warningLight: '#3a2a12', warningText: '#fbbf24',
+      danger: '#f87171', dangerLight: '#3a1a1a', dangerText: '#f87171',
+      info: '#60a5fa', infoLight: '#16243e', infoText: '#60a5fa',
       bg: '#0e1319', bgHover: '#1b232e', card: '#161e27', surface2: '#1c2530',
       textMain: '#e9eef4', textSub: '#b5c0cc', textMuted: '#8a95a1', textOnPrimary: '#0a0f14',
       border: '#28333f', borderLight: '#1a222b',
@@ -332,20 +342,25 @@ export function buildSemantic(preset: ThemePreset, mode: ThemeMode): SemanticTok
     'primary-hover': h.brandHover,
     'primary-pressed': h.brandPressed,
     'primary-light': h.brandLight,
+    'primary-text': h.brandText,
     'primary-soft': `rgba(${b}, ${soft})`,
     'primary-soft-strong': `rgba(${b}, ${softStrong})`,
 
     'success-color': h.success,
     'success-light': h.successLight,
+    'success-text': h.successText,
     'success-soft': `rgba(${rgbTuple(h.success)}, ${soft})`,
     'warning-color': h.warning,
     'warning-light': h.warningLight,
+    'warning-text': h.warningText,
     'warning-soft': `rgba(${rgbTuple(h.warning)}, ${soft})`,
     'danger-color': h.danger,
     'danger-light': h.dangerLight,
+    'danger-text': h.dangerText,
     'danger-soft': `rgba(${rgbTuple(h.danger)}, ${soft})`,
     'info-color': h.info,
     'info-light': h.infoLight,
+    'info-text': h.infoText,
     'info-soft': `rgba(${rgbTuple(h.info)}, ${soft})`,
 
     'primary-rgb': b,
@@ -405,7 +420,7 @@ export const COMPONENT_TOKENS: Record<string, string> = {
   // 按钮
   'btn-primary-bg': 'var(--primary-color)',
   'btn-primary-bg-hover': 'var(--primary-hover)',
-  'btn-primary-fg': 'var(--on-strong)',
+  'btn-primary-fg': 'var(--text-on-primary)',
   'btn-focus-ring': 'var(--focus-ring)',
   // 卡片
   'card-header-bg': 'var(--bg-color-hover)',
