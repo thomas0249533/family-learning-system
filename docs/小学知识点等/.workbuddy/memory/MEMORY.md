@@ -94,3 +94,17 @@
 - **校验新增规则必须"接受"新形态而非"拒绝"**：写成拒绝会把现有 18 道题挡在导入之外（把 bug 换成另一个 bug）。
 - **SFC 内部函数在本机测不到**（无 `@vue/test-utils`/jsdom，`vitest` 是 `environment:'node'` 且不许改）→ **要可验证就必须把内核逻辑抽成纯模块**（沿用 `@core/review/fsrs.ts`、`@core/mistake/mistakeRules.ts` 模式）。
 - **技术债**：`content/all_exercises.json` 是**语法坏掉的 JSON**；`content/english-7-up-rjb/` 下 `add_manifest.py`/`fix_fields.py`/`fix_validate.py`/`fix_sprint.py` 等临时脚本**都在 git 里**。
+
+## D:/study 多陈述判断题（批 7，2026-10-16 完成）
+- **能力**：`judge` 题 `answer` 可为数组（多陈述）。材料 + `(1)(2)(3)` 陈述句被切成「阅读区 + 逐句 T/F 行」。内核在 `src/core/quiz/judge.ts`。
+- **判分 = 全对才算对**（与 `multiple` 一致），**不做部分给分**（`isCorrect` 是 boolean，牵动 FSRS/BKT/错题三级）。已有单测钉死这条决策。
+- **解析器失败即降级**：编号 <2 / 编号不连续 / 与答案长度不等 / 切出空句 → 返回 `null`，UI 降级成整块题干 + N 组按钮。**绝不让解析器把内容切坏。**
+- **按钮文案由 `options` 驱动**：`["T","F"]` → `T`/`F`；否则 `对`/`错`。
+
+## D:/study 测试与验证硬经验（长期有效）
+- **Playwright `animations:'disabled'` 对 SMIL 无效**（实测：naive-ui `n-base-loading__icon` 用 `<animateTransform>`）。要冻结 SVG 动画必须 `setCurrentTime(0)` + `pauseAnimations()`。共用 helper：`tests/e2e/freeze-smil.ts`。
+- **验证门禁退出码时不要接管道**：`npm run x | tail` 之后 `$?` 是 **tail** 的退出码。必须去掉管道直取，否则"报错却 EXIT 0"的门禁会被误判为有效。
+- **确定性/自愈类验证要选对基线**：验证"修好了没"必须比**修复后的两次运行**，拿修复前的旧字节当基线会误报仍失败。
+- **变异测试要先确认突变真能改变行为**：改了代码但被前置短路挡住 → 变异无效（不是测试弱）。写完变异先想它会走哪条路径。
+- **e2e 播种学习包**：`window.db.packages.put()` 的记录必须有**顶层 `packageId`**（只写 `manifest.packageId` → `DexieError2`），并带 `exercises: []`。URL `/learn/{pkg}/unit/{unit}/topic/{topic}`。合成包 `dependencies: []` 且 KP 无 prerequisites 才能跳过热身阶段。
+- **优先用真实内容做题源**（如从 `content/english-7-up-rjb/*.json` 取出题对象），别手写 fixture —— fixture 与真实形状脱节会造成假绿。
