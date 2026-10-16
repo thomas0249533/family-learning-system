@@ -64,16 +64,17 @@ withDefaults(defineProps<PageHeaderProps>(), {
   align-items: center;
   gap: var(--space-2);
   margin: 0;
-  font-size: var(--font-2xl);
-  font-weight: 700;
+  font-size: var(--font-3xl);
+  font-weight: 800;
   line-height: 1.25;
   color: var(--text-main);
+  letter-spacing: 0.3px;
 }
 
 .page-header__icon {
   display: inline-flex;
   align-items: center;
-  font-size: var(--font-2xl);
+  font-size: var(--font-3xl);
   line-height: 1;
 }
 

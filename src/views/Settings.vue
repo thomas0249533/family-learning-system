@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <!-- 外观设置 -->
-    <n-card title="🎨 外观设置" class="card">
+    <AppCard title="🎨 外观设置" class="card">
       <n-space vertical size="large">
         <!-- 学习阶段主题（preset 卡片单选） -->
         <div>
@@ -28,20 +28,20 @@
             </button>
           </div>
 
-          <!-- 推荐提示条 -->
+          <!-- 推荐提示条（文本统一为 AppBadge 软色 pill，§5.1） -->
           <div class="preset-advice">
             <template v-if="themeStore.presetManual">
-              <span class="advice-text">已手动选择，不再自动推荐</span>
-              <n-button size="tiny" quaternary type="primary" @click="handleRestoreAuto">恢复自动</n-button>
+              <AppBadge tone="neutral" size="sm" icon="🔒">已手动选择，不再自动推荐</AppBadge>
+              <AppButton size="tiny" quaternary type="primary" @click="handleRestoreAuto">恢复自动</AppButton>
             </template>
             <template v-else-if="recommended.grade !== null">
-              <span class="advice-text">
+              <AppBadge tone="warning" size="sm" icon="💡">
                 检测到孩子 {{ recommended.grade }} 年级，推荐「{{ presetName(recommended.preset) }}」主题
-              </span>
-              <n-button size="tiny" quaternary type="primary" @click="applyRecommended">一键切换</n-button>
+              </AppBadge>
+              <AppButton size="tiny" quaternary type="primary" @click="applyRecommended">一键切换</AppButton>
             </template>
             <template v-else>
-              <span class="advice-text">导入学习包后，将按孩子年级自动推荐主题</span>
+              <AppBadge tone="info" size="sm" icon="📥">导入学习包后，将按孩子年级自动推荐主题</AppBadge>
             </template>
           </div>
         </div>
@@ -66,26 +66,26 @@
           </n-radio-group>
         </div>
       </n-space>
-    </n-card>
+    </AppCard>
 
     <!-- 学习包管理 -->
-    <n-card title="📦 学习包管理" class="card">
+    <AppCard title="📦 学习包管理" class="card">
       <n-space vertical>
-        <n-button type="primary" block size="large" @click="$router.push('/settings/import')">
+        <AppButton type="primary" block size="large" @click="$router.push('/settings/import')">
           📥 导入新的学习包
-        </n-button>
+        </AppButton>
       </n-space>
-    </n-card>
+    </AppCard>
 
     <!-- 导出 -->
-    <n-card title="📤 导出" class="card">
+    <AppCard title="📤 导出" class="card">
       <n-space vertical>
         <div class="export-row">
           <div class="export-info">
             <div class="export-title">导出错题本</div>
             <div class="export-desc">所有错题，含题目、解析、错误次数</div>
           </div>
-          <n-button @click="doExportMistakes">导出</n-button>
+          <AppButton @click="doExportMistakes">导出</AppButton>
         </div>
 
         <div class="export-row">
@@ -93,7 +93,7 @@
             <div class="export-title">导出学习进度</div>
             <div class="export-desc">知识点掌握度、答题统计</div>
           </div>
-          <n-button @click="doExportProgress">导出</n-button>
+          <AppButton @click="doExportProgress">导出</AppButton>
         </div>
 
         <div class="export-row">
@@ -101,7 +101,7 @@
             <div class="export-title">导出全部包</div>
             <div class="export-desc">所有学习包 JSON</div>
           </div>
-          <n-button @click="doExportPackages">导出</n-button>
+          <AppButton @click="doExportPackages">导出</AppButton>
         </div>
 
         <div class="export-row">
@@ -109,49 +109,53 @@
             <div class="export-title">全量备份</div>
             <div class="export-desc">包 + 进度 + 错题 + 设置</div>
           </div>
-          <n-button type="primary" @click="doExportAll">导出</n-button>
+          <AppButton type="primary" @click="doExportAll">导出</AppButton>
         </div>
       </n-space>
-    </n-card>
+    </AppCard>
 
     <!-- 导入用户数据 -->
-    <n-card title="📥 导入用户数据" class="card">
+    <AppCard title="📥 导入用户数据" class="card">
       <n-upload :custom-request="handleImportUserData" :show-file-list="false" accept=".json">
-        <n-button dashed>选择用户数据 JSON</n-button>
+        <AppButton dashed>选择用户数据 JSON</AppButton>
       </n-upload>
       <div class="hint">导入进度、错题、设置。已存在的记录会合并更新。</div>
-    </n-card>
+    </AppCard>
 
     <!-- 搜索历史 -->
-    <n-card title="🔍 搜索历史" class="card">
-      <div v-if="searchHistory.length === 0" class="empty-hint">暂无搜索历史</div>
+    <AppCard title="🔍 搜索历史" class="card">
+      <EmptyState v-if="searchHistory.length === 0" size="small" description="暂无搜索历史" />
       <template v-else>
         <div class="history-list">
           <n-tag v-for="(kw, i) in searchHistory" :key="i" closable size="medium" @close="removeHistory(i)">
             {{ kw }}
           </n-tag>
         </div>
-        <n-button size="small" style="margin-top: 12px;" @click="clearHistory">清空搜索历史</n-button>
+        <AppButton size="small" style="margin-top: 12px;" @click="clearHistory">清空搜索历史</AppButton>
       </template>
-    </n-card>
+    </AppCard>
 
     <!-- 危险操作 -->
-    <n-card title="🗑️ 危险操作" class="card danger-card">
+    <AppCard title="🗑️ 危险操作" class="card" variant="danger">
       <n-space vertical>
-        <n-button type="error" ghost @click="doClearMistakes">清空所有错题</n-button>
-        <n-button type="error" ghost @click="doClearProgress">清空学习进度</n-button>
-        <n-button type="error" ghost @click="clearAllData">清空所有数据（含包）</n-button>
+        <AppButton type="error" ghost @click="doClearMistakes">清空所有错题</AppButton>
+        <AppButton type="error" ghost @click="doClearProgress">清空学习进度</AppButton>
+        <AppButton type="error" ghost @click="clearAllData">清空所有数据（含包）</AppButton>
       </n-space>
-    </n-card>
+    </AppCard>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import {
-  NCard, NSpace, NRadioGroup, NRadioButton, NButton, NUpload, NTag,
+  NSpace, NRadioGroup, NRadioButton, NUpload, NTag,
   useMessage, useDialog
 } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import AppBadge from '@/components/ui/AppBadge.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 import { useThemeStore } from '@core/stores/theme'
 import { usePackageStore } from '@core/stores/package'
 import { db } from '@/db'
@@ -290,8 +294,7 @@ function clearAllData() {
 
 <style scoped lang="scss">
 .page-container { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
-.card { border-radius: $radius-lg; box-shadow: $shadow-sm; margin-bottom: 0; }
-.danger-card { border: 1px solid $danger-light; }
+/* `.card` 的圆角/阴影已由 AppCard 基元统一提供（radius-lg + shadow-sm）；危险卡走 variant="danger"。 */
 .setting-label { font-size: 14px; font-weight: 700; color: $text-main; margin-bottom: 10px; }
 
 /* ========== 学段预设卡片 ========== */
@@ -375,17 +378,13 @@ function clearAllData() {
   }
 }
 
+/* 提示条：文本已交由 AppBadge 承载（§5.1），本容器只保留排布。 */
 .preset-advice {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 10px;
-  padding: 8px 12px;
-  background: $bg-color-hover;
-  border-radius: $radius-sm;
-
-  .advice-text { font-size: 12px; color: $text-sub; }
 }
 
 .export-row {
@@ -398,6 +397,5 @@ function clearAllData() {
 }
 
 .hint { font-size: 12px; color: $text-sub; margin-top: 8px; }
-.empty-hint { font-size: 13px; color: $text-sub; }
 .history-list { display: flex; flex-wrap: wrap; gap: 8px; }
 </style>

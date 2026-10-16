@@ -60,28 +60,31 @@ withDefaults(defineProps<StatCardProps>(), {
   gap: var(--space-3);
   padding: var(--space-4);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--card-bg);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--duration-base) var(--ease-standard),
     transform var(--duration-base) var(--ease-standard);
 }
 
+/* 竖向（默认）：居中排布 —— 复刻 Parent `.ov-card` / Report `.stat-box` 的既有观感 */
 .stat-card--vertical {
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
 }
 
 .stat-card--horizontal {
   flex-direction: row;
   align-items: center;
+  text-align: left;
 }
 
 .stat-card__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-xl);
+  font-size: var(--font-3xl);
   line-height: 1;
 }
 
@@ -97,8 +100,10 @@ withDefaults(defineProps<StatCardProps>(), {
 }
 
 .stat-card__value {
-  font-size: var(--font-2xl);
-  font-weight: 700;
+  /* 26px：复刻 Parent `.ov-value` / Report `.stat-value` 的既有字号。
+     字号阶梯无 26px 取值，故按 §8.4 不变量 7「常量尺寸」保留精确值。 */
+  font-size: 26px;
+  font-weight: 800;
   line-height: 1.15;
   color: var(--stat-value-fg);
 }

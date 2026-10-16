@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card class="card">
+    <AppCard class="card">
       <n-input-group>
         <n-input
           v-model:value="keyword"
@@ -9,7 +9,7 @@
           clearable
           @keyup.enter="doSearch"
         />
-        <n-button type="primary" size="large" @click="doSearch">🔍 搜索</n-button>
+        <AppButton type="primary" size="large" @click="doSearch">🔍 搜索</AppButton>
       </n-input-group>
 
       <div class="scope-hint" v-if="currentPackage">
@@ -18,9 +18,9 @@
       <div class="scope-hint empty" v-else>
         尚未选择学习包
       </div>
-    </n-card>
+    </AppCard>
 
-    <n-card v-if="hasSearched" class="card result-card">
+    <AppCard v-if="hasSearched" class="card result-card">
       <n-empty v-if="groups.length === 0" description="没有找到相关内容，试试换个关键词？" />
 
       <div v-else class="result-list">
@@ -61,7 +61,7 @@
           </div>
         </div>
       </div>
-    </n-card>
+    </AppCard>
 
     <!-- 详情弹窗 -->
     <n-modal
@@ -107,8 +107,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import {
-  NCard, NInput, NInputGroup, NButton, NEmpty, NModal
+  NInput, NInputGroup, NEmpty, NModal
 } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
 import {
@@ -194,7 +196,7 @@ function openItem(item: SearchResultItem) {
 
 <style scoped lang="scss">
 .page-container { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
-.card { border-radius: $radius-lg; box-shadow: $shadow-sm; }
+/* `.card` 的圆角/阴影已由 AppCard 基元统一提供（radius-lg + shadow-sm），故移除重复声明。 */
 
 .scope-hint {
   margin-top: 12px;

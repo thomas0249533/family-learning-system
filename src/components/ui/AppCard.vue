@@ -6,10 +6,13 @@
       { 'app-card--hoverable': hoverable, 'app-card--paddingless': paddingless },
     ]"
   >
-    <template v-if="title || icon || $slots.header" #header>
+    <template v-if="$slots.header" #header>
+      <slot name="header" />
+    </template>
+    <template v-else-if="title || icon" #header>
       <div class="app-card__header">
-        <span v-if="icon" class="app-card__icon">{{ icon }}</span>
-        <slot name="header">{{ title }}</slot>
+        <span v-if="icon" class="app-card__icon" aria-hidden="true">{{ icon }}</span>
+        <span class="app-card__title">{{ title }}</span>
       </div>
     </template>
     <template v-if="$slots['header-extra']" #header-extra>
@@ -48,18 +51,16 @@ withDefaults(defineProps<AppCardProps>(), {
 </script>
 
 <style scoped lang="scss">
+/* 复刻现有观感的「最主流的那一套」：radius-lg + shadow-sm。
+   刻意 **不** 覆盖 border 与 header 背景 —— 现有各页的 n-card 用的是 naive 默认
+   （边框 = --border-color，标题栏无底色）；强行上 --border-light / --card-header-bg
+   会让每一张被替换的卡片产生非预期可见变化（批3/批4 铁律：差异只应出现在
+   「原本各页就不一致」的地方）。 */
 .app-card {
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
-  background: var(--card-bg);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--duration-base) var(--ease-standard),
     transform var(--duration-base) var(--ease-standard);
-}
-
-.app-card:deep(.n-card-header),
-.app-card :deep(.n-card-header) {
-  background: var(--card-header-bg);
 }
 
 .app-card__header {

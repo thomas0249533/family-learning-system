@@ -1,51 +1,28 @@
 <template>
   <div class="parent-page">
     <!-- 顶部标题 -->
-    <div class="page-title">
-      <h1>👨‍👩‍👧 家长视图</h1>
-      <p class="page-sub">查看孩子的学习情况 · 数据只读</p>
-    </div>
+    <PageHeader
+      icon="👨‍👩‍👧"
+      title="家长视图"
+      subtitle="查看孩子的学习情况 · 数据只读"
+    />
 
     <!-- 总览指标 -->
     <section class="section">
-      <h2 class="section-title">📊 学习总览</h2>
+      <SectionTitle title="📊 学习总览" />
       <div class="overview-grid">
-        <div class="ov-card">
-          <div class="ov-icon">📖</div>
-          <div class="ov-value">{{ stats.totalKp }}</div>
-          <div class="ov-label">知识点总数</div>
-        </div>
-        <div class="ov-card success">
-          <div class="ov-icon">✅</div>
-          <div class="ov-value">{{ stats.mastered }}</div>
-          <div class="ov-label">已掌握</div>
-        </div>
-        <div class="ov-card warning">
-          <div class="ov-icon">🔄</div>
-          <div class="ov-value">{{ stats.learning }}</div>
-          <div class="ov-label">学习中</div>
-        </div>
-        <div class="ov-card danger">
-          <div class="ov-icon">❌</div>
-          <div class="ov-value">{{ stats.needReview }}</div>
-          <div class="ov-label">需复习</div>
-        </div>
-        <div class="ov-card">
-          <div class="ov-icon">⏱️</div>
-          <div class="ov-value">{{ stats.studyMinutes }}</div>
-          <div class="ov-label">累计分钟</div>
-        </div>
-        <div class="ov-card">
-          <div class="ov-icon">🔥</div>
-          <div class="ov-value">{{ stats.continuousDays }}</div>
-          <div class="ov-label">连续天数</div>
-        </div>
+        <StatCard icon="📖" :value="stats.totalKp" label="知识点总数" />
+        <StatCard icon="✅" :value="stats.mastered" label="已掌握" tone="success" />
+        <StatCard icon="🔄" :value="stats.learning" label="学习中" tone="warning" />
+        <StatCard icon="❌" :value="stats.needReview" label="需复习" tone="danger" />
+        <StatCard icon="⏱️" :value="stats.studyMinutes" label="累计分钟" />
+        <StatCard icon="🔥" :value="stats.continuousDays" label="连续天数" />
       </div>
     </section>
 
     <!-- 成就概览（只读） -->
     <section class="section">
-      <h2 class="section-title">🏅 成就概览</h2>
+      <SectionTitle title="🏅 成就概览" />
       <div class="ach-overview-card">
         <div class="ach-total">
           <div class="ach-total-value">{{ achUnlockedCount }} / {{ achTotal }}</div>
@@ -74,7 +51,7 @@
 
     <!-- 学科分布 -->
     <section class="section" v-if="subjectStats.length > 0">
-      <h2 class="section-title">📚 学科分布</h2>
+      <SectionTitle title="📚 学科分布" />
       <div class="subject-list">
         <div v-for="s in subjectStats" :key="s.subject" class="subject-item">
           <div class="subject-head">
@@ -83,19 +60,14 @@
               {{ s.mastered }} / {{ s.total }}（{{ s.rate }}%）
             </span>
           </div>
-          <div class="subject-bar">
-            <div
-              class="subject-bar-fill"
-              :style="{ width: s.rate + '%' }"
-            ></div>
-          </div>
+          <ProgressBar :value="s.rate" gradient />
         </div>
       </div>
     </section>
 
     <!-- 高频错题 Top 5 -->
     <section class="section" v-if="topMistakes.length > 0">
-      <h2 class="section-title">❌ 高频错题 Top 5</h2>
+      <SectionTitle title="❌ 高频错题 Top 5" />
       <div class="top-list">
         <div v-for="(item, i) in topMistakes" :key="item.kpId" class="top-item">
           <div class="top-rank">{{ i + 1 }}</div>
@@ -109,7 +81,7 @@
 
     <!-- 近 7 天学习 -->
     <section class="section">
-      <h2 class="section-title">📅 近 7 天学习</h2>
+      <SectionTitle title="📅 近 7 天学习" />
       <div class="week-card">
         <div class="week-chart">
           <div v-for="d in weekDays" :key="d.date" class="day-col">
@@ -132,13 +104,13 @@
 
     <!-- 学习包管理 -->
     <section class="section">
-      <h2 class="section-title">📦 学习包管理</h2>
+      <SectionTitle title="📦 学习包管理" />
       <div class="pkg-card">
         <div class="pkg-info">
           <div class="pkg-title">已导入 {{ packageStore.packages.length }} 个学习包</div>
           <div class="pkg-desc">管理学习内容、导入新包、导出备份</div>
         </div>
-        <n-button type="primary" @click="goToImport">📥 管理学习包</n-button>
+        <AppButton type="primary" @click="goToImport">📥 管理学习包</AppButton>
       </div>
     </section>
   </div>
@@ -147,7 +119,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { NButton } from 'naive-ui'
+import PageHeader from '@/components/ui/PageHeader.vue'
+import SectionTitle from '@/components/ui/SectionTitle.vue'
+import StatCard from '@/components/ui/StatCard.vue'
+import ProgressBar from '@/components/ui/ProgressBar.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import {
@@ -328,34 +304,12 @@ function goToImport() {
   padding-bottom: 24px;
 }
 
-.page-title {
-  .page-title h1,
-  h1 {
-    font-size: 22px;
-    font-weight: 800;
-    color: $text-main;
-    margin: 0 0 6px;
-    letter-spacing: 0.3px;
-  }
-  .page-sub {
-    font-size: 13px;
-    color: $text-sub;
-    margin: 0;
-  }
-}
+/* 页头 / 小节标题 / 概览卡 / 进度条 已由基元承载（PageHeader / SectionTitle / StatCard / ProgressBar）。 */
 
 .section {
   display: flex;
   flex-direction: column;
   gap: 14px;
-}
-
-.section-title {
-  font-size: 16px;
-  font-weight: 800;
-  color: $text-main;
-  margin: 0;
-  letter-spacing: 0.2px;
 }
 
 /* ========== 总览 ========== */
@@ -368,43 +322,7 @@ function goToImport() {
   @media (max-width: 640px) { grid-template-columns: repeat(2, 1fr); }
 }
 
-.ov-card {
-  background: $card-bg;
-  border: 1px solid $border-color;
-  border-radius: $radius-md;
-  padding: 16px 12px;
-  text-align: center;
-  transition: all 0.15s;
-  box-shadow: $shadow-sm;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
-  }
-
-  &.success .ov-value { color: $success-color; }
-  &.warning .ov-value { color: $warning-color; }
-  &.danger .ov-value { color: $danger-color; }
-
-  .ov-icon {
-    font-size: 22px;
-    margin-bottom: 8px;
-    line-height: 1;
-  }
-  .ov-value {
-    font-size: 26px;
-    font-weight: 800;
-    color: $text-main;
-    line-height: 1;
-    letter-spacing: -0.5px;
-    margin-bottom: 6px;
-  }
-  .ov-label {
-    font-size: 12px;
-    color: $text-sub;
-    font-weight: 600;
-  }
-}
+/* `.ov-card` 已由 StatCard 基元承载（card-bg + border-color + radius-md + shadow-sm + tone 值色）。 */
 
 /* ========== 成就概览 ========== */
 .ach-overview-card {
@@ -515,20 +433,6 @@ function goToImport() {
       font-size: 12px;
       color: $text-sub;
       font-weight: 600;
-    }
-  }
-
-  .subject-bar {
-    height: 8px;
-    background: $bg-color-hover;
-    border-radius: 8px;
-    overflow: hidden;
-
-    .subject-bar-fill {
-      height: 100%;
-      background: $gradient-primary;
-      border-radius: 8px;
-      transition: width 0.4s;
     }
   }
 }

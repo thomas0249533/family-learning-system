@@ -22,9 +22,9 @@
         <div class="stat-label">已掌握</div>
       </div>
       <div class="stats-actions">
-        <n-button size="small" :disabled="totalCount === 0" @click="handleExport">
+        <AppButton size="small" :disabled="totalCount === 0" @click="handleExport">
           📤 导出
-        </n-button>
+        </AppButton>
       </div>
     </div>
 
@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <n-empty
+    <EmptyState
       v-if="filteredMistakes.length === 0"
       :description="emptyText"
       class="empty-card"
@@ -129,9 +129,9 @@
               <span v-if="levelOf(m) === 'partial'" class="partial-hint">
                 再答对 {{ remainingToMaster(m) }} 次就彻底掌握了
               </span>
-              <n-button size="small" type="success" ghost @click="markMastered(m.id!)">
+              <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
                 ✅ 我已掌握
-              </n-button>
+              </AppButton>
             </div>
           </div>
         </div>
@@ -177,9 +177,9 @@
           <span v-if="levelOf(m) === 'partial'" class="partial-hint">
             再答对 {{ remainingToMaster(m) }} 次就彻底掌握了
           </span>
-          <n-button size="small" type="success" ghost @click="markMastered(m.id!)">
+          <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
             ✅ 我已掌握
-          </n-button>
+          </AppButton>
         </div>
       </div>
     </div>
@@ -188,7 +188,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { NEmpty, NButton, NInput, useMessage } from 'naive-ui'
+import { NInput, useMessage } from 'naive-ui'
+import AppButton from '@/components/ui/AppButton.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import { exportMistakes } from '@core/export/exportService'

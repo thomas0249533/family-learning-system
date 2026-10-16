@@ -1,14 +1,14 @@
 <template>
   <div class="page-container">
-    <n-card class="card">
+    <AppCard class="card">
       <template #header>
         <div class="header-row">
           <span>📄 学习报告</span>
           <div class="header-actions">
-            <n-button size="small" @click="loadData" :loading="loading">🔄 刷新</n-button>
-            <n-button type="primary" size="small" @click="exportPDF" :disabled="loading || !report">
+            <AppButton size="small" @click="loadData" :loading="loading">🔄 刷新</AppButton>
+            <AppButton type="primary" size="small" @click="exportPDF" :disabled="loading || !report">
               📥 导出 PDF
-            </n-button>
+            </AppButton>
           </div>
         </div>
       </template>
@@ -25,44 +25,24 @@
 
         <!-- 核心指标 -->
         <div class="section">
-          <h2 class="section-title">📊 核心指标</h2>
+          <SectionTitle title="📊 核心指标" accent />
           <div class="stat-grid">
-            <div class="stat-box primary">
-              <div class="stat-value">{{ report.stats.masteryRate }}%</div>
-              <div class="stat-label">整体掌握率</div>
-            </div>
-            <div class="stat-box success">
-              <div class="stat-value">{{ report.stats.mastered }}</div>
-              <div class="stat-label">已掌握</div>
-            </div>
-            <div class="stat-box warning">
-              <div class="stat-value">{{ report.stats.learning }}</div>
-              <div class="stat-label">学习中</div>
-            </div>
-            <div class="stat-box danger">
-              <div class="stat-value">{{ report.stats.needReview }}</div>
-              <div class="stat-label">需复习</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-value">{{ report.stats.totalStudyMinutes }}</div>
-              <div class="stat-label">学习分钟</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-value">{{ report.stats.continuousDays }}</div>
-              <div class="stat-label">连续天数</div>
-            </div>
+            <StatCard tone="primary" :value="report.stats.masteryRate + '%'" label="整体掌握率" />
+            <StatCard tone="success" :value="report.stats.mastered" label="已掌握" />
+            <StatCard tone="warning" :value="report.stats.learning" label="学习中" />
+            <StatCard tone="danger" :value="report.stats.needReview" label="需复习" />
+            <StatCard :value="report.stats.totalStudyMinutes" label="学习分钟" />
+            <StatCard :value="report.stats.continuousDays" label="连续天数" />
           </div>
         </div>
 
         <!-- 学科分布 -->
         <div class="section" v-if="report.subjectBreakdown.length > 0">
-          <h2 class="section-title">📚 学科分布</h2>
+          <SectionTitle title="📚 学科分布" accent />
           <div class="subject-list">
             <div v-for="s in report.subjectBreakdown" :key="s.subject" class="subject-row">
               <div class="subject-name">{{ s.label }}</div>
-              <div class="subject-bar">
-                <div class="subject-bar-fill" :style="{ width: s.masteryRate + '%' }"></div>
-              </div>
+              <ProgressBar :value="s.masteryRate" />
               <div class="subject-stats">{{ s.mastered }} / {{ s.total }}（{{ s.masteryRate }}%）</div>
             </div>
           </div>
@@ -70,20 +50,11 @@
 
         <!-- 错题统计 -->
         <div class="section">
-          <h2 class="section-title">📕 错题情况</h2>
+          <SectionTitle title="📕 错题情况" accent />
           <div class="mistake-summary">
-            <div class="mistake-item">
-              <span class="mistake-label">错题总数</span>
-              <span class="mistake-value">{{ report.mistakeStats.total }}</span>
-            </div>
-            <div class="mistake-item">
-              <span class="mistake-label">未掌握</span>
-              <span class="mistake-value danger">{{ report.mistakeStats.unmastered }}</span>
-            </div>
-            <div class="mistake-item">
-              <span class="mistake-label">部分掌握</span>
-              <span class="mistake-value warning">{{ report.mistakeStats.partial }}</span>
-            </div>
+            <StatCard :value="report.mistakeStats.total" label="错题总数" />
+            <StatCard tone="danger" :value="report.mistakeStats.unmastered" label="未掌握" />
+            <StatCard tone="warning" :value="report.mistakeStats.partial" label="部分掌握" />
           </div>
           <div v-if="report.mistakeStats.topKnowledgePoints.length > 0" class="top-kps">
             <div class="top-kps-label">高频错题知识点：</div>
@@ -97,22 +68,16 @@
 
         <!-- 复习安排 -->
         <div class="section">
-          <h2 class="section-title">🔄 复习安排</h2>
+          <SectionTitle title="🔄 复习安排" accent />
           <div class="review-row">
-            <div class="review-item">
-              <div class="review-num danger">{{ report.reviewStats.dueToday }}</div>
-              <div class="review-label">今天待复习</div>
-            </div>
-            <div class="review-item">
-              <div class="review-num warning">{{ report.reviewStats.dueThisWeek }}</div>
-              <div class="review-label">本周待复习</div>
-            </div>
+            <StatCard tone="danger" :value="report.reviewStats.dueToday" label="今天待复习" />
+            <StatCard tone="warning" :value="report.reviewStats.dueThisWeek" label="本周待复习" />
           </div>
         </div>
 
         <!-- 近 7 天学习 -->
         <div class="section">
-          <h2 class="section-title">📅 近 7 天学习</h2>
+          <SectionTitle title="📅 近 7 天学习" accent />
           <div class="week-chart">
             <div v-for="d in report.recent7Days" :key="d.date" class="day-col">
               <div class="day-bar-wrap">
@@ -133,13 +98,18 @@
           —— 家庭学习系统 · 让学习更简单 ——
         </div>
       </div>
-    </n-card>
+    </AppCard>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
-import { NCard, NButton, useMessage } from 'naive-ui'
+import { useMessage } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import SectionTitle from '@/components/ui/SectionTitle.vue'
+import StatCard from '@/components/ui/StatCard.vue'
+import ProgressBar from '@/components/ui/ProgressBar.vue'
 import { generateReportData, type ReportData } from '@core/report/reportGenerator'
 import { exportReportAsPDF } from '@core/report/pdfExporter'
 
@@ -191,7 +161,7 @@ onMounted(loadData)
 
 <style scoped lang="scss">
 .page-container { padding: 16px; }
-.card { border-radius: $radius-lg; box-shadow: $shadow-sm; }
+/* `.card` 的圆角/阴影已由 AppCard 基元统一提供（radius-lg + shadow-sm）。 */
 
 .header-row {
   display: flex;
@@ -227,13 +197,9 @@ onMounted(loadData)
 .section {
   margin-bottom: 24px;
 
+  /* 保留 Report 原有的「标题—内容」12px 间距（SectionTitle 基元默认 margin: 0）。 */
   .section-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: $text-main;
     margin-bottom: 12px;
-    padding-left: 8px;
-    border-left: 4px solid $primary-color;
   }
 }
 
@@ -241,31 +207,6 @@ onMounted(loadData)
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-
-  .stat-box {
-    padding: 16px;
-    border-radius: 10px;
-    text-align: center;
-    background: $surface-2;
-    border: 1px solid $border-color;
-
-    &.primary { background: $band-danger-bg; border-color: $band-danger-border; }
-    &.success { background: $band-success-bg; border-color: $band-success-border; }
-    &.warning { background: $band-warning-bg; border-color: $band-warning-border; }
-    &.danger { background: $band-danger-bg; border-color: $band-danger-border; }
-
-    .stat-value {
-      font-size: 26px;
-      font-weight: 800;
-      color: $text-main;
-      line-height: 1.2;
-    }
-    .stat-label {
-      font-size: 12px;
-      color: $text-sub;
-      margin-top: 4px;
-    }
-  }
 }
 
 .subject-list {
@@ -280,42 +221,13 @@ onMounted(loadData)
     color: $text-main;
     margin-bottom: 6px;
   }
-  .subject-bar {
-    height: 10px;
-    background: $surface-2;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 4px;
-
-    .subject-bar-fill {
-      height: 100%;
-      background: $gradient-warm;
-      border-radius: 6px;
-      transition: width 0.4s;
-    }
-  }
-  .subject-stats { font-size: 12px; color: $text-sub; }
+  .subject-stats { font-size: 12px; color: $text-sub; margin-top: 4px; }
 }
 
 .mistake-summary {
   display: flex;
   gap: 24px;
   margin-bottom: 16px;
-
-  .mistake-item {
-    display: flex;
-    flex-direction: column;
-
-    .mistake-label { font-size: 12px; color: $text-sub; }
-    .mistake-value {
-      font-size: 22px;
-      font-weight: 800;
-      color: $text-main;
-
-      &.danger { color: $danger-color; }
-      &.warning { color: $warning-color; }
-    }
-  }
 }
 
 .top-kps {
@@ -346,27 +258,8 @@ onMounted(loadData)
   display: flex;
   gap: 16px;
 
-  .review-item {
-    flex: 1;
-    text-align: center;
-    padding: 16px;
-    border-radius: 10px;
-    background: $surface-2;
-
-    .review-num {
-      font-size: 28px;
-      font-weight: 800;
-      color: $text-main;
-
-      &.danger { color: $danger-color; }
-      &.warning { color: $warning-color; }
-    }
-    .review-label {
-      font-size: 12px;
-      color: $text-sub;
-      margin-top: 4px;
-    }
-  }
+  /* StatCard 基元自身无 flex:1；此处补等宽铺满（复刻原 .review-item { flex: 1 }）。 */
+  > * { flex: 1; }
 }
 
 .week-chart {

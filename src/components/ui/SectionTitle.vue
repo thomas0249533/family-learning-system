@@ -44,7 +44,7 @@ withDefaults(defineProps<SectionTitleProps>(), {
   gap: var(--space-2);
   margin: 0;
   font-size: var(--font-lg);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.3;
   color: var(--text-main);
 }

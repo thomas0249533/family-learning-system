@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card class="card">
+    <AppCard class="card">
       <template #header>
         <div class="header-row">
           <span>🔄 今日复习计划</span>
@@ -41,9 +41,9 @@
           </div>
         </div>
       </template>
-    </n-card>
+    </AppCard>
 
-    <n-card title="📅 未来 7 天复习安排" class="card" v-if="upcomingItems.length > 0">
+    <AppCard title="📅 未来 7 天复习安排" class="card" v-if="upcomingItems.length > 0">
       <div v-for="day in upcomingDays" :key="day.date" class="upcoming-day">
         <div class="upcoming-date">{{ day.label }}</div>
         <div class="upcoming-chips">
@@ -57,14 +57,15 @@
           </n-tag>
         </div>
       </div>
-    </n-card>
+    </AppCard>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { NCard, NEmpty, NTag } from 'naive-ui'
+import { NEmpty, NTag } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
 import { db, type ProgressRecord, type LearningPackageRecord } from '@/db'
 import { useUserDataStore } from '@core/stores/userData'
 import { isDueForReview, humanizeNextReview, memoryStrengthLabel, retrievabilityPercent, stageLabel } from '@core/review/reviewScheduler'
@@ -195,7 +196,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .page-container { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
-.card { border-radius: $radius-lg; box-shadow: $shadow-sm; }
+/* `.card` 的圆角/阴影已由 AppCard 基元统一提供（radius-lg + shadow-sm），故移除重复声明。 */
 
 .header-row {
   display: flex;
