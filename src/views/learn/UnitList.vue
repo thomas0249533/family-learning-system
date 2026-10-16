@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <n-empty v-else description="该学习包内暂无单元数据" class="empty-card" />
+        <EmptyState v-else description="该学习包内暂无单元数据" class="empty-card" />
       </template>
     </template>
   </div>
@@ -47,7 +47,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { NSpin, NAlert, NEmpty } from 'naive-ui'
+import { NSpin, NAlert } from 'naive-ui'
+import EmptyState from '@/components/ui/EmptyState.vue'
 import { usePackageStore } from '@core/stores/package'
 import { resolvePackageUnits, type ResolvedUnit } from '@core/importer/resolvePackageUnits'
 import ExamPanel from './ExamPanel.vue'

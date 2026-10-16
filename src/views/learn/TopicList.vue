@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <n-empty v-else description="该单元暂无主题数据" class="empty-card" />
+      <EmptyState v-else description="该单元暂无主题数据" class="empty-card" />
     </template>
   </div>
 </template>
@@ -45,7 +45,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { NEmpty, NSpin } from 'naive-ui'
+import { NSpin } from 'naive-ui'
+import EmptyState from '@/components/ui/EmptyState.vue'
 import { usePackageStore } from '@core/stores/package'
 
 const packageStore = usePackageStore()

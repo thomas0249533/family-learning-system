@@ -57,7 +57,7 @@ withDefaults(defineProps<SectionTitleProps>(), {
 .section-title__icon {
   display: inline-flex;
   align-items: center;
-  font-size: var(--font-lg);
+  font-size: var(--font-xl);
   line-height: 1;
 }
 

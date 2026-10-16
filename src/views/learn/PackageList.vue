@@ -135,7 +135,7 @@
         </div>
       </section>
 
-      <n-empty
+      <EmptyState
         v-if="groups.textbook.length + groups.daily.length + groups.special.length + groups.sprint.length === 0"
         description="暂无学习包，请先导入"
         class="empty-card"
@@ -147,7 +147,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { NEmpty, NSpin } from 'naive-ui'
+import { NSpin } from 'naive-ui'
+import EmptyState from '@/components/ui/EmptyState.vue'
 import { usePackageStore } from '@core/stores/package'
 import type { LearningPackageRecord } from '@/db'
 

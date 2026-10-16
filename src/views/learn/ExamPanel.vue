@@ -1,5 +1,5 @@
 <template>
-  <n-card class="exam-panel">
+  <AppCard class="exam-panel">
     <!-- 入口屏 -->
     <div v-if="phase === 'intro'" class="exam-intro">
       <div class="exam-badge">🎯 {{ examTypeLabel }}</div>
@@ -32,12 +32,12 @@
       </div>
 
       <n-space vertical style="margin-top: 20px;">
-        <n-button type="primary" size="large" block @click="startNewSession">
+        <AppButton type="primary" size="large" block @click="startNewSession">
           ▶ 开始新会话（{{ Math.min(perSessionCount, remainingCount) }} 题）
-        </n-button>
-        <n-button v-if="ongoingSession" type="warning" size="large" block @click="continueSession">
+        </AppButton>
+        <AppButton v-if="ongoingSession" type="warning" size="large" block @click="continueSession">
           🔄 继续上次（{{ Object.keys(ongoingSession.answers).length }} / {{ ongoingSession.totalCount }}）
-        </n-button>
+        </AppButton>
       </n-space>
 
       <div v-if="sessions.length > 0" class="session-history">
@@ -53,7 +53,7 @@
             </span>
             <span v-else class="history-status">未完成</span>
           </div>
-          <n-button size="tiny" text type="error" @click="removeSession(s.id!)">删除</n-button>
+          <AppButton size="tiny" text type="error" @click="removeSession(s.id!)">删除</AppButton>
         </div>
       </div>
     </div>
@@ -95,9 +95,9 @@
       <div v-if="examWrongItems.length > 0" class="result-section">
         <div class="section-head">
           <span class="section-title wrong-title">❌ 错题清单（{{ examWrongItems.length }} 题）</span>
-          <n-button size="tiny" text @click="showWrong = !showWrong">
+          <AppButton size="tiny" text @click="showWrong = !showWrong">
             {{ showWrong ? '收起' : '展开' }}
-          </n-button>
+          </AppButton>
         </div>
         <div v-show="showWrong" class="detail-list">
           <div v-for="item in examWrongItems" :key="item.questionId" class="detail-card wrong">
@@ -147,9 +147,9 @@
       <div v-if="examCorrectItems.length > 0" class="result-section">
         <div class="section-head">
           <span class="section-title correct-title">✅ 答对题目（{{ examCorrectItems.length }} 题）</span>
-          <n-button size="tiny" text @click="showCorrect = !showCorrect">
+          <AppButton size="tiny" text @click="showCorrect = !showCorrect">
             {{ showCorrect ? '收起' : '展开' }}
-          </n-button>
+          </AppButton>
         </div>
         <div v-show="showCorrect" class="detail-list">
           <div v-for="item in examCorrectItems" :key="item.questionId" class="detail-card correct">
@@ -167,19 +167,21 @@
         </div>
       </div>
 
-      <n-button v-if="remainingCount > 0" type="primary" size="large" block style="margin-top: 24px;" @click="startNewSession">
+      <AppButton v-if="remainingCount > 0" type="primary" size="large" block style="margin-top: 24px;" @click="startNewSession">
         ▶ 继续下一卷（剩 {{ remainingCount }} 题）
-      </n-button>
-      <n-button block style="margin-top: 10px;" @click="backToIntro">
+      </AppButton>
+      <AppButton block style="margin-top: 10px;" @click="backToIntro">
         ← 返回列表
-      </n-button>
+      </AppButton>
     </div>
-  </n-card>
+  </AppCard>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { NCard, NButton, NInputNumber, NSpace, useMessage } from 'naive-ui'
+import { NInputNumber, NSpace, useMessage } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 import QuizEngine, { type AnswerPayload, type ExamDetailItem, type ExamDetailPayload } from '@modules/core/QuizEngine.vue'
 import { useUserDataStore } from '@core/stores/userData'
 import { useExamStore } from '@core/stores/exam'

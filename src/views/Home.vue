@@ -17,12 +17,7 @@
 
     <!-- ========== 今日复习 ========== -->
     <section class="section">
-      <header class="section-header">
-        <h2 class="section-title">
-          <span class="section-icon">🔄</span>
-          <span>今日复习</span>
-        </h2>
-      </header>
+      <SectionTitle title="今日复习" icon="🔄" />
 
       <div
         class="review-card"
@@ -57,17 +52,13 @@
 
     <!-- ========== 今日推荐 ========== -->
     <section class="section">
-      <header class="section-header">
-        <h2 class="section-title">
-          <span class="section-icon">✨</span>
-          <span>今日推荐</span>
-        </h2>
-        <span v-if="recommendations.length > 0" class="section-count">
+      <SectionTitle title="今日推荐" icon="✨">
+        <AppBadge v-if="recommendations.length > 0" size="md">
           {{ recommendations.length }} 项
-        </span>
-      </header>
+        </AppBadge>
+      </SectionTitle>
 
-      <n-empty
+      <EmptyState
         v-if="recommendations.length === 0"
         description="暂无推荐，去导入学习包并开始学习吧！"
         class="empty-card"
@@ -105,13 +96,9 @@
 
     <!-- ========== 我的成就 ========== -->
     <section class="section">
-      <header class="section-header">
-        <h2 class="section-title">
-          <span class="section-icon">🏅</span>
-          <span>我的成就</span>
-        </h2>
-        <span class="section-count">{{ unlockedCount }} / {{ totalCount }}</span>
-      </header>
+      <SectionTitle title="我的成就" icon="🏅">
+        <AppBadge size="md">{{ unlockedCount }} / {{ totalCount }}</AppBadge>
+      </SectionTitle>
 
       <!-- 总进度条 -->
       <div class="ach-overview">
@@ -162,12 +149,7 @@
 
     <!-- ========== 学习进度 ========== -->
     <section class="section">
-      <header class="section-header">
-        <h2 class="section-title">
-          <span class="section-icon">📊</span>
-          <span>学习进度</span>
-        </h2>
-      </header>
+      <SectionTitle title="学习进度" icon="📊" />
 
       <div class="progress-card">
         <div class="chart-wrap">
@@ -178,27 +160,21 @@
           </div>
         </div>
         <div class="progress-stats">
-          <div class="stat-item">
-            <span class="stat-dot" style="background: var(--primary-color);"></span>
-            <div class="stat-info">
-              <div class="stat-value">{{ stats.total }}</div>
-              <div class="stat-label">总知识点</div>
-            </div>
-          </div>
-          <div class="stat-item">
-            <span class="stat-dot" style="background: var(--success-color);"></span>
-            <div class="stat-info">
-              <div class="stat-value">{{ stats.mastered }}</div>
-              <div class="stat-label">已掌握</div>
-            </div>
-          </div>
-          <div class="stat-item">
-            <span class="stat-dot" style="background: var(--warning-color);"></span>
-            <div class="stat-info">
-              <div class="stat-value">{{ stats.learning }}</div>
-              <div class="stat-label">学习中</div>
-            </div>
-          </div>
+          <StatCard layout="horizontal" :value="stats.total" label="总知识点">
+            <template #icon>
+              <span class="stat-dot" style="background: var(--primary-color);"></span>
+            </template>
+          </StatCard>
+          <StatCard layout="horizontal" :value="stats.mastered" label="已掌握">
+            <template #icon>
+              <span class="stat-dot" style="background: var(--success-color);"></span>
+            </template>
+          </StatCard>
+          <StatCard layout="horizontal" :value="stats.learning" label="学习中">
+            <template #icon>
+              <span class="stat-dot" style="background: var(--warning-color);"></span>
+            </template>
+          </StatCard>
         </div>
       </div>
     </section>
@@ -209,7 +185,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watchEffect, nextTick } from 'vue'
-import { NEmpty } from 'naive-ui'
+import SectionTitle from '@/components/ui/SectionTitle.vue'
+import AppBadge from '@/components/ui/AppBadge.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
+import StatCard from '@/components/ui/StatCard.vue'
 import { useRouter } from 'vue-router'
 import * as echarts from 'echarts'
 import { useUserDataStore } from '@core/stores/userData'
@@ -749,36 +728,7 @@ onUnmounted(() => {
   gap: 14px;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.section-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 800;
-  color: $text-main;
-  margin: 0;
-  letter-spacing: 0.2px;
-
-  .section-icon {
-    font-size: 18px;
-    line-height: 1;
-  }
-}
-
-.section-count {
-  font-size: 12px;
-  font-weight: 600;
-  color: $text-sub;
-  background: $bg-color-hover;
-  padding: 3px 10px;
-  border-radius: 20px;
-}
+/* 分区标题 / 计数徽章 已由 SectionTitle + AppBadge 基元承载。 */
 
 /* ========== 今日复习卡片 ========== */
 .review-card {
@@ -1096,45 +1046,15 @@ onUnmounted(() => {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
     min-width: 0;
 
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      transition: background 0.15s;
-
-      &:hover { background: $bg-color-hover; }
-
-      .stat-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
-
-      .stat-info {
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-        min-width: 0;
-      }
-
-      .stat-value {
-        font-size: 20px;
-        font-weight: 800;
-        color: $text-main;
-        line-height: 1;
-        min-width: 32px;
-      }
-      .stat-label {
-        font-size: 13px;
-        color: $text-sub;
-        font-weight: 500;
-      }
+    /* 圆点作为 StatCard `icon` slot 的内容（原 .stat-item 三行已替换为 StatCard）。 */
+    .stat-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
   }
 }

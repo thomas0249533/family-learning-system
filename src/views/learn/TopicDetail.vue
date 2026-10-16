@@ -15,12 +15,12 @@
         <div class="prereq-tip">这些前置知识点还没掌握，可以直接在这里练几道：</div>
         <div v-for="pre in unmetPrerequisites" :key="pre.id" class="prereq-item">
           <span class="prereq-title">{{ pre.title }}</span>
-          <n-button size="tiny" text type="primary" @click="goToPrerequisite(pre.id)">
+          <AppButton size="tiny" text type="primary" @click="goToPrerequisite(pre.id)">
             去学习 →
-          </n-button>
+          </AppButton>
         </div>
         <div class="prereq-actions">
-          <n-button
+          <AppButton
             size="small"
             type="primary"
             ghost
@@ -28,12 +28,12 @@
             @click="startWarmup"
           >
             🔥 先做 {{ warmupExercises.length }} 道前置热身
-          </n-button>
+          </AppButton>
           <span class="prereq-actions-tip">做错也没关系，重点是先把思路找回来</span>
         </div>
       </n-alert>
 
-      <n-card v-if="warmupOpen" title="🔥 前置热身" class="warmup-card">
+      <AppCard v-if="warmupOpen" title="🔥 前置热身" class="warmup-card">
         <div class="warmup-intro">
           这些都是本主题的前置知识。做完会自动回到本主题，不会打乱你原来的进度。
         </div>
@@ -43,10 +43,10 @@
           @answer="handleWarmupAnswer"
           @finish="handleWarmupFinish"
         />
-      </n-card>
+      </AppCard>
 
       <!-- ============ P1 · 掌握情况（保留 4 态，另加掌握度副标） ============ -->
-      <n-card v-if="topicMastery.length > 0" title="📈 本主题掌握情况" class="mastery-card">
+      <AppCard v-if="topicMastery.length > 0" title="📈 本主题掌握情况" class="mastery-card">
         <div v-for="row in topicMastery" :key="row.id" class="mastery-row">
           <div class="mastery-head">
             <span class="mastery-title">{{ row.title }}</span>
@@ -63,20 +63,20 @@
             <span class="mastery-count">对 {{ row.correctCount }} · 错 {{ row.wrongCount }}</span>
           </div>
         </div>
-      </n-card>
+      </AppCard>
 
       <!-- ============ 知识卡片区 ============ -->
       <!-- 场景 1：topic 有 modules（含兼容 knowledgePoints 字段名）-->
       <template v-if="currentTopic?.modules?.length">
         <div v-for="(mod, index) in currentTopic.modules" :key="index">
           <!-- 情况 1a：module 有 content 字段 → 直接渲染卡片 -->
-          <n-card
+          <AppCard
             v-if="mod.content"
             :title="mod.title || '知识卡片'"
             class="fallback-kp-card"
           >
             <div class="kp-content" v-html="renderMarkdown(mod.content)"></div>
-          </n-card>
+          </AppCard>
 
           <!-- 情况 1b：module 有知识点引用 → 用模块组件渲染 -->
           <component
@@ -100,20 +100,20 @@
             :knowledge-point-ids="[kp.id]"
             :package-id="currentPackageId"
           />
-          <n-card v-else :title="kp.title" class="fallback-kp-card">
+          <AppCard v-else :title="kp.title" class="fallback-kp-card">
             <div class="kp-content" v-html="renderMarkdown(kp.content)"></div>
-          </n-card>
+          </AppCard>
         </div>
       </template>
 
-      <n-empty
+      <EmptyState
         v-else
         description="该主题暂无知识点内容"
         style="padding: 40px 0;"
       />
 
       <!-- 练习区 -->
-      <n-card
+      <AppCard
         v-if="topicExercises.length > 0"
         title="🎮 同步练习"
         style="margin-top: 24px; border-radius: 14px;"
@@ -124,8 +124,8 @@
           @answer="handleAnswer"
           @finish="handleQuizFinish"
         />
-      </n-card>
-      <n-empty
+      </AppCard>
+      <EmptyState
         v-else-if="!isVocabTopic"
         description="本主题暂无配套练习"
         style="margin-top: 24px; padding: 20px 0;"
@@ -137,7 +137,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NSpin, NCard, NAlert, NButton, NEmpty, useMessage } from 'naive-ui'
+import { NSpin, NAlert, useMessage } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 import MarkdownIt from 'markdown-it'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
