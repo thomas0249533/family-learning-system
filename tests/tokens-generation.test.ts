@@ -88,7 +88,39 @@ describe('components.scss ⇄ tokens.ts COMPONENT_TOKENS（第三层不漂移）
     })
   }
 
-  it('components.scss 未夹带字面量 hex（纯 var() 别名约束）', () => {
-    expect(componentsText).not.toMatch(/#[0-9a-fA-F]{3,8}\b/)
+  // —— 零字面量色守卫（H2）——
+  // scripts/check-hex.mjs 的 SCAN_DIRS 不含 src/core/styles/**，故本文件必须单独守卫。
+  // 只扫「声明值」而非整文件，避免中文注释误伤；var() 引用（如 rgba(var(--primary-rgb), 0.55)，
+  // `rgba(` 后是 `var` 非数字）为合法引用，必须放行。
+  const HEX_RE = /#([0-9a-fA-F]{3,8})\b/
+  const RGB_RE = /rgba?\(\s*\d/i
+  const HSL_RE = /hsla?\(\s*\d/i
+  const NAMED_RE =
+    /\b(white|black|red|green|blue|gray|grey|orange|yellow|purple|pink|brown|silver|gold|navy|teal|olive|maroon|lime|aqua|fuchsia|cyan|magenta)\b/i
+
+  it('components.scss 声明值零字面量色（hex / rgb / hsl / 命名色）', () => {
+    const hits: string[] = []
+    for (const [name, value] of Object.entries(scssVars)) {
+      if (HEX_RE.test(value) || RGB_RE.test(value) || HSL_RE.test(value) || NAMED_RE.test(value)) {
+        hits.push(`--${name}: ${value}`)
+      }
+    }
+    expect(
+      hits,
+      `components.scss 含字面量色（组件级 token 只允许 var()/尺寸）：${hits.join(' | ')}`,
+    ).toEqual([])
+  })
+
+  it('check-hex.mjs 的正则与本地镜像一致（防第二套真相漂移）', () => {
+    const src = readFileSync(resolve(ROOT, 'scripts/check-hex.mjs'), 'utf8')
+    expect(src, 'check-hex.mjs 的 HEX 正则已变，请同步本测试镜像').toContain(
+      'const HEX = /#([0-9a-fA-F]{3,8})\\b/',
+    )
+    expect(src, 'check-hex.mjs 的 RGB_NUM 正则已变，请同步本测试镜像').toContain(
+      'const RGB_NUM = /rgba?\\(\\s*\\d/i',
+    )
+    expect(src, 'check-hex.mjs 的 HSL_NUM 正则已变，请同步本测试镜像').toContain(
+      'const HSL_NUM = /hsla?\\(\\s*\\d/i',
+    )
   })
 })

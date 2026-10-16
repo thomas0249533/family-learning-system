@@ -197,7 +197,9 @@ export const COMPONENT_TOKENS: Record<string, string> = {
 |---|---|---|
 | **① 自动再生成** | `predev`/`prebuild`/`pretest` 钩子 | 开发/构建/测试前**自动**重生成 → 手改被覆盖 |
 | **② 漂移校验** | `tokens:check`：内存生成 vs 磁盘逐字节比对（**含规范化行尾**，见 §10 风险） | 纳入"5 道门"独立跑；CI/收尾必跑 |
-| **③ 测试内嵌守卫** | `tests/tokens-generation.test.ts`：a) 磁盘文件 === 内存生成；b) 两个产物含 `DO NOT EDIT` banner；c) **若有人删掉 banner 或改值 → 红** | `npm test`（5 门之一） |
+| **③ 测试内嵌守卫** | `tests/tokens-generation.test.ts`：a) 磁盘文件 === 内存生成；b) 两个产物含 `DO NOT EDIT` banner；c) **若有人删掉 banner 或改值 → 红**（+ `palette-consistency` 的 tokens ⇄ theme 生成校验） | **绕过 `pretest` 的直接 vitest 运行**（`npx vitest run`）/ CI 显式跑 `tokens:check`。⚠️ 裸 `npm test` 会先跑 `pretest`→`tokens:build` **自愈覆盖手改**，故 ③ 的检测必须靠 `tokens:check`（排在 `tokens:build` 之前）或直连 vitest |
+
+> **① ② 是「自愈」（重生成覆盖脏值），③ + `tokens:check` 才是「检测」（会红）。** 因此每批门禁必须把 `tokens:check` 排在 `tokens:build` **之前**，否则后者自愈后前者形同虚设（§5.2/§8.4.13）。
 
 ### 2.4 生成物是否入库？——**结论：入库（commit），并靠 ①②③ 守漂移**
 
@@ -231,7 +233,7 @@ export const COMPONENT_TOKENS: Record<string, string> = {
 - component：`--<component>-<element>-<property>`：`--btn-primary-bg`、`--btn-primary-bg-hover`、`--card-header-bg`、`--badge-warning-bg`、`--stat-value-fg`、`--progress-track-bg`、`--progress-fill-bg`、`--empty-icon-fg`、`--page-header-border`。
 - **组件级 token 只允许**：引用 semantic（`var(--x)`）或常量尺寸；**禁止**写 `#hex`/`rgba(数字)`（`components.scss` 虽不在 `check:hex` 扫描目录，但**沿用 §8 不变量，靠评审 + 可选把 styles 目录纳入自检**）。
 
-**为什么 component token 不放进 `theme.scss`**：`theme.scss` 被一致性测试按"6 组变量块"解析；若在 `:root` 追加 `--btn-*`（`var()` 引用、6 组同值），会**污染 `rootVars`**，破坏既有的"键集合相等 / preset 子集 / 深色覆盖"断言。故**独立成 `components.scss`**，保持 `theme.scss` 的 6 组纯净。
+**为什么 component token 不放进 `theme.scss`**：`theme.scss` 被一致性测试按"6 组变量块"解析。若在 `:root` 追加 `--btn-*`（`var()` 引用、6 组同值），实测会变红的**不是**"键集合相等"断言（该断言因 `:root` 传播到 6 组而恒等、不触发），而是 **「每个颜色类 token 必须也被 `body.dark-mode` 覆盖」断言**与**生成物逐字节比对**（`--btn-*` 既未出现在 `body.dark-mode`、也不在生成产物里）。故**独立成 `components.scss`**，保持 `theme.scss` 的 6 组纯净。
 
 ---
 
@@ -309,8 +311,8 @@ export const COMPONENT_TOKENS: Record<string, string> = {
 | **批5 模块层** | modules/chinese·english·math·core + ImportWizard | 同上 |
 | **批6 a11y + 文档 + 收尾** | 对比度修正（可见变化登记）、`docs/design-system/*`、最终基线截图 | 同上 + 对比度报告脚本 |
 
-> **"改一批 → 5 门 → commit"**：命令固定为
-> `npm run tokens:build && npx vue-tsc --noEmit && npm test && npm run lint:styles && npm run check:hex && npx playwright test`
+> **"改一批 → 门禁 → commit"**：命令固定为（**`tokens:check` 必须在 `tokens:build` 之前** —— 后者会自愈脏值，排在前面才拦得住）
+> `npm run tokens:check && npm run tokens:build && npx vue-tsc --noEmit && npm test && npm run lint:styles && npm run check:hex && npx playwright test`
 
 ---
 
@@ -458,7 +460,7 @@ package.json                                  # tokens:build / tokens:check / a1
 | **a11y 修正导致可见变化** | 中 | 小学 primary/muted 对比度不足 | **单列 4 处可见变化**（§6.3）并登记；更新基线（属预期）；其余零变化 |
 | **沙箱 `npm install` 风险** | 中 | 历史 SIGTERM | **本轮零新增依赖**（`vite-node`/Playwright/stylelint 均已装）；生成/审计脚本用 Node 内置 |
 | **`vite-node` 导入 `tokens.ts`（含 naive 类型）失败** | 中 | 类型导入/路径别名 | 生成器只 `import` 值导出（`type` 导入被擦除），必要时 `import type` 显式；失败则退化为"生成器内联读取 TS 常量" |
-| **component token 污染 6 组断言** | 中 | `--btn-*` 进 `:root` 会坏结构断言 | component token 独立 `components.scss`（§3），不入 `theme.scss` |
+| **component token 污染 6 组断言** | 中 | `--btn-*` 进 `:root` → 触发「颜色类 token 须被 `body.dark-mode` 覆盖」断言 + 生成物逐字节比对（**非**"键集合相等"——该断言恒等不触发） | component token 独立 `components.scss`（§3），不入 `theme.scss` |
 | **三层 token 与现有 naive 覆盖重复** | 低 | 圆角在 naive/SCSS/token 三处 | 以 token 为准，naive 覆盖引用相同值；文档标注单一来源 |
 
 ### 8.4 共享知识（跨文件硬约定）
@@ -475,7 +477,7 @@ package.json                                  # tokens:build / tokens:check / a1
 10. **尊重 `prefers-reduced-motion`**。
 11. **字号单一源**：naive 覆盖（`FONT_SIZE_MAPS`）；**不引入 `rem` 缩放**。
 12. **不复刻选择器/顺序**以外不得改 `theme.scss` 之外定义主题变量的文件；`index.scss` 不得再引入主题变量。
-13. **门禁顺序（每批）**：`tokens:check → vue-tsc → vitest → lint:styles → check:hex → playwright`。
+13. **门禁顺序（每批）**：`tokens:check → tokens:build → vue-tsc → vitest → lint:styles → check:hex → playwright`（**`tokens:check` 先于 `tokens:build`**：前者「检测」、后者「自愈」；顺序反了则检测被自愈掩盖）。
 14. **生成物入库**；改 `tokens.ts` → `npm run tokens:build` → diff 审阅 → commit。
 15. **测试同步**：改 token/基元/结构，同步维护 `palette-consistency.test.ts`/`tokens-generation.test.ts`/基元截图，不得留红或空洞。
 
