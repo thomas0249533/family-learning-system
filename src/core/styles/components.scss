@@ -12,9 +12,19 @@
 //       `rgba(数字)`（§8.4 不变量 5）。本文件与本仓 tokens.ts 的
 //       COMPONENT_TOKENS 常量由 tests/tokens-generation.test.ts 锁定一致。
 // 引入：由 index.scss `@import './components.scss'` 加载。
+//
+// ⚠️ 作用域必须是 `body` 而**不是** `:root`：
+//   自定义属性在「声明所在元素」的 computed-value 阶段就完成 var() 替换，
+//   子元素只继承替换后的结果。主题覆盖全部落在 `body[...]` / `body.dark-mode`
+//   （theme.scss），若把别名声明在 `:root`，别名会在 :root 处被**提前**替换成
+//   浅色值，深色/非主预设下不再跟随覆盖 → 表现为「深色卡片上深色字、徽章用
+//   浅色底、焦点环用错色相」等失效。声明在 `body` 上即与覆盖同元素，
+//   替换时取到覆盖后的值。（`useThemeTokens` 亦从 document.body 读取，口径一致。）
+//   注意：本文件注释里不要写 `--名: 值` 形态的示例，会被
+//   tests/tokens-generation.test.ts 的声明解析正则误当作真声明。
 // =====================================================================
 
-:root {
+body {
   /* 按钮 */
   --btn-primary-bg: var(--primary-color);
   --btn-primary-bg-hover: var(--primary-hover);
