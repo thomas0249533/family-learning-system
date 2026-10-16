@@ -688,12 +688,12 @@ function handleExit() {
     font-family: 'Consolas', monospace;
     font-size: 14px;
     font-weight: 700;
-    color: $primary-color;
+    color: $primary-text;
     padding: 3px 10px;
     background: $primary-light;
     border-radius: 6px;
     &.timer-warning {
-      color: $danger-color;
+      color: $danger-text;
       background: $danger-light;
       animation: pulse 1s infinite;
     }
@@ -708,7 +708,7 @@ function handleExit() {
     font-size: 14px;
     cursor: pointer;
     transition: all 0.15s;
-    &:hover { background: $danger-light; color: $danger-color; }
+    &:hover { background: $danger-light; color: $danger-text; }
   }
 }
 
@@ -742,17 +742,17 @@ function handleExit() {
 
     &:hover {
       border-color: $primary-color;
-      color: $primary-color;
+      color: $primary-text;
     }
     &.answered {
       background: $primary-light;
       border-color: $primary-color;
-      color: $primary-color;
+      color: $primary-text;
     }
     &.active {
       background: $primary-color;
       border-color: $primary-color;
-      color: $on-strong;
+      color: var(--text-on-primary);
       box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.35);
       transform: scale(1.08);
     }
@@ -767,9 +767,9 @@ function handleExit() {
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 20px;
-  &.level-基础 { background: $success-light; color: $success-color; }
-  &.level-提高 { background: $warning-light; color: $warning-color; }
-  &.level-挑战 { background: $danger-light; color: $danger-color; }
+  &.level-基础 { background: $success-light; color: $success-text; }
+  &.level-提高 { background: $warning-light; color: $warning-text; }
+  &.level-挑战 { background: $danger-light; color: $danger-text; }
 }
 
 .judge-hint { font-size: 14px; color: $text-sub; margin-bottom: 6px; }
@@ -804,7 +804,7 @@ function handleExit() {
 
 .multi-hint {
   font-size: 13px;
-  color: $warning-color;
+  color: $warning-text;
   margin-top: 8px;
   font-weight: 600;
 }
@@ -825,7 +825,7 @@ function handleExit() {
 
 .spelling-group {
   .spelling-hint {
-    font-size: 15px; color: $primary-color; background: $primary-light;
+    font-size: 15px; color: $primary-text; background: $primary-light;
     padding: 8px 14px; border-radius: 6px; margin-bottom: 12px;
     font-family: 'Times New Roman', monospace; letter-spacing: 2px;
   }
@@ -833,7 +833,7 @@ function handleExit() {
 
 .essay-group {
   .essay-hint {
-    font-size: 13px; color: $primary-color; background: $primary-light;
+    font-size: 13px; color: $primary-text; background: $primary-light;
     padding: 8px 14px; border-radius: 6px; margin-bottom: 10px;
   }
   :deep(.n-input) { font-size: 15px; line-height: 1.8; }
@@ -883,7 +883,7 @@ function handleExit() {
 }
 .correct-answer {
   font-weight: 700;
-  color: $danger-color;
+  color: $danger-text;
   margin-bottom: 8px;
   font-size: 15px;
 }
@@ -945,11 +945,11 @@ body.dark-mode {
     &.answered {
       background: rgba(var(--primary-rgb), 0.2);
       border-color: $primary-color;
-      color: $primary-color;
+      color: $primary-text;
     }
     &.active {
       background: $primary-color;
-      color: $on-strong;
+      color: var(--text-on-primary);
     }
   }
 }

@@ -202,7 +202,7 @@ function openItem(item: SearchResultItem) {
   margin-top: 12px;
   font-size: 13px;
   color: $text-sub;
-  &.empty { color: $danger-color; }
+  &.empty { color: $danger-text; }
 }
 
 .result-card { min-height: 200px; }
@@ -248,9 +248,9 @@ function openItem(item: SearchResultItem) {
     border-radius: 4px;
     margin-top: 2px;
 
-    &.type-knowledgePoint { background: $info-light; color: $info-color; }
-    &.type-exercise { background: $success-light; color: $success-color; }
-    &.type-mistake { background: $danger-light; color: $danger-color; }
+    &.type-knowledgePoint { background: $info-light; color: $info-text; }
+    &.type-exercise { background: $success-light; color: $success-text; }
+    &.type-mistake { background: $danger-light; color: $danger-text; }
   }
 
   .item-body { flex: 1; min-width: 0; }
@@ -271,7 +271,7 @@ function openItem(item: SearchResultItem) {
 
   :deep(mark) {
     background: $warning-light;
-    color: $warning-color;
+    color: $warning-text;
     padding: 0 2px;
     border-radius: 2px;
   }
@@ -308,7 +308,7 @@ function openItem(item: SearchResultItem) {
 }
 .detail-answer {
   font-weight: 700;
-  color: $success-color;
+  color: $success-text;
   margin-bottom: 8px;
 }
 .detail-explain {

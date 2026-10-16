@@ -74,3 +74,23 @@
 - **测试 13 文件 / 395 用例**；一致性测试 `tests/palette-consistency.test.ts` **208 例**（含"原始块级深色覆盖 + preset 子集"断言，堵住"dark-mode 漏写非 hero token"盲区）。
 - **check-hex 已知残留绕过面（低危，已决定不继续修）**：`#abcdefg`（hex 后紧贴词字符）、`hsl (…)`（函数名与括号间空格）、命名色 `white/red`（范围外）。**理由：修漏洞的改动自身引入过新绕过面，继续微调有负期望收益。**
 - **下一轮 = V1.2 设计系统 2.0**（单源 token 生成 `tokens.ts` / 三层 token / UI 基元封装 / 多主题与 a11y AA / 组件文档预览）。路线图关键决策点 #1 = **是否引入构建脚本做单源生成**（尚未定）。
+
+## D:/study V1.2 设计系统 2.0（2026-10-16 进行中）
+- **单源生成已落地**：`src/core/styles/tokens.ts` 是**唯一源**（手写）→ `scripts/tokens/{emit,generate,check}.ts` 生成 `theme.scss`（CSS 变量）与 `palette.ts`（JS 真值）。**生成物入库**（diff 可审阅 + 沙箱鲁棒）。
+  - **拆 emit/generate/check 三文件是必需的**：`vite-node` 下 `process.argv[1]` **恒为 `vite-node.mjs`**，无法判定主模块 → 若生成逻辑写在 `generate.ts`，`check.ts` 一 import 就触发写盘。emit = 无副作用纯生成。
+  - **三重防护**：`predev`/`prebuild`/`pretest` 自动再生成（**自愈**）+ `tokens:check`（内存 vs 磁盘逐字节比对）+ `tests/tokens-generation.test.ts` 内嵌 banner 守卫。
+  - ⚠️ **门禁顺序铁律**：`tokens:check` **必须早于** `tokens:build`。因为 `pretest` 会自愈，`npm test` **抓不到**手改生成物（实证 741 全绿）；真正抓到的是 `tokens:check`。顺序写反 = 白跑。
+- **语义色分工（批 6a）**：新增 `--{primary,success,warning,danger,info}-text`（AA 手调值，非派生）。**不变量：`-text` 是文字色，`-color` 是图形色** —— `color:` 位置一律用 `-text`，`background`/`border-color`/`fill`/`stroke` 用 `-color`。新增门禁 `npm run check:text-color`（`color:` 接受 `$x-text`/`var(--x-text)`，拒绝 `$x-color`/`var(--x-color)`）。
+- **第二套软底实现已统一**：`--badge-{tone}-bg` 的定义**就是** `var(--{tone}-light)`（`tokens.ts:429-433` ≡ `components.scss:39-43`）。而页面手写的 11 处药丸用 `rgba(var(--{tone}-rgb), .12|.14)` 叠在未知卡片底上 → 不可控、不达 AA。**全部改为 `var(--badge-{tone}-bg)`**（`TopicDetail.vue:632-634`、`PackageList.vue:365-368`、`Home.vue:897-900`）。定位这些**不能用 `^\s*color:` 顶格锚点**——很多是 `{ background: ...; color: $x-color; }` 一行多属性。
+- **组件级 token 块必须声明在 `body` 而非 `:root`**（`components.scss`，`81841fc`）：自定义属性在**声明所在元素**的 computed-value 阶段就完成 `var()` 替换，子元素只继承结果。声明在 `:root` 会被提前替换成**浅色值** → 深色下卡片深墨字/徽章浅底/焦点环错色相。已补守卫断言「`components.scss` 不得存在 `:root` 选择器块」。
+- **JS/CSS 双源一致性测试**：`tests/palette-consistency.test.ts` + `tests/tokens-generation.test.ts`。**自证非空洞的手法（可复用）**：篡改值 / 改变量名 / 解析器返回空对象 / **删掉整个组合深色块**。注意内存变异法能抓到的才叫真断言。
+
+## D:/study 内容包结构关键事实（批 7 侦察，2026-10-16）
+- ⚠️ **`content/<集合>/packages/*.json` 是构建产物，不是源**：id 为完整限定形式（`special-english-7-up-youandme::special-ex-006`），根目录同名文件才是源（裸 id `special-ex-006`）。**两者都在 git 里**（`.gitignore` 未忽略 `packages/`）。**统计题量/改内容时只看根目录，否则数字翻倍**（实测踩过：数组判断题 36 → 真实 18）。
+- **`judge` 题的 `options` 是 T/F 域判别器**：`options:["T","F"]` 出现 ⟺ 答案属 T/F 域；无 `options` ⟺ 答案属 `对`/`错` 域。**按钮文案应由 `options` 驱动**（`["T","F"]` → 显示 `T`/`F`），不能硬编码 `✅对/❌错`（英语 T/F 题显示中文字按钮 = 文案与题型域不匹配）。
+- **`doc/prompts/unit-prompt.md:94` 规定 `judge：` `"对"` 或 `"错"`（只允许标量）** → 内容是照规范写的；但实际有 18 道写成**数组**（一次问 4 句），引擎静默降级掩盖了它。**规范是单一事实来源，引擎扩能力时必须同步改规范，否则缺陷复发。**
+- **引擎里 `multiple`（`QuizEngine.vue:341`）与 `matching`（`:347`）已有完整数组分支**（长度校验 + 逐元素比对），judge 是唯一漏掉的分支 → 修法是补已有模式，不是新增概念。
+- **多陈述判断题判分 = 全对才算对**（与 `multiple` 一致）。**不做部分给分**：`AnswerPayload.isCorrect` 是 boolean，FSRS/BKT/错题三级全挂在它上面，改部分分要穿透学习内核，收益远小于风险。
+- **校验新增规则必须"接受"新形态而非"拒绝"**：写成拒绝会把现有 18 道题挡在导入之外（把 bug 换成另一个 bug）。
+- **SFC 内部函数在本机测不到**（无 `@vue/test-utils`/jsdom，`vitest` 是 `environment:'node'` 且不许改）→ **要可验证就必须把内核逻辑抽成纯模块**（沿用 `@core/review/fsrs.ts`、`@core/mistake/mistakeRules.ts` 模式）。
+- **技术债**：`content/all_exercises.json` 是**语法坏掉的 JSON**；`content/english-7-up-rjb/` 下 `add_manifest.py`/`fix_fields.py`/`fix_validate.py`/`fix_sprint.py` 等临时脚本**都在 git 里**。

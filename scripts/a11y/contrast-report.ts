@@ -2,16 +2,14 @@
 // 对比度审计（WCAG AA）· 零依赖（vite-node 运行）
 // ---------------------------------------------------------------------
 // 数据源：src/core/styles/tokens.ts 的 buildSemantic（6 组 = 3 学段 × 浅/深）。
-// 策略：**仅报告 + 小型「必须 PASS」白名单门禁**。
+// 策略（批 6a-2 收口）：
 //   · 全表输出到 docs/design-system/a11y.md（人看）；
-//   · 只对 MUST_PASS 明确列举的关键对 `exit 1`（CI 卡口）。
-//   理由：一刀切 fail 会成枷锁——装饰性叠色、--code-color、遮罩本就不该受
-//   文字阈值约束，硬套会逼出大量豁免注释、门禁形同虚设。
-//
-// 局限（诚实登记）：本脚本只审 token 值本身，**审不到 naive-ui 派生出来的
-//   颜色**（例如 type="error"/"warning" 按钮的文字色由 naive 依据 common
-//   变量计算）。这类已在本轮通过 buildThemeOverrides 显式覆盖的项，见文末
-//   「主按钮」一节与 docs/design-system/a11y.md。
+//   · **三类门禁**，任一红即 exit 1：
+//       (1) MUST_PASS：覆盖**所有真实会被渲染的文字/背景对**；
+//       (2) 例外表：真实但接受低于 AA 的组合，逐行带「不得变差」下限断言；
+//       (3) 无未分类失败项：每个 ❌ 必须是 例外 / 已由「语义色分工」判定为
+//           不适用（图形色 / 非真实渲染），否则视为未登记 → 失败。
+//   理由：只做「小型白名单」会让门禁沦为装饰（见批 6a 复盘）。
 // =====================================================================
 
 import { mkdirSync, writeFileSync } from 'node:fs'
@@ -22,7 +20,6 @@ import { buildSemantic, PRESETS, MODES, type ThemePreset, type ThemeMode } from 
 
 interface RGBA { r: number; g: number; b: number; a: number }
 
-/** 解析 `#rgb` / `#rrggbb` / `rgb()` / `rgba()`。 */
 function parseColor(input: string): RGBA | null {
   const s = String(input ?? '').trim()
   if (s.startsWith('#')) {
@@ -39,7 +36,6 @@ function parseColor(input: string): RGBA | null {
   return { r, g, b, a: Number.isFinite(a) ? a : 1 }
 }
 
-/** 把一个（可能半透明）前景色合成到不透明背景上。 */
 function composite(fg: RGBA, bg: RGBA): RGBA {
   const a = fg.a
   return {
@@ -50,7 +46,6 @@ function composite(fg: RGBA, bg: RGBA): RGBA {
   }
 }
 
-/** 相对亮度（WCAG 定义）。 */
 function relLum(c: RGBA): number {
   const f = (v: number): number => {
     const s = v / 255
@@ -59,7 +54,6 @@ function relLum(c: RGBA): number {
   return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b)
 }
 
-/** 两色对比度（前景若半透明，先合成到背景）。 */
 function contrast(fgRaw: string, bgRaw: string): number | null {
   const fg = parseColor(fgRaw)
   const bg = parseColor(bgRaw)
@@ -84,13 +78,11 @@ function surface(sem: Sem, name: string): string {
   const c = parseColor(raw)
   if (!c) return '#000000'
   if (c.a >= 1) return raw
-  // 半透明 → 合成到 card-bg
   const card = parseColor(sem['card-bg']) ?? { r: 255, g: 255, b: 255, a: 1 }
   const over = composite(c, card)
   return `rgb(${over.r}, ${over.g}, ${over.b})`
 }
 
-/** 取梯度两个端点（16 进制）。 */
 function gradientEnds(value: string): string[] {
   return (value.match(/#[0-9a-fA-F]{3,6}/g) ?? []).slice(0, 2)
 }
@@ -98,11 +90,10 @@ function gradientEnds(value: string): string[] {
 /* ---------------------- 配对清单 ---------------------- */
 
 interface Pair {
-  /** 稳定标识（跨组一致，用于白名单）：`fg ↔ bg` 模板 */
   key: string
   label: string
-  fg: string        // 原始值
-  bg: string        // 原始值
+  fg: string
+  bg: string
   threshold: number
 }
 
@@ -110,25 +101,53 @@ const TONES = ['primary', 'success', 'warning', 'danger', 'info'] as const
 const BG_BODY = 4.5
 const BG_LARGE = 3.0
 
-/** 每组的「必须 PASS」白名单（key）。本批修完 / 既有达标的关键对。 */
+/**
+ * 「必须 PASS」白名单：覆盖**真实会渲染的文字/背景对**。
+ * 仅供报告判定的组合（图形色 / 软底 reference / on-strong on gradient）不进此表。
+ */
 const MUST_PASS = new Set<string>([
-  // 正文对三表面
-  'text-main ↔ card-bg',
-  'text-main ↔ bg-color',
-  'text-sub ↔ card-bg',
-  'text-sub ↔ bg-color',
-  'text-sub ↔ surface-2',
+  // 正文 × 三表面（bg-color-hover 上只有 text-sub 为真实正文）
+  ...['text-main', 'text-sub', 'text-muted'].flatMap((t) =>
+    ['bg-color', 'card-bg', 'surface-2'].map((b) => `${t} ↔ ${b}`),
+  ),
   'text-sub ↔ bg-color-hover',
-  'text-muted ↔ card-bg',
-  'text-muted ↔ bg-color',
-  // 软底徽章：tone-text on tone-light
-  ...TONES.map((t) => `${t}-text ↔ ${t}-light`),
-  // 实心徽章 / 实心块：text-on-primary on tone-text（含 neutral=text-sub）
+  // 语义文字色 × 表面 / 自身浅底
+  ...TONES.flatMap((t) => ['bg-color', 'card-bg', 'surface-2', `${t}-light`].map((b) => `${t}-text ↔ ${b}`)),
+  // 实心块：text-on-primary 压在语义 -text 底 / neutral(text-sub) 底
   ...TONES.map((t) => `text-on-primary ↔ ${t}-text`),
   'text-on-primary ↔ text-sub',
-  // StatCard primary 数值（大号 3.0）
+  // StatCard primary 数值
   'primary-text ↔ card-bg',
 ])
+
+/** 例外表：真实但接受低于 AA；`floor` = 「不得变差」下限（复算不得低于此值）。 */
+interface Exception { key: string; group: string; floor: number; reason: string }
+const EXCEPTIONS: Exception[] = [
+  {
+    key: 'text-muted ↔ bg-color-hover',
+    group: 'primary.light',
+    floor: 4.06,
+    reason: 'bg-color-hover 作底的次要文字（版本徽章 / 内嵌块）最弱组合；非正文、层级弱化有意为之。6a 已把 text-muted 由 #877665 加深到 #807060（比值回升）。',
+  },
+  { key: 'text-muted ↔ bg-color-hover', group: 'junior.light', floor: 4.30, reason: '同上（junior.light）' },
+  { key: 'text-muted ↔ bg-color-hover', group: 'senior.light', floor: 4.23, reason: '同上（senior.light）' },
+]
+const EXCEPTION_KEYS = new Set(EXCEPTIONS.map((e) => e.key))
+
+/**
+ * 「不适用」判定：❌ 若命中以下任一条，说明它**不是真实渲染的文字/背景对**，
+ * 无需在例外表登记；返回非 null 即视为已分类。
+ */
+function notApplicable(key: string): string | null {
+  const [fg, bg] = key.split(' ↔ ')
+  if (/-color$/.test(fg)) return '图形色（-color）不作文字；本批已统一改用 -text'
+  if (fg === 'code-color') return '内联代码色，非本「语义色分工」不变量范围'
+  if (fg === 'on-strong') return 'on-strong 仅用于品牌渐变 / hero（未压在实心语义底上）'
+  if (/-color$/.test(bg)) return '实心语义底（-color）上不再有白 / 深字（已改 -text 底 + text-on-primary）'
+  if (/-soft$/.test(bg)) return '软底已统一为 --badge-{tone}-bg（= -light），-soft 不再承载 tone 文字'
+  if (bg === 'bg-color-hover' && /-text$/.test(fg)) return 'bg-color-hover 上承载 text-main / -sub，无 tone 文字'
+  return null
+}
 
 function buildPairs(sem: Sem): Pair[] {
   const pairs: Pair[] = []
@@ -136,13 +155,7 @@ function buildPairs(sem: Sem): Pair[] {
     const fgVal = fgOverride ?? sem[fgName]
     const bgVal = surface(sem, bgName)
     if (fgVal === undefined) return
-    pairs.push({
-      key: `${fgName} ↔ ${bgName}`,
-      label: label ?? `${fgName} on ${bgName}`,
-      fg: fgVal,
-      bg: bgVal,
-      threshold,
-    })
+    pairs.push({ key: `${fgName} ↔ ${bgName}`, label: label ?? `${fgName} on ${bgName}`, fg: fgVal, bg: bgVal, threshold })
   }
 
   // ① 正文 × 表面
@@ -150,14 +163,14 @@ function buildPairs(sem: Sem): Pair[] {
     for (const b of ['bg-color', 'card-bg', 'surface-2', 'bg-color-hover']) add(t, b)
   }
 
-  // ② tone-color / tone-text × bg / card / 自身 -light
+  // ② tone 前景（-color 图形 / -text 文字）× 表面 + 自身 -light / -soft
   for (const g of TONES) {
     for (const f of [`${g}-color`, `${g}-text`]) {
-      for (const b of ['bg-color', 'card-bg', `${g}-light`]) add(f, b)
+      for (const b of ['bg-color', 'card-bg', 'surface-2', 'bg-color-hover', `${g}-light`, `${g}-soft`]) add(f, b)
     }
   }
 
-  // ③ on-strong / text-on-primary × 语义实心底 / text-sub
+  // ③ on-strong / text-on-primary × 语义实心底（-color / -text）/ text-sub
   for (const g of TONES) {
     for (const f of ['on-strong', 'text-on-primary']) {
       for (const b of [`${g}-color`, `${g}-text`]) add(f, b)
@@ -165,7 +178,7 @@ function buildPairs(sem: Sem): Pair[] {
   }
   for (const f of ['on-strong', 'text-on-primary']) add(f, 'text-sub')
 
-  // ④ primary 专项 × bg / card
+  // ④ primary 专项 × bg / card（text 按大号 3.0）
   for (const f of ['primary-color', 'primary-text']) {
     for (const b of ['bg-color', 'card-bg']) {
       add(f, b, f === 'primary-text' && b === 'card-bg' ? BG_LARGE : BG_BODY)
@@ -175,7 +188,7 @@ function buildPairs(sem: Sem): Pair[] {
   // ⑤ code-color × card / bg
   for (const b of ['card-bg', 'bg-color']) add('code-color', b)
 
-  // ⑥ text-main/-sub × tone-light
+  // ⑥ text-main / -sub × tone-light
   for (const g of TONES) {
     for (const f of ['text-main', 'text-sub']) add(f, `${g}-light`)
   }
@@ -183,9 +196,9 @@ function buildPairs(sem: Sem): Pair[] {
   return pairs
 }
 
-/* ---------------------- 渲染 ---------------------- */
+/* ---------------------- 计算 ---------------------- */
 
-interface Row extends Pair { group: string; groupLabel: string; value: number | null; pass: boolean; must: boolean }
+interface Row extends Pair { group: string; value: number | null; pass: boolean; must: boolean; class: string }
 
 const GROUPS: Array<[ThemePreset, ThemeMode, string]> = PRESETS.flatMap((p) =>
   MODES.map((m) => [p, m, `${p}.${m}`] as [ThemePreset, ThemeMode, string]),
@@ -197,11 +210,29 @@ for (const [preset, mode, label] of GROUPS) {
   for (const p of buildPairs(sem)) {
     const value = contrast(p.fg, p.bg)
     const pass = value !== null && value >= p.threshold
-    allRows.push({ ...p, group: label, groupLabel: label, value, pass, must: MUST_PASS.has(p.key) })
+    const must = MUST_PASS.has(p.key)
+    let cls = '✅'
+    if (!pass) {
+      if (EXCEPTION_KEYS.has(p.key)) cls = '例外'
+      else if (notApplicable(p.key)) cls = '不适用'
+      else cls = '未分类'
+    }
+    allRows.push({ ...p, group: label, value, pass, must, class: cls })
   }
 }
 
-/* ---------------------- 报告 ---------------------- */
+/* ---------------------- §--on-strong 消费者实测 ---------------------- */
+
+interface OnStrongSpot { file: string; line: number; name: string; gradient: 'gradient-primary' | 'gradient-warm'; changed: boolean }
+const ON_STRONG_SPOTS: OnStrongSpot[] = [
+  { file: 'Home.vue', line: 534, name: '.welcome-hi（22px/800 大号）', gradient: 'gradient-primary', changed: false },
+  { file: 'Home.vue', line: 575, name: '.streak-pill .streak-text', gradient: 'gradient-primary', changed: false },
+  { file: 'Home.vue', line: 823, name: '.action-pill.primary', gradient: 'gradient-primary', changed: false },
+  { file: 'Parent.vue', line: 476, name: '.top-rank:first-child', gradient: 'gradient-warm', changed: false },
+  { file: 'VocabDrill.vue', line: 620, name: '.listen-btn', gradient: 'gradient-primary', changed: false },
+]
+
+/* ---------------------- 渲染 ---------------------- */
 
 const md: string[] = []
 md.push('# 对比度审计（WCAG AA）')
@@ -221,6 +252,7 @@ md.push('')
 md.push('## 脚本局限（诚实登记）')
 md.push('')
 md.push('- 本脚本只审 **token 值本身**，**审不到 naive-ui 派生出来的颜色**（如 `type="error"/"warning"` 按钮文字色由 naive 依据 common 变量计算）。')
+md.push('- **渐变上的文字**（hero / 品牌渐变白字）按两端点分别计算，见 §--on-strong 消费者实测。')
 md.push('- 主按钮（primary 实心）已由 `buildThemeOverrides` 的 `Button.colorPrimary / textColorPrimary` 显式覆盖；其 6 组实测见下节。')
 md.push('')
 md.push('## 主按钮实测（浏览器 computed，非推导）')
@@ -236,16 +268,80 @@ for (const line of [
   '| senior.dark | #0a0f14 | #7fa3c4 | 7.27 | ✅ |',
 ]) md.push(line)
 md.push('')
+md.push('## §语义色分工（不变量，批 6a-2）')
+md.push('')
+md.push('- `--{primary,success,warning,danger,info}-color` = **图形色**（边框 / 描边 / 背景 / 渐变 / 图形填充）')
+md.push('- `--{primary,…,info}-text` = **文字色**（正文；对自身 `-light` 亦 ≥4.5，6 组全过）')
+md.push('- **组件层 `color:` 一律用 `-text`，禁止 `-color`**；由 `npm run check:text-color` 强制。')
+md.push('- 软底徽章统一走 `--badge-{tone}-bg`（= `-light`），不再用裸 `rgba({tone}-rgb, α)`。')
+md.push('')
+md.push('## §MUST_PASS 清单（' + MUST_PASS.size + ' 对 × 6 组）')
+md.push('')
+md.push('```')
+for (const k of [...MUST_PASS].sort()) md.push(k)
+md.push('```')
+md.push('')
+md.push('## §例外表（真实但接受低于 AA；含「不得变差」下限）')
+md.push('')
+md.push('| 组合 | group | 实测 | 阈值 | 差 | 为什么接受 |')
+md.push('|---|---|---|---|---|---|')
+for (const ex of EXCEPTIONS) {
+  const row = allRows.find((r) => r.key === ex.key && r.group === ex.group)
+  const v = row?.value?.toFixed(2) ?? 'n/a'
+  const diff = row?.value != null ? (row.value - BG_BODY).toFixed(2) : 'n/a'
+  md.push(`| \`${ex.key}\` | ${ex.group} | ${v} | 4.5 | ${diff} | ${ex.reason} |`)
+}
+md.push('')
+md.push('> 「不得变差」断言：上表每行的实测值复算不得低于其 `floor`（' + EXCEPTIONS.map((e) => `${e.group}=${e.floor}`).join(' / ') + '）。')
+md.push('')
+md.push('## §58 项分类结论（批 6a 报告的「仅报告」失败项）')
+md.push('')
+md.push('| 模式 | 数量 | 分类 | 依据 |')
+md.push('|---|---|---|---|')
+md.push('| `{tone}-color` 作前景 × 各表面 / 自身 -light | 40 | **实修** | R1：100 处 `color:` 一律改 `-text`，浅色组（primary.light 2.43–3.30 → ≥4.5） |')
+md.push('| `on-strong` / `text-on-primary` × `{tone}-color`（浅组白字） | 2 | **实修** | R2-⑤：5 处实心底 bg 改 `-text` + 字 `text-on-primary` |')
+md.push('| `on-strong` / `text-on-primary` × `{tone}-color`（深组白字） | 10 | **实修** | 同上（深组实心底改 `-text`，白字问题消解） |')
+md.push('| `on-strong` × `{tone}-text`（深组） | 10 | **不适用** | `on-strong` 仅用于品牌渐变/hero，未压在实心语义底上 |')
+md.push('| `on-strong` × `text-sub`（深组） | 3 | **不适用** | 实心 neutral 徽章用 `text-on-primary`（非 on-strong） |')
+md.push('| `text-muted` × `bg-color-hover`（浅组 ×3） | 3 | **例外表** | 见 §例外表 |')
+md.push('')
+md.push('> 合计 40 + 2 + 10 + 10 + 3 + 3 = 68。其中属**原 58 项**者为：`{tone}-color` 前景 40 + 浅组白字 2 + 深组白字 10 + `on-strong`×`text-sub` 3 + `text-muted`×`bg-color-hover` 3 = 58；另 `on-strong × {tone}-text`（深组 10）为**新增报告行**（6a-2 报告中新出现），一并分类，**无未分类项**。')
+md.push('')
+md.push('## §--on-strong 消费者实测（渐变两端点分别计）')
+md.push('')
+md.push('**已改（实心 `$primary-color` 底，`on-strong → var(--text-on-primary)`）**：`ChinesePoem.vue:139`、`EnglishVocab.vue:201`、`QuizEngine.vue:755`、`QuizEngine.vue:952`、`VocabDrill.vue:492`。')
+md.push('')
+md.push('**保留（品牌渐变 / hero，未改）**：')
+md.push('')
+md.push('| 位置 | 背景 | 浅端对比度（白字） | 深端对比度 | 合规 |')
+md.push('|---|---|---|---|---|')
+for (const [preset, mode, label] of GROUPS) {
+  const sem = buildSemantic(preset, mode)
+  for (const spot of ON_STRONG_SPOTS) {
+    const ends = gradientEnds(sem[spot.gradient])
+    if (ends.length < 2) continue
+    const c0 = contrast('#ffffff', ends[0])
+    const c1 = contrast('#ffffff', ends[1])
+    const worst = Math.min(c0 ?? 99, c1 ?? 99)
+    md.push(
+      `| ${label} · ${spot.file}:${spot.line} | ${spot.gradient} | ${c0?.toFixed(2)} | ${c1?.toFixed(2)} | ${worst >= 3.0 ? '✅(≥3.0)' : '⚠️ 浅端 <3.0'} |`,
+    )
+  }
+}
+md.push('')
+md.push('> 说明：hero / 品牌渐变白字为**品牌视觉**，team-lead 明确「不要动」；此处如实给出实测（浅端 primary.light 最低 1.97），供记录。')
+md.push('')
 
+/* ---------------------- 各组全表 ---------------------- */
 for (const [preset, mode, label] of GROUPS) {
   md.push(`## ${label}`)
   md.push('')
-  md.push('| 前景 | 背景 | 对比度 | 阈值 | 结果 |')
-  md.push('|---|---|---|---|---|')
+  md.push('| 前景 | 背景 | 对比度 | 阈值 | 结果 | 分类 |')
+  md.push('|---|---|---|---|---|---|')
   for (const r of allRows.filter((x) => x.group === label)) {
     const v = r.value === null ? 'n/a' : r.value.toFixed(2)
     const ok = r.pass ? '✅' : '❌'
-    md.push(`| \`${r.fg}\` | \`${r.bg}\` | ${v} | ${r.threshold} | ${ok} |`)
+    md.push(`| \`${r.fg}\` | \`${r.bg}\` | ${v} | ${r.threshold} | ${ok} | ${r.class} |`)
   }
   md.push('')
 }
@@ -256,11 +352,11 @@ md.push('')
 md.push('| group | token | 改前 | 改后 | 实测新比值 | 为什么必须改 | 类别 |')
 md.push('|---|---|---|---|---|---|---|')
 const CHANGES: string[][] = [
-  ['全部 6 组', '--{tone}-text（新增）', '（无）', '手调 AA 值', '见上表', '软底色字 / 实心底 / 自身软底字统一取 AA 值', '(c) 修 bug'],
-  ['primary.light', '--text-muted', '#877665', '#807060', '4.60 / 4.74', '原值对 bg/card 低于 4.5', '(c) 修 bug'],
-  ['primary/junior/senior .light', 'danger 文字（改走 --danger-text）', '#dc2626', '#d42525', '4.51（对 danger-light）', '原 danger 文字对软色底 4.26 ✗', '(a) 用户已授权'],
-  ['全部 6 组', '主按钮 fg/bg（Button 覆盖）', 'naive 派生', 'text-on-primary / primary-text', '5.12–9.51', 'naive 误判浅色 → 深色三组 2.99/1.97/2.65 ✗', '(c) 修 bug'],
-  ['全部 6 组', '页面级 5 处实心块（bg + 文字）', 'bg=$primary/$danger/$success-color + 白字', 'bg=var(--{tone}-text) + color=var(--text-on-primary)', '≥4.5', '深色下白字对语义/主色底不足；primary.light 白字对 #f2760c 仅 2.85', '(b) 新授权'],
+  ['全部 6 组', '--{tone}-text（6a 新增）', '（无）', '手调 AA 值', '见上表', '软底色字 / 实心底 / 自身软底字统一取 AA 值', '(c) 修 bug'],
+  ['primary.light', '--text-muted（6a）', '#877665', '#807060', '对 bg 4.53 / card 4.77', '原值对 bg/card 低于 4.5', '(c) 修 bug'],
+  ['全部 6 组', '`color:`（100 处）', '$x-color / var(--x-color)', '$x-text / var(--x-text)', '浅组 2.43–3.30 → ≥4.5', '文字色不得用图形色（§语义色分工）', '(b) 本批新授权'],
+  ['全部 6 组', '软底徽章 bg（24 处）', 'rgba(var(--{tone}-rgb), .12/.14)', 'var(--badge-{tone}-bg)', '对 -light ≥4.51', '统一软底实现（= -light），达 AA', '(b) 本批新授权'],
+  ['全部 6 组', '5 处实心底字', '$on-strong', 'var(--text-on-primary)', '5.12–9.51', '深色组白字对主色底不足（1.97–2.99）', '(c) 修 bug'],
 ]
 for (const c of CHANGES) md.push('| ' + c.join(' | ') + ' |')
 md.push('')
@@ -274,15 +370,36 @@ writeFileSync(outPath, md.join('\n'), 'utf8')
 /* ---------------------- 门禁 ---------------------- */
 
 const mustFails = allRows.filter((r) => r.must && !r.pass)
+const exceptionFails: string[] = []
+for (const ex of EXCEPTIONS) {
+  const row = allRows.find((r) => r.key === ex.key && r.group === ex.group)
+  if (!row || row.value === null) exceptionFails.push(`[${ex.group}] ${ex.key} 无法复算`)
+  else if (row.value + 0.005 < ex.floor) {
+    exceptionFails.push(`[${ex.group}] ${ex.key} = ${row.value.toFixed(2)} < 下限 ${ex.floor}（变差！）`)
+  }
+}
+const unclassified = allRows.filter((r) => !r.pass && r.class === '未分类')
 const totalFails = allRows.filter((r) => !r.pass).length
 
 console.log(`[a11y:contrast] 报告已写入 ${outPath}`)
-console.log(`[a11y:contrast] 配对总数 ${allRows.length}；非通过（仅报告）${totalFails}；必须 PASS 清单失败 ${mustFails.length}`)
+console.log(`[a11y:contrast] 配对总数 ${allRows.length}；非通过 ${totalFails}（例外 ${EXCEPTIONS.length}；其余均已判不适用）`)
+console.log(`[a11y:contrast] MUST_PASS 失败 ${mustFails.length}；例外「不得变差」失败 ${exceptionFails.length}；未分类失败 ${unclassified.length}`)
+
+let bad = false
 if (mustFails.length > 0) {
-  console.error('[a11y:contrast] ✗ 必须 PASS 清单出现不达标：')
-  for (const r of mustFails) {
-    console.error(`  - [${r.group}] ${r.label} = ${r.value?.toFixed(2)} (< ${r.threshold})`)
-  }
-  process.exit(1)
+  bad = true
+  console.error('[a11y:contrast] ✗ MUST_PASS 出现不达标：')
+  for (const r of mustFails) console.error(`  - [${r.group}] ${r.label} = ${r.value?.toFixed(2)} (< ${r.threshold})`)
 }
-console.log('[a11y:contrast] ✓ 必须 PASS 清单全部达标')
+if (exceptionFails.length > 0) {
+  bad = true
+  console.error('[a11y:contrast] ✗ 例外表「不得变差」断言失败：')
+  for (const s of exceptionFails) console.error(`  - ${s}`)
+}
+if (unclassified.length > 0) {
+  bad = true
+  console.error('[a11y:contrast] ✗ 存在未分类的失败项（须登记例外或判定不适用）：')
+  for (const r of unclassified) console.error(`  - [${r.group}] ${r.key} = ${r.value?.toFixed(2)}`)
+}
+if (bad) process.exit(1)
+console.log('[a11y:contrast] ✓ MUST_PASS 全达标 + 例外表未变差 + 无未分类失败项')

@@ -200,7 +200,7 @@ function selectTopic(topic: any) {
     align-items: center;
     justify-content: center;
     background: $primary-light;
-    color: $primary-color;
+    color: $primary-text;
     font-size: 12px;
     font-weight: 800;
     border-radius: 8px;
@@ -262,7 +262,7 @@ function selectTopic(topic: any) {
     gap: 4px;
     font-size: 12px;
     font-weight: 700;
-    color: $primary-color;
+    color: $primary-text;
 
     .cta-arrow {
       font-size: 13px;

@@ -1,4 +1,5 @@
 import { test } from '@playwright/test'
+import { freezeSmil } from './freeze-smil'
 
 /**
  * 8 UI 基元 · 截图矩阵（浅/深 × 基元 × 状态）。
@@ -29,6 +30,7 @@ const HOVER = [
 
 /** 固定时刻（本地时间 2025-01-15 10:00:00）；口径与 visual.spec.ts 一致 */
 const FIXED_NOW = new Date('2025-01-15T10:00:00').getTime()
+
 
 for (const mode of ['light', 'dark'] as const) {
   test.describe(`design-system · ${mode}`, () => {
@@ -69,7 +71,8 @@ for (const mode of ['light', 'dark'] as const) {
         await block.scrollIntoViewIfNeeded()
         await block.evaluate((el) => el.scrollIntoView({ block: 'center' }))
         await page.waitForTimeout(250)
-        await block.screenshot({ path: `docs/screenshots/ds/${key}-${mode}.png` })
+        await freezeSmil(page)
+        await block.screenshot({ path: `docs/screenshots/ds/${key}-${mode}.png`, animations: 'disabled' })
       })
     }
 
@@ -80,7 +83,8 @@ for (const mode of ['light', 'dark'] as const) {
         await page.waitForTimeout(250)
         await block.locator(h.target).first().hover()
         await page.waitForTimeout(250)
-        await block.screenshot({ path: `docs/screenshots/ds/${h.key}-hover-${mode}.png` })
+        await freezeSmil(page)
+        await block.screenshot({ path: `docs/screenshots/ds/${h.key}-hover-${mode}.png`, animations: 'disabled' })
       })
     }
   })

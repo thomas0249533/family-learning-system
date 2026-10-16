@@ -112,13 +112,13 @@ withDefaults(defineProps<StatCardProps>(), {
   color: var(--primary-text);
 }
 .stat-card--success .stat-card__value {
-  color: var(--success-color);
+  color: var(--success-text);
 }
 .stat-card--warning .stat-card__value {
-  color: var(--warning-color);
+  color: var(--warning-text);
 }
 .stat-card--danger .stat-card__value {
-  color: var(--danger-color);
+  color: var(--danger-text);
 }
 
 .stat-card__label {

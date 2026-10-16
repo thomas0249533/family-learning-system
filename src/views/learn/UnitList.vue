@@ -133,7 +133,7 @@ function selectUnit(ru: ResolvedUnit) {
 
     .unit-card-arrow {
       transform: translateX(4px);
-      color: $primary-color;
+      color: $primary-text;
     }
 
     .unit-card-index {
@@ -149,7 +149,7 @@ function selectUnit(ru: ResolvedUnit) {
     align-items: center;
     justify-content: center;
     background: $primary-light;
-    color: $primary-color;
+    color: $primary-text;
     font-size: 18px;
     font-weight: 800;
     transition: all 0.2s;
@@ -193,7 +193,7 @@ function selectUnit(ru: ResolvedUnit) {
     margin-top: 2px;
 
     .unit-card-source {
-      color: $primary-color;
+      color: $primary-text;
       font-weight: 600;
     }
   }

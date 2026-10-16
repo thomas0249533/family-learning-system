@@ -393,9 +393,9 @@ function formatDate(iso: string): string {
       color: $text-main;
       line-height: 1.1;
       letter-spacing: -0.5px;
-      &.danger { color: $danger-color; }
-      &.warning { color: $warning-color; }
-      &.success { color: $success-color; }
+      &.danger { color: $danger-text; }
+      &.warning { color: $warning-text; }
+      &.success { color: $success-text; }
     }
     .stat-label {
       font-size: 12px;
@@ -466,7 +466,7 @@ function formatDate(iso: string): string {
 
       &.active {
         background: $card-bg;
-        color: $primary-color;
+        color: $primary-text;
         box-shadow: $shadow-xs;
       }
     }
@@ -524,7 +524,7 @@ function formatDate(iso: string): string {
   .kp-group-count {
     font-size: 12px;
     font-weight: 700;
-    color: $primary-color;
+    color: $primary-text;
     background: $primary-light;
     padding: 3px 10px;
     border-radius: 20px;
@@ -567,16 +567,16 @@ function formatDate(iso: string): string {
       font-weight: 700;
       padding: 3px 10px;
       border-radius: 20px;
-      background: rgba(var(--danger-rgb), 0.12);
-      color: $danger-color;
+      background: var(--badge-danger-bg);
+      color: $danger-text;
 
       &.lb-partial {
-        background: rgba(var(--warning-rgb), 0.14);
-        color: $warning-color;
+        background: var(--badge-warning-bg);
+        color: $warning-text;
       }
       &.lb-mastered {
-        background: rgba(var(--success-rgb), 0.14);
-        color: $success-color;
+        background: var(--badge-success-bg);
+        color: $success-text;
       }
     }
     .mistake-date {
@@ -611,16 +611,16 @@ function formatDate(iso: string): string {
       flex-wrap: wrap;
     }
     .correct-opt {
-      background: rgba(var(--success-rgb), 0.12);
-      color: $success-color;
+      background: var(--badge-success-bg);
+      color: $success-text;
       font-weight: 700;
       font-size: 13px;
       padding: 6px 10px;
       border-radius: 6px;
     }
     .wrong-opt {
-      background: rgba(var(--danger-rgb), 0.12);
-      color: $danger-color;
+      background: var(--badge-danger-bg);
+      color: $danger-text;
       font-weight: 700;
       font-size: 13px;
       padding: 6px 10px;
@@ -658,7 +658,7 @@ function formatDate(iso: string): string {
 
     .partial-hint {
       font-size: 11.5px;
-      color: $warning-color;
+      color: $warning-text;
       font-weight: 700;
       line-height: 1.4;
     }

@@ -108,7 +108,7 @@ defineExpose({ enqueue })
     .toast-tag {
       font-size: 11px;
       font-weight: 800;
-      color: $primary-color;
+      color: $primary-text;
       letter-spacing: 0.3px;
     }
     .toast-title {

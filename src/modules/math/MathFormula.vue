@@ -40,5 +40,5 @@ function renderLatex(text: string) {
 .math-module-card { margin-bottom: 16px; }
 .formula-item { padding: 12px 0; border-bottom: 1px dashed $border-light; }
 .formula-item:last-child { border-bottom: none; }
-.latex-content { font-size: 18px; padding: 8px 0; color: $danger-color; }
+.latex-content { font-size: 18px; padding: 8px 0; color: $danger-text; }
 </style>

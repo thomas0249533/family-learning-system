@@ -344,7 +344,7 @@ function goToImport() {
   .ach-total-value {
     font-size: 28px;
     font-weight: 800;
-    color: $primary-color;
+    color: $primary-text;
     line-height: 1;
   }
   .ach-total-label {
@@ -372,7 +372,7 @@ function goToImport() {
 
   .ach-cat-icon { font-size: 16px; line-height: 1; }
   .ach-cat-name { font-size: 12px; font-weight: 700; color: $text-main; flex: 1; }
-  .ach-cat-count { font-size: 12px; font-weight: 800; color: $primary-color; }
+  .ach-cat-count { font-size: 12px; font-weight: 800; color: $primary-text; }
 }
 
 .ach-recent {
@@ -495,7 +495,7 @@ function goToImport() {
     }
     .top-meta {
       font-size: 12px;
-      color: $danger-color;
+      color: $danger-text;
       font-weight: 700;
       flex-shrink: 0;
     }
@@ -544,7 +544,7 @@ function goToImport() {
       }
       .day-count {
         font-size: 11px;
-        color: $primary-color;
+        color: $primary-text;
         font-weight: 700;
         margin-top: 4px;
       }
@@ -564,7 +564,7 @@ function goToImport() {
     border-top: 1px dashed $border-light;
 
     b {
-      color: $primary-color;
+      color: $primary-text;
       font-size: 16px;
       margin: 0 3px;
     }

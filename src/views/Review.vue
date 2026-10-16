@@ -207,7 +207,7 @@ onMounted(async () => {
     font-size: 12px;
     font-weight: 700;
     background: $warning-light;
-    color: $warning-color;
+    color: $warning-text;
     padding: 2px 10px;
     border-radius: 12px;
   }
@@ -248,7 +248,7 @@ onMounted(async () => {
     .stage-tag {
       font-size: 11px;
       background: $primary-light;
-      color: $primary-color;
+      color: $primary-text;
       padding: 2px 8px;
       border-radius: 10px;
       font-weight: 700;
@@ -262,7 +262,7 @@ onMounted(async () => {
     color: $text-sub;
     margin-bottom: 4px;
 
-    .overdue { color: $danger-color; font-weight: 700; }
+    .overdue { color: $danger-text; font-weight: 700; }
   }
 
   .item-stats {
@@ -272,7 +272,7 @@ onMounted(async () => {
     flex-wrap: wrap;
     gap: 10px;
 
-    .stat-mastery { color: $primary-color; font-weight: 700; }
+    .stat-mastery { color: $primary-text; font-weight: 700; }
     .stat-memory { color: $text-muted; }
   }
 }

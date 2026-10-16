@@ -1,4 +1,5 @@
 import { test } from '@playwright/test'
+import { freezeSmil } from './freeze-smil'
 
 /**
  * B7 · 视觉回归截图矩阵（浅/深 × 8 类页面）。
@@ -59,7 +60,8 @@ for (const mode of ['light', 'dark'] as const) {
       await page.goto(p.path)
       await page.waitForLoadState('networkidle')
       await page.waitForTimeout(1200)
-      await page.screenshot({ path: `docs/screenshots/${p.key}-${mode}.png`, fullPage: true })
+      await freezeSmil(page)
+      await page.screenshot({ path: `docs/screenshots/${p.key}-${mode}.png`, fullPage: true, animations: 'disabled' })
     })
   }
 }

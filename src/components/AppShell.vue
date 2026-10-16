@@ -227,7 +227,7 @@ const todayText = computed(() => {
 
     &.router-link-active {
       background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--primary-rgb), 0.1));
-      color: $primary-color;
+      color: $primary-text;
       font-weight: 700;
 
       .sidebar-icon {
@@ -298,7 +298,7 @@ const todayText = computed(() => {
 
     .version-badge {
       background: $primary-light;
-      color: $primary-color;
+      color: $primary-text;
       font-size: 11px;
       font-weight: 700;
       padding: 4px 10px;
@@ -399,7 +399,7 @@ const todayText = computed(() => {
     .nav-label { font-weight: 600; }
 
     &.router-link-active {
-      color: $primary-color;
+      color: $primary-text;
       .nav-icon { transform: scale(1.15); }
       .nav-label { font-weight: 700; }
     }

@@ -448,7 +448,7 @@ function backToIntro() {
     padding: 4px 12px;
     border-radius: 20px;
     background: $warning-light;
-    color: $warning-color;
+    color: $warning-text;
     margin-bottom: 16px;
   }
   .exam-title {
@@ -469,7 +469,7 @@ function backToIntro() {
 
   .meta-item {
     text-align: center;
-    .meta-value { font-size: 24px; font-weight: 800; color: $primary-color; }
+    .meta-value { font-size: 24px; font-weight: 800; color: $primary-text; }
     .meta-label { font-size: 12px; color: $text-sub; margin-top: 4px; }
   }
 }
@@ -523,11 +523,11 @@ function backToIntro() {
       .history-progress { color: $text-sub; }
       .history-rate {
         font-weight: 700;
-        &.rate-good { color: $success-color; }
-        &.rate-mid { color: $warning-color; }
-        &.rate-bad { color: $danger-color; }
+        &.rate-good { color: $success-text; }
+        &.rate-mid { color: $warning-text; }
+        &.rate-bad { color: $danger-text; }
       }
-      .history-status { color: $warning-color; font-size: 12px; }
+      .history-status { color: $warning-text; font-size: 12px; }
     }
   }
 }
@@ -543,7 +543,7 @@ function backToIntro() {
     display: inline-flex;
     align-items: baseline;
     gap: 4px;
-    .score-num { font-size: 48px; font-weight: 900; color: $primary-color; }
+    .score-num { font-size: 48px; font-weight: 900; color: $primary-text; }
     .score-div { font-size: 28px; color: $text-muted; }
     .score-total { font-size: 28px; font-weight: 700; color: $text-sub; }
   }
@@ -566,8 +566,8 @@ function backToIntro() {
   .section-title {
     font-size: 15px;
     font-weight: 800;
-    &.wrong-title { color: $danger-color; }
-    &.correct-title { color: $success-color; }
+    &.wrong-title { color: $danger-text; }
+    &.correct-title { color: $success-text; }
   }
 }
 
@@ -634,13 +634,13 @@ function backToIntro() {
     gap: 8px;
 
     &.opt-correct {
-      background: rgba(var(--success-rgb), 0.12);
-      color: $success-color;
+      background: var(--badge-success-bg);
+      color: $success-text;
       font-weight: 700;
     }
     &.opt-wrong {
-      background: rgba(var(--danger-rgb), 0.12);
-      color: $danger-color;
+      background: var(--badge-danger-bg);
+      color: $danger-text;
       font-weight: 700;
     }
 
@@ -668,12 +668,12 @@ function backToIntro() {
     }
 
     &.wrong-row {
-      background: rgba(var(--danger-rgb), 0.1);
-      color: $danger-color;
+      background: var(--badge-danger-bg);
+      color: $danger-text;
     }
     &.correct-row {
-      background: rgba(var(--success-rgb), 0.1);
-      color: $success-color;
+      background: var(--badge-success-bg);
+      color: $success-text;
     }
   }
 }

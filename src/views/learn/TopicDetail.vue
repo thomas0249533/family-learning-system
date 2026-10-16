@@ -629,9 +629,9 @@ function handleQuizFinish(correctCount: number) {
       background: $bg-color-hover;
       color: $text-sub;
 
-      &.ms-mastered { background: rgba(var(--success-rgb), 0.14); color: $success-color; }
-      &.ms-learning { background: rgba(var(--warning-rgb), 0.14); color: $warning-color; }
-      &.ms-review { background: rgba(var(--danger-rgb), 0.14); color: $danger-color; }
+      &.ms-mastered { background: var(--badge-success-bg); color: $success-text; }
+      &.ms-learning { background: var(--badge-warning-bg); color: $warning-text; }
+      &.ms-review { background: var(--badge-danger-bg); color: $danger-text; }
     }
   }
 
@@ -662,7 +662,7 @@ function handleQuizFinish(correctCount: number) {
     font-size: 12px;
     color: $text-sub;
 
-    .mastery-percent strong { color: $primary-color; font-weight: 800; }
+    .mastery-percent strong { color: $primary-text; font-weight: 800; }
     .mastery-next { color: $text-muted; }
     .mastery-count { color: $text-muted; }
   }
@@ -690,7 +690,7 @@ function handleQuizFinish(correctCount: number) {
   }
   :deep(ul), :deep(ol) { padding-left: 26px; }
   :deep(li) { margin: 4px 0; }
-  :deep(strong) { color: $primary-color; font-weight: 700; }
+  :deep(strong) { color: $primary-text; font-weight: 700; }
   :deep(code) {
     background: rgba(var(--primary-rgb), 0.1);
     padding: 2px 6px;

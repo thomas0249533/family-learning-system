@@ -198,7 +198,7 @@ onUnmounted(() => { stop() })
   &.speaking {
     background: $primary-color;
     border-color: $primary-color;
-    color: $on-strong;
+    color: var(--text-on-primary);
     animation: pulse-speaking 1.2s infinite;
   }
   &.tiny {

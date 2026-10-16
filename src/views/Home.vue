@@ -713,7 +713,7 @@ onUnmounted(() => {
     bottom: 8px;
     font-size: 10px;
     font-weight: 700;
-    color: $primary-color;
+    color: $primary-text;
     background: $primary-light;
     padding: 2px 8px;
     border-radius: 10px;
@@ -789,7 +789,7 @@ onUnmounted(() => {
     line-height: 1.4;
 
     strong {
-      color: $warning-color;
+      color: $warning-text;
       font-size: 20px;
       font-weight: 800;
       margin: 0 3px;
@@ -890,14 +890,14 @@ onUnmounted(() => {
     padding: 3px 10px;
     border-radius: 20px;
     background: $primary-light;
-    color: $primary-color;
+    color: $primary-text;
     letter-spacing: 0.2px;
   }
 
-  &.rec-mistake .rec-badge { background: rgba(var(--danger-rgb), 0.12); color: $danger-color; }
-  &.rec-review .rec-badge { background: rgba(var(--warning-rgb), 0.12); color: $warning-color; }
-  &.rec-new .rec-badge { background: rgba(var(--success-rgb), 0.12); color: $success-color; }
-  &.rec-prerequisite .rec-badge { background: rgba(var(--primary-rgb), 0.12); color: $primary-color; }
+  &.rec-mistake .rec-badge { background: var(--badge-danger-bg); color: $danger-text; }
+  &.rec-review .rec-badge { background: var(--badge-warning-bg); color: $warning-text; }
+  &.rec-new .rec-badge { background: var(--badge-success-bg); color: $success-text; }
+  &.rec-prerequisite .rec-badge { background: var(--badge-primary-bg); color: $primary-text; }
 
   .rec-title {
     font-size: 15px;
@@ -959,7 +959,7 @@ onUnmounted(() => {
     gap: 3px;
     font-size: 12px;
     font-weight: 700;
-    color: $primary-color;
+    color: $primary-text;
     transition: all 0.2s;
 
     .cta-arrow {
@@ -1021,7 +1021,7 @@ onUnmounted(() => {
     .chart-rate {
       font-size: 32px;
       font-weight: 800;
-      color: $primary-color;
+      color: $primary-text;
       line-height: 1;
       letter-spacing: -0.5px;
 

@@ -250,7 +250,7 @@ onMounted(loadData)
 
     .top-kp-rank { color: $text-sub; font-weight: 700; width: 20px; }
     .top-kp-title { flex: 1; color: $text-main; }
-    .top-kp-count { color: $danger-color; font-weight: 700; }
+    .top-kp-count { color: $danger-text; font-weight: 700; }
   }
 }
 

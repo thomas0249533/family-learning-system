@@ -180,21 +180,21 @@ async function handleUploadZip({ file, onFinish }: any) {
 .set-result .result-summary {
   font-size: 15px;
   margin-bottom: 12px;
-  b { color: $primary-color; font-size: 20px; }
-  &.error { color: $danger-color; }
+  b { color: $primary-text; font-size: 20px; }
+  &.error { color: $danger-text; }
 }
 .pkg-list { margin-bottom: 12px; }
 .warn-list {
   background: $warning-light;
   padding: 10px 12px;
   border-radius: 6px;
-  .warn-title { font-size: 13px; font-weight: 700; color: $warning-color; margin-bottom: 6px; }
+  .warn-title { font-size: 13px; font-weight: 700; color: $warning-text; margin-bottom: 6px; }
   .warn-item { font-size: 12px; color: $text-sub; line-height: 1.6; }
 }
 .failed-pkg {
   font-size: 13px;
   margin-bottom: 10px;
-  code { background: $danger-light; color: $danger-color; padding: 2px 6px; border-radius: 4px; }
+  code { background: $danger-light; color: $danger-text; padding: 2px 6px; border-radius: 4px; }
 }
 .error-list {
   max-height: 50vh;

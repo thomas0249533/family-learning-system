@@ -404,7 +404,7 @@ onUnmounted(() => {
     padding: 4px 12px;
     border-radius: 20px;
     background: $primary-light;
-    color: $primary-color;
+    color: $primary-text;
     margin-bottom: 12px;
   }
 
@@ -484,12 +484,12 @@ onUnmounted(() => {
     cursor: pointer;
     transition: all 0.15s;
 
-    &:hover { border-color: $primary-color; color: $primary-color; }
+    &:hover { border-color: $primary-color; color: $primary-text; }
 
     &.active {
       background: $primary-color;
       border-color: $primary-color;
-      color: $on-strong;
+      color: var(--text-on-primary);
     }
   }
 }
@@ -538,7 +538,7 @@ onUnmounted(() => {
     cursor: pointer;
     transition: all 0.15s;
 
-    &:hover { background: $danger-light; color: $danger-color; }
+    &:hover { background: $danger-light; color: $danger-text; }
   }
 }
 
@@ -592,7 +592,7 @@ onUnmounted(() => {
 
     &.big {
       font-size: 40px;
-      color: $primary-color;
+      color: $primary-text;
     }
   }
 
@@ -687,14 +687,14 @@ onUnmounted(() => {
   &:disabled { cursor: default; }
 
   &.correct {
-    background: rgba(var(--success-rgb), 0.12);
+    background: var(--badge-success-bg);
     border-color: $success-color;
-    color: $success-color;
+    color: $success-text;
   }
   &.wrong {
-    background: rgba(var(--danger-rgb), 0.12);
+    background: var(--badge-danger-bg);
     border-color: $danger-color;
-    color: $danger-color;
+    color: $danger-text;
   }
 }
 
@@ -707,14 +707,14 @@ onUnmounted(() => {
   text-align: center;
 
   &.ok {
-    background: rgba(var(--success-rgb), 0.12);
-    color: $success-color;
+    background: var(--badge-success-bg);
+    color: $success-text;
   }
   &.no {
-    background: rgba(var(--danger-rgb), 0.12);
-    color: $danger-color;
+    background: var(--badge-danger-bg);
+    color: $danger-text;
 
-    b { color: $danger-color; margin-left: 4px; }
+    b { color: $danger-text; margin-left: 4px; }
   }
 }
 
@@ -746,7 +746,7 @@ onUnmounted(() => {
     align-items: baseline;
     gap: 4px;
 
-    .done-num { font-size: 48px; font-weight: 900; color: $primary-color; }
+    .done-num { font-size: 48px; font-weight: 900; color: $primary-text; }
     .done-div { font-size: 28px; color: $text-muted; }
     .done-total { font-size: 28px; font-weight: 700; color: $text-sub; }
   }
@@ -762,10 +762,8 @@ onUnmounted(() => {
 }
 
 body.dark-mode {
+  // .choice-item.correct/.wrong、.drill-feedback.ok/.no 的背景已改由
+  // var(--badge-{tone}-bg) 承载（随主题解析），故移除本地的深色 rgba 覆盖。
   .flip-card.flipped { background: rgba(var(--primary-rgb), 0.15); }
-  .choice-item.correct { background: rgba(var(--success-rgb), 0.15); }
-  .choice-item.wrong { background: rgba(var(--danger-rgb), 0.15); }
-  .drill-feedback.ok { background: rgba(var(--success-rgb), 0.15); }
-  .drill-feedback.no { background: rgba(var(--danger-rgb), 0.15); }
 }
 </style>

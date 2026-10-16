@@ -305,13 +305,13 @@ function subjectLabel(subject?: string): string {
 
     .pkg-card-arrow {
       transform: translateX(4px);
-      color: $primary-color;
+      color: $primary-text;
     }
   }
 
   &.exam:hover {
     border-color: $warning-color;
-    .pkg-card-arrow { color: $warning-color; }
+    .pkg-card-arrow { color: $warning-text; }
   }
 
   .pkg-card-accent {
@@ -362,10 +362,10 @@ function subjectLabel(subject?: string): string {
     padding: 2px 8px;
     border-radius: 12px;
 
-    &.tag-blue { background: rgba(var(--primary-rgb), 0.12); color: $primary-color; }
-    &.tag-green { background: rgba(var(--success-rgb), 0.12); color: $success-color; }
-    &.tag-orange { background: rgba(var(--warning-rgb), 0.12); color: $warning-color; }
-    &.tag-red { background: rgba(var(--danger-rgb), 0.12); color: $danger-color; }
+    &.tag-blue { background: var(--badge-primary-bg); color: $primary-text; }
+    &.tag-green { background: var(--badge-success-bg); color: $success-text; }
+    &.tag-orange { background: var(--badge-warning-bg); color: $warning-text; }
+    &.tag-red { background: var(--badge-danger-bg); color: $danger-text; }
   }
 
   .pkg-card-meta {
