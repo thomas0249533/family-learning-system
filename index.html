@@ -6,6 +6,36 @@
     <title>家庭学习系统框架 V1.0</title>
   </head>
   <body>
+    <!--
+      防 FOUC 内联启动脚本（body 首个元素，早于 #app 渲染与首帧绘制）：
+      同步读 localStorage['fls:theme']，把「深色 class + 学段属性」落到 body，
+      使 theme.scss 的 6 组选择器在首帧即命中，消灭「先白后深 / 先初中后小学」闪色。
+      与 stores/theme.ts 共用同一 schema（键 fls:theme），小且唯一。
+    -->
+    <script>
+      (function () {
+        try {
+          var preset = 'junior';
+          var mode = 'light';
+          var raw = localStorage.getItem('fls:theme');
+          if (raw) {
+            var o = JSON.parse(raw);
+            if (o && typeof o === 'object') {
+              if (o.preset === 'primary' || o.preset === 'junior' || o.preset === 'senior') preset = o.preset;
+              if (o.mode === 'light' || o.mode === 'dark' || o.mode === 'system') mode = o.mode;
+            }
+          }
+          var dark = mode === 'dark';
+          if (mode === 'system') {
+            dark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          }
+          document.body.classList.toggle('dark-mode', dark);
+          document.body.dataset.themePreset = preset;
+        } catch (e) {
+          /* 忽略：首帧退回 :root 默认（初中·浅），无 JS 也能看到合理配色 */
+        }
+      })();
+    </script>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

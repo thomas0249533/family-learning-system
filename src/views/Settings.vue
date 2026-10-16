@@ -3,6 +3,50 @@
     <!-- 外观设置 -->
     <n-card title="🎨 外观设置" class="card">
       <n-space vertical size="large">
+        <!-- 学习阶段主题（preset 卡片单选） -->
+        <div>
+          <h4 class="setting-label">学习阶段主题</h4>
+          <div class="preset-grid">
+            <button
+              v-for="p in PRESET_META"
+              :key="p.value"
+              type="button"
+              class="preset-card"
+              :class="{ selected: themeStore.preset === p.value }"
+              @click="selectPreset(p.value)"
+            >
+              <span class="preset-band">
+                <span class="band-swatch" :style="{ background: presetPreview(p.value).primary }"></span>
+                <span class="band-swatch" :style="{ background: presetPreview(p.value).bg }"></span>
+                <span class="band-swatch" :style="{ background: presetPreview(p.value).card }"></span>
+              </span>
+              <span class="preset-body">
+                <span class="preset-name">{{ p.icon }} {{ p.name }}</span>
+                <span class="preset-tagline">{{ p.tagline }}</span>
+              </span>
+              <span v-if="themeStore.preset === p.value" class="preset-check">✓</span>
+            </button>
+          </div>
+
+          <!-- 推荐提示条 -->
+          <div class="preset-advice">
+            <template v-if="themeStore.presetManual">
+              <span class="advice-text">已手动选择，不再自动推荐</span>
+              <n-button size="tiny" quaternary type="primary" @click="handleRestoreAuto">恢复自动</n-button>
+            </template>
+            <template v-else-if="recommended.grade !== null">
+              <span class="advice-text">
+                检测到孩子 {{ recommended.grade }} 年级，推荐「{{ presetName(recommended.preset) }}」主题
+              </span>
+              <n-button size="tiny" quaternary type="primary" @click="applyRecommended">一键切换</n-button>
+            </template>
+            <template v-else>
+              <span class="advice-text">导入学习包后，将按孩子年级自动推荐主题</span>
+            </template>
+          </div>
+        </div>
+
+        <!-- 主题模式（与学段、字号互相独立） -->
         <div>
           <h4 class="setting-label">主题模式</h4>
           <n-radio-group v-model:value="themeStore.themeMode" @update:value="themeStore.setTheme">
@@ -11,6 +55,8 @@
             <n-radio-button value="system">跟随系统</n-radio-button>
           </n-radio-group>
         </div>
+
+        <!-- 字号（独立控件） -->
         <div>
           <h4 class="setting-label">字号</h4>
           <n-radio-group v-model:value="themeStore.fontSize" @update:value="themeStore.setFontSize">
@@ -101,26 +147,66 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   NCard, NSpace, NRadioGroup, NRadioButton, NButton, NUpload, NTag,
   useMessage, useDialog
 } from 'naive-ui'
 import { useThemeStore } from '@core/stores/theme'
+import { usePackageStore } from '@core/stores/package'
 import { db } from '@/db'
 import {
   exportMistakes, exportUserData, exportAllPackages, exportAll, importUserData,
 } from '@/core/export/exportService'
+import type { ThemePreset } from '@core/styles/palette'
+import type { GradeSource } from '@core/theme/presetInference'
+import { inferPreset } from '@core/theme/presetInference'
+import { PRESET_META, presetPreview } from '@core/theme/presetPreview'
 
 const themeStore = useThemeStore()
+const packageStore = usePackageStore()
 const message = useMessage()
 const dialog = useDialog()
 
 const searchHistory = ref<string[]>([])
 
-onMounted(() => {
+/** 学习包 → 年级来源（供自动推荐） */
+function gradeSources(): GradeSource[] {
+  return packageStore.packages.map((pkg) => ({
+    grade: pkg.manifest.grade,
+    updatedAt: pkg.manifest.updatedAt,
+    createdAt: pkg.manifest.createdAt,
+  }))
+}
+
+/** 当前数据下的「推荐」预设（不施加，仅用于展示与一键切换） */
+const recommended = computed(() => inferPreset(gradeSources()))
+
+function presetName(p: ThemePreset): string {
+  return PRESET_META.find((m) => m.value === p)?.name ?? p
+}
+
+function selectPreset(p: ThemePreset) {
+  // 家长手动切换 → 标记 manual，永久停止自动推荐
+  themeStore.setPreset(p, true)
+}
+
+function applyRecommended() {
+  themeStore.setPreset(recommended.value.preset, true)
+}
+
+function handleRestoreAuto() {
+  themeStore.restoreAuto(gradeSources())
+  message.success('已恢复自动推荐')
+}
+
+onMounted(async () => {
   const raw = localStorage.getItem('searchHistory')
   if (raw) { try { searchHistory.value = JSON.parse(raw) } catch {} }
+
+  // 载入学习包后按年级自动推断（仅当未手动选择时生效）
+  await packageStore.loadPackages()
+  themeStore.reconcilePreset(gradeSources())
 })
 
 function removeHistory(i: number) {
@@ -207,6 +293,100 @@ function clearAllData() {
 .card { border-radius: $radius-lg; box-shadow: $shadow-sm; margin-bottom: 0; }
 .danger-card { border: 1px solid $danger-light; }
 .setting-label { font-size: 14px; font-weight: 700; color: $text-main; margin-bottom: 10px; }
+
+/* ========== 学段预设卡片 ========== */
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preset-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: $surface-2;
+  border: 2px solid $border-color;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
+
+  &.selected {
+    border-color: $primary-color;
+    background: $primary-light;
+    box-shadow: $shadow;
+  }
+
+  .preset-band {
+    display: flex;
+    height: 26px;
+    border-radius: $radius-sm;
+    overflow: hidden;
+    border: 1px solid $border-light;
+
+    .band-swatch {
+      flex: 1;
+    }
+  }
+
+  .preset-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .preset-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: $text-main;
+    }
+    .preset-tagline {
+      font-size: 11px;
+      color: $text-muted;
+    }
+  }
+
+  .preset-check {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-full;
+    background: $primary-color;
+    color: $on-strong;
+    font-size: 12px;
+    font-weight: 800;
+  }
+}
+
+.preset-advice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: $bg-color-hover;
+  border-radius: $radius-sm;
+
+  .advice-text { font-size: 12px; color: $text-sub; }
+}
 
 .export-row {
   display: flex; justify-content: space-between; align-items: center;
