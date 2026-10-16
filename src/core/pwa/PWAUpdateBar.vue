@@ -1,28 +1,32 @@
 <template>
-  <!-- 更新可用提示 -->
-  <transition name="slide-up">
-    <div v-if="needRefresh" class="pwa-bar update-bar">
-      <span class="pwa-icon">🆕</span>
-      <span class="pwa-text">有新版本可用</span>
-      <button class="pwa-btn primary" @click="applyUpdate" :disabled="state === 'updating'">
-        {{ state === 'updating' ? '更新中...' : '立即更新' }}
-      </button>
-      <button class="pwa-btn" @click="dismiss">稍后</button>
-    </div>
-  </transition>
+  <!-- B4 · Tauri 桌面端不渲染 SW 更新条（Web 端行为不变） -->
+  <template v-if="!isTauri()">
+    <!-- 更新可用提示 -->
+    <transition name="slide-up">
+      <div v-if="needRefresh" class="pwa-bar update-bar">
+        <span class="pwa-icon">🆕</span>
+        <span class="pwa-text">有新版本可用</span>
+        <button class="pwa-btn primary" @click="applyUpdate" :disabled="state === 'updating'">
+          {{ state === 'updating' ? '更新中...' : '立即更新' }}
+        </button>
+        <button class="pwa-btn" @click="dismiss">稍后</button>
+      </div>
+    </transition>
 
-  <!-- 离线就绪提示 -->
-  <transition name="slide-up">
-    <div v-if="offlineReady && !needRefresh" class="pwa-bar offline-bar">
-      <span class="pwa-icon">📥</span>
-      <span class="pwa-text">已可离线使用</span>
-      <button class="pwa-btn" @click="dismiss">知道了</button>
-    </div>
-  </transition>
+    <!-- 离线就绪提示 -->
+    <transition name="slide-up">
+      <div v-if="offlineReady && !needRefresh" class="pwa-bar offline-bar">
+        <span class="pwa-icon">📥</span>
+        <span class="pwa-text">已可离线使用</span>
+        <button class="pwa-btn" @click="dismiss">知道了</button>
+      </div>
+    </transition>
+  </template>
 </template>
 
 <script setup lang="ts">
 import { usePWAUpdate } from './usePWAUpdate'
+import { isTauri } from './isTauri'
 
 const { state, needRefresh, offlineReady, applyUpdate, dismiss } = usePWAUpdate()
 </script>
