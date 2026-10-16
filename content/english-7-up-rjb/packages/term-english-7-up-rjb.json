@@ -1,0 +1,90 @@
+{
+  "manifest": {
+    "packageId": "term-english-7-up-rjb",
+    "type": "term",
+    "title": "七年级英语上册学期复习",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-english-7-up-rjb-p1",
+      "unit-english-7-up-rjb-p2",
+      "unit-english-7-up-rjb-p3",
+      "unit-english-7-up-rjb-p4",
+      "unit-english-7-up-rjb-p5",
+      "unit-english-7-up-rjb-p6",
+      "unit-english-7-up-rjb-p7"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）"
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "term-english-7-up-rjb::term-u1",
+      "name": "学期复习",
+      "title": "七年级英语上册学期复习",
+      "desc": "聚合全册 7 个单元的核心知识点，用于整体复习与检测。",
+      "topics": [
+        {
+          "id": "term-english-7-up-rjb::term-t1",
+          "title": "全册综合",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p1::kp-word-001",
+            "unit-english-7-up-rjb-p1::kp-sentence-001",
+            "unit-english-7-up-rjb-p1::kp-grammar-001",
+            "unit-english-7-up-rjb-p1::kp-grammar-002",
+            "unit-english-7-up-rjb-p1::kp-phonetic-001",
+            "unit-english-7-up-rjb-p1::kp-reading-001",
+            "unit-english-7-up-rjb-p1::kp-writing-001",
+            "unit-english-7-up-rjb-p2::kp-word-001",
+            "unit-english-7-up-rjb-p2::kp-sentence-001",
+            "unit-english-7-up-rjb-p2::kp-grammar-001",
+            "unit-english-7-up-rjb-p2::kp-grammar-002",
+            "unit-english-7-up-rjb-p2::kp-phonetic-001",
+            "unit-english-7-up-rjb-p2::kp-reading-001",
+            "unit-english-7-up-rjb-p2::kp-writing-001",
+            "unit-english-7-up-rjb-p3::kp-word-001",
+            "unit-english-7-up-rjb-p3::kp-sentence-001",
+            "unit-english-7-up-rjb-p3::kp-grammar-001",
+            "unit-english-7-up-rjb-p3::kp-grammar-002",
+            "unit-english-7-up-rjb-p3::kp-phonetic-001",
+            "unit-english-7-up-rjb-p3::kp-reading-001",
+            "unit-english-7-up-rjb-p3::kp-writing-001",
+            "unit-english-7-up-rjb-p4::kp-word-001",
+            "unit-english-7-up-rjb-p4::kp-sentence-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-002",
+            "unit-english-7-up-rjb-p4::kp-phonetic-001",
+            "unit-english-7-up-rjb-p4::kp-reading-001",
+            "unit-english-7-up-rjb-p4::kp-writing-001",
+            "unit-english-7-up-rjb-p5::kp-word-001",
+            "unit-english-7-up-rjb-p5::kp-sentence-001",
+            "unit-english-7-up-rjb-p5::kp-grammar-001",
+            "unit-english-7-up-rjb-p5::kp-phonetic-001",
+            "unit-english-7-up-rjb-p5::kp-reading-001",
+            "unit-english-7-up-rjb-p5::kp-writing-001",
+            "unit-english-7-up-rjb-p6::kp-word-001",
+            "unit-english-7-up-rjb-p6::kp-sentence-001",
+            "unit-english-7-up-rjb-p6::kp-grammar-001",
+            "unit-english-7-up-rjb-p6::kp-grammar-002",
+            "unit-english-7-up-rjb-p6::kp-phonetic-001",
+            "unit-english-7-up-rjb-p6::kp-reading-001",
+            "unit-english-7-up-rjb-p6::kp-writing-001",
+            "unit-english-7-up-rjb-p7::kp-word-001",
+            "unit-english-7-up-rjb-p7::kp-sentence-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-002",
+            "unit-english-7-up-rjb-p7::kp-phonetic-001",
+            "unit-english-7-up-rjb-p7::kp-reading-001",
+            "unit-english-7-up-rjb-p7::kp-writing-001"
+          ],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

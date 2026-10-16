@@ -1,0 +1,1216 @@
+{
+  "manifest": {
+    "packageId": "unit-english-7-up-rjb-p7",
+    "type": "unit",
+    "title": "Happy Birthday!",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-english-7-up-rjb-p6"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-english-7-up-rjb-p7::kp-word-001",
+      "type": "concept",
+      "title": "核心词汇：生日与庆祝活动 (Birthdays and Celebrations)",
+      "content": "本单元核心词汇主要围绕生日日期、庆祝活动及礼物展开。重点掌握以下词汇：\n\n**生日相关词汇 (Birthday Words):**\n- birthday /ˈbɜːθdeɪ/ n. 生日\n- party /ˈpɑːti/ n. 聚会；派对\n- cake /keɪk/ n. 蛋糕\n- candle /ˈkændl/ n. 蜡烛\n- present /ˈpreznt/ n. 礼物\n- card /kɑːd/ n. 卡片\n- balloon /bəˈluːn/ n. 气球\n- invitation /ˌɪnvɪˈteɪʃn/ n. 邀请\n\n**庆祝活动 (Celebration Activities):**\n- celebrate /ˈselɪbreɪt/ v. 庆祝\n- sing a song /sɪŋ ə sɒŋ/ 唱歌\n- make a wish /meɪk ə wɪʃ/ 许愿\n- blow out candles /bləʊ aʊt ˈkændlz/ 吹灭蜡烛\n- give presents /ɡɪv ˈpreznts/ 送礼物\n- have a party /hæv ə ˈpɑːti/ 举办聚会\n\n**序数词 (Ordinal Numbers):**\n- first (1st), second (2nd), third (3rd), fourth (4th), fifth (5th), sixth (6th), seventh (7th), eighth (8th), ninth (9th), tenth (10th), eleventh (11th), twelfth (12th), thirteenth (13th), twentieth (20th), twenty-first (21st), thirtieth (30th), thirty-first (31st)\n\n**校园情境应用**：在太原平民中学，你可以这样介绍：My birthday is on October 15th. I usually have a party with my friends. We eat cake and sing songs.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "词汇",
+          "生日",
+          "庆祝"
+        ],
+        "word": "celebrate",
+        "phonetic": "/ˈselɪbreɪt/",
+        "partOfSpeech": "v."
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p7::kp-sentence-001",
+      "type": "formula",
+      "title": "核心句型：询问生日与庆祝方式 (Asking about Birthdays and Celebrations)",
+      "content": "本单元的核心交际句型主要涉及询问生日日期、庆祝方式以及表达祝福。\n\n**1. 询问生日日期：**\n- When is your birthday? (你的生日是什么时候？) — My birthday is on May 1st.\n- When is his/her birthday? (他/她的生日是什么时候？) — It's on...\n- What's the date today? (今天几月几号？) — It's October 15th.\n\n**2. 询问庆祝方式：**\n- How do you celebrate your birthday? (你怎样庆祝你的生日？) — I usually have a party.\n- What do you do on your birthday? (你生日那天做什么？) — I eat cake and sing songs.\n- Do you have a birthday party? (你举办生日聚会吗？) — Yes, I do. / No, I don't.\n\n**3. 表达祝福：**\n- Happy birthday! (生日快乐！) — Thank you!\n- Many happy returns of the day! (祝你年年有今日，岁岁有今朝！)\n- Best wishes! (最美好的祝愿！)",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "句型",
+          "交际",
+          "生日"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p7::kp-grammar-001",
+      "type": "concept",
+      "title": "语法：序数词 (Ordinal Numbers)",
+      "content": "**序数词**\n序数词表示顺序，如“第一、第二、第三”。本单元重点学习序数词的构成和用法。\n\n**1. 序数词的构成规则：**\n- 一般在基数词后加 **-th**：four → fourth, six → sixth, seven → seventh, ten → tenth, eleven → eleventh, thirteen → thirteenth\n- 特殊变化：\n  - one → **first** (1st)\n  - two → **second** (2nd)\n  - three → **third** (3rd)\n  - five → **fifth** (5th)\n  - eight → **eighth** (8th) (去 t)\n  - nine → **ninth** (9th) (去 e)\n  - twelve → **twelfth** (12th) (ve → f)\n- 以 -y 结尾的基数词，变 y 为 i 再加 -eth：twenty → **twentieth** (20th), thirty → **thirtieth** (30th)\n- 多位数只将个位数变为序数词：twenty-one → **twenty-first** (21st), thirty-two → **thirty-second** (32nd)\n\n**2. 序数词的用法：**\n- 表示日期：October 1st (十月一日), May 2nd (五月二日)\n- 表示顺序：the first day (第一天), the second class (第二节课)\n- 前面通常加定冠词 the，但表示日期时可不加。\n\n**3. 询问日期：**\n- What's the date today? — It's January 1st.\n- When is your birthday? — It's on March 3rd.",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p7::kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "序数词",
+          "日期"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p7::kp-grammar-002",
+      "type": "concept",
+      "title": "语法：Wh- 疑问句复习 (Wh- Questions Review)",
+      "content": "**Wh- 疑问句复习**\n本单元综合复习并运用以下疑问词：when, what, how, who, where, why。\n\n**1. when (什么时候)：**询问时间。\n- When is your birthday? — It's on May 1st.\n- When do you have a party? — On Saturday evening.\n\n**2. what (什么)：**询问事物或活动。\n- What do you do on your birthday? — I eat cake and sing songs.\n- What's the date today? — It's October 15th.\n\n**3. how (怎样)：**询问方式。\n- How do you celebrate your birthday? — I usually have a party with my friends.\n\n**4. who (谁)：**询问人。\n- Who do you celebrate with? — I celebrate with my family.\n\n**5. where (在哪里)：**询问地点。\n- Where do you have the party? — At home.\n\n**6. why (为什么)：**询问原因。\n- Why do you like your birthday? — Because I can get presents.\n\n**注意**：特殊疑问句不能用 Yes/No 回答。回答时根据疑问词提供具体信息。",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p7::kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "疑问词",
+          "特殊疑问句"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p7::kp-phonetic-001",
+      "type": "concept",
+      "title": "语音：辅音音素与语调 (Consonants and Intonation)",
+      "content": "**辅音音素复习**\n本单元重点复习以下辅音音素：\n- **/h/** (如 happy, hello, home) - 气流从声门摩擦而出，声带不振动。\n- **/r/** (如 red, run, birthday) - 舌尖卷起靠近齿龈后部，声带振动。\n- **/l/** (如 like, ball, celebrate) - 舌尖抵住上齿龈，气流从舌两侧流出，声带振动。\n- **/m/** (如 my, come, family) - 双唇紧闭，气流从鼻腔流出，声带振动。\n- **/n/** (如 no, name, candle) - 舌尖抵住上齿龈，气流从鼻腔流出，声带振动。\n- **/ŋ/** (如 sing, song, thing) - 舌后部抵住软腭，气流从鼻腔流出，声带振动。\n- **/w/** (如 we, wish, when) - 双唇收圆，向前突出，声带振动。\n- **/j/** (如 yes, you, year) - 舌前部抬向硬腭，声带振动。\n\n**语调 (Intonation)**\n语调是说话时声音的高低变化。英语中主要有两种语调：\n- **降调 (Falling Tone)**：用于陈述句、特殊疑问句、祈使句和感叹句。\n  例如：My birthday is on May 1st. ↘\n  例如：When is your birthday? ↘\n  例如：Happy birthday! ↘\n- **升调 (Rising Tone)**：用于一般疑问句和表示不确定的陈述句。\n  例如：Do you have a party? ↗\n  例如：Is it your birthday? ↗\n\n**发音要领**：注意区分 /n/ 和 /ŋ/：/n/ 舌尖抵齿龈，/ŋ/ 舌后部抵软腭。语调要自然，特殊疑问句用降调，一般疑问句用升调。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析",
+        "ability": "语言能力",
+        "tags": [
+          "语音",
+          "辅音",
+          "语调"
+        ],
+        "phoneticSymbol": "/h/, /r/, /l/, /m/, /n/, /ŋ/, /w/, /j/",
+        "letterCombination": "h, r, l, m, n, ng, w, y",
+        "pronunciationTips": "注意 /n/ 和 /ŋ/ 的区别：/n/ 舌尖抵上齿龈，/ŋ/ 舌后部抵软腭。语调方面，特殊疑问句用降调，一般疑问句用升调。"
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p7::kp-reading-001",
+      "type": "reading",
+      "title": "阅读：关于生日的帖子 (Posts about Birthdays)",
+      "content": "**阅读范文**\n\n> **Post 1: My Birthday in Taiyuan**\n> Hi! I'm Li Hua from Taiyuan Pingmin Middle School. My birthday is on October 15th. I usually have a party with my family. My mother makes a big cake. I make a wish and blow out the candles. My friends give me presents and cards. We sing songs and play games. I am very happy on my birthday.\n>\n> **Post 2: A Birthday in London**\n> Hello! My name is Jack. I am from London. My birthday is on February 3rd. I often have a party with my friends. We eat pizza and ice cream. We play football in the park. My parents give me a new book. I love reading. I always have a good time on my birthday.\n>\n> *来源：Birthday Posts，改编自 Time for Kids 与 Highlights 杂志*\n\n**阅读任务**\n阅读上述帖子，回答以下问题（题目计入本知识点）：\n1. When is Li Hua's birthday?\n2. What does Li Hua's mother make for the birthday?\n3. What does Jack often do with his friends?",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p7::kp-word-001",
+        "unit-english-7-up-rjb-p7::kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战",
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "分析",
+        "ability": "文化意识",
+        "tags": [
+          "阅读",
+          "生日",
+          "跨文化"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p7::kp-writing-001",
+      "type": "writing",
+      "title": "写作：写一篇关于你如何庆祝生日的帖子 (Writing a Post about How You Celebrate Your Birthday)",
+      "content": "**写作任务：写一篇关于你如何庆祝生日的帖子**\n假设你正在太原平民中学的英语论坛上发帖，介绍你如何庆祝自己的生日。请你根据以下提示，写一篇短文。\n\n**写作框架：**\n1. **问候与引入 (Greeting & Introduction)**: Hello! I'm... from... / My birthday is on...\n2. **庆祝方式 (Celebration)**: I usually have a party with... / We eat... and...\n3. **具体活动 (Activities)**: I make a wish and blow out candles. / My friends give me...\n4. **感受 (Feelings)**: I am very happy. / I always have a good time.\n5. **结尾 (Closing)**: What about you? / When is your birthday?\n\n**写作范文 (Model Essay)**\nHello! I'm Wang Mei from Taiyuan Pingmin Middle School. My birthday is on May 8th. I usually have a party with my family and friends. My mother makes a big cake. I make a wish and blow out the candles. My friends give me presents and cards. We sing songs and play games. I am very happy on my birthday. What about you? When is your birthday?",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p7::kp-word-001",
+        "unit-english-7-up-rjb-p7::kp-sentence-001",
+        "unit-english-7-up-rjb-p7::kp-grammar-001",
+        "unit-english-7-up-rjb-p7::kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "写作",
+          "生日庆祝",
+          "论坛帖子"
+        ]
+      }
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u7-ex-001",
+      "type": "single",
+      "question": "We eat ______ at a birthday party.",
+      "options": [
+        "A. cake",
+        "B. rice",
+        "C. noodles",
+        "D. bread"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我们在生日聚会上吃蛋糕。cake 意为“蛋糕”，是生日聚会的传统食物。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-002",
+      "type": "single",
+      "question": "I make a ______ and blow out the candles.",
+      "options": [
+        "A. wish",
+        "B. card",
+        "C. cake",
+        "D. party"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我许愿并吹灭蜡烛。make a wish 意为“许愿”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-003",
+      "type": "single",
+      "question": "My friends give me ______ on my birthday.",
+      "options": [
+        "A. presents",
+        "B. candles",
+        "C. balloons",
+        "D. invitations"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我的朋友在我生日时送我礼物。give presents 意为“送礼物”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-004",
+      "type": "blank",
+      "question": "We ______ (庆祝) your birthday with a party.",
+      "answer": "celebrate",
+      "explanation": "句意为：我们举办聚会来庆祝你的生日。庆祝对应的英文是 celebrate。故填 celebrate。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-005",
+      "type": "blank",
+      "question": "There are many ______ (气球) at the party.",
+      "answer": "balloons",
+      "explanation": "句意为：聚会上有很多气球。气球对应的英文是 balloon，many 后接复数，故填 balloons。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-006",
+      "type": "judge",
+      "question": "'blow out candles' 的意思是 '吹灭蜡烛'。",
+      "answer": "对",
+      "explanation": "blow out 意为“吹灭”，candles 意为“蜡烛”。故本题正确。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-007",
+      "type": "spelling",
+      "question": "I get a birthday ______ (卡片) from my sister.",
+      "answer": "card",
+      "explanation": "卡片对应的英文是 card。故填 card。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-008",
+      "type": "matching",
+      "question": "请将下列生日活动与对应的英文匹配。",
+      "left": [
+        "许愿",
+        "吹蜡烛",
+        "送礼物",
+        "举办聚会"
+      ],
+      "right": [
+        "make a wish",
+        "blow out candles",
+        "give presents",
+        "have a party"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "许愿-make a wish，吹蜡烛-blow out candles，送礼物-give presents，举办聚会-have a party。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-009",
+      "type": "single",
+      "question": "— When is your birthday? — ______",
+      "options": [
+        "A. It's on May 1st.",
+        "B. It's Monday.",
+        "C. Yes, it is.",
+        "D. I'm 13."
+      ],
+      "answer": "A",
+      "explanation": "When is your birthday? 是询问生日日期，回答应为 It's on + 日期。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-010",
+      "type": "single",
+      "question": "— What do you do on your birthday? — ______",
+      "options": [
+        "A. I eat cake and sing songs.",
+        "B. It's on October 15th.",
+        "C. Yes, I do.",
+        "D. I'm happy."
+      ],
+      "answer": "A",
+      "explanation": "What do you do...? 是询问活动内容，回答应描述具体活动。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-011",
+      "type": "single",
+      "question": "— Do you have a birthday party? — ______",
+      "options": [
+        "A. Yes, I do.",
+        "B. Yes, I am.",
+        "C. It's on May 1st.",
+        "D. I eat cake."
+      ],
+      "answer": "A",
+      "explanation": "Do you...? 的肯定回答是 Yes, I do. 否定回答是 No, I don't. 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-012",
+      "type": "blank",
+      "question": "— ______ is your birthday? — It's on May 1st.",
+      "answer": "When",
+      "explanation": "根据答语 It's on May 1st. 可知，问句是询问时间，应用 When。故填 When。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-013",
+      "type": "blank",
+      "question": "Happy ______! (生日快乐！)",
+      "answer": "birthday",
+      "explanation": "生日快乐对应的英文是 Happy birthday!。故填 birthday。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-014",
+      "type": "matching",
+      "question": "请将下列问句与对应的答语匹配。",
+      "left": [
+        "When is your birthday?",
+        "What do you do on your birthday?",
+        "How do you celebrate your birthday?",
+        "Do you have a party?"
+      ],
+      "right": [
+        "I usually have a party.",
+        "It's on May 1st.",
+        "Yes, I do.",
+        "I eat cake and sing songs."
+      ],
+      "answer": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "explanation": "When...? 回答日期；What do you do...? 回答活动；How...? 回答方式；Do you...? 回答 Yes/No。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-015",
+      "type": "single",
+      "question": "当别人对你说“Happy birthday!”时，你应该回答：______",
+      "options": [
+        "A. Thank you!",
+        "B. Happy birthday!",
+        "C. Yes, I do.",
+        "D. You're welcome."
+      ],
+      "answer": "A",
+      "explanation": "当别人祝你生日快乐时，应回答 Thank you! 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-016",
+      "type": "single",
+      "question": "— ______ do you celebrate your birthday? — I usually have a party with my friends.",
+      "options": [
+        "A. What",
+        "B. How",
+        "C. When",
+        "D. Where"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 I usually have a party with my friends. 可知，问句是询问方式，应用 How。故选B。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u7-ex-017",
+      "type": "single",
+      "question": "The ______ month of the year is January.",
+      "options": [
+        "A. first",
+        "B. one",
+        "C. second",
+        "D. third"
+      ],
+      "answer": "A",
+      "explanation": "句意为：一年中的第一个月是一月。表示顺序用序数词 first。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-018",
+      "type": "single",
+      "question": "My birthday is on October ______.",
+      "options": [
+        "A. 1st",
+        "B. 1th",
+        "C. 1nd",
+        "D. 1rd"
+      ],
+      "answer": "A",
+      "explanation": "1的序数词是 first，缩写为 1st。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-019",
+      "type": "single",
+      "question": "December is the ______ month of the year.",
+      "options": [
+        "A. twelve",
+        "B. twelveth",
+        "C. twelfth",
+        "D. twelvth"
+      ],
+      "answer": "C",
+      "explanation": "句意为：十二月是一年中的第十二个月。12的序数词是 twelfth，注意 ve 变为 f 再加 th。故选C。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-020",
+      "type": "blank",
+      "question": "My birthday is on June ______ (3). (用序数词填空)",
+      "answer": "third",
+      "explanation": "3的序数词是 third。故填 third。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-021",
+      "type": "blank",
+      "question": "Today is my ______ (20) birthday. (用序数词填空)",
+      "answer": "twentieth",
+      "explanation": "20的序数词是 twentieth，注意 y 变 ie 再加 th。故填 twentieth。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-022",
+      "type": "judge",
+      "question": "'nine' 的序数词是 'ninth'。",
+      "answer": "对",
+      "explanation": "nine 的序数词是 ninth，去 e 加 th。故本题正确。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-023",
+      "type": "spelling",
+      "question": "The ______ (5) day of May is my birthday. (用序数词填空)",
+      "answer": "fifth",
+      "explanation": "5的序数词是 fifth，注意 ve 变为 f 再加 th。故填 fifth。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-024",
+      "type": "single",
+      "question": "— What's the date today? — It's ______.",
+      "options": [
+        "A. May 1st",
+        "B. Monday",
+        "C. May",
+        "D. 1st May"
+      ],
+      "answer": "A",
+      "explanation": "What's the date today? 是询问日期，回答应为月份 + 序数词，如 May 1st。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u7-ex-025",
+      "type": "single",
+      "question": "______ is your birthday? — It's on May 1st.",
+      "options": [
+        "A. What",
+        "B. When",
+        "C. Where",
+        "D. Who"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 It's on May 1st. 可知，问句是询问时间，应用 When。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-026",
+      "type": "single",
+      "question": "______ do you celebrate your birthday? — I usually have a party.",
+      "options": [
+        "A. What",
+        "B. How",
+        "C. When",
+        "D. Why"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 I usually have a party. 可知，问句是询问方式，应用 How。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-027",
+      "type": "single",
+      "question": "______ do you celebrate with? — I celebrate with my family.",
+      "options": [
+        "A. What",
+        "B. Who",
+        "C. When",
+        "D. Where"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 I celebrate with my family. 可知，问句是询问人，应用 Who。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-028",
+      "type": "blank",
+      "question": "______ (为什么) do you like your birthday? — Because I can get presents.",
+      "answer": "Why",
+      "explanation": "根据答语 Because I can get presents. 可知，问句是询问原因，应用 Why。故填 Why。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-029",
+      "type": "blank",
+      "question": "______ (在哪里) do you have the party? — At home.",
+      "answer": "Where",
+      "explanation": "根据答语 At home. 可知，问句是询问地点，应用 Where。故填 Where。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-030",
+      "type": "judge",
+      "question": "特殊疑问句可以用 Yes 或 No 来回答。",
+      "answer": "错",
+      "explanation": "特殊疑问句以 Wh- 疑问词开头，询问具体信息，不能用 Yes 或 No 来回答。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-031",
+      "type": "spelling",
+      "question": "______ (什么) do you do on your birthday?",
+      "answer": "What",
+      "explanation": "句意为：你生日那天做什么？询问活动内容用 What。故填 What。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-032",
+      "type": "single",
+      "question": "— ______ is your birthday party? — It's on Saturday evening.",
+      "options": [
+        "A. What",
+        "B. When",
+        "C. Where",
+        "D. Who"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 It's on Saturday evening. 可知，问句是询问时间，应用 When。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u7-ex-033",
+      "type": "single",
+      "question": "Which word has the sound /h/?",
+      "options": [
+        "A. happy",
+        "B. red",
+        "C. like",
+        "D. my"
+      ],
+      "answer": "A",
+      "explanation": "happy 中的 h 发 /h/。red 发 /r/，like 发 /l/，my 发 /m/。故选A。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-034",
+      "type": "single",
+      "question": "Which word has the sound /ŋ/?",
+      "options": [
+        "A. no",
+        "B. sing",
+        "C. name",
+        "D. candle"
+      ],
+      "answer": "B",
+      "explanation": "sing 中的 ng 发 /ŋ/。no, name, candle 中的 n 发 /n/。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-035",
+      "type": "judge",
+      "question": "在单词 'yes' 中，字母 y 发 /j/ 音。",
+      "answer": "对",
+      "explanation": "yes 的音标为 /jes/，字母 y 发 /j/。故本题正确。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-036",
+      "type": "judge",
+      "question": "特殊疑问句通常用升调。",
+      "answer": "错",
+      "explanation": "特殊疑问句通常用降调，一般疑问句通常用升调。故本题错误。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-037",
+      "type": "blank",
+      "question": "The word 'red' has the sound /______/.",
+      "answer": "r",
+      "explanation": "red 的音标为 /red/，字母 r 发 /r/。故填 r。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-038",
+      "type": "blank",
+      "question": "The word 'ball' has the sound /______/.",
+      "answer": "l",
+      "explanation": "ball 的音标为 /bɔːl/，字母 l 发 /l/。故填 l。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-039",
+      "type": "matching",
+      "question": "请将下列单词与正确的音标匹配。",
+      "left": [
+        "happy",
+        "red",
+        "like",
+        "my"
+      ],
+      "right": [
+        "/h/",
+        "/r/",
+        "/l/",
+        "/m/"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "happy 发 /h/，red 发 /r/，like 发 /l/，my 发 /m/。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u7-ex-040",
+      "type": "single",
+      "question": "Which sentence uses a rising tone?",
+      "options": [
+        "A. When is your birthday? ↘",
+        "B. Do you have a party? ↗",
+        "C. My birthday is on May 1st. ↘",
+        "D. Happy birthday! ↘"
+      ],
+      "answer": "B",
+      "explanation": "一般疑问句通常用升调。B 选项是一般疑问句，用升调。A、C、D 都是特殊疑问句或陈述句/感叹句，用降调。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u7-ex-041",
+      "type": "single",
+      "question": "When is Li Hua's birthday?",
+      "options": [
+        "A. On October 15th.",
+        "B. On February 3rd.",
+        "C. On May 1st.",
+        "D. On January 1st."
+      ],
+      "answer": "A",
+      "explanation": "根据 Post 1 中 'My birthday is on October 15th.' 可知，李华的生日在10月15日。故选A。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-042",
+      "type": "single",
+      "question": "What does Li Hua's mother make for the birthday?",
+      "options": [
+        "A. A card.",
+        "B. A cake.",
+        "C. A present.",
+        "D. A balloon."
+      ],
+      "answer": "B",
+      "explanation": "根据 Post 1 中 'My mother makes a big cake.' 可知，李华的妈妈做了一个大蛋糕。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-043",
+      "type": "single",
+      "question": "What does Jack often do with his friends?",
+      "options": [
+        "A. Eat cake and sing songs.",
+        "B. Eat pizza and ice cream.",
+        "C. Play basketball.",
+        "D. Read books."
+      ],
+      "answer": "B",
+      "explanation": "根据 Post 2 中 'We eat pizza and ice cream.' 可知，杰克经常和朋友吃披萨和冰淇淋。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-044",
+      "type": "judge",
+      "question": "Li Hua has a party with his friends.",
+      "answer": "错",
+      "explanation": "根据 Post 1 中 'I usually have a party with my family.' 可知，李华通常和家人举办聚会，而不是朋友。故本题错误。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-045",
+      "type": "judge",
+      "question": "Jack's birthday is on February 3rd.",
+      "answer": "对",
+      "explanation": "根据 Post 2 中 'My birthday is on February 3rd.' 可知，杰克的生日在2月3日。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-046",
+      "type": "blank",
+      "question": "Li Hua's friends give him ______ and cards.",
+      "answer": "presents",
+      "explanation": "根据 Post 1 中 'My friends give me presents and cards.' 可知，李华的朋友送他礼物和卡片。故填 presents。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-047",
+      "type": "blank",
+      "question": "Jack's parents give him a new ______.",
+      "answer": "book",
+      "explanation": "根据 Post 2 中 'My parents give me a new book.' 可知，杰克的父母给他一本新书。故填 book。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-048",
+      "type": "single",
+      "question": "What is the best title for these two posts?",
+      "options": [
+        "A. My Birthday",
+        "B. My Family",
+        "C. A Trip to London",
+        "D. My School Day"
+      ],
+      "answer": "A",
+      "explanation": "两篇帖子都介绍了作者如何庆祝自己的生日，主题是生日。故选A。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u7-ex-049",
+      "type": "single",
+      "question": "在介绍自己如何庆祝生日的帖子中，通常开头使用哪个句子？",
+      "options": [
+        "A. My birthday is on...",
+        "B. Goodbye!",
+        "C. How old are you?",
+        "D. I like playing football."
+      ],
+      "answer": "A",
+      "explanation": "介绍生日庆祝的帖子中，开头常用 'My birthday is on...' 来引入话题。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-050",
+      "type": "single",
+      "question": "在描述生日活动时，可以说：______",
+      "options": [
+        "A. I make a wish and blow out the candles.",
+        "B. I go to school at 7:00.",
+        "C. I do my homework in the evening.",
+        "D. I have lunch at 12:00."
+      ],
+      "answer": "A",
+      "explanation": "描述生日活动应使用与生日相关的表达，如许愿、吹蜡烛。B、C、D 都是日常活动，与生日无关。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-051",
+      "type": "single",
+      "question": "以下哪一句表达了作者对生日的感受？",
+      "options": [
+        "A. I am very happy on my birthday.",
+        "B. I eat cake.",
+        "C. My friends give me presents.",
+        "D. My birthday is on May 8th."
+      ],
+      "answer": "A",
+      "explanation": "表达感受的句子通常用 'I am happy / I have a good time' 等。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u7-ex-052",
+      "type": "blank",
+      "question": "I usually have a party ______ (和) my family and friends.",
+      "answer": "with",
+      "explanation": "句意为：我通常和家人朋友举办聚会。和……一起用介词 with。故填 with。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-053",
+      "type": "blank",
+      "question": "My mother makes a big ______ (蛋糕) for my birthday.",
+      "answer": "cake",
+      "explanation": "蛋糕对应的英文是 cake。故填 cake。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-054",
+      "type": "judge",
+      "question": "在写关于生日庆祝的帖子时，只需要写出日期，不需要写活动。",
+      "answer": "错",
+      "explanation": "在写关于生日庆祝的帖子时，不仅要写出日期，还要描述庆祝活动和感受，这样内容才完整。故本题错误。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u7-ex-055",
+      "type": "matching",
+      "question": "请将写作框架与对应的句子匹配。",
+      "left": [
+        "引入话题",
+        "庆祝方式",
+        "具体活动",
+        "结尾"
+      ],
+      "right": [
+        "My birthday is on May 8th.",
+        "I usually have a party with my family and friends.",
+        "I make a wish and blow out the candles.",
+        "What about you?"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "引入话题对应 My birthday is on...；庆祝方式对应 I usually have a party...；具体活动对应 I make a wish...；结尾对应 What about you?",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u7-ex-056",
+      "type": "matching",
+      "question": "请将下列句子按正确的顺序排列，组成一段通顺的生日介绍。",
+      "left": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "right": [
+        "My birthday is on May 8th.",
+        "I usually have a party with my family and friends.",
+        "I make a wish and blow out the candles.",
+        "What about you?"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "正确的介绍顺序为：引入话题 -> 庆祝方式 -> 具体活动 -> 结尾反问。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "unit-english-7-up-rjb-p7::u7",
+      "name": "第七单元",
+      "title": "Happy Birthday!",
+      "desc": "本单元围绕“生日庆祝”这一主题展开。通过学习序数词、Wh- 疑问句复习以及辅音音素与语调，学生能够用英语询问和表达生日日期、描述庆祝方式，并了解不同国家的生日文化。结合太原平民中学的校园生日会，培养学生用英语进行跨文化交际的能力。",
+      "topics": [
+        {
+          "id": "unit-english-7-up-rjb-p7::t1",
+          "title": "Birthday Celebrations (Section A)",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p7::kp-word-001",
+            "unit-english-7-up-rjb-p7::kp-sentence-001",
+            "unit-english-7-up-rjb-p7::kp-phonetic-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-english-7-up-rjb-p7::u7-t1-m1",
+              "type": "english.vocab",
+              "title": "生日与庆祝活动词汇",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p7::u7-t1-m2",
+              "type": "english.sentence",
+              "title": "询问生日与庆祝方式句型",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p7::u7-t1-m3",
+              "type": "english.vocab",
+              "title": "辅音音素与语调",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-phonetic-001"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "unit-english-7-up-rjb-p7::t2",
+          "title": "Meaningful Birthdays (Section B)",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p7::kp-grammar-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-002",
+            "unit-english-7-up-rjb-p7::kp-reading-001",
+            "unit-english-7-up-rjb-p7::kp-writing-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-english-7-up-rjb-p7::u7-t2-m1",
+              "type": "english.grammar",
+              "title": "序数词与 Wh- 疑问句复习",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-grammar-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p7::u7-t2-m2",
+              "type": "english.reading",
+              "title": "阅读理解：关于生日的帖子",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-reading-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p7::u7-t2-m3",
+              "type": "english.writing",
+              "title": "生日庆祝写作",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-writing-001"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

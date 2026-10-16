@@ -1,0 +1,133 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-chinese-4-up-rjb-u8",
+    "type": "unit",
+    "isInternal": true,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "第八单元 家国情怀",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-029",
+      "type": "concept",
+      "title": "《我将无我，不负人民》人物精神解读",
+      "content": "“我将无我，不负人民”是国家领导人提出的重要表述，体现了全心全意为人民服务、无私奉献的崇高精神，表达了对国家和人民的深厚情怀。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-chinese-030",
+      "type": "concept",
+      "title": "《为中华之崛起而读书》历史背景与情感体会",
+      "content": "周恩来少年时代耳闻目睹中国人在外国租界受洋人欺凌却无处说理，深刻体会到“中华不振”，立下“为中华之崛起而读书”的宏伟志向，表现了少年周恩来的博大胸怀和远大抱负。",
+      "prerequisites": ["kp-chinese-029"]
+    },
+    {
+      "id": "kp-chinese-031",
+      "type": "concept",
+      "title": "《延安，我把你追寻》红色诗歌赏析",
+      "content": "这首现代抒情诗抒发了诗人追寻延安精神的迫切心情，歌颂了在战争年代形成的自力更生、艰苦奋斗、为人民服务的延安精神，号召大家继承和发扬优良传统。",
+      "prerequisites": ["kp-chinese-030"]
+    },
+    {
+      "id": "kp-chinese-032",
+      "type": "poem",
+      "title": "古诗三首《凉州词》《出塞》《夏日绝句》爱国主题解读",
+      "content": "《凉州词》作者王翰（唐），写出了边塞将士豪迈悲壮的战争生活；《出塞》作者王昌龄（唐），“但使龙城飞将在，不教胡马度阴山”抒发强烈爱国情怀；《夏日绝句》作者李清照（宋），借古讽今，歌颂项羽的英雄气节。",
+      "prerequisites": ["kp-chinese-031"]
+    },
+    {
+      "id": "kp-chinese-033",
+      "type": "writing",
+      "title": "书信格式与写作方法",
+      "content": "正确书信格式：1. 开头称呼顶格写 2. 正文另起空两格 3. 结尾写祝福语 4. 右下角署名和日期。写信时要把想说的事说清楚，语气真诚，符合写信对象身份。",
+      "prerequisites": ["kp-chinese-032"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u8-ex-001",
+      "type": "single",
+      "question": "立下“为中华之崛起而读书”远大志向的是（ ）。",
+      "options": ["A. 毛泽东", "B. 周恩来", "C. 鲁迅", "D. 朱德"],
+      "answer": "B",
+      "explanation": "少年周恩来目睹中国人受洋人欺凌却无处说理，深刻体会到“中华不振”，立下为中华之崛起而读书的志向。",
+      "knowledgePointIds": ["kp-chinese-030"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u8-ex-002",
+      "type": "blank",
+      "question": "《出塞》中“但使龙城飞将在，不教胡马度阴山”，作者是______代诗人______，诗句表达了诗人渴望良将、保家卫国的______之情。",
+      "answer": ["唐", "王昌龄", "爱国"],
+      "explanation": "《出塞》是唐代诗人王昌龄的边塞诗，诗人借思念名将李广，抒发对安定边防、抵御外敌的渴望，爱国之情跃然纸上。",
+      "knowledgePointIds": ["kp-chinese-032"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u8-ex-003",
+      "type": "single",
+      "question": "《夏日绝句》“生当作人杰，死亦为鬼雄”的作者是（ ）。",
+      "options": ["A. 李清照", "B. 李白", "C. 王翰", "D. 王昌龄"],
+      "answer": "A",
+      "explanation": "《夏日绝句》的作者是宋代女词人李清照，她借赞颂项羽宁死不屈的气节，表达对南宋统治者苟且偷安的讽刺和爱国情怀。",
+      "knowledgePointIds": ["kp-chinese-032"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u8-ex-004",
+      "type": "multiple",
+      "question": "《延安，我把你追寻》一诗歌颂的延安精神包括（ ）。",
+      "options": ["A. 自力更生", "B. 艰苦奋斗", "C. 为人民服务", "D. 贪图享乐"],
+      "answer": ["A", "B", "C"],
+      "explanation": "延安精神是自力更生、艰苦奋斗、全心全意为人民服务的精神，诗歌表达了追寻和传承延安精神的决心。",
+      "knowledgePointIds": ["kp-chinese-031"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u8-ex-005",
+      "type": "blank",
+      "question": "写信时，开头的称呼要______写，正文另起一行空______格。",
+      "answer": ["顶格", "两"],
+      "explanation": "书信有固定格式：称呼顶格写在第一行，正文另起一行空两格，结尾写祝福语，最后署名和日期。",
+      "knowledgePointIds": ["kp-chinese-033"],
+      "metadata": { "difficulty": "挑战" }
+    }
+  ],
+  "units": [
+    {
+      "id": "u8",
+      "name": "第八单元",
+      "title": "第八单元 家国情怀",
+      "desc": "本单元围绕家国情怀展开，包含《为中华之崛起而读书》《延安，我把你追寻》等课文。",
+      "topics": [
+        {
+          "id": "u8-t1",
+          "title": "伟人风采·我将无我与少年周恩来",
+          "knowledgePointIds": ["kp-chinese-029", "kp-chinese-030"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u8-t2",
+          "title": "延安精神与爱国古诗",
+          "knowledgePointIds": ["kp-chinese-031", "kp-chinese-032"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u8-t3",
+          "title": "习作·写信",
+          "knowledgePointIds": ["kp-chinese-033"],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

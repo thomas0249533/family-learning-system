@@ -1,0 +1,22 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "math-4-up-term",
+    "packageType": "term",
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "四年级数学上学期包",
+    "subtitle": "聚合单元包",
+    "dependencies": [
+      "math-4-up-unit5",
+      "math-4-up-unit6",
+      "math-4-up-unit5"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": []
+}

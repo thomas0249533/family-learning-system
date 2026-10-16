@@ -1,0 +1,19 @@
+{
+  "setId": "english-4-up-vocab-set",
+  "title": "四上英语词汇",
+  "subject": "english",
+  "grade": 4,
+  "term": "up",
+  "edition": "沪教版",
+  "importOrder": ["special-english-4-up-vocab"],
+  "packages": [
+    {
+      "file": "special-english-4-up-vocab.json",
+      "packageId": "special-english-4-up-vocab",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    }
+  ]
+}

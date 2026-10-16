@@ -1,0 +1,218 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-birthday",
+    "type": "special",
+    "title": "Happy Birthday! 生日与庆祝专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p7"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p7::u7"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-u7",
+      "name": "专项测验",
+      "title": "Happy Birthday! 生日与庆祝专项测验",
+      "desc": "针对人教版2024新教材七年级上册 Unit 7 Happy Birthday! 的高难度变式测验，覆盖生日与庆祝活动词汇、序数词、Wh- 疑问句复习，以及关于生日庆祝的跨文化阅读语篇。",
+      "topics": [
+        {
+          "id": "special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p7::kp-word-001",
+            "unit-english-7-up-rjb-p7::kp-sentence-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-091",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. 1st; first",
+                "B. 1th; first",
+                "C. first; 1st",
+                "D. one; first"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-grammar-001",
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ],
+              "question": "— When is your birthday?\n— It's on October ______. It's the ______ day of October.",
+              "explanation": "日期表达用序数词缩写 1st，读作 first。第二空表示“十月第一天”，也用序数词 first。易错点：误写 1th 或混淆基数词 one 与序数词 first。"
+            },
+            {
+              "id": "special-ex-092",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "third; twelfth",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-grammar-001"
+              ],
+              "question": "用括号中所给词的序数词形式填空。\nMy birthday is on June ______ (3). December is the ______ (12) month of the year.",
+              "explanation": "3 的序数词是 third；12 的序数词是 twelfth，注意 ve 变为 f 再加 th。易错点：拼写错误，如 thirth 或 twelveth。"
+            },
+            {
+              "id": "special-ex-093",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. What",
+                "B. How",
+                "C. When",
+                "D. Where"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002"
+              ],
+              "question": "— ______ do you celebrate your birthday?\n— I usually have a party with my friends.",
+              "explanation": "答语 I usually have a party with my friends. 回答的是庆祝方式，因此问句用 How。A 询问活动内容，C 询问时间，D 询问地点。易错点：混淆 How 和 What 的提问功能。"
+            },
+            {
+              "id": "special-ex-094",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": "T",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-phonetic-001"
+              ],
+              "question": "在句子 'My birthday is on May 1st.' 中，'May' 和 '1st' 通常需要重读。",
+              "explanation": "在英语句子中，实词通常重读。May 和 1st 承载关键信息，需要重读。故本题正确。考察句子重音与生日日期表达。"
+            },
+            {
+              "id": "special-ex-095",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "When is",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002"
+              ],
+              "question": "根据答语补全问句，每空一词。\n— ______ ______ your birthday?\n— It's on February 3rd.",
+              "explanation": "答语 It's on February 3rd. 回答的是日期，因此问句用 When is your birthday?。易错点：误用 What time，因为 What time 询问具体钟点。"
+            }
+          ]
+        },
+        {
+          "id": "special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p7::kp-grammar-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-002",
+            "unit-english-7-up-rjb-p7::kp-reading-001",
+            "unit-english-7-up-rjb-p7::kp-writing-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-096",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "F"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-reading-001"
+              ],
+              "question": "阅读 Emma 的生日帖子，判断下列句子是否正确，正确写 T，错误写 F。\nHi! I'm Emma from Canada. My birthday is on November 8th. I usually have a party with my family. My mother makes a big cake. I make a wish and blow out the candles. My friends give me presents and cards. We sing songs and play games. I am very happy on my birthday.\n(1) Emma's birthday is on November 18th. (2) Emma's mother makes a big cake. (3) Emma's friends give her presents and cards. (4) Emma doesn't like her birthday.",
+              "explanation": "由 My birthday is on November 8th. 可知(1)F；由 My mother makes a big cake. 可知(2)T；由 My friends give me presents and cards. 可知(3)T；由 I am very happy on my birthday. 可知(4)F。考察阅读细节提取与情感推断。"
+            },
+            {
+              "id": "special-ex-097",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. To introduce her school.",
+                "B. To talk about how she celebrates her birthday.",
+                "C. To ask for birthday presents.",
+                "D. To show her mother's cake."
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-reading-001"
+              ],
+              "question": "What is Emma's main purpose in writing this text?",
+              "explanation": "文章围绕生日日期、庆祝方式、礼物和感受展开，主要目的是介绍自己如何庆祝生日。A、C、D 均偏离主旨。考察阅读主旨与写作意图推断。"
+            },
+            {
+              "id": "special-ex-098",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. When is your birthday?",
+                "B. How do you celebrate your birthday?",
+                "C. What do you do on your birthday?",
+                "D. Do you have a birthday party?",
+                "E. Where do you have the party?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n— Hi, Jack. 1. ______\n— It's on February 3rd.\n— 2. ______\n— I usually have a party with my friends.",
+              "explanation": "第一空：根据答语 It's on February 3rd. 可知，问句询问生日日期，A 符合；第二空：根据答语 I usually have a party with my friends. 可知，问句询问庆祝方式，B 符合。C 询问具体活动，D 是一般疑问句，E 询问地点。考察 Wh- 疑问句与生日交际语境的综合。"
+            },
+            {
+              "id": "special-ex-099",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "1th → 1st; present → presents",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-grammar-001",
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ],
+              "question": "找出并改正下列句子中的错误。\nMy birthday is on May 1th. I usually have a party and my friends give me many present.",
+              "explanation": "1 的序数词缩写是 1st，不是 1th；many 后接可数名词复数，present 应变为 presents。考察序数词缩写与名词复数的综合。"
+            },
+            {
+              "id": "special-ex-100",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "on; with; blow",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-writing-001",
+                "unit-english-7-up-rjb-p7::kp-word-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-001"
+              ],
+              "question": "阅读短文，用适当的词填空。\nMy name is Peter. My birthday is ______ (1) October 15th. I usually have a party ______ (2) my family. My mother makes a big cake. I make a wish and ______ (3) out the candles. I am very happy.",
+              "explanation": "具体日期前用介词 on；和……一起用 with；吹灭蜡烛是 blow out candles，情态动词后或并列动词用原形 blow。考察生日活动词汇与介词搭配。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

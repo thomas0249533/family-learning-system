@@ -1,0 +1,26 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "term-chinese-4-up-rjb",
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "语文四年级上册 学期课程包",
+    "dependencies": [
+      "unit-chinese-4-up-rjb-u1",
+      "unit-chinese-4-up-rjb-u2",
+      "unit-chinese-4-up-rjb-u3",
+      "unit-chinese-4-up-rjb-u4",
+      "unit-chinese-4-up-rjb-u5",
+      "unit-chinese-4-up-rjb-u6",
+      "unit-chinese-4-up-rjb-u7",
+      "unit-chinese-4-up-rjb-u8"
+    ],
+    "type": "term"
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": []
+}

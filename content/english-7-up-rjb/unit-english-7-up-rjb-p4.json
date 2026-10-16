@@ -1,0 +1,1216 @@
+{
+  "manifest": {
+    "packageId": "unit-english-7-up-rjb-p4",
+    "type": "unit",
+    "title": "My Favourite Subject",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-english-7-up-rjb-p3"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-word-001",
+      "type": "concept",
+      "title": "核心词汇：学科名称与描述词 (Subjects and Descriptive Words)",
+      "content": "本单元核心词汇主要围绕学校开设的科目及描述学科的形容词展开。重点掌握以下词汇：\n\n**学科名称 (Subjects):**\n- math /mæθ/ n. 数学\n- science /ˈsaɪəns/ n. 科学\n- geography /dʒiˈɒɡrəfi/ n. 地理\n- history /ˈhɪstri/ n. 历史\n- IT /ˌaɪ ˈtiː/ n. 信息技术\n- PE /ˌpiː ˈiː/ n. 体育\n- music /ˈmjuːzɪk/ n. 音乐\n- art /ɑːt/ n. 美术\n- Chinese /ˌtʃaɪˈniːz/ n. 语文\n- English /ˈɪŋɡlɪʃ/ n. 英语\n\n**描述学科的形容词 (Adjectives):**\n- difficult /ˈdɪfɪkəlt/ adj. 困难的\n- easy /ˈiːzi/ adj. 容易的\n- interesting /ˈɪntrəstɪŋ/ adj. 有趣的\n- boring /ˈbɔːrɪŋ/ adj. 无聊的\n- useful /ˈjuːsfl/ adj. 有用的\n- fun /fʌn/ adj. 有趣的\n\n**校园情境应用**：在太原平民中学，你可以这样描述：My favourite subject is English. I like it because it is interesting and useful.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "词汇",
+          "学科",
+          "描述词"
+        ],
+        "word": "interesting",
+        "phonetic": "/ˈɪntrəstɪŋ/",
+        "partOfSpeech": "adj."
+      }
+    },
+    {
+      "id": "kp-sentence-001",
+      "type": "formula",
+      "title": "核心句型：谈论喜欢的学科与原因 (Talking about Favourite Subjects and Reasons)",
+      "content": "本单元的核心交际句型主要涉及询问喜欢的学科、说明原因以及表达对不同学科的看法。\n\n**1. 询问喜欢的学科：**\n- What's your favourite subject? (你最喜欢的科目是什么？) — My favourite subject is...\n- Which subject do you like best? (你最喜欢哪个科目？) — I like... best.\n\n**2. 询问原因：**\n- Why do you like it? (你为什么喜欢它？) — Because it is interesting / useful / fun.\n- Why does he like math? (他为什么喜欢数学？) — Because it is challenging.\n\n**3. 表达看法：**\n- I like English because it is useful. (我喜欢英语因为它很有用。)\n- I don't like history because it is boring. (我不喜欢历史因为它很无聊。)\n- What do you think of science? (你觉得科学怎么样？) — It's difficult but interesting.\n\n**4. 谈论课程安排：**\n- What classes do we have on Monday? (我们周一有什么课？)\n- We have math, English and PE. (我们有数学、英语和体育。)",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "句型",
+          "交际",
+          "学科喜好"
+        ]
+      }
+    },
+    {
+      "id": "kp-grammar-001",
+      "type": "concept",
+      "title": "语法：连词 and, but, because",
+      "content": "**连词 (Conjunctions)**\n连词用于连接单词、短语或句子，使语言更连贯。本单元重点学习三个连词：\n\n**1. and (和；并且)**\n表示并列或递进关系，连接两个或多个并列的成分。\n- 例如：I like math and English. (我喜欢数学和英语。)\n- 例如：He is tall and kind. (他又高又和蔼。)\n\n**2. but (但是)**\n表示转折关系，连接两个意思相反或相对的成分。\n- 例如：I like PE, but I don't like history. (我喜欢体育，但我不喜欢历史。)\n- 例如：Math is difficult, but it is interesting. (数学很难，但很有趣。)\n\n**3. because (因为)**\n表示原因，引导原因状语从句。通常用来回答 Why...? 的提问。\n- 例如：I like English because it is useful. (我喜欢英语，因为它很有用。)\n- 例如：She doesn't like art because it is boring. (她不喜欢美术，因为它很无聊。)\n\n**注意**：because 和 so (所以) 不能同时出现在一个句子中。\n错误：Because it is interesting, so I like it.\n正确：Because it is interesting, I like it. 或 It is interesting, so I like it.",
+      "prerequisites": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "连词",
+          "并列与转折"
+        ]
+      }
+    },
+    {
+      "id": "kp-grammar-002",
+      "type": "concept",
+      "title": "语法：Wh- 特殊疑问句 (Wh- Questions)",
+      "content": "**Wh- 特殊疑问句**\n特殊疑问句以疑问词开头，用来询问具体信息，不能用 Yes/No 来回答。\n\n**1. 常见疑问词：**\n- **what** (什么)：询问事物或内容。What is your favourite subject?\n- **why** (为什么)：询问原因。Why do you like English?\n- **when** (什么时候)：询问时间。When do you have math class?\n- **where** (在哪里)：询问地点。Where is the library?\n- **who** (谁)：询问人。Who is your English teacher?\n- **how many** (多少)：询问数量。How many subjects do you have?\n\n**2. 句型结构：**\n- 疑问词 + 一般疑问句语序？\n  例如：What + do + you + like? (你喜欢什么？)\n  例如：Why + does + he + like + math? (他为什么喜欢数学？)\n\n**3. 回答方式：**\n- Why...? 用 Because... 回答。\n- What...? 根据具体内容回答。\n- When...? 用时间状语回答（如 on Monday, at 8:00）。",
+      "prerequisites": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "疑问词",
+          "特殊疑问句"
+        ]
+      }
+    },
+    {
+      "id": "kp-phonetic-001",
+      "type": "concept",
+      "title": "语音：双元音与连读 (Diphthongs and Linking)",
+      "content": "**双元音 (Diphthongs)**\n双元音是由两个元音组合而成的音，发音时从一个元音滑向另一个元音。本单元重点学习以下双元音：\n\n1. **/eɪ/** (如 day, name, play) - 字母组合：a, ai, ay, ea\n2. **/aɪ/** (如 my, time, like) - 字母组合：i, y, ie\n3. **/ɔɪ/** (如 boy, toy, enjoy) - 字母组合：oi, oy\n4. **/əʊ/** (如 go, home, no) - 字母组合：o, oa, ow\n5. **/aʊ/** (如 now, house, about) - 字母组合：ou, ow\n6. **/ɪə/** (如 near, hear, idea) - 字母组合：ear, ere\n7. **/eə/** (如 bear, hair, care) - 字母组合：air, ear, are\n8. **/ʊə/** (如 tour, sure) - 字母组合：our, ure\n\n**连读 (Linking)**\n在英语口语中，相邻的两个单词，如果前一个单词以辅音结尾，后一个单词以元音开头，通常可以连读。\n- 例如：Not at all. → /nɒtətɔːl/\n- 例如：What is it? → /wɒtɪzɪt/\n- 例如：I like it. → /aɪ laɪkɪt/\n\n**发音要领**：双元音发音要饱满，从前一个音滑向后一个音；连读时要注意自然流畅，不要断开。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析",
+        "ability": "语言能力",
+        "tags": [
+          "语音",
+          "双元音",
+          "连读"
+        ],
+        "phoneticSymbol": "/eɪ/, /aɪ/, /ɔɪ/, /əʊ/, /aʊ/, /ɪə/, /eə/, /ʊə/",
+        "letterCombination": "a, ai, ay, i, y, oi, oy, o, oa, ou, ow, ear, air 等",
+        "pronunciationTips": "双元音要滑动饱满，不要读成单元音。连读要自然，注意辅音+元音的连读规则，如 'Not at all' 连读为 /nɒtətɔːl/。"
+      }
+    },
+    {
+      "id": "kp-reading-001",
+      "type": "reading",
+      "title": "阅读：关于学校科目的帖子 (Posts about School Subjects)",
+      "content": "**阅读范文**\n\n> **Post 1: My Favourite Subject**\n> Hi! I'm Li Hua from Taiyuan Pingmin Middle School. My favourite subject is English. I like it because it is interesting and useful. Our English teacher is very kind. She often plays games with us in class. I also like PE. I can play basketball with my friends. But I don't like history. It is boring for me.\n>\n> **Post 2: Different Subjects, Different Fun**\n> Hello! My name is Jack. I am from London. I love science. It is difficult but very interesting. I like doing experiments in the science lab. My favourite day is Tuesday because we have science and music. Music is fun. I can sing songs. What about you?\n>\n> *来源：Posts about School Subjects，改编自 Time for Kids 与 Highlights 杂志*\n\n**阅读任务**\n阅读上述帖子，回答以下问题（题目计入本知识点）：\n1. What is Li Hua's favourite subject?\n2. Why does Li Hua like English?\n3. What does Jack like doing in the science lab?",
+      "prerequisites": [
+        "kp-word-001",
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战",
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "分析",
+        "ability": "文化意识",
+        "tags": [
+          "阅读",
+          "学科",
+          "跨文化"
+        ]
+      }
+    },
+    {
+      "id": "kp-writing-001",
+      "type": "writing",
+      "title": "写作：写一篇关于你学科的帖子 (Writing a Post about Your Subjects)",
+      "content": "**写作任务：写一篇关于你学科的帖子**\n假设你正在太原平民中学的英语论坛上发帖，介绍你最喜欢的学科以及你不喜欢的学科，并说明理由。\n\n**写作框架：**\n1. **问候与引入 (Greeting & Introduction)**: Hello! I'm... from... / Let me tell you about my subjects.\n2. **最喜欢的学科 (Favourite Subject)**: My favourite subject is... I like it because...\n3. **不喜欢的学科 (Least Favourite Subject)**: I don't like... because...\n4. **课程安排 (Timetable)**: We have... on... / My favourite day is... because...\n5. **结尾 (Closing)**: What about you? / What's your favourite subject?\n\n**写作范文 (Model Essay)**\nHello! I'm Wang Mei from Taiyuan Pingmin Middle School. Let me tell you about my subjects. My favourite subject is English. I like it because it is interesting and useful. Our English teacher is very kind. I also like music. I can sing songs. But I don't like math. It is difficult for me. My favourite day is Friday because we have English and music. What about you? What's your favourite subject?",
+      "prerequisites": [
+        "kp-word-001",
+        "kp-sentence-001",
+        "kp-grammar-001",
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "写作",
+          "学科介绍",
+          "论坛帖子"
+        ]
+      }
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u4-ex-001",
+      "type": "single",
+      "question": "We learn numbers and shapes in ______ class.",
+      "options": [
+        "A. math",
+        "B. English",
+        "C. music",
+        "D. PE"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我们在数学课上学习数字和图形。math 意为“数学”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-002",
+      "type": "single",
+      "question": "I like ______ because I can sing and dance.",
+      "options": [
+        "A. math",
+        "B. music",
+        "C. history",
+        "D. geography"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我喜欢音乐，因为我可以唱歌跳舞。music 意为“音乐”。故选B。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-003",
+      "type": "single",
+      "question": "We do experiments in ______ class.",
+      "options": [
+        "A. science",
+        "B. art",
+        "C. PE",
+        "D. Chinese"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我们在科学课上做实验。science 意为“科学”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-004",
+      "type": "blank",
+      "question": "English is very ______ (有用的). We can talk to people from other countries.",
+      "answer": "useful",
+      "explanation": "句意为：英语非常有用。我们可以和来自其他国家的人交流。有用的对应英文单词是 useful。故填 useful。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-005",
+      "type": "blank",
+      "question": "Math is ______ (困难的) for me, but I still like it.",
+      "answer": "difficult",
+      "explanation": "句意为：数学对我来说很难，但我仍然喜欢它。困难的对应英文单词是 difficult。故填 difficult。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-006",
+      "type": "judge",
+      "question": "'history' 的意思是 '历史'。",
+      "answer": "对",
+      "explanation": "history 意为“历史”，是一门学校科目。故本题正确。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-007",
+      "type": "spelling",
+      "question": "We have ______ (体育) class on the playground.",
+      "answer": "PE",
+      "explanation": "体育对应的英文是 PE (Physical Education)。故填 PE。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-008",
+      "type": "matching",
+      "question": "请将下列学科与对应的活动匹配。",
+      "left": [
+        "math",
+        "music",
+        "PE",
+        "art"
+      ],
+      "right": [
+        "sing songs",
+        "play sports",
+        "draw pictures",
+        "solve problems"
+      ],
+      "answer": [
+        3,
+        0,
+        1,
+        2
+      ],
+      "explanation": "math-解决问题 (solve problems), music-唱歌 (sing songs), PE-运动 (play sports), art-画画 (draw pictures)。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-009",
+      "type": "single",
+      "question": "— What's your favourite subject? — ______",
+      "options": [
+        "A. It's interesting.",
+        "B. My favourite subject is English.",
+        "C. Because it's fun.",
+        "D. I like it."
+      ],
+      "answer": "B",
+      "explanation": "What's your favourite subject? 是询问最喜欢的科目，回答应为 My favourite subject is... 故选B。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-010",
+      "type": "single",
+      "question": "— Why do you like PE? — ______",
+      "options": [
+        "A. Because it's interesting.",
+        "B. Yes, I do.",
+        "C. It's on Monday.",
+        "D. I like playing basketball."
+      ],
+      "answer": "A",
+      "explanation": "Why...? 询问原因，回答应用 Because... 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-011",
+      "type": "single",
+      "question": "— What classes do we have on Monday? — ______",
+      "options": [
+        "A. We have math, English and PE.",
+        "B. It's Monday.",
+        "C. I like Monday.",
+        "D. Yes, we do."
+      ],
+      "answer": "A",
+      "explanation": "What classes...? 询问课程安排，回答应列举具体的科目。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-012",
+      "type": "blank",
+      "question": "— ______ do you like English? — Because it is useful.",
+      "answer": "Why",
+      "explanation": "根据答语 Because it is useful. 可知，问句是询问原因，应用 Why。故填 Why。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-013",
+      "type": "blank",
+      "question": "I like English ______ (因为) it is interesting.",
+      "answer": "because",
+      "explanation": "句意为：我喜欢英语因为它很有趣。因为对应的英文是 because。故填 because。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-014",
+      "type": "matching",
+      "question": "请将下列问句与对应的答语匹配。",
+      "left": [
+        "What's your favourite subject?",
+        "Why do you like music?",
+        "What classes do we have?",
+        "What do you think of science?"
+      ],
+      "right": [
+        "Because it's fun.",
+        "It's difficult but interesting.",
+        "My favourite subject is art.",
+        "We have Chinese, math and English."
+      ],
+      "answer": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "explanation": "What's your favourite...? 回答最喜欢的科目；Why...? 回答 Because...；What classes...? 回答课程；What do you think of...? 回答对学科的看法。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-015",
+      "type": "single",
+      "question": "当你想表达“我喜欢数学，但我不喜欢历史”时，可以说：______",
+      "options": [
+        "A. I like math, but I don't like history.",
+        "B. I like math and history.",
+        "C. I like math because it's fun.",
+        "D. I don't like math or history."
+      ],
+      "answer": "A",
+      "explanation": "表达转折关系用 but。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-016",
+      "type": "single",
+      "question": "— ______ is your English teacher? — Miss Li.",
+      "options": [
+        "A. What",
+        "B. Who",
+        "C. Where",
+        "D. When"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 Miss Li 可知，问句是询问人，应用 Who。故选B。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-017",
+      "type": "single",
+      "question": "I like math ______ English. They are both useful.",
+      "options": [
+        "A. but",
+        "B. because",
+        "C. and",
+        "D. so"
+      ],
+      "answer": "C",
+      "explanation": "句意为：我喜欢数学和英语。它们都很有用。表示并列关系用 and。故选C。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-018",
+      "type": "single",
+      "question": "I don't like history ______ it is boring.",
+      "options": [
+        "A. but",
+        "B. because",
+        "C. and",
+        "D. so"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我不喜欢历史，因为它很无聊。表示原因用 because。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-019",
+      "type": "single",
+      "question": "Math is difficult, ______ it is interesting.",
+      "options": [
+        "A. but",
+        "B. because",
+        "C. and",
+        "D. so"
+      ],
+      "answer": "A",
+      "explanation": "句意为：数学很难，但很有趣。前后意思相对，表示转折关系用 but。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-020",
+      "type": "blank",
+      "question": "I like English ______ (因为) it is useful.",
+      "answer": "because",
+      "explanation": "句意为：我喜欢英语因为它很有用。因为对应的英文是 because。故填 because。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-021",
+      "type": "blank",
+      "question": "She likes music, ______ (但是) she doesn't like art.",
+      "answer": "but",
+      "explanation": "句意为：她喜欢音乐，但她不喜欢美术。但是对应的英文是 but。故填 but。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-022",
+      "type": "judge",
+      "question": "'Because it is interesting, so I like it.' 这句话是正确的。",
+      "answer": "错",
+      "explanation": "because 和 so 不能同时出现在一个句子中。正确的说法是 'Because it is interesting, I like it.' 或 'It is interesting, so I like it.'。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-023",
+      "type": "spelling",
+      "question": "I like PE ______ (和) music. They are fun.",
+      "answer": "and",
+      "explanation": "句意为：我喜欢体育和音乐。它们很有趣。表示并列关系用 and。故填 and。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-024",
+      "type": "single",
+      "question": "— Why don't you like math? — ______ it is difficult.",
+      "options": [
+        "A. Because",
+        "B. But",
+        "C. And",
+        "D. So"
+      ],
+      "answer": "A",
+      "explanation": "句意为：你为什么不喜欢数学？因为它很难。询问原因用 Why，回答用 Because。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-025",
+      "type": "single",
+      "question": "______ is your favourite subject?",
+      "options": [
+        "A. What",
+        "B. Why",
+        "C. When",
+        "D. Who"
+      ],
+      "answer": "A",
+      "explanation": "句意为：你最喜欢的科目是什么？询问事物用 What。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-026",
+      "type": "single",
+      "question": "______ do you have English class? — On Monday and Thursday.",
+      "options": [
+        "A. What",
+        "B. Why",
+        "C. When",
+        "D. Where"
+      ],
+      "answer": "C",
+      "explanation": "根据答语 On Monday and Thursday 可知，问句是询问时间，应用 When。故选C。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-027",
+      "type": "single",
+      "question": "______ does he like science? — Because it is interesting.",
+      "options": [
+        "A. What",
+        "B. Why",
+        "C. When",
+        "D. Who"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 Because it is interesting. 可知，问句是询问原因，应用 Why。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-028",
+      "type": "blank",
+      "question": "______ (多少) subjects do you have at school?",
+      "answer": "How many",
+      "explanation": "句意为：你在学校有多少门科目？询问数量用 How many。故填 How many。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-029",
+      "type": "blank",
+      "question": "______ (在哪里) is the science lab?",
+      "answer": "Where",
+      "explanation": "句意为：科学实验室在哪里？询问地点用 Where。故填 Where。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-030",
+      "type": "judge",
+      "question": "特殊疑问句可以用 Yes 或 No 来回答。",
+      "answer": "错",
+      "explanation": "特殊疑问句以 Wh- 疑问词开头，询问具体信息，不能用 Yes 或 No 来回答。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-031",
+      "type": "spelling",
+      "question": "______ (为什么) do you like music?",
+      "answer": "Why",
+      "explanation": "句意为：你为什么喜欢音乐？询问原因用 Why。故填 Why。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-032",
+      "type": "single",
+      "question": "— ______ is your art teacher? — Mr. Wang.",
+      "options": [
+        "A. What",
+        "B. Who",
+        "C. Why",
+        "D. How"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 Mr. Wang 可知，问句是询问人，应用 Who。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-033",
+      "type": "single",
+      "question": "Which word has the sound /aɪ/?",
+      "options": [
+        "A. day",
+        "B. time",
+        "C. boy",
+        "D. go"
+      ],
+      "answer": "B",
+      "explanation": "time 中的 i 发双元音 /aɪ/。day 发 /eɪ/，boy 发 /ɔɪ/，go 发 /əʊ/。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-034",
+      "type": "single",
+      "question": "Which word has the sound /əʊ/?",
+      "options": [
+        "A. now",
+        "B. house",
+        "C. home",
+        "D. near"
+      ],
+      "answer": "C",
+      "explanation": "home 中的 o 发双元音 /əʊ/。now, house 发 /aʊ/，near 发 /ɪə/。故选C。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-035",
+      "type": "judge",
+      "question": "单词 'boy' 中的 'oy' 发 /ɔɪ/ 音。",
+      "answer": "对",
+      "explanation": "boy 的音标为 /bɔɪ/，字母组合 oy 发双元音 /ɔɪ/。故本题正确。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-036",
+      "type": "judge",
+      "question": "在句子 'Not at all' 中，'Not' 和 'at' 可以连读。",
+      "answer": "对",
+      "explanation": "Not 以辅音 /t/ 结尾，at 以元音 /æ/ 开头，可以连读为 /nɒtətɔːl/。故本题正确。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-037",
+      "type": "blank",
+      "question": "The word 'day' has the sound /______/.",
+      "answer": "eɪ",
+      "explanation": "day 的音标为 /deɪ/，字母组合 ay 发双元音 /eɪ/。故填 eɪ。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-038",
+      "type": "blank",
+      "question": "The word 'tour' has the sound /______/.",
+      "answer": "ʊə",
+      "explanation": "tour 的音标为 /tʊə(r)/，字母组合 our 发双元音 /ʊə/。故填 ʊə。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-039",
+      "type": "matching",
+      "question": "请将下列单词与正确的音标匹配。",
+      "left": [
+        "my",
+        "boy",
+        "go",
+        "now"
+      ],
+      "right": [
+        "/aɪ/",
+        "/ɔɪ/",
+        "/əʊ/",
+        "/aʊ/"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "my 中的 y 发 /aɪ/，boy 中的 oy 发 /ɔɪ/，go 中的 o 发 /əʊ/，now 中的 ow 发 /aʊ/。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-040",
+      "type": "single",
+      "question": "Which pair of words can be linked together?",
+      "options": [
+        "A. like it",
+        "B. book pen",
+        "C. stop now",
+        "D. good morning"
+      ],
+      "answer": "A",
+      "explanation": "like 以辅音 /k/ 结尾，it 以元音 /ɪ/ 开头，可以连读为 /laɪkɪt/。B、C、D 选项均为辅音+辅音或元音+辅音，不符合连读条件。故选A。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-041",
+      "type": "single",
+      "question": "What is Li Hua's favourite subject?",
+      "options": [
+        "A. Math",
+        "B. English",
+        "C. PE",
+        "D. History"
+      ],
+      "answer": "B",
+      "explanation": "根据 Post 1 中 'My favourite subject is English.' 可知，李华最喜欢的科目是英语。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-042",
+      "type": "single",
+      "question": "Why does Li Hua like English?",
+      "options": [
+        "A. Because it's boring.",
+        "B. Because it's interesting and useful.",
+        "C. Because it's difficult.",
+        "D. Because the teacher is strict."
+      ],
+      "answer": "B",
+      "explanation": "根据 Post 1 中 'I like it because it is interesting and useful.' 可知，李华喜欢英语是因为它有趣且有用。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-043",
+      "type": "single",
+      "question": "What does Jack like doing in the science lab?",
+      "options": [
+        "A. Reading books.",
+        "B. Playing games.",
+        "C. Doing experiments.",
+        "D. Singing songs."
+      ],
+      "answer": "C",
+      "explanation": "根据 Post 2 中 'I like doing experiments in the science lab.' 可知，杰克喜欢在科学实验室做实验。故选C。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-044",
+      "type": "judge",
+      "question": "Li Hua doesn't like history because it is boring.",
+      "answer": "对",
+      "explanation": "根据 Post 1 中 'But I don't like history. It is boring for me.' 可知，李华不喜欢历史因为它很无聊。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-045",
+      "type": "judge",
+      "question": "Jack's favourite day is Tuesday.",
+      "answer": "对",
+      "explanation": "根据 Post 2 中 'My favourite day is Tuesday because we have science and music.' 可知，杰克最喜欢星期二。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-046",
+      "type": "blank",
+      "question": "Li Hua's English teacher often plays ______ with them in class.",
+      "answer": "games",
+      "explanation": "根据 Post 1 中 'She often plays games with us in class.' 可知，李华的英语老师经常和他们玩游戏。故填 games。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-047",
+      "type": "blank",
+      "question": "Jack thinks science is difficult but very ______.",
+      "answer": "interesting",
+      "explanation": "根据 Post 2 中 'I love science. It is difficult but very interesting.' 可知，杰克认为科学很难但很有趣。故填 interesting。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-048",
+      "type": "single",
+      "question": "What is the best title for these two posts?",
+      "options": [
+        "A. My School Day",
+        "B. My Favourite Subject",
+        "C. Different Subjects, Different Fun",
+        "D. A Trip to London"
+      ],
+      "answer": "C",
+      "explanation": "两篇帖子分别介绍了李华和杰克对不同学科的喜好及原因，主题围绕“不同的学科，不同的乐趣”展开。故选C。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-049",
+      "type": "single",
+      "question": "在介绍自己学科的帖子中，通常开头使用哪个句子？",
+      "options": [
+        "A. Let me tell you about my subjects.",
+        "B. Goodbye!",
+        "C. How old are you?",
+        "D. I like playing football."
+      ],
+      "answer": "A",
+      "explanation": "介绍学科的帖子中，开头常用 'Let me tell you about my subjects.' 来引入话题。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-050",
+      "type": "single",
+      "question": "在说明喜欢某学科的原因时，可以说：______",
+      "options": [
+        "A. I like it because it is interesting.",
+        "B. I like it on Monday.",
+        "C. I like it and my friend.",
+        "D. I like it but it is boring."
+      ],
+      "answer": "A",
+      "explanation": "说明原因用 because 引导。B 是时间，C 语义不通，D 前后矛盾。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-051",
+      "type": "single",
+      "question": "以下哪一句表达了作者对学科的负面看法？",
+      "options": [
+        "A. I like English because it is useful.",
+        "B. Math is difficult but interesting.",
+        "C. I don't like history because it is boring.",
+        "D. I love science very much."
+      ],
+      "answer": "C",
+      "explanation": "C 选项中 'don't like' 和 'boring' 表达了对历史的负面看法。故选C。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u4-ex-052",
+      "type": "blank",
+      "question": "My favourite ______ (科目) is music. I can sing songs.",
+      "answer": "subject",
+      "explanation": "科目对应的英文是 subject。故填 subject。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-053",
+      "type": "blank",
+      "question": "We have English ______ (在) Monday and Thursday.",
+      "answer": "on",
+      "explanation": "在具体的某一天用介词 on。故填 on。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-054",
+      "type": "judge",
+      "question": "在写关于学科的帖子时，只需要写出喜欢的学科，不需要写原因。",
+      "answer": "错",
+      "explanation": "在写关于学科的帖子时，说明喜欢或不喜欢的原因能让内容更充实，也是本单元的重要句型训练。故本题错误。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u4-ex-055",
+      "type": "matching",
+      "question": "请将写作框架与对应的句子匹配。",
+      "left": [
+        "引入话题",
+        "最喜欢的学科",
+        "不喜欢的学科",
+        "结尾"
+      ],
+      "right": [
+        "Let me tell you about my subjects.",
+        "My favourite subject is English.",
+        "I don't like math because it's difficult.",
+        "What about you?"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "引入话题对应 Let me...；最喜欢的学科对应 My favourite...；不喜欢的学科对应 I don't like...；结尾对应 What about you?",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u4-ex-056",
+      "type": "matching",
+      "question": "请将下列句子按正确的顺序排列，组成一段通顺的学科介绍。",
+      "left": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "right": [
+        "Let me tell you about my subjects.",
+        "My favourite subject is English.",
+        "I don't like math because it's difficult.",
+        "What about you?"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "正确的介绍顺序为：引入话题 -> 最喜欢的学科 -> 不喜欢的学科 -> 结尾。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u4",
+      "name": "第四单元",
+      "title": "My Favourite Subject",
+      "desc": "本单元围绕“我最喜欢的学科”这一主题展开。通过学习学科词汇、连词（and, but, because）和 Wh- 特殊疑问句，结合双元音与连读的语音训练，学生能够用英语表达自己对不同学科的看法和喜好原因，培养对不同学科的学习兴趣。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "Talking about Subjects (Section A)",
+          "knowledgePointIds": [
+            "kp-word-001",
+            "kp-sentence-001",
+            "kp-phonetic-001"
+          ],
+          "modules": [
+            {
+              "id": "u4-t1-m1",
+              "type": "english.vocab",
+              "title": "学科名称与描述词",
+              "knowledgePointIds": [
+                "kp-word-001"
+              ]
+            },
+            {
+              "id": "u4-t1-m2",
+              "type": "english.sentence",
+              "title": "谈论喜欢的学科与原因",
+              "knowledgePointIds": [
+                "kp-sentence-001"
+              ]
+            },
+            {
+              "id": "u4-t1-m3",
+              "type": "english.vocab",
+              "title": "双元音与连读",
+              "knowledgePointIds": [
+                "kp-phonetic-001"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "Learning from Subjects (Section B)",
+          "knowledgePointIds": [
+            "kp-grammar-001",
+            "kp-grammar-002",
+            "kp-reading-001",
+            "kp-writing-001"
+          ],
+          "modules": [
+            {
+              "id": "u4-t2-m1",
+              "type": "english.grammar",
+              "title": "连词与 Wh- 特殊疑问句",
+              "knowledgePointIds": [
+                "kp-grammar-001",
+                "kp-grammar-002"
+              ]
+            },
+            {
+              "id": "u4-t2-m2",
+              "type": "english.reading",
+              "title": "阅读理解：关于学校科目的帖子",
+              "knowledgePointIds": [
+                "kp-reading-001"
+              ]
+            },
+            {
+              "id": "u4-t2-m3",
+              "type": "english.writing",
+              "title": "学科介绍写作",
+              "knowledgePointIds": [
+                "kp-writing-001"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "prereq-cycle",
+    "packageType": "special",
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "通用",
+    "title": "前置环测试包",
+    "subtitle": "A → B → A 循环",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    { "id": "kp-A", "type": "concept", "title": "A", "content": "x", "prerequisites": ["kp-B"] },
+    { "id": "kp-B", "type": "concept", "title": "B", "content": "y", "prerequisites": ["kp-A"] }
+  ],
+  "exercises": [],
+  "units": []
+}

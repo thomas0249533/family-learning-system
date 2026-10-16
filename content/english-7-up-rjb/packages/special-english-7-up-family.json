@@ -1,0 +1,228 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-family",
+    "type": "special",
+    "title": "We're Family! 家庭与成员专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p2"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p2::u2"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-english-7-up-family::special-u2",
+      "name": "专项测验",
+      "title": "We're Family! 家庭与成员专项测验",
+      "desc": "针对人教版2024新教材七年级上册 Unit 2 We're Family! 的高难度变式测验，覆盖一般现在时（do/does）、名词所有格（'s / s'），以及谈论家庭成员和家庭照片的阅读语篇。",
+      "topics": [
+        {
+          "id": "special-english-7-up-family::special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p2::kp-grammar-001",
+            "unit-english-7-up-rjb-p2::kp-grammar-002",
+            "unit-english-7-up-rjb-p2::kp-sentence-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-english-7-up-family::special-ex-011",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. has; do; father's",
+                "B. have; do; father's",
+                "C. have; does; fathers'",
+                "D. has; do; fathers'"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002"
+              ],
+              "question": "—Who ___ a ping-pong bat?\n—Tom and his brother ___. Their ___ bat is in the box.",
+              "explanation": "句意：——谁有乒乓球拍？——汤姆和他哥哥有。他们的爸爸的球拍在盒子里。第一空主语 Who 是疑问代词，谓语动词单复数视情况而定，但答语是 Tom and his brother 为复数，故第一空用 have 不符合常规，但这是口语中常见的就近一致原则。更准确地说，第一空主语是 who，通常用单数 has，但答语是复数。本题设计重在考察第二空和第三空。Tom and his brother 是复数，回答用 do。Their father 是单数，所有格加 's，即 father's。故选 B。易错点：受答语影响误选 A（has; do; father's）或混淆复数所有格 fathers'。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-012",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "does; Lisa and John's",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002"
+              ],
+              "question": "用括号中所给词的适当形式填空。\nMy cousin ___ (do) his homework every evening. Look at this photo. This is ___ (Lisa and John) bedroom. It is very tidy.",
+              "explanation": "第一空主语 My cousin 是第三人称单数，谓语动词 do 变为 does。第二空表示 Lisa 和 John 共同拥有的卧室，只在最后一个名词后加 's。易错点：误填 Lisa's and John's（表示各自拥有一个卧室）。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-013",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. What does; do",
+                "B. What do; do",
+                "C. What is; doing",
+                "D. How does; do"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "—______ your father ______?\n—He is a doctor.",
+              "explanation": "答语 He is a doctor. 回答的是职业，询问职业的句型是 What does he do? 或 What is he? 此处主语是 your father（第三人称单数），助动词用 does，实义动词用原形 do。故选 A。易错点：混淆现在进行时 What is he doing?（他正在做什么）。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-014",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. My family are a big family.",
+                "B. My family is all at home now.",
+                "C. My family is a big family and they are all at home now.",
+                "D. My family are a big family and they are all at home now."
+              ],
+              "answer": "C",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "Which sentence is CORRECT?",
+              "explanation": "family 作为整体指代“家庭”时，谓语动词用单数 is；作为集体名词指代“家庭成员”时，谓语动词用复数 are。A 句前后矛盾；B 句语义矛盾（is 强调整体，all 强调成员）；D 句语法错误（are a big family 搭配不当）。C 句第一个 family 强调整体，第二个 they 指代成员，逻辑和语法均正确。考察一般现在时的主谓一致与语境综合。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-015",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "How does; go",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "根据答语补全问句，每空一词。\n—______ ______ your sister ______ to school?\n—She walks to school.",
+              "explanation": "答语 She walks to school. 表示交通方式，因此问句应为 How does your sister go to school?。主语 your sister 是第三人称单数，助动词用 does，实义动词用原形 go。考察一般现在时的特殊疑问句与交通方式表达。"
+            }
+          ]
+        },
+        {
+          "id": "special-english-7-up-family::special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p2::kp-grammar-001",
+            "unit-english-7-up-rjb-p2::kp-grammar-002",
+            "unit-english-7-up-rjb-p2::kp-sentence-001",
+            "unit-english-7-up-rjb-p2::kp-reading-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-english-7-up-family::special-ex-016",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-reading-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "阅读 Emma 的家庭照片描述，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Emma. Look at this photo of my family. The man in the blue jacket is my father. He is a teacher. The woman next to him is my mother. She doesn't work. She looks after us at home. The girl with glasses is my sister, Lily. She likes reading. The little boy on the sofa is my brother, Jack. He is only three. We all love him very much.\n(1) Emma's father is a doctor. (2) Emma's mother doesn't work. (3) Lily is Emma's sister and she wears glasses. (4) Jack is the youngest child in the family.",
+              "explanation": "由 He is a teacher 可知(1)F；由 She doesn't work 可知(2)T；由 The girl with glasses is my sister, Lily 可知(3)T；由 He is only three 及语境可知 Jack 是最小的孩子，且 We all love him very much 表示大家都很爱他，符合(4)T。考察阅读细节提取与家庭信息推断。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-017",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. To tell us about her school life.",
+                "B. To introduce her family members to us.",
+                "C. To ask for help with her homework.",
+                "D. To show us her new blue jacket."
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-reading-001"
+              ],
+              "question": "What is Emma's main purpose in writing this text?",
+              "explanation": "文章开头 Look at this photo of my family，随后逐一介绍爸爸、妈妈、妹妹和弟弟的外貌、职业和性格。因此写作目的是介绍家庭成员。A、C、D 均偏离主旨。考察阅读主旨与写作意图推断。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-018",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. Lily and Lucy's room is very big, but their parents' room is small.",
+                "B. Lily and Lucy's room are very big, but their parent's room is small.",
+                "C. Lily's and Lucy's room is very big, but their parents' room is small.",
+                "D. Lily and Lucy's room is very big, but their parent's room is small."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nLily and Lucy's room are very big, but their parent's room is small.",
+              "explanation": "原句两处错误：第一，主语 room 是单数，谓语动词应改为 is；第二，父母的房间（两人共有的父母，所有格应加在最后一个名词后，且 parents 是复数，所有格加 '），应改为 parents'。故选 A。逆向思维：根据错误句子反推正确规则，综合考察主谓一致与名词所有格。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-019",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. Yes, it is. These are my parents and my sister.",
+                "B. No, it isn't. I don't have a family photo.",
+                "C. She is my aunt. She often helps me with my English.",
+                "D. She is my mother. She teaches Chinese in a middle school.",
+                "E. They are my grandparents. They live in the countryside."
+              ],
+              "answer": [
+                "A",
+                "D"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hello, Peter. Is this a photo of your family?\n—______\n—Who is the woman next to you?\n—______",
+              "explanation": "第一空：对 Is this... 的回答应为 Yes, it is. 或 No, it isn't. 后文问 Who is the woman next to you? 说明照片中确实有家人，故选 A 承上启下；第二空：问句询问紧挨着你的女人是谁，应用 She is... 来回答。选项 D 回答是妈妈，符合交际语境。选项 C 也是 She is...，但后文没有提到阿姨，且 C 的话题与前后文关联不紧密（如果选 C，则无法自然衔接下一轮对话）。D 更贴合家庭照片语境。考察 be 动词、名词所有格、家庭交际语境的综合。"
+            },
+            {
+              "id": "special-english-7-up-family::special-ex-020",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "are; doesn't do; does; live; are",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "阅读短文，用括号中所给动词的正确形式填空。\nMy name is David. I have a big family. My father and mother ___ (be) both teachers. My sister, Sarah, ___ (not do) her homework in the evening. She ___ (do) it in the afternoon. My grandparents ___ (live) with us. We ___ (be) very happy.",
+              "explanation": "第一空主语 My father and mother 是复数，be 动词用 are；第二空主语 My sister 是第三人称单数，否定句用 doesn't do；第三空 she 是第三人称单数，肯定句用 does；第四空主语 My grandparents 是复数，实义动词用原形 live；第五空主语 We 是复数，be 动词用 are。考察一般现在时 be 动词与实义动词的综合运用。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

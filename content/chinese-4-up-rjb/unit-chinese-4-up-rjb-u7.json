@@ -1,0 +1,126 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-chinese-4-up-rjb-u7",
+    "type": "unit",
+    "isInternal": true,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "第七单元 成长故事",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-025",
+      "type": "concept",
+      "title": "《牛和鹅》叙事与道理感悟",
+      "content": "课文讲了童年时“我”怕鹅、被老公鹅欺负，后来在金奎叔帮助下改变了对牛和鹅的看法。告诉我们：换个角度看问题，对事物的认识就会大不一样。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-chinese-026",
+      "type": "concept",
+      "title": "《一只窝囊的大老虎》童年趣事细节描写",
+      "content": "课文回忆了童年时“我”在文艺表演中扮演一只大老虎，结果演砸了的经历，写出了表演前的期待、表演中的紧张狼狈和表演后的困惑心情，充满真挚的童趣。",
+      "prerequisites": ["kp-chinese-025"]
+    },
+    {
+      "id": "kp-chinese-027",
+      "type": "concept",
+      "title": "《陀螺》生活感悟类散文赏析",
+      "content": "高洪波的《陀螺》，讲述了“我”小时候自己做不出好陀螺，叔叔送了一个其貌不扬的小陀螺，却打败了小伙伴的大陀螺。悟出道理：人不可貌相，海水不可斗量。",
+      "prerequisites": ["kp-chinese-026"]
+    },
+    {
+      "id": "kp-chinese-028",
+      "type": "poem",
+      "title": "《王戎不取道旁李》小古文阅读技巧",
+      "content": "出自《世说新语》，王戎七岁时和小伙伴玩耍，其他孩子都去摘路边的李子，只有王戎不动，他推理出“树在道边而多子，此必苦李”。告诉我们要仔细观察、冷静思考。",
+      "prerequisites": ["kp-chinese-027"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u7-ex-001",
+      "type": "single",
+      "question": "《牛和鹅》中，作者小时候害怕的动物是（ ）。",
+      "options": ["A. 牛", "B. 鹅", "C. 狗", "D. 猫"],
+      "answer": "B",
+      "explanation": "课文写“我”小时候被老公鹅追咬，十分害怕鹅，后来在金奎叔的帮助下改变了对牛和鹅的看法。",
+      "knowledgePointIds": ["kp-chinese-025"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u7-ex-002",
+      "type": "blank",
+      "question": "《一只窝囊的大老虎》中，“窝囊”的意思是______，写出了“我”扮演老虎演砸后______的心情。",
+      "answer": ["无能、怯懦", "失落与困惑"],
+      "explanation": "“我”满心期待演大老虎，结果演砸了，同学们哈哈大笑，这使“我”又失落又困惑，充满童年的真实感。",
+      "knowledgePointIds": ["kp-chinese-026"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u7-ex-003",
+      "type": "single",
+      "question": "《陀螺》中，那个其貌不扬的小陀螺打败了大陀螺，让我们悟出的道理是（ ）。",
+      "options": ["A. 人不可貌相，海水不可斗量", "B. 便宜没有好货", "C. 大的东西一定更好", "D. 玩陀螺要看运气"],
+      "answer": "A",
+      "explanation": "小陀螺虽不起眼却十分厉害，课文由此得出“人不可貌相，海水不可斗量”的启示，说明不能只看外表。",
+      "knowledgePointIds": ["kp-chinese-027"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u7-ex-004",
+      "type": "blank",
+      "question": "《王戎不取道旁李》中，王戎判断“此必苦李”的依据是“______”。",
+      "answer": ["树在道边而多子"],
+      "explanation": "李树长在路边却果实很多，说明没人摘来吃，可见李子是苦的。王戎靠细心观察和冷静推理做出判断。",
+      "knowledgePointIds": ["kp-chinese-028"],
+      "metadata": { "difficulty": "挑战" }
+    },
+    {
+      "id": "u7-ex-005",
+      "type": "multiple",
+      "question": "安慰别人时，比较恰当的做法有（ ）。",
+      "options": ["A. 设身处地理解对方的感受", "B. 用合适的方式帮对方转移注意力", "C. 嘲笑对方的遭遇", "D. 真诚地鼓励对方"],
+      "answer": ["A", "B", "D"],
+      "explanation": "安慰他人要学会换位思考，真诚共情，适时鼓励，切不可嘲笑或轻视对方的感受。",
+      "knowledgePointIds": ["kp-chinese-026"],
+      "metadata": { "difficulty": "提高" }
+    }
+  ],
+  "units": [
+    {
+      "id": "u7",
+      "name": "第七单元",
+      "title": "第七单元 成长故事",
+      "desc": "本单元围绕成长故事展开，包含《牛和鹅》《一只窝囊的大老虎》《陀螺》等课文。",
+      "topics": [
+        {
+          "id": "u7-t1",
+          "title": "童年趣事·牛和鹅、大老虎",
+          "knowledgePointIds": ["kp-chinese-025", "kp-chinese-026"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u7-t2",
+          "title": "生活感悟·陀螺与王戎",
+          "knowledgePointIds": ["kp-chinese-027", "kp-chinese-028"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u7-t3",
+          "title": "口语交际与习作·安慰与心跳",
+          "knowledgePointIds": ["kp-chinese-026", "kp-chinese-027"],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

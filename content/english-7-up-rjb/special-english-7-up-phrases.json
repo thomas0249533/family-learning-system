@@ -1,0 +1,189 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-phrases",
+    "type": "special",
+    "title": "七年级上册核心短语专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p1",
+      "unit-english-7-up-rjb-p2",
+      "unit-english-7-up-rjb-p3",
+      "unit-english-7-up-rjb-p4",
+      "unit-english-7-up-rjb-p5",
+      "unit-english-7-up-rjb-p6",
+      "unit-english-7-up-rjb-p7"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p1::u1",
+      "unit-english-7-up-rjb-p2::u2",
+      "unit-english-7-up-rjb-p3::u3",
+      "unit-english-7-up-rjb-p4::u4",
+      "unit-english-7-up-rjb-p5::u5",
+      "unit-english-7-up-rjb-p6::u6",
+      "unit-english-7-up-rjb-p7::u7"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-phrases",
+      "name": "专项测验",
+      "title": "七年级上册核心短语专项测验",
+      "desc": "针对人教版2024新教材七年级上册核心交际短语与固定搭配的高难度变式测验，覆盖问候、自我介绍、家庭、学校、学科、社团、日常作息与生日庆祝。",
+      "topics": [
+        {
+          "id": "special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p1::kp-sentence-001",
+            "unit-english-7-up-rjb-p2::kp-sentence-001",
+            "unit-english-7-up-rjb-p3::kp-sentence-001",
+            "unit-english-7-up-rjb-p4::kp-sentence-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-109",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. Nice to meet you, too.",
+                "B. I'm fine, thank you.",
+                "C. You're welcome.",
+                "D. Yes, I am."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-sentence-001"
+              ],
+              "question": "— Nice to meet you.\n— ______",
+              "explanation": "初次见面听到 Nice to meet you. 应回答 Nice to meet you, too. B 回答 How are you?，C 回答感谢，D 回答一般疑问句。考察问候与自我介绍核心短语。"
+            },
+            {
+              "id": "special-ex-110",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "make friends; be from / come from; be in Class 1, Grade 7",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-word-001",
+                "unit-english-7-up-rjb-p1::kp-sentence-001"
+              ],
+              "question": "根据汉语提示写出短语。\n交朋友 ______    来自 ______    在七年级一班 ______",
+              "explanation": "交朋友 make friends；来自 be from 或 come from；在七年级一班 be in Class 1, Grade 7。易错点：班级和年级顺序，班级在前，年级在后。"
+            },
+            {
+              "id": "special-ex-111",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. He is a doctor.",
+                "B. He is fine.",
+                "C. He is at home.",
+                "D. He likes reading."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "— What does your father do?\n— ______",
+              "explanation": "What does your father do? 询问职业，回答用 He is a...。B 回答 How are you?，C 回答地点，D 回答爱好。考察家庭交际短语。"
+            },
+            {
+              "id": "special-ex-112",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "next to; beautiful",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-sentence-001",
+                "unit-english-7-up-rjb-p3::kp-word-001"
+              ],
+              "question": "根据答语补全短语。\n— Where is the library?\n— It's ______ ______ the classroom building. (在……旁边)\n— What is your school like?\n— It's big and ______. (美丽)",
+              "explanation": "在……旁边 next to；美丽 beautiful。考察学校位置与特征短语。"
+            }
+          ]
+        },
+        {
+          "id": "special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p4::kp-sentence-001",
+            "unit-english-7-up-rjb-p5::kp-sentence-001",
+            "unit-english-7-up-rjb-p6::kp-sentence-001",
+            "unit-english-7-up-rjb-p7::kp-sentence-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-113",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. Because it is useful.",
+                "B. Yes, I do.",
+                "C. It's on Monday.",
+                "D. I like English."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "— Why do you like English?\n— ______",
+              "explanation": "Why...? 询问原因，回答用 Because...。B 回答一般疑问句，C 回答时间，D 答非所问。考察学科喜好原因短语。"
+            },
+            {
+              "id": "special-ex-114",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "join the English club; play the guitar; play chess",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-sentence-001"
+              ],
+              "question": "根据汉语提示写出短语。\n加入英语社 ______    弹吉他 ______    下棋 ______",
+              "explanation": "加入英语社 join the English club；弹吉他 play the guitar；下棋 play chess。易错点：棋类前不加 the，乐器前加 the。"
+            },
+            {
+              "id": "special-ex-115",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. At 6:30.",
+                "B. In the morning.",
+                "C. On Monday.",
+                "D. It's 6:30."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-sentence-001"
+              ],
+              "question": "— What time do you get up?\n— ______",
+              "explanation": "What time...? 询问具体时间点，回答用 at + 时间点。B 回答 When，C 回答星期，D 是中文式表达。考察日常作息时间短语。"
+            },
+            {
+              "id": "special-ex-116",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "make a wish; blow out candles; have a party; give presents",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-word-001",
+                "unit-english-7-up-rjb-p7::kp-sentence-001"
+              ],
+              "question": "根据汉语提示写出短语。\n许愿 ______    吹灭蜡烛 ______    举办聚会 ______    送礼物 ______",
+              "explanation": "许愿 make a wish；吹灭蜡烛 blow out candles；举办聚会 have a party；送礼物 give presents。考察生日庆祝核心短语。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

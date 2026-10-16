@@ -1,0 +1,77 @@
+sequenceDiagram
+    autonumber
+    participant User as 用户
+    participant Boot as index.html 启动脚本
+    participant Store as useThemeStore
+    participant Body as document.body
+    participant CSS as theme.scss (6 组选择器)
+    participant TP as ThemeProvider
+    participant Palette as palette.ts
+    participant Naive as n-config-provider / naive-ui
+    participant View as 业务组件
+
+    Note over User,View: 链路 A · 首屏防 FOUC + 主题渲染（preset × mode 正交）
+
+    User->>Boot: 打开应用（Vue 尚未 mount）
+    Boot->>Boot: 同步读 localStorage['fls:theme']
+    Boot->>Body: classList.toggle('dark-mode', resolveDark)
+    Boot->>Body: dataset.themePreset = preset || 'junior'
+    Body-->>CSS: 首帧即命中 6 组选择器之一 → 无闪色
+
+    User->>Store: setPreset('senior') / setTheme('dark') / setFontSize('large')
+    Store->>Store: actualTheme = computed(mode)
+    Store->>Store: persist() → localStorage['fls:theme']
+    Store->>Body: watchEffect: classList + dataset.themePreset
+    Body-->>CSS: 命中 body[data-theme-preset=senior].dark-mode (0,2,1)
+    TP->>Store: 读取 preset / actualTheme / fontSize
+    TP->>Palette: palette.presets[preset][mode]
+    Palette-->>TP: 数值色板（6 组之一）
+    TP->>TP: buildThemeOverrides(palette, preset, mode, FONT_SIZE_MAPS[fontSize])
+    TP->>Naive: :theme-overrides / :theme=darkTheme
+    Naive-->>View: naive-ui 组件按数值重绘
+    CSS-->>View: var(--x) 自动刷新（无 JS 参与）
+    View-->>User: 学段配色 × 明暗 一致渲染
+
+    Note over User,View: 链路 A2 · 按年级自动推荐（A1-3）
+
+    TP->>Store: reconcilePreset(packageStore.packages[].manifest)
+    Store->>Store: if presetManual === false
+    Store->>Store: inferPreset(manifests) → 众数/并列取最新/空则 junior
+    Store->>Store: setPreset(inferred)（不置 manual）
+    User->>Store: 手动切换 → setPreset(p, manual=true)
+    Store-->>User: 永久停止覆盖；提供 restoreAuto()
+
+    Note over User,View: 链路 B · 一致性测试（2 组 → 6 组，防双源漂移）
+
+    User->>PaletteConsistencyTest: npm test (vitest)
+    PaletteConsistencyTest->>theme_scss: readFileSync(theme.scss)
+    PaletteConsistencyTest->>PaletteConsistencyTest: extractBlock(6 选择器)
+    PaletteConsistencyTest->>PaletteConsistencyTest: 合成生效表（模拟继承：preset 覆盖 :root / dark-mode）
+    PaletteConsistencyTest->>PaletteConsistencyTest: normalizeColor(hex|rgba|gradient)
+    PaletteConsistencyTest->>palette_ts: palette.presets[p][m]
+    PaletteConsistencyTest->>PaletteConsistencyTest: 断言 A 数值一致 + B 齐全 + C 结构(键集合相等/组合块存在) + D buildThemeOverrides
+    PaletteConsistencyTest-->>User: 绿=无漂移 / 红=preset.mode.field + 两值
+
+    Note over User,View: 链路 C · 成就结算 + 新解锁动效（A2）
+
+    User->>View: 作答（TopicDetail / ExamPanel / VocabDrill）
+    View->>useUserDataStore: recordProgress(...)（×KP）
+    useUserDataStore->>streak_module: touchStudyDay(now)
+    View->>useUserDataStore: recordAnswerEvent({type, exerciseId})（题目级，一次）
+    useUserDataStore->>dailyStats_module: bumpDailyStats({count:1})（内存 + 1500ms 防抖）
+    dailyStats_module-->>useUserDataStore: (异步) flushDailyStats() → db.settings
+    User->>Home: 返回首页 onMounted
+    Home->>useUserDataStore: loadUserData()
+    Home->>achievements_module: syncAchievements(ctx{progress,mistakes,streak,packages,dailyStats,attemptedTypes})
+    achievements_module->>achievements_module: evaluateAchievements + normalizeUnlocked(兼容 string[])
+    achievements_module-->>Home: { unlocked, newlyUnlocked }
+    Home->>AchievementToast: 展示新解锁徽章卡（respect prefers-reduced-motion）
+    AchievementToast-->>User: 回弹动效 / 静态（reduced-motion）
+
+    Note over User,View: 链路 D · JS 取色统一（B2/B3，组件不 import palette）
+
+    View->>useThemeTokens: tokens（getComputedStyle 读 --x 真值）
+    View->>useChartTheme: chartTheme（echarts 轴/文字/tooltip/色块）
+    useChartTheme-->>View: 随 preset/mode 重绘
+    View->>pdfExporter: exportReportAsPDF(el)
+    pdfExporter->>pdfExporter: 临时去 dark-mode / force-light → 截图 → 恢复（固定浅色）

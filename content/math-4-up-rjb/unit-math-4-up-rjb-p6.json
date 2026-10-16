@@ -1,0 +1,501 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-up-rjb-p6",
+    "type": "unit",
+    "title": "数学4上第6部分",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-math-4-up-rjb-p5"
+    ]
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-math-4-up-rjb-p6::kp-stat-001",
+      "type": "concept",
+      "title": "条形统计图的绘制与分析",
+      "content": "1. 条形统计图的特点：能清楚地看出各种数量的多少，便于比较。\\n2. 绘制步骤：\\n- 确定横轴和纵轴（横轴表示类别，纵轴表示数量）；\\n- 确定单位长度（一格表示多少个单位，要根据数据大小合理选择）；\\n- 画直条（直条高度代表数量，宽度要一致）；\\n- 标明标题、单位和图例。\\n3. 分析方法：直条越高，数量越多；直条越矮，数量越少。通过对比直条高度，可以发现数据间的差异和变化趋势。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "数据意识",
+        "tags": [
+          "条形统计图",
+          "数据可视化",
+          "统计"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p6::kp-stat-002",
+      "type": "formula",
+      "title": "平均数的意义与求法",
+      "content": "1. 平均数的意义：平均数是一组数据整体水平的代表，反映了一组数据的集中趋势。\\n2. 求法：平均数 = 总数量 ÷ 总份数。\\n公式：\\overline{x} = (x_1 + x_2 + ... + x_n) \\div n\\n3. 特点：平均数介于最大值和最小值之间；平均数容易受极端数据（偏大或偏小）的影响。\\n4. 生活应用：平均身高、平均分、平均气温、平均速度等。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p6::kp-stat-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "应用",
+        "ability": "运算能力",
+        "tags": [
+          "平均数",
+          "集中趋势",
+          "统计量"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p6::kp-rel-003",
+      "type": "life",
+      "title": "综合时间、路程问题（导航时间准吗）",
+      "content": "1. 导航预估时间原理：导航软件根据剩余路程和当前/历史平均速度，计算出预计到达时间。\\n2. 影响导航时间的因素：实时路况（是否堵车）、红绿灯数量、限速变化、天气等。\\n3. 导航时间是一个动态变化的预测值，不是绝对准确的。\\n4. 实际行驶中，平均速度 = 总路程 ÷ 总时间。通过对比导航预估速度和实际速度，可以分析导航的准确性。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p5::kp-rel-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "分析",
+        "ability": "模型意识",
+        "tags": [
+          "导航",
+          "时间",
+          "路程",
+          "综合实践"
+        ]
+      }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "unit-math-4-up-rjb-p6::u9",
+      "name": "第八单元",
+      "title": "数据的表示和分析（一）",
+      "desc": "认识条形统计图，理解平均数的意义，掌握求平均数的方法，发展数据意识。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p6::t1",
+          "title": "条形统计图",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p6::kp-stat-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p6::m1",
+              "type": "math.concept",
+              "title": "条形统计图的绘制与分析",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-001",
+              "type": "blank",
+              "question": "条形统计图能清楚地看出各种数量的（______），便于（______）。",
+              "answer": "多少,比较",
+              "explanation": "条形统计图的特点就是能清楚地看出各种数量的多少，便于比较。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-002",
+              "type": "judge",
+              "question": "在绘制条形统计图时，纵轴上一格表示的数量必须相等。",
+              "answer": "对",
+              "explanation": "绘制条形统计图时，纵轴上每一格表示的数量（单位长度）必须相等，这样才能准确反映数据的多少。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-003",
+              "type": "single",
+              "question": "某条形统计图中，纵轴每格代表5个单位。如果某直条高4格，它表示的数量是（　　）。",
+              "options": [
+                "A. 15",
+                "B. 20",
+                "C. 25",
+                "D. 30"
+              ],
+              "answer": "B",
+              "explanation": "每格代表5个单位，直条高4格，则数量 = 5 \\times 4 = 20。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-004",
+              "type": "judge",
+              "question": "条形统计图中，直条越高，表示的数量越多。",
+              "answer": "对",
+              "explanation": "条形统计图中，直条的高度与数量成正比，直条越高，数量越多。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-005",
+              "type": "single",
+              "question": "要清楚地比较四年级各班的人数多少，最好选用（　　）。",
+              "options": [
+                "A. 条形统计图",
+                "B. 折线统计图",
+                "C. 扇形统计图",
+                "D. 文字描述"
+              ],
+              "answer": "A",
+              "explanation": "条形统计图能清楚地看出数量的多少，便于比较。折线统计图更侧重于反映数据的变化趋势，扇形统计图反映部分与整体的关系。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-006",
+              "type": "blank",
+              "question": "在一幅条形统计图中，纵轴上的数据从0开始，第一格表示0-10，第二格表示10-20。如果某直条的顶端正好在第三格结束，表示的数量是（______）。",
+              "answer": "30",
+              "explanation": "第一格结束是10，第二格结束是20，第三格结束是30。所以直条顶端在第三格结束，表示的数量是30。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-007",
+              "type": "single",
+              "question": "某书店四月份卖出图书的情况如下：故事书120本，科技书80本，漫画书150本，作文书50本。如果画成条形统计图，直条最高的是（　　）。",
+              "options": [
+                "A. 故事书",
+                "B. 科技书",
+                "C. 漫画书",
+                "D. 作文书"
+              ],
+              "answer": "C",
+              "explanation": "数据中150最大，对应的是漫画书。所以漫画书的直条最高。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p6::t2",
+          "title": "平均数",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p6::kp-stat-002"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p6::m2",
+              "type": "math.formula",
+              "title": "平均数的意义与求法",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-008",
+              "type": "blank",
+              "question": "4名同学的身高分别是：140厘米、145厘米、150厘米、145厘米。他们的平均身高是（______）厘米。",
+              "answer": "145",
+              "explanation": "总身高 = 140 + 145 + 150 + 145 = 580（厘米）。总人数 = 4。平均身高 = 580 ÷ 4 = 145（厘米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-009",
+              "type": "blank",
+              "question": "小明语文、数学、英语三科的平均分是92分，他的三科总分是（______）分。",
+              "answer": "276",
+              "explanation": "总分 = 平均数 \\times 份数 = 92 \\times 3 = 276（分）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-010",
+              "type": "judge",
+              "question": "一条小河平均水深110厘米，小明身高140厘米，他下水游泳一定没有危险。",
+              "answer": "错",
+              "explanation": "平均水深110厘米，不代表所有地方都是110厘米。可能有的地方水深超过140厘米，所以小明下水游泳可能有危险。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-011",
+              "type": "single",
+              "question": "一组数据：10、20、30、40、50。这组数据的平均数是（　　）。",
+              "options": [
+                "A. 25",
+                "B. 30",
+                "C. 35",
+                "D. 40"
+              ],
+              "answer": "B",
+              "explanation": "平均数 = (10 + 20 + 30 + 40 + 50) ÷ 5 = 150 ÷ 5 = 30。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-012",
+              "type": "judge",
+              "question": "四（1）班男生平均体重35千克，女生平均体重32千克。全班同学的平均体重一定是33.5千克。",
+              "answer": "错",
+              "explanation": "全班平均体重 = 全班总体重 ÷ 全班总人数。由于男生和女生的人数不一定相同，所以不能用(35+32)÷2来计算。所以这句话是错误的。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-013",
+              "type": "single",
+              "question": "小明前3次数学测验的平均分是88分，第4次考了96分。他这4次测验的平均分是（　　）。",
+              "options": [
+                "A. 88",
+                "B. 90",
+                "C. 92",
+                "D. 94"
+              ],
+              "answer": "B",
+              "explanation": "前3次总分 = 88 \\times 3 = 264（分）。4次总分 = 264 + 96 = 360（分）。4次平均分 = 360 ÷ 4 = 90（分）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-014",
+              "type": "single",
+              "question": "甲组4人共植树20棵，乙组5人共植树25棵。比较两组平均每人植树的棵数，（　　）。",
+              "options": [
+                "A. 甲组多",
+                "B. 乙组多",
+                "C. 一样多",
+                "D. 无法比较"
+              ],
+              "answer": "C",
+              "explanation": "甲组平均每人植树：20 ÷ 4 = 5（棵）。乙组平均每人植树：25 ÷ 5 = 5（棵）。两组一样多。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-015",
+              "type": "single",
+              "question": "下面哪个量不能用平均数来表示？（　　）",
+              "options": [
+                "A. 全班同学的平均身高",
+                "B. 某地一周的平均气温",
+                "C. 某次比赛的最高分",
+                "D. 一辆汽车的平均速度"
+              ],
+              "answer": "C",
+              "explanation": "最高分是一个极端值，不能用平均数来表示。平均身高、平均气温、平均速度都是常见的平均数应用。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-016",
+              "type": "blank",
+              "question": "5个数的平均数是20。如果其中一个数从20改成了10，那么新的平均数是（______）。",
+              "answer": "18",
+              "explanation": "原总和 = 20 \\times 5 = 100。改后总和 = 100 - 20 + 10 = 90。新平均数 = 90 ÷ 5 = 18。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u9-ex-017",
+              "type": "judge",
+              "question": "平均数一定比这组数据中最大的数小，比最小的数大。",
+              "answer": "对",
+              "explanation": "平均数是一组数据整体水平的代表，它介于最大值和最小值之间（除非所有数据都相同）。所以这句话是正确的。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-stat-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-math-4-up-rjb-p6::u10",
+      "name": "综合实践",
+      "title": "导航给的时间准吗",
+      "desc": "结合路程、速度和时间的关系，分析导航预估时间的原理和影响因素。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p6::t1",
+          "title": "导航时间准吗",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p6::kp-rel-003"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p6::m1",
+              "type": "math.life",
+              "title": "导航预估时间的奥秘",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-rel-003"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p6::u10-ex-001",
+              "type": "blank",
+              "question": "导航软件预估到达时间，主要是根据剩余路程和（______）来计算的。",
+              "answer": "平均速度",
+              "explanation": "导航软件结合剩余路程和当前/历史平均速度，计算出预计需要的时间。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-rel-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u10-ex-002",
+              "type": "single",
+              "question": "同样的路程，导航在下午5点显示的时间比凌晨3点显示的时间长。最可能的原因是（　　）。",
+              "options": [
+                "A. 下午5点路程变长了",
+                "B. 下午5点是晚高峰，堵车导致平均速度慢",
+                "C. 导航软件下午5点出故障了",
+                "D. 凌晨3点司机开得慢"
+              ],
+              "answer": "B",
+              "explanation": "下午5点是晚高峰，交通拥堵，车辆的平均行驶速度慢，所以导航预估的时间更长。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-rel-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u10-ex-003",
+              "type": "blank",
+              "question": "导航显示剩余路程120千米，预计还需要2小时。导航预估的平均速度是（______）千米/时。",
+              "answer": "60",
+              "explanation": "速度 = 路程 ÷ 时间 = 120 ÷ 2 = 60（千米/时）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-rel-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u10-ex-004",
+              "type": "judge",
+              "question": "导航给出的预计到达时间是绝对准确的，一定会在这个时间到达。",
+              "answer": "错",
+              "explanation": "导航预估时间是基于历史数据和当前路况的预测值，实际行驶中可能遇到突发情况（如交通事故、临时修路），导致实际到达时间与预估时间有偏差。所以不是绝对准确的。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-rel-003"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u10-ex-005",
+              "type": "single",
+              "question": "小明一家自驾游，全程300千米。导航预计3小时到达。实际行驶中，前2小时开了160千米，此时导航显示剩余路程还需要2小时。下面说法正确的是（　　）。",
+              "options": [
+                "A. 前2小时的实际平均速度是80千米/时",
+                "B. 剩余路程的预估平均速度是70千米/时",
+                "C. 导航预估的全程平均速度是100千米/时",
+                "D. 以上说法都正确"
+              ],
+              "answer": "D",
+              "explanation": "前2小时实际平均速度 = 160 ÷ 2 = 80（千米/时），A正确。剩余路程 = 300 - 160 = 140（千米），剩余时间2小时，预估平均速度 = 140 ÷ 2 = 70（千米/时），B正确。导航最初预估全程300千米用3小时，平均速度 = 300 ÷ 3 = 100（千米/时），C正确。所以选D。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-rel-003"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p6::u10-ex-006",
+              "type": "judge",
+              "question": "堵车时，导航会自动重新规划路线并更新时间，这体现了导航数据的实时性。",
+              "answer": "对",
+              "explanation": "导航软件能够根据实时路况动态调整预估时间和路线，这体现了其数据的实时性和动态性。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p6::kp-rel-003"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

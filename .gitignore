@@ -1,0 +1,37 @@
+# 依赖
+node_modules/
+# 构建产物
+dist/
+dist-ssr/
+.vite/
+# Rust / Tauri 构建产物与打包
+src-tauri/target/
+src-tauri/gen/
+# 根目录手工打包的 exe（本项目不纳入版本库）
+/*.exe
+# 临时脚本
+*.tmp*
+.tmp-*
+# 环境
+*.local
+.env
+.env.*
+!.env.example
+# 日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+# 测试缓存 / 覆盖率
+.vitest-cache/
+coverage/
+# 编辑器 / 系统
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+# 视觉回归产物（截图留档需提交，故仅忽略临时 diff 输出）
+tests/e2e/**/*-diff.png
+test-results/
+playwright-report/

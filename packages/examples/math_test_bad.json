@@ -1,0 +1,44 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "math-4-up-bad-test",
+    "packageType": "base",
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "故意出错的包"
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-real-id",
+      "type": "formula",
+      "title": "乘法分配律",
+      "content": "(a+b) \\times c = a \\times c + b \\times c"
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "u1",
+      "title": "测试单元",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "测试主题",
+          "knowledgePointIds": ["kp-not-exist"],
+          "exercises": [
+            {
+              "id": "ex_001",
+              "type": "single",
+              "question": "测试题",
+              "options": ["A", "B"],
+              "answer": "A"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1676 @@
+{
+  "manifest": {
+    "packageId": "sprint-english-7-up-final",
+    "type": "sprint",
+    "title": "七年级上册期末模拟卷（太原平民中学适用）",
+    "dependencies": [
+      "unit-english-7-up-rjb-p1",
+      "unit-english-7-up-rjb-p2",
+      "unit-english-7-up-rjb-p3",
+      "unit-english-7-up-rjb-p4",
+      "unit-english-7-up-rjb-p5",
+      "unit-english-7-up-rjb-p6",
+      "unit-english-7-up-rjb-p7"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p1::u1",
+      "unit-english-7-up-rjb-p2::u2",
+      "unit-english-7-up-rjb-p3::u3",
+      "unit-english-7-up-rjb-p4::u4",
+      "unit-english-7-up-rjb-p5::u5",
+      "unit-english-7-up-rjb-p6::u6",
+      "unit-english-7-up-rjb-p7::u7"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "sprint-english-7-up-final::sprint-u1",
+      "name": "期末冲刺",
+      "title": "七年级上册期末模拟卷（太原平民中学适用）",
+      "desc": "覆盖人教版2024新教材七年级上册全册重点的综合训练，难度适中偏上，含基础巩固、提高变式与挑战拔高题。",
+      "topics": [
+        {
+          "id": "sprint-english-7-up-final::sprint-t1",
+          "title": "综合应用",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p1::kp-word-001",
+            "unit-english-7-up-rjb-p1::kp-sentence-001",
+            "unit-english-7-up-rjb-p1::kp-grammar-001",
+            "unit-english-7-up-rjb-p1::kp-grammar-002",
+            "unit-english-7-up-rjb-p1::kp-phonetic-001",
+            "unit-english-7-up-rjb-p1::kp-reading-001",
+            "unit-english-7-up-rjb-p1::kp-writing-001",
+            "unit-english-7-up-rjb-p2::kp-word-001",
+            "unit-english-7-up-rjb-p2::kp-sentence-001",
+            "unit-english-7-up-rjb-p2::kp-grammar-001",
+            "unit-english-7-up-rjb-p2::kp-grammar-002",
+            "unit-english-7-up-rjb-p2::kp-phonetic-001",
+            "unit-english-7-up-rjb-p2::kp-reading-001",
+            "unit-english-7-up-rjb-p2::kp-writing-001",
+            "unit-english-7-up-rjb-p3::kp-word-001",
+            "unit-english-7-up-rjb-p3::kp-sentence-001",
+            "unit-english-7-up-rjb-p3::kp-grammar-001",
+            "unit-english-7-up-rjb-p3::kp-grammar-002",
+            "unit-english-7-up-rjb-p3::kp-phonetic-001",
+            "unit-english-7-up-rjb-p3::kp-reading-001",
+            "unit-english-7-up-rjb-p3::kp-writing-001",
+            "unit-english-7-up-rjb-p4::kp-word-001",
+            "unit-english-7-up-rjb-p4::kp-sentence-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-002",
+            "unit-english-7-up-rjb-p4::kp-phonetic-001",
+            "unit-english-7-up-rjb-p4::kp-reading-001",
+            "unit-english-7-up-rjb-p4::kp-writing-001",
+            "unit-english-7-up-rjb-p5::kp-word-001",
+            "unit-english-7-up-rjb-p5::kp-sentence-001",
+            "unit-english-7-up-rjb-p5::kp-grammar-001",
+            "unit-english-7-up-rjb-p5::kp-phonetic-001",
+            "unit-english-7-up-rjb-p5::kp-reading-001",
+            "unit-english-7-up-rjb-p5::kp-writing-001",
+            "unit-english-7-up-rjb-p6::kp-word-001",
+            "unit-english-7-up-rjb-p6::kp-sentence-001",
+            "unit-english-7-up-rjb-p6::kp-grammar-001",
+            "unit-english-7-up-rjb-p6::kp-grammar-002",
+            "unit-english-7-up-rjb-p6::kp-phonetic-001",
+            "unit-english-7-up-rjb-p6::kp-reading-001",
+            "unit-english-7-up-rjb-p6::kp-writing-001",
+            "unit-english-7-up-rjb-p7::kp-word-001",
+            "unit-english-7-up-rjb-p7::kp-sentence-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-002",
+            "unit-english-7-up-rjb-p7::kp-phonetic-001",
+            "unit-english-7-up-rjb-p7::kp-reading-001",
+            "unit-english-7-up-rjb-p7::kp-writing-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-001",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. am; am; are; am",
+                "B. is; am; is; are",
+                "C. am; is; are; is",
+                "D. are; am; are; am"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p1::kp-grammar-002",
+                "unit-english-7-up-rjb-p1::kp-sentence-001"
+              ],
+              "question": "—Hi, I ______ Li Hua from Taiyuan Pingmin Middle School. Are you from London?\n—No, I ______ not. My parents ______ from Canada, but I ______ in Taiyuan now.",
+              "explanation": "考查 be 动词与主格代词的一致。I 用 am；I am not 用 am；My parents 是复数，用 are；I 用 am。故选 A。易错点：受 parents 影响误把 I 后也用 are。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-002",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. on; next to",
+                "B. in; next to",
+                "C. on; next",
+                "D. in; next"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-sentence-001"
+              ],
+              "question": "—Where is the art room?\n—It's ______ the second floor, ______ the science lab.",
+              "explanation": "表示“在几楼”用介词 on；表示“在……旁边”用 next to，next 不能单独作介词。故选 A。易错点：混淆 on 和 in 表示楼层，或漏掉 next 后面的 to。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-003",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. Yes, she can",
+                "B. No, she can't",
+                "C. Yes, she does",
+                "D. No, she doesn't"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-word-001"
+              ],
+              "question": "—Can she dance?\n—______. She is in the dance club.",
+              "explanation": "根据 She is in the dance club 可知她会跳舞。Can she...? 的肯定回答是 Yes, she can. 易错点：混淆 can 和 do/does 的回答形式。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-004",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. When; Why",
+                "B. What; Why",
+                "C. When; How",
+                "D. Where; Because"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "—______ do you have English?\n—On Monday and Thursday.\n—______ do you like it?\n—Because it is useful.",
+              "explanation": "第一空答语 On Monday and Thursday 回答时间，用 When；第二空答语 Because... 回答原因，用 Why。故选 A。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-005",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. art club; can",
+                "B. music club; can't",
+                "C. chess club; can",
+                "D. sports club; can't"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-word-001"
+              ],
+              "question": "—What club do you want to join?\n—I want to join the ______ because I like drawing and I ______ draw well.",
+              "explanation": "跨单元综合题。喜欢画画对应 art club；会画得好用 can。融合社团词汇、can 表能力与学科兴趣表达。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-006",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. parents",
+                "B. parents'",
+                "C. parent's",
+                "D. parents's"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-002",
+                "unit-english-7-up-rjb-p2::kp-word-001"
+              ],
+              "question": "This is my ______ room. It's very clean. Tom and Jack share it.",
+              "explanation": "句意为：这是我父母的房间。parents 是以 -s 结尾的复数名词，所有格直接加 '。故选 B。易错点：误加 's 或混淆单复数。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-007",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. Lily and Lucy's room is very big, but their parents' room is small.",
+                "B. Lily and Lucy's room are very big, but their parent's room is small.",
+                "C. Lily's and Lucy's room is very big, but their parents' room is small.",
+                "D. Lily and Lucy's room is very big, but their parent's room is small."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nLily and Lucy's room are very big, but their parent's room is small.",
+              "explanation": "原句两处错误：第一，主语 room 是单数，谓语动词应改为 is；第二，父母的房间，所有格应加在最后一个名词后且 parents 是复数，所有格加 '，即 parents'。故选 A。跨单元综合考察主谓一致与名词所有格。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-008",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. is; is",
+                "B. are; is",
+                "C. is; are",
+                "D. are; are"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "There ______ a library and two classroom buildings in my school. The library ______ between the two buildings.",
+              "explanation": "There be 遵循就近原则，靠近 be 动词的是 a library（单数），用 is；第二空主语 The library 是单数，用 is。易错点：受 two classroom buildings 影响误用 are。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-009",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "does; Lisa and John's",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002",
+                "unit-english-7-up-rjb-p2::kp-word-001"
+              ],
+              "question": "用括号中所给词的适当形式填空。\nMy cousin ______ (do) his homework every evening. Look at this photo. This is ______ (Lisa and John) bedroom. It is very tidy.",
+              "explanation": "第一空主语 My cousin 是第三人称单数，do 变为 does。第二空表示 Lisa 和 John 共同拥有的卧室，只在最后一个名词后加 's。易错点：误填 Lisa's and John's 表示各自拥有。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-010",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "because; but; because",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "用适当的连词填空（and, but, because）。\nI like English ______ it is useful. I also like PE, ______ I don't like history ______ it is boring.",
+              "explanation": "第一空后“它很有用”是喜欢英语的原因，用 because；第二空前后是转折关系，用 but；第三空后“它很无聊”是不喜欢历史的原因，用 because。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-011",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "in; Where; meet; too",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-sentence-001",
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p1::kp-word-001"
+              ],
+              "question": "补全对话，每空一词。\nA: Hello! What's your name?\nB: My name is Li Hua. I'm ______ Class 3, Grade 7.\nA: ______ are you from?\nB: I'm from Taiyuan. And you?\nA: I'm from London. Nice to ______ you.\nB: Nice to meet you, ______.",
+              "explanation": "在几班用 in；询问来自哪里用 Where；初次见面说 Nice to meet you.；回应用 Nice to meet you, too. 融合问候、自我介绍与 be 动词句型。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-012",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "are; doesn't do; does",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001",
+                "unit-english-7-up-rjb-p1::kp-grammar-001"
+              ],
+              "question": "用括号中所给动词的正确形式填空。\nMy father and mother ______ (be) both teachers. My sister Sarah ______ (not do) her homework in the evening. She ______ (do) it in the afternoon.",
+              "explanation": "第一空主语 My father and mother 是复数，be 动词用 are；第二空主语 My sister 是第三人称单数，否定句用 doesn't do；第三空 she 是第三人称单数，肯定句用 does。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-013",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "beautiful; next; read; have; clean",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-word-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-sentence-001"
+              ],
+              "question": "阅读短文，从方框中选择适当的词并用其正确形式填空（每词限用一次）。\n\nbeautiful  clean  next  have  read\n\nWelcome to Taiyuan Pingmin Middle School! Our school is very ______ (1). There is a modern library ______ (2) to the classroom building. I often ______ (3) books there after class. The playground is in front of the dining hall. We ______ (4) PE class on the playground. My classroom is big and ______ (5). I love my school very much.",
+              "explanation": "第一空描述学校美丽，用 beautiful；第二空 next to 表示“在……旁边”；第三空 I often read books 表示“读书”；第四空 have PE class 表示“上体育课”；第五空描述教室干净，用 clean。改编自太原市期末选词填空题型。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-014",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "because; When; Who; there; club",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-sentence-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-sentence-001"
+              ],
+              "question": "用适当的词填空。\nA: Hi, Mike. What's your favourite subject?\nB: I like science best ______ (1) it is interesting.\nA: ______ (2) do you have science?\nB: On Tuesday and Friday.\nA: ______ (3) is your science teacher?\nB: Mr. Wang. He is very kind.\nA: Do you have a science lab?\nB: Yes, ______ (4) is. It's next to the library.\nA: Great! I want to join the science ______ (5).",
+              "explanation": "第一空后是喜欢科学的原因，用 because；第二空询问时间，用 When；第三空询问人，用 Who；第四空 There be 句型的肯定回答用 there；第五空 science club 表示“科学社”。融合学科喜好、Wh- 疑问句与社团表达。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-015",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "are; doesn't do; does; live; are",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "用括号中所给词的适当形式填空。\nMy name is Peter. I have a big family. My father and mother ______ (be) both teachers. My sister Sarah ______ (not do) her homework in the evening. She ______ (do) it in the afternoon. My grandparents ______ (live) with us. We ______ (be) very happy.",
+              "explanation": "第一空主语是复数，be 用 are；第二空第三人称单数否定用 doesn't do；第三空 she 肯定用 does；第四空复数主语用原形 live；第五空 We 用 are。综合考查一般现在时 be 动词与实义动词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-016",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "What is; like; How many",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-sentence-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-001"
+              ],
+              "question": "根据答语补全问句，每空一词。\n—______ ______ your new school ______?\n—It's very big and beautiful.\n—______ ______ classrooms are there in your school?\n—There are 30.",
+              "explanation": "What is... like? 询问特征；How many 询问数量。考查学校介绍核心句型与 There be 结构。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-017",
+              "type": "multiple",
+              "difficulty": "提高",
+              "options": [
+                "A. It's very beautiful.",
+                "B. Is there a dining hall?",
+                "C. Where is the dining hall?",
+                "D. Do you like your new school?",
+                "E. There is a big playground."
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-sentence-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Sarah. How is your new school?\n—1. ______\n—2. ______\n—Yes, there is. It's next to the library.",
+              "explanation": "第一空回答 How is your new school? 应描述学校特征，A 符合；第二空根据答语 Yes, there is. 可知问句是 There be 句型的一般疑问句，B 符合。C 是特殊疑问句，D 答语不匹配，E 是陈述句。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-018",
+              "type": "multiple",
+              "difficulty": "提高",
+              "options": [
+                "A. What's your favourite subject?",
+                "B. Why do you like it?",
+                "C. Do you like science?",
+                "D. How do you like science?",
+                "E. When do you have science?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-sentence-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Mike. 1. ______\n—I like science best.\n—2. ______\n—Because it is interesting and useful.",
+              "explanation": "第一空根据答语 I like science best. 可知询问最喜欢的科目，A 符合；第二空根据答语 Because... 可知询问原因，B 符合。C 是一般疑问句，D 询问看法，E 询问时间。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-019",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. Yes, it is. These are my parents and my sister.",
+                "B. No, it isn't. I don't have a family photo.",
+                "C. She is my aunt. She often helps me with my English.",
+                "D. She is my mother. She teaches Chinese in a middle school.",
+                "E. They are my grandparents. They live in the countryside."
+              ],
+              "answer": [
+                "A",
+                "D"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hello, Peter. Is this a photo of your family?\n—______\n—Who is the woman next to you?\n—______",
+              "explanation": "第一空对 Is this... 的回答应为 Yes/No，后文问 Who is the woman 说明照片中有家人，A 承上启下；第二空询问紧挨着的女人是谁，用 She is... 回答，D 回答是妈妈，符合家庭照片语境。考察 be 动词、名词所有格与家庭交际语境的综合。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-020",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-reading-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001",
+                "unit-english-7-up-rjb-p2::kp-word-001"
+              ],
+              "question": "阅读 Emma 的家庭照片描述，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Emma. Look at this photo of my family. The man in the blue jacket is my father. He is a teacher. The woman next to him is my mother. She doesn't work. She looks after us at home. The girl with glasses is my sister, Lily. She likes reading. The little boy on the sofa is my brother, Jack. He is only three. We all love him very much.\n(1) Emma's father is a doctor. (2) Emma's mother doesn't work. (3) Lily is Emma's sister and she wears glasses. (4) Jack is the youngest child in the family.",
+              "explanation": "由 He is a teacher 可知(1)F；由 She doesn't work 可知(2)T；由 The girl with glasses is my sister, Lily 可知(3)T；由 He is only three 可知 Jack 是最小的孩子，且 We all love him 符合(4)T。考察阅读细节提取与家庭信息推断。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-021",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "F",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-reading-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-word-001"
+              ],
+              "question": "阅读 Mike 介绍学校的邮件，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Mike. Welcome to my school! My school is very big. There are two teaching buildings and a library in my school. The library is between the two teaching buildings. There is a big playground behind the library. We often play games there after school. My favourite place is the art room. It's on the second floor of the first teaching building. I love my school.\n(1) Mike's school is small. (2) The library is between the two teaching buildings. (3) The playground is in front of the library. (4) Mike's favourite place is the art room.",
+              "explanation": "由 My school is very big 可知(1)F；由 The library is between the two teaching buildings 可知(2)T；由 There is a big playground behind the library 可知(3)F（文中是 behind，不是 in front of）；由 My favourite place is the art room 可知(4)T。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-022",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "F",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "阅读 Alex 的帖子，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Alex from Canada. My favourite subject is drama. I like it because I can act and express myself. Some of my friends don't like it. They think it is boring. But I think it is very fun and useful. We have drama class on Tuesday and Friday afternoons. I am also good at music. I can play the piano.\n(1) Alex doesn't like drama because it's boring. (2) Alex can play the piano. (3) Alex has drama class on Monday. (4) Alex thinks drama is fun and useful.",
+              "explanation": "由 My favourite subject is drama 和 I like it because I can act... 可知(1)F；由 I can play the piano 可知(2)T；由 We have drama class on Tuesday and Friday afternoons 可知(3)F；由 But I think it is very fun and useful 可知(4)T。材料改编自国外青少年学科喜好帖子。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-023",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "F"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "阅读以下课程表并判断句子正误（T/F）。\n\n| Day | Subject |\n|---|---|\n| Monday | English, math, PE |\n| Tuesday | Chinese, science, music |\n| Wednesday | math, English, art |\n| Thursday | history, PE, science |\n| Friday | Chinese, English, music |\n\n(1) We have English four times a week. (2) We have PE on Monday and Thursday. (3) We have art on Wednesday. (4) Science is on Tuesday and Friday.",
+              "explanation": "由课程表可知 English 出现在周一、周三、周五共三次，故(1)F；PE 在周一和周四，故(2)T；art 在周三，故(3)T；science 在周二和周四，不是周五，故(4)F"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-024",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "A; B; C",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p6::kp-sentence-001",
+                "unit-english-7-up-rjb-p6::kp-word-001"
+              ],
+              "question": "根据对话内容，从方框中选择适当的句子补全对话。\n\nA. What time do you get up?  B. What do you do after that?  C. When do you go to bed?  D. Do you get up early?  E. What time do you have breakfast?\n\nA: Hi, Mike. ______ (1)\nB: I usually get up at 6:30.\nA: ______ (2)\nB: I have breakfast and go to school.\nA: ______ (3)\nB: I go to bed at 10:00.",
+              "explanation": "第一空根据答语 I usually get up at 6:30. 可知询问起床时间，A 符合；第二空根据答语 I have breakfast and go to school. 可知询问起床后的活动，B 符合；第三空根据答语 I go to bed at 10:00. 可知询问睡觉时间，C 符合。改编自太原市期末补全对话题型。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-025",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "subjects; because; But; favourite; interesting",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001",
+                "unit-english-7-up-rjb-p4::kp-writing-001"
+              ],
+              "question": "阅读短文，用方框中所给词的正确形式填空（每词限用一次）。\n\ninterest  subject  because  but  favourite\n\nHello! I'm Wang Mei from Taiyuan Pingmin Middle School. Let me tell you about my ______ (1). My favourite subject is English. I like it ______ (2) it is useful. Our English teacher is very kind. I also like music. I can sing songs. ______ (3) I don't like math. It is difficult for me. My ______ (4) day is Friday because we have English and music. I think all subjects are ______ (5) and important.",
+              "explanation": "第一空 tell you about my subjects 表示“告诉你我的学科”；第二空 because 引导原因；第三空 But 表转折；第四空 favourite day 表示“最喜欢的一天”；第五空 interesting 描述学科有趣。综合考查学科词汇与连词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-026",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "I want to join a club.; I can sing and dance.; When does it meet?",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p5::kp-word-001"
+              ],
+              "question": "补全对话，每空一句。\nA: Hello! Can I help you?\nB: Yes, please. ______ (1)\nA: We have many clubs. What can you do?\nB: ______ (2)\nA: Great! You can join the music club.\nB: ______ (3)\nA: It meets on Tuesday and Thursday afternoons.\nB: Thank you!",
+              "explanation": "第一空根据 Can I help you? 和下文 We have many clubs. 可知是想加入社团；第二空根据 What can you do? 应回答能力；第三空根据 It meets on... 可知是询问社团活动时间。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-027",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. in",
+                "B. on",
+                "C. at",
+                "D. from"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-word-001",
+                "unit-english-7-up-rjb-p1::kp-sentence-001"
+              ],
+              "question": "I am a student at Taiyuan Pingmin Middle School. I am ______ Class 3, Grade 7.",
+              "explanation": "在几班用介词 in。故选 A。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-028",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. uncle",
+                "B. aunt",
+                "C. cousin",
+                "D. sister"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-word-001"
+              ],
+              "question": "My mother's sister is my ______.",
+              "explanation": "妈妈的姐妹是阿姨，英文为 aunt。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-029",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. science lab",
+                "B. music room",
+                "C. art room",
+                "D. gym"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-word-001"
+              ],
+              "question": "We do experiments in the ______.",
+              "explanation": "做实验在科学实验室，science lab 意为“科学实验室”。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-030",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. math",
+                "B. English",
+                "C. music",
+                "D. PE"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-word-001"
+              ],
+              "question": "We learn numbers and shapes in ______ class.",
+              "explanation": "学习数字和图形在数学课上，math 意为“数学”。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-031",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "doctor; teacher",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-word-001"
+              ],
+              "question": "根据汉语提示写出单词。\nMy father is a ______ (医生). My mother is a ______ (教师).",
+              "explanation": "医生 doctor；教师 teacher。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-032",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "make friends; be from / come from; be in Class 1, Grade 7",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-word-001",
+                "unit-english-7-up-rjb-p1::kp-sentence-001"
+              ],
+              "question": "根据汉语提示写出短语。\n交朋友 ______    来自 ______    在七年级一班 ______",
+              "explanation": "交朋友 make friends；来自 be from 或 come from；在七年级一班 be in Class 1, Grade 7。注意班级在前，年级在后。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-033",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "How does; go",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "根据答语补全问句，每空一词。\n—______ ______ your sister ______ to school?\n—She walks to school.",
+              "explanation": "答语 She walks to school. 表示交通方式，问句用 How does your sister go to school? 主语第三人称单数用 does，实义动词用原形 go。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-034",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "across from; between",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-word-001"
+              ],
+              "question": "用适当的方位介词填空。\nThe library is ______ (在……对面) the playground. The dining hall is ______ (在……之间) the library and the gym.",
+              "explanation": "在……对面用 across from；在……之间用 between... and... 考查方位介词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-035",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "is; in; between; are",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-sentence-001"
+              ],
+              "question": "阅读短文，用适当的词填空。\nLook at the picture of my school. There ______ (1) a big playground in the middle. The teaching building is ______ (2) front of the playground. The library is ______ (3) the teaching building and the dining hall. There ______ (4) many books in it. I like my school very much.",
+              "explanation": "第一空主语 a big playground 是单数，用 is；第二空 in front of 表示“在……前面”；第三空 between... and... 表示“在……之间”；第四空 many books 是复数，用 are。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-036",
+              "type": "multiple",
+              "difficulty": "提高",
+              "options": [
+                "A. What club do you want to join?",
+                "B. Can you speak English?",
+                "C. Do you like English?",
+                "D. What can you do?",
+                "E. Why do you like English?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Lucy. 1. ______\n—I want to join the English club.\n—2. ______\n—Yes, I can. I can speak English well.",
+              "explanation": "第一空根据答语 I want to join the English club. 可知询问想加入的社团，A 符合；第二空根据答语 Yes, I can. 可知问句是 Can 引导的一般疑问句，B 符合。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-037",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. Yes, it is. These are my parents and my sister.",
+                "B. No, it isn't. I don't have a family photo.",
+                "C. She is my aunt. She often helps me with my English.",
+                "D. She is my mother. She teaches Chinese in a middle school.",
+                "E. They are my grandparents. They live in the countryside."
+              ],
+              "answer": [
+                "A",
+                "D"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hello, Peter. Is this a photo of your family?\n—______\n—Who is the woman next to you?\n—______",
+              "explanation": "第一空后文问 Who is the woman 说明照片中有家人，A 承上启下；第二空询问紧挨着的女人是谁，用 She is... 回答，D 回答是妈妈，符合语境。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-038",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": "T",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-word-001"
+              ],
+              "question": "'grandfather' 的意思是 '祖父；外祖父'。",
+              "explanation": "grandfather 可以指父亲的父亲（祖父），也可以指母亲的父亲（外祖父）。故本题正确。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-039",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": "F",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-phonetic-001"
+              ],
+              "question": "在句子 'I get up at six in the morning.' 中，'at' 和 'the' 通常需要重读。",
+              "explanation": "英语句子中实词通常重读，虚词通常弱读。at 和 the 是虚词，应弱读。故本题错误。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-040",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": "F",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001"
+              ],
+              "question": "'Does he has a brother?' 这句话是正确的。",
+              "explanation": "Does 后面应接动词原形，have 不能变为 has。正确句子是 'Does he have a brother?'。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-041",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "F"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p7::kp-reading-001"
+              ],
+              "question": "阅读英国学生 Jack 的邮件，判断下列句子是否正确，正确写 T，错误写 F。\nHi! I'm Jack from London. I get up at 7:00 and go to school at 8:00. My favourite subject is science because it is interesting. I want to join the science club. My birthday is on February 3rd. I usually have a party with my friends. We eat pizza and play football in the park.\n(1) Jack is from Canada. (2) Jack's favourite subject is science. (3) Jack's birthday is in February. (4) Jack usually has a birthday party with his family.",
+              "explanation": "跨单元综合阅读。由 I'm Jack from London. 可知(1)F；由 My favourite subject is science... 可知(2)T；由 My birthday is on February 3rd. 可知(3)T；由 I usually have a party with my friends. 可知(4)F。材料改编自国外青少年邮件语篇。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-042",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. To introduce his school day in Finland.",
+                "B. To ask for birthday presents.",
+                "C. To show his favourite club.",
+                "D. To talk about his family."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-reading-001",
+                "unit-english-7-up-rjb-p6::kp-writing-001",
+                "unit-english-7-up-rjb-p6::kp-word-001"
+              ],
+              "question": "阅读 Mika 的学校日介绍，选择最佳答案。\nHello! My name is Mika. I am from Finland. I am 13 years old. I get up at 7:00. I have breakfast at 7:30. School starts at 8:30. We have four classes in the morning. I have lunch at 11:30. In the afternoon, we have two classes. School ends at 2:30. After school, I often play football with my friends. I go home at 4:00. I do my homework from 4:30 to 5:30. I have dinner at 6:00. I go to bed at 9:30.\nWhat is Mika's main purpose in writing this text?",
+              "explanation": "文章按时间顺序介绍 Mika 从起床到睡觉的学校日，主要目的是介绍他在芬兰的学校日。材料改编自 BBC Learning English 与 National Geographic Kids 风格语篇。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-043",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "second; next; in",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-reading-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-word-001"
+              ],
+              "question": "阅读短文，完成表格（每空不超过3个词）。\n\nMy name is Li Hua. I am a student at Taiyuan Pingmin Middle School. My school is very big and beautiful. There are three classroom buildings. My classroom is on the second floor. There is a modern library next to the classroom building. I often read books there after class. The playground is in front of the dining hall. We have PE class on the playground.\n\n| Place | Position |\n|---|---|\n| Classroom | On the ______ (1) floor |\n| Library | ______ (2) to the classroom building |\n| Playground | ______ (3) front of the dining hall |",
+              "explanation": "由 My classroom is on the second floor 可知(1)second；由 a modern library next to the classroom building 可知(2)next；由 The playground is in front of the dining hall 可知(3)in。改编自太原市期末任务型阅读题型。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-044",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "English.; Because it's interesting and useful.; Play games with them.",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "阅读短文，回答问题（每题不超过5个词）。\n\nHi! I'm Li Hua from Taiyuan Pingmin Middle School. My favourite subject is English. I like it because it is interesting and useful. Our English teacher is very kind. She often plays games with us in class. I also like PE. I can play basketball with my friends. But I don't like history. It is boring for me.\n(1) What is Li Hua's favourite subject?\n(2) Why does Li Hua like English?\n(3) What does Li Hua's English teacher often do in class?",
+              "explanation": "由 My favourite subject is English 可知(1)；由 I like it because it is interesting and useful 可知(2)；由 She often plays games with us in class 可知(3)。改编自太原市期末任务型阅读简答题。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-045",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. He is from Taiyuan.",
+                "B. He is in Class 3.",
+                "C. He is 13 years old.",
+                "D. He likes basketball."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-sentence-001",
+                "unit-english-7-up-rjb-p1::kp-reading-001"
+              ],
+              "question": "— Where is Li Ming from?\n— ______",
+              "explanation": "Where... from? 询问来自哪里，回答用 He is from... 故选 A。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-046",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. He is a doctor.",
+                "B. He is fine.",
+                "C. He is at home.",
+                "D. He likes reading."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "— What does your father do?\n— ______",
+              "explanation": "What does your father do? 询问职业，回答用 He is a... 故选 A。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-047",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "Where; there; How",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-sentence-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-001"
+              ],
+              "question": "用适当的词填空。\nA: ______ (1) is the library?\nB: It's next to the classroom building.\nA: Is there a gym in your school?\nB: Yes, ______ (2) is.\nA: ______ (3) many students are there in your class?\nB: There are 45.",
+              "explanation": "第一空询问位置用 Where；第二空 There be 句型肯定回答用 there is；第三空询问数量用 How many。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-048",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-reading-001",
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "阅读社团广告，判断下列句子是否正确（T/F）。\n\nMusic Club: Do you like music? Can you sing or dance? Join us! We meet on Tuesday and Thursday afternoons. Call Ms. Li at 123-4567.\nEnglish Club: Do you want to speak English well? We watch English movies and sing English songs. We meet on Friday afternoon. Email Mr. Wang at wang@example.com.\n\n(1) The Music Club meets on Monday and Wednesday. (2) You can email Mr. Wang to join the English Club. (3) The English Club watches English movies.",
+              "explanation": "由 Music Club 中 We meet on Tuesday and Thursday afternoons 可知(1)F；由 English Club 中 Email Mr. Wang at wang@example.com 可知(2)T；由 We watch English movies 可知(3)T。材料改编自国外学校社团广告。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-049",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. What time do you get up?",
+                "B. What do you do after that?",
+                "C. When do you go to bed?",
+                "D. Do you get up early?",
+                "E. What time do you have breakfast?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p6::kp-sentence-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-002"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Mike. 1. ______\n—I usually get up at 6:30.\n—2. ______\n—I have breakfast and go to school.",
+              "explanation": "第一空根据答语 I usually get up at 6:30. 可知询问具体起床时间，A 符合；第二空根据答语 I have breakfast and go to school. 可知询问起床后的活动，B 符合。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-050",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "on; 15th; at",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-writing-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "阅读短文，用适当的词填空。\nDear Tom,\nMy birthday party is ______ (1) Saturday, October ______ (2). It starts ______ (3) 3:00 p.m. I hope you can come.\nYours,\nLi Hua",
+              "explanation": "跨单元综合题。具体某一天前用 on；日期用序数词 15th；具体钟点前用 at。融合生日邀请、序数词与时间介词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-051",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. speak; play",
+                "B. speaks; play",
+                "C. speak; plays",
+                "D. speaks; plays"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "She can ______ English very well, but she can't ______ the piano.",
+              "explanation": "can 是情态动词，后面必须接动词原形，不能加 -s。第一空用 speak，第二空用 play。故选 A。易错点：受第三人称单数影响误选 speaks 或 plays。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-052",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. a quarter past six",
+                "B. a quarter to six",
+                "C. a quarter to seven",
+                "D. six forty-five past"
+              ],
+              "answer": "C",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "6:45 can be read as ______.",
+              "explanation": "6:45 表示差一刻七点，逆读法为 a quarter to seven。分钟数大于 30 时用 to，表示“差……分到下一个钟点”。故选 C。易错点：混淆 past 和 to 的使用规则。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-053",
+              "type": "single",
+              "difficulty": "基础",
+              "options": [
+                "A. five",
+                "B. fifth",
+                "C. fiveth",
+                "D. fivth"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-grammar-001"
+              ],
+              "question": "The ______ day of May is my birthday.",
+              "explanation": "表示“第五”用序数词 fifth，注意 five 变为 fifth 时 ve 变成 f 再加 th。故选 B。易错点：拼写错误，如 fiveth 或 fivth。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-054",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. What",
+                "B. How",
+                "C. When",
+                "D. Where"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002"
+              ],
+              "question": "— ______ do you celebrate your birthday?\n— I usually have a party with my friends.",
+              "explanation": "答语 I usually have a party with my friends. 回答的是庆祝方式，因此问句用 How。A 询问活动内容，C 询问时间，D 询问地点。故选 B。易错点：混淆 How 和 What 的提问功能。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-055",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. What time; What",
+                "B. When; What",
+                "C. What time; When",
+                "D. What; What time"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p6::kp-sentence-001"
+              ],
+              "question": "— ______ does your father go to work?\n— He goes to work at 7:30.\n— ______ does he do after work?\n— He usually exercises.",
+              "explanation": "第一空根据答语 at 7:30 可知询问具体时间点，用 What time 更精确；第二空根据答语 He usually exercises. 可知询问活动内容，用 What。故选 A。易错点：混淆 What time 和 What 的用法。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-056",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. parents",
+                "B. parents'",
+                "C. parent's",
+                "D. parents's"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-002"
+              ],
+              "question": "This is my ______ room. It's very clean. Tom and Jack share it.",
+              "explanation": "句意为：这是我父母的房间。parents 是以 -s 结尾的复数名词，所有格直接加 '。故选 B。易错点：误加 's 或混淆单复数所有格。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-057",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. is; is",
+                "B. are; is",
+                "C. is; are",
+                "D. are; are"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "There ______ a library and two classroom buildings in my school. The library ______ between the two buildings.",
+              "explanation": "There be 遵循就近原则，靠近 be 动词的是 a library（单数），用 is；第二空主语 The library 是单数，用 is。故选 A。易错点：受 two classroom buildings 影响误用 are。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-058",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. Because it is interesting, I like it.",
+                "B. It is interesting, so I like it.",
+                "C. Both A and B.",
+                "D. Because it is interesting, but I like it."
+              ],
+              "answer": "C",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-001"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nBecause it is interesting, so I like it.",
+              "explanation": "在英语中，because 和 so 不能同时出现在一个句子中。A 只用 because 引导原因，B 只用 so 引导结果，均正确。故选 C。逆向思维：根据错误句子反推连词规则。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-059",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. is; in front of; play",
+                "B. are; in front of; play",
+                "C. is; in front of; plays",
+                "D. are; behind; play"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "— Can you tell me about your school?\n— Sure. There ______ a big playground ______ the dining hall. We can ______ football there.",
+              "explanation": "跨单元综合题。第一空 a big playground 是单数，用 is；第二空表示“在餐厅前面”用 in front of；第三空 can 后接动词原形 play。故选 A。融合 There be、方位介词与 can 的用法。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-060",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. get; 1st",
+                "B. gets; 1st",
+                "C. get; first",
+                "D. gets; first"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-001"
+              ],
+              "question": "My sister ______ up at 6:30. She has breakfast at 7:00. Her birthday is on October ______.",
+              "explanation": "跨单元综合题。第一空主语 My sister 是第三人称单数，get 加 -s 变为 gets；第二空日期用序数词缩写 1st。故选 B。融合一般现在时第三人称单数、时间表达与序数词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-061",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. Why; Because; but",
+                "B. Why; So; and",
+                "C. When; Because; but",
+                "D. What; Because; and"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-word-001"
+              ],
+              "question": "— ______ do you like English?\n— ______ it is useful. I also like math, ______ I don't like history.",
+              "explanation": "跨单元综合题。第一空答语 Because... 回答原因，用 Why；第二空用 Because 引导原因；第三空前后“喜欢数学”和“不喜欢历史”是转折关系，用 but。故选 A。融合 Wh- 疑问句、连词与学科词汇。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-062",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. can; art club",
+                "B. can; music club",
+                "C. can't; art club",
+                "D. can't; music club"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-001"
+              ],
+              "question": "My friend Li Ming ______ draw well. He wants to join the ______ because he likes drawing.",
+              "explanation": "跨单元综合题。根据 he likes drawing 可知他会画画，用 can；喜欢画画加入美术社，用 art club。故选 A。融合社团词汇、can 表能力与一般现在时。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-063",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. am; am; are; am",
+                "B. is; am; is; are",
+                "C. am; is; are; is",
+                "D. are; am; are; am"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-sentence-001",
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p1::kp-grammar-002"
+              ],
+              "question": "— Hi, I ______ Li Hua. Are you from Taiyuan?\n— No, I ______ not. My parents ______ from London, but I ______ in Taiyuan now.",
+              "explanation": "跨单元综合题。I 用 am；I am not 用 am；My parents 是复数用 are；I 用 am。故选 A。融合问候句型、be 动词与主格代词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-064",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "join; club; sing",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "补全对话，每空一词。\nA: Hello! Can I help you?\nB: Yes, please. I want to ______ a club.\nA: What ______ do you want to join?\nB: I want to join the music club. I can ______ and dance.",
+              "explanation": "加入社团用 join；询问什么社团用 What club；会唱歌用 sing。考查社团相关词汇与 can 的用法。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-065",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "get up; have; go; do; brush",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-word-001",
+                "unit-english-7-up-rjb-p6::kp-sentence-001"
+              ],
+              "question": "用方框中所给词的正确形式填空（每词限用一次）。\nget up  have  go  do  brush\nI usually ______ (1) at 6:30 in the morning. I ______ (2) breakfast at 7:00. Then I ______ (3) to school at 7:30. I ______ (4) my homework in the evening. I ______ (5) my teeth before bed.",
+              "explanation": "起床 get up；吃早饭 have breakfast；去上学 go to school；做作业 do homework；刷牙 brush teeth。考查日常活动词汇与一般现在时。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-066",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "Can you come?; When does it start?; Where is it?",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002"
+              ],
+              "question": "补全对话，每空一句。\nA: Hi, Tom. My birthday party is on Saturday. ______ (1)\nB: Yes, I'd love to. ______ (2)\nA: It starts at 3:00 p.m.\nB: OK. ______ (3)\nA: At my home.",
+              "explanation": "第一空邀请对方来参加聚会；第二空询问开始时间；第三空询问地点。考查生日邀请与 Wh- 疑问句。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-067",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "favourite; because; interesting; But; subjects",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "用方框中所给词的正确形式填空（每词限用一次）。\nbecause  but  interesting  favourite  subject\nMy ______ (1) subject is English. I like it ______ (2) it is useful. I also like music. It is ______ (3). ______ (4) I don't like math. It is difficult for me. We have many ______ (5) at school.",
+              "explanation": "最喜欢的科目 favourite subject；because 引导原因；interesting 描述音乐有趣；But 表转折；many subjects 许多科目。考查学科词汇与连词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-068",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "around; Where; next; is; beautiful",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-sentence-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "补全对话，每空一词。\nA: Welcome to our school! Let me show you ______ (1).\nB: Thank you. ______ (2) is the library?\nA: It's ______ (3) to the classroom building.\nB: Is there a gym?\nA: Yes, there ______ (4). It's behind the library.\nB: Your school is very ______ (5).",
+              "explanation": "show you around 带你参观；Where 询问地点；next to 在旁边；There is 肯定回答；beautiful 描述学校。考查学校设施与方位介词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-069",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "have; are; likes; live; kind",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-word-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "用方框中所给词的正确形式填空（每词限用一次）。\nbe  have  like  live  kind\nMy name is David. I ______ (1) a big family. My father and mother ______ (2) both teachers. My sister Sarah ______ (3) reading books. My grandparents ______ (4) with us. We are very happy. My family is very ______ (5) to me.",
+              "explanation": "I have a big family；父母是复数用 are；Sarah 第三人称单数 likes；祖父母 live with us；kind 描述家庭。考查家庭词汇与一般现在时。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-070",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "What time do you get up?; What do you do after that?; When do you go to bed?",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p6::kp-sentence-001",
+                "unit-english-7-up-rjb-p6::kp-word-001"
+              ],
+              "question": "补全对话，每空一句。\nA: Hi, Mike. ______ (1)\nB: I usually get up at 6:30.\nA: ______ (2)\nB: I have breakfast and go to school.\nA: ______ (3)\nB: I go to bed at 10:00.",
+              "explanation": "第一空询问起床时间；第二空询问起床后的活动；第三空询问睡觉时间。考查日常作息与 Wh- 疑问句。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-071",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "on; 15th; at; blow; tell",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-writing-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "阅读 Li Hua 的生日邀请函，用适当的词填空。\nDear Tom,\nMy birthday party is ______ (1) Saturday, October ______ (2). It starts ______ (3) 3:00 p.m. My mother will make a big cake. We will sing songs and ______ (4) out the candles. I hope you can come. Please ______ (5) me before Friday.\nYours,\nLi Hua",
+              "explanation": "跨单元综合题。具体某一天前用 on；日期用序数词 15th；具体钟点前用 at；吹灭蜡烛是 blow out candles；告诉某人用 tell。融合生日邀请、序数词与时间介词。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-072",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "What club do you want to join?; Can you speak English?; Why do you want to join it?",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-002"
+              ],
+              "question": "补全对话，每空一句。\nA: Hi, Lucy. ______ (1)\nB: I want to join the English club.\nA: ______ (2)\nB: Yes, I can. I can speak English well.\nA: ______ (3)\nB: Because I want to talk to people from other countries.",
+              "explanation": "跨单元综合题。第一空根据答语 I want to join the English club. 可知询问想加入的社团；第二空根据答语 Yes, I can. 可知是 Can 引导的一般疑问句；第三空根据答语 Because... 可知询问原因。融合社团、can 与 Wh- 疑问句。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-073",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "am; get; have; go; likes",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p6::kp-word-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-001"
+              ],
+              "question": "用方框中所给词的正确形式填空（每词限用一次）。\nbe  have  like  go  do\nMy name is Peter. I ______ (1) a student at Taiyuan Pingmin Middle School. I ______ (2) up at 6:30 every day. I ______ (3) breakfast at 7:00. Then I ______ (4) to school at 7:30. My sister ______ (5) reading books. We are very happy.",
+              "explanation": "跨单元综合题。I 用 am；起床 get up；吃早饭 have breakfast；去上学 go to school；主语 My sister 是第三人称单数，like 加 -s 变为 likes。融合 be 动词、日常作息与一般现在时。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-074",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "second; next; in; English; interesting and useful",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-reading-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-word-001"
+              ],
+              "question": "阅读短文，完成任务型阅读（每空不超过3个词）。\n\nMy name is Li Hua. I am a student at Taiyuan Pingmin Middle School. My school is very big and beautiful. There are three classroom buildings. My classroom is on the second floor. There is a modern library next to the classroom building. I often read books there after class. The playground is in front of the dining hall. We have PE class on the playground. My favourite subject is English because it is interesting and useful.\n\n| Information | Answer |\n|---|---|\n| Classroom floor | On the ______ (1) floor |\n| Library position | ______ (2) to the classroom building |\n| Playground position | ______ (3) front of the dining hall |\n| Favourite subject | ______ (4) |\n| Reason for liking English | Because it is ______ (5) |",
+              "explanation": "跨单元任务型阅读。由 My classroom is on the second floor 可知(1)second；由 a modern library next to the classroom building 可知(2)next；由 The playground is in front of the dining hall 可知(3)in；由 My favourite subject is English 可知(4)English；由 because it is interesting and useful 可知(5)interesting and useful。融合学校设施、方位介词与学科喜好。改编自太原市期末任务型阅读题型。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-075",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "London.; Science.; On February 3rd.; Play football.",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p7::kp-reading-001"
+              ],
+              "question": "阅读短文，回答问题（每题不超过5个词）。\n\nHi! I'm Jack from London. I get up at 7:00 and go to school at 8:00. My favourite subject is science because it is interesting. I want to join the science club. My birthday is on February 3rd. I usually have a party with my friends. We eat pizza and play football in the park.\n(1) Where is Jack from?\n(2) What is Jack's favourite subject?\n(3) When is Jack's birthday?\n(4) What do Jack and his friends do in the park?",
+              "explanation": "跨单元任务型阅读。由 I'm Jack from London. 可知(1)；由 My favourite subject is science... 可知(2)；由 My birthday is on February 3rd. 可知(3)；由 We eat pizza and play football in the park. 可知(4)。材料改编自国外青少年邮件语篇。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-076",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "subject; because; can; club; birthday",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-001",
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ],
+              "question": "用方框中所给词的正确形式填空（每词限用一次）。\nclub  can  subject  because  birthday\nHello! I'm Wang Mei from Taiyuan Pingmin Middle School. My favourite ______ (1) is English. I like it ______ (2) it is useful. I ______ (3) speak English well. I want to join the English ______ (4). My ______ (5) is on May 8th. I usually have a party with my friends.",
+              "explanation": "跨单元综合题。最喜欢的科目 favourite subject；because 引导原因；can 表能力；英语社 English club；生日 birthday。融合学科、社团、能力与生日表达。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-077",
+              "type": "multiple",
+              "difficulty": "提高",
+              "options": [
+                "A. What club do you want to join?",
+                "B. Can you speak English?",
+                "C. Do you like English?",
+                "D. What can you do?",
+                "E. Why do you like English?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Lucy. 1. ______\n—I want to join the English club.\n—2. ______\n—Yes, I can. I can speak English well.",
+              "explanation": "第一空根据答语 I want to join the English club. 可知询问想加入的社团，A 符合；第二空根据答语 Yes, I can. 可知问句是 Can 引导的一般疑问句，B 符合。C 是一般疑问句，回答用 Yes/No；D 是特殊疑问句，不能用 Yes 回答；E 询问原因，回答用 Because。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-078",
+              "type": "multiple",
+              "difficulty": "提高",
+              "options": [
+                "A. What's your favourite subject?",
+                "B. Why do you like it?",
+                "C. Do you like science?",
+                "D. How do you like science?",
+                "E. When do you have science?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-sentence-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Mike. 1. ______\n—I like science best.\n—2. ______\n—Because it is interesting and useful.",
+              "explanation": "第一空根据答语 I like science best. 可知询问最喜欢的科目，A 符合；第二空根据答语 Because... 可知询问原因，B 符合。C 是一般疑问句，D 询问看法，E 询问时间。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-079",
+              "type": "multiple",
+              "difficulty": "提高",
+              "options": [
+                "A. When is your birthday?",
+                "B. How do you celebrate your birthday?",
+                "C. What do you do on your birthday?",
+                "D. Do you have a birthday party?",
+                "E. Where do you have the party?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002",
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Jack. 1. ______\n—It's on February 3rd.\n—2. ______\n—I usually have a party with my friends.",
+              "explanation": "第一空根据答语 It's on February 3rd. 可知询问生日日期，A 符合；第二空根据答语 I usually have a party with my friends. 可知询问庆祝方式，B 符合。C 询问具体活动，D 是一般疑问句，E 询问地点。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-080",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. What do you do in the morning?",
+                "B. What time do you get up?",
+                "C. What's your favourite subject?",
+                "D. What club do you want to join?",
+                "E. When do you go to bed?"
+              ],
+              "answer": [
+                "A",
+                "C"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p5::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Peter. 1. ______\n—I usually get up at 6:30 and go to school at 7:30.\n—2. ______\n—My favourite subject is English. I want to join the English club.",
+              "explanation": "跨单元综合题。第一空根据答语描述早晨活动可知询问早晨做什么，A 符合；第二空根据答语 My favourite subject is English. 可知询问最喜欢的科目，C 符合。B 只问起床时间，D 只问社团，E 问睡觉时间，均不全面。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-081",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. Yes, it is. These are my parents and my sister.",
+                "B. No, it isn't. I don't have a family photo.",
+                "C. She is my aunt. She often helps me with my English.",
+                "D. She is my mother. She teaches Chinese in a middle school.",
+                "E. They are my grandparents. They live in the countryside."
+              ],
+              "answer": [
+                "A",
+                "D"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p2::kp-grammar-002",
+                "unit-english-7-up-rjb-p2::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hello, Emma. Is this a photo of your family?\n—______\n—Who is the woman next to you?\n—______",
+              "explanation": "跨单元综合题。第一空后文问 Who is the woman 说明照片中有家人，A 承上启下；第二空询问紧挨着的女人是谁，用 She is... 回答，D 回答是妈妈，符合家庭照片语境。C 也是 She is...，但与前后文关联不如 D 紧密。融合 be 动词、名词所有格与家庭交际语境。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-082",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. When is your birthday?",
+                "B. How do you celebrate your birthday?",
+                "C. What do you do on your birthday?",
+                "D. Do you have a birthday party?",
+                "E. Where do you have the party?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-sentence-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-002",
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Li Hua. 1. ______\n—My birthday is on October 15th.\n—2. ______\n—I usually have a party with my family. We eat cake and sing songs.",
+              "explanation": "跨单元综合题。第一空根据答语 My birthday is on October 15th. 可知询问生日日期，A 符合；第二空根据答语描述庆祝方式，B 符合。C 询问具体活动，D 是一般疑问句，E 询问地点。融合生日日期、庆祝方式与 Wh- 疑问句。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-083",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "F"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-reading-001",
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ],
+              "question": "阅读 Emma 的生日帖子，判断下列句子是否正确，正确写 T，错误写 F。\nHi! I'm Emma from Canada. My birthday is on November 8th. I usually have a party with my family. My mother makes a big cake. I make a wish and blow out the candles. My friends give me presents and cards. We sing songs and play games. I am very happy on my birthday.\n(1) Emma's birthday is on November 18th. (2) Emma's mother makes a big cake. (3) Emma's friends give her presents and cards. (4) Emma doesn't like her birthday.",
+              "explanation": "由 My birthday is on November 8th. 可知(1)F；由 My mother makes a big cake. 可知(2)T；由 My friends give me presents and cards. 可知(3)T；由 I am very happy on my birthday. 可知(4)F。考查阅读细节提取与情感推断。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-084",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-reading-001",
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "阅读英国 Greenfield School 社团招募广告，判断下列句子是否正确，正确写 T，错误写 F。\nWelcome to Greenfield School! We have many fun clubs for you.\nChess Club: Do you like playing chess? Come and join us! We meet on Wednesday afternoons. Please call Mr. Black at 555-0123.\nDrama Club: Can you act? Do you like telling stories? Join the drama club! We meet on Friday afternoons. Please email Ms. Green at green@example.com.\nPhotography Club: Do you have a camera? Can you take photos? We meet on Monday afternoons. Please call Mr. White at 555-0456.\n(1) The Chess Club meets on Monday afternoons. (2) You can email Ms. Green to join the Drama Club. (3) The Photography Club needs students who can take photos.",
+              "explanation": "由 Chess Club 广告中 We meet on Wednesday afternoons. 可知(1)F；由 Drama Club 广告中 Please email Ms. Green at green@example.com. 可知(2)T；由 Photography Club 广告中 Can you take photos? 可知(3)T。材料改编自国外学校社团招募广告。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-085",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "F"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-reading-001",
+                "unit-english-7-up-rjb-p6::kp-word-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "阅读 Emily 的学校日介绍，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Emily from Australia. I get up at 7:00 in the morning. I have breakfast at 7:30. School starts at 8:30. We have four classes in the morning. I have lunch at 12:30. In the afternoon, we have two classes. School ends at 3:30. After school, I play netball with my friends. I go home at 5:00. I do my homework from 6:00 to 7:00. I have dinner at 7:30. I go to bed at 9:00.\n(1) Emily is from the UK. (2) Emily has lunch at 12:30. (3) Emily plays netball after school. (4) Emily goes to bed at 10:00.",
+              "explanation": "由 Hi, I'm Emily from Australia. 可知(1)F；由 I have lunch at 12:30. 可知(2)T；由 After school, I play netball with my friends. 可知(3)T；由 I go to bed at 9:00. 可知(4)F。材料改编自国外青少年日常作息语篇。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-086",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "T",
+                "F",
+                "T",
+                "F"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p6::kp-reading-001",
+                "unit-english-7-up-rjb-p7::kp-reading-001"
+              ],
+              "question": "阅读以下跨单元短文，判断句子正误（T/F）。\nHi! I'm Mika from Finland. I get up at 7:00. My favourite subject is science because it is interesting. I want to join the science club. My birthday is on February 3rd. I usually have a party with my friends. We eat pizza and play football in the park. After school, I often play football with my friends.\n(1) Mika is from Finland. (2) Mika's favourite subject is English. (3) Mika's birthday is in February. (4) Mika usually has a birthday party with his family.",
+              "explanation": "跨单元综合阅读。由 I'm Mika from Finland. 可知(1)T；由 My favourite subject is science... 可知(2)F；由 My birthday is on February 3rd. 可知(3)T；由 I usually have a party with my friends. 可知(4)F。材料改编自 BBC Learning English 与 National Geographic Kids 风格语篇。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-087",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p7::kp-reading-001",
+                "unit-english-7-up-rjb-p7::kp-word-001"
+              ],
+              "question": "阅读以下跨单元短文，判断句子正误（T/F）。\nHello! I'm Alex from Canada. My favourite subject is drama because I can act and express myself. I want to join the drama club. I also like music. I can play the piano. My birthday is on May 1st. I usually have a party with my friends. We sing songs and play games.\n(1) Alex is from the UK. (2) Alex can play the piano. (3) Alex's favourite subject is drama. (4) Alex's birthday is in May.",
+              "explanation": "跨单元综合阅读。由 I'm Alex from Canada. 可知(1)F；由 I can play the piano. 可知(2)T；由 My favourite subject is drama... 可知(3)T；由 My birthday is on May 1st. 可知(4)T。材料改编自国外青少年学科喜好与生日帖子。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-088",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. Birthday foods are the same around the world.",
+                "B. Different countries have different birthday traditions.",
+                "C. Only Chinese people eat noodles on birthdays.",
+                "D. Birthday parties are not popular in Western countries."
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p7::kp-reading-001",
+                "unit-english-7-up-rjb-p7::kp-word-001",
+                "unit-english-7-up-rjb-p7::kp-sentence-001"
+              ],
+              "question": "阅读关于不同国家生日文化的短文，选择最佳答案。\nIn China, people often eat noodles on their birthdays. Long noodles mean a long life. In Western countries, people usually eat a birthday cake with candles. They make a wish and blow out the candles. In Mexico, there is a piñata at the party. Children hit the piñata and get candies and small presents. In Finland, families often have coffee and cake, and friends sing a birthday song.\nWhat is the main idea of this passage?",
+              "explanation": "文章介绍了中国、西方国家、墨西哥和芬兰不同的生日习俗，主旨是不同国家有不同的生日传统。A 与文意相反；C 过于绝对；D 与文意相反。材料改编自 National Geographic Kids 与 Highlights 风格跨文化语篇。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-089",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "6:30; 8:00; English; English club; 10:00",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p5::kp-reading-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "阅读短文，完成任务型阅读（每空不超过3个词）。\n\nHi! I'm Li Hua from Taiyuan Pingmin Middle School. Let me tell you about my school day. I get up at 6:30 in the morning. I have breakfast at 7:00. Then I go to school at 7:30. School starts at 8:00. We have four classes in the morning. I have lunch at 12:00. In the afternoon, we have two classes. School ends at 4:30. After school, I often play basketball with my friends. My favourite subject is English because it is interesting. I want to join the English club. I go to bed at 10:00.\n\n| Information | Answer |\n|---|---|\n| Get up time | ______ (1) |\n| School start time | ______ (2) |\n| Favourite subject | ______ (3) |\n| Club to join | ______ (4) |\n| Go to bed time | ______ (5) |",
+              "explanation": "跨单元任务型阅读。由 I get up at 6:30 可知(1)6:30；由 School starts at 8:00 可知(2)8:00；由 My favourite subject is English 可知(3)English；由 I want to join the English club 可知(4)English club；由 I go to bed at 10:00 可知(5)10:00。融合日常作息、学科喜好与社团选择。改编自太原市期末任务型阅读题型。"
+            },
+            {
+              "id": "sprint-english-7-up-final::sprint-ex-090",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "参考范文：\nDear Tom,\nHello! I'm Li Hua from Taiyuan Pingmin Middle School. Let me tell you about my school life. My favourite subject is English because it is interesting and useful. I want to join the English club. I can speak English well. I usually get up at 6:30 and go to school at 7:30. I go to bed at 10:00. My birthday is on October 15th. I usually have a party with my family. We eat cake and sing songs. What about your school life?\nYours,\nLi Hua",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-writing-001",
+                "unit-english-7-up-rjb-p5::kp-writing-001",
+                "unit-english-7-up-rjb-p6::kp-writing-001",
+                "unit-english-7-up-rjb-p7::kp-writing-001"
+              ],
+              "question": "书面表达。\n假设你是太原平民中学七年级学生李华，你的笔友 Tom 想了解你的学校生活。请你根据以下提示，给他写一封电子邮件，介绍你的学校生活。\n提示：\n1. 你最喜欢的科目及原因；\n2. 你想加入的社团及你的能力；\n3. 你的日常作息（起床、上学、睡觉时间）；\n4. 你的生日及庆祝方式。\n要求：\n1. 包含以上所有提示内容，可适当发挥；\n2. 不少于 60 词；\n3. 邮件格式已给出，不计入总词数。\n\nDear Tom,\n________________________________________________________________________\n________________________________________________________________________\n________________________________________________________________________\nYours,\nLi Hua",
+              "explanation": "跨单元综合书面表达。要求融合学科喜好、社团选择、日常作息与生日庆祝四个话题。评分要点：1. 内容完整，涵盖四个提示；2. 语法正确，一般现在时使用准确；3. 词汇丰富，能正确使用 because、can、时间表达、序数词等；4. 语篇连贯，邮件格式正确。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

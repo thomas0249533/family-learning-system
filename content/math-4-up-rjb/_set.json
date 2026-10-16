@@ -1,0 +1,157 @@
+{
+  "setId": "math-4-up-rjb-set",
+  "title": "四年级数学上（人教版）",
+  "subject": "math",
+  "grade": 4,
+  "term": "up",
+  "edition": "人教版",
+  "packages": [
+    {
+      "file": "unit-math-4-up-rjb-p1.json",
+      "packageId": "unit-math-4-up-rjb-p1",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-up-rjb-p2.json",
+      "packageId": "unit-math-4-up-rjb-p2",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-up-rjb-p3.json",
+      "packageId": "unit-math-4-up-rjb-p3",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-up-rjb-p4.json",
+      "packageId": "unit-math-4-up-rjb-p4",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-up-rjb-p5.json",
+      "packageId": "unit-math-4-up-rjb-p5",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-up-rjb-p6.json",
+      "packageId": "unit-math-4-up-rjb-p6",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "term-math-4-up-rjb.json",
+      "packageId": "term-math-4-up-rjb",
+      "type": "term",
+      "visible": true,
+      "dependencies": [
+        "unit-math-4-up-rjb-p1",
+        "unit-math-4-up-rjb-p2",
+        "unit-math-4-up-rjb-p3",
+        "unit-math-4-up-rjb-p4",
+        "unit-math-4-up-rjb-p5",
+        "unit-math-4-up-rjb-p6"
+      ]
+    },
+    {
+      "file": "daily-math-4-up-rjb-45d.json",
+      "packageId": "daily-math-4-up-rjb-45d",
+      "type": "daily",
+      "visible": true,
+      "dependencies": []
+    },
+    {
+      "file": "special-math-4-up-yunsuanlv.json",
+      "packageId": "special-math-4-up-yunsuanlv",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-math-4-up-rjb-p4::u5"],
+      "dependencies": ["unit-math-4-up-rjb-p4"]
+    },
+    {
+      "file": "special-math-4-up-u3.json",
+      "packageId": "special-math-4-up-u3",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-math-4-up-rjb-p3::u3"],
+      "dependencies": ["unit-math-4-up-rjb-p3"]
+    },
+    {
+      "file": "special-math-4-up-jiajiancheng.json",
+      "packageId": "special-math-4-up-jiajiancheng",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-math-4-up-rjb-p5::u8"],
+      "dependencies": ["unit-math-4-up-rjb-p5"]
+    },
+    {
+      "file": "sprint-math-4-up-final.json",
+      "packageId": "sprint-math-4-up-final",
+      "type": "sprint",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": [
+        "unit-math-4-up-rjb-p1::u1",
+        "unit-math-4-up-rjb-p3::u3",
+        "unit-math-4-up-rjb-p4::u5",
+        "unit-math-4-up-rjb-p5::u7"
+      ],
+      "dependencies": [
+        "unit-math-4-up-rjb-p1",
+        "unit-math-4-up-rjb-p3",
+        "unit-math-4-up-rjb-p4",
+        "unit-math-4-up-rjb-p5"
+      ]
+    }
+  ],
+  "importOrder": [
+    "unit-math-4-up-rjb-p1",
+    "unit-math-4-up-rjb-p2",
+    "unit-math-4-up-rjb-p3",
+    "unit-math-4-up-rjb-p4",
+    "unit-math-4-up-rjb-p5",
+    "unit-math-4-up-rjb-p6",
+    "term-math-4-up-rjb",
+    "daily-math-4-up-rjb-45d",
+    "special-math-4-up-yunsuanlv",
+    "special-math-4-up-u3",
+    "special-math-4-up-jiajiancheng",
+    "sprint-math-4-up-final"
+  ],
+  "overrides": {
+    "special-math-4-up-yunsuanlv": {
+      "sourceUnitIds": ["unit-math-4-up-rjb-p4::u5"],
+      "dependencies": ["unit-math-4-up-rjb-p4"]
+    },
+    "special-math-4-up-jiajiancheng": {
+      "sourceUnitIds": ["unit-math-4-up-rjb-p5::u8"],
+      "dependencies": ["unit-math-4-up-rjb-p5"]
+    },
+    "sprint-math-4-up-final": {
+      "sourceUnitIds": [
+        "unit-math-4-up-rjb-p1::u1",
+        "unit-math-4-up-rjb-p3::u3",
+        "unit-math-4-up-rjb-p4::u5",
+        "unit-math-4-up-rjb-p5::u7"
+      ],
+      "dependencies": [
+        "unit-math-4-up-rjb-p1",
+        "unit-math-4-up-rjb-p3",
+        "unit-math-4-up-rjb-p4",
+        "unit-math-4-up-rjb-p5"
+      ]
+    }
+  }
+}

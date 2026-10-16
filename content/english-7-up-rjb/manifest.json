@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0",
+  "setId": "english-7-up-rjb-set",
+  "title": "七年级英语上（人教版2024新教材）",
+  "subject": "english",
+  "grade": 7,
+  "term": "up",
+  "edition": "人教版（2024新教材）",
+  "importOrder": [
+    "unit-english-7-up-rjb-p1",
+    "unit-english-7-up-rjb-p2",
+    "unit-english-7-up-rjb-p3",
+    "unit-english-7-up-rjb-p4",
+    "unit-english-7-up-rjb-p5",
+    "unit-english-7-up-rjb-p6",
+    "unit-english-7-up-rjb-p7",
+    "term-english-7-up-rjb",
+    "special-english-7-up-youandme",
+    "special-english-7-up-family",
+    "special-english-7-up-school",
+    "special-english-7-up-subject",
+    "special-english-7-up-club",
+    "special-english-7-up-dailylife",
+    "special-english-7-up-birthday",
+    "special-english-7-up-grammar",
+    "special-english-7-up-phrases",
+    "special-english-7-up-vocab",
+    "sprint-english-7-up-final"
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "manifest": {
+    "packageId": "sprint-math-4-up-final",
+    "type": "sprint",
+    "isInternal": false,
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-math-4-up-rjb-p1::u1",
+      "unit-math-4-up-rjb-p3::u3",
+      "unit-math-4-up-rjb-p4::u5",
+      "unit-math-4-up-rjb-p5::u7"
+    ],
+    "title": "期末冲刺模拟卷"
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "sprint-u1",
+      "name": "期末冲刺",
+      "title": "期末模拟考试",
+      "desc": "覆盖全册重点的综合训练",
+      "topics": [
+        {
+          "id": "sprint-t1",
+          "title": "综合应用",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p1::kp-num-001",
+            "unit-math-4-up-rjb-p3::kp-num-005",
+            "unit-math-4-up-rjb-p4::kp-formula-003",
+            "unit-math-4-up-rjb-p5::kp-geo-007"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "sprint-ex-001",
+              "type": "blank",
+              "question": "由 7 个亿、5 个百万、3 个万和 8 个一组成的数是 ______。",
+              "answer": "705030008",
+              "explanation": "亿位7，百万位5，万位3，个位8，其余补0：705030008。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p1::kp-num-001"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "sprint-ex-002",
+              "type": "single",
+              "question": "某数四舍五入到万位是 7 万，这个数最大是：",
+              "options": ["A. 69999", "B. 74999", "C. 75000", "D. 79999"],
+              "answer": "B",
+              "explanation": "四舍五入到万位为7万，原数最大时万位为7，千位最大取4（否则进位成8万），其余各位取9，即74999。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p1::kp-num-003"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "sprint-ex-003",
+              "type": "blank",
+              "question": "简便计算：125 × 88 = ______",
+              "answer": "11000",
+              "explanation": "把88拆成8×11：125 × 8 × 11 = 1000 × 11 = 11000。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p4::kp-formula-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "sprint-ex-004",
+              "type": "blank",
+              "question": "简便计算：99 × 68 + 68 = ______",
+              "answer": "6800",
+              "explanation": "提取公因数68：68 × (99 + 1) = 68 × 100 = 6800。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p4::kp-formula-003"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "sprint-ex-005",
+              "type": "single",
+              "question": "一个三角形，其中两个角分别是 45° 和 45°，这个三角形是：",
+              "options": ["A. 锐角三角形", "B. 直角三角形", "C. 钝角三角形", "D. 无法确定"],
+              "answer": "B",
+              "explanation": "第三个角 = 180° - 45° - 45° = 90°，是直角三角形。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-geo-007"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "sprint-ex-006",
+              "type": "blank",
+              "question": "一个立体图形由 4 个同样大小的正方体搭成，从正面看是横排 3 个正方形，从左面看是竖排 2 个正方形。这个立体图形有 ______ 种不同搭法。",
+              "answer": "3",
+              "explanation": "底层 3 个，第 2 层的 1 个可以放在底层 3 个中的任意一个上面，共 3 种。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p3::kp-geo-004"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "sprint-ex-007",
+              "type": "single",
+              "question": "一辆汽车 3 小时行驶 240 千米。照这样计算，行驶 640 千米需要多少小时？",
+              "options": ["A. 6 小时", "B. 7 小时", "C. 8 小时", "D. 9 小时"],
+              "answer": "C",
+              "explanation": "先求速度：240 ÷ 3 = 80（千米/时）。再求时间：640 ÷ 80 = 8（小时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "sprint-ex-008",
+              "type": "blank",
+              "question": "4 名同学的平均身高是 148 厘米，其中 3 人的平均身高是 146 厘米，第 4 名同学的身高是 ______ 厘米。",
+              "answer": "154",
+              "explanation": "4 人总身高 = 148 × 4 = 592。3 人总身高 = 146 × 3 = 438。第 4 人身高 = 592 - 438 = 154（厘米）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p6::kp-stat-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "sprint-ex-009",
+              "type": "judge",
+              "question": "在同一个三角形中，如果有两个角是 60° 和 70°，那么第三个角一定是锐角。",
+              "answer": "对",
+              "explanation": "第三个角 = 180° - 60° - 70° = 50°，是锐角，正确。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-geo-007"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "sprint-ex-010",
+              "type": "single",
+              "question": "某班男生平均体重 36 千克，女生平均体重 32 千克，男生 20 人，女生 20 人。全班平均体重是：",
+              "options": ["A. 32 千克", "B. 34 千克", "C. 36 千克", "D. 35 千克"],
+              "answer": "B",
+              "explanation": "全班总重 = 36 × 20 + 32 × 20 = 720 + 640 = 1360（千克）。全班人数 = 40。平均 = 1360 ÷ 40 = 34（千克）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p6::kp-stat-002"],
+              "metadata": { "difficulty": "挑战" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

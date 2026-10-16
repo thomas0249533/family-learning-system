@@ -1,0 +1,481 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "base-chinese-4-up-rjb",
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "语文四年级上册 基础知识点包",
+    "dependencies": [],
+    "type": "base"
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-001",
+      "type": "concept",
+      "title": "《观潮》生字词与课文赏析",
+      "content": "《观潮》记叙了作者观赏钱塘江大潮的盛况，重点描写了潮来前、潮来时、潮去后的景象，展现了大潮的奇特、雄伟、壮观。需要掌握“潮、据、堤”等生字，理解天下奇观的含义。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-002",
+      "type": "concept",
+      "title": "《繁星》现代诗情感解读",
+      "content": "《繁星》是巴金的散文诗集节选，作者通过描写不同时期、不同地点看到的繁星，表达了对星空的热爱、对故乡的思念以及对美好生活的向往。文章语言清丽，充满童真。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-001"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-003",
+      "type": "concept",
+      "title": "现代诗二首《秋晚的江上》《花牛歌》意象分析",
+      "content": "《秋晚的江上》作者刘大白，通过归巢的鸟儿、斜阳、芦苇等意象勾勒出傍晚江边的唯美画面；《花牛歌》作者徐志摩，用花牛的四组活动展现了大自然的悠闲与诗意。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-002"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析"
+      }
+    },
+    {
+      "id": "kp-chinese-004",
+      "type": "writing",
+      "title": "写景类习作推荐方法",
+      "content": "推荐一个好地方类习作要点：1. 开篇点明推荐地点 2. 按顺序描写亮点场景 3. 融入个人真实感受 4. 结尾发出邀请。做到抓住景物特点，表达真情实感。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-001",
+        "base-chinese-4-up-rjb::kp-chinese-003"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用"
+      }
+    },
+    {
+      "id": "kp-chinese-005",
+      "type": "concept",
+      "title": "《一个豆荚里的五粒豆》阅读理解与道理感悟",
+      "content": "安徒生童话《一个豆荚里的五粒豆》讲述了五粒豌豆不同的命运，其中最后一粒落在顶楼裂缝里的豌豆发芽开花，给生病的小女孩带来了生命的希望。故事告诉我们生命的价值在于创造与帮助他人。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-006",
+      "type": "concept",
+      "title": "《夜间飞行的秘密》科普文逻辑梳理",
+      "content": "《夜间飞行的秘密》是一篇科普说明文，通过科学家反复实验，揭示了蝙蝠夜间靠嘴和耳朵配合探路的原理，并由此发明了雷达，应用于飞机飞行。展现了科学探索的严谨与仿生学的魅力。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-005"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析"
+      }
+    },
+    {
+      "id": "kp-chinese-007",
+      "type": "concept",
+      "title": "《方帽子店》寓言故事寓意解析",
+      "content": "《方帽子店》讲了一家只做方帽子的老店，因不肯改变，最终被孩子们做出的各式各样舒服的帽子取代的故事。寓意是：不能因循守旧，要敢于创新，顺应时代变化。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-005"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-008",
+      "type": "concept",
+      "title": "《田忌赛马》历史故事人物分析",
+      "content": "出自《史记》，战国时期齐国大将田忌在孙膑的帮助下，调整马匹出场顺序，以三局两胜赢了齐威王。体现了孙膑的足智多谋，告诉我们遇到问题换个思路就能取得意想不到的结果。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-007"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析"
+      }
+    },
+    {
+      "id": "kp-chinese-009",
+      "type": "concept",
+      "title": "观察提问阅读策略",
+      "content": "阅读时从不同角度提问：可以针对课文内容提问，可以针对课文写法提问，可以联系生活经验提问。养成边阅读边思考的好习惯，帮助我们理解得更深刻。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-005",
+        "base-chinese-4-up-rjb::kp-chinese-006",
+        "base-chinese-4-up-rjb::kp-chinese-008"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "应用"
+      }
+    },
+    {
+      "id": "kp-chinese-010",
+      "type": "poem",
+      "title": "古诗三首《暮江吟》《题西林壁》《雪梅》作者与诗意解读",
+      "content": "《暮江吟》作者白居易（唐），描绘了暮江落日与新月初升的美景；《题西林壁》作者苏轼（宋），“横看成岭侧成峰”蕴含当局者迷的哲理；《雪梅》作者卢钺（宋），借雪梅争春告诉我们事物各有长短。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "理解",
+        "author": "白居易、苏轼、卢钺",
+        "dynasty": "唐、宋、宋"
+      }
+    },
+    {
+      "id": "kp-chinese-011",
+      "type": "concept",
+      "title": "《爬山虎的脚》植物观察写作方法",
+      "content": "叶圣陶先生的《爬山虎的脚》，通过长期细致观察，写出了爬山虎叶子的特点和脚的形状、爬墙的过程。教给我们连续观察、抓住事物细节特点的写作方法。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-010"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-012",
+      "type": "concept",
+      "title": "《蟋蟀的住宅》说明文特点赏析",
+      "content": "法布尔的《昆虫记》节选，作者用拟人化的手法，把蟋蟀建造住宅的过程写得生动有趣，既展现了蟋蟀的勤劳智慧，也体现了作者长期坚持的科学观察精神。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-011"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析"
+      }
+    },
+    {
+      "id": "kp-chinese-013",
+      "type": "writing",
+      "title": "观察日记写作技巧",
+      "content": "写观察日记要点：1. 写清观察时间、对象 2. 记录连续观察中的变化 3. 融入自己的发现和感受 4. 语言通顺，细节真实。可以写植物生长、动物活动或自然现象变化。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-011",
+        "base-chinese-4-up-rjb::kp-chinese-012"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用"
+      }
+    },
+    {
+      "id": "kp-chinese-014",
+      "type": "concept",
+      "title": "神话故事《盘古开天地》内容与人物形象",
+      "content": "中国古代神话，盘古用斧头劈开混沌，身体化为世间万物，创造了美丽的宇宙。盘古形象高大无私，体现了古代人民对世界起源的浪漫想象。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-015",
+      "type": "poem",
+      "title": "神话故事《精卫填海》古文基础与精神内涵",
+      "content": "出自《山海经》：“炎帝之少女，名曰女娃。女娃游于东海，溺而不返，故为精卫，常衔西山之木石，以堙于东海。” 体现了坚持不懈、永不放弃的抗争精神。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-014"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "author": "出自《山海经》",
+        "dynasty": "先秦"
+      }
+    },
+    {
+      "id": "kp-chinese-016",
+      "type": "concept",
+      "title": "神话故事《普罗米修斯》情节梳理",
+      "content": "古希腊神话，普罗米修斯为人类盗取火种，忍受宙斯残酷惩罚，始终不肯屈服。最终大力神赫拉克勒斯解救了他，展现了普罗米修斯为民造福、不畏强权的伟大精神。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-014"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-017",
+      "type": "concept",
+      "title": "神话故事《女娲补天》传统文化知识点",
+      "content": "中国经典神话，水神共工撞断不周山，天塌下大窟窿，女娲炼五色石补天，斩神龟四足撑天，拯救了苍生百姓。是中国古代神话中母系英雄的经典代表。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-015",
+        "base-chinese-4-up-rjb::kp-chinese-016"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-018",
+      "type": "concept",
+      "title": "《麻雀》细节描写与情感表达",
+      "content": "屠格涅夫的短篇小说，“我”打猎回来路上，一只老麻雀奋不顾身从树上飞下来，想用自己的身体掩护幼儿，面对庞大的猎狗毫不退缩。展现了母爱的伟大与无私。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-019",
+      "type": "concept",
+      "title": "《爬天都峰》叙事顺序写作方法",
+      "content": "课文按照“爬山前-爬山中-爬上峰顶后”的顺序，写了“我”和一位老爷爷互相鼓励，一起爬上天都峰的事。告诉我们面对困难，要有战胜它的勇气和信心。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-018"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-020",
+      "type": "writing",
+      "title": "《生活万花筒》记事类习作方法",
+      "content": "写一件印象深刻的事：1. 把事情的起因、经过、结果写清楚 2. 重点部分写具体细节 3. 写出自己当时的真实心情 4. 题目可以用事件相关的关键词，让文章更生动。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-018",
+        "base-chinese-4-up-rjb::kp-chinese-019"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用"
+      }
+    },
+    {
+      "id": "kp-chinese-021",
+      "type": "concept",
+      "title": "《长城》说明文说明方法赏析",
+      "content": "《长城》一文运用了列数字、打比方等说明方法，介绍了长城的长、高大坚固的特点和建筑奇迹，赞美了古代劳动人民的智慧和血汗结晶，展现了中华文明的伟大。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-022",
+      "type": "concept",
+      "title": "《颐和园》游览顺序写作技巧",
+      "content": "《颐和园》按照游览移步换景的顺序，依次介绍了长廊、万寿山、昆明湖等景点，过渡自然，景物特点鲜明。学会按游览顺序写景，能让文章条理非常清晰。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-021"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析"
+      }
+    },
+    {
+      "id": "kp-chinese-023",
+      "type": "concept",
+      "title": "《秦兵马俑》传统文化知识点",
+      "content": "秦兵马俑位于陕西西安临潼，是秦始皇陵的陪葬坑，出土的兵马俑神态各异、规模宏大，被誉为“世界第八大奇迹”，是我国举世无双的珍贵历史文物。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-021",
+        "base-chinese-4-up-rjb::kp-chinese-022"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-024",
+      "type": "writing",
+      "title": "世界文化遗产主题讲解方法",
+      "content": "作为小小讲解员介绍文化遗产：1. 先讲整体概况，再按顺序介绍重点景点 2. 加入1-2个有趣的小故事 3. 声音洪亮，态度自信 4. 注意礼貌用语。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-021",
+        "base-chinese-4-up-rjb::kp-chinese-022",
+        "base-chinese-4-up-rjb::kp-chinese-023"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用"
+      }
+    },
+    {
+      "id": "kp-chinese-025",
+      "type": "concept",
+      "title": "《牛和鹅》叙事与道理感悟",
+      "content": "课文讲了童年时“我”怕鹅、被老公鹅欺负，后来在金奎叔帮助下改变了对牛和鹅的看法。告诉我们：换个角度看问题，对事物的认识就会大不一样。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-026",
+      "type": "concept",
+      "title": "《一只窝囊的大老虎》童年趣事细节描写",
+      "content": "课文回忆了童年时“我”在文艺表演中扮演一只大老虎，结果演砸了的经历，写出了表演前的期待、表演中的紧张狼狈和表演后的困惑心情，充满真挚的童趣。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-025"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-027",
+      "type": "concept",
+      "title": "《陀螺》生活感悟类散文赏析",
+      "content": "高洪波的《陀螺》，讲述了“我”小时候自己做不出好陀螺，叔叔送了一个其貌不扬的小陀螺，却打败了小伙伴的大陀螺。悟出道理：人不可貌相，海水不可斗量。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-026"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析"
+      }
+    },
+    {
+      "id": "kp-chinese-028",
+      "type": "poem",
+      "title": "《王戎不取道旁李》小古文阅读技巧",
+      "content": "出自《世说新语》，王戎七岁时和小伙伴玩耍，其他孩子都去摘路边的李子，只有王戎不动，他推理出“树在道边而多子，此必苦李”。告诉我们要仔细观察、冷静思考。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-027"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "理解",
+        "author": "出自《世说新语》",
+        "dynasty": "南朝宋"
+      }
+    },
+    {
+      "id": "kp-chinese-029",
+      "type": "concept",
+      "title": "《我将无我，不负人民》人物精神解读",
+      "content": "“我将无我，不负人民”是国家领导人提出的重要表述，体现了全心全意为人民服务、无私奉献的崇高精神，表达了对国家和人民的深厚情怀。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-030",
+      "type": "concept",
+      "title": "《为中华之崛起而读书》历史背景与情感体会",
+      "content": "周恩来少年时代耳闻目睹中国人在外国租界受洋人欺凌却无处说理，深刻体会到“中华不振”，立下“为中华之崛起而读书”的宏伟志向，表现了少年周恩来的博大胸怀和远大抱负。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-029"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解"
+      }
+    },
+    {
+      "id": "kp-chinese-031",
+      "type": "concept",
+      "title": "《延安，我把你追寻》红色诗歌赏析",
+      "content": "这首现代抒情诗抒发了诗人追寻延安精神的迫切心情，歌颂了在战争年代形成的自力更生、艰苦奋斗、为人民服务的延安精神，号召大家继承和发扬优良传统。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-030"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析"
+      }
+    },
+    {
+      "id": "kp-chinese-032",
+      "type": "poem",
+      "title": "古诗三首《凉州词》《出塞》《夏日绝句》爱国主题解读",
+      "content": "《凉州词》作者王翰（唐），写出了边塞将士豪迈悲壮的战争生活；《出塞》作者王昌龄（唐），“但使龙城飞将在，不教胡马度阴山”抒发强烈爱国情怀；《夏日绝句》作者李清照（宋），借古讽今，歌颂项羽的英雄气节。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-031"
+      ],
+      "metadata": {
+        "difficulty": 2,
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "理解",
+        "author": "王翰、王昌龄、李清照",
+        "dynasty": "唐、唐、宋"
+      }
+    },
+    {
+      "id": "kp-chinese-033",
+      "type": "writing",
+      "title": "书信格式与写作方法",
+      "content": "正确书信格式：1. 开头称呼顶格写 2. 正文另起空两格 3. 结尾写祝福语 4. 右下角署名和日期。写信时要把想说的事说清楚，语气真诚，符合写信对象身份。",
+      "prerequisites": [
+        "base-chinese-4-up-rjb::kp-chinese-032"
+      ],
+      "metadata": {
+        "difficulty": 3,
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用"
+      }
+    }
+  ],
+  "exercises": [],
+  "units": []
+}

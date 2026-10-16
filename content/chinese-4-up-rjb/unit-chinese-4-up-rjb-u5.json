@@ -1,0 +1,112 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-chinese-4-up-rjb-u5",
+    "type": "unit",
+    "isInternal": true,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "第五单元 习作单元·写事",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-018",
+      "type": "concept",
+      "title": "《麻雀》细节描写与情感表达",
+      "content": "屠格涅夫的短篇小说，“我”打猎回来路上，一只老麻雀奋不顾身从树上飞下来，想用自己的身体掩护幼儿，面对庞大的猎狗毫不退缩。展现了母爱的伟大与无私。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-chinese-019",
+      "type": "concept",
+      "title": "《爬天都峰》叙事顺序写作方法",
+      "content": "课文按照“爬山前-爬山中-爬上峰顶后”的顺序，写了“我”和一位老爷爷互相鼓励，一起爬上天都峰的事。告诉我们面对困难，要有战胜它的勇气和信心。",
+      "prerequisites": ["kp-chinese-018"]
+    },
+    {
+      "id": "kp-chinese-020",
+      "type": "writing",
+      "title": "《生活万花筒》记事类习作方法",
+      "content": "写一件印象深刻的事：1. 把事情的起因、经过、结果写清楚 2. 重点部分写具体细节 3. 写出自己当时的真实心情 4. 题目可以用事件相关的关键词，让文章更生动。",
+      "prerequisites": ["kp-chinese-018", "kp-chinese-019"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u5-ex-001",
+      "type": "single",
+      "question": "《麻雀》的作者是俄国作家（ ）。",
+      "options": ["A. 屠格涅夫", "B. 列夫·托尔斯泰", "C. 普希金", "D. 高尔基"],
+      "answer": "A",
+      "explanation": "《麻雀》是俄国作家屠格涅夫的作品，写了一只老麻雀奋不顾身保护幼儿的故事。",
+      "knowledgePointIds": ["kp-chinese-018"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u5-ex-002",
+      "type": "blank",
+      "question": "《麻雀》中，老麻雀从树上飞下来，像一块石头似的落在猎狗面前，它要用自己的______保护小麻雀，这体现了______的伟大。",
+      "answer": ["身体", "母爱"],
+      "explanation": "老麻雀明知危险仍义无反顾，作者通过动作、神态描写，突出母爱的无私与强大力量。",
+      "knowledgePointIds": ["kp-chinese-018"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u5-ex-003",
+      "type": "single",
+      "question": "《爬天都峰》是按照（ ）的顺序来写的。",
+      "options": ["A. 时间顺序", "B. 空间顺序", "C. 事情发展顺序", "D. 逻辑顺序"],
+      "answer": "C",
+      "explanation": "课文按“爬山前—爬山中—爬上峰顶后”的事情发展顺序记叙，条理非常清晰。",
+      "knowledgePointIds": ["kp-chinese-019"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u5-ex-004",
+      "type": "multiple",
+      "question": "写“生活万花筒”这类记事作文，应该注意（ ）。",
+      "options": ["A. 写清事情的起因、经过、结果", "B. 重点部分写具体", "C. 写出自己的真实感受", "D. 只写开头和结尾即可"],
+      "answer": ["A", "B", "C"],
+      "explanation": "记事作文要交代清楚起因、经过、结果，把重点部分写具体，并融入真情实感，才能打动人。",
+      "knowledgePointIds": ["kp-chinese-020"],
+      "metadata": { "difficulty": "挑战" }
+    },
+    {
+      "id": "u5-ex-005",
+      "type": "blank",
+      "question": "《爬天都峰》告诉我们：面对困难，要有战胜它的______和______。",
+      "answer": ["勇气", "信心"],
+      "explanation": "“我”和素不相识的老爷爷互相鼓励，一起爬上天都峰，说明只要有勇气和信心，就能克服困难。",
+      "knowledgePointIds": ["kp-chinese-019"],
+      "metadata": { "difficulty": "基础" }
+    }
+  ],
+  "units": [
+    {
+      "id": "u5",
+      "name": "第五单元",
+      "title": "第五单元 习作单元·写事",
+      "desc": "本单元围绕写事展开，包含《麻雀》《爬天都峰》等课文。",
+      "topics": [
+        {
+          "id": "u5-t1",
+          "title": "阅读悟法·麻雀与爬天都峰",
+          "knowledgePointIds": ["kp-chinese-018", "kp-chinese-019"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u5-t2",
+          "title": "习作实践·生活万花筒",
+          "knowledgePointIds": ["kp-chinese-020"],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

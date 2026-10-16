@@ -1,0 +1,76 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "chinese-4-up-test",
+    "packageType": "base",
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "四年级语文上（P5多学科测试）",
+    "subtitle": "含古诗、课文、字词"
+  },
+  "knowledgePoints": [
+    {
+      "id": "cn-poem-001",
+      "type": "poem",
+      "title": "静夜思",
+      "content": "床前明月光，\n疑是地上霜。\n举头望明月，\n低头思故乡。",
+      "metadata": {
+        "author": "李白",
+        "dynasty": "唐",
+        "translation": "明亮的月光洒在床前，好像地上泛起了一层白霜。我抬起头来，看那天窗外空中的明月，不由得低头沉思，想起远方的家乡。",
+        "appreciation": "这首诗写的是在寂静的月夜思念家乡的感受。全诗语言清新朴素而韵味含蓄无穷。"
+      }
+    },
+    {
+      "id": "cn-text-001",
+      "type": "concept",
+      "title": "观潮（节选）",
+      "content": "钱塘江大潮，自古以来被称为天下奇观。\n\n农历八月十八是一年一度的观潮日。这一天早上，我们来到了海宁市的盐官镇，据说这里是观潮最好的地方。"
+    },
+    {
+      "id": "cn-word-001",
+      "type": "word",
+      "title": "词语：人山人海",
+      "content": "形容人聚集得非常多。",
+      "metadata": { "word": "人山人海", "pinyin": "rén shān rén hǎi" }
+    },
+    {
+      "id": "cn-word-002",
+      "type": "word",
+      "title": "词语：若隐若现",
+      "content": "好像隐藏不露，又好像显现出来。形容隐隐约约，看不清楚的样子。",
+      "metadata": { "word": "若隐若现", "pinyin": "ruò yǐn ruò xiàn" }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "cu1",
+      "name": "第一单元",
+      "title": "自然之美",
+      "desc": "感受自然的神奇与壮美",
+      "topics": [
+        {
+          "id": "ct1",
+          "title": "古诗二首·静夜思",
+          "knowledgePointIds": ["cn-poem-001"],
+          "modules": [
+            { "id": "cm1", "type": "chinese.poem", "title": "古诗精读", "knowledgePointIds": ["cn-poem-001"] }
+          ]
+        },
+        {
+          "id": "ct2",
+          "title": "观潮",
+          "knowledgePointIds": ["cn-text-001", "cn-word-001", "cn-word-002"],
+          "modules": [
+            { "id": "cm2", "type": "chinese.text", "title": "课文精读", "knowledgePointIds": ["cn-text-001"] },
+            { "id": "cm3", "type": "chinese.words", "title": "字词积累", "knowledgePointIds": ["cn-word-001", "cn-word-002"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

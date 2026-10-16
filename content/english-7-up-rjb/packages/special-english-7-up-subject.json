@@ -1,0 +1,219 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-subject",
+    "type": "special",
+    "title": "My Favourite Subject 学科喜好与逻辑表达专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p4"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p4::u4"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-english-7-up-subject::special-u4",
+      "name": "专项测验",
+      "title": "My Favourite Subject 学科喜好与逻辑表达专项测验",
+      "desc": "针对人教版2024新教材七年级上册 Unit 4 My Favourite Subject 的高难度变式测验，覆盖学科词汇、连词（and, but, because）、Wh- 特殊疑问句，以及关于学科喜好的跨文化阅读语篇。",
+      "topics": [
+        {
+          "id": "special-english-7-up-subject::special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p4::kp-word-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-002"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-english-7-up-subject::special-ex-061",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. boring; because",
+                "B. difficult; so",
+                "C. interesting; because",
+                "D. boring; but"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-001"
+              ],
+              "question": "— Do you like math?\n— No, I find it ______. I like art ______ it is relaxing.",
+              "explanation": "句意为：——你喜欢数学吗？——不，我觉得它很无聊。我喜欢美术，因为它很放松。第一空根据答语 No 可知，不喜欢数学，用 boring 或 difficult 符合语境；第二空后是喜欢美术的原因，用 because 引导原因状语从句。故选 A。易错点：混淆 so 和 because 的逻辑关系，so 表示结果，because 表示原因。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-062",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "because; but; because",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-001"
+              ],
+              "question": "用适当的连词填空（and, but, because）。\nI like English ______ I can talk to people from other countries. I also like PE, ______ I don't like history ______ it is boring.",
+              "explanation": "第一空后“我能和来自其他国家的人交流”是喜欢英语的原因，用 because；第二空前后“喜欢体育”和“不喜欢历史”是转折关系，用 but；第三空后“它很无聊”是不喜欢历史的原因，用 because。考察连词在语境中的逻辑判断。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-063",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. What's your favourite subject?",
+                "B. Why do you like English?",
+                "C. When do you have English?",
+                "D. What do you think of English?"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "— ______\n— Because it is useful and interesting.",
+              "explanation": "答语 Because it is useful and interesting. 用 Because 回答，说明问句是询问原因的 Why 引导的特殊疑问句。A 询问最喜欢的科目，C 询问时间，D 询问看法。故选 B。逆向思维：根据答语中的 Because 反推问句。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-064",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "Who; When",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002"
+              ],
+              "question": "根据答语补全问句，每空一词。\n— ______ is your art teacher?\n— Mr. Wang.\n— ______ do you have art?\n— On Monday and Thursday.",
+              "explanation": "第一空答语 Mr. Wang 回答的是人，用 Who 提问；第二空答语 On Monday and Thursday 回答的是时间，用 When 提问。考察 Wh- 疑问词的准确选用。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-065",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "F",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-reading-001",
+                "unit-english-7-up-rjb-p4::kp-word-001"
+              ],
+              "question": "阅读 Alex 的帖子，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Alex from Canada. My favourite subject is drama (戏剧). I like it because I can act and express myself. Some of my friends don't like it. They think it is boring. But I think it is very fun and useful. We have drama class on Tuesday and Friday afternoons. I am also good at music. I can play the piano.\n(1) Alex doesn't like drama because it's boring. (2) Alex can play the piano. (3) Alex has drama class on Monday. (4) Alex thinks drama is fun and useful.",
+              "explanation": "由 My favourite subject is drama 和 I like it because I can act... 可知(1)F；由 I can play the piano 可知(2)T；由 We have drama class on Tuesday and Friday afternoons 可知(3)F；由 But I think it is very fun and useful 可知(4)T。考察阅读细节提取与跨文化语境理解。"
+            }
+          ]
+        },
+        {
+          "id": "special-english-7-up-subject::special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p4::kp-grammar-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-002",
+            "unit-english-7-up-rjb-p4::kp-reading-001",
+            "unit-english-7-up-rjb-p4::kp-phonetic-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-english-7-up-subject::special-ex-066",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. To introduce his school.",
+                "B. To talk about his favourite subject.",
+                "C. To ask for help with his homework.",
+                "D. To show his drama teacher."
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-reading-001"
+              ],
+              "question": "What is Alex's main purpose in writing this text?",
+              "explanation": "文章开头 My favourite subject is drama，随后说明喜欢戏剧的原因，以及朋友们的不同看法和自己的课程安排。因此主要目的是谈论自己最喜欢的学科。A、C、D 均偏离主旨。考察阅读主旨与写作意图推断。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-067",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. Because it is interesting, I like it.",
+                "B. It is interesting, so I like it.",
+                "C. Both A and B.",
+                "D. Because it is interesting, but I like it."
+              ],
+              "answer": "C",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-001"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nBecause it is interesting, so I like it.",
+              "explanation": "在英语中，because 和 so 不能同时出现在一个句子中。原句同时使用了 because 和 so，是错误的。正确的表达是只用 because 引导原因，或只用 so 引导结果。A 和 B 都是正确的修改方式。故选 C。逆向思维：根据错误句子反推正确规则。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-068",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. What's your favourite subject?",
+                "B. Why do you like it?",
+                "C. Do you like science?",
+                "D. How do you like science?",
+                "E. When do you have science?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p4::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n— Hi, Mike. 1. ______\n— I like science best.\n— 2. ______\n— Because it is interesting and useful.",
+              "explanation": "第一空：根据答语 I like science best. 可知，问句是询问最喜欢的科目，A 符合；第二空：根据答语 Because it is interesting and useful. 可知，问句是询问原因，B 符合。C 是一般疑问句，回答用 Yes/No；D 询问看法，回答用形容词；E 询问时间，回答用时间状语。考察 Wh- 疑问句与交际语境的综合。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-069",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "eɪ; aɪ",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-phonetic-001"
+              ],
+              "question": "根据音标写出对应的单词或字母组合。\nThe word 'name' has the sound /______/. The word 'like' has the sound /______/.",
+              "explanation": "name 的音标为 /neɪm/，字母 a 发双元音 /eɪ/；like 的音标为 /laɪk/，字母 i 发双元音 /aɪ/。考察双元音的发音规则。"
+            },
+            {
+              "id": "special-english-7-up-subject::special-ex-070",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "because; don't like; boring",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-001",
+                "unit-english-7-up-rjb-p4::kp-word-001",
+                "unit-english-7-up-rjb-p4::kp-grammar-002"
+              ],
+              "question": "阅读短文，用适当的词填空。\nMy name is Peter. I love school. My favourite subject is science ______ (1) it is exciting. I like doing experiments. But I ______ (2) (not like) history. It is ______ (3) (boring). I think it is important to learn all subjects.",
+              "explanation": "第一空后“它很令人兴奋”是喜欢科学的原因，用 because；第二空主语 I，否定形式用 don't like；第三空描述历史学科的性质，用形容词 boring。考察连词、否定句和词汇的综合运用。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

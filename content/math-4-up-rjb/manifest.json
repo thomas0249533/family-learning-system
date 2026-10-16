@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "setId": "math-4-up-rjb-set",
+  "title": "四年级数学上（人教版）",
+  "subject": "math",
+  "grade": 4,
+  "term": "up",
+  "edition": "人教版",
+  "importOrder": [
+    "unit-math-4-up-rjb-p1",
+    "unit-math-4-up-rjb-p2",
+    "unit-math-4-up-rjb-p3",
+    "unit-math-4-up-rjb-p4",
+    "unit-math-4-up-rjb-p5",
+    "unit-math-4-up-rjb-p6",
+    "term-math-4-up-rjb",
+    "daily-math-4-up-rjb-45d",
+    "special-math-4-up-yunsuanlv",
+    "special-math-4-up-u3",
+    "special-math-4-up-jiajiancheng",
+    "sprint-math-4-up-final"
+  ]
+}

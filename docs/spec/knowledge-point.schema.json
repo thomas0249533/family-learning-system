@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://family-learning-system/schemas/knowledge-point.schema.json",
+  "title": "KnowledgePoint",
+  "description": "全局知识点原子单位",
+  "type": "object",
+  "required": ["id", "type", "title", "content"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "type": { 
+      "type": "string", 
+      "enum": ["concept", "formula", "derivation", "example", "mistake", "word", "poem", "grammar"] 
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "content": { "type": "string", "description": "支持 Markdown / LaTeX" },
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["image", "audio", "table", "mindmap", "code", "latex"] },
+          "src": { "type": "string" }
+        }
+      }
+    },
+    "exerciseIds": { "type": "array", "items": { "type": "string" } },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "cognitiveLevel": { "type": "string" },
+        "estimatedMinutes": { "type": "integer" },
+        "source": { "type": "string" },
+        "ability": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "prerequisites": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

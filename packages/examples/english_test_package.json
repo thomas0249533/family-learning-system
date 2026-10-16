@@ -1,0 +1,93 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "english-4-up-test",
+    "packageType": "base",
+    "subject": "english",
+    "templateId": "english.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "四年级英语上（P5多学科测试）",
+    "subtitle": "含词汇、句型、语法、阅读"
+  },
+  "knowledgePoints": [
+    {
+      "id": "en-word-001",
+      "type": "word",
+      "title": "单词：library",
+      "content": "图书馆",
+      "metadata": { "word": "library", "phonetic": "/ˈlaɪbrəri/", "partOfSpeech": "n.", "example": "Let's go to the library.", "exampleCn": "我们去图书馆吧。" }
+    },
+    {
+      "id": "en-word-002",
+      "type": "word",
+      "title": "单词：playground",
+      "content": "操场",
+      "metadata": { "word": "playground", "phonetic": "/ˈpleɪɡraʊnd/", "partOfSpeech": "n.", "example": "The playground is big.", "exampleCn": "操场很大。" }
+    },
+    {
+      "id": "en-word-003",
+      "type": "word",
+      "title": "单词：canteen",
+      "content": "食堂",
+      "metadata": { "word": "canteen", "phonetic": "/kænˈtiːn/", "partOfSpeech": "n.", "example": "We have lunch in the canteen.", "exampleCn": "我们在食堂吃午饭。" }
+    },
+    {
+      "id": "en-sentence-001",
+      "type": "grammar",
+      "title": "句型：Where is...?",
+      "content": "Where is the library? It's on the second floor.",
+      "metadata": { "pattern": "Where is + 地点？", "translation": "图书馆在哪里？它在二楼。", "usage": "用来询问某个地方在哪里。回答用 It's on/in/at + 地点。" }
+    },
+    {
+      "id": "en-grammar-001",
+      "type": "grammar",
+      "title": "序数词的用法",
+      "content": "**序数词**表示顺序，如 first (第一)、second (第二)、third (第三)。\n\n**规则**：\n- 一般在基数词后加 -th：four → fourth\n- 特殊变化：one → first, two → second, three → third\n\n**例句**：My classroom is on the third floor. (我的教室在三楼。)"
+    },
+    {
+      "id": "en-reading-001",
+      "type": "concept",
+      "title": "My School",
+      "content": "Welcome to my school! My school is very big and beautiful. There is a library on the second floor. We often read books there. The playground is very big. We play football on the playground after school.",
+      "metadata": { "translation": "欢迎来到我的学校！我的学校又大又漂亮。二楼有一个图书馆。我们经常在那里看书。操场很大。放学后我们在操场上踢足球。" }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "eu1",
+      "name": "Unit 1",
+      "title": "My School",
+      "desc": "介绍学校的各个场所",
+      "topics": [
+        {
+          "id": "et1",
+          "title": "School Places 学校场所",
+          "knowledgePointIds": ["en-word-001", "en-word-002", "en-word-003"],
+          "modules": [
+            { "id": "em1", "type": "english.vocab", "title": "词汇学习", "knowledgePointIds": ["en-word-001", "en-word-002", "en-word-003"] }
+          ]
+        },
+        {
+          "id": "et2",
+          "title": "Asking Directions 问路",
+          "knowledgePointIds": ["en-sentence-001", "en-grammar-001"],
+          "modules": [
+            { "id": "em2", "type": "english.sentence", "title": "句型练习", "knowledgePointIds": ["en-sentence-001"] },
+            { "id": "em3", "type": "english.grammar", "title": "语法精讲", "knowledgePointIds": ["en-grammar-001"] }
+          ]
+        },
+        {
+          "id": "et3",
+          "title": "Reading: My School",
+          "knowledgePointIds": ["en-reading-001"],
+          "modules": [
+            { "id": "em4", "type": "english.reading", "title": "阅读理解", "knowledgePointIds": ["en-reading-001"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "special-english-4-up-vocab",
+    "packageType": "special",
+    "isInternal": false,
+    "examMode": false,
+    "subject": "english",
+    "templateId": "english.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "沪教版",
+    "title": "四上英语词汇专项",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    { "id": "en-vocab-001", "type": "word", "title": "单词：city", "content": "城市", "metadata": { "word": "city", "phonetic": "/ˈsɪti/" } },
+    { "id": "en-vocab-002", "type": "word", "title": "单词：building", "content": "建筑物；楼房", "metadata": { "word": "building", "phonetic": "/ˈbɪldɪŋ/" } },
+    { "id": "en-vocab-003", "type": "word", "title": "单词：flat", "content": "公寓", "metadata": { "word": "flat", "phonetic": "/flæt/" } },
+    { "id": "en-vocab-004", "type": "word", "title": "单词：street", "content": "大街；街道", "metadata": { "word": "street", "phonetic": "/striːt/" } },
+    { "id": "en-vocab-005", "type": "word", "title": "单词：country", "content": "乡村", "metadata": { "word": "country", "phonetic": "/ˈkʌntri/" } },
+    { "id": "en-vocab-006", "type": "word", "title": "单词：farm", "content": "农场", "metadata": { "word": "farm", "phonetic": "/fɑːm/" } },
+    { "id": "en-vocab-007", "type": "word", "title": "单词：house", "content": "房屋；房子", "metadata": { "word": "house", "phonetic": "/haʊs/" } },
+    { "id": "en-vocab-008", "type": "word", "title": "单词：people", "content": "人；人们", "metadata": { "word": "people", "phonetic": "/ˈpiːpl/" } },
+    { "id": "en-vocab-009", "type": "word", "title": "单词：live", "content": "住；居住", "metadata": { "word": "live", "phonetic": "/lɪv/" } },
+    { "id": "en-vocab-010", "type": "word", "title": "单词：many", "content": "许多", "metadata": { "word": "many", "phonetic": "/ˈmeni/" } },
+    { "id": "en-vocab-011", "type": "word", "title": "单词：place", "content": "地方", "metadata": { "word": "place", "phonetic": "/pleɪs/" } },
+    { "id": "en-vocab-012", "type": "word", "title": "单词：quiet", "content": "安静的", "metadata": { "word": "quiet", "phonetic": "/ˈkwaɪət/" } },
+    { "id": "en-vocab-013", "type": "word", "title": "单词：all kinds of", "content": "各种各样的", "metadata": { "word": "all kinds of", "phonetic": "/ɔːl kaɪndz əv/" } },
+    { "id": "en-vocab-014", "type": "word", "title": "单词：a lot of", "content": "许多", "metadata": { "word": "a lot of", "phonetic": "/ə lɒt əv/" } },
+    { "id": "en-vocab-015", "type": "word", "title": "单词：eagle", "content": "老鹰", "metadata": { "word": "eagle", "phonetic": "/ˈiːɡl/" } },
+    { "id": "en-vocab-016", "type": "word", "title": "单词：owl", "content": "猫头鹰", "metadata": { "word": "owl", "phonetic": "/aʊl/" } },
+    { "id": "en-vocab-017", "type": "word", "title": "单词：honeybee", "content": "蜜蜂", "metadata": { "word": "honeybee", "phonetic": "/ˈhʌnibiː/" } },
+    { "id": "en-vocab-018", "type": "word", "title": "单词：nest", "content": "巢穴", "metadata": { "word": "nest", "phonetic": "/nest/" } },
+    { "id": "en-vocab-019", "type": "word", "title": "单词：their", "content": "他们的；她们的；它们的", "metadata": { "word": "their", "phonetic": "/ðeə/" } },
+    { "id": "en-vocab-020", "type": "word", "title": "单词：tree hole", "content": "树洞", "metadata": { "word": "tree hole", "phonetic": "/triː həʊl/" } },
+    { "id": "en-vocab-021", "type": "word", "title": "单词：safe", "content": "安全的", "metadata": { "word": "safe", "phonetic": "/seɪf/" } },
+    { "id": "en-vocab-022", "type": "word", "title": "单词：there", "content": "那里；在那里", "metadata": { "word": "there", "phonetic": "/ðeə/" } },
+    { "id": "en-vocab-023", "type": "word", "title": "单词：snake", "content": "蛇", "metadata": { "word": "snake", "phonetic": "/sneɪk/" } },
+    { "id": "en-vocab-024", "type": "word", "title": "单词：hive", "content": "蜂巢", "metadata": { "word": "hive", "phonetic": "/haɪv/" } },
+    { "id": "en-vocab-025", "type": "word", "title": "单词：under", "content": "在……下面；小于；少于", "metadata": { "word": "under", "phonetic": "/ˈʌndə/" } },
+    { "id": "en-vocab-026", "type": "word", "title": "单词：at night", "content": "晚上", "metadata": { "word": "at night", "phonetic": "/ət naɪt/" } },
+    { "id": "en-vocab-027", "type": "word", "title": "单词：make honey", "content": "酿蜜", "metadata": { "word": "make honey", "phonetic": "/meɪk ˈhʌni/" } },
+    { "id": "en-vocab-028", "type": "word", "title": "单词：plus", "content": "加；加号", "metadata": { "word": "plus", "phonetic": "/plʌs/" } },
+    { "id": "en-vocab-029", "type": "word", "title": "单词：equal", "content": "等于", "metadata": { "word": "equal", "phonetic": "/ˈiːkwəl/" } },
+    { "id": "en-vocab-030", "type": "word", "title": "单词：answer", "content": "答案；回答", "metadata": { "word": "answer", "phonetic": "/ˈɑːnsə/" } },
+    { "id": "en-vocab-031", "type": "word", "title": "单词：minus", "content": "减；减号", "metadata": { "word": "minus", "phonetic": "/ˈmaɪnəs/" } },
+    { "id": "en-vocab-032", "type": "word", "title": "单词：odd numbers", "content": "奇数", "metadata": { "word": "odd numbers", "phonetic": "/ɒd ˈnʌmbəz/" } },
+    { "id": "en-vocab-033", "type": "word", "title": "单词：even numbers", "content": "偶数", "metadata": { "word": "even numbers", "phonetic": "/ˈiːvn ˈnʌmbəz/" } },
+    { "id": "en-vocab-034", "type": "word", "title": "单词：use", "content": "使用", "metadata": { "word": "use", "phonetic": "/juːz/" } },
+    { "id": "en-vocab-035", "type": "word", "title": "单词：help", "content": "帮助", "metadata": { "word": "help", "phonetic": "/help/" } },
+    { "id": "en-vocab-036", "type": "word", "title": "单词：count", "content": "（按顺序）数数", "metadata": { "word": "count", "phonetic": "/kaʊnt/" } },
+    { "id": "en-vocab-037", "type": "word", "title": "单词：thing", "content": "东西；事物", "metadata": { "word": "thing", "phonetic": "/θɪŋ/" } },
+    { "id": "en-vocab-038", "type": "word", "title": "单词：say", "content": "说", "metadata": { "word": "say", "phonetic": "/seɪ/" } },
+    { "id": "en-vocab-039", "type": "word", "title": "单词：every day", "content": "每天", "metadata": { "word": "every day", "phonetic": "/ˈevri deɪ/" } },
+    { "id": "en-vocab-040", "type": "word", "title": "单词：how many", "content": "（用于问数量）多少", "metadata": { "word": "how many", "phonetic": "/haʊ ˈmeni/" } },
+    { "id": "en-vocab-041", "type": "word", "title": "单词：supermarket", "content": "超市", "metadata": { "word": "supermarket", "phonetic": "/ˈsuːpəmɑːkɪt/" } },
+    { "id": "en-vocab-042", "type": "word", "title": "单词：a bag of rice", "content": "一袋米", "metadata": { "word": "a bag of rice", "phonetic": "/ə bæɡ əv raɪs/" } },
+    { "id": "en-vocab-043", "type": "word", "title": "单词：a box of eggs", "content": "一盒鸡蛋", "metadata": { "word": "a box of eggs", "phonetic": "/ə bɒks əv eɡz/" } },
+    { "id": "en-vocab-044", "type": "word", "title": "单词：a bottle of juice", "content": "一瓶果汁", "metadata": { "word": "a bottle of juice", "phonetic": "/ə ˈbɒtl əv dʒuːs/" } },
+    { "id": "en-vocab-045", "type": "word", "title": "单词：buy", "content": "购买", "metadata": { "word": "buy", "phonetic": "/baɪ/" } },
+    { "id": "en-vocab-046", "type": "word", "title": "单词：sell", "content": "出售", "metadata": { "word": "sell", "phonetic": "/sel/" } },
+    { "id": "en-vocab-047", "type": "word", "title": "单词：need", "content": "需要", "metadata": { "word": "need", "phonetic": "/niːd/" } },
+    { "id": "en-vocab-048", "type": "word", "title": "单词：shopping list", "content": "购物单", "metadata": { "word": "shopping list", "phonetic": "/ˈʃɒpɪŋ lɪst/" } },
+    { "id": "en-vocab-049", "type": "word", "title": "单词：each", "content": "每个", "metadata": { "word": "each", "phonetic": "/iːtʃ/" } },
+    { "id": "en-vocab-050", "type": "word", "title": "单词：team", "content": "队；组", "metadata": { "word": "team", "phonetic": "/tiːm/" } },
+    { "id": "en-vocab-051", "type": "word", "title": "单词：faster", "content": "更快的", "metadata": { "word": "faster", "phonetic": "/ˈfɑːstə/" } },
+    { "id": "en-vocab-052", "type": "word", "title": "单词：candy", "content": "糖果；巧克力", "metadata": { "word": "candy", "phonetic": "/ˈkændi/" } },
+    { "id": "en-vocab-053", "type": "word", "title": "单词：bread", "content": "面包", "metadata": { "word": "bread", "phonetic": "/bred/" } },
+    { "id": "en-vocab-054", "type": "word", "title": "单词：win", "content": "获胜", "metadata": { "word": "win", "phonetic": "/wɪn/" } },
+    { "id": "en-vocab-055", "type": "word", "title": "单词：still", "content": "还；仍然", "metadata": { "word": "still", "phonetic": "/stɪl/" } },
+    { "id": "en-vocab-056", "type": "word", "title": "单词：share", "content": "分享", "metadata": { "word": "share", "phonetic": "/ʃeə/" } },
+    { "id": "en-vocab-057", "type": "word", "title": "单词：water", "content": "水；给……浇水", "metadata": { "word": "water", "phonetic": "/ˈwɔːtə/" } },
+    { "id": "en-vocab-058", "type": "word", "title": "单词：how much", "content": "多少钱；多少", "metadata": { "word": "how much", "phonetic": "/haʊ mʌtʃ/" } },
+    { "id": "en-vocab-059", "type": "word", "title": "单词：a bar of chocolate", "content": "一块巧克力", "metadata": { "word": "a bar of chocolate", "phonetic": "/ə bɑːr əv ˈtʃɒklət/" } },
+    { "id": "en-vocab-060", "type": "word", "title": "单词：Here they are.", "content": "它们在这里。", "metadata": { "word": "Here they are.", "phonetic": "/hɪə ðeɪ ɑː/" } },
+    { "id": "en-vocab-061", "type": "word", "title": "单词：All right.", "content": "好的。", "metadata": { "word": "All right.", "phonetic": "/ɔːl raɪt/" } },
+    { "id": "en-vocab-062", "type": "word", "title": "单词：What would you like?", "content": "你想要什么？", "metadata": { "word": "What would you like?", "phonetic": "/wɒt wʊd juː laɪk/" } },
+    { "id": "en-vocab-063", "type": "word", "title": "单词：spring", "content": "春天", "metadata": { "word": "spring", "phonetic": "/sprɪŋ/" } },
+    { "id": "en-vocab-064", "type": "word", "title": "单词：warm", "content": "温暖的", "metadata": { "word": "warm", "phonetic": "/wɔːm/" } },
+    { "id": "en-vocab-065", "type": "word", "title": "单词：summer", "content": "夏天", "metadata": { "word": "summer", "phonetic": "/ˈsʌmə/" } },
+    { "id": "en-vocab-066", "type": "word", "title": "单词：hot", "content": "炎热的", "metadata": { "word": "hot", "phonetic": "/hɒt/" } },
+    { "id": "en-vocab-067", "type": "word", "title": "单词：autumn", "content": "秋天", "metadata": { "word": "autumn", "phonetic": "/ˈɔːtəm/" } },
+    { "id": "en-vocab-068", "type": "word", "title": "单词：cool", "content": "凉爽的", "metadata": { "word": "cool", "phonetic": "/kuːl/" } },
+    { "id": "en-vocab-069", "type": "word", "title": "单词：winter", "content": "冬天", "metadata": { "word": "winter", "phonetic": "/ˈwɪntə/" } },
+    { "id": "en-vocab-070", "type": "word", "title": "单词：cold", "content": "寒冷的", "metadata": { "word": "cold", "phonetic": "/kəʊld/" } },
+    { "id": "en-vocab-071", "type": "word", "title": "单词：parent", "content": "父亲（或母亲）", "metadata": { "word": "parent", "phonetic": "/ˈpeərənt/" } },
+    { "id": "en-vocab-072", "type": "word", "title": "单词：season", "content": "季节", "metadata": { "word": "season", "phonetic": "/ˈsiːzn/" } },
+    { "id": "en-vocab-073", "type": "word", "title": "单词：year", "content": "年", "metadata": { "word": "year", "phonetic": "/jɪə/" } },
+    { "id": "en-vocab-074", "type": "word", "title": "单词：grow", "content": "（使）生长", "metadata": { "word": "grow", "phonetic": "/ɡrəʊ/" } },
+    { "id": "en-vocab-075", "type": "word", "title": "单词：get", "content": "变得", "metadata": { "word": "get", "phonetic": "/ɡet/" } },
+    { "id": "en-vocab-076", "type": "word", "title": "单词：usually", "content": "通常", "metadata": { "word": "usually", "phonetic": "/ˈjuːʒuəli/" } },
+    { "id": "en-vocab-077", "type": "word", "title": "单词：after", "content": "在……之后", "metadata": { "word": "after", "phonetic": "/ˈɑːftə/" } },
+    { "id": "en-vocab-078", "type": "word", "title": "单词：fall", "content": "落下", "metadata": { "word": "fall", "phonetic": "/fɔːl/" } },
+    { "id": "en-vocab-079", "type": "word", "title": "单词：turn", "content": "（使）变成", "metadata": { "word": "turn", "phonetic": "/tɜːn/" } },
+    { "id": "en-vocab-080", "type": "word", "title": "单词：often", "content": "经常", "metadata": { "word": "often", "phonetic": "/ˈɒfn/" } },
+    { "id": "en-vocab-081", "type": "word", "title": "单词：snow", "content": "下雪；雪", "metadata": { "word": "snow", "phonetic": "/snəʊ/" } },
+    { "id": "en-vocab-082", "type": "word", "title": "单词：then", "content": "然后", "metadata": { "word": "then", "phonetic": "/ðen/" } },
+    { "id": "en-vocab-083", "type": "word", "title": "单词：begin", "content": "开始", "metadata": { "word": "begin", "phonetic": "/bɪˈɡɪn/" } },
+    { "id": "en-vocab-084", "type": "word", "title": "单词：flower", "content": "花", "metadata": { "word": "flower", "phonetic": "/ˈflaʊə/" } },
+    { "id": "en-vocab-085", "type": "word", "title": "单词：fruit", "content": "果实；水果", "metadata": { "word": "fruit", "phonetic": "/fruːt/" } },
+    { "id": "en-vocab-086", "type": "word", "title": "单词：leaf", "content": "叶子", "metadata": { "word": "leaf", "phonetic": "/liːf/" } },
+    { "id": "en-vocab-087", "type": "word", "title": "单词：soil", "content": "土壤", "metadata": { "word": "soil", "phonetic": "/sɔɪl/" } },
+    { "id": "en-vocab-088", "type": "word", "title": "单词：sunflower", "content": "向日葵", "metadata": { "word": "sunflower", "phonetic": "/ˈsʌnflaʊə/" } },
+    { "id": "en-vocab-089", "type": "word", "title": "单词：seed", "content": "种子", "metadata": { "word": "seed", "phonetic": "/siːd/" } },
+    { "id": "en-vocab-090", "type": "word", "title": "单词：put", "content": "放", "metadata": { "word": "put", "phonetic": "/pʊt/" } },
+    { "id": "en-vocab-091", "type": "word", "title": "单词：plant", "content": "植物", "metadata": { "word": "plant", "phonetic": "/plɑːnt/" } },
+    { "id": "en-vocab-092", "type": "word", "title": "单词：root", "content": "根", "metadata": { "word": "root", "phonetic": "/ruːt/" } },
+    { "id": "en-vocab-093", "type": "word", "title": "单词：tall", "content": "高的", "metadata": { "word": "tall", "phonetic": "/tɔːl/" } },
+    { "id": "en-vocab-094", "type": "word", "title": "单词：round", "content": "圆形的", "metadata": { "word": "round", "phonetic": "/raʊnd/" } },
+    { "id": "en-vocab-095", "type": "word", "title": "单词：oil", "content": "食用油", "metadata": { "word": "oil", "phonetic": "/ɔɪl/" } },
+    { "id": "en-vocab-096", "type": "word", "title": "单词：amazing", "content": "令人惊叹的", "metadata": { "word": "amazing", "phonetic": "/əˈmeɪzɪŋ/" } },
+    { "id": "en-vocab-097", "type": "word", "title": "单词：green light", "content": "绿灯", "metadata": { "word": "green light", "phonetic": "/ɡriːn laɪt/" } },
+    { "id": "en-vocab-098", "type": "word", "title": "单词：red light", "content": "红灯", "metadata": { "word": "red light", "phonetic": "/red laɪt/" } },
+    { "id": "en-vocab-099", "type": "word", "title": "单词：wait", "content": "等待", "metadata": { "word": "wait", "phonetic": "/weɪt/" } },
+    { "id": "en-vocab-100", "type": "word", "title": "单词：cross", "content": "穿越", "metadata": { "word": "cross", "phonetic": "/krɒs/" } },
+    { "id": "en-vocab-101", "type": "word", "title": "单词：Mr", "content": "先生", "metadata": { "word": "Mr", "phonetic": "/ˈmɪstə/" } },
+    { "id": "en-vocab-102", "type": "word", "title": "单词：way", "content": "路线；道路", "metadata": { "word": "way", "phonetic": "/weɪ/" } },
+    { "id": "en-vocab-103", "type": "word", "title": "单词：road", "content": "路；马路", "metadata": { "word": "road", "phonetic": "/rəʊd/" } },
+    { "id": "en-vocab-104", "type": "word", "title": "单词：should", "content": "应该", "metadata": { "word": "should", "phonetic": "/ʃʊd/" } },
+    { "id": "en-vocab-105", "type": "word", "title": "单词：first", "content": "首先", "metadata": { "word": "first", "phonetic": "/fɜːst/" } },
+    { "id": "en-vocab-106", "type": "word", "title": "单词：left", "content": "左边", "metadata": { "word": "left", "phonetic": "/left/" } },
+    { "id": "en-vocab-107", "type": "word", "title": "单词：car", "content": "小汽车", "metadata": { "word": "car", "phonetic": "/kɑː/" } },
+    { "id": "en-vocab-108", "type": "word", "title": "单词：right", "content": "右边", "metadata": { "word": "right", "phonetic": "/raɪt/" } },
+    { "id": "en-vocab-109", "type": "word", "title": "单词：skate", "content": "滑（滑板）", "metadata": { "word": "skate", "phonetic": "/skeɪt/" } },
+    { "id": "en-vocab-110", "type": "word", "title": "单词：sorry", "content": "对不起", "metadata": { "word": "sorry", "phonetic": "/ˈsɒri/" } },
+    { "id": "en-vocab-111", "type": "word", "title": "单词：kid", "content": "小孩；孩子", "metadata": { "word": "kid", "phonetic": "/kɪd/" } },
+    { "id": "en-vocab-112", "type": "word", "title": "单词：late", "content": "迟到", "metadata": { "word": "late", "phonetic": "/leɪt/" } },
+    { "id": "en-vocab-113", "type": "word", "title": "单词：Good job!", "content": "做得好！", "metadata": { "word": "Good job!", "phonetic": "/ɡʊd dʒɒb/" } },
+    { "id": "en-vocab-114", "type": "word", "title": "单词：Hurry up!", "content": "快点！", "metadata": { "word": "Hurry up!", "phonetic": "/ˈhʌri ʌp/" } },
+    { "id": "en-vocab-115", "type": "word", "title": "单词：go shopping", "content": "购物", "metadata": { "word": "go shopping", "phonetic": "/ɡəʊ ˈʃɒpɪŋ/" } },
+    { "id": "en-vocab-116", "type": "word", "title": "单词：go for a walk", "content": "去散步", "metadata": { "word": "go for a walk", "phonetic": "/ɡəʊ fər ə wɔːk/" } },
+    { "id": "en-vocab-117", "type": "word", "title": "单词：use the internet", "content": "使用互联网", "metadata": { "word": "use the internet", "phonetic": "/juːz ði ˈɪntənet/" } },
+    { "id": "en-vocab-118", "type": "word", "title": "单词：do exercise", "content": "锻炼", "metadata": { "word": "do exercise", "phonetic": "/duː ˈeksəsaɪz/" } },
+    { "id": "en-vocab-119", "type": "word", "title": "单词：always", "content": "总是", "metadata": { "word": "always", "phonetic": "/ˈɔːlweɪz/" } },
+    { "id": "en-vocab-120", "type": "word", "title": "单词：do housework", "content": "做家务", "metadata": { "word": "do housework", "phonetic": "/duː ˈhaʊswɜːk/" } },
+    { "id": "en-vocab-121", "type": "word", "title": "单词：vlog", "content": "视频博客", "metadata": { "word": "vlog", "phonetic": "/vlɒɡ/" } },
+    { "id": "en-vocab-122", "type": "word", "title": "单词：do gardening", "content": "做园艺", "metadata": { "word": "do gardening", "phonetic": "/duː ˈɡɑːdnɪŋ/" } },
+    { "id": "en-vocab-123", "type": "word", "title": "单词：watch", "content": "看；观看", "metadata": { "word": "watch", "phonetic": "/wɒtʃ/" } },
+    { "id": "en-vocab-124", "type": "word", "title": "单词：grandparent", "content": "祖父（母）；外祖父（母）", "metadata": { "word": "grandparent", "phonetic": "/ˈɡrænpeərənt/" } },
+    { "id": "en-vocab-125", "type": "word", "title": "单词：do tai chi", "content": "打太极拳", "metadata": { "word": "do tai chi", "phonetic": "/duː taɪ tʃiː/" } },
+    { "id": "en-vocab-126", "type": "word", "title": "单词：week", "content": "星期；周", "metadata": { "word": "week", "phonetic": "/wiːk/" } },
+    { "id": "en-vocab-127", "type": "word", "title": "单词：tidy up", "content": "收拾；整理", "metadata": { "word": "tidy up", "phonetic": "/ˈtaɪdi ʌp/" } },
+    { "id": "en-vocab-128", "type": "word", "title": "单词：work", "content": "工作", "metadata": { "word": "work", "phonetic": "/wɜːk/" } }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "vocab-u1",
+      "name": "Unit 1",
+      "title": "Unit 1 城市与乡村",
+      "desc": "city / building / flat / street / country ...",
+      "topics": [
+        {
+          "id": "vocab-t1",
+          "title": "Unit 1 词汇",
+          "knowledgePointIds": ["en-vocab-001","en-vocab-002","en-vocab-003","en-vocab-004","en-vocab-005","en-vocab-006","en-vocab-007","en-vocab-008","en-vocab-009","en-vocab-010","en-vocab-011","en-vocab-012","en-vocab-013","en-vocab-014"],
+          "modules": [
+            { "id": "vocab-m1", "type": "english.vocab", "title": "Unit 1 词汇", "knowledgePointIds": ["en-vocab-001","en-vocab-002","en-vocab-003","en-vocab-004","en-vocab-005","en-vocab-006","en-vocab-007","en-vocab-008","en-vocab-009","en-vocab-010","en-vocab-011","en-vocab-012","en-vocab-013","en-vocab-014"] }
+          ],
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "vocab-u2",
+      "name": "Unit 2",
+      "title": "Unit 2 鸟类与昆虫",
+      "desc": "eagle / owl / honeybee / nest ...",
+      "topics": [
+        {
+          "id": "vocab-t2",
+          "title": "Unit 2 词汇",
+          "knowledgePointIds": ["en-vocab-015","en-vocab-016","en-vocab-017","en-vocab-018","en-vocab-019","en-vocab-020","en-vocab-021","en-vocab-022","en-vocab-023","en-vocab-024","en-vocab-025","en-vocab-026","en-vocab-027"],
+          "modules": [
+            { "id": "vocab-m2", "type": "english.vocab", "title": "Unit 2 词汇", "knowledgePointIds": ["en-vocab-015","en-vocab-016","en-vocab-017","en-vocab-018","en-vocab-019","en-vocab-020","en-vocab-021","en-vocab-022","en-vocab-023","en-vocab-024","en-vocab-025","en-vocab-026","en-vocab-027"] }
+          ],
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "vocab-u3",
+      "name": "Unit 3",
+      "title": "Unit 3 数字与运算",
+      "desc": "plus / equal / answer / minus ...",
+      "topics": [
+        {
+          "id": "vocab-t3",
+          "title": "Unit 3 词汇",
+          "knowledgePointIds": ["en-vocab-028","en-vocab-029","en-vocab-030","en-vocab-031","en-vocab-032","en-vocab-033","en-vocab-034","en-vocab-035","en-vocab-036","en-vocab-037","en-vocab-038","en-vocab-039","en-vocab-040"],
+          "modules": [
+            { "id": "vocab-m3", "type": "english.vocab", "title": "Unit 3 词汇", "knowledgePointIds": ["en-vocab-028","en-vocab-029","en-vocab-030","en-vocab-031","en-vocab-032","en-vocab-033","en-vocab-034","en-vocab-035","en-vocab-036","en-vocab-037","en-vocab-038","en-vocab-039","en-vocab-040"] }
+          ],
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "vocab-u4",
+      "name": "Unit 4",
+      "title": "Unit 4 购物",
+      "desc": "supermarket / buy / sell / need ...",
+      "topics": [
+        {
+          "id": "vocab-t4",
+          "title": "Unit 4 词汇",
+          "knowledgePointIds": ["en-vocab-041","en-vocab-042","en-vocab-043","en-vocab-044","en-vocab-045","en-vocab-046","en-vocab-047","en-vocab-048","en-vocab-049","en-vocab-050","en-vocab-051","en-vocab-052","en-vocab-053","en-vocab-054","en-vocab-055","en-vocab-056","en-vocab-057","en-vocab-058","en-vocab-059","en-vocab-060","en-vocab-061","en-vocab-062"],
+          "modules": [
+            { "id": "vocab-m4", "type": "english.vocab", "title": "Unit 4 词汇", "knowledgePointIds": ["en-vocab-041","en-vocab-042","en-vocab-043","en-vocab-044","en-vocab-045","en-vocab-046","en-vocab-047","en-vocab-048","en-vocab-049","en-vocab-050","en-vocab-051","en-vocab-052","en-vocab-053","en-vocab-054","en-vocab-055","en-vocab-056","en-vocab-057","en-vocab-058","en-vocab-059","en-vocab-060","en-vocab-061","en-vocab-062"] }
+          ],
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "vocab-u5",
+      "name": "Unit 5",
+      "title": "Unit 5 季节",
+      "desc": "spring / summer / autumn / winter ...",
+      "topics": [
+        {
+          "id": "vocab-t5",
+          "title": "Unit 5 词汇",
+          "knowledgePointIds": ["en-vocab-063","en-vocab-064","en-vocab-065","en-vocab-066","en-vocab-067","en-vocab-068","en-vocab-069","en-vocab-070","en-vocab-071","en-vocab-072","en-vocab-073","en-vocab-074","en-vocab-075","en-vocab-076","en-vocab-077","en-vocab-078","en-vocab-079","en-vocab-080","en-vocab-081","en-vocab-082","en-vocab-083"],
+          "modules": [
+            { "id": "vocab-m5", "type": "english.vocab", "title": "Unit 5 词汇", "knowledgePointIds": ["en-vocab-063","en-vocab-064","en-vocab-065","en-vocab-066","en-vocab-067","en-vocab-068","en-vocab-069","en-vocab-070","en-vocab-071","en-vocab-072","en-vocab-073","en-vocab-074","en-vocab-075","en-vocab-076","en-vocab-077","en-vocab-078","en-vocab-079","en-vocab-080","en-vocab-081","en-vocab-082","en-vocab-083"] }
+          ],
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "vocab-u6",
+      "name": "Unit 6",
+      "title": "Unit 6 植物",
+      "desc": "flower / fruit / leaf / soil ...",
+      "topics": [
+        {
+          "id": "vocab-t6",
+          "title": "Unit 6 词汇",
+          "knowledgePointIds": ["en-vocab-084","en-vocab-085","en-vocab-086","en-vocab-087","en-vocab-088","en-vocab-089","en-vocab-090","en-vocab-091","en-vocab-092","en-vocab-093","en-vocab-094","en-vocab-095","en-vocab-096"],
+          "modules": [
+            { "id": "vocab-m6", "type": "english.vocab", "title": "Unit 6 词汇", "knowledgePointIds": ["en-vocab-084","en-vocab-085","en-vocab-086","en-vocab-087","en-vocab-088","en-vocab-089","en-vocab-090","en-vocab-091","en-vocab-092","en-vocab-093","en-vocab-094","en-vocab-095","en-vocab-096"] }
+          ],
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "vocab-u7",
+      "name": "Unit 7",
+      "title": "Unit 7 交通",
+      "desc": "green light / red light / wait / cross ...",
+      "topics": [
+        {
+          "id": "vocab-t7",
+          "title": "Unit 7 词汇",
+          "knowledgePointIds": ["en-vocab-097","en-vocab-098","en-vocab-099","en-vocab-100","en-vocab-101","en-vocab-102","en-vocab-103","en-vocab-104","en-vocab-105","en-vocab-106","en-vocab-107","en-vocab-108","en-vocab-109","en-vocab-110","en-vocab-111","en-vocab-112","en-vocab-113","en-vocab-114"],
+          "modules": [
+            { "id": "vocab-m7", "type": "english.vocab", "title": "Unit 7 词汇", "knowledgePointIds": ["en-vocab-097","en-vocab-098","en-vocab-099","en-vocab-100","en-vocab-101","en-vocab-102","en-vocab-103","en-vocab-104","en-vocab-105","en-vocab-106","en-vocab-107","en-vocab-108","en-vocab-109","en-vocab-110","en-vocab-111","en-vocab-112","en-vocab-113","en-vocab-114"] }
+          ],
+          "exercises": []
+        }
+      ]
+    },
+    {
+      "id": "vocab-u8",
+      "name": "Unit 8",
+      "title": "Unit 8 日常活动",
+      "desc": "go shopping / do exercise / watch ...",
+      "topics": [
+        {
+          "id": "vocab-t8",
+          "title": "Unit 8 词汇",
+          "knowledgePointIds": ["en-vocab-115","en-vocab-116","en-vocab-117","en-vocab-118","en-vocab-119","en-vocab-120","en-vocab-121","en-vocab-122","en-vocab-123","en-vocab-124","en-vocab-125","en-vocab-126","en-vocab-127","en-vocab-128"],
+          "modules": [
+            { "id": "vocab-m8", "type": "english.vocab", "title": "Unit 8 词汇", "knowledgePointIds": ["en-vocab-115","en-vocab-116","en-vocab-117","en-vocab-118","en-vocab-119","en-vocab-120","en-vocab-121","en-vocab-122","en-vocab-123","en-vocab-124","en-vocab-125","en-vocab-126","en-vocab-127","en-vocab-128"] }
+          ],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

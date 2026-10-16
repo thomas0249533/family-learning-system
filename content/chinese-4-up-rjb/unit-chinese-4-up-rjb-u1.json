@@ -1,0 +1,125 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-chinese-4-up-rjb-u1",
+    "type": "unit",
+    "isInternal": true,
+    "subject": "chinese",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "第一单元 自然之美",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-001",
+      "type": "concept",
+      "title": "《观潮》生字词与课文赏析",
+      "content": "《观潮》记叙了作者观赏钱塘江大潮的盛况，重点描写了潮来前、潮来时、潮去后的景象，展现了大潮的奇特、雄伟、壮观。需要掌握“潮、据、堤”等生字，理解天下奇观的含义。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-chinese-002",
+      "type": "concept",
+      "title": "《繁星》现代诗情感解读",
+      "content": "《繁星》是巴金的散文诗集节选，作者通过描写不同时期、不同地点看到的繁星，表达了对星空的热爱、对故乡的思念以及对美好生活的向往。文章语言清丽，充满童真。",
+      "prerequisites": ["kp-chinese-001"]
+    },
+    {
+      "id": "kp-chinese-003",
+      "type": "concept",
+      "title": "现代诗二首《秋晚的江上》《花牛歌》意象分析",
+      "content": "《秋晚的江上》作者刘大白，通过归巢的鸟儿、斜阳、芦苇等意象勾勒出傍晚江边的唯美画面；《花牛歌》作者徐志摩，用花牛的四组活动展现了大自然的悠闲与诗意。",
+      "prerequisites": ["kp-chinese-002"]
+    },
+    {
+      "id": "kp-chinese-004",
+      "type": "writing",
+      "title": "写景类习作推荐方法",
+      "content": "推荐一个好地方类习作要点：1. 开篇点明推荐地点 2. 按顺序描写亮点场景 3. 融入个人真实感受 4. 结尾发出邀请。做到抓住景物特点，表达真情实感。",
+      "prerequisites": ["kp-chinese-001", "kp-chinese-003"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u1-ex-001",
+      "type": "single",
+      "question": "《观潮》中“钱塘江大潮，自古以来被称为天下奇观”一句里，“奇观”的“观”意思是（ ）。",
+      "options": ["A. 观看", "B. 景象", "C. 观察", "D. 道观"],
+      "answer": "B",
+      "explanation": "“奇观”指奇特的景象，“观”在这里是名词，意为景象。判断时可结合“天下奇观”的语境，它形容大潮的雄伟壮观。",
+      "knowledgePointIds": ["kp-chinese-001"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u1-ex-002",
+      "type": "blank",
+      "question": "《观潮》中描写潮来时的句子：浪潮越来越近，犹如千万匹白色战马______，浩浩荡荡地飞奔而来。",
+      "answer": ["齐头并进"],
+      "explanation": "原文用“齐头并进”写出潮水齐头涌来的气势，把浪潮比作白色战马，突出大潮的雄伟壮观。",
+      "knowledgePointIds": ["kp-chinese-001"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u1-ex-003",
+      "type": "single",
+      "question": "《繁星》的作者巴金在文中写了三次看星，其中第二次看星的地点是（ ）。",
+      "options": ["A. 家乡庭院", "B. 南京", "C. 海上", "D. 北京"],
+      "answer": "B",
+      "explanation": "课文写作者三次看星：第一次在家乡庭院，第二次在南京，第三次在海上。可抓住文中表示地点的词语按顺序梳理。",
+      "knowledgePointIds": ["kp-chinese-002"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u1-ex-004",
+      "type": "multiple",
+      "question": "《秋晚的江上》一诗中出现的意象有（ ）。",
+      "options": ["A. 归鸟", "B. 斜阳", "C. 芦苇", "D. 白雪"],
+      "answer": ["A", "B", "C"],
+      "explanation": "诗中写到倦了的鸟儿、双翅一翻把斜阳掉在江上，头白的芦苇也妆成一瞬的红颜，全诗并没有白雪这一意象。",
+      "knowledgePointIds": ["kp-chinese-003"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u1-ex-005",
+      "type": "blank",
+      "question": "写“推荐一个好地方”时，要按一定的______来介绍，并突出这个地方的______。",
+      "answer": ["顺序", "特点"],
+      "explanation": "介绍一个地方要有条理，如按空间顺序或游览顺序；同时要抓住景物最吸引人的特点来写，才能让读者留下深刻印象。",
+      "knowledgePointIds": ["kp-chinese-004"],
+      "metadata": { "difficulty": "挑战" }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第一单元",
+      "title": "第一单元 自然之美",
+      "desc": "本单元围绕自然之美展开，包含《观潮》《繁星》等课文。",
+      "topics": [
+        {
+          "id": "u1-t1",
+          "title": "钱塘江大潮·《观潮》",
+          "knowledgePointIds": ["kp-chinese-001"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u1-t2",
+          "title": "星空与自然·《繁星》《现代诗二首》",
+          "knowledgePointIds": ["kp-chinese-002", "kp-chinese-003"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u1-t3",
+          "title": "口语交际与习作·身边的好地方",
+          "knowledgePointIds": ["kp-chinese-004"],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

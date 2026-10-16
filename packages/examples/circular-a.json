@@ -1,0 +1,17 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "circular-a",
+    "packageType": "base",
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "循环依赖 A",
+    "dependencies": ["circular-b"]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": []
+}

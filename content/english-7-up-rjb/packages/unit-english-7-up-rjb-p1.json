@@ -1,0 +1,1199 @@
+{
+  "manifest": {
+    "packageId": "unit-english-7-up-rjb-p1",
+    "type": "unit",
+    "title": "You and Me",
+    "version": "1.0.0",
+    "dependencies": [],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-english-7-up-rjb-p1::kp-word-001",
+      "type": "concept",
+      "title": "核心词汇：结识新朋友 (Meeting New Friends)",
+      "content": "本单元核心词汇主要围绕结识新朋友、介绍个人信息展开。重点掌握以下词汇及用法：\n\n- **greet** /ɡriːt/ v. 问候；迎接。例如：Greet each other. (互相问候)\n- **new** /njuː/ adj. 新的。例如：a new friend (一个新朋友)\n- **friend** /frend/ n. 朋友。例如：make friends (交朋友)\n- **class** /klɑːs/ n. 班级。例如：Class 1, Grade 7 (七年级一班)\n- **grade** /ɡreɪd/ n. 年级。\n- **from** /frɒm/ prep. 来自。例如：I am from Taiyuan. (我来自太原)\n- **England** /ˈɪŋɡlənd/ n. 英格兰\n- **American** /əˈmerɪkən/ adj. 美国的 n. 美国人\n- **Chinese** /ˌtʃaɪˈniːz/ adj. 中国的 n. 中国人；中文\n- **Japanese** /ˌdʒæpəˈniːz/ adj. 日本的 n. 日本人；日语\n\n**校园情境应用**：在太原平民中学的校园里，你可以这样介绍自己：\nI am a student from Taiyuan Pingmin Middle School. I am in Class 3, Grade 7. Nice to meet you!",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "词汇",
+          "交友",
+          "个人信息"
+        ],
+        "word": "greet",
+        "phonetic": "/ɡriːt/",
+        "partOfSpeech": "v."
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p1::kp-sentence-001",
+      "type": "formula",
+      "title": "核心句型：自我介绍与问候",
+      "content": "本单元的核心交际句型主要涉及见面打招呼、自我介绍和询问对方信息。\n\n**1. 问候与打招呼：**\n- Hi! / Hello! (你好！)\n- Good morning! (早上好！)\n- How are you? (你好吗？) — I'm fine, thank you. / Very well, thanks.\n- Nice to meet you. (很高兴认识你。) — Nice to meet you, too.\n\n**2. 自我介绍：**\n- My name is... / I am... (我的名字是……/我是……)\n- I am from... (我来自……)\n- I am in Class..., Grade... (我在……年级……班)\n\n**3. 询问他人信息：**\n- What's your name? (你叫什么名字？) — My name is...\n- How do you spell your name? (你的名字怎么拼写？) — J-A-C-K, Jack.\n- Where are you from? (你来自哪里？) — I'm from...",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "句型",
+          "交际",
+          "问候"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p1::kp-grammar-001",
+      "type": "concept",
+      "title": "语法：一般现在时 be 动词 (am, is, are)",
+      "content": "**be动词的用法**\n在一般现在时中，be动词有三种形式：am, is, are。它们的具体用法如下：\n- **am**：只能与第一人称单数 **I** 连用。例如：I am a student. (I'm a student.)\n- **is**：用于第三人称单数（he, she, it）及单数名词。例如：He is my friend. (He's my friend.) / Jack is from England.\n- **are**：用于第二人称（you）及所有复数（we, they, 复数名词）。例如：You are nice. (You're nice.) / We are in Grade 7. (We're in Grade 7.)\n\n**be动词的句式变化**\n1. **否定句**：在be动词后加not。\n   - I am not... (I'm not...)\n   - He is not... (He isn't...)\n   - They are not... (They aren't...)\n2. **一般疑问句**：将be动词提到句首。\n   - Are you from Taiyuan? — Yes, I am. / No, I'm not.\n   - Is she your friend? — Yes, she is. / No, she isn't.\n\n**注意**：be动词在口语中常与主语缩写，如 I'm, you're, he's, she's, it's, we're, they're。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "be动词",
+          "一般现在时"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p1::kp-grammar-002",
+      "type": "concept",
+      "title": "语法：主格代词 (Subject Pronouns)",
+      "content": "**主格代词**\n主格代词在句子中作主语，表示动作的执行者。本单元要求掌握以下七个主格代词：\n- **I** (我)\n- **you** (你；你们)\n- **he** (他)\n- **she** (她)\n- **it** (它)\n- **we** (我们)\n- **they** (他们；她们；它们)\n\n**用法要点：**\n1. **人称与数的对应**：\n   - 第一人称单数：I\n   - 第二人称单复数：you\n   - 第三人称单数：he (男性), she (女性), it (动物/事物)\n   - 第一人称复数：we\n   - 第三人称复数：they\n2. **主格代词与be动词的搭配**：\n   - I → am\n   - you / we / they → are\n   - he / she / it → is\n\n**情境演练**：\n在太原平民中学，你可以这样介绍他人：\nThis is my friend, Li Ming. **He** is from Taiyuan. **We** are in the same class. **They** are my classmates, too.",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p1::kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "代词",
+          "主格"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p1::kp-phonetic-001",
+      "type": "concept",
+      "title": "语音：元音字母发音与缩略形式",
+      "content": "**元音字母发音对比**\n本单元重点学习四个元音音素：/i:/, /ɪ/, /e/, /æ/。\n\n1. **/i:/** (长元音，嘴角向两边咧开，发音饱满)\n   - 字母组合：e, ee, ea\n   - 例词：he, she, meet, read\n2. **/ɪ/** (短元音，发音短促，口型放松)\n   - 字母组合：i, y\n   - 例词：is, in, big, happy\n3. **/e/** (短元音，嘴唇向两侧微微张开)\n   - 字母组合：e, ea\n   - 例词：bed, pen, head, bread\n4. **/æ/** (短元音，口型张大，下巴向下)\n   - 字母组合：a\n   - 例词：am, cat, bag, map\n\n**缩略形式的发音 (Contractions)**\n在口语中，be动词常与主语缩略，注意其读音变化：\n- I am → I'm /aɪm/\n- You are → You're /jʊə(r)/ 或 /jɔːr/\n- He is → He's /hiːz/\n- She is → She's /ʃiːz/\n- It is → It's /ɪts/\n- We are → We're /wɪə(r)/ 或 /wɪr/\n- They are → They're /ðeə(r)/ 或 /ðer/",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析",
+        "ability": "语言能力",
+        "tags": [
+          "语音",
+          "元音",
+          "缩略形式"
+        ],
+        "phoneticSymbol": "/i:/, /ɪ/, /e/, /æ/",
+        "letterCombination": "e, ee, ea, i, y, a",
+        "pronunciationTips": "注意区分长元音 /i:/ 和短元音 /ɪ/，前者发音饱满且长，后者短促且放松；/e/ 和 /æ/ 的区别在于口型大小，/æ/ 口型更大，下巴更向下。"
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p1::kp-reading-001",
+      "type": "reading",
+      "title": "阅读：寻找朋友的帖子 (Looking for Friends)",
+      "content": "**阅读范文**\n\n> **Post 1: Hello from Taiyuan!**\n> Hi! My name is Li Ming. I am a student at Taiyuan Pingmin Middle School. Our school is very big and beautiful. I am 13 years old. I am in Class 3, Grade 7. I like playing basketball and reading books. I want to make a new friend from an English-speaking country. Please write to me! My email is liming@example.com.\n>\n> **Post 2: Greetings from London!**\n> Hello, Li Ming! My name is Jack. I am from London, England. I am 12 years old. I love sports and music. My favourite subject is PE. I want to know about China and make a Chinese friend. Nice to meet you! \n>\n> *来源：Pen Pal Wanted，改编自 Time for Kids 与 Highlights 杂志*\n\n**阅读任务**\n阅读上述帖子，回答以下问题（题目计入本知识点）：\n1. Where is Li Ming from?\n2. How old is Jack?\n3. What is Jack's favourite subject?",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p1::kp-word-001",
+        "unit-english-7-up-rjb-p1::kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战",
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "分析",
+        "ability": "文化意识",
+        "tags": [
+          "阅读",
+          "交友",
+          "跨文化"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p1::kp-writing-001",
+      "type": "writing",
+      "title": "写作：制作个人档案与回复帖子",
+      "content": "**写作任务：回复交友帖子**\n假设你是太原平民中学的一名学生，你看到了上面（kp-reading-001）中 Jack 发布的交友帖子。请你给他回复一封电子邮件，介绍你自己，并表达你想要和他交朋友的意愿。\n\n**写作框架：**\n1. **问候 (Greeting)**: Dear Jack, / Hello Jack,\n2. **自我介绍 (Self-introduction)**: \n   - My name is... / I am...\n   - I am from... (Taiyuan Pingmin Middle School)\n   - I am... years old.\n   - I am in Class..., Grade...\n3. **兴趣爱好 (Hobbies)**: \n   - I like... / My favourite subject is...\n4. **表达交友意愿 (Make friends)**: \n   - I want to be your friend. / Can we be friends?\n5. **结尾 (Closing)**: \n   - Please write to me soon. / Best wishes,\n   - [Your Name]\n\n**写作范文 (Model Essay)**\nDear Jack,\nHello! My name is Wang Mei. I am a student at Taiyuan Pingmin Middle School. I am 13 years old and I am in Class 1, Grade 7. I like listening to music and playing badminton. My favourite subject is English. I want to be your friend and know more about London. Please write to me soon.\nBest wishes,\nWang Mei",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p1::kp-word-001",
+        "unit-english-7-up-rjb-p1::kp-sentence-001",
+        "unit-english-7-up-rjb-p1::kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "写作",
+          "个人档案",
+          "电子邮件"
+        ]
+      }
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u1-ex-001",
+      "type": "single",
+      "question": "I am a student. I want to make a new ______.",
+      "options": [
+        "A. friend",
+        "B. school",
+        "C. class",
+        "D. grade"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我是一名学生。我想交一个新朋友。make a new friend 意为“交新朋友”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-002",
+      "type": "single",
+      "question": "I am ______ Taiyuan. I love my city.",
+      "options": [
+        "A. in",
+        "B. from",
+        "C. at",
+        "D. on"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我来自太原。be from 意为“来自”。故选B。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-003",
+      "type": "single",
+      "question": "We are in Class 3, ______ 7 in Taiyuan Pingmin Middle School.",
+      "options": [
+        "A. Grade",
+        "B. Class",
+        "C. School",
+        "D. Room"
+      ],
+      "answer": "A",
+      "explanation": "英语中表达年级和班级，通常班级在前，年级在后。Grade 7 表示七年级。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-004",
+      "type": "blank",
+      "question": "Nice to meet you, Jack. Are you ______ (来自) England?",
+      "answer": "from",
+      "explanation": "be from 表示“来自”。故填 from。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-005",
+      "type": "blank",
+      "question": "I am a ______ (中国的) student. I love China.",
+      "answer": "Chinese",
+      "explanation": "Chinese 作形容词，意为“中国的”。故填 Chinese。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-006",
+      "type": "judge",
+      "question": "在英语中，'Grade' 的意思是 '班级'。",
+      "answer": "错",
+      "explanation": "Grade 的意思是“年级”，Class 的意思是“班级”。故本题错误。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-007",
+      "type": "spelling",
+      "question": "He is my new ______ (朋友). We are in the same class.",
+      "answer": "friend",
+      "explanation": "朋友对应的英文单词是 friend。故填 friend。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-008",
+      "type": "matching",
+      "question": "请将下列国家与对应的形容词/人匹配。",
+      "left": [
+        "China",
+        "England",
+        "America",
+        "Japan"
+      ],
+      "right": [
+        "Chinese",
+        "English",
+        "American",
+        "Japanese"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "China-Chinese (中国-中国的/中国人), England-English (英国-英国的/英国人), America-American (美国-美国的/美国人), Japan-Japanese (日本-日本的/日本人)。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-009",
+      "type": "single",
+      "question": "— How are you? — ______",
+      "options": [
+        "A. I'm fine, thank you.",
+        "B. Nice to meet you.",
+        "C. Good morning.",
+        "D. My name is Jack."
+      ],
+      "answer": "A",
+      "explanation": "How are you? 是询问对方近况的常用句型，回答通常为 I'm fine, thank you. 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-010",
+      "type": "single",
+      "question": "— What's your name? — ______",
+      "options": [
+        "A. I'm from Taiyuan.",
+        "B. I'm in Grade 7.",
+        "C. My name is Li Ming.",
+        "D. I'm fine."
+      ],
+      "answer": "C",
+      "explanation": "What's your name? 是询问对方名字的句型，回答应为 My name is... 故选C。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-011",
+      "type": "single",
+      "question": "— How do you spell your name? — ______",
+      "options": [
+        "A. J-A-C-K, Jack.",
+        "B. I'm Jack.",
+        "C. Yes, I do.",
+        "D. Nice to meet you."
+      ],
+      "answer": "A",
+      "explanation": "How do you spell your name? 是询问名字如何拼写的句型，回答应逐个字母拼写。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-012",
+      "type": "blank",
+      "question": "— Nice to meet you. — Nice to meet you, ______ (too / also).",
+      "answer": "too",
+      "explanation": "Nice to meet you, too. 是固定的回答，表示“也很高兴认识你”。also 通常用于句中，too 用于句末。故填 too。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-013",
+      "type": "blank",
+      "question": "— Where are you ______? — I'm from Taiyuan.",
+      "answer": "from",
+      "explanation": "Where are you from? 是询问对方来自哪里的句型。故填 from。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-014",
+      "type": "matching",
+      "question": "请将下列问句与对应的答语匹配。",
+      "left": [
+        "What's your name?",
+        "How are you?",
+        "Where are you from?",
+        "Nice to meet you."
+      ],
+      "right": [
+        "I'm fine, thank you.",
+        "My name is Li Ming.",
+        "Nice to meet you, too.",
+        "I'm from Taiyuan."
+      ],
+      "answer": [
+        1,
+        0,
+        3,
+        2
+      ],
+      "explanation": "What's your name? 回答名字；How are you? 回答近况；Where are you from? 回答来自哪里；Nice to meet you. 回答 Nice to meet you, too.",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-015",
+      "type": "single",
+      "question": "— Good morning, Miss Li! — ______",
+      "options": [
+        "A. Good morning!",
+        "B. Good afternoon!",
+        "C. Good evening!",
+        "D. Hello!"
+      ],
+      "answer": "A",
+      "explanation": "当别人早上向你问候时，你也应该用同样的问候语回复。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-016",
+      "type": "single",
+      "question": "当你向别人介绍新同学时，你可以说：______",
+      "options": [
+        "A. This is my new friend, Jack.",
+        "B. How are you?",
+        "C. What's your name?",
+        "D. I'm Jack."
+      ],
+      "answer": "A",
+      "explanation": "向别人介绍第三方时，常用 This is... 句型。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u1-ex-017",
+      "type": "single",
+      "question": "Which word has the sound /i:/?",
+      "options": [
+        "A. is",
+        "B. in",
+        "C. meet",
+        "D. big"
+      ],
+      "answer": "C",
+      "explanation": "meet 中的字母组合 ee 发长元音 /i:/。is, in, big 中的 i 发短元音 /ɪ/。故选C。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-018",
+      "type": "single",
+      "question": "Which word has the sound /æ/?",
+      "options": [
+        "A. am",
+        "B. bed",
+        "C. pen",
+        "D. he"
+      ],
+      "answer": "A",
+      "explanation": "am 中的字母 a 发短元音 /æ/。bed, pen 发 /e/，he 发 /i:/。故选A。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-019",
+      "type": "judge",
+      "question": "单词 'she' 的发音是 /ʃiː/。",
+      "answer": "对",
+      "explanation": "she 的音标为 /ʃiː/，字母组合 sh 发 /ʃ/，e 发长元音 /i:/。故本题正确。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-020",
+      "type": "judge",
+      "question": "单词 'it' 的发音是 /aɪt/。",
+      "answer": "错",
+      "explanation": "it 的音标为 /ɪt/，字母 i 发短元音 /ɪ/，而不是双元音 /aɪ/。故本题错误。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-021",
+      "type": "blank",
+      "question": "The contraction of 'I am' is ______.",
+      "answer": "I'm",
+      "explanation": "I am 的缩略形式是 I'm。故填 I'm。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-022",
+      "type": "blank",
+      "question": "The contraction of 'They are' is ______.",
+      "answer": "They're",
+      "explanation": "They are 的缩略形式是 They're。故填 They're。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-023",
+      "type": "spelling",
+      "question": "请写出单词 'cat' 的音标（含斜杠）。",
+      "answer": "/kæt/",
+      "explanation": "cat 的音标为 /kæt/，字母 a 发 /æ/。故填 /kæt/。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-024",
+      "type": "matching",
+      "question": "请将下列单词与正确的音标匹配。",
+      "left": [
+        "bed",
+        "am",
+        "he",
+        "is"
+      ],
+      "right": [
+        "/e/",
+        "/æ/",
+        "/i:/",
+        "/ɪ/"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "bed 中的 e 发 /e/，am 中的 a 发 /æ/，he 中的 e 发 /i:/，is 中的 i 发 /ɪ/。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u1-ex-025",
+      "type": "single",
+      "question": "I ______ a student at Taiyuan Pingmin Middle School.",
+      "options": [
+        "A. am",
+        "B. is",
+        "C. are",
+        "D. be"
+      ],
+      "answer": "A",
+      "explanation": "主语是 I，be动词用 am。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-026",
+      "type": "single",
+      "question": "My friend Jack ______ from England.",
+      "options": [
+        "A. am",
+        "B. is",
+        "C. are",
+        "D. be"
+      ],
+      "answer": "B",
+      "explanation": "主语是 My friend Jack，属于第三人称单数，be动词用 is。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-027",
+      "type": "single",
+      "question": "— Are you in Class 3? — Yes, I ______.",
+      "options": [
+        "A. am",
+        "B. is",
+        "C. are",
+        "D. do"
+      ],
+      "answer": "A",
+      "explanation": "一般疑问句 Are you...? 的肯定回答是 Yes, I am. 故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-028",
+      "type": "blank",
+      "question": "She ______ (be) my classmate. We are good friends.",
+      "answer": "is",
+      "explanation": "主语 She 是第三人称单数，be动词用 is。故填 is。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-029",
+      "type": "blank",
+      "question": "They ______ (not be) in the same class. They are in Class 2 and Class 3.",
+      "answer": "aren't / are not",
+      "explanation": "主语 They 是复数，否定形式为 are not，缩写为 aren't。故填 aren't 或 are not。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-030",
+      "type": "blank",
+      "question": "______ (be) you from Taiyuan? — Yes, I am.",
+      "answer": "Are",
+      "explanation": "主语是 you，变一般疑问句时将 be动词 are 提到句首，首字母大写。故填 Are。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-031",
+      "type": "judge",
+      "question": "'He are a good boy.' 这句话是正确的。",
+      "answer": "错",
+      "explanation": "主语 He 是第三人称单数，be动词应该用 is，而不是 are。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-032",
+      "type": "single",
+      "question": "— Is she your friend? — No, ______.",
+      "options": [
+        "A. she isn't",
+        "B. she is",
+        "C. he isn't",
+        "D. I'm not"
+      ],
+      "answer": "A",
+      "explanation": "一般疑问句 Is she...? 的否定回答是 No, she isn't. 故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u1-ex-033",
+      "type": "single",
+      "question": "______ is my friend. ______ name is Jack.",
+      "options": [
+        "A. He; His",
+        "B. She; Her",
+        "C. It; Its",
+        "D. They; Their"
+      ],
+      "answer": "A",
+      "explanation": "句意为：他是我的朋友。他的名字叫杰克。第一空作主语，用主格 He；第二空修饰名词 name，用形容词性物主代词 His。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-034",
+      "type": "single",
+      "question": "______ are my classmates. We are in Class 1.",
+      "options": [
+        "A. He",
+        "B. She",
+        "C. They",
+        "D. It"
+      ],
+      "answer": "C",
+      "explanation": "句意为：他们是我的同班同学。主语是复数，用主格代词 They。故选C。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-035",
+      "type": "single",
+      "question": "This is my friend, Li Ming. ______ is from Taiyuan.",
+      "options": [
+        "A. He",
+        "B. She",
+        "C. It",
+        "D. I"
+      ],
+      "answer": "A",
+      "explanation": "Li Ming 是男性名字，指代男性用主格代词 He。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-036",
+      "type": "blank",
+      "question": "I am from China. ______ (我) am a Chinese student.",
+      "answer": "I",
+      "explanation": "句意为：我来自中国。我是一名中国学生。第一人称单数主格代词为 I，首字母大写。故填 I。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-037",
+      "type": "blank",
+      "question": "You and Jack are friends. ______ (你们) are in Class 1.",
+      "answer": "You",
+      "explanation": "句意为：你和杰克是朋友。你们在一班。第二人称主格代词为 You，首字母大写。故填 You。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-038",
+      "type": "judge",
+      "question": "'We' 是复数主格代词。",
+      "answer": "对",
+      "explanation": "We 意为“我们”，是第一人称复数主格代词，在句中作主语。故本题正确。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-039",
+      "type": "blank",
+      "question": "My mother is a teacher. ______ (她) is very nice.",
+      "answer": "She",
+      "explanation": "句意为：我妈妈是一名老师。她非常和蔼。指代女性，用主格代词 She，首字母大写。故填 She。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-040",
+      "type": "single",
+      "question": "— Who is the girl? — ______ is my sister, and ______ name is Lucy.",
+      "options": [
+        "A. She; her",
+        "B. He; his",
+        "C. It; its",
+        "D. They; their"
+      ],
+      "answer": "A",
+      "explanation": "句意为：那个女孩是谁？她是我妹妹，她的名字叫露西。第一空作主语，指代女孩用 She；第二空修饰名词 name，用形容词性物主代词 her。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u1-ex-041",
+      "type": "single",
+      "question": "Where is Li Ming from?",
+      "options": [
+        "A. Taiyuan",
+        "B. London",
+        "C. England",
+        "D. America"
+      ],
+      "answer": "A",
+      "explanation": "根据 Post 1 中 'I am a student at Taiyuan Pingmin Middle School.' 和 'I am from Taiyuan.' 可知，李明来自太原。故选A。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-042",
+      "type": "single",
+      "question": "How old is Jack?",
+      "options": [
+        "A. 12",
+        "B. 13",
+        "C. 14",
+        "D. 15"
+      ],
+      "answer": "A",
+      "explanation": "根据 Post 2 中 'I am 12 years old.' 可知，杰克12岁。故选A。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-043",
+      "type": "single",
+      "question": "What is Jack's favourite subject?",
+      "options": [
+        "A. English",
+        "B. PE",
+        "C. Music",
+        "D. Math"
+      ],
+      "answer": "B",
+      "explanation": "根据 Post 2 中 'My favourite subject is PE.' 可知，杰克最喜欢的科目是体育。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-044",
+      "type": "judge",
+      "question": "Li Ming wants to make a new friend from an English-speaking country.",
+      "answer": "对",
+      "explanation": "根据 Post 1 中 'I want to make a new friend from an English-speaking country.' 可知，李明想交一个来自英语国家的新朋友。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-045",
+      "type": "judge",
+      "question": "Jack loves sports and music.",
+      "answer": "对",
+      "explanation": "根据 Post 2 中 'I love sports and music.' 可知，杰克喜欢运动和音乐。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-046",
+      "type": "blank",
+      "question": "Li Ming likes playing ______ and reading books.",
+      "answer": "basketball",
+      "explanation": "根据 Post 1 中 'I like playing basketball and reading books.' 可知，李明喜欢打篮球和读书。故填 basketball。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-047",
+      "type": "blank",
+      "question": "Jack wants to know about ______ and make a Chinese friend.",
+      "answer": "China",
+      "explanation": "根据 Post 2 中 'I want to know about China and make a Chinese friend.' 可知，杰克想了解中国。故填 China。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-048",
+      "type": "blank",
+      "question": "What school is Li Ming in? (请用英文完整回答)",
+      "answer": "Taiyuan Pingmin Middle School.",
+      "explanation": "根据 Post 1 中 'I am a student at Taiyuan Pingmin Middle School.' 可知，李明在太原平民中学。故填 Taiyuan Pingmin Middle School。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u1-ex-049",
+      "type": "single",
+      "question": "在电子邮件的开头，通常使用哪个问候语？",
+      "options": [
+        "A. Goodbye",
+        "B. Dear Jack,",
+        "C. Yours sincerely",
+        "D. Hello, I am Wang Mei."
+      ],
+      "answer": "B",
+      "explanation": "电子邮件或信件开头的称呼通常用 Dear + 名字，如 Dear Jack,。故选B。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-050",
+      "type": "single",
+      "question": "在介绍自己的名字时，可以说：______",
+      "options": [
+        "A. My name is...",
+        "B. I am from...",
+        "C. I am in...",
+        "D. I like..."
+      ],
+      "answer": "A",
+      "explanation": "介绍自己的名字用 My name is... 或 I am...。I am from 用于介绍来自哪里，I am in 用于介绍班级年级，I like 用于介绍爱好。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-051",
+      "type": "single",
+      "question": "以下哪个不是电子邮件的结尾？",
+      "options": [
+        "A. Best wishes",
+        "B. Yours",
+        "C. Please write to me soon",
+        "D. Dear Jack"
+      ],
+      "answer": "D",
+      "explanation": "Dear Jack 是电子邮件的开头称呼，而不是结尾。Best wishes, Yours, Please write to me soon 均可作为结尾。故选D。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u1-ex-052",
+      "type": "blank",
+      "question": "I want to ______ (成为) your friend.",
+      "answer": "be",
+      "explanation": "句意为：我想成为你的朋友。want to do sth. 想要做某事，be 动词原形为 be。故填 be。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-053",
+      "type": "blank",
+      "question": "I am in Class 1, ______ 7.",
+      "answer": "Grade",
+      "explanation": "英语中表达班级和年级，班级在前，年级在后。Class 1, Grade 7 表示七年级一班。故填 Grade。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-054",
+      "type": "judge",
+      "question": "在回复交友帖子时，不需要介绍自己的兴趣爱好。",
+      "answer": "错",
+      "explanation": "在回复交友帖子时，介绍自己的兴趣爱好有助于对方了解你，是交友的重要环节。故本题错误。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u1-ex-055",
+      "type": "matching",
+      "question": "请将写作框架与对应的句子匹配。",
+      "left": [
+        "问候",
+        "自我介绍",
+        "兴趣爱好",
+        "结尾"
+      ],
+      "right": [
+        "Dear Jack,",
+        "My name is Wang Mei. I am 13 years old.",
+        "I like listening to music and playing badminton.",
+        "Please write to me soon."
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "问候对应 Dear Jack,；自我介绍对应 My name is...；兴趣爱好对应 I like...；结尾对应 Please write to me soon.",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u1-ex-056",
+      "type": "matching",
+      "question": "请将下列句子按正确的顺序排列，组成一段通顺的回复。",
+      "left": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "right": [
+        "Dear Jack,",
+        "My name is Wang Mei.",
+        "I want to be your friend.",
+        "Please write to me soon."
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "正确的回复顺序为：称呼 (Dear Jack,) -> 自我介绍 (My name is Wang Mei.) -> 表达意愿 (I want to be your friend.) -> 结尾 (Please write to me soon.)。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "unit-english-7-up-rjb-p1::u1",
+      "name": "第一单元",
+      "title": "You and Me",
+      "desc": "本单元围绕‘结识新朋友’这一主题展开。通过学习be动词、主格代词及相关的问候与自我介绍句型，结合语音发音规则和读写训练，帮助学生在太原平民中学的新环境中自信地用英语进行交流，提升跨文化交际意识。",
+      "topics": [
+        {
+          "id": "unit-english-7-up-rjb-p1::t1",
+          "title": "Meeting New Friends (Section A)",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p1::kp-word-001",
+            "unit-english-7-up-rjb-p1::kp-sentence-001",
+            "unit-english-7-up-rjb-p1::kp-phonetic-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-english-7-up-rjb-p1::u1-t1-m1",
+              "type": "english.vocab",
+              "title": "核心词汇学习",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-word-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p1::u1-t1-m2",
+              "type": "english.sentence",
+              "title": "交际句型演练",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-sentence-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p1::u1-t1-m3",
+              "type": "english.vocab",
+              "title": "元音词汇与缩略形式",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-phonetic-001"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "unit-english-7-up-rjb-p1::t2",
+          "title": "Getting to Know Each Other (Section B)",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p1::kp-grammar-001",
+            "unit-english-7-up-rjb-p1::kp-grammar-002",
+            "unit-english-7-up-rjb-p1::kp-reading-001",
+            "unit-english-7-up-rjb-p1::kp-writing-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-english-7-up-rjb-p1::u1-t2-m1",
+              "type": "english.grammar",
+              "title": "be动词与主格代词",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p1::kp-grammar-002"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p1::u1-t2-m2",
+              "type": "english.reading",
+              "title": "阅读理解：寻找朋友",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-reading-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p1::u1-t2-m3",
+              "type": "english.writing",
+              "title": "个人档案写作",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-writing-001"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-dailylife",
+    "type": "special",
+    "title": "A Day in the Life 日常作息与时间表达专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p6"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p6::u6"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-english-7-up-dailylife::special-u6",
+      "name": "专项测验",
+      "title": "A Day in the Life 日常作息与时间表达专项测验",
+      "desc": "针对人教版2024新教材七年级上册 Unit 6 A Day in the Life 的高难度变式测验，覆盖日常活动词汇、时间表达法、Wh- 疑问句，以及关于不同国家青少年日常作息的跨文化阅读语篇。",
+      "topics": [
+        {
+          "id": "special-english-7-up-dailylife::special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p6::kp-word-001",
+            "unit-english-7-up-rjb-p6::kp-sentence-001",
+            "unit-english-7-up-rjb-p6::kp-grammar-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-english-7-up-dailylife::special-ex-081",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. get up; have breakfast",
+                "B. go to bed; have breakfast",
+                "C. get up; have lunch",
+                "D. go to school; do homework"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-word-001",
+                "unit-english-7-up-rjb-p6::kp-sentence-001"
+              ],
+              "question": "— What do you usually do in the morning?\n— I ______ at 6:30 and ______ at 7:00.",
+              "explanation": "句意为：——你早上通常做什么？——我6:30起床，7:00吃早饭。get up（起床）和 have breakfast（吃早饭）都是早晨的活动。B 中的 go to bed 是晚上，C 中的 have lunch 是中午，D 中的 do homework 通常是傍晚或晚上。故选 A。易错点：混淆不同时间段的日常活动。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-082",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "a quarter to eight; half past nine",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "用英语写出下列时间（使用逆读法）。\n7:45 → ______    9:30 → ______",
+              "explanation": "7:45 表示差一刻八点，逆读法为 a quarter to eight；9:30 表示九点半，逆读法为 half past nine。考察时间表达法的逆读规则：分钟数 > 30 时用 to，分钟数 ≤ 30 时用 past。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-083",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. What time; What",
+                "B. When; What",
+                "C. What time; When",
+                "D. What; What time"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p6::kp-sentence-001"
+              ],
+              "question": "— ______ does your father go to work?\n— He goes to work at 7:30.\n— ______ does he do after work?\n— He usually exercises.",
+              "explanation": "第一空根据答语 at 7:30 可知，询问具体时间点，用 What time 或 When 均可，但 What time 更精确；第二空根据答语 He usually exercises. 可知，询问活动内容，用 What。结合选项，A 最佳。易错点：混淆 What time 和 What 的用法。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-084",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "brushes; goes",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-word-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-002"
+              ],
+              "question": "用括号中所给动词的适当形式填空。\nMy sister ______ (brush) her teeth at 7:00. Then she ______ (go) to school at 7:30.",
+              "explanation": "主语 My sister 是第三人称单数，一般现在时中动词要用第三人称单数形式。brush 变为 brushes，go 变为 goes。考察一般现在时第三人称单数的动词变化。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-085",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": "F",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-phonetic-001"
+              ],
+              "question": "在句子 'I get up at six in the morning.' 中，'at' 和 'the' 通常需要重读。",
+              "explanation": "在英语句子中，实词（如 get, up, six, morning）通常重读，虚词（如 at, the）通常弱读。故本题错误。考察句子重音规则。"
+            }
+          ]
+        },
+        {
+          "id": "special-english-7-up-dailylife::special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p6::kp-grammar-001",
+            "unit-english-7-up-rjb-p6::kp-grammar-002",
+            "unit-english-7-up-rjb-p6::kp-reading-001",
+            "unit-english-7-up-rjb-p6::kp-writing-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-english-7-up-dailylife::special-ex-086",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. What time do you get up?",
+                "B. What do you do in the morning?",
+                "C. When do you go to school?",
+                "D. Do you get up early?"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-sentence-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-002"
+              ],
+              "question": "— ______\n— I usually get up at 6:30 and have breakfast at 7:00.",
+              "explanation": "答语描述了早晨的一系列活动（get up and have breakfast），因此问句应是询问早晨的活动内容，用 What do you do in the morning?。A 询问具体起床时间，答语只需回答一个时间点；C 询问上学时间；D 是一般疑问句，回答用 Yes/No。故选 B。逆向思维：根据答语反推问句。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-087",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T",
+                "F"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-reading-001",
+                "unit-english-7-up-rjb-p6::kp-word-001"
+              ],
+              "question": "阅读 Emily 的学校日介绍，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Emily from Australia. I get up at 7:00 in the morning. I have breakfast at 7:30. School starts at 8:30. We have four classes in the morning. I have lunch at 12:30. In the afternoon, we have two classes. School ends at 3:30. After school, I play netball with my friends. I go home at 5:00. I do my homework from 6:00 to 7:00. I have dinner at 7:30. I go to bed at 9:00.\n(1) Emily is from the UK. (2) Emily has lunch at 12:30. (3) Emily plays netball after school. (4) Emily goes to bed at 10:00.",
+              "explanation": "由 Hi, I'm Emily from Australia. 可知(1)F；由 I have lunch at 12:30. 可知(2)T；由 After school, I play netball with my friends. 可知(3)T；由 I go to bed at 9:00. 可知(4)F。考察阅读细节提取与跨文化语境理解（澳大利亚的 netball 是一项特色运动）。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-088",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. What time do you get up?",
+                "B. What do you do after that?",
+                "C. When do you go to bed?",
+                "D. Do you get up early?",
+                "E. What time do you have breakfast?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-002",
+                "unit-english-7-up-rjb-p6::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n— Hi, Mike. 1. ______\n— I usually get up at 6:30.\n— 2. ______\n— I have breakfast and go to school.",
+              "explanation": "第一空：根据答语 I usually get up at 6:30. 可知，问句是询问具体起床时间，A 符合；第二空：根据答语 I have breakfast and go to school. 可知，问句是询问起床后的活动，B 符合。C 询问睡觉时间，D 是一般疑问句，E 询问吃早饭的具体时间（答语应为时间点，而不是活动）。考察 Wh- 疑问句与交际语境的综合。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-089",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "on → in; in → at",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "找出并改正下列句子中的错误（时间介词误用）。\nI get up at 6:30 on the morning. I go to bed at 10:00 in night.",
+              "explanation": "在早上用 in the morning，而不是 on the morning；在夜里用 at night，而不是 in night。原句两处介词错误：on the morning 应改为 in the morning，in night 应改为 at night。考察时间介词的准确搭配。"
+            },
+            {
+              "id": "special-english-7-up-dailylife::special-ex-090",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "get; starts; ends",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-writing-001",
+                "unit-english-7-up-rjb-p6::kp-word-001",
+                "unit-english-7-up-rjb-p6::kp-grammar-001"
+              ],
+              "question": "阅读短文，用适当的词填空。\nMy name is Peter. I am a student in London. I usually ______ (1) (get) up at 7:00. I have breakfast at 7:30. Then I go to school at 8:00. School ______ (2) (start) at 8:30. I have lunch at 12:00. In the afternoon, I have two classes. School ______ (3) (end) at 3:30. After school, I often play football. I go home at 5:00. I do my homework from 6:00 to 7:00. I have dinner at 7:30. I go to bed at 10:00.",
+              "explanation": "第一空主语 I，动词用原形 get；第二空主语 School 是第三人称单数，start 加 -s 变为 starts；第三空主语 School 是第三人称单数，end 加 -s 变为 ends。考察一般现在时第三人称单数的动词变化与语篇综合理解。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

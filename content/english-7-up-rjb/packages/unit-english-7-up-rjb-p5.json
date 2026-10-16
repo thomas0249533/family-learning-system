@@ -1,0 +1,1205 @@
+{
+  "manifest": {
+    "packageId": "unit-english-7-up-rjb-p5",
+    "type": "unit",
+    "title": "Fun Clubs",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-english-7-up-rjb-p4"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-english-7-up-rjb-p5::kp-word-001",
+      "type": "concept",
+      "title": "核心词汇：俱乐部名称与活动 (Club Names and Activities)",
+      "content": "本单元核心词汇主要围绕学校社团及相关的活动展开。重点掌握以下词汇：\n\n**俱乐部名称 (Club Names):**\n- club /klʌb/ n. 俱乐部；社团\n- music club /ˈmjuːzɪk klʌb/ 音乐社\n- art club /ɑːt klʌb/ 美术社\n- sports club /spɔːts klʌb/ 体育社\n- chess club /tʃes klʌb/ 棋类社\n- English club /ˈɪŋɡlɪʃ klʌb/ 英语社\n- swimming club /ˈswɪmɪŋ klʌb/ 游泳社\n- basketball club /ˈbɑːskɪtbɔːl klʌb/ 篮球社\n\n**相关活动 (Activities):**\n- join /dʒɔɪn/ v. 加入\n- sing /sɪŋ/ v. 唱歌\n- dance /dɑːns/ v. 跳舞\n- draw /drɔː/ v. 画画\n- swim /swɪm/ v. 游泳\n- play chess /pleɪ tʃes/ 下棋\n- speak English /spiːk ˈɪŋɡlɪʃ/ 说英语\n- play the guitar /pleɪ ðə ɡɪˈtɑː(r)/ 弹吉他\n\n**校园情境应用**：在太原平民中学，你可以这样介绍：There are many clubs in our school. I want to join the basketball club because I can play basketball well.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "词汇",
+          "社团",
+          "活动"
+        ],
+        "word": "club",
+        "phonetic": "/klʌb/",
+        "partOfSpeech": "n."
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p5::kp-sentence-001",
+      "type": "formula",
+      "title": "核心句型：询问与表达加入社团的意愿 (Asking and Expressing Club Preferences)",
+      "content": "本单元的核心交际句型主要涉及询问对方想加入的社团、询问对方的能力以及表达自己的意愿。\n\n**1. 询问想加入的社团：**\n- What club do you want to join? (你想加入什么社团？) — I want to join the music club.\n- Which club do you like? (你喜欢哪个社团？) — I like the art club.\n\n**2. 询问和表达能力：**\n- Can you sing? (你会唱歌吗？) — Yes, I can. / No, I can't.\n- What can you do? (你会做什么？) — I can dance and draw.\n- I can play the guitar, but I can't play the piano. (我会弹吉他，但我不会弹钢琴。)\n\n**3. 表达加入社团的意愿：**\n- I want to join the English club because I want to speak English well. (我想加入英语社，因为我想把英语说好。)\n- Let's join the chess club! (让我们加入棋类社吧！)",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "句型",
+          "交际",
+          "社团"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p5::kp-grammar-001",
+      "type": "concept",
+      "title": "语法：情态动词 can (Modal Verb for Ability)",
+      "content": "**情态动词 can 的用法**\ncan 是情态动词，表示能力（“会；能”），它没有人称和数的变化，后面必须接动词原形。\n\n**1. 肯定句：**\n- 主语 + can + 动词原形 + 其他.\n  例如：I can swim. (我会游泳。) / She can dance. (她会跳舞。)\n\n**2. 否定句：**\n在 can 后加 not，缩写为 can't (cannot)。\n- 主语 + can't + 动词原形 + 其他.\n  例如：I can't play chess. (我不会下棋。) / He can't sing. (他不会唱歌。)\n\n**3. 一般疑问句：**\n将 can 提到主语前面。\n- Can + 主语 + 动词原形 + 其他?\n  例如：Can you speak English? (你会说英语吗？) — Yes, I can. / No, I can't.\n  例如：Can she play the guitar? (她会弹吉他吗？) — Yes, she can. / No, she can't.\n\n**4. 特殊疑问句：**\n- What + can + 主语 + do?\n  例如：What can you do? (你会做什么？) — I can sing and dance.\n\n**注意**：can 后面永远接动词原形，不能加 -s 或 -ing。",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p5::kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "情态动词",
+          "can"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p5::kp-phonetic-001",
+      "type": "concept",
+      "title": "语音：辅音与不完全爆破 (Consonants and Incomplete Plosion)",
+      "content": "**辅音音素**\n本单元重点复习以下辅音音素：\n- **/p/** (如 pen, map, play) - 双唇紧闭，突然放开，气流冲出。\n- **/b/** (如 bag, club, book) - 发音部位与 /p/ 相同，但声带振动。\n- **/t/** (如 time, sit, want) - 舌尖抵住上齿龈，突然放开。\n- **/d/** (如 dog, good, need) - 发音部位与 /t/ 相同，但声带振动。\n- **/k/** (如 cat, club, book) - 舌后部抵住软腭，突然放开。\n- **/g/** (如 go, bag, big) - 发音部位与 /k/ 相同，但声带振动。\n- **/f/** (如 five, fun, life) - 上齿轻触下唇，气流从缝隙中摩擦而出。\n- **/v/** (如 very, love, seven) - 发音部位与 /f/ 相同，但声带振动。\n\n**不完全爆破 (Incomplete Plosion / 失去爆破)**\n当爆破音（/p/, /b/, /t/, /d/, /k/, /g/）后面紧跟另一个辅音时，前面的爆破音只做口型，不发音，这种现象叫不完全爆破。\n- **sit down** /sɪt daʊn/ → /t/ 失去爆破\n- **good boy** /ɡʊd bɔɪ/ → /d/ 失去爆破\n- **blackboard** /ˈblækbɔːd/ → /k/ 失去爆破\n- **next day** /nekst deɪ/ → /t/ 失去爆破\n\n**发音要领**：不完全爆破时，发音器官做好发爆破音的准备，稍作停顿后立即过渡到下一个辅音，不要将爆破音完全读出来。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析",
+        "ability": "语言能力",
+        "tags": [
+          "语音",
+          "辅音",
+          "不完全爆破"
+        ],
+        "phoneticSymbol": "/p/, /b/, /t/, /d/, /k/, /g/, /f/, /v/",
+        "letterCombination": "p, b, t, d, k, g, f, v",
+        "pronunciationTips": "注意区分清辅音和浊辅音（如 /p/ 和 /b/）。不完全爆破要掌握‘只做口型不发音’的技巧，重点体会 sit down, good boy 等短语中的停顿感。"
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p5::kp-reading-001",
+      "type": "reading",
+      "title": "阅读：学校社团招募广告 (School Club Ads)",
+      "content": "**阅读范文**\n\n> **School Club Ads**\n> Welcome to Taiyuan Pingmin Middle School! We have many fun clubs for you. Come and join us!\n>\n> **Music Club**\n> Do you like music? Can you sing or dance? Can you play the guitar? Join us! We meet on Tuesday and Thursday after school. Please call Ms. Li at 123-4567.\n>\n> **Sports Club**\n> Are you good at sports? Can you play basketball? We have a basketball club and a swimming club. We play games on the playground. Join us and have fun!\n>\n> **English Club**\n> Do you want to speak English well? We have an English club! We watch English movies and sing English songs. We meet on Friday afternoon. Please email Mr. Wang at wang@example.com.\n>\n> *来源：School Club Ads，改编自 Time for Kids 与 Highlights 杂志*\n\n**阅读任务**\n阅读上述广告，回答以下问题（题目计入本知识点）：\n1. When does the Music Club meet?\n2. What can you do in the English Club?\n3. How can you contact (联系) the Sports Club?",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p5::kp-word-001",
+        "unit-english-7-up-rjb-p5::kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战",
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "分析",
+        "ability": "文化意识",
+        "tags": [
+          "阅读",
+          "社团",
+          "跨文化"
+        ]
+      }
+    },
+    {
+      "id": "unit-english-7-up-rjb-p5::kp-writing-001",
+      "type": "writing",
+      "title": "写作：写邮件申请加入俱乐部 (Emailing a Club Leader to Join the Club)",
+      "content": "**写作任务：写邮件申请加入俱乐部**\n假设你是太原平民中学的学生，你想加入学校的某个社团。请你给该社团的负责人写一封电子邮件，介绍你自己，说明你想加入的社团及原因，并展示你的能力。\n\n**写作框架：**\n1. **问候与自我介绍 (Greeting & Self-introduction)**: Dear Mr./Ms. ..., I am... from Class..., Grade...\n2. **想加入的社团及原因 (Club & Reason)**: I want to join... because...\n3. **展示能力 (Abilities)**: I can... / I am good at...\n4. **期待回复 (Expectation)**: I hope I can join you. / Thank you.\n\n**写作范文 (Model Essay)**\nDear Mr. Wang,\nHello! I am Wang Mei from Class 1, Grade 7. I want to join the English Club because I like English very much. I can speak English well and I can sing English songs. I want to watch English movies with you. I hope I can join the English Club.\nThank you very much.\nBest wishes,\nWang Mei",
+      "prerequisites": [
+        "unit-english-7-up-rjb-p5::kp-word-001",
+        "unit-english-7-up-rjb-p5::kp-sentence-001",
+        "unit-english-7-up-rjb-p5::kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "写作",
+          "社团申请",
+          "电子邮件"
+        ]
+      }
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u5-ex-001",
+      "type": "single",
+      "question": "I like singing and dancing. I want to join the ______.",
+      "options": [
+        "A. music club",
+        "B. art club",
+        "C. sports club",
+        "D. chess club"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我喜欢唱歌跳舞。我想加入音乐社。music club 意为“音乐社”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-002",
+      "type": "single",
+      "question": "I can play basketball well. I want to join the ______.",
+      "options": [
+        "A. English club",
+        "B. basketball club",
+        "C. music club",
+        "D. art club"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我篮球打得很好。我想加入篮球社。basketball club 意为“篮球社”。故选B。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-003",
+      "type": "single",
+      "question": "We often draw pictures in the ______.",
+      "options": [
+        "A. art club",
+        "B. sports club",
+        "C. music club",
+        "D. English club"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我们经常在美术社画画。draw pictures 对应 art club。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-004",
+      "type": "blank",
+      "question": "Can you play ______ (国际象棋)? If yes, you can join the chess club.",
+      "answer": "chess",
+      "explanation": "句意为：你会下国际象棋吗？如果会，你可以加入棋类社。国际象棋对应的英文是 chess。故填 chess。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-005",
+      "type": "blank",
+      "question": "I want to ______ (加入) the swimming club.",
+      "answer": "join",
+      "explanation": "句意为：我想加入游泳社。加入对应的英文是 join。故填 join。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-006",
+      "type": "judge",
+      "question": "'English club' 的意思是 '英语社'。",
+      "answer": "对",
+      "explanation": "English club 意为“英语社”，是学校中常见的社团。故本题正确。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-007",
+      "type": "spelling",
+      "question": "I can ______ (游泳) in the river.",
+      "answer": "swim",
+      "explanation": "游泳对应的英文是 swim。故填 swim。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-008",
+      "type": "matching",
+      "question": "请将下列社团与对应的活动匹配。",
+      "left": [
+        "music club",
+        "art club",
+        "sports club",
+        "chess club"
+      ],
+      "right": [
+        "play chess",
+        "sing songs",
+        "play basketball",
+        "draw pictures"
+      ],
+      "answer": [
+        1,
+        3,
+        2,
+        0
+      ],
+      "explanation": "music club-唱歌 (sing songs), art club-画画 (draw pictures), sports club-打篮球 (play basketball), chess club-下棋 (play chess)。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-009",
+      "type": "single",
+      "question": "— What club do you want to join? — ______",
+      "options": [
+        "A. I can swim.",
+        "B. I want to join the music club.",
+        "C. Yes, I do.",
+        "D. Because it's fun."
+      ],
+      "answer": "B",
+      "explanation": "What club do you want to join? 是询问想加入什么社团，回答应为 I want to join... 故选B。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-010",
+      "type": "single",
+      "question": "— Can you play the guitar? — ______",
+      "options": [
+        "A. Yes, I can.",
+        "B. Yes, I do.",
+        "C. No, I don't.",
+        "D. I can play."
+      ],
+      "answer": "A",
+      "explanation": "Can you...? 的肯定回答是 Yes, I can. 否定回答是 No, I can't. 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-011",
+      "type": "single",
+      "question": "— What can you do? — ______",
+      "options": [
+        "A. I can dance and draw.",
+        "B. I like music.",
+        "C. Yes, I can.",
+        "D. I want to join the club."
+      ],
+      "answer": "A",
+      "explanation": "What can you do? 是询问能力的句型，回答应为 I can... 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-012",
+      "type": "blank",
+      "question": "I want to join the English club ______ (因为) I want to speak English well.",
+      "answer": "because",
+      "explanation": "句意为：我想加入英语社，因为我想把英语说好。因为对应的英文是 because。故填 because。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-013",
+      "type": "blank",
+      "question": "— ______ you swim? — Yes, I can.",
+      "answer": "Can",
+      "explanation": "根据答语 Yes, I can. 可知，问句是询问能力，应用 Can。故填 Can。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-014",
+      "type": "matching",
+      "question": "请将下列问句与对应的答语匹配。",
+      "left": [
+        "What club do you want to join?",
+        "Can you dance?",
+        "What can you do?",
+        "Why do you like the club?"
+      ],
+      "right": [
+        "Because it's fun.",
+        "I want to join the art club.",
+        "I can play chess.",
+        "No, I can't."
+      ],
+      "answer": [
+        1,
+        3,
+        2,
+        0
+      ],
+      "explanation": "What club...? 回答想加入的社团；Can you...? 回答 Yes/No；What can you do? 回答能力；Why...? 回答 Because...",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-015",
+      "type": "single",
+      "question": "当你想表达“我会弹吉他，但我不会弹钢琴”时，可以说：______",
+      "options": [
+        "A. I can play the guitar, but I can't play the piano.",
+        "B. I can play the guitar and the piano.",
+        "C. I can't play the guitar or the piano.",
+        "D. I play the guitar and the piano."
+      ],
+      "answer": "A",
+      "explanation": "表达转折关系用 but。会弹吉他用 can play the guitar，不会弹钢琴用 can't play the piano。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-016",
+      "type": "single",
+      "question": "— ______ club do you like? — I like the sports club.",
+      "options": [
+        "A. What",
+        "B. When",
+        "C. Where",
+        "D. Who"
+      ],
+      "answer": "A",
+      "explanation": "根据答语 I like the sports club. 可知，问句是询问哪个社团，应用 What (club)。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-017",
+      "type": "single",
+      "question": "I ______ swim, but I can't play chess.",
+      "options": [
+        "A. can",
+        "B. can't",
+        "C. am",
+        "D. do"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我会游泳，但我不会下棋。根据 but I can't play chess 可知，前半句是肯定，表示“会”，用 can。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-018",
+      "type": "single",
+      "question": "She ______ dance, but she can sing well.",
+      "options": [
+        "A. can",
+        "B. can't",
+        "C. isn't",
+        "D. doesn't"
+      ],
+      "answer": "B",
+      "explanation": "句意为：她不会跳舞，但她唱歌很好。根据 but she can sing well 可知，前半句表示否定能力，用 can't。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-019",
+      "type": "single",
+      "question": "— Can he play basketball? — Yes, he ______.",
+      "options": [
+        "A. can",
+        "B. can't",
+        "C. is",
+        "D. does"
+      ],
+      "answer": "A",
+      "explanation": "Can he...? 的肯定回答是 Yes, he can. 故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-020",
+      "type": "blank",
+      "question": "I can ______ (sing) English songs.",
+      "answer": "sing",
+      "explanation": "can 是情态动词，后面接动词原形。故填 sing。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-021",
+      "type": "blank",
+      "question": "He can't ______ (play) the piano.",
+      "answer": "play",
+      "explanation": "can't 是情态动词的否定形式，后面接动词原形。故填 play。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-022",
+      "type": "judge",
+      "question": "'She can sings well.' 这句话是正确的。",
+      "answer": "错",
+      "explanation": "can 是情态动词，后面必须接动词原形，不能加 -s。正确的句子是 'She can sing well.'。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-023",
+      "type": "spelling",
+      "question": "______ (Can) you speak English? — Yes, I can.",
+      "answer": "Can",
+      "explanation": "句意为：你会说英语吗？是的，我会。情态动词 can 位于句首构成一般疑问句，首字母大写。故填 Can。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-024",
+      "type": "single",
+      "question": "— What can she do? — She ______.",
+      "options": [
+        "A. can draw",
+        "B. can draws",
+        "C. draw",
+        "D. drawing"
+      ],
+      "answer": "A",
+      "explanation": "What can she do? 的回答应为 She can + 动词原形。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-025",
+      "type": "single",
+      "question": "Which word has the sound /p/?",
+      "options": [
+        "A. bag",
+        "B. pen",
+        "C. dog",
+        "D. five"
+      ],
+      "answer": "B",
+      "explanation": "pen 中的 p 发清辅音 /p/。bag 发 /b/，dog 发 /d/，five 发 /f/。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-026",
+      "type": "single",
+      "question": "Which word has the sound /v/?",
+      "options": [
+        "A. fun",
+        "B. very",
+        "C. club",
+        "D. cat"
+      ],
+      "answer": "B",
+      "explanation": "very 中的 v 发浊辅音 /v/。fun 发 /f/，club 发 /b/，cat 发 /k/。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-027",
+      "type": "judge",
+      "question": "在短语 'sit down' 中，/t/ 音需要不完全爆破。",
+      "answer": "对",
+      "explanation": "sit 以爆破音 /t/ 结尾，down 以爆破音 /d/ 开头，两个爆破音相遇时，前面的 /t/ 失去爆破，只做口型不发音。故本题正确。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-028",
+      "type": "judge",
+      "question": "在短语 'good boy' 中，/d/ 音需要完全读出来。",
+      "answer": "错",
+      "explanation": "good 以爆破音 /d/ 结尾，boy 以爆破音 /b/ 开头，/d/ 失去爆破，只做口型不发音，不需要完全读出来。故本题错误。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-029",
+      "type": "blank",
+      "question": "The word 'blackboard' has the sound /______/ (失去爆破).",
+      "answer": "k",
+      "explanation": "blackboard 中的 black 以 /k/ 结尾，board 以 /b/ 开头，/k/ 失去爆破。故填 k。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-030",
+      "type": "blank",
+      "question": "The word 'next day' has the sound /______/ (失去爆破).",
+      "answer": "t",
+      "explanation": "next 以 /t/ 结尾，day 以 /d/ 开头，/t/ 失去爆破。故填 t。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-031",
+      "type": "matching",
+      "question": "请将下列单词与正确的音标匹配。",
+      "left": [
+        "pen",
+        "bag",
+        "five",
+        "very"
+      ],
+      "right": [
+        "/p/",
+        "/b/",
+        "/f/",
+        "/v/"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "pen 发 /p/，bag 发 /b/，five 发 /f/，very 发 /v/。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-032",
+      "type": "single",
+      "question": "Which phrase has an incomplete plosion?",
+      "options": [
+        "A. good morning",
+        "B. sit down",
+        "C. stand up",
+        "D. thank you"
+      ],
+      "answer": "B",
+      "explanation": "sit down 中 /t/ 和 /d/ 都是爆破音，前面的 /t/ 失去爆破。good morning 中 /d/ 和 /m/ 不属于爆破音相遇；stand up 中 /d/ 和 /ʌ/ 是爆破音+元音，可以连读；thank you 是 /k/ 和 /j/。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-033",
+      "type": "single",
+      "question": "When does the Music Club meet?",
+      "options": [
+        "A. On Monday.",
+        "B. On Tuesday and Thursday.",
+        "C. On Friday.",
+        "D. On Sunday."
+      ],
+      "answer": "B",
+      "explanation": "根据 Music Club 广告中 'We meet on Tuesday and Thursday after school.' 可知，音乐社在周二和周四活动。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-034",
+      "type": "single",
+      "question": "What can you do in the English Club?",
+      "options": [
+        "A. Play basketball.",
+        "B. Sing English songs.",
+        "C. Play chess.",
+        "D. Swim."
+      ],
+      "answer": "B",
+      "explanation": "根据 English Club 广告中 'We watch English movies and sing English songs.' 可知，在英语社可以唱英文歌。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-035",
+      "type": "single",
+      "question": "How can you contact the Sports Club?",
+      "options": [
+        "A. Call Ms. Li.",
+        "B. Email Mr. Wang.",
+        "C. Go to the playground.",
+        "D. Call Mr. Wang."
+      ],
+      "answer": "C",
+      "explanation": "Sports Club 广告中只提到 'Join us and have fun!' 和活动地点 'We play games on the playground.'，并没有提供电话或邮箱。而其他社团提供了电话或邮箱。题目问如何联系 Sports Club，选项 C 是最合理的推断。故选C。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-036",
+      "type": "judge",
+      "question": "The Music Club needs students who can sing or dance.",
+      "answer": "对",
+      "explanation": "根据 Music Club 广告中 'Can you sing or dance? Can you play the guitar? Join us!' 可知，音乐社需要会唱歌、跳舞或弹吉他的学生。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-037",
+      "type": "judge",
+      "question": "The English Club meets on Friday afternoon.",
+      "answer": "对",
+      "explanation": "根据 English Club 广告中 'We meet on Friday afternoon.' 可知，英语社在周五下午活动。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-038",
+      "type": "blank",
+      "question": "If you want to join the Music Club, you can call Ms. Li at ______.",
+      "answer": "123-4567",
+      "explanation": "根据 Music Club 广告中 'Please call Ms. Li at 123-4567.' 可知，联系电话是 123-4567。故填 123-4567。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-039",
+      "type": "blank",
+      "question": "If you want to join the English Club, you can email Mr. Wang at ______.",
+      "answer": "wang@example.com",
+      "explanation": "根据 English Club 广告中 'Please email Mr. Wang at wang@example.com.' 可知，联系邮箱是 wang@example.com。故填 wang@example.com。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-040",
+      "type": "single",
+      "question": "What is the main purpose of these ads?",
+      "options": [
+        "A. To introduce the school.",
+        "B. To ask students to join the clubs.",
+        "C. To show the teachers' abilities.",
+        "D. To talk about sports."
+      ],
+      "answer": "B",
+      "explanation": "这三则广告都介绍了各自社团的活动、时间及联系方式，目的是招募学生加入社团。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-041",
+      "type": "single",
+      "question": "在写加入社团的申请邮件时，通常开头使用哪个句子？",
+      "options": [
+        "A. I want to join the English Club.",
+        "B. Dear Mr. Wang, I am Wang Mei from Class 1.",
+        "C. I can sing English songs.",
+        "D. Thank you very much."
+      ],
+      "answer": "B",
+      "explanation": "申请邮件的开头通常是称呼和自我介绍，如 Dear Mr. Wang, I am... 故选B。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-042",
+      "type": "single",
+      "question": "在说明想加入社团的原因时，可以说：______",
+      "options": [
+        "A. I want to join the club because I like it.",
+        "B. I can play basketball.",
+        "C. I am in Class 1.",
+        "D. I am 13 years old."
+      ],
+      "answer": "A",
+      "explanation": "说明原因用 because 引导。B 是能力，C 是班级，D 是年龄。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-043",
+      "type": "single",
+      "question": "以下哪一句展示了申请人的能力？",
+      "options": [
+        "A. I want to join the music club.",
+        "B. I can sing and dance.",
+        "C. I am from Taiyuan.",
+        "D. I like English."
+      ],
+      "answer": "B",
+      "explanation": "展示能力通常用 'I can...' 句型。A 是意愿，C 是籍贯，D 是喜好。故选B。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-044",
+      "type": "blank",
+      "question": "I am good at ______ (画画). I want to join the art club.",
+      "answer": "drawing",
+      "explanation": "be good at 后面接动词的 -ing 形式。画画对应的英文是 draw，动名词为 drawing。故填 drawing。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-045",
+      "type": "blank",
+      "question": "I hope I can ______ (加入) the English club.",
+      "answer": "join",
+      "explanation": "句意为：我希望我能加入英语社。加入对应的英文是 join。故填 join。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-046",
+      "type": "judge",
+      "question": "在申请加入社团的邮件中，不需要介绍自己的班级和姓名。",
+      "answer": "错",
+      "explanation": "在申请邮件中，为了让负责人了解你，通常需要介绍自己的姓名和班级。故本题错误。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-047",
+      "type": "matching",
+      "question": "请将写作框架与对应的句子匹配。",
+      "left": [
+        "问候与自我介绍",
+        "想加入的社团及原因",
+        "展示能力",
+        "期待回复"
+      ],
+      "right": [
+        "Dear Mr. Wang, I am Wang Mei from Class 1.",
+        "I want to join the English Club because I like English.",
+        "I can speak English well and sing English songs.",
+        "I hope I can join you."
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "问候与自我介绍对应 Dear Mr. Wang...；想加入的社团及原因对应 I want to join...；展示能力对应 I can...；期待回复对应 I hope...",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-048",
+      "type": "single",
+      "question": "在申请邮件的结尾，通常使用哪个句子？",
+      "options": [
+        "A. I want to join the club.",
+        "B. I can sing.",
+        "C. Thank you very much.",
+        "D. I am from Taiyuan."
+      ],
+      "answer": "C",
+      "explanation": "申请邮件的结尾通常表达感谢或期待回复，如 Thank you very much. 或 I hope I can join you. 故选C。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-049",
+      "type": "single",
+      "question": "当你向别人介绍你的学校有很多社团时，可以说：______",
+      "options": [
+        "A. There are many clubs in our school.",
+        "B. I am a student.",
+        "C. I like playing basketball.",
+        "D. I can sing."
+      ],
+      "answer": "A",
+      "explanation": "介绍学校有很多社团用 There are many clubs in our school. 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-050",
+      "type": "single",
+      "question": "— Let's join the chess club! — ______",
+      "options": [
+        "A. Good idea!",
+        "B. Yes, I can.",
+        "C. No, I don't.",
+        "D. I like it."
+      ],
+      "answer": "A",
+      "explanation": "Let's... 是提出建议，肯定回答常用 Good idea! 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u5-ex-051",
+      "type": "single",
+      "question": "— Can you speak English? — ______. I can only speak a little.",
+      "options": [
+        "A. Yes, I can",
+        "B. No, I can't",
+        "C. Yes, I do",
+        "D. No, I don't"
+      ],
+      "answer": "B",
+      "explanation": "根据 'I can only speak a little.' 可知，回答是否定的，用 No, I can't. 故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-052",
+      "type": "blank",
+      "question": "We can ______ (play) games on the playground.",
+      "answer": "play",
+      "explanation": "can 后面接动词原形。故填 play。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-053",
+      "type": "single",
+      "question": "— ______ you play the piano? — No, I can't. But I can play the guitar.",
+      "options": [
+        "A. Can",
+        "B. Do",
+        "C. Are",
+        "D. Is"
+      ],
+      "answer": "A",
+      "explanation": "根据答语 No, I can't. 可知，问句是询问能力，用 Can 开头。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-054",
+      "type": "judge",
+      "question": "can 在句子中有人称和数的变化。",
+      "answer": "错",
+      "explanation": "can 是情态动词，没有人称和数的变化，所有人称都用 can。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u5-ex-055",
+      "type": "matching",
+      "question": "请将下列句子按正确的顺序排列，组成一封申请加入英语社的邮件。",
+      "left": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "right": [
+        "Dear Mr. Wang, I am Wang Mei from Class 1.",
+        "I want to join the English Club because I like English.",
+        "I can speak English well and sing English songs.",
+        "I hope I can join you. Thank you."
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "正确的申请邮件顺序为：问候与自我介绍 -> 想加入的社团及原因 -> 展示能力 -> 期待回复并致谢。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u5-ex-056",
+      "type": "single",
+      "question": "以下哪个短语包含不完全爆破现象？",
+      "options": [
+        "A. good morning",
+        "B. sit down",
+        "C. an apple",
+        "D. thank you"
+      ],
+      "answer": "B",
+      "explanation": "sit down 中 /t/ 和 /d/ 均为爆破音，/t/ 失去爆破。good morning 中 /d/ 和 /m/ 不是爆破音相遇；an apple 是连读；thank you 是 /k/ 和 /j/ 的连读现象。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "unit-english-7-up-rjb-p5::u5",
+      "name": "第五单元",
+      "title": "Fun Clubs",
+      "desc": "本单元围绕“学校社团”这一主题展开。通过学习社团名称、活动词汇、情态动词 can 以及不完全爆破的语音现象，学生能够用英语谈论自己想加入的社团、展示自己的能力，并学会写申请加入社团的电子邮件。结合太原平民中学丰富的社团文化，培养积极参与校园活动的意识。",
+      "topics": [
+        {
+          "id": "unit-english-7-up-rjb-p5::t1",
+          "title": "Choosing a Club (Section A)",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p5::kp-word-001",
+            "unit-english-7-up-rjb-p5::kp-sentence-001",
+            "unit-english-7-up-rjb-p5::kp-phonetic-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-english-7-up-rjb-p5::u5-t1-m1",
+              "type": "english.vocab",
+              "title": "俱乐部名称与活动词汇",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-word-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p5::u5-t1-m2",
+              "type": "english.sentence",
+              "title": "询问与表达加入社团的意愿",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p5::u5-t1-m3",
+              "type": "english.vocab",
+              "title": "辅音与不完全爆破",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-phonetic-001"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "unit-english-7-up-rjb-p5::t2",
+          "title": "Joining a Club (Section B)",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p5::kp-grammar-001",
+            "unit-english-7-up-rjb-p5::kp-reading-001",
+            "unit-english-7-up-rjb-p5::kp-writing-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-english-7-up-rjb-p5::u5-t2-m1",
+              "type": "english.grammar",
+              "title": "情态动词 can 的用法",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p5::u5-t2-m2",
+              "type": "english.reading",
+              "title": "阅读理解：学校社团招募广告",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-reading-001"
+              ]
+            },
+            {
+              "id": "unit-english-7-up-rjb-p5::u5-t2-m3",
+              "type": "english.writing",
+              "title": "写邮件申请加入俱乐部",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-writing-001"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

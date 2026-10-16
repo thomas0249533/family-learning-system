@@ -1,0 +1,1214 @@
+{
+  "manifest": {
+    "packageId": "unit-english-7-up-rjb-p3",
+    "type": "unit",
+    "title": "My School",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-english-7-up-rjb-p2"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-word-001",
+      "type": "concept",
+      "title": "核心词汇：学校场所与设施 (School Places and Facilities)",
+      "content": "本单元核心词汇主要围绕学校场所、设施及描述性形容词展开。重点掌握以下词汇：\n\n**学校场所 (School Places):**\n- classroom /ˈklɑːsruːm/ n. 教室\n- library /ˈlaɪbrəri/ n. 图书馆\n- playground /ˈpleɪɡraʊnd/ n. 操场\n- dining hall /ˈdaɪnɪŋ hɔːl/ n. 餐厅\n- gym /dʒɪm/ n. 体育馆\n- art room /ɑːt ruːm/ n. 美术室\n- music room /ˈmjuːzɪk ruːm/ n. 音乐室\n- science lab /ˈsaɪəns læb/ n. 科学实验室\n- teachers' office /ˈtiːtʃəz ˈɒfɪs/ n. 教师办公室\n\n**描述性形容词 (Adjectives):**\n- big /bɪɡ/ adj. 大的\n- small /smɔːl/ adj. 小的\n- clean /kliːn/ adj. 干净的\n- beautiful /ˈbjuːtɪfl/ adj. 美丽的\n- modern /ˈmɒdn/ adj. 现代化的\n\n**校园情境应用**：在太原平民中学，你可以这样介绍：Our school is very big and beautiful. There is a modern library and a large playground. I like reading in the library.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "词汇",
+          "学校",
+          "场所"
+        ],
+        "word": "library",
+        "phonetic": "/ˈlaɪbrəri/",
+        "partOfSpeech": "n."
+      }
+    },
+    {
+      "id": "kp-sentence-001",
+      "type": "formula",
+      "title": "核心句型：介绍学校与位置询问 (Introducing School and Asking for Locations)",
+      "content": "本单元的核心交际句型主要涉及介绍学校设施、询问和描述位置以及询问数量。\n\n**1. 介绍学校：**\n- What is your school like? (你的学校什么样？) — It is big and beautiful.\n- Welcome to our school! (欢迎来到我们学校！)\n\n**2. 询问与描述位置：**\n- Where is the library? (图书馆在哪里？) — It's next to the classroom building.\n- Is there a gym in your school? (你们学校有体育馆吗？) — Yes, there is. / No, there isn't.\n\n**3. 询问数量：**\n- How many classrooms are there in your school? (你们学校有多少间教室？) — There are 30 classrooms.\n- How many students are there in your class? (你们班有多少学生？) — There are 45 students.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "句型",
+          "交际",
+          "学校"
+        ]
+      }
+    },
+    {
+      "id": "kp-grammar-001",
+      "type": "concept",
+      "title": "语法：There be 结构",
+      "content": "**There be 结构**\nThere be 结构表示“某地有某物”，be动词的形式取决于其后紧跟的名词的单复数（就近原则）。\n\n**1. 肯定句：**\n- There is + 单数名词/不可数名词. 例如：There is a library in my school.\n- There are + 复数名词. 例如：There are many classrooms in our school.\n\n**2. 否定句：**\n在 be 动词后加 not。\n- There isn't a gym in my school. (我们学校没有体育馆。)\n- There aren't any computers in the classroom. (教室里没有电脑。)\n\n**3. 一般疑问句：**\n将 be 动词提到句首。\n- Is there a dining hall? — Yes, there is. / No, there isn't.\n- Are there any art rooms? — Yes, there are. / No, there aren't.\n\n**4. 特殊疑问句：**\n- How many + 复数名词 + are there + 地点? 例如：How many books are there in the library?\n\n**注意（就近原则）**：当 There be 后面跟多个名词时，be动词的形式取决于最靠近它的那个名词。例如：There **is** a pen and two books on the desk. / There **are** two books and a pen on the desk.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "There be",
+          "存在句"
+        ]
+      }
+    },
+    {
+      "id": "kp-grammar-002",
+      "type": "concept",
+      "title": "语法：方位介词 (Prepositions of Position)",
+      "content": "**方位介词**\n方位介词用于描述事物之间的空间位置关系。本单元重点掌握以下五个方位介词（短语）：\n\n1. **in front of** (在……前面)：指在某个物体外部的前面。\n   - 例如：The playground is in front of the classroom building.\n2. **behind** (在……后面)：指在某个物体外部的后面。\n   - 例如：The library is behind the gym.\n3. **between** (在……之间)：通常指在两者之间，常与 and 连用。\n   - 例如：The dining hall is between the library and the gym.\n4. **next to** (在……旁边；紧挨着)：相当于 beside。\n   - 例如：The art room is next to the music room.\n5. **across from** (在……对面)：指在街道、广场等对面的位置。\n   - 例如：The library is across from the playground.\n\n**情境演练**：\n在太原平民中学，你可以这样描述：\nThe teachers' office is next to our classroom. The playground is in front of the dining hall.",
+      "prerequisites": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "介词",
+          "方位"
+        ]
+      }
+    },
+    {
+      "id": "kp-phonetic-001",
+      "type": "concept",
+      "title": "语音：/ɔ:/, /ɒ/, /u:/, /ʊ/ 与单词重音 (2)",
+      "content": "**元音音素对比**\n本单元重点学习四个元音音素：/ɔ:/, /ɒ/, /u:/, /ʊ/。\n\n1. **/ɔ:/** (长元音，口型圆，发音饱满)\n   - 字母组合：or, al, au, oor\n   - 例词：door, floor, ball, autumn\n2. **/ɒ/** (短元音，口型圆，发音短促)\n   - 字母组合：o, a\n   - 例词：dog, box, not, what\n3. **/u:/** (长元音，口型小而圆，发音饱满)\n   - 字母组合：oo, u, ou\n   - 例词：school, room, food, you\n4. **/ʊ/** (短元音，口型稍大，发音短促)\n   - 字母组合：oo, u\n   - 例词：book, look, good, put\n\n**单词重音 (Word Stress)**\n在多音节单词中，重音位置不同，发音也不同。本单元重点学习名词和复合词的重音规律：\n- 一般规则：名词重音多在第一音节。例如：**li**-bra-ry, **play**-ground, **class**-room。\n- 复合词重音：复合名词重音通常在第一个词上。例如：**dining** hall, **art** room, **science** lab。\n\n**发音要领**：注意区分 /ɔ:/ 和 /ɒ/，前者是长元音，口型更圆；后者是短元音，口型稍开。同时注意 /u:/ 和 /ʊ/ 的区别，前者发音长而饱满，后者短而放松。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析",
+        "ability": "语言能力",
+        "tags": [
+          "语音",
+          "元音",
+          "重音"
+        ],
+        "phoneticSymbol": "/ɔ:/, /ɒ/, /u:/, /ʊ/",
+        "letterCombination": "or, al, au, o, oo, u",
+        "pronunciationTips": "注意区分长元音 /ɔ:/ 和短元音 /ɒ/，前者发音饱满且长，后者短促；/u:/ 发音长而饱满，/ʊ/ 短而放松。复合名词如 'dining hall' 重音在第一个词上。"
+      }
+    },
+    {
+      "id": "kp-reading-001",
+      "type": "reading",
+      "title": "阅读：一封关于新学校的电子邮件 (An Email About the New School)",
+      "content": "**阅读范文**\n\n> **An Email to My Friend**\n> Dear Tom,\n> How are you? I'm writing to tell you about my new school in Taiyuan. My school is very big and beautiful. There are three classroom buildings in my school. My classroom is on the second floor. It is big and clean.\n> There is a modern library next to the classroom building. I often read books there after class. The playground is in front of the dining hall. We have PE class on the playground. There is also a music room and an art room in our school. I love my new school very much.\n> What is your school like? Please write to me soon.\n> Best wishes,\n> Li Hua\n>\n> *来源：An Email to My Friend，改编自 Time for Kids 杂志*\n\n**阅读任务**\n阅读上述电子邮件，回答以下问题（题目计入本知识点）：\n1. Where is Li Hua's classroom?\n2. Where is the playground?\n3. What does Li Hua often do after class?",
+      "prerequisites": [
+        "kp-word-001",
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战",
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "分析",
+        "ability": "文化意识",
+        "tags": [
+          "阅读",
+          "学校",
+          "电子邮件"
+        ]
+      }
+    },
+    {
+      "id": "kp-writing-001",
+      "type": "writing",
+      "title": "写作：给朋友写邮件描述你的学校 (Emailing a Friend to Describe Your School)",
+      "content": "**写作任务：给朋友写一封电子邮件介绍你的学校**\n假设你是太原平民中学的一名学生，你的笔友 Tom 想了解你的学校。请你给他写一封电子邮件，介绍你的学校的设施、位置以及你最喜欢的场所。\n\n**写作框架：**\n1. **问候与引入 (Greeting & Introduction)**: Dear Tom, / How are you? I'm writing to tell you about my school.\n2. **整体印象 (Overall Impression)**: My school is big and beautiful. / There are...\n3. **具体场所介绍 (Specific Places)**: There is a... next to/in front of/behind...\n4. **个人感受 (Feelings)**: I like... best because... / I love my school very much.\n5. **结尾 (Closing)**: What is your school like? Please write to me soon. / Best wishes,\n\n**写作范文 (Model Essay)**\nDear Tom,\nHow are you? I'm writing to tell you about my school. My school is in Taiyuan. It is very big and beautiful. There are three classroom buildings and a modern library. The library is next to the classroom building. I often read books there. The playground is in front of the dining hall. We have PE class on the playground. I like my school very much.\nWhat is your school like? Please write to me soon.\nBest wishes,\nLi Hua",
+      "prerequisites": [
+        "kp-word-001",
+        "kp-sentence-001",
+        "kp-grammar-001",
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "写作",
+          "学校介绍",
+          "电子邮件"
+        ]
+      }
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u3-ex-001",
+      "type": "single",
+      "question": "We have lunch in the ______ every day.",
+      "options": [
+        "A. library",
+        "B. dining hall",
+        "C. gym",
+        "D. art room"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我们每天在餐厅吃午饭。dining hall 意为“餐厅”。故选B。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-002",
+      "type": "single",
+      "question": "I like reading books. I often go to the ______.",
+      "options": [
+        "A. playground",
+        "B. library",
+        "C. dining hall",
+        "D. music room"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我喜欢读书。我经常去图书馆。library 意为“图书馆”。故选B。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-003",
+      "type": "single",
+      "question": "We do experiments in the ______.",
+      "options": [
+        "A. science lab",
+        "B. music room",
+        "C. art room",
+        "D. gym"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我们在科学实验室做实验。science lab 意为“科学实验室”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-004",
+      "type": "blank",
+      "question": "Our school is very ______ (美丽) and modern.",
+      "answer": "beautiful",
+      "explanation": "句意为：我们的学校非常美丽和现代化。美丽对应的英文单词是 beautiful。故填 beautiful。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-005",
+      "type": "blank",
+      "question": "The teachers' ______ (办公室) is next to our classroom.",
+      "answer": "office",
+      "explanation": "句意为：教师办公室在我们教室旁边。办公室对应的英文单词是 office。故填 office。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-006",
+      "type": "judge",
+      "question": "'playground' 的意思是 '操场'。",
+      "answer": "对",
+      "explanation": "playground 意为“操场”，是学生进行体育活动的场所。故本题正确。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-007",
+      "type": "spelling",
+      "question": "We have art class in the ______ (美术室).",
+      "answer": "art room",
+      "explanation": "美术室对应的英文是 art room。故填 art room。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-008",
+      "type": "matching",
+      "question": "请将下列学校场所与对应的活动匹配。",
+      "left": [
+        "library",
+        "playground",
+        "dining hall",
+        "music room"
+      ],
+      "right": [
+        "read books",
+        "play sports",
+        "have lunch",
+        "sing songs"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "library-读书 (read books), playground-运动 (play sports), dining hall-吃午饭 (have lunch), music room-唱歌 (sing songs)。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-009",
+      "type": "single",
+      "question": "— What is your school like? — ______",
+      "options": [
+        "A. It's big and beautiful.",
+        "B. It's next to the park.",
+        "C. Yes, it is.",
+        "D. I like it."
+      ],
+      "answer": "A",
+      "explanation": "What is your school like? 是询问学校整体情况的句型，回答应为 It's big and beautiful. 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-010",
+      "type": "single",
+      "question": "— Where is the library? — ______",
+      "options": [
+        "A. It's big.",
+        "B. It's next to the gym.",
+        "C. Yes, it is.",
+        "D. There is a library."
+      ],
+      "answer": "B",
+      "explanation": "Where is the library? 是询问位置的句型，回答应为 It's next to... 故选B。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-011",
+      "type": "single",
+      "question": "— Is there a gym in your school? — ______",
+      "options": [
+        "A. Yes, there is.",
+        "B. Yes, it is.",
+        "C. No, there isn't.",
+        "D. Both A and C."
+      ],
+      "answer": "D",
+      "explanation": "Is there...? 的肯定回答是 Yes, there is. 否定回答是 No, there isn't. 故选D。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-012",
+      "type": "blank",
+      "question": "— How many classrooms are there in your school? — ______ (有) 30 classrooms.",
+      "answer": "There are",
+      "explanation": "句意为：你们学校有多少间教室？有30间。表示“有”用 There are。故填 There are。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-013",
+      "type": "blank",
+      "question": "Welcome ______ our school! Let me show you around.",
+      "answer": "to",
+      "explanation": "Welcome to... 是固定搭配，意为“欢迎来到……”。故填 to。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-014",
+      "type": "matching",
+      "question": "请将下列问句与对应的答语匹配。",
+      "left": [
+        "What is your school like?",
+        "Where is the library?",
+        "Is there a gym?",
+        "How many students are there?"
+      ],
+      "right": [
+        "It's next to the classroom.",
+        "It's big and beautiful.",
+        "There are 45 students.",
+        "Yes, there is."
+      ],
+      "answer": [
+        1,
+        0,
+        3,
+        2
+      ],
+      "explanation": "What is... like? 回答整体印象；Where...? 回答位置；Is there...? 回答 Yes/No；How many...? 回答数量。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-015",
+      "type": "single",
+      "question": "当你想向别人展示你的学校时，你可以说：______",
+      "options": [
+        "A. Let me show you around.",
+        "B. How are you?",
+        "C. What's your name?",
+        "D. I'm a student."
+      ],
+      "answer": "A",
+      "explanation": "向别人展示学校时，常用 Let me show you around. 故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-016",
+      "type": "single",
+      "question": "— ______ is the teachers' office? — It's on the first floor.",
+      "options": [
+        "A. What",
+        "B. Where",
+        "C. How",
+        "D. Who"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 It's on the first floor. 可知，问句是在询问位置，应用 Where。故选B。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u3-ex-017",
+      "type": "single",
+      "question": "There ______ a library and two classroom buildings in my school.",
+      "options": [
+        "A. is",
+        "B. are",
+        "C. be",
+        "D. have"
+      ],
+      "answer": "A",
+      "explanation": "There be 结构遵循就近原则。靠近 be 动词的是 a library（单数），所以用 is。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-018",
+      "type": "single",
+      "question": "There ______ some books on the desk.",
+      "options": [
+        "A. is",
+        "B. are",
+        "C. be",
+        "D. have"
+      ],
+      "answer": "B",
+      "explanation": "主语 some books 是复数，be动词用 are。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-019",
+      "type": "single",
+      "question": "— Are there any art rooms in your school? — No, ______.",
+      "options": [
+        "A. there aren't",
+        "B. there isn't",
+        "C. they aren't",
+        "D. it isn't"
+      ],
+      "answer": "A",
+      "explanation": "Are there...? 的否定回答是 No, there aren't. 故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-020",
+      "type": "blank",
+      "question": "There ______ (be) a gym in our school.",
+      "answer": "is",
+      "explanation": "主语 a gym 是单数，be动词用 is。故填 is。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-021",
+      "type": "blank",
+      "question": "There ______ (not be) any computers in the classroom.",
+      "answer": "aren't / are not",
+      "explanation": "主语 any computers 是复数，否定形式为 are not，缩写为 aren't。故填 aren't 或 are not。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-022",
+      "type": "judge",
+      "question": "'There is two books on the desk.' 这句话是正确的。",
+      "answer": "错",
+      "explanation": "主语 two books 是复数，be动词应该用 are，而不是 is。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-023",
+      "type": "spelling",
+      "question": "______ (有) a dining hall in our school.",
+      "answer": "There is",
+      "explanation": "句意为：我们学校有一个餐厅。表示“有”用 There is。故填 There is。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-024",
+      "type": "single",
+      "question": "— ______ there any students in the library? — Yes, there are.",
+      "options": [
+        "A. Is",
+        "B. Are",
+        "C. Do",
+        "D. Does"
+      ],
+      "answer": "B",
+      "explanation": "主语 any students 是复数，一般疑问句用 Are there...? 故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u3-ex-025",
+      "type": "single",
+      "question": "The library is ______ the classroom building. You can see it when you walk out.",
+      "options": [
+        "A. in front of",
+        "B. behind",
+        "C. between",
+        "D. next to"
+      ],
+      "answer": "A",
+      "explanation": "句意为：图书馆在教学楼前面。in front of 意为“在……前面”。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-026",
+      "type": "single",
+      "question": "The dining hall is ______ the library and the gym.",
+      "options": [
+        "A. in front of",
+        "B. between",
+        "C. next to",
+        "D. across from"
+      ],
+      "answer": "B",
+      "explanation": "句意为：餐厅在图书馆和体育馆之间。between... and... 意为“在……和……之间”。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-027",
+      "type": "single",
+      "question": "The art room is ______ the music room. They are on the same floor.",
+      "options": [
+        "A. next to",
+        "B. behind",
+        "C. between",
+        "D. across from"
+      ],
+      "answer": "A",
+      "explanation": "句意为：美术室在音乐室旁边。next to 意为“在……旁边；紧挨着”。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-028",
+      "type": "blank",
+      "question": "The playground is ______ (在……后面) the classroom building.",
+      "answer": "behind",
+      "explanation": "句意为：操场在教学楼后面。在……后面对应的英文是 behind。故填 behind。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-029",
+      "type": "blank",
+      "question": "The library is ______ (在……对面) the playground.",
+      "answer": "across from",
+      "explanation": "句意为：图书馆在操场对面。在……对面对应的英文是 across from。故填 across from。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-030",
+      "type": "judge",
+      "question": "'in front of' 的意思是 '在……后面'。",
+      "answer": "错",
+      "explanation": "in front of 的意思是“在……前面”，而不是“在……后面”。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-031",
+      "type": "spelling",
+      "question": "The teachers' office is ______ (在……旁边) our classroom.",
+      "answer": "next to",
+      "explanation": "在……旁边对应的英文是 next to。故填 next to。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-032",
+      "type": "single",
+      "question": "— Where is the gym? — It's ______ the library. You need to cross the road.",
+      "options": [
+        "A. next to",
+        "B. behind",
+        "C. across from",
+        "D. between"
+      ],
+      "answer": "C",
+      "explanation": "根据 'You need to cross the road.'（你需要过马路）可知，体育馆在图书馆对面。across from 意为“在……对面”。故选C。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u3-ex-033",
+      "type": "single",
+      "question": "Which word has the sound /u:/?",
+      "options": [
+        "A. book",
+        "B. look",
+        "C. school",
+        "D. good"
+      ],
+      "answer": "C",
+      "explanation": "school 中的 oo 发长元音 /u:/。book, look, good 中的 oo 发短元音 /ʊ/。故选C。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-034",
+      "type": "single",
+      "question": "Which word has the sound /ɒ/?",
+      "options": [
+        "A. door",
+        "B. box",
+        "C. food",
+        "D. ball"
+      ],
+      "answer": "B",
+      "explanation": "box 中的 o 发短元音 /ɒ/。door, ball 中的 or, al 发 /ɔ:/，food 中的 oo 发 /u:/。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-035",
+      "type": "judge",
+      "question": "单词 'floor' 中的字母组合 'oor' 发 /ɔ:/ 音。",
+      "answer": "对",
+      "explanation": "floor 的音标为 /flɔː(r)/，字母组合 oor 发长元音 /ɔ:/。故本题正确。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-036",
+      "type": "judge",
+      "question": "单词 'playground' 的重音在第二个音节上。",
+      "answer": "错",
+      "explanation": "playground 的音标为 /ˈpleɪɡraʊnd/，重音符号 ˈ 在第一个音节前，所以重音在第一音节。故本题错误。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-037",
+      "type": "blank",
+      "question": "The word 'dining hall' has the stress on the ______ (first / second) word.",
+      "answer": "first",
+      "explanation": "复合名词 dining hall 的重音通常在第一个词上，即 dining。故填 first。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-038",
+      "type": "blank",
+      "question": "The word 'autumn' has the sound /ɔ:/ in it. (请写出 /ɔ:/ 对应的字母组合)",
+      "answer": "au",
+      "explanation": "autumn 的音标为 /ˈɔːtəm/，字母组合 au 发长元音 /ɔ:/。故填 au。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-039",
+      "type": "matching",
+      "question": "请将下列单词与正确的音标匹配。",
+      "left": [
+        "door",
+        "box",
+        "school",
+        "book"
+      ],
+      "right": [
+        "/ɔ:/",
+        "/ɒ/",
+        "/u:/",
+        "/ʊ/"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "door 中的 oor 发 /ɔ:/，box 中的 o 发 /ɒ/，school 中的 oo 发 /u:/，book 中的 oo 发 /ʊ/。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u3-ex-040",
+      "type": "single",
+      "question": "Which word has the stress on the first syllable?",
+      "options": [
+        "A. library",
+        "B. begin",
+        "C. about",
+        "D. remember"
+      ],
+      "answer": "A",
+      "explanation": "library 的重音在第一音节 /ˈlaɪbrəri/。begin, about, remember 的重音均在第二音节。故选A。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u3-ex-041",
+      "type": "single",
+      "question": "Where is Li Hua's classroom?",
+      "options": [
+        "A. On the first floor.",
+        "B. On the second floor.",
+        "C. On the third floor.",
+        "D. Next to the library."
+      ],
+      "answer": "B",
+      "explanation": "根据短文 'My classroom is on the second floor.' 可知，李华的教室在二楼。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-042",
+      "type": "single",
+      "question": "Where is the playground?",
+      "options": [
+        "A. Next to the classroom building.",
+        "B. Behind the library.",
+        "C. In front of the dining hall.",
+        "D. Across from the gym."
+      ],
+      "answer": "C",
+      "explanation": "根据短文 'The playground is in front of the dining hall.' 可知，操场在餐厅前面。故选C。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-043",
+      "type": "single",
+      "question": "What does Li Hua often do after class?",
+      "options": [
+        "A. Plays football.",
+        "B. Reads books.",
+        "C. Sings songs.",
+        "D. Does experiments."
+      ],
+      "answer": "B",
+      "explanation": "根据短文 'I often read books there after class.' 可知，李华课后经常读书。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-044",
+      "type": "judge",
+      "question": "Li Hua's school is very small.",
+      "answer": "错",
+      "explanation": "根据短文 'My school is very big and beautiful.' 可知，李华的学校很大。故本题错误。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-045",
+      "type": "judge",
+      "question": "There is a music room and an art room in Li Hua's school.",
+      "answer": "对",
+      "explanation": "根据短文 'There is also a music room and an art room in our school.' 可知，李华的学校有音乐室和美术室。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-046",
+      "type": "blank",
+      "question": "Li Hua's school has ______ classroom buildings.",
+      "answer": "three",
+      "explanation": "根据短文 'There are three classroom buildings in my school.' 可知，李华的学校有三栋教学楼。故填 three。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-047",
+      "type": "blank",
+      "question": "Li Hua often reads books in the ______.",
+      "answer": "library",
+      "explanation": "根据短文 'There is a modern library next to the classroom building. I often read books there after class.' 可知，李华经常在图书馆读书。故填 library。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-048",
+      "type": "single",
+      "question": "What is the best title for this passage?",
+      "options": [
+        "A. My New School",
+        "B. My Family",
+        "C. My Friend Tom",
+        "D. A Trip to Taiyuan"
+      ],
+      "answer": "A",
+      "explanation": "短文主要介绍了李华的新学校，包括学校的设施和位置。因此最佳标题是 'My New School'。故选A。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u3-ex-049",
+      "type": "single",
+      "question": "在介绍学校的电子邮件中，通常开头使用哪个句子？",
+      "options": [
+        "A. I'm writing to tell you about my school.",
+        "B. Goodbye!",
+        "C. How old are you?",
+        "D. I like playing football."
+      ],
+      "answer": "A",
+      "explanation": "介绍学校的电子邮件中，开头常用 'I'm writing to tell you about my school.' 来引入话题。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-050",
+      "type": "single",
+      "question": "在介绍学校设施的位置时，可以说：______",
+      "options": [
+        "A. The library is next to the classroom building.",
+        "B. The library is big.",
+        "C. I like the library.",
+        "D. There is a library."
+      ],
+      "answer": "A",
+      "explanation": "询问或描述位置时，用 'It is next to/in front of/behind...' 句型。B是描述特征，C是表达喜好，D是表示存在。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-051",
+      "type": "single",
+      "question": "以下哪一句表达了作者对学校的情感？",
+      "options": [
+        "A. There are three classroom buildings.",
+        "B. I love my new school very much.",
+        "C. The playground is in front of the dining hall.",
+        "D. It is big and clean."
+      ],
+      "answer": "B",
+      "explanation": "表达对学校的情感通常用 'I love my school very much.' 故选B。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u3-ex-052",
+      "type": "blank",
+      "question": "We have PE class on the ______ (操场).",
+      "answer": "playground",
+      "explanation": "操场对应的英文是 playground。故填 playground。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-053",
+      "type": "blank",
+      "question": "The library is ______ (在……旁边) the classroom building.",
+      "answer": "next to",
+      "explanation": "在……旁边对应的英文是 next to。故填 next to。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-054",
+      "type": "judge",
+      "question": "在介绍学校时，只需要介绍学校的大小，不需要介绍具体设施。",
+      "answer": "错",
+      "explanation": "在介绍学校时，除了整体印象，还应该介绍具体设施及其位置，这样内容更丰富。故本题错误。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u3-ex-055",
+      "type": "matching",
+      "question": "请将写作框架与对应的句子匹配。",
+      "left": [
+        "引入话题",
+        "整体印象",
+        "具体设施",
+        "表达情感"
+      ],
+      "right": [
+        "I'm writing to tell you about my school.",
+        "My school is big and beautiful.",
+        "The library is next to the classroom building.",
+        "I love my school very much."
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "引入话题对应 I'm writing...；整体印象对应 My school is...；具体设施对应 The library is...；表达情感对应 I love...",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u3-ex-056",
+      "type": "matching",
+      "question": "请将下列句子按正确的顺序排列，组成一段通顺的学校介绍。",
+      "left": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "right": [
+        "I'm writing to tell you about my school.",
+        "My school is big and beautiful.",
+        "The library is next to the classroom building.",
+        "I love my school very much."
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "正确的介绍顺序为：引入话题 -> 整体印象 -> 具体设施 -> 表达情感。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u3",
+      "name": "第三单元",
+      "title": "My School",
+      "desc": "本单元围绕“我的学校”这一主题展开。通过介绍学校场所、设施及其方位，学习 There be 结构和方位介词的用法。结合语音重音规则和读写训练，学生能够用英语生动地介绍自己的校园环境，培养对学校的热爱之情。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "Exploring My School (Section A)",
+          "knowledgePointIds": [
+            "kp-word-001",
+            "kp-sentence-001",
+            "kp-phonetic-001"
+          ],
+          "modules": [
+            {
+              "id": "u3-t1-m1",
+              "type": "english.vocab",
+              "title": "学校场所与设施词汇",
+              "knowledgePointIds": [
+                "kp-word-001"
+              ]
+            },
+            {
+              "id": "u3-t1-m2",
+              "type": "english.sentence",
+              "title": "介绍学校与位置询问句型",
+              "knowledgePointIds": [
+                "kp-sentence-001"
+              ]
+            },
+            {
+              "id": "u3-t1-m3",
+              "type": "english.vocab",
+              "title": "元音词汇与单词重音",
+              "knowledgePointIds": [
+                "kp-phonetic-001"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "My School Life (Section B)",
+          "knowledgePointIds": [
+            "kp-grammar-001",
+            "kp-grammar-002",
+            "kp-reading-001",
+            "kp-writing-001"
+          ],
+          "modules": [
+            {
+              "id": "u3-t2-m1",
+              "type": "english.grammar",
+              "title": "There be 结构与方位介词",
+              "knowledgePointIds": [
+                "kp-grammar-001",
+                "kp-grammar-002"
+              ]
+            },
+            {
+              "id": "u3-t2-m2",
+              "type": "english.reading",
+              "title": "阅读理解：新学校的电子邮件",
+              "knowledgePointIds": [
+                "kp-reading-001"
+              ]
+            },
+            {
+              "id": "u3-t2-m3",
+              "type": "english.writing",
+              "title": "学校介绍写作",
+              "knowledgePointIds": [
+                "kp-writing-001"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

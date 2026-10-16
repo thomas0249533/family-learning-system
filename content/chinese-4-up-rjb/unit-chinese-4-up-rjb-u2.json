@@ -1,0 +1,133 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-chinese-4-up-rjb-u2",
+    "type": "unit",
+    "isInternal": true,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "第二单元 提问策略",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-005",
+      "type": "concept",
+      "title": "《一个豆荚里的五粒豆》阅读理解与道理感悟",
+      "content": "安徒生童话《一个豆荚里的五粒豆》讲述了五粒豌豆不同的命运，其中最后一粒落在顶楼裂缝里的豌豆发芽开花，给生病的小女孩带来了生命的希望。故事告诉我们生命的价值在于创造与帮助他人。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-chinese-006",
+      "type": "concept",
+      "title": "《夜间飞行的秘密》科普文逻辑梳理",
+      "content": "《夜间飞行的秘密》是一篇科普说明文，通过科学家反复实验，揭示了蝙蝠夜间靠嘴和耳朵配合探路的原理，并由此发明了雷达，应用于飞机飞行。展现了科学探索的严谨与仿生学的魅力。",
+      "prerequisites": ["kp-chinese-005"]
+    },
+    {
+      "id": "kp-chinese-007",
+      "type": "concept",
+      "title": "《方帽子店》寓言故事寓意解析",
+      "content": "《方帽子店》讲了一家只做方帽子的老店，因不肯改变，最终被孩子们做出的各式各样舒服的帽子取代的故事。寓意是：不能因循守旧，要敢于创新，顺应时代变化。",
+      "prerequisites": ["kp-chinese-005"]
+    },
+    {
+      "id": "kp-chinese-008",
+      "type": "concept",
+      "title": "《田忌赛马》历史故事人物分析",
+      "content": "出自《史记》，战国时期齐国大将田忌在孙膑的帮助下，调整马匹出场顺序，以三局两胜赢了齐威王。体现了孙膑的足智多谋，告诉我们遇到问题换个思路就能取得意想不到的结果。",
+      "prerequisites": ["kp-chinese-007"]
+    },
+    {
+      "id": "kp-chinese-009",
+      "type": "concept",
+      "title": "观察提问阅读策略",
+      "content": "阅读时从不同角度提问：可以针对课文内容提问，可以针对课文写法提问，可以联系生活经验提问。养成边阅读边思考的好习惯，帮助我们理解得更深刻。",
+      "prerequisites": ["kp-chinese-005", "kp-chinese-006", "kp-chinese-008"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u2-ex-001",
+      "type": "single",
+      "question": "《一个豆荚里的五粒豆》的作者安徒生是（ ）人。",
+      "options": ["A. 英国", "B. 丹麦", "C. 法国", "D. 德国"],
+      "answer": "B",
+      "explanation": "安徒生是丹麦著名童话作家，代表作还有《卖火柴的小女孩》《丑小鸭》《海的女儿》等。",
+      "knowledgePointIds": ["kp-chinese-005"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u2-ex-002",
+      "type": "blank",
+      "question": "《夜间飞行的秘密》中，科学家经过反复实验，发现蝙蝠夜里飞行靠的是______配合探路，后来人们据此发明了______。",
+      "answer": ["嘴和耳朵", "雷达"],
+      "explanation": "蝙蝠一边飞一边从嘴里发出超声波，超声波遇到障碍物反射回来传到耳朵里，从而判断方向；科学家模仿这一原理发明了雷达，装在飞机上。",
+      "knowledgePointIds": ["kp-chinese-006"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u2-ex-003",
+      "type": "multiple",
+      "question": "《方帽子店》这个故事告诉我们的道理有（ ）。",
+      "options": ["A. 要敢于创新", "B. 不能因循守旧", "C. 方帽子最舒服", "D. 要顺应时代变化"],
+      "answer": ["A", "B", "D"],
+      "explanation": "方帽子又硬又不舒服，店主人却守着老样子不肯改，最终被各式舒服的帽子取代。故事启示我们要敢于创新、顺应变化。",
+      "knowledgePointIds": ["kp-chinese-007"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u2-ex-004",
+      "type": "single",
+      "question": "《田忌赛马》中，帮助田忌用调换出场顺序的方法取胜的人是（ ）。",
+      "options": ["A. 孙武", "B. 孙膑", "C. 庞涓", "D. 管仲"],
+      "answer": "B",
+      "explanation": "孙膑用“下等马对上等马、上等马对中等马、中等马对下等马”的策略，三局两胜赢得比赛，体现出足智多谋。",
+      "knowledgePointIds": ["kp-chinese-008"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u2-ex-005",
+      "type": "blank",
+      "question": "阅读时提问可以从三个角度展开：针对______提问、针对______提问、联系______提问。",
+      "answer": ["课文内容", "课文写法", "生活经验"],
+      "explanation": "本单元是提问策略单元，学会从内容、写法、生活经验等不同角度提问，能让阅读思考更加深入。",
+      "knowledgePointIds": ["kp-chinese-009"],
+      "metadata": { "difficulty": "挑战" }
+    }
+  ],
+  "units": [
+    {
+      "id": "u2",
+      "name": "第二单元",
+      "title": "第二单元 提问策略",
+      "desc": "本单元围绕提问策略展开，包含童话与科普、寓言与智慧等内容。",
+      "topics": [
+        {
+          "id": "u2-t1",
+          "title": "童话与科普·五粒豆与夜间飞行",
+          "knowledgePointIds": ["kp-chinese-005", "kp-chinese-006"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u2-t2",
+          "title": "寓言与智慧·方帽子店与田忌赛马",
+          "knowledgePointIds": ["kp-chinese-007", "kp-chinese-008"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u2-t3",
+          "title": "提问策略与习作·我的家人",
+          "knowledgePointIds": ["kp-chinese-009"],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

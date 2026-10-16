@@ -1,0 +1,104 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "quiz-all-types",
+    "packageType": "special",
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "通用",
+    "title": "题型演示包",
+    "subtitle": "6 种题型全覆盖",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "quiz-demo-kp-001",
+      "type": "concept",
+      "title": "题型演示",
+      "content": "本知识点用于演示 6 种题型。"
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "u1",
+      "name": "演示",
+      "title": "6 种题型演示",
+      "desc": "单选题 / 填空题 / 多选题 / 判断题 / 连线题 / 拼写题",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "全部题型",
+          "knowledgePointIds": ["quiz-demo-kp-001"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "ex-single-001",
+              "type": "single",
+              "question": "计算 25 × 4 + 75 × 4 用哪种运算律最简便？",
+              "options": ["A. 交换律", "B. 结合律", "C. 分配律", "D. 无法判断"],
+              "answer": "C",
+              "explanation": "提取公因数4，(25+75)×4 = 400。",
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "ex-blank-001",
+              "type": "blank",
+              "question": "计算：(25 + 75) × 4 = ____",
+              "answer": "400",
+              "explanation": "先算括号内的 25 + 75 = 100，再算 100 × 4 = 400。",
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "ex-multiple-001",
+              "type": "multiple",
+              "question": "以下哪些是乘法运算律？（多选）",
+              "options": [
+                "A. 乘法交换律",
+                "B. 乘法结合律",
+                "C. 乘法分配律",
+                "D. 加法交换律"
+              ],
+              "answer": "ABC",
+              "explanation": "乘法交换律、结合律、分配律都是乘法运算律；加法交换律属于加法运算律。",
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "ex-judge-001",
+              "type": "judge",
+              "question": "乘法分配律的公式是 (a+b)×c = a×c + b×c。",
+              "answer": "对",
+              "explanation": "乘法分配律的核心：两个数的和乘一个数，等于分别相乘再相加。",
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "ex-matching-001",
+              "type": "matching",
+              "question": "将左侧的运算律与右侧的公式对应起来：",
+              "left": ["乘法交换律", "乘法结合律", "乘法分配律"],
+              "right": [
+                "(a+b)×c = a×c + b×c",
+                "a×b = b×a",
+                "(a×b)×c = a×(b×c)"
+              ],
+              "answer": [1, 2, 0],
+              "explanation": "交换律：a×b=b×a；结合律：(a×b)×c=a×(b×c)；分配律：(a+b)×c=a×c+b×c。",
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "ex-spelling-001",
+              "type": "spelling",
+              "question": "图书馆",
+              "hint": "l _ _ _ _ _ _",
+              "answer": "library",
+              "explanation": "library 意为“图书馆”。",
+              "metadata": { "difficulty": "基础" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

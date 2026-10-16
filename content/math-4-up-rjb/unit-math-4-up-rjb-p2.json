@@ -1,0 +1,645 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-up-rjb-p2",
+    "type": "unit",
+    "title": "数学4上第2部分",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-math-4-up-rjb-p1"
+    ]
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-math-4-up-rjb-p2::kp-num-004",
+      "type": "life",
+      "title": "数字编码的奥秘",
+      "content": "数字编码是用数字、字母或符号来代表特定含义的规律。\\n1. 邮政编码：我国邮政编码由6位数字组成。前2位表示省（直辖市、自治区）；第3位表示邮区；第4位表示县（市）；最后2位表示投递局。\\n2. 身份证号码：我国居民身份证号码由18位数字组成。前6位是地址码；第7-14位是出生日期码（年月日）；第15-17位是顺序码（其中第17位奇数分给男性，偶数分给女性）；第18位是校验码（可以是0-9或X）。\\n编码使得信息记录、查找和传递更加简便、准确。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p1::kp-num-001"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "数据意识",
+        "tags": [
+          "编码",
+          "身份证",
+          "邮政编码",
+          "生活数学"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p2::kp-geo-001",
+      "type": "concept",
+      "title": "线段、射线与直线的特性",
+      "content": "1. 线段：有两个端点，不能向两端无限延伸，可以度量长度。\\n2. 射线：只有一个端点，可以向一端无限延伸，不可度量长度。\\n3. 直线：没有端点，可以向两端无限延伸，不可度量长度。\\n重要公理：经过一点可以画无数条直线；经过两点只能画一条直线（两点确定一条直线）。两点之间线段最短。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 10,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念",
+        "tags": [
+          "线段",
+          "射线",
+          "直线",
+          "几何基础"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p2::kp-geo-002",
+      "type": "concept",
+      "title": "相交、垂直与平行的认识",
+      "content": "1. 相交：在同一平面内，两条直线如果只有一个公共点，就说这两条直线相交。\\n2. 平行：在同一平面内，不相交的两条直线叫做平行线，也可以说这两条直线互相平行。\\n3. 垂直：两条直线相交成直角时，就说这两条直线互相垂直。其中一条直线叫做另一条直线的垂线，这两条直线的交点叫做垂足。\\n4. 重要结论：在同一平面内，两条直线的位置关系只有平行和相交两种。从直线外一点到这条直线所画的垂直线段最短，它的长度叫做点到直线的距离。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p2::kp-geo-001"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "空间观念",
+        "tags": [
+          "平行",
+          "垂直",
+          "相交",
+          "位置关系"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p2::kp-geo-003",
+      "type": "concept",
+      "title": "角的分类与度量",
+      "content": "1. 角的概念：从一点引出两条射线所组成的图形叫做角。这一点是角的顶点，两条射线是角的边。角的大小与两条边张开的程度有关，与边的长短无关。\\n2. 计量单位：角的计量单位是“度”，用符号“°”表示。量角的工具是量角器。\\n3. 角的分类：\\n- 锐角：大于0°且小于90°；\\n- 直角：等于90°；\\n- 钝角：大于90°且小于180°；\\n- 平角：等于180°（1平角=2直角）；\\n- 周角：等于360°（1周角=2平角=4直角）。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p2::kp-geo-001",
+        "unit-math-4-up-rjb-p2::kp-geo-002"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念",
+        "tags": [
+          "角",
+          "锐角",
+          "钝角",
+          "平角",
+          "周角",
+          "量角器"
+        ]
+      }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "unit-math-4-up-rjb-p2::u2",
+      "name": "综合实践",
+      "title": "编码",
+      "desc": "探索数字编码在生活中的应用，学会用数学的眼光观察世界。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p2::t1",
+          "title": "数字编码的奥秘",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p2::kp-num-004"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p2::m1",
+              "type": "math.life",
+              "title": "生活中的数字编码",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-num-004"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p2::u2-ex-001",
+              "type": "single",
+              "question": "下面哪个不是用数字编码来表示信息的？",
+              "options": [
+                "A. 学号",
+                "B. 邮政编码",
+                "C. 身份证号",
+                "D. 学生的姓名"
+              ],
+              "answer": "D",
+              "explanation": "学号、邮政编码、身份证号都是用数字或字母组合来记录信息的编码。而姓名通常用汉字来表示，不属于数字编码。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-num-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u2-ex-002",
+              "type": "blank",
+              "question": "我国邮政编码是由（______）位数字组成的。其中前两位数字表示（______）。",
+              "answer": "6,省（直辖市、自治区）",
+              "explanation": "根据我国邮政编码的规则，邮编由6位数字组成，前两位代表省（直辖市、自治区），第三位代表邮区，第四位代表县（市），最后两位代表投递局。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-num-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u2-ex-003",
+              "type": "judge",
+              "question": "身份证号码的最后一位数字代表性别。",
+              "answer": "错",
+              "explanation": "身份证号码的第17位代表性别（奇数为男性，偶数为女性）。最后一位（第18位）是校验码，用于检验身份证号码的正确性。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-num-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u2-ex-004",
+              "type": "single",
+              "question": "某人的身份证号码是 110105201203150026，这个人是在（　　）出生的。",
+              "options": [
+                "A. 2012年3月15日",
+                "B. 2012年2月3日",
+                "C. 2012年15月3日",
+                "D. 2012年3月1日"
+              ],
+              "answer": "A",
+              "explanation": "身份证号码的第7到14位是出生日期码。这个号码的第7到14位是“20120315”，所以出生日期是2012年3月15日。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-num-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u2-ex-005",
+              "type": "single",
+              "question": "接上题，根据该身份证号码，我们可以判断这个人是（　　）。",
+              "options": [
+                "A. 男性",
+                "B. 女性",
+                "C. 无法判断"
+              ],
+              "answer": "B",
+              "explanation": "身份证号码的第17位是2（偶数），代表女性。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-num-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u2-ex-006",
+              "type": "matching",
+              "question": "将身份证号码的各部分与其对应的含义连线。",
+              "left": [
+                "前6位",
+                "第7-14位",
+                "第15-17位",
+                "第18位"
+              ],
+              "right": [
+                "顺序码",
+                "地址码",
+                "校验码",
+                "出生日期码"
+              ],
+              "answer": [
+                1,
+                3,
+                0,
+                2
+              ],
+              "explanation": "前6位是地址码；第7-14位是出生日期码；第15-17位是顺序码；第18位是校验码。对应索引为1, 3, 0, 2。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-num-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-math-4-up-rjb-p2::u3",
+      "name": "第二单元",
+      "title": "线与角",
+      "desc": "认识线段、射线、直线，理解相交、平行与垂直，掌握角的分类与度量。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p2::t1",
+          "title": "线的认识",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p2::kp-geo-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p2::m1",
+              "type": "math.concept",
+              "title": "线段、射线与直线",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-001",
+              "type": "single",
+              "question": "直线和射线相比，（　　）。",
+              "options": [
+                "A. 直线长",
+                "B. 射线长",
+                "C. 一样长",
+                "D. 无法比较"
+              ],
+              "answer": "D",
+              "explanation": "直线可以向两端无限延伸，射线可以向一端无限延伸。它们都是无限长的，无法度量长度，所以无法比较大小。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-002",
+              "type": "blank",
+              "question": "过一点可以画（______）条直线，过两点可以画（______）条直线。",
+              "answer": "无数,1",
+              "explanation": "经过一点可以画无数条直线；经过两点只能画一条直线，这就是“两点确定一条直线”。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-003",
+              "type": "blank",
+              "question": "把线段的一端无限延长，就得到一条（______）；把线段的两端无限延长，就得到一条（______）。",
+              "answer": "射线,直线",
+              "explanation": "线段有两个端点；去掉一个端点并向一端无限延长就是射线；去掉两个端点并向两端无限延长就是直线。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-004",
+              "type": "judge",
+              "question": "小明从家到学校有三条路，走弯曲的路和走直路一样近。",
+              "answer": "错",
+              "explanation": "根据“两点之间线段最短”的原理，走直路是最近的。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-005",
+              "type": "single",
+              "question": "下面图形中，可以度量长度的是（　　）。",
+              "options": [
+                "A. 射线",
+                "B. 直线",
+                "C. 线段",
+                "D. 以上都可以"
+              ],
+              "answer": "C",
+              "explanation": "线段有两个端点，长度是有限的，可以度量。射线和直线都是无限长的，不能度量长度。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-006",
+              "type": "blank",
+              "question": "手电筒射出的光线可以近似看作（______）线。",
+              "answer": "射",
+              "explanation": "手电筒的光源可以看作一个端点，光线向一个方向无限延伸，符合射线的特征。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p2::t2",
+          "title": "相交与平行",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p2::kp-geo-002"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p2::m2",
+              "type": "math.concept",
+              "title": "平行与垂直",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-007",
+              "type": "judge",
+              "question": "在同一平面内，两条直线不相交就一定平行。",
+              "answer": "对",
+              "explanation": "在同一平面内，两条直线的位置关系只有两种：相交和平行。如果它们不相交，那么它们一定互相平行。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-008",
+              "type": "single",
+              "question": "在同一平面内，两条直线相交成直角，这两条直线（　　）。",
+              "options": [
+                "A. 互相平行",
+                "B. 互相垂直",
+                "C. 既不平行也不垂直",
+                "D. 无法判断"
+              ],
+              "answer": "B",
+              "explanation": "两条直线相交成直角时，这两条直线互相垂直。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-009",
+              "type": "blank",
+              "question": "黑板相对的两条边互相（______），相邻的两条边互相（______）。",
+              "answer": "平行,垂直",
+              "explanation": "黑板的形状是长方形。长方形的对边互相平行，相邻的边互相垂直。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-010",
+              "type": "single",
+              "question": "过直线外一点画已知直线的垂线，可以画（　　）条。",
+              "options": [
+                "A. 1",
+                "B. 2",
+                "C. 3",
+                "D. 无数"
+              ],
+              "answer": "A",
+              "explanation": "过直线外一点，有且只有一条直线与已知直线垂直。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-011",
+              "type": "judge",
+              "question": "两条直线相交，如果其中一个角是90°，那么其他三个角也一定是90°。",
+              "answer": "对",
+              "explanation": "两条直线相交形成四个角。如果其中一个角是90°，根据对顶角相等和邻补角互补的原理，其余三个角都是90°。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-012",
+              "type": "single",
+              "question": "在两条平行线之间画几条垂直线段，这些垂直线段的长度（　　）。",
+              "options": [
+                "A. 都相等",
+                "B. 不相等",
+                "C. 有的相等有的不等",
+                "D. 无法确定"
+              ],
+              "answer": "A",
+              "explanation": "平行线之间的距离处处相等。因此，在两条平行线之间画的垂直线段长度都相等。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-013",
+              "type": "blank",
+              "question": "从直线外一点到这条直线所画的线段中，（______）线段最短，它的长度叫做点到直线的（______）。",
+              "answer": "垂直,距离",
+              "explanation": "从直线外一点到这条直线所画的垂直线段最短，它的长度叫做点到直线的距离。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p2::t3",
+          "title": "角的度量与分类",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p2::kp-geo-003"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p2::m3",
+              "type": "math.concept",
+              "title": "角的分类与度量",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-014",
+              "type": "single",
+              "question": "用放大镜看一个30°的角，这个角的度数是（　　）。",
+              "options": [
+                "A. 30°",
+                "B. 60°",
+                "C. 90°",
+                "D. 无法确定"
+              ],
+              "answer": "A",
+              "explanation": "角的大小与两条边张开的程度有关，与边的长短无关。放大镜只能放大边的长度，不能改变角的度数。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-015",
+              "type": "blank",
+              "question": "1个周角 = （______）个平角 = （______）个直角。",
+              "answer": "2,4",
+              "explanation": "周角是360°，平角是180°，直角是90°。360° ÷ 180° = 2，360° ÷ 90° = 4。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-016",
+              "type": "judge",
+              "question": "平角就是一条直线。",
+              "answer": "错",
+              "explanation": "平角是一个角，它有一个顶点和两条边，只是两条边刚好在同一条直线上。而直线没有端点，不是角。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-017",
+              "type": "single",
+              "question": "钟面上3时整，时针和分针组成的角是（　　）。",
+              "options": [
+                "A. 锐角",
+                "B. 直角",
+                "C. 钝角",
+                "D. 平角"
+              ],
+              "answer": "B",
+              "explanation": "钟面上3时整，时针指向3，分针指向12。3和12之间相差3个大格，每个大格是30°，所以夹角是90°，是直角。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-018",
+              "type": "blank",
+              "question": "钟面上6时整，时针和分针组成的角是（______）角，度数是（______）°。",
+              "answer": "平,180",
+              "explanation": "6时整，时针指向6，分针指向12，两者在一条直线上，组成的角是平角，度数为180°。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-019",
+              "type": "single",
+              "question": "一个平角减去一个锐角，剩下的角一定是（　　）。",
+              "options": [
+                "A. 锐角",
+                "B. 直角",
+                "C. 钝角",
+                "D. 无法确定"
+              ],
+              "answer": "C",
+              "explanation": "平角是180°，锐角小于90°。180°减去一个小于90°的数，结果一定大于90°且小于180°，所以是钝角。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-020",
+              "type": "judge",
+              "question": "大于90°的角都是钝角。",
+              "answer": "错",
+              "explanation": "大于90°且小于180°的角是钝角。大于或等于180°的角（如平角、周角）不是钝角。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-021",
+              "type": "blank",
+              "question": "量角的工具是（______），角的计量单位是（______），用符号（______）表示。",
+              "answer": "量角器,度,°",
+              "explanation": "量角的工具是量角器。角的计量单位是“度”，用符号“°”表示。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p2::u3-ex-022",
+              "type": "single",
+              "question": "把两个锐角拼在一起，拼成的角（　　）。",
+              "options": [
+                "A. 一定是钝角",
+                "B. 一定是锐角",
+                "C. 可能是直角",
+                "D. 一定是平角"
+              ],
+              "answer": "C",
+              "explanation": "两个锐角的和可能小于90°（如30°+40°=70°，是锐角），可能等于90°（如30°+60°=90°，是直角），也可能大于90°（如50°+60°=110°，是钝角）。所以可能是直角。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p2::kp-geo-003"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

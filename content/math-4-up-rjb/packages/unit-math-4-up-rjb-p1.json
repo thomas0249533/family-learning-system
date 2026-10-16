@@ -1,0 +1,458 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-up-rjb-p1",
+    "type": "unit",
+    "title": "数学4上第1部分",
+    "version": "1.0.0",
+    "dependencies": [],
+    "schemaVersion": "1.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-math-4-up-rjb-p1::kp-num-001",
+      "type": "concept",
+      "title": "大数的读写与数位顺序表",
+      "content": "按照我国的计数习惯，从右起每四个数位为一级。个级、万级、亿级。\\n数位顺序表：个位、十位、百位、千位、万位、十万位、百万位、千万位、亿位……\\n读数法则：从高位读起，一级一级地读。读亿级、万级时，先按照个级的读法读，再在后面加上一个“亿”字或“万”字。每级末尾不管有几个0，都不读；其他数位上有一个0或连续几个0，都只读一个零。\\n写数法则：从高位写起，一级一级地写，哪一个数位上一个单位也没有，就在那个数位上写0。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "数感",
+        "tags": [
+          "大数",
+          "数位",
+          "读写"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p1::kp-num-002",
+      "type": "concept",
+      "title": "大数的比较与改写",
+      "content": "比较大小：位数不同时，位数多的数就大；位数相同时，从最高位比起，最高位上的数大的那个数就大。\\n改写：为了读写方便，常把整万或整亿的数改写成用“万”或“亿”作单位的数。改写时，去掉万位或亿位后面的0，并加上“万”字或“亿”字。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p1::kp-num-001"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 10,
+        "cognitiveLevel": "应用",
+        "ability": "运算能力",
+        "tags": [
+          "大数比较",
+          "改写",
+          "万",
+          "亿"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p1::kp-num-003",
+      "type": "concept",
+      "title": "近似数与四舍五入",
+      "content": "有些数前面有“约”字，表示是近似数。\\n四舍五入法：要看省略的尾数部分的最高位上的数。如果小于5，就把尾数舍去（四舍）；如果大于或等于5，就向前一位进1，再把尾数舍去（五入）。\\n注意：近似数可能比原数大，也可能比原数小。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p1::kp-num-002"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "数感",
+        "tags": [
+          "近似数",
+          "四舍五入"
+        ]
+      }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "unit-math-4-up-rjb-p1::u1",
+      "name": "第一单元",
+      "title": "认识更大的数",
+      "desc": "掌握亿以内数的读写、比较、改写及近似数的求法，感受大数在生活中的应用。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p1::t1",
+          "title": "大数的读写与数位",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p1::kp-num-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p1::m1",
+              "type": "math.concept",
+              "title": "数位顺序表与读写法则",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-001",
+              "type": "blank",
+              "question": "10个一万是（______），10个一千万是（______）。",
+              "answer": "十万,一亿",
+              "explanation": "根据十进制计数法，相邻两个计数单位之间的进率是10。10个一万是十万，10个一千万是一亿。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-002",
+              "type": "single",
+              "question": "一个数的最高位是千万位，这个数是（　　）位数。",
+              "options": [
+                "A. 六",
+                "B. 七",
+                "C. 八",
+                "D. 九"
+              ],
+              "answer": "C",
+              "explanation": "数位顺序从右往左依次是：个位、十位、百位、千位、万位、十万位、百万位、千万位。千万位是第八位，所以这个数是八位数。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-003",
+              "type": "blank",
+              "question": "由5个亿、3个百万、7个万和2个一组成的数是（______）。",
+              "answer": "503070002",
+              "explanation": "根据数位顺序表，5在亿位，3在百万位，7在万位，2在个位，其余数位补0，这个数写作503070002。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-004",
+              "type": "judge",
+              "question": "读多位数时，每级末尾的0都不读。",
+              "answer": "对",
+              "explanation": "根据大数的读数法则，每级末尾不管有几个0，都不读。这句话是正确的。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-005",
+              "type": "single",
+              "question": "下面各数中，一个零也不读的是（　　）。",
+              "options": [
+                "A. 4008000",
+                "B. 4080000",
+                "C. 4800000",
+                "D. 4000800"
+              ],
+              "answer": "C",
+              "explanation": "A读作四百万八千，读一个零；B读作四百零八万，读一个零；C读作四百八十万，一个零也不读；D读作四百万零八百，读一个零。故选C。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-006",
+              "type": "blank",
+              "question": "用0、0、3、5、7、9组成的最大六位数是（______），最小六位数是（______）。",
+              "answer": "975300,300579",
+              "explanation": "组成最大数：将数字按从大到小排列，即9、7、5、3、0、0，得975300。组成最小数：将非零最小数字3放在最高位，其余数字按从小到大排列，即0、0、5、7、9，得300579。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-007",
+              "type": "blank",
+              "question": "一个数的亿位、万位和千位上都是6，其余各位都是0，这个数是（______），读作（______）。",
+              "answer": "600066000,六亿零六万六千",
+              "explanation": "亿位是6，万位是6，千位是6，其余为0。写作600066000。读作：六亿零六万六千。注意万级前面有0要读出来。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-008",
+              "type": "judge",
+              "question": "900000000这个数中包含90个千万。",
+              "answer": "错",
+              "explanation": "900000000的最高位是亿位，9在亿位上，表示9个亿。如果包含90个千万，应该是900000000，数值虽然相等，但计数单位不同，9个亿等于90个千万，原题表述不准确。正确说法是包含9个亿。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p1::t2",
+          "title": "大数的比较与改写",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p1::kp-num-002"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p1::m2",
+              "type": "math.concept",
+              "title": "比较大小与改写方法",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-009",
+              "type": "single",
+              "question": "在〇里填上“>”、“<”或“=”，正确的是（　　）。\\n998765〇1000000",
+              "options": [
+                "A. >",
+                "B. <",
+                "C. =",
+                "D. 无法比较"
+              ],
+              "answer": "B",
+              "explanation": "998765是六位数，1000000是七位数。位数不同时，位数多的数就大。所以998765 < 1000000。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-010",
+              "type": "blank",
+              "question": "380000改写成以“万”为单位的数是（______）。",
+              "answer": "38万",
+              "explanation": "把整万的数改写成用“万”作单位，去掉万位后面的4个0，并加上“万”字。380000 = 38万。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-012",
+              "type": "single",
+              "question": "下面各数中，比400万大且最接近400万的数是（　　）。",
+              "options": [
+                "A. 3999999",
+                "B. 4000001",
+                "C. 3999998",
+                "D. 4000009"
+              ],
+              "answer": "B",
+              "explanation": "400万 = 4000000。A比400万小；B比400万大1；C比400万小2；D比400万大9。比400万大且最接近的是4000001。故选B。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-013",
+              "type": "blank",
+              "question": "地球到太阳的平均距离大约是149600000千米，改写成用“万”作单位的数是（______）万千米。",
+              "answer": "14960",
+              "explanation": "149600000去掉万位后面的4个0，即14960，加上“万”字，所以是14960万千米。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-014",
+              "type": "blank",
+              "question": "某商场一年的营业额是365000000元，读作（______）元，改写成用“亿”作单位的数是（______）亿元。",
+              "answer": "三亿六千五百万,3.65",
+              "explanation": "365000000读作：三亿六千五百万。改写成用“亿”作单位，去掉亿位后面的8个0，即3.65，加上“亿”字，得3.65亿元。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-015",
+              "type": "judge",
+              "question": "比较两个大数的大小时，如果位数相同，最高位上的数大的那个数就大。",
+              "answer": "对",
+              "explanation": "根据大数比较的法则，位数相同时，从最高位比起，最高位上的数大的那个数就大。这句话是正确的。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p1::t3",
+          "title": "近似数与四舍五入",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p1::kp-num-003"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p1::m3",
+              "type": "math.concept",
+              "title": "四舍五入法求近似数",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-016",
+              "type": "blank",
+              "question": "把984500省略万位后面的尾数约是（______）万。",
+              "answer": "98",
+              "explanation": "省略万位后面的尾数，要看千位上的数。千位是4，小于5，舍去尾数，所以984500 ≈ 98万。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-017",
+              "type": "single",
+              "question": "一个数四舍五入到万位是5万，这个数最大是（　　）。",
+              "options": [
+                "A. 49999",
+                "B. 54999",
+                "C. 50000",
+                "D. 59999"
+              ],
+              "answer": "B",
+              "explanation": "四舍五入到万位是5万，要使原数最大，万位是5，千位必须小于5（四舍），最大是4，其余各位最大是9。所以这个数最大是54999。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-018",
+              "type": "single",
+              "question": "一个数四舍五入到万位是5万，这个数最小是（　　）。",
+              "options": [
+                "A. 45000",
+                "B. 49000",
+                "C. 50000",
+                "D. 49999"
+              ],
+              "answer": "A",
+              "explanation": "四舍五入到万位是5万，要使原数最小，万位是4，千位必须大于或等于5（五入），最小是5，其余各位最小是0。所以这个数最小是45000。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-019",
+              "type": "judge",
+              "question": "近似数一定比准确数小。",
+              "answer": "错",
+              "explanation": "近似数可能比准确数小（四舍），也可能比准确数大（五入）。例如：984500 ≈ 98万（变小），955000 ≈ 96万（变大）。所以这句话是错误的。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-020",
+              "type": "multiple",
+              "question": "关于近似数，下列说法正确的是（　　）。",
+              "options": [
+                "A. 近似数可能比原数大",
+                "B. 近似数可能比原数小",
+                "C. 近似数一定等于原数",
+                "D. 四舍五入法可以求近似数"
+              ],
+              "answer": "ABD",
+              "explanation": "近似数可能比原数大，也可能比原数小，所以A和B正确，C错误。四舍五入法是求近似数的常用方法，D正确。故选ABD。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-021",
+              "type": "blank",
+              "question": "一个保险箱的密码是八位数。最高位是最大的一位数，万位是最小的合数，千位是最小的质数，其余各位都是0，这个密码是（______）。",
+              "answer": "90402000",
+              "explanation": "最大的一位数是9（千万位），最小的合数是4（万位），最小的质数是2（千位），其余位补0。所以密码是90402000。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p1::u1-ex-022",
+              "type": "blank",
+              "question": "比59999多1的数是（______），比100000少1的数是（______）。",
+              "answer": "60000,99999",
+              "explanation": "59999 + 1 = 60000。100000 - 1 = 99999。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p1::kp-num-003"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

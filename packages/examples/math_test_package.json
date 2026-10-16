@@ -1,0 +1,45 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0", "packageId": "math-4-up-p4-test", "packageType": "base",
+    "subject": "math", "templateId": "math.primary.v1", "grade": 4, "term": "up", "edition": "人教版",
+    "title": "四年级数学上（P4全题型测试）", "subtitle": "含选择、填空题型"
+  },
+  "knowledgePoints": [
+    { "id": "550e8400-e29b-41d4-a716-446655440000", "type": "formula", "title": "乘法分配律", "content": "(a+b) \\times c = a \\times c + b \\times c" }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "u5", "name": "第五单元", "title": "运算律", "desc": "运算律精讲与实战",
+      "topics": [
+        {
+          "id": "t1", "title": "乘法分配律的妙用", "knowledgePointIds": ["550e8400-e29b-41d4-a716-446655440000"],
+          "modules": [
+            { "id": "m1", "type": "math.formula", "title": "公式速查", "knowledgePointIds": ["550e8400-e29b-41d4-a716-446655440000"] }
+          ],
+          "exercises": [
+            {
+              "id": "ex_001", "type": "single",
+              "question": "计算 25 × 4 + 75 × 4，用哪种运算律最简便？",
+              "options": ["A. 乘法交换律", "B. 乘法结合律", "C. 乘法分配律", "D. 加法结合律"],
+              "answer": "C", "explanation": "提取公因数4，变成 (25+75) × 4 = 100 × 4 = 400。",
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "ex_002", "type": "blank",
+              "question": "计算：(25 + 75) × 4 = ____",
+              "answer": "400", "explanation": "先算括号内的 25 + 75 = 100，再算 100 × 4 = 400。",
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "ex_003", "type": "blank",
+              "question": "根据乘法分配律，99 × 15 可以写成 (100 - 1) × 15 = 1500 - ____",
+              "answer": "15", "explanation": "运用乘法分配律的逆运算，100×15 - 1×15 = 1500 - 15。",
+              "metadata": { "difficulty": "提高" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

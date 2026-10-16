@@ -1,0 +1,17 @@
+{
+  "manifest": {
+    "packageId": "term-math-4-up-rjb",
+    "type": "term",
+    "title": "四年级上册学期包（自动合成）",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-math-4-up-rjb-p1",
+      "unit-math-4-up-rjb-p2",
+      "unit-math-4-up-rjb-p3",
+      "unit-math-4-up-rjb-p4",
+      "unit-math-4-up-rjb-p5",
+      "unit-math-4-up-rjb-p6"
+    ]
+  },
+  "units": []
+}

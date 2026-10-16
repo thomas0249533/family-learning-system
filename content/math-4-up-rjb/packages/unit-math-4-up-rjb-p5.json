@@ -1,0 +1,800 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-up-rjb-p5",
+    "type": "unit",
+    "title": "数学4上第5部分",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-math-4-up-rjb-p4"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-math-4-up-rjb-p5::kp-geo-006",
+      "type": "concept",
+      "title": "平行四边形与梯形的特征",
+      "content": "1. 平行四边形：两组对边分别平行的四边形叫做平行四边形。特征：两组对边分别平行且相等，对角相等。\\n2. 梯形：只有一组对边平行的四边形叫做梯形。平行的两边叫做梯形的底（上底、下底），不平行的两边叫做腰。\\n3. 特殊梯形：两腰相等的梯形叫等腰梯形；有一个角是直角的梯形叫直角梯形。\\n4. 生活应用：伸缩门、升降机利用了平行四边形易变形的特性；堤坝、水渠的横截面常做成梯形。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p2::kp-geo-002"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念",
+        "tags": [
+          "平行四边形",
+          "梯形",
+          "四边形特征"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p5::kp-geo-007",
+      "type": "concept",
+      "title": "三角形内角和及应用",
+      "content": "1. 三角形内角和：任意三角形的内角和都是180°。\\n2. 三角形分类：\\n- 锐角三角形：三个角都是锐角；\\n- 直角三角形：有一个角是直角；\\n- 钝角三角形：有一个角是钝角。\\n3. 已知两个角的度数，可以用180°减去这两个角求出第三个角。\\n4. 拓展：四边形可以分成两个三角形，所以四边形的内角和是180° \\times 2 = 360°。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p2::kp-geo-003"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "应用",
+        "ability": "推理意识",
+        "tags": [
+          "三角形内角和",
+          "角度计算",
+          "四边形内角和"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p5::kp-rel-001",
+      "type": "concept",
+      "title": "路程 = 速度 × 时间",
+      "content": "1. 基本数量关系：\\n路程 = 速度 × 时间；\\n速度 = 路程 ÷ 时间；\\n时间 = 路程 ÷ 速度。\\n2. 速度的单位：通常用“千米/时”或“米/分”表示。\\n3. 生活应用：计算汽车行驶距离、步行时间、飞机飞行路程等。\\n4. 注意事项：计算时单位要统一。例如：速度是“千米/时”，时间必须是“时”，求出的路程单位才是“千米”。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p3::kp-num-005"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "模型意识",
+        "tags": [
+          "路程",
+          "速度",
+          "时间",
+          "行程问题"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p5::kp-rel-002",
+      "type": "concept",
+      "title": "总价 = 单价 × 数量",
+      "content": "1. 基本数量关系：\\n总价 = 单价 × 数量；\\n单价 = 总价 ÷ 数量；\\n数量 = 总价 ÷ 单价。\\n2. 生活应用：超市购物、购买文具、订购校服等。\\n3. 注意事项：在解决实际问题时，要看清题目中已知的是总价、单价还是数量，再选择合适的公式进行计算。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p3::kp-num-005"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "模型意识",
+        "tags": [
+          "总价",
+          "单价",
+          "数量",
+          "购物问题"
+        ]
+      }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "unit-math-4-up-rjb-p5::u7",
+      "name": "第六单元",
+      "title": "图形的奥秘",
+      "desc": "认识平行四边形和梯形的特征，探索三角形内角和，发展空间观念和推理能力。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p5::t1",
+          "title": "平行四边形与梯形",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p5::kp-geo-006"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p5::m1",
+              "type": "math.concept",
+              "title": "平行四边形与梯形的特征",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-001",
+              "type": "single",
+              "question": "下面说法正确的是（　　）。",
+              "options": [
+                "A. 平行四边形是特殊的梯形",
+                "B. 梯形是特殊的平行四边形",
+                "C. 平行四边形有两组对边分别平行",
+                "D. 梯形有两组对边分别平行"
+              ],
+              "answer": "C",
+              "explanation": "平行四边形有两组对边分别平行；梯形只有一组对边平行。它们都是四边形，但互不包含。A、B、D说法错误，C正确。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-002",
+              "type": "blank",
+              "question": "只有一组对边平行的四边形叫做（______）。两腰相等的梯形叫做（______）梯形。",
+              "answer": "梯形,等腰",
+              "explanation": "根据梯形的定义：只有一组对边平行的四边形叫做梯形。两腰相等的梯形是等腰梯形。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-003",
+              "type": "judge",
+              "question": "平行四边形容易变形，具有不稳定性。",
+              "answer": "对",
+              "explanation": "平行四边形具有易变形的特性（不稳定性），生活中伸缩门、升降机就是利用了这一特性。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-004",
+              "type": "single",
+              "question": "一个直角梯形中，最多有（　　）个直角。",
+              "options": [
+                "A. 1",
+                "B. 2",
+                "C. 3",
+                "D. 4"
+              ],
+              "answer": "B",
+              "explanation": "直角梯形有一条腰垂直于底，这条腰与上底、下底各形成一个直角，所以最多有2个直角。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-005",
+              "type": "blank",
+              "question": "用一根长20厘米的铁丝围成一个平行四边形，已知相邻两条边的和是（______）厘米。",
+              "answer": "10",
+              "explanation": "平行四边形的周长 = (相邻两边之和) \\times 2。20 ÷ 2 = 10（厘米），所以相邻两条边的和是10厘米。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-006",
+              "type": "single",
+              "question": "学校的电动伸缩门利用了（　　）的特性。",
+              "options": [
+                "A. 三角形稳定",
+                "B. 平行四边形易变形",
+                "C. 梯形稳定",
+                "D. 圆形不稳定性"
+              ],
+              "answer": "B",
+              "explanation": "伸缩门需要能够拉伸和收缩，利用了平行四边形容易变形的特性。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-007",
+              "type": "judge",
+              "question": "一个四边形，如果它的一组对边平行，另一组对边也平行，那么它一定是平行四边形。",
+              "answer": "对",
+              "explanation": "两组对边分别平行的四边形就是平行四边形，这是平行四边形的定义。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-008",
+              "type": "blank",
+              "question": "从平行四边形的一个顶点向对边画一条高，可以将平行四边形分成一个三角形和一个（______）形。",
+              "answer": "梯",
+              "explanation": "从平行四边形的一个顶点向对边作高，沿着高剪开，会得到一个直角三角形和一个直角梯形。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-009",
+              "type": "single",
+              "question": "下面哪组小棒能围成一个平行四边形？（单位：厘米）",
+              "options": [
+                "A. 2, 3, 4, 5",
+                "B. 2, 2, 3, 3",
+                "C. 1, 2, 3, 4",
+                "D. 5, 5, 5, 5"
+              ],
+              "answer": "B",
+              "explanation": "平行四边形的两组对边分别相等。选项B有两根2厘米和两根3厘米的小棒，可以组成两组相等的对边，能围成平行四边形。选项D是四条边相等，围成的是正方形（特殊的平行四边形），但B更能体现平行四边形“两组对边分别相等”的一般特征。故选B。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-010",
+              "type": "blank",
+              "question": "一个等腰梯形的上底是5厘米，下底是9厘米，一条腰长是4厘米。这个等腰梯形的周长是（______）厘米。",
+              "answer": "22",
+              "explanation": "等腰梯形的两腰相等，都是4厘米。周长 = 上底 + 下底 + 两条腰 = 5 + 9 + 4 + 4 = 22（厘米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-006"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p5::t2",
+          "title": "三角形内角和",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p5::kp-geo-007"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p5::m2",
+              "type": "math.concept",
+              "title": "三角形内角和",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-011",
+              "type": "blank",
+              "question": "任意三角形的内角和都是（______）°。",
+              "answer": "180",
+              "explanation": "根据三角形内角和定理，任意三角形的内角和都是180°。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-012",
+              "type": "single",
+              "question": "在一个直角三角形中，一个锐角是35°，另一个锐角是（　　）。",
+              "options": [
+                "A. 45°",
+                "B. 55°",
+                "C. 65°",
+                "D. 145°"
+              ],
+              "answer": "B",
+              "explanation": "直角三角形有一个角是90°。根据内角和180°，另一个锐角 = 180° - 90° - 35° = 55°。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-013",
+              "type": "judge",
+              "question": "一个三角形中，最多有一个直角。",
+              "answer": "对",
+              "explanation": "如果有两个直角，内角和就达到了180°，第三个角就只能是0°，无法构成三角形。所以最多只有一个直角。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-014",
+              "type": "blank",
+              "question": "一个三角形中，∠1 = 45°，∠2 = 65°，∠3 = （______）°，这是一个（______）三角形。",
+              "answer": "70,锐角",
+              "explanation": "∠3 = 180° - 45° - 65° = 70°。三个角都是锐角（45°、65°、70°），所以是锐角三角形。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-015",
+              "type": "single",
+              "question": "把一个三角形剪成两个小三角形，每个小三角形的内角和是（　　）。",
+              "options": [
+                "A. 90°",
+                "B. 180°",
+                "C. 360°",
+                "D. 无法确定"
+              ],
+              "answer": "B",
+              "explanation": "无论三角形大小，只要是三角形，它的内角和就是180°。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-016",
+              "type": "blank",
+              "question": "一个四边形的内角和是（______）°。",
+              "answer": "360",
+              "explanation": "四边形可以分成两个三角形，每个三角形的内角和是180°，所以四边形的内角和 = 180° \\times 2 = 360°。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-017",
+              "type": "single",
+              "question": "一个等腰三角形的顶角是80°，它的一个底角是（　　）。",
+              "options": [
+                "A. 50°",
+                "B. 80°",
+                "C. 100°",
+                "D. 40°"
+              ],
+              "answer": "A",
+              "explanation": "等腰三角形两个底角相等。底角 = (180° - 80°) ÷ 2 = 100° ÷ 2 = 50°。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-018",
+              "type": "blank",
+              "question": "一个等腰三角形的一个底角是45°，它的顶角是（______）°，按角分类它是一个（______）三角形。",
+              "answer": "90,直角",
+              "explanation": "两个底角都是45°，顶角 = 180° - 45° - 45° = 90°。因为有一个角是直角，所以是直角三角形。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-019",
+              "type": "judge",
+              "question": "钝角三角形的两个锐角之和一定小于90°。",
+              "answer": "对",
+              "explanation": "钝角三角形有一个角大于90°。根据内角和180°，另外两个锐角之和 = 180° - 钝角 < 90°。所以这句话正确。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u7-ex-020",
+              "type": "blank",
+              "question": "一个多边形的内角和是720°，这个多边形是（______）边形。",
+              "answer": "六",
+              "explanation": "多边形内角和 = (n - 2) \\times 180°。720° ÷ 180° = 4，n - 2 = 4，n = 6。所以是六边形。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-geo-007"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-math-4-up-rjb-p5::u8",
+      "name": "第七单元",
+      "title": "运用数量关系解决问题",
+      "desc": "掌握路程、速度、时间以及总价、单价、数量之间的数量关系，并能解决实际问题。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p5::t1",
+          "title": "路程、速度与时间",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p5::kp-rel-001"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p5::m1",
+              "type": "math.concept",
+              "title": "路程 = 速度 × 时间",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-001",
+              "type": "blank",
+              "question": "一辆汽车每小时行驶80千米，3小时行驶（______）千米。",
+              "answer": "240",
+              "explanation": "根据“路程 = 速度 × 时间”，80 \\times 3 = 240（千米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-002",
+              "type": "single",
+              "question": "小明步行的速度是60米/分，他走完300米需要（　　）分钟。",
+              "options": [
+                "A. 3",
+                "B. 4",
+                "C. 5",
+                "D. 6"
+              ],
+              "answer": "C",
+              "explanation": "根据“时间 = 路程 ÷ 速度”，300 ÷ 60 = 5（分钟）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-003",
+              "type": "blank",
+              "question": "一架飞机2小时飞行了1400千米，这架飞机的速度是（______）千米/时。",
+              "answer": "700",
+              "explanation": "根据“速度 = 路程 ÷ 时间”，1400 ÷ 2 = 700（千米/时）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-004",
+              "type": "judge",
+              "question": "速度是指物体在单位时间内行驶的路程。",
+              "answer": "对",
+              "explanation": "速度的定义就是单位时间内行驶的路程，通常用“千米/时”或“米/分”表示。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-005",
+              "type": "single",
+              "question": "甲、乙两地相距450千米。一辆汽车从甲地开往乙地，速度是90千米/时，需要（　　）小时到达。",
+              "options": [
+                "A. 4",
+                "B. 5",
+                "C. 6",
+                "D. 7"
+              ],
+              "answer": "B",
+              "explanation": "时间 = 路程 ÷ 速度 = 450 ÷ 90 = 5（小时）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-006",
+              "type": "blank",
+              "question": "一列火车以160千米/时的速度行驶，12小时可以行驶（______）千米。",
+              "answer": "1920",
+              "explanation": "路程 = 速度 \\times 时间 = 160 \\times 12 = 1920（千米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-007",
+              "type": "single",
+              "question": "小华从家到学校走了15分钟，速度是70米/分。小华家到学校的距离是（　　）米。",
+              "options": [
+                "A. 950",
+                "B. 1050",
+                "C. 1150",
+                "D. 1250"
+              ],
+              "answer": "B",
+              "explanation": "路程 = 速度 \\times 时间 = 70 \\times 15 = 1050（米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-008",
+              "type": "judge",
+              "question": "如果速度不变，时间越长，行驶的路程就越远。",
+              "answer": "对",
+              "explanation": "根据路程 = 速度 \\times 时间，当速度一定时，路程与时间成正比。时间越长，路程越远。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-009",
+              "type": "blank",
+              "question": "一辆汽车3小时行驶了210千米。照这样的速度，行驶350千米需要（______）小时。",
+              "answer": "5",
+              "explanation": "先求速度：210 ÷ 3 = 70（千米/时）。再求时间：350 ÷ 70 = 5（小时）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-010",
+              "type": "single",
+              "question": "甲、乙两人同时从两地相对而行。甲的速度是5千米/时，乙的速度是4千米/时，2小时后两人相遇。两地相距（　　）千米。",
+              "options": [
+                "A. 9",
+                "B. 18",
+                "C. 10",
+                "D. 20"
+              ],
+              "answer": "B",
+              "explanation": "两人相对而行，速度和 = 5 + 4 = 9（千米/时）。路程 = 速度和 \\times 相遇时间 = 9 \\times 2 = 18（千米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-001"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p5::t2",
+          "title": "单价、数量与总价",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p5::kp-rel-002"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p5::m2",
+              "type": "math.concept",
+              "title": "总价 = 单价 × 数量",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-011",
+              "type": "blank",
+              "question": "一支钢笔12元，买5支这样的钢笔需要（______）元。",
+              "answer": "60",
+              "explanation": "根据“总价 = 单价 × 数量”，12 \\times 5 = 60（元）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-012",
+              "type": "single",
+              "question": "妈妈买了3千克苹果，一共花了24元。每千克苹果（　　）元。",
+              "options": [
+                "A. 6",
+                "B. 7",
+                "C. 8",
+                "D. 9"
+              ],
+              "answer": "C",
+              "explanation": "根据“单价 = 总价 ÷ 数量”，24 ÷ 3 = 8（元）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-013",
+              "type": "blank",
+              "question": "一种笔记本的单价是8元/本。小明带了56元，最多可以买（______）本。",
+              "answer": "7",
+              "explanation": "根据“数量 = 总价 ÷ 单价”，56 ÷ 8 = 7（本）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-014",
+              "type": "judge",
+              "question": "已知总价和数量，可以用乘法求出单价。",
+              "answer": "错",
+              "explanation": "已知总价和数量，应该用除法求单价：单价 = 总价 ÷ 数量。所以这句话错误。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-015",
+              "type": "single",
+              "question": "学校买了45套校服，每套128元。一共花了（　　）元。",
+              "options": [
+                "A. 5760",
+                "B. 5860",
+                "C. 5660",
+                "D. 5960"
+              ],
+              "answer": "A",
+              "explanation": "总价 = 单价 \\times 数量 = 128 \\times 45 = 5760（元）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-016",
+              "type": "blank",
+              "question": "一箱牛奶有12盒，售价60元。平均每盒牛奶（______）元。",
+              "answer": "5",
+              "explanation": "单价 = 总价 ÷ 数量 = 60 ÷ 12 = 5（元）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-017",
+              "type": "single",
+              "question": "买3个足球用了180元。照这样计算，买8个足球需要（　　）元。",
+              "options": [
+                "A. 480",
+                "B. 420",
+                "C. 540",
+                "D. 600"
+              ],
+              "answer": "A",
+              "explanation": "先求单价：180 ÷ 3 = 60（元）。再求总价：60 \\times 8 = 480（元）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-018",
+              "type": "blank",
+              "question": "超市促销，原来每瓶饮料5元，现在买4送1。妈妈买了5瓶，实际花了（______）元。",
+              "answer": "20",
+              "explanation": "买4送1，意味着花4瓶的钱可以得到5瓶。妈妈得到5瓶，只需要付4瓶的钱。4 \\times 5 = 20（元）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-019",
+              "type": "judge",
+              "question": "单价越高，购买同样数量的商品，总价就越高。",
+              "answer": "对",
+              "explanation": "根据总价 = 单价 \\times 数量，当数量一定时，单价越高，总价越高。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p5::u8-ex-020",
+              "type": "blank",
+              "question": "李老师带了500元去买书，每本书25元。她最多可以买（______）本书，还剩（______）元。",
+              "answer": "20,0",
+              "explanation": "数量 = 总价 ÷ 单价 = 500 ÷ 25 = 20（本）。500 - 25 \\times 20 = 0（元），刚好花完。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p5::kp-rel-002"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

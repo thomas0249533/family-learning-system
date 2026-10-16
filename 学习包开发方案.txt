@@ -1,0 +1,500 @@
+《学习包开发工具》详细设计方案
+
+# 一、问题本质：四张图被混在一起了
+
+AI 依据规范生成学期包时，最容易出现循环引用，根因是以下四类关系没有分离：
+
+| 图 | 关系 | 典型字段 | 若混用会怎样 |
+|---|---|---|---|
+| 包依赖图 | 包 A 依赖包 B | `manifest.dependencies` | term 依赖 unit，unit 又依赖 term |
+| 知识点先修图 | KP A 是 KP B 的前置 | `prerequisites` | 跨包反向先修，形成环 |
+| 课程结构树 | 学期包含单元，单元含主题 | `units/topics/modules` | term 内联 unit，unit 又声明依赖 term |
+| 内容引用图 | 题目引用知识点，模块引用知识点 | `knowledgePointIds` | 跨包引用不存在或反向引用 |
+
+**结论：**
+学期包不能被设计成“大 JSON 把所有单元嵌套进去”。  
+学期包应该是 **根包 + 依赖闭包 + 课程编排视图**。  
+单元包、专项包、基础包是独立发布单元，学期包只负责编排和依赖，不反向被单元包依赖。
+
+---
+
+# 二、核心模型：三层分离 + 包层级 DAG
+
+## 2.1 包类型分层
+
+在规范原有 `packageType` 基础上，工具内部建立层级模型：
+
+| 层级 | packageType | 职责 | 允许依赖 |
+|---|---|---|---|
+| L0 | `base` | 基础知识包、知识点池、公式/单词/古诗 | 无 |
+| L1 | `unit` | 单元学习包，含 topics/modules/exercises | `base`，可同层前序 `unit` |
+| L1 | `special` | 专项刷题包 | `base`、`unit` |
+| L2 | `term` | 学期课程包，只做编排 | `base`、`unit`、`special` |
+| L2 | `sprint` | 冲刺包 | `term`、`unit`、`special`、`base` |
+| L3 | `mistake` | 错题包，只读快照 | 任意，但不可被其他包依赖 |
+
+**铁律：依赖边只能从高层指向低层，或同层从前序指向后序。禁止反向。**
+
+例如：
+
+```text
+term-math-4-up-rjb
+  ├── base-math-4-up-rjb
+  ├── unit-math-4-up-rjb-u5
+  └── special-math-4-up-rjb-operations
+
+unit-math-4-up-rjb-u5
+  └── base-math-4-up-rjb
+```
+
+禁止：
+
+```text
+unit-u5 -> term
+term -> special
+special -> term
+base -> unit
+```
+
+## 2.2 学期包只做“编排”，不做“拥有”
+
+开发态学期包建议使用扩展字段做引用，不内联完整单元内容：
+
+```json
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "term-math-4-up-rjb",
+    "packageType": "term",
+    "dependencies": [
+      "base-math-4-up-rjb",
+      "unit-math-4-up-rjb-u5",
+      "special-math-4-up-rjb-operations"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "u5",
+      "name": "第五单元",
+      "title": "运算律",
+      "sourcePackageId": "unit-math-4-up-rjb-u5",
+      "sourceUnitId": "u5",
+      "order": 5
+    }
+  ]
+}
+```
+
+其中 `sourcePackageId` 是工具扩展字段。  
+发布时可选择两种模式：
+
+1. **链接模式**：保留多包，生成 `.lpkgset.zip`，按 `importOrder` 导入。
+2. **快照模式**：编译器展开依赖闭包，重写 ID，生成单个符合规范的学期包 JSON。
+
+这样 AI 生成学期包时，不需要生成 unit 内部的 topics/exercises，只需要生成编排和依赖，从源头切断循环。
+
+---
+
+# 三、防循环引用的关键规则
+
+## 3.1 包依赖规则
+
+新增校验码建议：
+
+| 码 | 含义 |
+|---|---|
+| E101 | 包类型依赖非法 |
+| E102 | 依赖指向高层包，形成反向依赖 |
+| E103 | term 内联 unit 内容且又依赖该 unit，重复/易循环 |
+| E104 | unit/special 依赖 term |
+| E105 | base 依赖任何包 |
+| E106 | mistake 被其他包依赖 |
+| E107 | 同层依赖不是前序包 |
+| E108 | 展开后 ID 冲突 |
+
+强制规则：
+
+- `base.dependencies = []`
+- `unit.dependencies ⊆ base ∪ 前序 unit`
+- `special.dependencies ⊆ base ∪ unit`
+- `term.dependencies ⊆ base ∪ unit ∪ special`
+- `sprint.dependencies ⊆ term ∪ unit ∪ special ∪ base`
+- `mistake` 可依赖任意，但不能被依赖
+- 禁止自依赖、循环依赖、跨层反向依赖
+
+## 3.2 知识点先修规则
+
+`prerequisites` 只允许指向：
+
+- 同包知识点
+- 依赖包中的知识点
+
+禁止指向：
+
+- 依赖自己的包
+- 未导入包
+- 学期包新增但单元包引用的知识点
+
+因为 unit 不依赖 term，所以 term 新增 KP 不可能成为 unit 的前置，这从模型上避免先修环。
+
+## 3.3 ID 命名空间规则
+
+开发态允许语义化 ID：
+
+```text
+kp-formula-001
+u5-ex-001
+```
+
+发布/合并时必须重写为全局 ID：
+
+```text
+unit-math-4-up-rjb-u5::kp-formula-001
+unit-math-4-up-rjb-u5::u5-ex-001
+```
+
+导入 IndexedDB 时维护映射表：
+
+```json
+{
+  "packageId": "unit-math-4-up-rjb-u5",
+  "localId": "kp-formula-001",
+  "globalId": "unit-math-4-up-rjb-u5::kp-formula-001"
+}
+```
+
+这样避免多包合并时 ID 冲突，也避免 AI 直接跨包复制 ID。
+
+---
+
+# 四、工具总体架构
+
+## 4.1 模块划分
+
+```text
+@lp/schema        JSON Schema、类型定义、扩展字段
+@lp/graph         包依赖图、知识点先修图、拓扑排序、环检测
+@lp/validator     规范校验 + 扩展防循环校验
+@lp/resolver      依赖解析、闭包计算、锁文件
+@lp/compiler      链接模式/快照模式构建 .lpkgset.zip
+@lp/idmapper      全局 ID 重写、映射表
+@lp/ai            AI 分阶段生成、Prompt 模板、JSON 修复
+@lp/cli           命令行工具
+@lp/vscode        VSCode 插件，实时校验
+@lp/importer      IndexedDB 导入适配器
+@lp/viewer        包图、知识点图、课程树可视化
+```
+
+## 4.2 CLI 设计
+
+```bash
+lp init term --id term-math-4-up-rjb
+lp graph validate ./packages
+lp gen base --out base-math-4-up-rjb.json
+lp gen unit --depends base-math-4-up-rjb --out unit-u5.json
+lp link term-math-4-up-rjb --add unit-math-4-up-rjb-u5
+lp validate ./packages
+lp build term-math-4-up-rjb --out math-4-up-rjb.lpkgset.zip
+lp import math-4-up-rjb.lpkgset.zip
+lp viz ./packages --open
+```
+
+---
+
+# 五、关键流程：自底向上生成，自顶向下编排
+
+## 5.1 推荐生成顺序
+
+```text
+1. 生成课程大纲 / 包图草案
+2. 校验包图 DAG，人工确认
+3. 生成 base 包
+4. 生成 unit 包，依赖已冻结 base
+5. 生成 special 包，依赖 base/unit
+6. 生成 term 包，只写 dependencies + units 编排
+7. 校验包图、KP 图、题目、ID
+8. 构建 .lpkgset.zip
+9. 导入 IndexedDB
+10. 页面渲染与做题验证
+```
+
+**AI 每次只能生成一个包。**  
+生成 unit 时，不允许修改 base。  
+生成 term 时，不允许生成 unit 内部内容。
+
+## 5.2 依赖闭包解析
+
+伪代码：
+
+```ts
+function resolveClosure(rootId: string) {
+  const visiting = new Set<string>();
+  const visited = new Set<string>();
+  const order: string[] = [];
+
+  function dfs(id: string, path: string[]) {
+    if (visiting.has(id)) {
+      throw new Error(`E022 包依赖循环: ${[...path, id].join(" -> ")}`);
+    }
+    if (visited.has(id)) return;
+
+    visiting.add(id);
+    const pkg = loadPackage(id);
+    for (const dep of pkg.manifest.dependencies ?? []) {
+      dfs(dep, [...path, id]);
+    }
+    visiting.delete(id);
+    visited.add(id);
+    order.push(id);
+  }
+
+  dfs(rootId, []);
+  return order; // 拓扑序，先导入依赖
+}
+```
+
+## 5.3 .lpkgset.zip 的 manifest.json
+
+```json
+{
+  "schemaVersion": "1.0",
+  "setId": "math-4-up-rjb-term-set",
+  "root": "term-math-4-up-rjb",
+  "importOrder": [
+    "base-math-4-up-rjb",
+    "unit-math-4-up-rjb-u5",
+    "special-math-4-up-rjb-operations",
+    "term-math-4-up-rjb"
+  ],
+  "packages": [
+    {
+      "packageId": "base-math-4-up-rjb",
+      "file": "base-math-4-up-rjb.json",
+      "dependencies": []
+    },
+    {
+      "packageId": "unit-math-4-up-rjb-u5",
+      "file": "unit-u5.json",
+      "dependencies": ["base-math-4-up-rjb"]
+    },
+    {
+      "packageId": "term-math-4-up-rjb",
+      "file": "term.json",
+      "dependencies": [
+        "base-math-4-up-rjb",
+        "unit-math-4-up-rjb-u5",
+        "special-math-4-up-rjb-operations"
+      ]
+    }
+  ]
+}
+```
+
+导入器按 `importOrder` 顺序导入，每个包独立写入 IndexedDB，`packageId` 为主键。  
+课程视图单独维护：
+
+```text
+courseId: term-math-4-up-rjb
+unitId: u5
+sourcePackageId: unit-math-4-up-rjb-u5
+order: 5
+```
+
+这样不会出现“term 包主键覆盖 unit 包”或“unit 反向依赖 term”的问题。
+
+---
+
+# 六、学期包整合方案：链接模式 vs 快照模式
+
+## 6.1 链接模式，推荐用于开发与多包导入
+
+特点：
+
+- 保留 base、unit、special、term 多包。
+- term 只存 `dependencies` 和 `sourcePackageId` 编排。
+- 导入时按拓扑序导入。
+- 课程页面通过课程视图聚合展示。
+- 单元包、专项包可独立更新。
+
+优点：
+
+- 无嵌套循环。
+- 包可复用。
+- 支持增量更新。
+- 适合 AI 分阶段生成。
+
+## 6.2 快照模式，推荐用于单包交付或旧导入器
+
+编译器执行：
+
+```text
+1. 计算 term 依赖闭包
+2. 拓扑排序
+3. 依次合并 knowledgePoints、exercises、units
+4. 重写所有 ID
+5. 重写 knowledgePointIds、prerequisites
+6. 题目继承 topic 的 knowledgePointIds
+7. 生成单个 term.json
+8. manifest 顶层 packageId = term packageId
+9. 来源信息写入 metadata.sourcePackageId
+```
+
+注意：
+
+- 快照模式必须在构建时完成，不能让 AI 直接生成。
+- 快照包内不再保留子包 `dependencies`，避免导入时又去解析循环。
+- 子包来源仅作审计，不参与依赖解析。
+
+---
+
+# 七、AI 生成协议：防止 AI 自由发挥
+
+## 7.1 分阶段 Prompt
+
+**生成 base 时：**
+
+```text
+你只能生成 packageType=base 的学习包。
+dependencies 必须为空。
+不得引用任何 unit、term、special。
+输出严格 JSON。
+```
+
+**生成 unit 时：**
+
+```text
+你只能生成 packageType=unit 的学习包。
+dependencies 只能从已冻结的 base 包中选择。
+不得生成 term，不得依赖 term，不得修改 base。
+knowledgePointIds 只能引用本包或依赖包。
+```
+
+**生成 term 时：**
+
+```text
+你只能生成 packageType=term 的编排包。
+只允许输出 manifest、dependencies、units 编排。
+不得输出 topics、modules、exercises 内容。
+每个 unit 使用 sourcePackageId + sourceUnitId 引用。
+禁止内联完整 unit。
+```
+
+## 7.2 先图后文
+
+先生成 `package-graph.json`：
+
+```json
+{
+  "root": "term-math-4-up-rjb",
+  "nodes": [
+    { "id": "base-math-4-up-rjb", "type": "base" },
+    { "id": "unit-math-4-up-rjb-u5", "type": "unit", "deps": ["base-math-4-up-rjb"] },
+    { "id": "term-math-4-up-rjb", "type": "term", "deps": ["unit-math-4-up-rjb-u5"] }
+  ]
+}
+```
+
+工具先校验 DAG，通过后再允许 AI 生成各包内容。  
+这样循环在生成内容前就被拦截。
+
+## 7.3 冻结与锁文件
+
+每个包生成后记录：
+
+```json
+{
+  "packageId": "unit-math-4-up-rjb-u5",
+  "hash": "sha256:...",
+  "dependencies": ["base-math-4-up-rjb"],
+  "frozen": true
+}
+```
+
+后续包只能引用已冻结包。  
+禁止 AI 回头修改上游包，否则 term 生成后 unit 再改，可能引入反向依赖。
+
+---
+
+# 八、校验流程增强版
+
+在规范第 11 节基础上，工具应执行：
+
+1. JSON Schema 校验：E001~E010、E012。
+2. 包依赖图校验：E020~E022、E101~E108。
+3. 知识点先修图校验：E013、E014。
+4. 题目引用完整性：E005~E009。
+5. ID 全局唯一与命名空间校验。
+6. 学期包内联/依赖重复校验。
+7. 依赖闭包完整性校验。
+8. 模拟导入 IndexedDB。
+9. 模拟渲染模块。
+10. 模拟做题并校验答案格式。
+
+校验输出示例：
+
+```text
+E022 包依赖循环: term-math-4-up-rjb -> unit-u5 -> term-math-4-up-rjb
+建议：
+- 删除 unit-u5 对 term 的依赖
+- 将 term 中的 unit 改为 sourcePackageId 编排
+- 将共享知识点下沉到 base 包
+```
+
+---
+
+# 九、推荐目录结构
+
+```text
+packages/
+  base-math-4-up-rjb.json
+  unit-math-4-up-rjb-u5.json
+  special-math-4-up-rjb-operations.json
+  term-math-4-up-rjb.json
+  package-graph.json
+  lpkg.lock.json
+dist/
+  math-4-up-rjb.lpkgset.zip
+```
+
+`package-graph.json` 是 AI 与工具之间的契约，先校验再生成。
+
+---
+
+# 十、落地路线图
+
+## MVP
+
+- JSON Schema + 基础校验。
+- 包依赖图构建与循环检测。
+- CLI：`validate`、`graph`、`build`。
+- .lpkgset.zip 生成与拓扑导入。
+
+## V1
+
+- AI 分阶段生成：base → unit → special → term。
+- 学期包编排扩展字段 `sourcePackageId`。
+- 链接模式与快照模式构建。
+- VSCode 插件实时校验。
+
+## V2
+
+- 可视化包图、知识点先修图、课程树。
+- 增量生成与锁文件。
+- IndexedDB 导入适配器。
+- 课程视图聚合、单元/专项/学期包复用。
+
+---
+
+# 十一、最终结论
+
+要避免 AI 依据开发规范生成学期学习包时出现嵌套循环引用，工具必须坚持五条铁律：
+
+1. **四图分离**：包依赖、知识点先修、课程结构、内容引用不能混用。
+2. **依赖单向**：term → unit/special → base，禁止反向。
+3. **学期包只编排不拥有**：term 只写 dependencies + source 引用，不内联完整 unit。
+4. **AI 单包单阶段生成**：先生成 DAG，再自底向上生成，每包冻结后不可回改。
+5. **发布时拓扑展开**：链接模式多包导入，快照模式构建时展开并重写 ID。
+
+这样，单元学习包、专项刷题包可以独立开发、独立校验、独立复用；学期包只作为课程编排根节点，最终由工具构建成 `.lpkgset.zip` 或快照包导入。循环引用会在包图阶段、生成阶段、校验阶段、构建阶段被连续拦截，而不是等到导入 UI 才报错。

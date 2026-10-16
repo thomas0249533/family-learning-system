@@ -1,0 +1,251 @@
+classDiagram
+  %% 家庭学习系统 · 本轮增量类图（路线图 V1.1 批次）
+  %% 覆盖：多学段主题（palette/preset/服务层）+ 成就体系 + 每日埋点
+
+  %% ========== 主题数据源（JS 侧） ==========
+  class ThemePreset {
+    <<enum>>
+    primary
+    junior
+    senior
+  }
+  class ThemeMode {
+    <<enum>>
+    light
+    dark
+  }
+  class ThemeColors {
+    <<interface>>
+    +string primary
+    +string primaryHover
+    +string primaryPressed
+    +string primarySuppl
+    +string success
+    +string warning
+    +string danger
+    +string info
+    +string cardBg
+    +string bgColor
+    +string textMain
+    +string textSub
+    +string textMuted
+    +string border
+    +string borderLight
+  }
+  class SubjectColors {
+    <<interface>>
+    +string chinese
+    +string chineseDeep
+    +string chineseAccent
+    +string chineseSoft
+    +string english
+    +string englishLight
+  }
+  class ThemePalette {
+    <<interface>>
+    +Record~ThemePreset,Record~ThemeMode,ThemeColors~~ presets
+    +SubjectColors subjects
+    +Record~string,string~ radius
+    +Record~ThemePreset,Record~ThemeMode,Record~string,string~~~ gradients
+  }
+  class FontSizes {
+    <<interface>>
+    +string fontSizeTiny
+    +string fontSizeSmall
+    +string fontSizeMedium
+    +string fontSizeLarge
+    +string fontSizeHuge
+  }
+  class palette_module {
+    <<module palette.ts>>
+    +ThemePalette palette
+    +FONT_SIZE_MAPS Record~size,FontSizes~
+    +buildThemeOverrides(palette, preset, theme, sizes) GlobalThemeOverrides
+  }
+
+  %% ========== 主题推断（纯函数） ==========
+  class GradeSource {
+    <<interface>>
+    +number grade
+    +string updatedAt
+    +string createdAt
+  }
+  class InferResult {
+    <<interface>>
+    +ThemePreset preset
+    +number grade
+    +bool usedFallback
+  }
+  class presetInference {
+    <<module presetInference.ts>>
+    +gradeToPreset(grade) ThemePreset
+    +inferPreset(sources) InferResult
+  }
+
+  %% ========== 状态（Pinia） ==========
+  class useThemeStore {
+    <<store theme.ts>>
+    +Ref themeMode
+    +Ref fontSize
+    +Ref preset
+    +Ref presetManual
+    +Computed actualTheme
+    +setTheme(mode)
+    +setFontSize(size)
+    +setPreset(preset, manual)
+    +restoreAuto()
+    +reconcilePreset(manifests)
+    +persist()
+    +hydrateFromStorage()
+  }
+  class usePackageStore {
+    <<store package.ts>>
+    +Ref packages
+    +loadPackages()
+  }
+  class useUserDataStore {
+    <<store userData.ts>>
+    +Ref progress
+    +Ref mistakes
+    +loadUserData()
+    +recordProgress(pkgId, kpId, isCorrect, opts)
+    +recordAnswerEvent(payload)
+    +addMistake(...)
+    +resolveMistake(...)
+  }
+
+  %% ========== 服务层（JS 取色统一） ==========
+  class useThemeTokens {
+    <<composable>>
+    +tokens() ReactiveRecord
+    +resolveToken(name) string
+  }
+  class useChartTheme {
+    <<composable>>
+    +chartTheme() EchartsThemeTokens
+  }
+  class pdfExporter {
+    <<module pdfExporter.ts>>
+    +exportReportAsPDF(el, filename)
+  }
+  class isTauri {
+    <<module pwa/isTauri.ts>>
+    +isTauri() bool
+  }
+
+  %% ========== 成就体系 ==========
+  class AchievementCategory {
+    <<enum>>
+    M
+    G
+    B
+    E
+  }
+  class AchievementDef {
+    <<interface>>
+    +string id
+    +string icon
+    +string title
+    +string desc
+    +AchievementCategory category
+    +bool hidden
+    +string chain
+    +number order
+    +check(ctx) bool
+  }
+  class PackageMeta {
+    <<interface>>
+    +string packageId
+    +string subject
+    +number grade
+    +string term
+    +string packageType
+    +number kpCount
+  }
+  class AchievementContext {
+    <<interface>>
+    +ProgressRecord[] progress
+    +MistakeRecord[] mistakes
+    +StreakState streak
+    +PackageMeta[] packages
+    +DailyStat[] dailyStats
+    +string[] attemptedTypes
+  }
+  class ChainDef {
+    <<interface>>
+    +string id
+    +string name
+    +string[] ids
+  }
+  class UnlockedRecord {
+    <<interface>>
+    +string id
+    +string unlockedAt
+  }
+  class AchievementSyncResult {
+    <<interface>>
+    +string[] unlocked
+    +AchievementDef[] newlyUnlocked
+  }
+  class achievements_module {
+    <<module achievements.ts>>
+    +AchievementDef[] ACHIEVEMENTS
+    +evaluateAchievements(ctx) string[]
+    +syncAchievements(ctx) AchievementSyncResult
+    +loadUnlocked() UnlockedRecord[]
+    +normalizeUnlocked(raw) UnlockedRecord[]
+  }
+
+  %% ========== 每日统计（埋点） ==========
+  class DailyStat {
+    <<interface>>
+    +string date
+    +number questionCount
+    +number firstStudyAt
+    +number lastStudyAt
+  }
+  class dailyStats_module {
+    <<module dailyStats.ts>>
+    +number RETAIN_DAYS
+    +localDayKey(d) string
+    +loadDailyStats() DailyStat[]
+    +bumpDailyStats(opts)
+    +flushDailyStats()
+  }
+  class streak_module {
+    <<module streak.ts>>
+    +touchStudyDay(now) StreakState
+    +localDayKey(d) string
+  }
+
+  %% ========== 关系 ==========
+  ThemePalette *-- ThemeColors
+  ThemePalette *-- SubjectColors
+  palette_module --> ThemePalette
+  palette_module --> FontSizes
+  palette_module ..> ThemePreset
+  palette_module ..> ThemeMode
+  useThemeStore ..> palette_module : buildThemeOverrides
+  useThemeStore ..> presetInference : reconcilePreset
+  useThemeStore ..> usePackageStore : 读 manifest.grade
+  presetInference ..> GradeSource
+  presetInference ..> InferResult
+  presetInference ..> ThemePreset
+  useThemeTokens ..> useThemeStore : 依赖 preset/actualTheme
+  useChartTheme ..> useThemeTokens
+  pdfExporter ..> palette_module : preset light
+  AchievementDef ..> AchievementCategory
+  AchievementDef ..> AchievementContext
+  achievements_module *-- AchievementDef
+  achievements_module *-- ChainDef
+  achievements_module ..> AchievementContext
+  achievements_module ..> UnlockedRecord
+  achievements_module ..> AchievementSyncResult
+  AchievementContext *-- PackageMeta
+  AchievementContext ..> DailyStat
+  AchievementContext ..> streak_module : StreakState
+  dailyStats_module *-- DailyStat
+  dailyStats_module ..> streak_module : localDayKey 口径
+  useUserDataStore ..> dailyStats_module : recordAnswerEvent then bump
+  useUserDataStore ..> streak_module : touchStudyDay
+  useUserDataStore ..> achievements_module : syncAchievements(ctx)

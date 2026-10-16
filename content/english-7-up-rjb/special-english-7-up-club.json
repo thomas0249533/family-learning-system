@@ -1,0 +1,221 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-club",
+    "type": "special",
+    "title": "Fun Clubs 社团选择与能力表达专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p5"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p5::u5"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-u5",
+      "name": "专项测验",
+      "title": "Fun Clubs 社团选择与能力表达专项测验",
+      "desc": "针对人教版2024新教材七年级上册 Unit 5 Fun Clubs 的高难度变式测验，覆盖社团与活动词汇、情态动词 can、交际句型以及关于校园社团的跨文化阅读语篇。",
+      "topics": [
+        {
+          "id": "special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p5::kp-word-001",
+            "unit-english-7-up-rjb-p5::kp-sentence-001",
+            "unit-english-7-up-rjb-p5::kp-grammar-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-071",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. music club",
+                "B. art club",
+                "C. chess club",
+                "D. swimming club"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-word-001",
+                "unit-english-7-up-rjb-p5::kp-sentence-001"
+              ],
+              "question": "— What club do you want to join?\n— I like painting and drawing, so I want to join the ______.",
+              "explanation": "句意为：——你想加入什么社团？——我喜欢画画，所以我想加入美术社。painting and drawing 对应 art club。故选 B。易错点：混淆 music club（音乐社）和 chess club（棋类社）的活动内容。"
+            },
+            {
+              "id": "special-ex-072",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "Can; can't; can",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "用 can 的正确形式填空。\n— ______ you play the guitar?\n— No, I ______. But I ______ sing English songs.",
+              "explanation": "第一空询问能力，用 Can 引导一般疑问句，首字母大写；第二空否定回答，用 can't；第三空表示“会”，用 can。考察 can 的疑问句、否定句和肯定句的综合运用。"
+            },
+            {
+              "id": "special-ex-073",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. Yes, she can",
+                "B. No, she can't",
+                "C. Yes, she does",
+                "D. No, she doesn't"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p5::kp-sentence-001"
+              ],
+              "question": "— Can she dance?\n— ______. She is in the dance club.",
+              "explanation": "句意为：——她会跳舞吗？——是的，她会。她在舞蹈社。根据 She is in the dance club 可知，她会跳舞。Can she...? 的肯定回答是 Yes, she can. 故选 A。易错点：混淆 can 和 do/does 的回答形式。"
+            },
+            {
+              "id": "special-ex-074",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": "F",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-phonetic-001"
+              ],
+              "question": "在短语 'sit down' 中，/t/ 音需要完全读出来。",
+              "explanation": "sit 以爆破音 /t/ 结尾，down 以爆破音 /d/ 开头。两个爆破音相遇时，前面的 /t/ 失去爆破，只做口型不发音，不需要完全读出来。故本题错误。考察不完全爆破规则。"
+            },
+            {
+              "id": "special-ex-075",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "What sports",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-word-001"
+              ],
+              "question": "根据答语补全问句，每空一词。\n— ______ ______ can you play?\n— I can play basketball and football.",
+              "explanation": "答语 I can play basketball and football. 回答的是运动项目，因此问句应为 What sports can you play?。考察特殊疑问句与能力表达的结合。"
+            }
+          ]
+        },
+        {
+          "id": "special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p5::kp-grammar-001",
+            "unit-english-7-up-rjb-p5::kp-reading-001",
+            "unit-english-7-up-rjb-p5::kp-writing-001",
+            "unit-english-7-up-rjb-p5::kp-phonetic-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-076",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. She can sing well, but she can't play the piano.",
+                "B. She can sings well, but she can't play the piano.",
+                "C. She can sing well, but she can't plays the piano.",
+                "D. She can sings well, but she can't plays the piano."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nShe can sings well, but she can't plays the piano.",
+              "explanation": "can 和 can't 是情态动词，后面必须接动词原形，不能加 -s。原句两处错误（sings 和 plays）。故选 A。逆向思维：根据错误句子反推情态动词的语法规则。"
+            },
+            {
+              "id": "special-ex-077",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. What club do you want to join?",
+                "B. Can you speak English?",
+                "C. Do you like English?",
+                "D. What can you do?",
+                "E. Why do you like English?"
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-sentence-001",
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n— Hi, Lucy. 1. ______\n— I want to join the English club.\n— 2. ______\n— Yes, I can. I can speak English well.",
+              "explanation": "第一空：根据答语 I want to join the English club. 可知，问句是询问想加入的社团，A 符合；第二空：根据答语 Yes, I can. 可知，问句是 Can 引导的一般疑问句，B 符合。C 是 Do 引导的疑问句，回答用 Yes, I do；D 是特殊疑问句，不能用 Yes 回答；E 询问原因，回答用 Because。考察交际语境与 can 疑问句的综合。"
+            },
+            {
+              "id": "special-ex-078",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-reading-001",
+                "unit-english-7-up-rjb-p5::kp-word-001"
+              ],
+              "question": "阅读英国学校社团招募广告，判断下列句子是否正确，正确写 T，错误写 F。\nWelcome to Greenfield School! We have many fun clubs for you.\nChess Club: Do you like playing chess? Come and join us! We meet on Wednesday afternoons. Please call Mr. Black at 555-0123.\nDrama Club: Can you act? Do you like telling stories? Join the drama club! We meet on Friday afternoons. Please email Ms. Green at green@example.com.\nPhotography Club: Do you have a camera? Can you take photos? We meet on Monday afternoons. Please call Mr. White at 555-0456.\n(1) The Chess Club meets on Monday afternoons. (2) You can email Ms. Green to join the Drama Club. (3) The Photography Club needs students who can take photos.",
+              "explanation": "由 Chess Club 广告中 'We meet on Wednesday afternoons.' 可知(1)F；由 Drama Club 广告中 'Please email Ms. Green at green@example.com.' 可知(2)T；由 Photography Club 广告中 'Can you take photos?' 可知(3)T。考察阅读细节提取与跨文化语境理解。"
+            },
+            {
+              "id": "special-ex-079",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "can; can't; to join",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001",
+                "unit-english-7-up-rjb-p5::kp-word-001"
+              ],
+              "question": "阅读短文，用适当的词填空。\nMy name is Peter. I am a student in London. I ______ (1) (can) play the piano, but I ______ (2) (can not) play the guitar. I want ______ (3) (join) the music club because I like music.",
+              "explanation": "第一空表示“会”，用 can；第二空表示“不会”，用 can't；第三空 want to do sth. 想要做某事，用 to join。考察情态动词 can 与固定搭配的综合运用。"
+            },
+            {
+              "id": "special-ex-080",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. To introduce the school.",
+                "B. To ask students to join the clubs.",
+                "C. To show the teachers' abilities.",
+                "D. To talk about sports."
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-reading-001"
+              ],
+              "question": "What is the main purpose of these club ads?",
+              "explanation": "这三则广告分别介绍了社团的活动时间、联系方式及要求，目的是招募学生加入社团。故选 B。考察阅读主旨与写作意图推断。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "family-learning-system",
+  "private": true,
+  "version": "1.8.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "validate": "vite-node scripts/validate.ts --",
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "validate:set": "vite-node scripts/validate-lpkgset.ts --",
+    "build:lpkgset": "vite-node scripts/build-lpkgset.ts --",
+    "build:set": "vite-node scripts/build-lpkgset-auto.ts --"
+  },
+  "dependencies": {
+    "dexie": "^4.0.10",
+    "echarts": "^5.5.1",
+    "fflate": "^0.8.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "katex": "^0.16.11",
+    "markdown-it": "^14.1.0",
+    "naive-ui": "^2.40.1",
+    "pinia": "^2.3.0",
+    "ts-fsrs": "^5.4.2",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.5",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.20.4",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "ajv-formats": "^3.0.1",
+    "sass": "^1.83.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5",
+    "vite-node": "^2.1.9",
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^2.1.8",
+    "vue-tsc": "^2.2.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://family-learning-system/schemas/manifest.schema.json",
+  "title": "LearningPackageManifest",
+  "description": "学习包元数据配置",
+  "type": "object",
+  "required": ["schemaVersion", "packageId", "packageType", "subject", "templateId", "grade", "term", "title"],
+  "properties": {
+    "schemaVersion": { "type": "string", "enum": ["1.0"] },
+    "packageId": { "type": "string", "minLength": 3 },
+    "packageType": { "type": "string", "enum": ["base", "unit", "term", "special", "sprint", "mistake"] },
+    "subject": { "type": "string", "enum": ["math", "chinese", "english"] },
+    "templateId": { "type": "string" },
+    "grade": { "type": "integer", "minimum": 1, "maximum": 9 },
+    "term": { "type": "string", "enum": ["up", "down"] },
+    "edition": { "type": "string" },
+    "title": { "type": "string" },
+    "subtitle": { "type": "string" },
+    "theme": {
+      "type": "object",
+      "properties": { "primary": { "type": "string" } }
+    },
+    "dependencies": { "type": "array", "items": { "type": "string" } },
+    "author": { "type": "string" },
+    "language": { "type": "string", "default": "zh-CN" },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  }
+}

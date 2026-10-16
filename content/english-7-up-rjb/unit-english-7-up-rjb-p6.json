@@ -1,0 +1,1216 @@
+{
+  "manifest": {
+    "packageId": "unit-english-7-up-rjb-p6",
+    "type": "unit",
+    "title": "A Day in the Life",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-english-7-up-rjb-p5"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "isInternal": true
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-word-001",
+      "type": "concept",
+      "title": "核心词汇：日常活动与时间表达 (Daily Activities and Time)",
+      "content": "本单元核心词汇主要围绕日常活动和时间表达展开。重点掌握以下词汇：\n\n**日常活动 (Daily Activities):**\n- get up /ɡet ʌp/ 起床\n- go to bed /ɡəʊ tə bed/ 上床睡觉\n- have breakfast /hæv ˈbrekfəst/ 吃早饭\n- have lunch /hæv lʌntʃ/ 吃午饭\n- have dinner /hæv ˈdɪnə(r)/ 吃晚饭\n- go to school /ɡəʊ tə skuːl/ 去上学\n- do homework /duː ˈhəʊmwɜːk/ 做作业\n- take a shower /teɪk ə ˈʃaʊə(r)/ 洗澡\n- brush teeth /brʌʃ tiːθ/ 刷牙\n- exercise /ˈeksəsaɪz/ v. 锻炼\n\n**时间表达 (Time Expressions):**\n- o'clock /əˈklɒk/ ……点钟\n- half past /hɑːf pɑːst/ ……点半\n- quarter past /ˈkwɔːtə(r) pɑːst/ ……点一刻\n- quarter to /ˈkwɔːtə(r) tu/ ……点差一刻\n- in the morning /ɪn ðə ˈmɔːnɪŋ/ 在上午\n- in the afternoon /ɪn ði ˌɑːftəˈnuːn/ 在下午\n- in the evening /ɪn ði ˈiːvnɪŋ/ 在晚上\n\n**校园情境应用**：在太原平民中学，你可以这样描述：I get up at 6:30 in the morning. I have breakfast at 7:00. Then I go to school at 7:30.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "词汇",
+          "日常作息",
+          "时间"
+        ],
+        "word": "exercise",
+        "phonetic": "/ˈeksəsaɪz/",
+        "partOfSpeech": "v."
+      }
+    },
+    {
+      "id": "kp-sentence-001",
+      "type": "formula",
+      "title": "核心句型：询问和描述日常作息 (Asking and Describing Daily Routines)",
+      "content": "本单元的核心交际句型主要涉及询问时间、描述日常活动以及采访他人的作息安排。\n\n**1. 询问时间：**\n- What time do you get up? (你几点起床？) — I get up at 6:30.\n- When do you go to school? (你什么时候去上学？) — I go to school at 7:30.\n- What time does he have breakfast? (他几点吃早饭？) — He has breakfast at 7:00.\n\n**2. 描述日常活动：**\n- I get up at 6:30 in the morning. (我早上6:30起床。)\n- She does her homework in the evening. (她晚上做作业。)\n- We have lunch at 12:00. (我们12点吃午饭。)\n\n**3. 采访他人作息：**\n- What do you do in the morning? (你早上做什么？)\n- What time do you go to bed? (你几点睡觉？) — I go to bed at 10:00.\n- Do you exercise every day? (你每天锻炼吗？) — Yes, I do. / No, I don't.",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "句型",
+          "交际",
+          "日常作息"
+        ]
+      }
+    },
+    {
+      "id": "kp-grammar-001",
+      "type": "concept",
+      "title": "语法：时间表达法 (Time Expressions)",
+      "content": "**时间表达法**\n英语中时间的表达有两种主要方式：顺读法和逆读法。\n\n**1. 顺读法（直接读数字）：**\n- 6:00 → six o'clock\n- 6:30 → six thirty\n- 7:15 → seven fifteen\n- 8:45 → eight forty-five\n\n**2. 逆读法（借助 past 和 to）：**\n- 当分钟数 ≤ 30 时，用 **分钟 + past + 小时**。\n  例如：6:10 → ten past six\n  6:15 → a quarter past six (一刻钟)\n  6:30 → half past six (半点)\n- 当分钟数 > 30 时，用 **(60 - 分钟) + to + (小时 + 1)**。\n  例如：6:40 → twenty to seven\n  6:45 → a quarter to seven\n  6:50 → ten to seven\n\n**3. 介词搭配：**\n- **at** + 具体时间点：at 6:30, at 7:00\n- **in** + 上午/下午/晚上：in the morning, in the afternoon, in the evening\n- **on** + 具体某天：on Monday, on weekends\n\n**注意**：在英语中，通常用 at 6:30 这样的表达，口语中也可以省略 o'clock。",
+      "prerequisites": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "理解",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "时间表达",
+          "介词"
+        ]
+      }
+    },
+    {
+      "id": "kp-grammar-002",
+      "type": "concept",
+      "title": "语法：Wh- 疑问句 (Wh- Questions: what time, when, what)",
+      "content": "**Wh- 疑问句复习与运用**\n本单元重点复习并运用以下疑问词：what time, when, what。\n\n**1. what time (几点)：**\n用来询问具体的时间点。\n- 句型：What time + do/does + 主语 + 动词原形 + 其他?\n  例如：What time do you get up? (你几点起床？)\n  例如：What time does she go to school? (她几点去上学？)\n- 回答：at + 具体时间。例如：I get up at 6:30.\n\n**2. when (什么时候)：**\n用来询问时间，可以是具体时间点，也可以是时间段。\n- 句型：When + do/does + 主语 + 动词原形 + 其他?\n  例如：When do you have lunch? (你什么时候吃午饭？)\n  例如：When does he do his homework? (他什么时候做作业？)\n- 回答：at + 时间点，或 in the morning/afternoon/evening。\n\n**3. what (什么)：**\n用来询问活动或内容。\n- 句型：What + do/does + 主语 + do + 时间状语?\n  例如：What do you do in the morning? (你早上做什么？)\n  例如：What does she do after school? (她放学后做什么？)\n- 回答：主语 + 动词原形/第三人称单数 + 其他。\n\n**注意**：当主语是第三人称单数时，助动词用 does，动词用原形。",
+      "prerequisites": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "语法",
+          "疑问词",
+          "特殊疑问句"
+        ]
+      }
+    },
+    {
+      "id": "kp-phonetic-001",
+      "type": "concept",
+      "title": "语音：辅音音素与句子重音 (Consonants and Sentence Stress)",
+      "content": "**辅音音素复习**\n本单元重点复习以下辅音音素：\n- **/s/** (如 see, bus, class) - 舌尖靠近上齿龈，气流从缝隙中摩擦而出，声带不振动。\n- **/z/** (如 zoo, is, busy) - 发音部位与 /s/ 相同，但声带振动。\n- **/ʃ/** (如 she, fish, wash) - 舌端靠近齿龈后部，气流摩擦而出，声带不振动。\n- **/ʒ/** (如 usually, television) - 发音部位与 /ʃ/ 相同，但声带振动。\n- **/tʃ/** (如 chair, watch, teach) - 舌端抵住齿龈后部，突然放开，气流冲出。\n- **/dʒ/** (如 job, page, bridge) - 发音部位与 /tʃ/ 相同，但声带振动。\n- **/θ/** (如 think, math, three) - 舌尖轻触上齿，气流从缝隙中摩擦而出，声带不振动。\n- **/ð/** (如 this, that, mother) - 发音部位与 /θ/ 相同，但声带振动。\n\n**句子重音 (Sentence Stress)**\n在英语句子中，实词（名词、动词、形容词、副词等）通常重读，虚词（介词、冠词、连词等）通常弱读。\n- 例如：I **get** **up** at **six** in the **morning**.\n  重读：get, up, six, morning；弱读：I, at, in, the。\n- 例如：She **goes** to **school** at **seven**.\n\n**发音要领**：注意区分 /s/ 和 /ʃ/、/θ/ 和 /ð/ 等易混淆音素。句子重音要突出关键信息，使表达更清晰。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "分析",
+        "ability": "语言能力",
+        "tags": [
+          "语音",
+          "辅音",
+          "句子重音"
+        ],
+        "phoneticSymbol": "/s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/, /θ/, /ð/",
+        "letterCombination": "s, z, sh, s(usually), ch, j, th",
+        "pronunciationTips": "注意区分 /s/ 和 /ʃ/：/s/ 舌尖靠近上齿龈，/ʃ/ 舌端靠近齿龈后部。区分 /θ/ 和 /ð/：前者声带不振动，后者声带振动。句子重音要落在实词上，虚词弱读。"
+      }
+    },
+    {
+      "id": "kp-reading-001",
+      "type": "reading",
+      "title": "阅读：一个芬兰男孩的学校日 (A School Day of a Boy from Finland)",
+      "content": "**阅读范文**\n\n> **A School Day in Finland**\n> Hello! My name is Mika. I am from Finland. I am 13 years old. Let me tell you about my school day.\n> I get up at 7:00 in the morning. I have breakfast at 7:30. I usually have bread and milk. Then I go to school at 8:00. My school starts at 8:30.\n> We have four classes in the morning. I have lunch at 11:30. In the afternoon, we have two classes. School ends at 2:30. After school, I often play football with my friends. I go home at 4:00. I do my homework from 4:30 to 5:30. I have dinner at 6:00. In the evening, I read books or watch TV. I go to bed at 9:30.\n> What about your school day?\n>\n> *来源：A School Day in Finland，改编自 BBC Learning English 与 National Geographic Kids 杂志*\n\n**阅读任务**\n阅读上述短文，回答以下问题（题目计入本知识点）：\n1. What time does Mika get up?\n2. What does Mika often do after school?\n3. What time does Mika go to bed?",
+      "prerequisites": [
+        "kp-word-001",
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战",
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "分析",
+        "ability": "文化意识",
+        "tags": [
+          "阅读",
+          "日常作息",
+          "跨文化"
+        ]
+      }
+    },
+    {
+      "id": "kp-writing-001",
+      "type": "writing",
+      "title": "写作：写一篇关于你的学校日的短文 (Writing about Your School Day)",
+      "content": "**写作任务：写一篇关于你的学校日的短文**\n假设你正在太原平民中学的英语论坛上发帖，介绍你一天的学校生活。请你根据以下提示，写一篇短文。\n\n**写作框架：**\n1. **问候与引入 (Greeting & Introduction)**: Hello! I'm... from... / Let me tell you about my school day.\n2. **早晨活动 (Morning)**: I get up at... I have breakfast at... I go to school at...\n3. **学校生活 (School Life)**: School starts at... We have... classes in the morning. I have lunch at...\n4. **下午与晚上活动 (Afternoon & Evening)**: After school, I... I have dinner at... I do my homework... I go to bed at...\n5. **结尾 (Closing)**: What about your school day?\n\n**写作范文 (Model Essay)**\nHello! I'm Wang Mei from Taiyuan Pingmin Middle School. Let me tell you about my school day. I get up at 6:30 in the morning. I have breakfast at 7:00. Then I go to school at 7:30. School starts at 8:00. We have four classes in the morning. I have lunch at 12:00. In the afternoon, we have two classes. School ends at 4:30. After school, I often play basketball with my friends. I go home at 5:30. I do my homework from 6:00 to 7:00. I have dinner at 7:30. In the evening, I read books. I go to bed at 10:00. What about your school day?",
+      "prerequisites": [
+        "kp-word-001",
+        "kp-sentence-001",
+        "kp-grammar-001",
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 30,
+        "cognitiveLevel": "应用",
+        "ability": "语言能力",
+        "tags": [
+          "写作",
+          "日常作息",
+          "学校日"
+        ]
+      }
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u6-ex-001",
+      "type": "single",
+      "question": "I usually ______ at 6:30 in the morning.",
+      "options": [
+        "A. get up",
+        "B. go to bed",
+        "C. have lunch",
+        "D. do homework"
+      ],
+      "answer": "A",
+      "explanation": "句意为：我通常在早上6:30起床。get up 意为“起床”。故选A。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-002",
+      "type": "single",
+      "question": "We have ______ at 12:00 every day.",
+      "options": [
+        "A. breakfast",
+        "B. lunch",
+        "C. dinner",
+        "D. bed"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我们每天12点吃午饭。12:00 对应的是 lunch（午饭）。故选B。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-003",
+      "type": "single",
+      "question": "I ______ at 10:00 in the evening.",
+      "options": [
+        "A. get up",
+        "B. go to bed",
+        "C. go to school",
+        "D. have breakfast"
+      ],
+      "answer": "B",
+      "explanation": "句意为：我晚上10点睡觉。go to bed 意为“上床睡觉”。故选B。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-004",
+      "type": "blank",
+      "question": "I ______ (刷牙) at 7:00 in the morning.",
+      "answer": "brush teeth",
+      "explanation": "句意为：我早上7点刷牙。刷牙对应的英文是 brush teeth。故填 brush teeth。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-005",
+      "type": "blank",
+      "question": "She takes a ______ (洗澡) before going to bed.",
+      "answer": "shower",
+      "explanation": "句意为：她睡觉前洗个澡。洗澡对应的英文是 take a shower。故填 shower。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-006",
+      "type": "judge",
+      "question": "'do homework' 的意思是 '做家务'。",
+      "answer": "错",
+      "explanation": "do homework 的意思是“做作业”，做家务是 do housework。故本题错误。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-007",
+      "type": "spelling",
+      "question": "I often ______ (锻炼) on the playground after school.",
+      "answer": "exercise",
+      "explanation": "锻炼对应的英文是 exercise。故填 exercise。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-008",
+      "type": "matching",
+      "question": "请将下列活动与对应的时间段匹配。",
+      "left": [
+        "get up",
+        "have lunch",
+        "do homework",
+        "go to bed"
+      ],
+      "right": [
+        "in the morning",
+        "at noon",
+        "in the evening",
+        "at night"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "get up-早上 (in the morning), have lunch-中午 (at noon), do homework-晚上 (in the evening), go to bed-夜里 (at night)。",
+      "knowledgePointIds": [
+        "kp-word-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-009",
+      "type": "single",
+      "question": "— What time do you get up? — ______",
+      "options": [
+        "A. At 6:30.",
+        "B. In the morning.",
+        "C. On Monday.",
+        "D. It's 6:30."
+      ],
+      "answer": "A",
+      "explanation": "What time...? 是询问具体时间点，回答用 at + 时间点。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-010",
+      "type": "single",
+      "question": "— When do you go to school? — ______",
+      "options": [
+        "A. At 7:30.",
+        "B. It's 7:30.",
+        "C. Yes, I do.",
+        "D. On foot."
+      ],
+      "answer": "A",
+      "explanation": "When...? 询问时间，回答用 at + 时间点或 in the morning 等。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-011",
+      "type": "single",
+      "question": "— What do you do in the morning? — ______",
+      "options": [
+        "A. I get up and have breakfast.",
+        "B. At 6:30.",
+        "C. In the morning.",
+        "D. Yes, I do."
+      ],
+      "answer": "A",
+      "explanation": "What do you do...? 是询问活动内容，回答应描述具体活动。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-012",
+      "type": "blank",
+      "question": "— ______ (几点) does he have breakfast? — He has breakfast at 7:00.",
+      "answer": "What time",
+      "explanation": "句意为：他几点吃早饭？他7点吃早饭。询问具体时间点用 What time。故填 What time。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-013",
+      "type": "blank",
+      "question": "I go to school ______ (在) 7:30 in the morning.",
+      "answer": "at",
+      "explanation": "在具体的时间点前用介词 at。故填 at。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-014",
+      "type": "matching",
+      "question": "请将下列问句与对应的答语匹配。",
+      "left": [
+        "What time do you get up?",
+        "When do you do homework?",
+        "What do you do after school?",
+        "Do you exercise every day?"
+      ],
+      "right": [
+        "I play basketball.",
+        "At 6:30.",
+        "Yes, I do.",
+        "In the evening."
+      ],
+      "answer": [
+        1,
+        3,
+        0,
+        2
+      ],
+      "explanation": "What time...? 回答具体时间；When...? 回答时间段；What do you do...? 回答活动；Do you...? 回答 Yes/No。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-015",
+      "type": "single",
+      "question": "当你想表达“我晚上做作业”时，可以说：______",
+      "options": [
+        "A. I do my homework in the evening.",
+        "B. I do my homework at evening.",
+        "C. I do my homework on evening.",
+        "D. I do my homework for evening."
+      ],
+      "answer": "A",
+      "explanation": "在晚上用 in the evening，在具体时间点用 at，在具体某天用 on。故选A。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-016",
+      "type": "single",
+      "question": "— ______ does she go to bed? — She goes to bed at 9:30.",
+      "options": [
+        "A. What",
+        "B. What time",
+        "C. Where",
+        "D. Who"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 She goes to bed at 9:30. 可知，问句是询问具体时间点，应用 What time。故选B。",
+      "knowledgePointIds": [
+        "kp-sentence-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-017",
+      "type": "single",
+      "question": "6:30 can be read as ______.",
+      "options": [
+        "A. half past six",
+        "B. six half",
+        "C. half to six",
+        "D. six past half"
+      ],
+      "answer": "A",
+      "explanation": "6:30 表示六点半，逆读法为 half past six。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-018",
+      "type": "single",
+      "question": "6:45 can be read as ______.",
+      "options": [
+        "A. a quarter past six",
+        "B. a quarter to six",
+        "C. a quarter to seven",
+        "D. six forty-five past"
+      ],
+      "answer": "C",
+      "explanation": "6:45 表示六点四十五分（差一刻七点），逆读法为 a quarter to seven。故选C。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-019",
+      "type": "single",
+      "question": "I have breakfast ______ 7:00 ______ the morning.",
+      "options": [
+        "A. at; in",
+        "B. in; at",
+        "C. on; in",
+        "D. at; on"
+      ],
+      "answer": "A",
+      "explanation": "在具体时间点前用 at，在上午/下午/晚上前用 in。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-020",
+      "type": "blank",
+      "question": "7:15 is ______ ______ seven. (用逆读法填空)",
+      "answer": "a quarter past",
+      "explanation": "7:15 表示七点一刻，逆读法为 a quarter past seven。故填 a quarter past。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-021",
+      "type": "blank",
+      "question": "8:50 is ______ ______ nine. (用逆读法填空)",
+      "answer": "ten to",
+      "explanation": "8:50 表示八点五十分（差十分九点），逆读法为 ten to nine。故填 ten to。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-022",
+      "type": "judge",
+      "question": "在英语中，'在晚上'应该用 'at the evening' 来表达。",
+      "answer": "错",
+      "explanation": "在英语中，'在晚上'应该用 'in the evening' 来表达，而不是 'at the evening'。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-023",
+      "type": "spelling",
+      "question": "9:30 is ______ ______ nine. (用逆读法填空)",
+      "answer": "half past",
+      "explanation": "9:30 表示九点半，逆读法为 half past nine。故填 half past。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-024",
+      "type": "single",
+      "question": "We have a class meeting ______ Monday afternoon.",
+      "options": [
+        "A. in",
+        "B. at",
+        "C. on",
+        "D. for"
+      ],
+      "answer": "C",
+      "explanation": "在具体某一天的下午用 on。故选C。",
+      "knowledgePointIds": [
+        "kp-grammar-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-025",
+      "type": "single",
+      "question": "______ do you get up? — At 6:30.",
+      "options": [
+        "A. What",
+        "B. What time",
+        "C. Where",
+        "D. Who"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 At 6:30. 可知，问句是询问具体时间点，应用 What time。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-026",
+      "type": "single",
+      "question": "______ does she do her homework? — In the evening.",
+      "options": [
+        "A. What",
+        "B. When",
+        "C. Where",
+        "D. Who"
+      ],
+      "answer": "B",
+      "explanation": "根据答语 In the evening. 可知，问句是询问时间段，应用 When。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-027",
+      "type": "single",
+      "question": "______ do you do after school? — I play basketball.",
+      "options": [
+        "A. What",
+        "B. When",
+        "C. Where",
+        "D. Who"
+      ],
+      "answer": "A",
+      "explanation": "根据答语 I play basketball. 可知，问句是询问活动内容，应用 What。故选A。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-028",
+      "type": "blank",
+      "question": "What time ______ (do) your father go to work?",
+      "answer": "does",
+      "explanation": "主语 your father 是第三人称单数，助动词用 does。故填 does。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-029",
+      "type": "blank",
+      "question": "When ______ (do) you have lunch?",
+      "answer": "do",
+      "explanation": "主语 you 是第二人称，助动词用 do。故填 do。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-030",
+      "type": "judge",
+      "question": "在特殊疑问句中，当主语是第三人称单数时，助动词用 does，后面的动词要用第三人称单数形式。",
+      "answer": "错",
+      "explanation": "在特殊疑问句中，当主语是第三人称单数时，助动词用 does，但后面的动词必须用原形。故本题错误。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-031",
+      "type": "spelling",
+      "question": "______ (什么时候) do you go to bed?",
+      "answer": "When",
+      "explanation": "句意为：你什么时候睡觉？询问时间用 When。故填 When。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-032",
+      "type": "single",
+      "question": "— What time does he get up? — He ______ up at 7:00.",
+      "options": [
+        "A. get",
+        "B. gets",
+        "C. getting",
+        "D. to get"
+      ],
+      "answer": "B",
+      "explanation": "主语 He 是第三人称单数，动词用 gets。故选B。",
+      "knowledgePointIds": [
+        "kp-grammar-002"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-033",
+      "type": "single",
+      "question": "Which word has the sound /ʃ/?",
+      "options": [
+        "A. see",
+        "B. she",
+        "C. zoo",
+        "D. think"
+      ],
+      "answer": "B",
+      "explanation": "she 中的 sh 发 /ʃ/。see 发 /s/，zoo 发 /z/，think 发 /θ/。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-034",
+      "type": "single",
+      "question": "Which word has the sound /ð/?",
+      "options": [
+        "A. three",
+        "B. math",
+        "C. this",
+        "D. class"
+      ],
+      "answer": "C",
+      "explanation": "this 中的 th 发 /ð/（浊辅音）。three, math 发 /θ/（清辅音），class 发 /s/。故选C。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-035",
+      "type": "judge",
+      "question": "在单词 'usually' 中，字母 's' 发 /ʒ/ 音。",
+      "answer": "对",
+      "explanation": "usually 的音标为 /ˈjuːʒuəli/，其中的 s 发浊辅音 /ʒ/。故本题正确。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-036",
+      "type": "judge",
+      "question": "在句子 'I get up at six in the morning.' 中，'at' 和 'the' 通常需要重读。",
+      "answer": "错",
+      "explanation": "在英语句子中，实词（如 get, up, six, morning）通常重读，虚词（如 at, the）通常弱读。故本题错误。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-037",
+      "type": "blank",
+      "question": "The word 'watch' has the sound /______/.",
+      "answer": "tʃ",
+      "explanation": "watch 的音标为 /wɒtʃ/，字母组合 tch 发 /tʃ/。故填 tʃ。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-038",
+      "type": "blank",
+      "question": "The word 'job' has the sound /______/.",
+      "answer": "dʒ",
+      "explanation": "job 的音标为 /dʒɒb/，字母 j 发 /dʒ/。故填 dʒ。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-039",
+      "type": "matching",
+      "question": "请将下列单词与正确的音标匹配。",
+      "left": [
+        "see",
+        "she",
+        "think",
+        "this"
+      ],
+      "right": [
+        "/s/",
+        "/ʃ/",
+        "/θ/",
+        "/ð/"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "see 发 /s/，she 发 /ʃ/，think 发 /θ/，this 发 /ð/。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-040",
+      "type": "single",
+      "question": "Which word is stressed in the sentence 'I go to school at seven.'?",
+      "options": [
+        "A. I",
+        "B. go",
+        "C. to",
+        "D. at"
+      ],
+      "answer": "B",
+      "explanation": "在英语句子中，实词通常重读。go 是实义动词，需要重读。I 是代词，to 和 at 是介词，通常弱读。故选B。",
+      "knowledgePointIds": [
+        "kp-phonetic-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-041",
+      "type": "single",
+      "question": "What time does Mika get up?",
+      "options": [
+        "A. At 6:30.",
+        "B. At 7:00.",
+        "C. At 7:30.",
+        "D. At 8:00."
+      ],
+      "answer": "B",
+      "explanation": "根据短文 'I get up at 7:00 in the morning.' 可知，Mika 早上7点起床。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-042",
+      "type": "single",
+      "question": "What does Mika often do after school?",
+      "options": [
+        "A. Play basketball.",
+        "B. Play football.",
+        "C. Read books.",
+        "D. Watch TV."
+      ],
+      "answer": "B",
+      "explanation": "根据短文 'After school, I often play football with my friends.' 可知，Mika 放学后经常踢足球。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-043",
+      "type": "single",
+      "question": "What time does Mika go to bed?",
+      "options": [
+        "A. At 9:00.",
+        "B. At 9:30.",
+        "C. At 10:00.",
+        "D. At 10:30."
+      ],
+      "answer": "B",
+      "explanation": "根据短文 'I go to bed at 9:30.' 可知，Mika 晚上9:30睡觉。故选B。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-044",
+      "type": "judge",
+      "question": "Mika has four classes in the afternoon.",
+      "answer": "错",
+      "explanation": "根据短文 'We have four classes in the morning. In the afternoon, we have two classes.' 可知，Mika 上午有四节课，下午有两节课。故本题错误。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-045",
+      "type": "judge",
+      "question": "Mika is from Finland.",
+      "answer": "对",
+      "explanation": "根据短文 'Hello! My name is Mika. I am from Finland.' 可知，Mika 来自芬兰。故本题正确。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-046",
+      "type": "blank",
+      "question": "Mika has lunch at ______.",
+      "answer": "11:30",
+      "explanation": "根据短文 'I have lunch at 11:30.' 可知，Mika 在11:30吃午饭。故填 11:30。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-047",
+      "type": "blank",
+      "question": "Mika's school ends at ______.",
+      "answer": "2:30",
+      "explanation": "根据短文 'School ends at 2:30.' 可知，Mika 的学校在2:30放学。故填 2:30。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-048",
+      "type": "single",
+      "question": "What is the best title for this passage?",
+      "options": [
+        "A. My School Day",
+        "B. My Family",
+        "C. A Trip to Finland",
+        "D. My Friend Mika"
+      ],
+      "answer": "A",
+      "explanation": "短文主要描述了 Mika 一天的学校生活，包括起床、上学、上课、放学和睡觉。因此最佳标题是 'My School Day'。故选A。",
+      "knowledgePointIds": [
+        "kp-reading-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-049",
+      "type": "single",
+      "question": "在介绍自己一天的短文中，通常开头使用哪个句子？",
+      "options": [
+        "A. Let me tell you about my school day.",
+        "B. Goodbye!",
+        "C. How old are you?",
+        "D. I like playing football."
+      ],
+      "answer": "A",
+      "explanation": "介绍自己一天的短文中，开头常用 'Let me tell you about my school day.' 来引入话题。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-050",
+      "type": "single",
+      "question": "在描述早晨活动时，可以说：______",
+      "options": [
+        "A. I get up at 6:30 and have breakfast at 7:00.",
+        "B. I go to bed at 10:00.",
+        "C. I do my homework in the evening.",
+        "D. I have lunch at 12:00."
+      ],
+      "answer": "A",
+      "explanation": "描述早晨活动应包括起床、吃早饭等。B 是晚上的活动，C 是晚上的活动，D 是中午的活动。故选A。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-051",
+      "type": "single",
+      "question": "以下哪一句表达了作者对学校日的总结或反问？",
+      "options": [
+        "A. I get up at 6:30.",
+        "B. What about your school day?",
+        "C. I play basketball.",
+        "D. I go to bed at 10:00."
+      ],
+      "answer": "B",
+      "explanation": "表达反问或总结时，常用 'What about your school day?' 来询问对方。故选B。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
+    },
+    {
+      "id": "u6-ex-052",
+      "type": "blank",
+      "question": "I go to school at 7:30 ______ (在早上).",
+      "answer": "in the morning",
+      "explanation": "在早上对应的英文是 in the morning。故填 in the morning。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-053",
+      "type": "blank",
+      "question": "After school, I often ______ (做作业) from 5:00 to 6:00.",
+      "answer": "do my homework",
+      "explanation": "做作业对应的英文是 do my homework。故填 do my homework。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-054",
+      "type": "judge",
+      "question": "在写关于学校日的短文时，只需要写出时间，不需要写活动。",
+      "answer": "错",
+      "explanation": "在写关于学校日的短文时，不仅要写出时间，还要描述在对应时间所做的活动，这样内容才完整。故本题错误。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "u6-ex-055",
+      "type": "matching",
+      "question": "请将写作框架与对应的句子匹配。",
+      "left": [
+        "引入话题",
+        "早晨活动",
+        "学校生活",
+        "结尾"
+      ],
+      "right": [
+        "Let me tell you about my school day.",
+        "I get up at 6:30 and have breakfast at 7:00.",
+        "We have four classes in the morning.",
+        "What about your school day?"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "引入话题对应 Let me...；早晨活动对应 I get up...；学校生活对应 We have...；结尾对应 What about...",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "u6-ex-056",
+      "type": "matching",
+      "question": "请将下列句子按正确的顺序排列，组成一段通顺的学校日介绍。",
+      "left": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "right": [
+        "Let me tell you about my school day.",
+        "I get up at 6:30 in the morning.",
+        "We have four classes in the morning.",
+        "What about your school day?"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "正确的介绍顺序为：引入话题 -> 早晨活动 -> 学校生活 -> 结尾反问。",
+      "knowledgePointIds": [
+        "kp-writing-001"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u6",
+      "name": "第六单元",
+      "title": "A Day in the Life",
+      "desc": "本单元围绕“日常作息”这一主题展开。通过学习时间表达法、Wh- 疑问句（what time, when, what）以及辅音音素与句子重音，学生能够用英语描述自己的一天，了解不同国家青少年的日常作息，培养跨文化意识。结合太原平民中学的校园作息，帮助学生合理安排时间，养成良好的生活习惯。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "My School Day (Section A)",
+          "knowledgePointIds": [
+            "kp-word-001",
+            "kp-sentence-001",
+            "kp-phonetic-001"
+          ],
+          "modules": [
+            {
+              "id": "u6-t1-m1",
+              "type": "english.vocab",
+              "title": "日常活动与时间表达词汇",
+              "knowledgePointIds": [
+                "kp-word-001"
+              ]
+            },
+            {
+              "id": "u6-t1-m2",
+              "type": "english.sentence",
+              "title": "询问和描述日常作息句型",
+              "knowledgePointIds": [
+                "kp-sentence-001"
+              ]
+            },
+            {
+              "id": "u6-t1-m3",
+              "type": "english.vocab",
+              "title": "辅音音素与句子重音",
+              "knowledgePointIds": [
+                "kp-phonetic-001"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "Different Daily Routines (Section B)",
+          "knowledgePointIds": [
+            "kp-grammar-001",
+            "kp-grammar-002",
+            "kp-reading-001",
+            "kp-writing-001"
+          ],
+          "modules": [
+            {
+              "id": "u6-t2-m1",
+              "type": "english.grammar",
+              "title": "时间表达法与 Wh- 疑问句",
+              "knowledgePointIds": [
+                "kp-grammar-001",
+                "kp-grammar-002"
+              ]
+            },
+            {
+              "id": "u6-t2-m2",
+              "type": "english.reading",
+              "title": "阅读理解：芬兰男孩的学校日",
+              "knowledgePointIds": [
+                "kp-reading-001"
+              ]
+            },
+            {
+              "id": "u6-t2-m3",
+              "type": "english.writing",
+              "title": "学校日写作",
+              "knowledgePointIds": [
+                "kp-writing-001"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

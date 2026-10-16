@@ -1,0 +1,126 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-chinese-4-up-rjb-u3",
+    "type": "unit",
+    "isInternal": true,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "第三单元 观察与发现",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-010",
+      "type": "poem",
+      "title": "古诗三首《暮江吟》《题西林壁》《雪梅》作者与诗意解读",
+      "content": "《暮江吟》作者白居易（唐），描绘了暮江落日与新月初升的美景；《题西林壁》作者苏轼（宋），“横看成岭侧成峰”蕴含当局者迷的哲理；《雪梅》作者卢钺（宋），借雪梅争春告诉我们事物各有长短。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-chinese-011",
+      "type": "concept",
+      "title": "《爬山虎的脚》植物观察写作方法",
+      "content": "叶圣陶先生的《爬山虎的脚》，通过长期细致观察，写出了爬山虎叶子的特点和脚的形状、爬墙的过程。教给我们连续观察、抓住事物细节特点的写作方法。",
+      "prerequisites": ["kp-chinese-010"]
+    },
+    {
+      "id": "kp-chinese-012",
+      "type": "concept",
+      "title": "《蟋蟀的住宅》说明文特点赏析",
+      "content": "法布尔的《昆虫记》节选，作者用拟人化的手法，把蟋蟀建造住宅的过程写得生动有趣，既展现了蟋蟀的勤劳智慧，也体现了作者长期坚持的科学观察精神。",
+      "prerequisites": ["kp-chinese-011"]
+    },
+    {
+      "id": "kp-chinese-013",
+      "type": "writing",
+      "title": "观察日记写作技巧",
+      "content": "写观察日记要点：1. 写清观察时间、对象 2. 记录连续观察中的变化 3. 融入自己的发现和感受 4. 语言通顺，细节真实。可以写植物生长、动物活动或自然现象变化。",
+      "prerequisites": ["kp-chinese-011", "kp-chinese-012"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u3-ex-001",
+      "type": "single",
+      "question": "《暮江吟》的作者是（ ）。",
+      "options": ["A. 李白", "B. 白居易", "C. 苏轼", "D. 卢钺"],
+      "answer": "B",
+      "explanation": "《暮江吟》是唐代诗人白居易的作品，“一道残阳铺水中，半江瑟瑟半江红”写的是傍晚江面的美景。",
+      "knowledgePointIds": ["kp-chinese-010"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u3-ex-002",
+      "type": "blank",
+      "question": "《题西林壁》中“不识庐山真面目，只缘身在此山中”告诉我们：要______地看问题，如果身处其中，往往看不清事物的______。",
+      "answer": ["全面、客观", "全貌"],
+      "explanation": "这两句诗蕴含哲理：观察问题应客观全面，如果主观片面，就难以得出正确的结论。",
+      "knowledgePointIds": ["kp-chinese-010"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u3-ex-003",
+      "type": "single",
+      "question": "《爬山虎的脚》的作者是（ ）。",
+      "options": ["A. 叶圣陶", "B. 法布尔", "C. 老舍", "D. 巴金"],
+      "answer": "A",
+      "explanation": "《爬山虎的脚》是叶圣陶先生经过长期细致观察写成的，重点写了爬山虎叶子和脚的特点。",
+      "knowledgePointIds": ["kp-chinese-011"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u3-ex-004",
+      "type": "multiple",
+      "question": "《蟋蟀的住宅》一文的特点有（ ）。",
+      "options": ["A. 运用拟人手法", "B. 语言生动有趣", "C. 体现作者长期细致的观察", "D. 枯燥说教"],
+      "answer": ["A", "B", "C"],
+      "explanation": "法布尔把蟋蟀的住宅称为“伟大的工程”，用拟人手法写得生动有趣，体现了《昆虫记》科学性与文学性兼具的特点。",
+      "knowledgePointIds": ["kp-chinese-012"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u3-ex-005",
+      "type": "blank",
+      "question": "写观察日记，要写清观察的______和______，还要记录连续观察中的______。",
+      "answer": ["时间", "对象", "变化"],
+      "explanation": "观察日记贵在“连续”，把时间、对象以及事物的发展变化按顺序记录下来，才能体现观察的细致与真实。",
+      "knowledgePointIds": ["kp-chinese-013"],
+      "metadata": { "difficulty": "挑战" }
+    }
+  ],
+  "units": [
+    {
+      "id": "u3",
+      "name": "第三单元",
+      "title": "第三单元 观察与发现",
+      "desc": "本单元围绕观察与发现展开，包含古诗、爬山虎与蟋蟀等内容。",
+      "topics": [
+        {
+          "id": "u3-t1",
+          "title": "古诗中的观察·古诗三首",
+          "knowledgePointIds": ["kp-chinese-010"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u3-t2",
+          "title": "连续观察·爬山虎与蟋蟀",
+          "knowledgePointIds": ["kp-chinese-011", "kp-chinese-012"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u3-t3",
+          "title": "观察日记与护眼行动",
+          "knowledgePointIds": ["kp-chinese-013"],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

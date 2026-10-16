@@ -1,0 +1,608 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "special-math-4-up-jiajiancheng",
+    "type": "special",
+    "isInternal": false,
+    "examMode": true,
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "加法和乘法模型专项突破",
+    "sourceUnitIds": ["unit-math-4-up-rjb-p5::u8"],
+    "dependencies": ["unit-math-4-up-rjb-p5"]
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-rel-101",
+      "type": "concept",
+      "title": "加法数量关系模型（部分量 + 部分量 = 总量）",
+      "content": "1. 核心含义：描述部分量与总量之间关系的数量模型，概括“合并、求和、求剩余”类问题。\\n2. 核心公式：部分量 + 部分量 = 总量；总量 - 一个部分量 = 另一个部分量。\\n3. 拓展形式：总量 = 部分量1 + 部分量2 + …（多个独立部分量依次相加）。\\n4. 应用场景：求总数、总费用、总路程、剩余量、差额量等。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "模型意识",
+        "tags": ["加法模型", "数量关系", "部分量与总量"]
+      }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-u1",
+      "name": "专项测验",
+      "title": "加法和乘法模型专项突破",
+      "desc": "依据“加法模型和乘法模型十七大题型”整理，覆盖加法模型、价格模型（单价·数量·总价）与行程模型（速度·时间·路程）及其变式，共 57 题。",
+      "topics": [
+        {
+          "id": "special-t1",
+          "title": "一、加法模型",
+          "knowledgePointIds": ["kp-rel-101"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-001",
+              "type": "blank",
+              "question": "加法模型中，已知两个部分量求总量用（______）法；已知总量和其中一个部分量，求另一个部分量用（______）法。",
+              "answer": "加,减",
+              "explanation": "求总量是把两个部分量合并，用加法：部分量 + 部分量 = 总量；已知总量和一个部分量求剩余部分，用减法：总量 - 部分量 = 另一部分量。",
+              "knowledgePointIds": ["kp-rel-101"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-002",
+              "type": "judge",
+              "question": "已知两个数的和与其中一个加数，求另一个加数，用减法计算。",
+              "answer": "对",
+              "explanation": "和对应总量，加数对应部分量，求另一个加数就是“总量 - 部分量”，用减法。和 − 一个加数 = 另一个加数，说法正确。",
+              "knowledgePointIds": ["kp-rel-101"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-003",
+              "type": "single",
+              "question": "下面问题中，适合用加法模型解决的是（　　）。",
+              "options": ["A. 每支笔 3 元，买 10 支需要多少钱", "B. 一班有 42 人，二班有 45 人，两个班一共有多少人", "C. 汽车每小时行 60 千米，3 小时能行驶多少千米"],
+              "answer": "B",
+              "explanation": "加法模型用于两个部分量求总量。A 是“单价×数量”求总价、C 是“速度×时间”求路程，都属于乘法模型；只有 B 是两个部分量（两班人数）求和，用加法模型。",
+              "knowledgePointIds": ["kp-rel-101"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-004",
+              "type": "blank",
+              "question": "水果店上午卖出苹果 120 千克，下午卖出 150 千克。水果店一天一共卖出（______）千克苹果。",
+              "answer": "270",
+              "explanation": "上午销量与下午销量是两个独立部分量，求一天总销量：120 + 150 = 270（千克）。",
+              "knowledgePointIds": ["kp-rel-101"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-005",
+              "type": "blank",
+              "question": "学校图书馆共有图书 850 本，其中故事书有 320 本，其余都是科技书。科技书有（______）本。",
+              "answer": "530",
+              "explanation": "总量 850 本，故事书 320 本是其中一个部分量，求科技书（另一部分量）：850 − 320 = 530（本）。",
+              "knowledgePointIds": ["kp-rel-101"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-006",
+              "type": "blank",
+              "question": "水果店运来苹果 180 千克，运来的梨比苹果多 45 千克，两种水果一共运来（______）千克。",
+              "answer": "405",
+              "explanation": "先求梨的重量：180 + 45 = 225（千克）；再把两种水果相加：180 + 225 = 405（千克）。",
+              "knowledgePointIds": ["kp-rel-101"],
+              "metadata": { "difficulty": "提高" }
+            }
+          ]
+        },
+        {
+          "id": "special-t2",
+          "title": "二、单价、数量与总价",
+          "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-007",
+              "type": "blank",
+              "question": "已知总价和数量，求单价的数量关系式是：单价 = （______）。",
+              "answer": "总价÷数量",
+              "explanation": "由“单价 × 数量 = 总价”可推导出：单价 = 总价 ÷ 数量。已知总数和份数，求每份数用除法。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-008",
+              "type": "blank",
+              "question": "篮球每个 75 元，学校买了 30 个，一共花了（______）元。",
+              "answer": "2250",
+              "explanation": "总价 = 单价 × 数量 = 75 × 30 = 2250（元）。其中 75 元是单价，30 个是数量。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-009",
+              "type": "judge",
+              "question": "“每箱牛奶 60 元，买 5 箱一共花多少钱？”这道题求的是单价。",
+              "answer": "错",
+              "explanation": "每箱 60 元是单价，5 箱是数量，求一共花的钱是总价。已知单价和数量求总价，不是求单价，说法错误。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-010",
+              "type": "blank",
+              "question": "超市每箱牛奶售价 48 元，一次性购进 135 箱，一共需要花费（______）元。",
+              "answer": "6480",
+              "explanation": "总价 = 单价 × 数量 = 48 × 135 = 6480（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-011",
+              "type": "blank",
+              "question": "妈妈买苹果一共花了 96 元，已知每千克苹果 8 元。妈妈买了（______）千克苹果。",
+              "answer": "12",
+              "explanation": "96 元是总价，8 元是单价，求数量：数量 = 总价 ÷ 单价 = 96 ÷ 8 = 12（千克）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-012",
+              "type": "blank",
+              "question": "学校采购 40 个同款篮球，一共花费 3200 元。每个篮球的售价是（______）元。",
+              "answer": "80",
+              "explanation": "40 个是数量，3200 元是总价，求单价：单价 = 总价 ÷ 数量 = 3200 ÷ 40 = 80（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-013",
+              "type": "blank",
+              "question": "学校开展国学经典读书活动，需要购买 218 本《诗经》，每本的售价是 42 元，一共要花（______）元。",
+              "answer": "9156",
+              "explanation": "总价 = 单价 × 数量 = 42 × 218 = 9156（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-014",
+              "type": "blank",
+              "question": "学校要给一年级的 98 名新同学每人配备一套新课桌，每张桌子 115 元，每把椅子 35 元，学校一共要花（______）元。",
+              "answer": "14700",
+              "explanation": "先求一套课桌的价钱：115 + 35 = 150（元）；再乘人数：150 × 98 = 14700（元）。也可算作 115 × 98 + 35 × 98 = 11270 + 3430 = 14700（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            }
+          ]
+        },
+        {
+          "id": "special-t3",
+          "title": "三、价格模型变式：优惠与买送",
+          "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-015",
+              "type": "single",
+              "question": "一款运动服原价 368 元，国庆促销每件 249 元。购买 24 套这种运动服，可以省（　　）元。",
+              "options": ["A. 2086", "B. 2180", "C. 2056", "D. 2856"],
+              "answer": "D",
+              "explanation": "先求一套省的钱：368 − 249 = 119（元）；再乘 24：119 × 24 = 2856（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-016",
+              "type": "blank",
+              "question": "某校带四年级 145 名学生去动物园研学，儿童票原价 85 元/人，现价 55 元/人，一共可以节省（______）元。",
+              "answer": "4350",
+              "explanation": "先求每人省的钱：85 − 55 = 30（元）；再乘人数：145 × 30 = 4350（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-017",
+              "type": "blank",
+              "question": "服装店一款上衣原价每件 95 元，现在每件降价 15 元。买 12 件这样的上衣，现在一共需要花（______）元。",
+              "answer": "960",
+              "explanation": "先求现价：95 − 15 = 80（元）；再求总价：80 × 12 = 960（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-018",
+              "type": "blank",
+              "question": "某网站“双十一”促销，所有笔记本买二送一。一种笔记本每本 19 元，书店老板买了 15 本（含赠品），一共花了（______）元。",
+              "answer": "190",
+              "explanation": "买二送一即每 3 本付 2 本的钱：15 ÷ 3 = 5（份），赠送 5 本，实付 15 − 5 = 10（本）；19 × 10 = 190（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-019",
+              "type": "blank",
+              "question": "某超市的钢化杯原价 7 元一个，现在促销“买三赠一”。妈妈买了 12 个（含赠品），比原来节省（______）元。",
+              "answer": "21",
+              "explanation": "买三赠一即每 4 个付 3 个的钱：12 ÷ 4 = 3（组），赠送 3 个；3 × 7 = 21（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-020",
+              "type": "blank",
+              "question": "书店促销，一套《儿童历史百科绘本》原价每套 40 元，现在买 4 套送 1 套。王老师要买 5 套，现在每套比原来便宜（______）元。",
+              "answer": "8",
+              "explanation": "买 4 送 1，买 5 套只需付 4 套的钱：40 × 4 = 160（元），现价每套 160 ÷ 5 = 32（元）；每套便宜 40 − 32 = 8（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-021",
+              "type": "blank",
+              "question": "一条围巾 18 元，主办方要给 120 名演出者每人买一条，网店正好推出“买 5 送 1”。参加促销活动比不参加可以节省（______）元。",
+              "answer": "360",
+              "explanation": "不参加：18 × 120 = 2160（元）；参加“买5送1”：120 ÷ (5 + 1) = 20（条赠品），实买 120 − 20 = 100（条），100 × 18 = 1800（元）；节省 2160 − 1800 = 360（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            }
+          ]
+        },
+        {
+          "id": "special-t4",
+          "title": "四、价格、方案与综合应用",
+          "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-022",
+              "type": "blank",
+              "question": "商店里篮球和排球的单价相同。张老师买了 5 个篮球和 3 个排球，发现买篮球比买排球多花 46 元。篮球每个（______）元。",
+              "answer": "23",
+              "explanation": "单价相同，多花的钱全部由多买的个数造成：多买 5 − 3 = 2（个），多花 46 元，所以单价 = 46 ÷ 2 = 23（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-023",
+              "type": "blank",
+              "question": "红心小学计划买 12 台电视机和 45 台电脑，每台电视机 2800 元，每台电脑 4600 元，一共需要（______）元。",
+              "answer": "240600",
+              "explanation": "电视机：2800 × 12 = 33600（元）；电脑：4600 × 45 = 207000（元）；合计 33600 + 207000 = 240600（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-024",
+              "type": "blank",
+              "question": "商店共进了 697 个毛绒玩具，已经卖出了 548 个。已经卖出的毛绒玩具每个 16 元，共卖了（______）元。",
+              "answer": "8768",
+              "explanation": "总价 = 单价 × 数量 = 16 × 548 = 8768（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-025",
+              "type": "blank",
+              "question": "同心超市以批发价购进 7 箱巧克力雪糕，每箱 50 支。批发价每箱 115 元，零售价每支 3 元。全部按零售价卖完可以赚（______）元。",
+              "answer": "245",
+              "explanation": "进货花：115 × 7 = 805（元）；共有 7 × 50 = 350（支），卖出得 350 × 3 = 1050（元）；赚 1050 − 805 = 245（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-026",
+              "type": "blank",
+              "question": "工地要运送 200 吨建材，有两种卡车可选：大卡车每次运 8 吨、运费 120 元；小卡车每次运 5 吨、运费 80 元。怎样租车最省钱？最少需要（______）元运费。",
+              "answer": "3000",
+              "explanation": "大卡车每吨运费 120 ÷ 8 = 15（元），小卡车每吨运费 80 ÷ 5 = 16（元），大卡车更便宜。200 ÷ 8 = 25（次），全部用大卡车：25 × 120 = 3000（元）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-027",
+              "type": "blank",
+              "question": "某景点门票：购票 1~50 人每人 50 元，51~100 人每人 45 元，100 人以上每人 38 元。四年级三个班分别有 37 人、42 人、41 人，三个班合起来购票最少需要（______）元。",
+              "answer": "4560",
+              "explanation": "合起来人数 37 + 42 + 41 = 120（人），超过 100 人，每人 38 元：38 × 120 = 4560（元）。（各班分别购票要 1850 + 2100 + 2050 = 6000 元，合买更省。）",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-028",
+              "type": "blank",
+              "question": "海洋馆票价：成人票 150 元，儿童票 80 元，家庭套票 280 元，团体票（10 人及以上）100 元。3 对夫妻带 4 名儿童一起去游玩，最省钱的方案需要（______）元。",
+              "answer": "920",
+              "explanation": "共 6 名成人 + 4 名儿童。方案一全买普通票：150 × 6 + 80 × 4 = 1220（元）；方案二买 3 张家庭套票 + 1 张儿童票：280 × 3 + 80 = 920（元）；方案三买 10 张团体票：100 × 10 = 1000（元）。920 元最少。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-029",
+              "type": "blank",
+              "question": "学校电脑室有 125 台电脑，要配置同一类型的耳机，李老师带了 6000 元。可选耳机的单价为 32 元、38 元、45 元。三种方案中花钱最少的方案还剩（______）元。",
+              "answer": "2000",
+              "explanation": "方案一 32 元：125 × 32 = 4000（元），剩 6000 − 4000 = 2000（元）；方案二 38 元：4750 元，剩 1250 元；方案三 45 元：5625 元，剩 375 元。花钱最少的是 32 元方案，剩 2000 元。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-002"],
+              "metadata": { "difficulty": "挑战" }
+            }
+          ]
+        },
+        {
+          "id": "special-t5",
+          "title": "五、速度、时间与路程",
+          "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-030",
+              "type": "blank",
+              "question": "小华每分钟走 65 米，他从家到学校走了 12 分钟，他家离学校有（______）米。",
+              "answer": "780",
+              "explanation": "路程 = 速度 × 时间 = 65 × 12 = 780（米）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-031",
+              "type": "blank",
+              "question": "小雨步行的速度是 65 米/分，他从家到剧院要走 975 米，需要（______）分钟。",
+              "answer": "15",
+              "explanation": "时间 = 路程 ÷ 速度 = 975 ÷ 65 = 15（分钟）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-032",
+              "type": "blank",
+              "question": "飞机每小时行驶 380 千米，照这样的速度，它 6 小时可以飞行（______）千米。",
+              "answer": "2280",
+              "explanation": "路程 = 速度 × 时间 = 380 × 6 = 2280（千米）。每小时行驶 380 千米也可写作“380 千米/时”。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-033",
+              "type": "single",
+              "question": "一辆轿车的速度是 110 千米/时，这辆轿车 3 小时行驶多少千米？要解决的问题是轿车行驶的（　　）。",
+              "options": ["A. 速度", "B. 时间", "C. 路程", "D. 用油量"],
+              "answer": "C",
+              "explanation": "“行驶多少千米”求的是一共行进的长度，在行程问题中叫做路程。已知速度和时间，求路程。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-034",
+              "type": "blank",
+              "question": "李叔叔骑自行车出行，3 分钟行驶了 600 米，他骑车的速度是（______）米/分。",
+              "answer": "200",
+              "explanation": "“3 分钟”是时间，“600 米”是路程，速度 = 路程 ÷ 时间 = 600 ÷ 3 = 200（米/分）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "special-ex-035",
+              "type": "blank",
+              "question": "李翔家距离图书馆 1726 米，他从家骑自行车去图书馆，骑了 4 分钟后，剩下的路程比已走的多 126 米。他骑车的速度是（______）米/分。",
+              "answer": "200",
+              "explanation": "把剩下的路程看成“已走的路程 + 126 米”，则两个“已走的路程”共 1726 − 126 = 1600（米），已走 1600 ÷ 2 = 800（米）；速度 = 800 ÷ 4 = 200（米/分）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-036",
+              "type": "blank",
+              "question": "猎豹是陆地上奔跑速度最快的哺乳动物，96 米的路程它 3 秒就能到达终点。猎豹奔跑的速度是（______）米/秒。",
+              "answer": "32",
+              "explanation": "速度 = 路程 ÷ 时间 = 96 ÷ 3 = 32（米/秒）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-037",
+              "type": "blank",
+              "question": "多米 12 分钟走了 624 米，文森 18 分钟走了 990 米。走得快的那个人速度是（______）米/分。",
+              "answer": "55",
+              "explanation": "多米：624 ÷ 12 = 52（米/分）；文森：990 ÷ 18 = 55（米/分）；55 > 52，文森走得快，速度是 55 米/分。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-050",
+              "type": "blank",
+              "question": "小华 5 分钟走了 400 米，小东每分钟走 72 米。两人中走得快的那个人速度是（______）米/分。",
+              "answer": "80",
+              "explanation": "速度比较：小华 400 ÷ 5 = 80（米/分），小东 72 米/分；80 > 72，小华走得快，速度是 80 米/分。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-051",
+              "type": "blank",
+              "question": "小刚 3 分钟跑了 600 米，小强 5 分钟跑了 950 米。跑得快的那个人速度是（______）米/分。",
+              "answer": "200",
+              "explanation": "速度比较：小刚 600 ÷ 3 = 200（米/分），小强 950 ÷ 5 = 190（米/分）；200 > 190，小刚跑得快，速度是 200 米/分。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            }
+          ]
+        },
+        {
+          "id": "special-t6",
+          "title": "六、行程问题进阶与变式",
+          "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-038",
+              "type": "blank",
+              "question": "小林和小刚同时从自己家出发，相向而行。小林每分钟走 75 米，小刚每分钟走 85 米，12 分钟后两人相遇。两家相距（______）米。",
+              "answer": "1920",
+              "explanation": "相遇问题：路程和 = 速度和 × 相遇时间 = (75 + 85) × 12 = 160 × 12 = 1920（米）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-039",
+              "type": "blank",
+              "question": "甲、乙两人同时从相距 980 米的 A、B 两地相向而行，7 分钟相遇。已知甲平均每分钟行 80 米，乙平均每分钟行（______）米。",
+              "answer": "60",
+              "explanation": "速度和 = 总路程 ÷ 相遇时间 = 980 ÷ 7 = 140（米/分）；乙的速度 = 140 − 80 = 60（米/分）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-040",
+              "type": "blank",
+              "question": "钱钱和塘塘同时分别从两地骑车相向而行，钱钱每小时行 18 千米，塘塘每小时行 16 千米，两人相遇时距全程中点 3 千米。全程长（______）千米。",
+              "answer": "102",
+              "explanation": "相遇时距中点 3 千米，说明两人所行路程相差 3 × 2 = 6（千米）。由“路程差 ÷ 速度差 = 时间”得相遇时间 6 ÷ (18 − 16) = 3（小时）；全程 = 速度和 × 相遇时间 = (18 + 16) × 3 = 102（千米）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-041",
+              "type": "blank",
+              "question": "甲、乙两地相距 500 千米，A、B 两车同时从两地出发相向而行，3 小时后两车还相距 26 千米（未相遇）。已知 A 车每小时行 85 千米，B 车每小时行（______）千米。",
+              "answer": "73",
+              "explanation": "两车 3 小时共行 500 − 26 = 474（千米），速度和 = 474 ÷ 3 = 158（千米/时）；B 车速度 = 158 − 85 = 73（千米/时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-042",
+              "type": "blank",
+              "question": "甲、乙两人在同一条路上同向而行，甲每小时走 4 千米，乙每小时走 6 千米。甲先走 2 小时后乙才出发，乙（______）小时能追上甲。",
+              "answer": "4",
+              "explanation": "路程差 = 甲先走的路程 = 4 × 2 = 8（千米）；速度差 = 6 − 4 = 2（千米/时）；追及时间 = 路程差 ÷ 速度差 = 8 ÷ 2 = 4（小时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-043",
+              "type": "blank",
+              "question": "一列火车长 300 米，以 6 米/秒的速度通过一座长 900 米的大桥，从车头上桥到车尾离桥共需要（______）秒。",
+              "answer": "200",
+              "explanation": "火车过桥的总路程 = 桥长 + 火车长 = 900 + 300 = 1200（米）；时间 = 1200 ÷ 6 = 200（秒）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-044",
+              "type": "blank",
+              "question": "一列长 420 米的火车，以每分钟 945 米的速度穿过一个隧道，从车头进入隧道到车尾离开隧道一共用时 2 分钟。这个隧道长（______）米。",
+              "answer": "1470",
+              "explanation": "火车行驶总路程 = 速度 × 时间 = 945 × 2 = 1890（米）；隧道长 = 总路程 − 火车长 = 1890 − 420 = 1470（米）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-045",
+              "type": "blank",
+              "question": "一位叔叔以每秒 3 米的速度沿着铁路跑步，迎面开来一列火车，火车的速度是每秒 40 米，火车经过叔叔身边用了 8 秒。这列火车长（______）米。",
+              "answer": "344",
+              "explanation": "迎面相遇，路程和 = 火车长。速度之和 = 3 + 40 = 43（米/秒）；火车长 = 43 × 8 = 344（米）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-046",
+              "type": "blank",
+              "question": "李师傅从家开车去县城，去时用了 3 小时，速度是 80 千米/时，沿原路返回时用了 4 小时。返回时平均每小时行（______）千米。",
+              "answer": "60",
+              "explanation": "抓住“路程不变”：80 × 3 = 240（千米）；返回速度 = 240 ÷ 4 = 60（千米/时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-047",
+              "type": "blank",
+              "question": "一艘船顺水行驶 3 小时行 60 千米，逆水行驶同一段路程用了 5 小时。船在静水中的速度是（______）千米/时。",
+              "answer": "16",
+              "explanation": "顺水速度 = 60 ÷ 3 = 20（千米/时），逆水速度 = 60 ÷ 5 = 12（千米/时）；船速 = (顺水速度 + 逆水速度) ÷ 2 = (20 + 12) ÷ 2 = 16（千米/时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-048",
+              "type": "blank",
+              "question": "甲、乙两城相距 6000 千米，一架飞机从甲城顺风 4 小时到达乙城，从乙城逆风 5 小时返回甲城。这架飞机的速度是（______）千米/时。",
+              "answer": "1350",
+              "explanation": "顺风速度 = 6000 ÷ 4 = 1500（千米/时），逆风速度 = 6000 ÷ 5 = 1200（千米/时）；风速 = (1500 − 1200) ÷ 2 = 150（千米/时）；飞机速度 = 1500 − 150 = 1350（千米/时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-049",
+              "type": "blank",
+              "question": "电脑生产厂家有两条平板电脑生产线，第一条每天装配 180 台，第二条每天装配 220 台。两条生产线连续工作 30 天，一共装配（______）台平板电脑。",
+              "answer": "12000",
+              "explanation": "工程问题：工作总量 = 工作效率和 × 工作时间 = (180 + 220) × 30 = 400 × 30 = 12000（台）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-052",
+              "type": "blank",
+              "question": "一辆客车以每小时 50 千米的速度从 A 地出发，2 小时后一辆轿车以每小时 70 千米的速度从 A 地出发追赶客车。轿车出发后（______）小时能追上客车。",
+              "answer": "5",
+              "explanation": "追及问题：路程差 = 50 × 2 = 100（千米），速度差 = 70 − 50 = 20（千米/时），追及时间 = 100 ÷ 20 = 5（小时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-053",
+              "type": "blank",
+              "question": "甲车以每小时 40 千米的速度行驶，乙车在甲车后方 10 千米处，以每小时 50 千米的速度追赶。途中甲车提速为每小时 45 千米，乙车速度不变。乙车还需（______）小时能追上甲车。",
+              "answer": "2",
+              "explanation": "甲车提速后速度差 = 50 − 45 = 5（千米/时），路程差 = 10 千米，追及时间 = 10 ÷ 5 = 2（小时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "挑战" }
+            },
+            {
+              "id": "special-ex-054",
+              "type": "blank",
+              "question": "小丽爸爸从县城开车去某镇送化肥，去的时候速度是 60 千米/时，用了 3 小时，原路返回用了 2 小时。返回时平均每小时行（______）千米。",
+              "answer": "90",
+              "explanation": "抓住“路程不变”：60 × 3 = 180（千米），返回速度 = 180 ÷ 2 = 90（千米/时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-055",
+              "type": "blank",
+              "question": "一辆汽车从甲城开往乙城，去时以每小时 75 千米的速度行驶了 4 小时，原路返回时多用了 1 小时。这辆汽车返回时每小时行驶（______）千米。",
+              "answer": "60",
+              "explanation": "抓住“路程不变”：75 × 4 = 300（千米），返回时间 = 4 + 1 = 5（小时），返回速度 = 300 ÷ 5 = 60（千米/时）。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-056",
+              "type": "blank",
+              "question": "某施工队承担了“白改黑”道路维修工程，维修道路总长 6000 米。施工队平均每天维修 206 米，计划工期 30 天。30 天一共能维修（______）米。",
+              "answer": "6180",
+              "explanation": "工程问题：工作总量 = 工作效率 × 工作时间 = 206 × 30 = 6180（米），6180 > 6000，能按期完成。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "special-ex-057",
+              "type": "blank",
+              "question": "服装厂收到学校定制 3700 套校服的订单，要求 14 天完成交货。该服装厂每天可生产 264 套校服。14 天一共能生产（______）套校服。",
+              "answer": "3696",
+              "explanation": "工程问题：工作总量 = 工作效率 × 工作时间 = 264 × 14 = 3696（套），3696 < 3700，不能按时完成。",
+              "knowledgePointIds": ["unit-math-4-up-rjb-p5::kp-rel-001"],
+              "metadata": { "difficulty": "提高" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

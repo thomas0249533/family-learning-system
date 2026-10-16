@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0",
+  "setId": "chinese-4-up-rjb-term-set",
+  "root": "term-chinese-4-up-rjb",
+  "title": "语文四年级上册（人教版）",
+  "subject": "chinese",
+  "grade": 4,
+  "term": "up",
+  "edition": "人教版",
+  "importOrder": [
+    "unit-chinese-4-up-rjb-u1",
+    "unit-chinese-4-up-rjb-u2",
+    "unit-chinese-4-up-rjb-u3",
+    "unit-chinese-4-up-rjb-u4",
+    "unit-chinese-4-up-rjb-u5",
+    "unit-chinese-4-up-rjb-u6",
+    "unit-chinese-4-up-rjb-u7",
+    "unit-chinese-4-up-rjb-u8",
+    "term-chinese-4-up-rjb",
+    "special-chinese-4-up-reading",
+    "special-chinese-4-up-vocab"
+  ],
+  "packages": [
+    {
+      "file": "unit-chinese-4-up-rjb-u1.json",
+      "packageId": "unit-chinese-4-up-rjb-u1",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-chinese-4-up-rjb-u2.json",
+      "packageId": "unit-chinese-4-up-rjb-u2",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-chinese-4-up-rjb-u3.json",
+      "packageId": "unit-chinese-4-up-rjb-u3",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-chinese-4-up-rjb-u4.json",
+      "packageId": "unit-chinese-4-up-rjb-u4",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-chinese-4-up-rjb-u5.json",
+      "packageId": "unit-chinese-4-up-rjb-u5",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-chinese-4-up-rjb-u6.json",
+      "packageId": "unit-chinese-4-up-rjb-u6",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-chinese-4-up-rjb-u7.json",
+      "packageId": "unit-chinese-4-up-rjb-u7",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-chinese-4-up-rjb-u8.json",
+      "packageId": "unit-chinese-4-up-rjb-u8",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "term-chinese-4-up-rjb.json",
+      "packageId": "term-chinese-4-up-rjb",
+      "type": "term",
+      "visible": true,
+      "dependencies": [
+        "unit-chinese-4-up-rjb-u1",
+        "unit-chinese-4-up-rjb-u2",
+        "unit-chinese-4-up-rjb-u3",
+        "unit-chinese-4-up-rjb-u4",
+        "unit-chinese-4-up-rjb-u5",
+        "unit-chinese-4-up-rjb-u6",
+        "unit-chinese-4-up-rjb-u7",
+        "unit-chinese-4-up-rjb-u8"
+      ]
+    },
+    {
+      "file": "special-chinese-4-up-vocab.json",
+      "packageId": "special-chinese-4-up-vocab",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    },
+    {
+      "file": "special-chinese-4-up-reading.json",
+      "packageId": "special-chinese-4-up-reading",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    }
+  ]
+}

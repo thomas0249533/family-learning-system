@@ -1,0 +1,97 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "prereq-demo",
+    "packageType": "special",
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "通用",
+    "title": "前置链演示包",
+    "subtitle": "A → B → C 学习路径",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-A",
+      "type": "concept",
+      "title": "A · 加法交换律",
+      "content": "a + b = b + a"
+    },
+    {
+      "id": "kp-B",
+      "type": "concept",
+      "title": "B · 乘法交换律",
+      "content": "a × b = b × a",
+      "prerequisites": ["kp-A"]
+    },
+    {
+      "id": "kp-C",
+      "type": "concept",
+      "title": "C · 乘法分配律",
+      "content": "(a + b) × c = a×c + b×c",
+      "prerequisites": ["kp-B"]
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "u1",
+      "name": "演示",
+      "title": "前置链",
+      "desc": "A → B → C",
+      "topics": [
+        {
+          "id": "tA",
+          "title": "A · 加法交换律",
+          "knowledgePointIds": ["kp-A"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "ex-A-1",
+              "type": "single",
+              "question": "3 + 5 等于 5 + 3，这用了什么运算律？",
+              "options": ["A. 加法交换律", "B. 加法结合律", "C. 乘法交换律", "D. 无法判断"],
+              "answer": "A",
+              "explanation": "a + b = b + a 是加法交换律。",
+              "metadata": { "difficulty": "基础" }
+            }
+          ]
+        },
+        {
+          "id": "tB",
+          "title": "B · 乘法交换律",
+          "knowledgePointIds": ["kp-B"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "ex-B-1",
+              "type": "judge",
+              "question": "4 × 6 = 6 × 4，这用了乘法交换律。",
+              "answer": "对",
+              "explanation": "乘法交换律：a × b = b × a。",
+              "metadata": { "difficulty": "基础" }
+            }
+          ]
+        },
+        {
+          "id": "tC",
+          "title": "C · 乘法分配律",
+          "knowledgePointIds": ["kp-C"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "ex-C-1",
+              "type": "blank",
+              "question": "(2 + 3) × 4 = ____",
+              "answer": "20",
+              "explanation": "先算括号内 2 + 3 = 5，再算 5 × 4 = 20。",
+              "metadata": { "difficulty": "基础" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

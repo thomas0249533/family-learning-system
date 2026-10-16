@@ -1,0 +1,259 @@
+// =====================================================================
+// 主题变量（唯一来源）
+// ---------------------------------------------------------------------
+// 浅色定义在 :root，深色定义在 body.dark-mode。
+// 两者必须保持「同名变量、成对出现」——新增一个颜色时两边都要加。
+// 组件侧一律 var(--x)，不得写死色值。
+// =====================================================================
+
+/* ==================== 尺寸 / 字号 / 动效（不随主题变）==================== */
+:root {
+  /* 圆角 */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-control: 10px;   /* 按钮 / 输入框统一圆角 */
+  --radius-full: 999px;
+
+  /* 间距（8pt 网格） */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* 字号阶梯 */
+  --font-2xs: 11px;
+  --font-xs: 12px;
+  --font-sm: 13px;
+  --font-base: 14px;
+  --font-md: 15px;
+  --font-lg: 16px;
+  --font-xl: 18px;
+  --font-2xl: 20px;
+  --font-3xl: 22px;
+  --font-4xl: 24px;
+  --font-5xl: 32px;
+
+  /* 行高 */
+  --leading-tight: 1.25;
+  --leading-snug: 1.4;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+
+  /* 动效曲线 */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+
+  /* 动效时长 */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 450ms;
+}
+
+/* ==================== 浅色主题（默认）==================== */
+:root {
+  /* 品牌色：深松绿 */
+  --primary-color: #2d6a4f;
+  --primary-hover: #245741;
+  --primary-pressed: #1c4633;
+  --primary-light: #e7f3ed;
+  --primary-soft: rgba(45, 106, 79, 0.10);
+  --primary-soft-strong: rgba(45, 106, 79, 0.18);
+
+  /* 语义色 */
+  --success-color: #15803d;
+  --success-light: #e9f8ef;
+  --success-soft: rgba(21, 128, 61, 0.10);
+
+  --warning-color: #b45309;
+  --warning-light: #fdf4e7;
+  --warning-soft: rgba(180, 83, 9, 0.10);
+
+  --danger-color: #dc2626;
+  --danger-light: #fdeded;
+  --danger-soft: rgba(220, 38, 38, 0.10);
+
+  --info-color: #2563eb;
+  --info-light: #eaf1fe;
+  --info-soft: rgba(37, 99, 235, 0.10);
+
+  /* 语义色 RGB 三元组（供 rgba(var(--x-rgb), a) 使用；浅深各一套） */
+  --primary-rgb: 45, 106, 79;
+  --success-rgb: 21, 128, 61;
+  --warning-rgb: 180, 83, 9;
+  --danger-rgb: 220, 38, 38;
+  --info-rgb: 37, 99, 235;   /* 预留：供 info 半透明叠加使用（当前无调用点） */
+
+  /* 恒白前景色（主题无关，仅 :root 定义一次，深色不覆盖）——用于饱和色块上的文字/图标 */
+  --on-strong: #ffffff;
+  --on-strong-rgb: 255, 255, 255;
+
+  /* Report 分数档位浅底（浅色值精确搬运，未做色相调整） */
+  --band-success-bg: #effcf4;
+  --band-success-border: #c8f0d8;
+  --band-warning-bg: #fff9ec;
+  --band-warning-border: #ffe4b0;
+  --band-danger-bg: #fff0f0;
+  --band-danger-border: #ffd4d4;
+
+  /* 行内代码文字色（英文 code / TopicDetail code 通用） */
+  --code-color: #c7254e;
+
+  /* 底层与文字 */
+  --bg-color: #f6f8f5;
+  --bg-color-hover: #ebf0ec;
+  --card-bg: #ffffff;
+  --surface-2: #f9fbf9;
+  --text-main: #16261f;
+  --text-sub: #3f574c;
+  --text-muted: #5f756a;
+  --text-on-primary: #ffffff;
+  --border-color: #cfdcd5;
+  --border-light: #e5ede8;
+
+  /* 阴影（墨绿基调，非纯黑） */
+  --shadow-xs: 0 1px 2px rgba(22, 38, 31, 0.06);
+  --shadow-sm: 0 1px 3px rgba(22, 38, 31, 0.08), 0 1px 2px rgba(22, 38, 31, 0.05);
+  --shadow: 0 4px 12px rgba(22, 38, 31, 0.08);
+  --shadow-md: 0 8px 24px rgba(22, 38, 31, 0.10);
+  --shadow-lg: 0 20px 40px rgba(22, 38, 31, 0.12);
+  /* 上向阴影：固定底部横条抬升层次（精确搬运自 .app-nav / .quiz-actions）*/
+  --shadow-up: 0 -4px 16px rgba(0, 0, 0, 0.06);
+
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, #2d6a4f 0%, #4fa57f 100%);
+  --gradient-warm: linear-gradient(135deg, #d97706 0%, #e05d4a 100%);
+  --gradient-cool: linear-gradient(135deg, #0e7490 0%, #2563eb 100%);
+  --gradient-success: linear-gradient(135deg, #15803d 0%, #0ea5a0 100%);
+  --gradient-sunset: linear-gradient(135deg, #e8871e 0%, #d4537e 100%);
+}
+
+/* ==================== 深色主题 ==================== */
+body.dark-mode {
+  --primary-color: #4fa57f;
+  --primary-hover: #5fb88f;
+  --primary-pressed: #3f8a69;
+  --primary-light: #1c3a2c;
+  --primary-soft: rgba(79, 165, 127, 0.14);
+  --primary-soft-strong: rgba(79, 165, 127, 0.24);
+
+  --success-color: #4ade80;
+  --success-light: #14301f;
+  --success-soft: rgba(74, 222, 128, 0.14);
+
+  --warning-color: #fbbf24;
+  --warning-light: #3a2a12;
+  --warning-soft: rgba(251, 191, 36, 0.14);
+
+  --danger-color: #f87171;
+  --danger-light: #3a1a1a;
+  --danger-soft: rgba(248, 113, 113, 0.14);
+
+  --info-color: #60a5fa;
+  --info-light: #16243e;
+  --info-soft: rgba(96, 165, 250, 0.14);
+
+  /* 语义色 RGB 三元组（深色一套） */
+  --primary-rgb: 79, 165, 127;
+  --success-rgb: 74, 222, 128;
+  --warning-rgb: 251, 191, 36;
+  --danger-rgb: 248, 113, 113;
+  --info-rgb: 96, 165, 250;   /* 预留：供 info 半透明叠加使用（当前无调用点） */
+
+  /* Report 分数档位深色浅底 */
+  --band-success-bg: #14301f;
+  --band-success-border: #1e4a2f;
+  --band-warning-bg: #3a2a12;
+  --band-warning-border: #563d13;
+  --band-danger-bg: #3a1a1a;
+  --band-danger-border: #542222;
+
+  /* 行内代码文字色（深色） */
+  --code-color: #f08aa8;
+
+  --bg-color: #0d1613;
+  --bg-color-hover: #1b2a24;
+  --card-bg: #15211c;
+  --surface-2: #1a2822;
+  --text-main: #e8f1ec;
+  --text-sub: #b6c8bf;
+  --text-muted: #8b9c93;
+  --text-on-primary: #08120e;
+  --border-color: #2a3b34;
+  --border-light: #1f2e28;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.30);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.40);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.48);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.56);
+  --shadow-up: 0 -4px 16px rgba(0, 0, 0, 0.30);
+
+  --gradient-primary: linear-gradient(135deg, #255c43 0%, #3f8a69 100%);
+  --gradient-warm: linear-gradient(135deg, #b45309 0%, #b8453a 100%);
+  --gradient-cool: linear-gradient(135deg, #0b5f75 0%, #1d4ed8 100%);
+  --gradient-success: linear-gradient(135deg, #166534 0%, #0b8b87 100%);
+  --gradient-sunset: linear-gradient(135deg, #c26a15 0%, #b0436a 100%);
+}
+
+/* ==================== 全局基底 ==================== */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
+}
+
+/* ==================== 深色下的组件微调（集中一处）==================== */
+body.dark-mode {
+  /* 欢迎横幅压暗，避免在深色背景上过于刺眼 */
+  .welcome-banner {
+    filter: brightness(0.9);
+  }
+
+  /* 卡片边框更清晰（深色下仅靠阴影层次不足） */
+  .n-card {
+    border: 1px solid var(--border-color);
+  }
+
+  /* 按钮边框加强 */
+  .n-button {
+    border-color: var(--border-color);
+  }
+
+  /* 分隔线跟随主题 */
+  .n-divider {
+    background-color: var(--border-color);
+  }
+
+  /* 推荐卡片左侧色条降饱和，更柔和 */
+  .rec-card .rec-accent {
+    opacity: 0.85;
+    filter: saturate(0.9);
+  }
+
+  /* 复习卡片「查看」按钮在深色下提高对比度 */
+  .review-card .action-pill:not(.primary) {
+    background: var(--bg-color-hover);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    font-weight: 700;
+  }
+
+  /* 分区计数徽章对比度加强 */
+  .section-count {
+    background: var(--bg-color-hover);
+    color: var(--text-sub);
+  }
+}

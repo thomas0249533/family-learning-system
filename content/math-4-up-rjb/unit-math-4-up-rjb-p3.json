@@ -1,0 +1,825 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-up-rjb-p3",
+    "type": "unit",
+    "title": "数学4上第3部分",
+    "version": "1.0.0",
+    "dependencies": [
+      "unit-math-4-up-rjb-p2"
+    ]
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-math-4-up-rjb-p3::kp-num-005",
+      "type": "formula",
+      "title": "三位数乘两位数的笔算",
+      "content": "笔算方法：\\n1. 先用两位数个位上的数去乘三位数，得数的末位和两位数的个位对齐。\\n2. 再用两位数十位上的数去乘三位数，得数的末位和两位数的十位对齐。\\n3. 最后把两次乘得的积加起来。\\n注意：因数末尾有0时，可以先把0前面的数相乘，再看两个因数末尾一共有几个0，就在积的末尾添写几个0。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "应用",
+        "ability": "运算能力",
+        "tags": [
+          "乘法",
+          "笔算",
+          "三位数乘两位数"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p3::kp-num-006",
+      "type": "concept",
+      "title": "乘法的估算与算理",
+      "content": "估算方法：把两个因数分别看作与它接近的整十、整百数，再进行计算。\\n例如：把 145 看作 150，把 12 看作 10，估算结果约为 1500。\\n算理理解：利用乘法的意义（求几个相同加数的和）以及乘法分配律来理解每一步计算的含义。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p3::kp-num-005"
+      ],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "数感",
+        "tags": [
+          "估算",
+          "乘法算理"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p3::kp-num-007",
+      "type": "life",
+      "title": "计算器探索规律",
+      "content": "利用计算器进行大数计算，并观察算式中的规律。\\n常见规律：\\n1. 11 × 11 = 121\\n   111 × 111 = 12321\\n   1111 × 1111 = 1234321\\n2. 9 × 9 = 81\\n   99 × 99 = 9801\\n   999 × 999 = 998001\\n利用规律可以直接写出结果，体会数学的奇妙。",
+      "prerequisites": [
+        "unit-math-4-up-rjb-p3::kp-num-005"
+      ],
+      "metadata": {
+        "difficulty": "挑战",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "分析",
+        "ability": "推理意识",
+        "tags": [
+          "计算器",
+          "探索规律",
+          "数学好玩"
+        ]
+      }
+    },
+    {
+      "id": "unit-math-4-up-rjb-p3::kp-geo-004",
+      "type": "concept",
+      "title": "从不同位置观察立体图形",
+      "content": "观察由几个同样大小的正方体搭成的立体图形：\\n1. 从前面看：能观察到正面排列的形状。\\n2. 从右面看：能观察到侧面排列的形状。\\n3. 从上面看：能观察到俯视排列的形状。\\n根据看到的平面图形，可以推测立体图形的搭法。在搭积木时，可以分层思考：先确定底层，再确定上层。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念",
+        "tags": [
+          "观察物体",
+          "三视图",
+          "搭积木"
+        ]
+      }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "unit-math-4-up-rjb-p3::u3",
+      "name": "第三单元",
+      "title": "整数乘法（二）",
+      "desc": "掌握三位数乘两位数的笔算、估算方法，并能运用计算器探索乘法中的规律。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p3::t1",
+          "title": "三位数乘两位数的笔算",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p3::kp-num-005"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p3::m1",
+              "type": "math.formula",
+              "title": "笔算乘法法则",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-001",
+              "type": "blank",
+              "question": "计算 145 × 12 时，先算 145 × 2 =（______），再算 145 × 10 =（______），最后把两次的积相加得（______）。",
+              "answer": "290,1450,1740",
+              "explanation": "先用个位上的2去乘145，得290；再用十位上的1（代表10）去乘145，得1450；最后将两部分积相加：290 + 1450 = 1740。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-002",
+              "type": "single",
+              "question": "计算 250 × 40，下面哪种方法最简便？",
+              "options": [
+                "A. 先算25 × 4 = 100，再在末尾添两个0",
+                "B. 先算250 × 4 = 1000",
+                "C. 先算25 × 40 = 1000",
+                "D. 直接列竖式计算"
+              ],
+              "answer": "A",
+              "explanation": "因数末尾有0的乘法，可以先把0前面的数相乘，再数一数两个因数末尾一共有几个0，在积的末尾添上几个0。25 × 4 = 100，两个因数末尾共有两个0，所以结果是10000。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-003",
+              "type": "blank",
+              "question": "每套校服128元，学校为四年级45名学生每人订购一套，一共需要（______）元。",
+              "answer": "5760",
+              "explanation": "根据“总价 = 单价 × 数量”，列式为 128 × 45。计算：128 × 5 = 640，128 × 40 = 5120，640 + 5120 = 5760（元）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-004",
+              "type": "single",
+              "question": "一列火车每小时行驶165千米，从甲地到乙地需要12小时。甲地到乙地的铁路长（　　）千米。",
+              "options": [
+                "A. 1980",
+                "B. 1870",
+                "C. 1770",
+                "D. 2080"
+              ],
+              "answer": "A",
+              "explanation": "根据“路程 = 速度 × 时间”，列式为 165 × 12。计算：165 × 2 = 330，165 × 10 = 1650，330 + 1650 = 1980（千米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-005",
+              "type": "judge",
+              "question": "计算 306 × 25 时，十位上的2与306相乘，得到的是612个十。",
+              "answer": "对",
+              "explanation": "十位上的2表示2个十，2个十乘306等于612个十，也就是6120。在竖式中，末位应与十位对齐。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-006",
+              "type": "blank",
+              "question": "一个长方形花坛，长是205米，宽是32米。这个花坛的面积是（______）平方米。",
+              "answer": "6560",
+              "explanation": "长方形面积 = 长 × 宽。列式：205 × 32。计算：205 × 2 = 410，205 × 30 = 6150，410 + 6150 = 6560（平方米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-007",
+              "type": "single",
+              "question": "下面算式中，积是五位数的是（　　）。",
+              "options": [
+                "A. 120 × 30",
+                "B. 250 × 40",
+                "C. 108 × 25",
+                "D. 99 × 99"
+              ],
+              "answer": "C",
+              "explanation": "A. 120 × 30 = 3600（四位数）；B. 250 × 40 = 10000（五位数）；C. 108 × 25 = 2700（四位数）；D. 99 × 99 = 9801（四位数）。只有B的积是五位数。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-008",
+              "type": "blank",
+              "question": "李叔叔开车以每小时112千米的速度从A城去B城，行驶了15小时。A城到B城的路程是（______）千米。",
+              "answer": "1680",
+              "explanation": "路程 = 速度 × 时间。112 × 15 = 112 × 5 + 112 × 10 = 560 + 1120 = 1680（千米）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-005"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p3::t2",
+          "title": "乘法的估算",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p3::kp-num-006"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p3::m2",
+              "type": "math.concept",
+              "title": "估算的策略",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-006"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-009",
+              "type": "single",
+              "question": "估算 198 × 21 时，下面哪种估算方法最合理？",
+              "options": [
+                "A. 200 × 20 = 4000",
+                "B. 200 × 21 = 4200",
+                "C. 198 × 20 = 3960",
+                "D. 100 × 20 = 2000"
+              ],
+              "answer": "A",
+              "explanation": "估算时，把198看作最接近的整百数200，把21看作最接近的整十数20，200 × 20 = 4000。这种估法既简便又接近准确值。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-010",
+              "type": "judge",
+              "question": "估算的结果一定比准确值小。",
+              "answer": "错",
+              "explanation": "估算时，有时把因数看大了，估算结果会比准确值大；有时把因数看小了，估算结果会比准确值小。例如：198 × 21 ≈ 200 × 20 = 4000，而准确值198 × 21 = 4158，估算值比准确值小；如果把21看作30，200 × 30 = 6000，估算值就比准确值大。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-006"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-011",
+              "type": "blank",
+              "question": "学校要买32个足球，每个足球98元。估算一下，大约需要准备（______）元钱。",
+              "answer": "3000",
+              "explanation": "把98元看作100元，把32个看作30个。100 × 30 = 3000（元）。实际花费98 × 32 = 3136元，所以带3000元不够，但作为估算结果，3000是合理的近似值。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-012",
+              "type": "single",
+              "question": "一本故事书有212页，小明每天看19页。他大约需要（　　）天看完。",
+              "options": [
+                "A. 10",
+                "B. 11",
+                "C. 20",
+                "D. 30"
+              ],
+              "answer": "B",
+              "explanation": "把212看作200，把19看作20。200 ÷ 20 = 10（天）。但实际212 > 200，19 < 20，所以实际天数应该比10天多一点，大约11天。更合理的估算：212 ÷ 19 ≈ 210 ÷ 20 ≈ 10.5，所以约11天。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-006"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-013",
+              "type": "blank",
+              "question": "估算 302 × 48 时，可以把302看作（______），把48看作（______），估算结果是（______）。",
+              "answer": "300,50,15000",
+              "explanation": "把302看作300，把48看作50，300 × 50 = 15000。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-006"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-math-4-up-rjb-p3::t3",
+          "title": "计算器探索规律",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p3::kp-num-007"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p3::m3",
+              "type": "math.life",
+              "title": "有趣的乘法规律",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-014",
+              "type": "blank",
+              "question": "观察规律：1 × 1 = 1，11 × 11 = 121，111 × 111 = 12321。\\n那么 1111 × 1111 = （______），11111 × 11111 = （______）。",
+              "answer": "1234321,123454321",
+              "explanation": "规律是：由几个1组成的数相乘，积是从1开始递增到几，再递减回1。1111 × 1111 有4个1，所以积是1234321；11111 × 11111 有5个1，所以积是123454321。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-015",
+              "type": "blank",
+              "question": "观察规律：9 × 9 = 81，99 × 99 = 9801，999 × 999 = 998001。\\n那么 9999 × 9999 = （______）。",
+              "answer": "99980001",
+              "explanation": "规律是：n个9乘n个9，结果由(n-1)个9，接着一个8，接着(n-1)个0，最后是一个1组成。9999 × 9999，n=4，所以是3个9（999），一个8，3个0（000），一个1，即99980001。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-016",
+              "type": "single",
+              "question": "用计算器计算 12345679 × 9 = 111111111，那么 12345679 × 18 = （　　）。",
+              "options": [
+                "A. 222222222",
+                "B. 333333333",
+                "C. 111111111",
+                "D. 444444444"
+              ],
+              "answer": "A",
+              "explanation": "18是9的2倍，所以 12345679 × 18 = 12345679 × 9 × 2 = 111111111 × 2 = 222222222。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-017",
+              "type": "judge",
+              "question": "计算器只能用来计算，不能用来探索数学规律。",
+              "answer": "错",
+              "explanation": "计算器不仅可以用来进行复杂的计算，还可以帮助我们快速计算出一系列算式的结果，从而观察、发现并总结出数学规律。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-018",
+              "type": "blank",
+              "question": "观察：1 × 9 + 2 = 11，12 × 9 + 3 = 111，123 × 9 + 4 = 1111。\\n那么 1234 × 9 + 5 = （______）。",
+              "answer": "11111",
+              "explanation": "规律是：由1到n组成的数乘9加(n+1)，结果是由(n+1)个1组成的数。1234 × 9 + 5，n=4，所以结果是5个1，即11111。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-019",
+              "type": "single",
+              "question": "小马虎用计算器计算 256 × 48 时，发现计算器上的数字键“4”坏了。他可以用下面哪种方法算出正确结果？",
+              "options": [
+                "A. 256 × 50 - 256 × 2",
+                "B. 256 × 50 + 256 × 2",
+                "C. 256 × 40 + 256 × 8",
+                "D. 256 × 6 × 8"
+              ],
+              "answer": "A",
+              "explanation": "因为数字键“4”坏了，不能按48。可以把48拆成50 - 2，利用乘法分配律：256 × 48 = 256 × (50 - 2) = 256 × 50 - 256 × 2。选项A正确。选项B是256 × 52；选项C中40含有4；选项D中6 × 8 = 48，但数字键4坏了无法按40。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u3-ex-020",
+              "type": "blank",
+              "question": "用计算器计算下面各题，找出规律：\\n1 × 1 = 1\\n11 × 11 = 121\\n111 × 111 = 12321\\n1111111 × 1111111 = （______）。",
+              "answer": "1234567654321",
+              "explanation": "根据规律，由7个1组成的数相乘，积是从1递增到7，再递减回1，即1234567654321。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-num-007"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-math-4-up-rjb-p3::u4",
+      "name": "第四单元",
+      "title": "我们生活的空间（二）",
+      "desc": "从不同位置观察立体图形，感受空间观念，发展空间想象力。",
+      "topics": [
+        {
+          "id": "unit-math-4-up-rjb-p3::t1",
+          "title": "观察立体图形",
+          "knowledgePointIds": [
+            "unit-math-4-up-rjb-p3::kp-geo-004"
+          ],
+          "modules": [
+            {
+              "id": "unit-math-4-up-rjb-p3::m1",
+              "type": "math.concept",
+              "title": "三视图与搭积木",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-001",
+              "type": "single",
+              "question": "用4个同样大小的正方体搭成一个立体图形，从正面看到的形状是横着排成3个正方形。下面哪种搭法是不可能的？",
+              "options": [
+                "A. 底层3个，上层1个放在中间",
+                "B. 底层3个，上层1个放在左边",
+                "C. 底层3个，上层1个放在右边",
+                "D. 底层4个，上层没有"
+              ],
+              "answer": "D",
+              "explanation": "从正面看到横着排成3个正方形，说明只有一层或上层有1个。如果底层4个，从正面看至少能看到4个正方形排成一行（或两行），与题意不符。A、B、C的正面视图都是3个正方形。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-002",
+              "type": "blank",
+              "question": "一个立体图形由4个同样大小的正方体搭成，从上面看到的形状是横着排成3个正方形，从左面看到的形状是竖着排成2个正方形。这个立体图形有（______）种不同的搭法。",
+              "answer": "3",
+              "explanation": "从上面看是3个正方形，说明底层有3个。从左面看是2个正方形，说明第2层有1个。第2层的这个正方体可以放在底层3个中的任意一个上面，共有3种搭法。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-003",
+              "type": "judge",
+              "question": "从不同位置观察同一个立体图形，看到的形状一定是不同的。",
+              "answer": "错",
+              "explanation": "从不同位置观察同一个立体图形，看到的形状可能是相同的。例如，一个由3个正方体搭成的“L”形，从前面和右面看可能形状不同，但一个正方体从前面、右面和上面看都是正方形。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-004",
+              "type": "single",
+              "question": "用4个同样大小的正方体搭成一个立体图形，从上面看到的形状是横着排成3个正方形，从正面看到的形状是横着排成3个正方形，从左面看到的形状是竖着排成2个正方形。这个立体图形是（　　）。",
+              "options": [
+                "A. 底层3个，第2层2个",
+                "B. 底层3个，第2层1个",
+                "C. 底层4个，第2层1个",
+                "D. 底层4个，第2层0个"
+              ],
+              "answer": "B",
+              "explanation": "从上面看是3个，说明底层有3个。从左面看是2层，说明第2层至少有1个。从正面看是3个，说明第2层只能有1个。因此底层3个，第2层1个，共4个。故选B。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-005",
+              "type": "blank",
+              "question": "一个立体图形从正面看是（两个正方形竖着排），从上面看是（两个正方形横着排）。这个立体图形最少由（______）个小正方体搭成。",
+              "answer": "3",
+              "explanation": "从正面看是竖着2个，说明有2层。从上面看是横着2个，说明底层有2个。要使小正方体最少，上层只需要1个。所以最少需要2 + 1 = 3个小正方体。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-006",
+              "type": "single",
+              "question": "一个立体图形从正面看是（两个正方形横着排），从上面看是（两个正方形横着排），从左面看是（一个正方形）。这个立体图形最少由（　　）个小正方体搭成。",
+              "options": [
+                "A. 2",
+                "B. 3",
+                "C. 4",
+                "D. 5"
+              ],
+              "answer": "A",
+              "explanation": "从正面看是横着2个，从上面看也是横着2个，从左面看是1个。说明这个立体图形只有一层，底层横着排2个。最少需要2个小正方体。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-007",
+              "type": "judge",
+              "question": "从上面看到的图形是（三个正方形横着排），这个立体图形一定是由3个小正方体搭成的。",
+              "answer": "错",
+              "explanation": "从上面看到三个正方形横着排，只能说明底层有3个小正方体。上层可能还有小正方体，但不会影响从上面看到的形状。所以这个立体图形可能由3个、4个或更多小正方体搭成。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-008",
+              "type": "blank",
+              "question": "用4个同样大小的正方体搭成一个立体图形，从正面看到的形状是（三个正方形横着排），从左面看到的形状是（两个正方形竖着排）。这个立体图形有（______）种不同的搭法。",
+              "answer": "3",
+              "explanation": "从正面看是3个，说明底层有3个。从左面看是2层，说明第2层有1个。第2层的这个正方体可以放在底层3个中的任意一个上面，共有3种搭法。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-009",
+              "type": "single",
+              "question": "下面哪个立体图形从上面看到的形状是（一个正方形在左上，一个正方形在右下）？",
+              "options": [
+                "A. 两个正方体前后排",
+                "B. 两个正方体左右排",
+                "C. 三个正方体呈L形",
+                "D. 两个正方体上下叠放"
+              ],
+              "answer": "A",
+              "explanation": "从上面看，前后排的两个正方体会呈现左上和右下的对角形状。左右排的两个正方体从上面看是横着两个。上下叠放从上面看是一个。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-010",
+              "type": "blank",
+              "question": "一个立体图形，从前面看是（三个正方形横着排），从右面看是（两个正方形横着排），从上面看是（三个正方形横着排）。这个立体图形最少由（______）个小正方体搭成，最多由（______）个小正方体搭成。",
+              "answer": "4,6",
+              "explanation": "从前面看是3个，从上面看是3个，说明底层有3个。从右面看是2个，说明有2层，第2层至少有1个。最少：底层3个 + 上层1个 = 4个。最多：底层3个 + 上层3个（每个位置都放1个）= 6个。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-011",
+              "type": "single",
+              "question": "观察一个由小正方体搭成的立体图形，从正面看到的是（两个正方形横着排），从上面看到的是（两个正方形横着排），这个立体图形可能是（　　）。",
+              "options": [
+                "A. 两个正方体前后排",
+                "B. 两个正方体左右排",
+                "C. 三个正方体",
+                "D. 四个正方体"
+              ],
+              "answer": "B",
+              "explanation": "从正面看是横着2个，从上面看也是横着2个，说明底层只有左右排的2个，没有前后排，也没有上层。所以选B。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-012",
+              "type": "blank",
+              "question": "用3个同样大小的正方体搭成一个立体图形，从正面看到的形状是（三个正方形横着排）。这个立体图形有（______）种搭法。",
+              "answer": "1",
+              "explanation": "从正面看是3个横着排，说明这3个正方体只能排成一行，没有其他搭法。所以只有1种搭法。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-013",
+              "type": "judge",
+              "question": "从一个立体图形的上面看到的形状是（两个正方形横着排），从左面看到的形状是（两个正方形横着排），这个立体图形一定是由4个小正方体搭成的。",
+              "answer": "错",
+              "explanation": "从上面看是横着2个，从左面看也是横着2个，说明底层至少是2×2的排列，共有4个小正方体。但上层可能还有小正方体，只要不改变从上面和左面看到的形状即可。因此，这个立体图形可能由4个或更多小正方体搭成。原题说“一定”，所以错误。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-014",
+              "type": "single",
+              "question": "一个立体图形由若干个相同的小正方体搭成，从正面看是（两个正方形横着排），从左面看是（两个正方形竖着排）。这个立体图形最少由（　　）个小正方体搭成。",
+              "options": [
+                "A. 2",
+                "B. 3",
+                "C. 4",
+                "D. 5"
+              ],
+              "answer": "B",
+              "explanation": "从正面看是横着2个，说明底层有2个（左右排）。从左面看是竖着2个，说明有2层。所以底层2个，上层至少有1个。最少需要2 + 1 = 3个。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-015",
+              "type": "blank",
+              "question": "一个立体图形从正面看是（两个正方形竖着排），从左面看是（两个正方形竖着排），从上面看是（一个正方形）。这个立体图形由（______）个小正方体搭成。",
+              "answer": "2",
+              "explanation": "从上面看是1个，说明底层只有1个。从正面和左面看都是竖着2个，说明有2层。所以底层1个，上层1个，共2个。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-016",
+              "type": "single",
+              "question": "下面哪个立体图形从右面看到的形状是（两个正方形竖着排）？",
+              "options": [
+                "A. 两个正方体左右排",
+                "B. 两个正方体前后排",
+                "C. 两个正方体上下叠放",
+                "D. 三个正方体横着排"
+              ],
+              "answer": "C",
+              "explanation": "从右面看是竖着2个，说明这个立体图形有2层。上下叠放的两个正方体，从右面看正好是竖着2个。A和B从右面看是1个或横着2个。D从右面看是1个。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-017",
+              "type": "judge",
+              "question": "一个立体图形从正面看是（三个正方形横着排），从上面看也是（三个正方形横着排），这个立体图形一定是由3个小正方体搭成的。",
+              "answer": "错",
+              "explanation": "从正面和上面看都是3个横着排，说明底层有3个。但上层可能还有小正方体，只要上层的小正方体不超出底层的范围，从正面和上面看到的形状就不会改变。所以可能由3个、4个、5个或6个小正方体搭成。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-018",
+              "type": "blank",
+              "question": "一个立体图形，从正面看是（两个正方形横着排），从上面看是（两个正方形前后排）。这个立体图形由（______）个小正方体搭成。",
+              "answer": "3",
+              "explanation": "从正面看是横着2个，说明左右方向有2个；从上面看是前后排，说明前后方向有2个。要满足这两个条件，底层至少需要3个小正方体呈L形排列。因此，这个立体图形由3个小正方体搭成。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-019",
+              "type": "single",
+              "question": "一个立体图形，从正面看是（两个正方形横着排），从上面看是（两个正方形横着排）。这个立体图形最少由（　　）个小正方体搭成。",
+              "options": [
+                "A. 2",
+                "B. 3",
+                "C. 4",
+                "D. 5"
+              ],
+              "answer": "A",
+              "explanation": "从正面看横着2个，从上面看横着2个，说明底层左右排2个，没有上层。最少需要2个。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-020",
+              "type": "blank",
+              "question": "用5个同样大小的正方体搭成一个立体图形，从正面看到的形状是（三个正方形横着排），从左面看到的形状是（两个正方形竖着排）。这个立体图形有（______）种不同的搭法。",
+              "answer": "3",
+              "explanation": "从正面看是3个，说明底层有3个。共用5个，说明第2层有2个。第2层的2个正方体可以放在底层3个中的任意2个上面，共有3种不同的搭法。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-021",
+              "type": "single",
+              "question": "一个立体图形，从前面看是（三个正方形横着排），从右面看是（两个正方形横着排），从上面看是（三个正方形横着排）。这个立体图形最少由（　　）个小正方体搭成。",
+              "options": [
+                "A. 3",
+                "B. 4",
+                "C. 5",
+                "D. 6"
+              ],
+              "answer": "B",
+              "explanation": "从前面看是3个，从上面看是3个，说明底层有3个。从右面看是2个，说明有2层（前后排或上下层）。结合从上面看是3个，说明底层是横着3个。从右面看是2个，说明第2层有1个（或者前后排有2个）。最少：底层3个 + 上层1个 = 4个。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "unit-math-4-up-rjb-p3::u4-ex-022",
+              "type": "judge",
+              "question": "从不同位置观察一个由小正方体搭成的立体图形，最多能看到3个面。",
+              "answer": "对",
+              "explanation": "观察一个由小正方体搭成的立体图形，从一个位置看，最多能看到3个面（例如看一个单独的正方体，最多能看到正面、上面和右面3个面）。",
+              "knowledgePointIds": [
+                "unit-math-4-up-rjb-p3::kp-geo-004"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

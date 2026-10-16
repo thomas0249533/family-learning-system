@@ -1,0 +1,145 @@
+// =====================================================================
+// 设计 Token 体系（唯一来源）
+// ---------------------------------------------------------------------
+// 规则：
+//   1. 颜色 / 阴影 / 字号 / 间距 / 圆角 / 动效 一律走 CSS 变量，
+//      实际取值定义在 theme.scss（浅色 :root + 深色 body.dark-mode）。
+//   2. 组件里禁止写死 #hex 或 rgba(数字,...)，一律引用本文件或 var(--x)。
+//   3. 本文件通过 vite.config.ts 的 additionalData 全局注入，
+//      所有 <style lang="scss"> 可直接使用下述 $ 变量。
+// =====================================================================
+
+
+// ========== 1. 品牌色与语义色（随主题变）==========
+// 主色：深松绿，用于导航激活、主按钮、品牌元素
+$primary: var(--primary-color);
+$primary-color: var(--primary-color);
+$primary-hover: var(--primary-hover);
+$primary-pressed: var(--primary-pressed);
+
+$success: var(--success-color);
+$success-color: var(--success-color);
+$warning: var(--warning-color);
+$warning-color: var(--warning-color);
+$danger: var(--danger-color);
+$danger-color: var(--danger-color);
+$info: var(--info-color);
+$info-color: var(--info-color);
+
+// 浅底变体（标签 / 徽章 / 提示条背景）
+$primary-light: var(--primary-light);
+$success-light: var(--success-light);
+$warning-light: var(--warning-light);
+$danger-light: var(--danger-light);
+$info-light: var(--info-light);
+
+// 半透明柔光（用于 rgba 淡底、聚焦环、光晕）
+$primary-soft: var(--primary-soft);
+$primary-soft-strong: var(--primary-soft-strong);
+$success-soft: var(--success-soft);
+$warning-soft: var(--warning-soft);
+$danger-soft: var(--danger-soft);
+$info-soft: var(--info-soft);
+
+// ========== 2. 背景 / 文字 / 边框（随主题变）==========
+$bg-color: var(--bg-color);
+$bg-color-hover: var(--bg-color-hover);
+$card-bg: var(--card-bg);
+$surface-2: var(--surface-2);
+$text-main: var(--text-main);
+$text-sub: var(--text-sub);
+$text-muted: var(--text-muted);
+$text-on-primary: var(--text-on-primary);
+$border-color: var(--border-color);
+$border-light: var(--border-light);
+
+// ========== 3. 学科专属色（不随主题变，保留学科辨识度）==========
+// 语文：古风棕金
+$subject-chinese: #8a6b4a;
+$subject-chinese-deep: #5b4226;
+$subject-chinese-accent: #b7791f;
+$subject-chinese-soft: #d4b87a;
+// 英语：靛蓝
+$subject-english: #1a5490;
+$subject-english-light: #4a90d9;
+// 英语学科色半透明淡底（词性徽章 .pos 使用；主题无关常量）
+$subject-english-soft: rgba(74, 144, 217, 0.15);
+
+// ========== 4. 圆角 ==========
+$radius-xs: var(--radius-xs);
+$radius-sm: var(--radius-sm);
+$radius-md: var(--radius-md);
+$radius-lg: var(--radius-lg);
+$radius-xl: var(--radius-xl);
+$radius-control: var(--radius-control);
+$radius-full: var(--radius-full);
+
+// ========== 5. 间距（8pt 网格）==========
+$space-1: var(--space-1);
+$space-2: var(--space-2);
+$space-3: var(--space-3);
+$space-4: var(--space-4);
+$space-5: var(--space-5);
+$space-6: var(--space-6);
+$space-7: var(--space-7);
+$space-8: var(--space-8);
+$space-10: var(--space-10);
+$space-12: var(--space-12);
+$space-16: var(--space-16);
+
+// ========== 6. 字号 / 行高 ==========
+$font-2xs: var(--font-2xs);
+$font-xs: var(--font-xs);
+$font-sm: var(--font-sm);
+$font-base: var(--font-base);
+$font-md: var(--font-md);
+$font-lg: var(--font-lg);
+$font-xl: var(--font-xl);
+$font-2xl: var(--font-2xl);
+$font-3xl: var(--font-3xl);
+$font-4xl: var(--font-4xl);
+$font-5xl: var(--font-5xl);
+
+$leading-tight: var(--leading-tight);
+$leading-snug: var(--leading-snug);
+$leading-normal: var(--leading-normal);
+$leading-relaxed: var(--leading-relaxed);
+
+// ========== 7. 阴影（用墨绿基调，非纯黑）==========
+$shadow-xs: var(--shadow-xs);
+$shadow-sm: var(--shadow-sm);
+$shadow: var(--shadow);
+$shadow-md: var(--shadow-md);
+$shadow-lg: var(--shadow-lg);
+$shadow-up: var(--shadow-up);
+
+// ========== 8. 动效 ==========
+$ease-standard: var(--ease-standard);
+$ease-emphasized: var(--ease-emphasized);
+$ease-spring: var(--ease-spring);
+$ease-decelerate: var(--ease-decelerate);
+$duration-fast: var(--duration-fast);
+$duration-base: var(--duration-base);
+$duration-slow: var(--duration-slow);
+$duration-slower: var(--duration-slower);
+
+// ========== 9. 渐变（基于品牌色）==========
+$gradient-primary: var(--gradient-primary);
+$gradient-warm: var(--gradient-warm);
+$gradient-cool: var(--gradient-cool);
+$gradient-success: var(--gradient-success);
+$gradient-sunset: var(--gradient-sunset);
+
+// ========== 10. 新增通用 token 门面（对应 theme.scss 白名单新增项）==========
+// 恒白前景色：饱和色块上的文字/图标（深浅同值，仅 :root 定义）
+$on-strong: var(--on-strong);
+$on-strong-rgb: var(--on-strong-rgb);
+// Report 分数档位浅底
+$band-success-bg: var(--band-success-bg);
+$band-success-border: var(--band-success-border);
+$band-warning-bg: var(--band-warning-bg);
+$band-warning-border: var(--band-warning-border);
+$band-danger-bg: var(--band-danger-bg);
+$band-danger-border: var(--band-danger-border);
+// 行内代码文字色
+$code-color: var(--code-color);

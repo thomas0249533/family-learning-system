@@ -1,0 +1,12 @@
+# 任务：生成包集合 manifest.json（.lpkgset.zip 的核心）
+我已经准备好以下学习包文件（开发态 JSON）：
+- unit-math-4-up-rjb-u1.json ~ u8.json
+- term-math-4-up-rjb.json
+
+请根据《学习包开发工具设计方案》5.3 节，生成 `.lpkgset.zip` 中的 `manifest.json`。
+要求：
+1. setId: "math-4-up-rjb-term-set"
+2. root: "term-math-4-up-rjb"
+3. importOrder: 必须按照依赖拓扑排序，u1~u8 在前，term 在最后。
+4. packages 数组：列出所有包的信息，明确标注每个包的 dependencies。
+5. 输出严格 JSON，不要包含多余解释。

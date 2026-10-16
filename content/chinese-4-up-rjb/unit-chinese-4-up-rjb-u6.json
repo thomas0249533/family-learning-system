@@ -1,0 +1,126 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-chinese-4-up-rjb-u6",
+    "type": "unit",
+    "isInternal": true,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "第六单元 祖国壮丽山河",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chinese-021",
+      "type": "concept",
+      "title": "《长城》说明文说明方法赏析",
+      "content": "《长城》一文运用了列数字、打比方等说明方法，介绍了长城的长、高大坚固的特点和建筑奇迹，赞美了古代劳动人民的智慧和血汗结晶，展现了中华文明的伟大。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-chinese-022",
+      "type": "concept",
+      "title": "《颐和园》游览顺序写作技巧",
+      "content": "《颐和园》按照游览移步换景的顺序，依次介绍了长廊、万寿山、昆明湖等景点，过渡自然，景物特点鲜明。学会按游览顺序写景，能让文章条理非常清晰。",
+      "prerequisites": ["kp-chinese-021"]
+    },
+    {
+      "id": "kp-chinese-023",
+      "type": "concept",
+      "title": "《秦兵马俑》传统文化知识点",
+      "content": "秦兵马俑位于陕西西安临潼，是秦始皇陵的陪葬坑，出土的兵马俑神态各异、规模宏大，被誉为“世界第八大奇迹”，是我国举世无双的珍贵历史文物。",
+      "prerequisites": ["kp-chinese-021", "kp-chinese-022"]
+    },
+    {
+      "id": "kp-chinese-024",
+      "type": "writing",
+      "title": "世界文化遗产主题讲解方法",
+      "content": "作为小小讲解员介绍文化遗产：1. 先讲整体概况，再按顺序介绍重点景点 2. 加入1-2个有趣的小故事 3. 声音洪亮，态度自信 4. 注意礼貌用语。",
+      "prerequisites": ["kp-chinese-021", "kp-chinese-022", "kp-chinese-023"]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "u6-ex-001",
+      "type": "single",
+      "question": "《长城》一文在介绍长城时，运用的说明方法有（ ）。",
+      "options": ["A. 列数字", "B. 打比方", "C. 举例子", "D. 以上都是"],
+      "answer": "D",
+      "explanation": "文中用“一万三千多里”列数字，用“像一条长龙”打比方，还举了具体的例子，使说明更准确、形象。",
+      "knowledgePointIds": ["kp-chinese-021"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u6-ex-002",
+      "type": "blank",
+      "question": "《颐和园》一文按照作者的______顺序，依次介绍了长廊、万寿山和昆明湖。",
+      "answer": ["游览"],
+      "explanation": "文章采用移步换景的写法，随着游览路线的推进介绍不同景点，条理清晰，读者仿佛身临其境。",
+      "knowledgePointIds": ["kp-chinese-022"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u6-ex-003",
+      "type": "single",
+      "question": "秦兵马俑被誉为“世界第（ ）大奇迹”。",
+      "options": ["A. 六", "B. 七", "C. 八", "D. 九"],
+      "answer": "C",
+      "explanation": "秦始皇陵兵马俑规模宏大、神态各异，被誉为“世界第八大奇迹”，是我国珍贵的文化遗产。",
+      "knowledgePointIds": ["kp-chinese-023"],
+      "metadata": { "difficulty": "基础" }
+    },
+    {
+      "id": "u6-ex-004",
+      "type": "multiple",
+      "question": "当“小小讲解员”介绍文化遗产时，正确的做法有（ ）。",
+      "options": ["A. 声音洪亮", "B. 按一定顺序介绍", "C. 加入有趣的小故事", "D. 态度自然自信"],
+      "answer": ["A", "B", "C", "D"],
+      "explanation": "讲解员要在声音、条理、内容趣味性和仪态自信等方面做好准备，才能吸引听众。",
+      "knowledgePointIds": ["kp-chinese-024"],
+      "metadata": { "difficulty": "提高" }
+    },
+    {
+      "id": "u6-ex-005",
+      "type": "blank",
+      "question": "写“中国的世界文化遗产”时，可以先总写______，再按顺序介绍重点部分，最后写出自己的______。",
+      "answer": ["整体情况", "感受"],
+      "explanation": "介绍文化遗产要结构清晰，先概括后具体，最后表达自己的情感或呼吁保护，使文章更有感染力。",
+      "knowledgePointIds": ["kp-chinese-024"],
+      "metadata": { "difficulty": "挑战" }
+    }
+  ],
+  "units": [
+    {
+      "id": "u6",
+      "name": "第六单元",
+      "title": "第六单元 祖国壮丽山河",
+      "desc": "本单元围绕祖国壮丽山河展开，包含《长城》《颐和园》《秦兵马俑》等课文。",
+      "topics": [
+        {
+          "id": "u6-t1",
+          "title": "名胜古迹·长城与颐和园",
+          "knowledgePointIds": ["kp-chinese-021", "kp-chinese-022"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u6-t2",
+          "title": "历史文物·秦兵马俑",
+          "knowledgePointIds": ["kp-chinese-023"],
+          "modules": [],
+          "exercises": []
+        },
+        {
+          "id": "u6-t3",
+          "title": "口语交际与习作·文化遗产",
+          "knowledgePointIds": ["kp-chinese-024"],
+          "modules": [],
+          "exercises": []
+        }
+      ]
+    }
+  ]
+}

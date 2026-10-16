@@ -1,0 +1,893 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-tenses-combo",
+    "type": "special",
+    "title": "英语时态与主谓一致综合专项训练",
+    "dependencies": [],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "通用",
+    "examMode": true,
+    "sourceUnitIds": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-tense-present",
+      "type": "concept",
+      "title": "一般现在时",
+      "content": "表示经常性、习惯性动作或客观事实。主语为第三人称单数时，谓语动词加 -s/-es；其他主语用动词原形。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-tense-past",
+      "type": "concept",
+      "title": "一般过去时",
+      "content": "表示过去某个时间发生的动作或存在的状态。规则动词加 -ed，不规则动词需单独记忆。否定用 didn't + 动词原形。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-tense-continuous",
+      "type": "concept",
+      "title": "现在进行时",
+      "content": "表示此刻或现阶段正在进行的动作。结构：be (am/is/are) + doing。常与 now, look, listen 连用。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-agreement",
+      "type": "concept",
+      "title": "主谓一致（单三与非单三）",
+      "content": "一般现在时中，主语为 he/she/it/单数名词时，动词用单三形式；主语为 I/you/we/they/复数名词时，动词用原形。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-yesno",
+      "type": "concept",
+      "title": "一般疑问句",
+      "content": "将 be 动词、情态动词或助动词 do/does/did 提到主语前。回答用 Yes/No。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-wh",
+      "type": "concept",
+      "title": "特殊疑问句",
+      "content": "特殊疑问词（what/who/where/when/why/how 等）+ 一般疑问句语序。不能用 Yes/No 回答。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-attributive",
+      "type": "concept",
+      "title": "定语从句",
+      "content": "修饰名词或代词的从句，紧跟先行词。先行词指人用 who/that；指物用 which/that。从句谓语与先行词保持一致。",
+      "prerequisites": []
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-english-7-up-tenses-combo::u1",
+      "name": "综合专项训练",
+      "title": "英语时态与主谓一致综合专项训练",
+      "desc": "四种能力叠加训练：时态、主谓一致、疑问句、定语从句。每题至少融合两项。",
+      "topics": [
+        {
+          "id": "special-english-7-up-tenses-combo::t1",
+          "title": "四维综合",
+          "knowledgePointIds": [
+            "kp-tense-present",
+            "kp-tense-past",
+            "kp-tense-continuous",
+            "kp-agreement",
+            "kp-yesno",
+            "kp-wh",
+            "kp-attributive"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "combo-ex-001",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. go", "B. goes", "C. going", "D. went"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "My brother ______ to school by bike every day.",
+              "explanation": "主语 My brother 是第三人称单数，every day 提示一般现在时，动词加 -es。故选 B。"
+            },
+            {
+              "id": "combo-ex-002",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. play", "B. plays", "C. are playing", "D. played"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-tense-continuous"],
+              "question": "Look! The children ______ in the playground now.",
+              "explanation": "Look 和 now 提示现在进行时，主语是复数用 are playing。故选 C。"
+            },
+            {
+              "id": "combo-ex-003",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. Do", "B. Does", "C. Is", "D. Are"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-yesno", "kp-agreement"],
+              "question": "______ your sister like music?",
+              "explanation": "主语 your sister 为第三人称单数，一般现在时一般疑问句用 Does，后接动词原形。故选 B。"
+            },
+            {
+              "id": "combo-ex-004",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. which", "B. who", "C. what", "D. whose"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous"],
+              "question": "The girl ______ is wearing a red skirt is my cousin.",
+              "explanation": "先行词 girl 指人，用 who 引导定语从句，从句用现在进行时。故选 B。"
+            },
+            {
+              "id": "combo-ex-005",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. play", "B. plays", "C. are playing", "D. played"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "They ______ football every Sunday afternoon.",
+              "explanation": "主语 They 是非单三，every Sunday afternoon 提示一般现在时，动词用原形。故选 A。"
+            },
+            {
+              "id": "combo-ex-006",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. are; am", "B. do; am", "C. are; do", "D. is; am"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-wh"],
+              "question": "—What ______ you doing now? —I ______ reading a book.",
+              "explanation": "now 提示现在进行时；第一空 you 用 are；第二空 I 用 am。故选 A。"
+            },
+            {
+              "id": "combo-ex-007",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. watch", "B. watches", "C. watched", "D. is watching"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-tense-past"],
+              "question": "My father ______ TV last night.",
+              "explanation": "last night 提示一般过去时，watch 的过去式是 watched。故选 C。"
+            },
+            {
+              "id": "combo-ex-008",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. What", "B. How", "C. When", "D. Where"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-wh"],
+              "question": "—______ does your mother go to work? —By bus.",
+              "explanation": "By bus 回答交通方式，用 How 提问。故选 B。"
+            },
+            {
+              "id": "combo-ex-009",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. who", "B. whom", "C. which", "D. what"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-attributive"],
+              "question": "The book ______ is on the desk is mine.",
+              "explanation": "先行词 book 指物，用 which 引导定语从句。故选 C。"
+            },
+            {
+              "id": "combo-ex-010",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. Is; doing", "B. Does; do", "C. Do; do", "D. Is; do"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-yesno"],
+              "question": "______ she ______ her homework now?",
+              "explanation": "now 提示现在进行时，一般疑问句把 is 提前，动词用 doing。故选 A。"
+            },
+            {
+              "id": "combo-ex-011",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. listen", "B. listens", "C. listening", "D. listened"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "He often ______ to music after school.",
+              "explanation": "often 提示一般现在时，He 是第三人称单数，动词加 -s。故选 B。"
+            },
+            {
+              "id": "combo-ex-012",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. go", "B. goes", "C. went", "D. are going"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-tense-past"],
+              "question": "We ______ to the zoo last Sunday.",
+              "explanation": "last Sunday 提示一般过去时，go 的过去式是 went。故选 C。"
+            },
+            {
+              "id": "combo-ex-013",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. Do; speak", "B. Does; speak", "C. Do; speaks", "D. Does; speaks"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-yesno", "kp-agreement"],
+              "question": "______ your parents ______ English?",
+              "explanation": "主语 parents 是复数，用 Do，后接动词原形 speak。故选 A。"
+            },
+            {
+              "id": "combo-ex-014",
+              "type": "single",
+              "difficulty": "基础",
+              "options": ["A. which", "B. what", "C. who", "D. whose"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous"],
+              "question": "The man ______ is talking to my father is a doctor.",
+              "explanation": "先行词 man 指人，用 who 引导定语从句，从句用现在进行时。故选 C。"
+            },
+            {
+              "id": "combo-ex-015",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "She go to school every day.",
+              "explanation": "She 是第三人称单数，go 应改为 goes。故本题错误。"
+            },
+            {
+              "id": "combo-ex-016",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-agreement"],
+              "question": "They are playing basketball now.",
+              "explanation": "主语复数 + are + doing，符合现在进行时结构。故本题正确。"
+            },
+            {
+              "id": "combo-ex-017",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-yesno", "kp-agreement"],
+              "question": "Does he likes English?",
+              "explanation": "Does 后动词必须用原形，likes 应改为 like。故本题错误。"
+            },
+            {
+              "id": "combo-ex-018",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous"],
+              "question": "The girl who is singing is my sister.",
+              "explanation": "who 引导定语从句，先行词指人，从句是现在进行时，结构正确。故本题正确。"
+            },
+            {
+              "id": "combo-ex-019",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-wh", "kp-agreement"],
+              "question": "What time do she get up?",
+              "explanation": "she 是第三人称单数，助动词应用 does，应为 What time does she get up?。故本题错误。"
+            },
+            {
+              "id": "combo-ex-020",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-agreement"],
+              "question": "My mother is cook in the kitchen now.",
+              "explanation": "is 后应接现在分词 cooking。故本题错误。"
+            },
+            {
+              "id": "combo-ex-021",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-tense-past"],
+              "question": "I watched TV with my family yesterday evening.",
+              "explanation": "yesterday evening 提示一般过去时，watched 形式正确。故本题正确。"
+            },
+            {
+              "id": "combo-ex-022",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-past"],
+              "question": "The book which I bought yesterday is very interesting.",
+              "explanation": "which 指物，从句用过去时 bought，主句用现在时 is，结构正确。故本题正确。"
+            },
+            {
+              "id": "combo-ex-023",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-yesno", "kp-agreement"],
+              "question": "Do your brother like playing football?",
+              "explanation": "brother 是第三人称单数，应用 Does。故本题错误。"
+            },
+            {
+              "id": "combo-ex-024",
+              "type": "judge",
+              "difficulty": "基础",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-tense-continuous"],
+              "question": "Listen! The birds are singing in the tree.",
+              "explanation": "Listen 提示现在进行时，are singing 形式正确。故本题正确。"
+            },
+            {
+              "id": "combo-ex-025",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "goes",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "She ______ (go) to school at 7:00 every morning.",
+              "explanation": "She 是第三人称单数，一般现在时动词加 -es，故填 goes。"
+            },
+            {
+              "id": "combo-ex-026",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "are playing",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-agreement"],
+              "question": "Look! They ______ (play) football on the playground.",
+              "explanation": "Look 提示现在进行时，复数主语用 are playing。"
+            },
+            {
+              "id": "combo-ex-027",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "doesn't like",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "My sister ______ (not like) watching TV.",
+              "explanation": "单三否定用 doesn't + 动词原形，故填 doesn't like。"
+            },
+            {
+              "id": "combo-ex-028",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "Were",
+              "knowledgePointIds": ["kp-tense-past", "kp-yesno"],
+              "question": "______ (be) you at home yesterday?",
+              "explanation": "you 在过去时中用 were，疑问句将 Were 提前，首字母大写。"
+            },
+            {
+              "id": "combo-ex-029",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "is doing",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-agreement"],
+              "question": "He ______ (do) his homework now.",
+              "explanation": "now 提示现在进行时，He 是单三用 is doing。"
+            },
+            {
+              "id": "combo-ex-030",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "who",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous"],
+              "question": "The boy ______ (who) is running is my brother.",
+              "explanation": "先行词 boy 指人，用 who 引导定语从句。"
+            },
+            {
+              "id": "combo-ex-031",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "Does; have",
+              "knowledgePointIds": ["kp-yesno", "kp-agreement"],
+              "question": "—______ he ______ (have) a brother? —Yes, he does.",
+              "explanation": "单三一般疑问句用 Does 提前，动词用原形 have。"
+            },
+            {
+              "id": "combo-ex-032",
+              "type": "blank",
+              "difficulty": "基础",
+              "options": [],
+              "answer": "are",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "My parents ______ (be) both teachers.",
+              "explanation": "parents 是复数，be 动词用 are。"
+            },
+            {
+              "id": "combo-ex-033",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. sings", "B. is singing", "C. sang", "D. sing"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous"],
+              "question": "Look! The girl who ______ an English song is my cousin.",
+              "explanation": "Look 提示进行时，从句用 is singing。故选 B。"
+            },
+            {
+              "id": "combo-ex-034",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. Did; go", "B. Does; go", "C. Is; going", "D. Did; went"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-past", "kp-yesno"],
+              "question": "—______ your brother ______ to school yesterday? —No, he was ill.",
+              "explanation": "yesterday 提示过去时，Did 后接动词原形 go。故选 A。"
+            },
+            {
+              "id": "combo-ex-035",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. who; is", "B. which; is", "C. which; are", "D. who; are"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "The dictionary ______ I bought last week ______ very useful.",
+              "explanation": "先行词 dictionary 指物用 which，单数用 is。故选 B。"
+            },
+            {
+              "id": "combo-ex-036",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. knocks", "B. knocked", "C. is knocking", "D. knock"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-agreement"],
+              "question": "Listen! Someone ______ the door.",
+              "explanation": "Listen 提示进行时，someone 作单三用 is knocking。故选 C。"
+            },
+            {
+              "id": "combo-ex-037",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. is; doing", "B. does; do", "C. did; do", "D. does; does"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-tense-present", "kp-wh", "kp-agreement"],
+              "question": "—What ______ your father usually ______ after dinner? —He usually takes a walk.",
+              "explanation": "usually 提示一般现在时，单三助动词 does + 原形 do。故选 B。"
+            },
+            {
+              "id": "combo-ex-038",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. who; is", "B. which; is", "C. who; are", "D. that; are"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement", "kp-tense-continuous"],
+              "question": "The boy ______ is playing basketball ______ my cousin.",
+              "explanation": "先行词 boy 指人用 who，主句主语单三用 is。故选 A。"
+            },
+            {
+              "id": "combo-ex-039",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. helps; is", "B. helps; was", "C. help; was", "D. helped; was"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-tense-present", "kp-tense-past", "kp-agreement"],
+              "question": "My mother often ______ me with my homework, but yesterday she ______ too tired.",
+              "explanation": "often 现在时单三用 helps；yesterday 过去时用 was。故选 B。"
+            },
+            {
+              "id": "combo-ex-040",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. Are; having", "B. Do; have", "C. Did; have", "D. Is; having"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-yesno"],
+              "question": "—______ the students ______ an English class now? —Yes, they are.",
+              "explanation": "now 提示进行时，复数主语用 Are; having。故选 A。"
+            },
+            {
+              "id": "combo-ex-041",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. who", "B. whom", "C. which", "D. that"],
+              "answer": "D",
+              "knowledgePointIds": ["kp-attributive"],
+              "question": "This is the most interesting book ______ I have ever read.",
+              "explanation": "先行词被最高级修饰，只能用 that。故选 D。"
+            },
+            {
+              "id": "combo-ex-042",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. watch; does", "B. watches; is doing", "C. watched; is doing", "D. is watching; does"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-tense-present", "kp-tense-continuous", "kp-agreement"],
+              "question": "His sister ______ TV every evening, but now she ______ her homework.",
+              "explanation": "every evening 用单三 watches；now 用 is doing。故选 B。"
+            },
+            {
+              "id": "combo-ex-043",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. Did; go", "B. Do; go", "C. Are; going", "D. Did; went"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-past", "kp-yesno"],
+              "question": "______ they ______ to the beach last weekend?",
+              "explanation": "last weekend 提示过去时，Did 后接原形 go。故选 A。"
+            },
+            {
+              "id": "combo-ex-044",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. who; is", "B. which; is", "C. who; are", "D. that; are"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement", "kp-tense-continuous"],
+              "question": "The woman ______ is talking to my mother ______ a nurse.",
+              "explanation": "先行词 woman 指人用 who；主句单三用 is。故选 A。"
+            },
+            {
+              "id": "combo-ex-045",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. How often", "B. How long", "C. How soon", "D. How far"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-wh"],
+              "question": "—______ do you usually go to the library? —Once a week.",
+              "explanation": "Once a week 回答频率，用 How often。故选 A。"
+            },
+            {
+              "id": "combo-ex-046",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. reads; is", "B. is reading; is", "C. read; is", "D. reads; are"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-agreement"],
+              "question": "Look at the boy. He ______ a book under the tree. The book ______ about animals.",
+              "explanation": "Look 提示进行时，主语 He 用 is reading；书单数用 is。故选 B。"
+            },
+            {
+              "id": "combo-ex-047",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. which; is", "B. who; is", "C. who; was", "D. which; was"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-past"],
+              "question": "The man ______ helped me yesterday ______ my uncle.",
+              "explanation": "man 指人用 who；主句描述现状用现在时 is。故选 B。"
+            },
+            {
+              "id": "combo-ex-048",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. take; is", "B. takes; is", "C. took; was", "D. is taking; is"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "My grandfather ______ a walk in the park every morning. He ______ very healthy.",
+              "explanation": "every morning 一般现在时，grandfather 单三用 takes；He 单三用 is。故选 B。"
+            },
+            {
+              "id": "combo-ex-049",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. is", "B. does", "C. are", "D. do"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-wh", "kp-agreement"],
+              "question": "—Who ______ the girl under the tree? —She is my sister.",
+              "explanation": "Who + be 动词询问身份，girl 单数用 is。故选 A。"
+            },
+            {
+              "id": "combo-ex-050",
+              "type": "single",
+              "difficulty": "提高",
+              "options": ["A. who; is", "B. which; is", "C. which; was", "D. who; was"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-past"],
+              "question": "The film ______ we saw yesterday ______ very interesting.",
+              "explanation": "先行词 film 指物用 which；主句描述过去感受用 was。故选 C。"
+            },
+            {
+              "id": "combo-ex-051",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-yesno", "kp-agreement"],
+              "question": "Does she goes to school by bus every day?",
+              "explanation": "Does 后应为动词原形 go，不是 goes。故本题错误。"
+            },
+            {
+              "id": "combo-ex-052",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous"],
+              "question": "The boy who is playing the piano is my cousin.",
+              "explanation": "who 引导定语从句，从句是现在进行时，结构正确。故本题正确。"
+            },
+            {
+              "id": "combo-ex-053",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-tense-past"],
+              "question": "My father didn't watched TV last night.",
+              "explanation": "didn't 后用动词原形 watch。故本题错误。"
+            },
+            {
+              "id": "combo-ex-054",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-wh"],
+              "question": "What is your mother do now?",
+              "explanation": "now 提示进行时，应为 What is your mother doing now?。故本题错误。"
+            },
+            {
+              "id": "combo-ex-055",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-agreement"],
+              "question": "The students are reading books in the library.",
+              "explanation": "复数主语 + are doing，符合现在进行时。故本题正确。"
+            },
+            {
+              "id": "combo-ex-056",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-attributive"],
+              "question": "He is the man which helped me yesterday.",
+              "explanation": "先行词 man 指人，应用 who 或 that。故本题错误。"
+            },
+            {
+              "id": "combo-ex-057",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-tense-present", "kp-agreement"],
+              "question": "My sister often helps my mother with housework.",
+              "explanation": "often 一般现在时，sister 单三用 helps，正确。故本题正确。"
+            },
+            {
+              "id": "combo-ex-058",
+              "type": "judge",
+              "difficulty": "提高",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-yesno", "kp-agreement"],
+              "question": "Are she watching TV now?",
+              "explanation": "she 是单三，应用 Is。故本题错误。"
+            },
+            {
+              "id": "combo-ex-059",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "is wearing; is singing",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous", "kp-agreement"],
+              "question": "Look! The girl who ______ (wear) a red dress ______ (sing) on the stage.",
+              "explanation": "Look 提示进行时；girl 单三用 is wearing 和 is singing。"
+            },
+            {
+              "id": "combo-ex-060",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "gets; got",
+              "knowledgePointIds": ["kp-tense-present", "kp-tense-past", "kp-agreement"],
+              "question": "My brother usually ______ (get) up at 6:30, but yesterday he ______ (get) up at 8:00.",
+              "explanation": "usually 一般现在时单三用 gets；yesterday 一般过去时用 got。"
+            },
+            {
+              "id": "combo-ex-061",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "Does; go; walks",
+              "knowledgePointIds": ["kp-yesno", "kp-agreement", "kp-tense-present"],
+              "question": "—______ your father ______ (go) to work by car? —No, he doesn't. He ______ (walk) to work every day.",
+              "explanation": "单三一般疑问句用 Does + 原形 go；答句单三用 walks。"
+            },
+            {
+              "id": "combo-ex-062",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "which; is",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "The book ______ (which) is on the table ______ (be) mine.",
+              "explanation": "先行词物用 which；book 单数用 is。"
+            },
+            {
+              "id": "combo-ex-063",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "are playing; play",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-tense-present"],
+              "question": "They ______ (play) basketball now. They ______ (play) it every Saturday.",
+              "explanation": "now 进行时用 are playing；every Saturday 一般现在时用 play。"
+            },
+            {
+              "id": "combo-ex-064",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "who; is",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "The man ______ (who) is standing there ______ (be) my English teacher.",
+              "explanation": "先行词人用 who；man 单数用 is。"
+            },
+            {
+              "id": "combo-ex-065",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. who; who; is", "B. who; whose; is", "C. whose; who; is", "D. who; whose; are"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "The boy ______ is wearing glasses, ______ father is a doctor, ______ my best friend.",
+              "explanation": "第一空 who 作从句主语；第二空 whose 表所属；第三空主句单三用 is。故选 B。"
+            },
+            {
+              "id": "combo-ex-066",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. Does; wears; go", "B. Does; wear; go", "C. Does; wears; goes", "D. Do; wears; go"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-yesno", "kp-attributive", "kp-agreement"],
+              "question": "—______ the girl who ______ a red skirt ______ to school every day? —Yes, she does.",
+              "explanation": "主句疑问用 Does 提前；定语从句 who 后单三 wears；主句动词原形 go。故选 A。"
+            },
+            {
+              "id": "combo-ex-067",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. are; is", "B. is; are", "C. are; are", "D. is; is"],
+              "answer": "C",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "My parents, who ______ both teachers, ______ very busy every day.",
+              "explanation": "先行词 parents 复数，从句用 are；主句主语复数用 are。故选 C。"
+            },
+            {
+              "id": "combo-ex-068",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. sings; is", "B. is singing; is", "C. sing; is", "D. is singing; are"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous", "kp-agreement"],
+              "question": "Listen! The girl who ______ an English song ______ my sister.",
+              "explanation": "Listen 提示从句进行时 is singing；主句单三用 is。故选 B。"
+            },
+            {
+              "id": "combo-ex-069",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. is; doing; is reading", "B. does; do; reads", "C. is; do; is reading", "D. does; doing; reads"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-wh", "kp-agreement"],
+              "question": "—What ______ the boy ______ now? —He ______ a book under the tree.",
+              "explanation": "now 提示现在进行时；boy 单三用 is；答句 He 单三用 is reading。故选 A。"
+            },
+            {
+              "id": "combo-ex-070",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. who; helps", "B. which; helps", "C. who; helped", "D. which; helped"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-present", "kp-agreement"],
+              "question": "The woman ______ we met yesterday ______ us with our English.",
+              "explanation": "先行词 woman 指人用 who；主句描述现状用 helps。故选 A。"
+            },
+            {
+              "id": "combo-ex-071",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. wear; teach", "B. wears; teach", "C. wear; teaches", "D. wears; teaches"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-yesno", "kp-attributive", "kp-agreement"],
+              "question": "Does the man who ______ a black coat ______ English?",
+              "explanation": "Does 后主句动词用原形 teach；定语从句 who 后单三 wears。故选 B。"
+            },
+            {
+              "id": "combo-ex-072",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. works; goes", "B. work; goes", "C. works; go", "D. work; go"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "My sister, who ______ in a hospital, ______ to work by bus every day.",
+              "explanation": "先行词 sister 单三，从句用 works；主句单三用 goes。故选 A。"
+            },
+            {
+              "id": "combo-ex-073",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. which; am", "B. who; was", "C. who; am", "D. which; was"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-past"],
+              "question": "This is the boy ______ helped me when I ______ in trouble.",
+              "explanation": "先行词 boy 指人用 who；when 从句描述过去用 was。故选 B。"
+            },
+            {
+              "id": "combo-ex-074",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. Is; watching; is doing", "B. Does; watch; does", "C. Is; watch; is doing", "D. Does; watching; does"],
+              "answer": "A",
+              "knowledgePointIds": ["kp-tense-continuous", "kp-yesno", "kp-agreement"],
+              "question": "—______ your brother ______ TV now? —No, he ______ his homework.",
+              "explanation": "now 提示现在进行时；brother 单三用 Is；答句 He 单三用 is doing。故选 A。"
+            },
+            {
+              "id": "combo-ex-075",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": ["A. is; are", "B. are; are", "C. is; is", "D. are; is"],
+              "answer": "B",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "The students who ______ playing football on the playground ______ from Class One.",
+              "explanation": "先行词 students 复数，从句用 are；主句主语复数用 are。故选 B。"
+            },
+            {
+              "id": "combo-ex-076",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-yesno", "kp-attributive", "kp-agreement"],
+              "question": "Does the boy who is playing the piano like music?",
+              "explanation": "Does 提前；定语从句 who is playing 正确；主句动词用原形 like。故本题正确。"
+            },
+            {
+              "id": "combo-ex-077",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "The woman who is talking to my mother are my aunt.",
+              "explanation": "主句主语 The woman 是单数，应用 is。故本题错误。"
+            },
+            {
+              "id": "combo-ex-078",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": ["T", "F"],
+              "answer": "T",
+              "knowledgePointIds": ["kp-wh", "kp-attributive", "kp-tense-continuous"],
+              "question": "What is the girl who is wearing a red dress doing now?",
+              "explanation": "What ... doing 是进行时特殊疑问句；定语从句 who is wearing 正确。故本题正确。"
+            },
+            {
+              "id": "combo-ex-079",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": ["T", "F"],
+              "answer": "F",
+              "knowledgePointIds": ["kp-attributive", "kp-agreement"],
+              "question": "My father, who is a teacher, often help me with my homework.",
+              "explanation": "主句主语 My father 是单三，应用 helps。故本题错误。"
+            },
+            {
+              "id": "combo-ex-080",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "is singing; is; likes",
+              "knowledgePointIds": ["kp-attributive", "kp-tense-continuous", "kp-agreement", "kp-tense-present"],
+              "question": "The girl who ______ (sing) an English song now ______ (be) my cousin. She ______ (like) English very much.",
+              "explanation": "now 提示进行时，girl 单三用 is singing；主句单三用 is；like 单三加 -s 为 likes。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

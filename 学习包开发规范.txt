@@ -1,0 +1,223 @@
+学习包开发规范（当前版本）
+
+**有变化。** 新增了 6 种题型、依赖、前置、复习调度。以下是**给编程人员/专家用的完整规范**。
+
+---
+
+## 学习包开发规范 v1.1
+
+### 1. 文件格式
+
+- 单包：`.json`
+- 包集合：`.lpkgset.zip`（内含多个 `.json` + `manifest.json`）
+
+### 2. 顶层结构
+
+```json
+{
+  "manifest": { ... },
+  "knowledgePoints": [ ... ],
+  "exercises": [],
+  "units": [ ... ]
+}
+```
+
+- `exercises` 导入前可空，导入时自动填充。
+- `packageId` 会同步写到顶层，作为 IndexedDB 主键。
+
+### 3. manifest（元数据，必填）
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `schemaVersion` | string | ✅ | 固定 `"1.0"` |
+| `packageId` | string | ✅ | 全局唯一，如 `math-4-up-rjb` |
+| `packageType` | string | ✅ | `base` / `unit` / `term` / `special` / `sprint` / `mistake` |
+| `subject` | string | ✅ | `math` / `chinese` / `english` |
+| `templateId` | string | ✅ | `math.primary.v1` / `chinese.primary.v1` / `english.primary.v1` |
+| `grade` | number | ✅ | 1~9 |
+| `term` | string | ✅ | `up` / `down` |
+| `edition` | string | ✅ | 如 `人教版` |
+| `title` | string | ✅ | 显示标题 |
+| `subtitle` | string | ❌ | 副标题 |
+| `dependencies` | string[] | ❌ | 依赖的 packageId 数组（学期包/专项包用） |
+
+### 4. knowledgePoints（知识点池）
+
+```json
+{
+  "id": "kp-formula-001",
+  "type": "formula",
+  "title": "乘法分配律",
+  "content": "(a+b) \\times c = a \\times c + b \\times c",
+  "prerequisites": ["kp-formula-000"],
+  "metadata": { "difficulty": 2 }
+}
+```
+
+| 字段 | 必填 | 说明 |
+|---|---|---|
+| `id` | ✅ | 全局唯一，导入时 `exerciseIds` 自动生成 |
+| `type` | ✅ | 见下表 |
+| `title` | ✅ | 会被搜索索引 |
+| `content` | ✅ | Markdown / LaTeX |
+| `prerequisites` | ❌ | 前置知识点 ID 数组，不能成环 |
+| `metadata` | ❌ | 学科专属字段，渲染器依赖 |
+
+**知识点 type 一览**：
+
+| 学科 | type | 渲染器 |
+|---|---|---|
+| 数学 | `formula` | `math.formula` |
+| 数学 | `concept` | `math.concept` |
+| 数学 | `life` | `math.life` |
+| 语文 | `poem` | `chinese.poem` |
+| 语文 | `concept` | `chinese.text` |
+| 语文 | `word` | `chinese.words` |
+| 语文 | `writing` | `chinese.writing` |
+| 英语 | `word` | `english.vocab` |
+| 英语 | `grammar` | `english.sentence` / `english.grammar` |
+| 英语 | `concept` | `english.reading` / `english.writing` |
+
+**metadata 学科约定**：
+
+- **语文 poem**：`author` / `dynasty` / `translation` / `appreciation`
+- **语文 word**：`word` / `pinyin`
+- **英语 word**：`word` / `phonetic` / `partOfSpeech` / `example` / `exampleCn`
+- **英语 grammar（句型）**：`pattern` / `translation` / `usage`
+- **通用**：`difficulty` / `estimatedMinutes` / `cognitiveLevel` / `ability` / `tags`
+
+### 5. units（单元）
+
+```json
+{
+  "id": "u5",
+  "name": "第五单元",
+  "title": "运算律",
+  "desc": "加法与乘法交换律、结合律、分配律",
+  "topics": [ ... ]
+}
+```
+
+### 6. topics（主题/课时）
+
+```json
+{
+  "id": "t1",
+  "title": "乘法分配律的妙用",
+  "knowledgePointIds": ["kp-formula-001"],
+  "modules": [ ... ],
+  "exercises": [ ... ]
+}
+```
+
+- `knowledgePointIds`：本 topic 涉及的知识点。
+- `exercises`：本 topic 的练习题（导入时题目会自动继承 topic 的 `knowledgePointIds`）。
+
+### 7. modules（模块）
+
+```json
+{ "id": "m1", "type": "math.formula", "title": "公式速查", "knowledgePointIds": ["kp-formula-001"] }
+```
+
+- `type` 使用命名空间，见上表。
+- `knowledgePointIds` 引用知识点，也支持内联 `data`。
+
+### 8. exercises（题目）
+
+```json
+{
+  "id": "ex_001",
+  "type": "single",
+  "question": "计算 25 × 4 + 75 × 4 用哪种运算律最简便？",
+  "options": ["A. 交换律", "B. 结合律", "C. 分配律", "D. 无法判断"],
+  "answer": "C",
+  "explanation": "提取公因数4，(25+75)×4 = 400。",
+  "knowledgePointIds": ["kp-formula-001"],
+  "metadata": { "difficulty": "基础" }
+}
+```
+
+**8.1 支持的题型**
+
+| type | 说明 | answer 格式 | 额外字段 |
+|---|---|---|---|
+| `single` | 单选 | `"C"` | `options` |
+| `blank` | 填空 | `"400"` | — |
+| `multiple` | 多选 | `"ABC"` | `options` |
+| `judge` | 判断 | `"对"` 或 `"错"` | — |
+| `matching` | 连线 | `[1, 2, 0]`（索引数组） | `left[]`, `right[]` |
+| `spelling` | 拼写 | `"library"` | `hint`（可选） |
+
+**8.2 通用字段**
+
+| 字段 | 必填 | 说明 |
+|---|---|---|
+| `id` | ✅ | 全局唯一 |
+| `type` | ✅ | 上表之一 |
+| `question` | ✅ | 题干 |
+| `answer` | ✅ | 标准答案，格式见上表 |
+| `explanation` | ❌ | 解析 |
+| `knowledgePointIds` | ⚠️ | 建议手写；不写则继承 topic |
+| `options` | 单选/多选必填 | 选项数组，如 `["A. xxx", "B. yyy"]` |
+| `metadata.difficulty` | ❌ | `基础` / `提高` / `挑战` |
+
+### 9. 校验规则（导入时强制）
+
+| 码 | 含义 |
+|---|---|
+| E001~E003 | 顶层结构/ manifest 缺失 |
+| E004 | 知识点 id 重复 |
+| E005~E007 | 题目缺 id/type/answer |
+| E008 | 题目无知识点关联 |
+| E009 | 题目引用了不存在的知识点 |
+| E010 | JSON 语法错误 |
+| E012 | 连线题字段不合法 |
+| E013 | 前置引用不存在 / 自引用 |
+| E014 | 前置循环依赖 |
+| E020/E021 | 依赖项非法 / 自依赖 |
+| E022 | 包依赖循环 |
+| W001 | 知识点缺 id |
+| W002 | 题目 id 重复 |
+| W020 | 依赖重复 |
+| W021 | 依赖包未找到（仅警告，可导入） |
+
+### 10. 内容编写黄金法则
+
+- ✅ 公式用 LaTeX：`\\times`、`\\frac{1}{2}`、`x^2`
+- ✅ 多行用 `\n`（JSON 里不能直接换行）
+- ✅ Markdown 支持：标题、加粗、列表、代码块、引用
+- ✅ 难度分级：基础 / 提高 / 挑战
+- ❌ 禁止 HTML 标签
+- ❌ 禁止绝对路径，图片/音频用 base64 或相对路径
+- ✅ 知识点 id 语义化：`math-formula-001`、`cn-poem-001`、`en-word-001`
+- ✅ 题目 id 语义化：`u5-ex-001`
+
+### 11. 校验流程
+
+写完 JSON 后必须按顺序：
+
+1. VSCode 打开，无红色波浪线
+2. `npm run validate -- path/to/file.json`
+3. 导入 UI，无错误弹窗（警告可忽略）
+4. 进入知识点页面，模块渲染正常
+5. 做一遍题，反馈正确
+
+### 12. 专家输出清单
+
+每个知识点至少输出：
+
+- `id` / `type` / `title` / `content`
+- 学科 metadata（语文 poem 必须有 `author`；英语 word 必须有 `phonetic`）
+- 建议填 `prerequisites`（用于学习路径）
+- 建议填 `metadata.difficulty`
+
+每道题至少输出：
+
+- `id` / `type` / `question` / `answer` / `explanation`
+- `knowledgePointIds`（或由 topic 提供）
+
+
+
+规范 v1.1 是当前完整版本。**你可以继续按上一轮指导跑 P3d 的构建预览验证**，完成后进 P3e。
+
+**要我把这份规范存成 `docs/spec/learning-package-spec-v1.1.md` 吗？** 那样后面加学科、加题型时改动都有出处。

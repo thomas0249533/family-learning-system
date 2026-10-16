@@ -1,0 +1,224 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-school",
+    "type": "special",
+    "title": "My School 学校设施与方位专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p3"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p3::u3"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-u3",
+      "name": "专项测验",
+      "title": "My School 学校设施与方位专项测验",
+      "desc": "针对人教版2024新教材七年级上册 Unit 3 My School 的高难度变式测验，覆盖 There be 句型、方位介词（in front of, behind, between, next to, across from），以及介绍新学校的阅读语篇。",
+      "topics": [
+        {
+          "id": "special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p3::kp-grammar-001",
+            "unit-english-7-up-rjb-p3::kp-grammar-002",
+            "unit-english-7-up-rjb-p3::kp-sentence-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-021",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. on; next to",
+                "B. in; next to",
+                "C. on; next",
+                "D. in; next"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-sentence-001"
+              ],
+              "question": "—Where is the art room?\n—It's ______ the second floor, ______ the science lab.",
+              "explanation": "句意：——美术室在哪里？——在二楼，科学实验室旁边。表示“在几楼”用介词 on；表示“在……旁边”用 next to，next 不能单独作介词。故选 A。易错点：混淆 on 和 in 表示楼层的用法，或漏掉 next 后面的 to。"
+            },
+            {
+              "id": "special-ex-022",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "What is; like",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-sentence-001"
+              ],
+              "question": "根据答语补全问句，每空一词。\n—______ ______ your new school ______?\n—It's very big and beautiful.",
+              "explanation": "答语 It's very big and beautiful. 描述的是学校的特征，因此问句应为 What is your new school like?。易错点：误用 How is your new school?（How 询问感受或状况，What... like 询问特征）。考察描述学校特征的核心句型。"
+            },
+            {
+              "id": "special-ex-023",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "are; is",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001"
+              ],
+              "question": "用括号中所给动词的适当形式填空。\nThere ______ (be) two maps and a computer on the wall. There ______ (be) some milk in the glass.",
+              "explanation": "第一空 There be 句型遵循“就近原则”，靠近 be 动词的主语是 two maps（复数），故用 are；第二空主语 some milk 是不可数名词，故用 is。易错点：受 a computer 影响误填 is，或忽略 milk 的不可数属性。"
+            },
+            {
+              "id": "special-ex-024",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. in front of; across",
+                "B. next; through",
+                "C. in front of; through",
+                "D. behind; across"
+              ],
+              "answer": "C",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "The gym is ______ the classroom building. You can see it when you walk ______ the school gate.",
+              "explanation": "句意：体育馆在教学楼前面。当你穿过学校大门时就能看到它。第一空 in front of 表示在建筑物外部的前面；第二空 walk through 表示从内部穿过（校门），across 表示从表面横穿。故选 C。易错点：混淆 across 和 through 的用法。"
+            },
+            {
+              "id": "special-ex-025",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. are; food",
+                "B. is; food",
+                "C. are; foods",
+                "D. is; foods"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001"
+              ],
+              "question": "There ______ some ______ in the dining hall. Let's go and have lunch.",
+              "explanation": "句意：餐厅里有一些食物。我们去吃午饭吧。food 表示“食物”总称时是不可数名词，谓语动词用单数 is。some 修饰不可数名词。故选 B。易错点：受 some 影响误以为 food 是复数，或把 food 当作可数名词。"
+            }
+          ]
+        },
+        {
+          "id": "special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p3::kp-grammar-001",
+            "unit-english-7-up-rjb-p3::kp-grammar-002",
+            "unit-english-7-up-rjb-p3::kp-sentence-001",
+            "unit-english-7-up-rjb-p3::kp-reading-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-026",
+              "type": "judge",
+              "difficulty": "挑战",
+              "options": [
+                "T",
+                "F"
+              ],
+              "answer": [
+                "F",
+                "T",
+                "F",
+                "T"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-reading-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "阅读 Mike 介绍学校的邮件，判断下列句子是否正确，正确写 T，错误写 F。\nHi, I'm Mike. Welcome to my school! My school is very big. There are two teaching buildings and a library in my school. The library is between the two teaching buildings. There is a big playground behind the library. We often play games there after school. My favourite place is the art room. It's on the second floor of the first teaching building. I love my school.\n(1) Mike's school is small. (2) The library is between the two teaching buildings. (3) The playground is in front of the library. (4) Mike's favourite place is the art room.",
+              "explanation": "由 My school is very big 可知(1)F；由 The library is between the two teaching buildings 可知(2)T；由 There is a big playground behind the library 可知(3)F（文中是 behind，不是 in front of）；由 My favourite place is the art room 可知(4)T。考察阅读细节提取与方位信息匹配。"
+            },
+            {
+              "id": "special-ex-027",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. To tell us about his school.",
+                "B. To ask us to play games.",
+                "C. To show us his art room.",
+                "D. To find a new school."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-reading-001"
+              ],
+              "question": "What is Mike's main purpose in writing this text?",
+              "explanation": "文章开头 Welcome to my school，随后依次介绍教学楼、图书馆、操场和美术室的位置和情况，最后表达对学校的喜爱。因此写作目的是介绍他的学校。B、C、D 均只涉及局部或曲解。考察阅读主旨与写作意图推断。"
+            },
+            {
+              "id": "special-ex-028",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. There are two teaching buildings and a library in my school, and the library is between them.",
+                "B. There is two teaching buildings and a library in my school, and the library is among them.",
+                "C. There are two teaching buildings and a library in my school, and the library is among them.",
+                "D. There is two teaching buildings and a library in my school, and the library is between they."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nThere is two teaching buildings and a library in my school, and the library is between them.",
+              "explanation": "原句有两处错误：第一，There be 句型遵循就近原则，靠近 be 动词的主语是 two teaching buildings（复数），应用 are；第二，between 用于两者之间，among 用于三者或三者以上。此处指两栋教学楼之间，应用 between，且 them 是宾格。故选 A。逆向思维：根据错误句子反推正确规则。"
+            },
+            {
+              "id": "special-ex-029",
+              "type": "multiple",
+              "difficulty": "挑战",
+              "options": [
+                "A. It's very beautiful.",
+                "B. Is there a dining hall?",
+                "C. Where is the dining hall?",
+                "D. Do you like your new school?",
+                "E. There is a big playground."
+              ],
+              "answer": [
+                "A",
+                "B"
+              ],
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-sentence-001"
+              ],
+              "question": "Choose TWO correct sentences to complete the dialogue.\n—Hi, Sarah. How is your new school?\n—1. ______\n—2. ______\n—Yes, there is. It's next to the library.",
+              "explanation": "第一空：回答 How is your new school? 应描述学校特征，A 符合；第二空：根据答语 Yes, there is. 可知问句是 There be 句型的一般疑问句，B 符合。C 是特殊疑问句，不能用 Yes/No 回答；D 答语也不匹配；E 是陈述句，不能引出 Yes 的回答。考察 There be 句型与学校交际语境的综合。"
+            },
+            {
+              "id": "special-ex-030",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "is; in front of; between; are",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002",
+                "unit-english-7-up-rjb-p3::kp-sentence-001"
+              ],
+              "question": "阅读短文，用适当的词填空。\nLook at the picture of my school. There ______ (be) a big playground in the middle. The teaching building is ______ (在……前面) the playground. The library is ______ (在……之间) the teaching building and the dining hall. There ______ (be) many books in it. I like my school very much.",
+              "explanation": "第一空主语 a big playground 是单数，用 is；第二空表示在操场前面，用 in front of；第三空表示在教学楼和餐厅之间，用 between... and...；第四空主语 many books 是复数，用 are。考察 There be 句型、方位介词与学校场景的综合运用。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

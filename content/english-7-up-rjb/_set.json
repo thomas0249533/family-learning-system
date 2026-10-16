@@ -1,0 +1,258 @@
+{
+  "setId": "english-7-up-rjb-set",
+  "title": "七年级英语上（人教版2024新教材）",
+  "subject": "english",
+  "grade": 7,
+  "term": "up",
+  "edition": "人教版（2024新教材）",
+  "packages": [
+    {
+      "file": "unit-english-7-up-rjb-p1.json",
+      "packageId": "unit-english-7-up-rjb-p1",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-english-7-up-rjb-p2.json",
+      "packageId": "unit-english-7-up-rjb-p2",
+      "type": "unit",
+      "visible": false,
+      "dependencies": ["unit-english-7-up-rjb-p1"]
+    },
+    {
+      "file": "unit-english-7-up-rjb-p3.json",
+      "packageId": "unit-english-7-up-rjb-p3",
+      "type": "unit",
+      "visible": false,
+      "dependencies": ["unit-english-7-up-rjb-p2"]
+    },
+    {
+      "file": "unit-english-7-up-rjb-p4.json",
+      "packageId": "unit-english-7-up-rjb-p4",
+      "type": "unit",
+      "visible": false,
+      "dependencies": ["unit-english-7-up-rjb-p3"]
+    },
+    {
+      "file": "unit-english-7-up-rjb-p5.json",
+      "packageId": "unit-english-7-up-rjb-p5",
+      "type": "unit",
+      "visible": false,
+      "dependencies": ["unit-english-7-up-rjb-p4"]
+    },
+    {
+      "file": "unit-english-7-up-rjb-p6.json",
+      "packageId": "unit-english-7-up-rjb-p6",
+      "type": "unit",
+      "visible": false,
+      "dependencies": ["unit-english-7-up-rjb-p5"]
+    },
+    {
+      "file": "unit-english-7-up-rjb-p7.json",
+      "packageId": "unit-english-7-up-rjb-p7",
+      "type": "unit",
+      "visible": false,
+      "dependencies": ["unit-english-7-up-rjb-p6"]
+    },
+    {
+      "file": "term-english-7-up-rjb.json",
+      "packageId": "term-english-7-up-rjb",
+      "type": "term",
+      "visible": true,
+      "dependencies": [
+        "unit-english-7-up-rjb-p1",
+        "unit-english-7-up-rjb-p2",
+        "unit-english-7-up-rjb-p3",
+        "unit-english-7-up-rjb-p4",
+        "unit-english-7-up-rjb-p5",
+        "unit-english-7-up-rjb-p6",
+        "unit-english-7-up-rjb-p7"
+      ]
+    },
+    {
+      "file": "special-english-7-up-youandme.json",
+      "packageId": "special-english-7-up-youandme",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-english-7-up-rjb-p1::u1"],
+      "dependencies": ["unit-english-7-up-rjb-p1"]
+    },
+    {
+      "file": "special-english-7-up-family.json",
+      "packageId": "special-english-7-up-family",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-english-7-up-rjb-p2::u2"],
+      "dependencies": ["unit-english-7-up-rjb-p2"]
+    },
+    {
+      "file": "special-english-7-up-school.json",
+      "packageId": "special-english-7-up-school",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-english-7-up-rjb-p3::u3"],
+      "dependencies": ["unit-english-7-up-rjb-p3"]
+    },
+    {
+      "file": "special-english-7-up-subject.json",
+      "packageId": "special-english-7-up-subject",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-english-7-up-rjb-p4::u4"],
+      "dependencies": ["unit-english-7-up-rjb-p4"]
+    },
+    {
+      "file": "special-english-7-up-club.json",
+      "packageId": "special-english-7-up-club",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-english-7-up-rjb-p5::u5"],
+      "dependencies": ["unit-english-7-up-rjb-p5"]
+    },
+    {
+      "file": "special-english-7-up-dailylife.json",
+      "packageId": "special-english-7-up-dailylife",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-english-7-up-rjb-p6::u6"],
+      "dependencies": ["unit-english-7-up-rjb-p6"]
+    },
+    {
+      "file": "special-english-7-up-birthday.json",
+      "packageId": "special-english-7-up-birthday",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": ["unit-english-7-up-rjb-p7::u7"],
+      "dependencies": ["unit-english-7-up-rjb-p7"]
+    },
+    {
+      "file": "special-english-7-up-grammar.json",
+      "packageId": "special-english-7-up-grammar",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": [
+        "unit-english-7-up-rjb-p1::u1",
+        "unit-english-7-up-rjb-p2::u2",
+        "unit-english-7-up-rjb-p3::u3",
+        "unit-english-7-up-rjb-p4::u4",
+        "unit-english-7-up-rjb-p5::u5",
+        "unit-english-7-up-rjb-p6::u6",
+        "unit-english-7-up-rjb-p7::u7"
+      ],
+      "dependencies": [
+        "unit-english-7-up-rjb-p1",
+        "unit-english-7-up-rjb-p2",
+        "unit-english-7-up-rjb-p3",
+        "unit-english-7-up-rjb-p4",
+        "unit-english-7-up-rjb-p5",
+        "unit-english-7-up-rjb-p6",
+        "unit-english-7-up-rjb-p7"
+      ]
+    },
+    {
+      "file": "special-english-7-up-phrases.json",
+      "packageId": "special-english-7-up-phrases",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": [
+        "unit-english-7-up-rjb-p1::u1",
+        "unit-english-7-up-rjb-p2::u2",
+        "unit-english-7-up-rjb-p3::u3",
+        "unit-english-7-up-rjb-p4::u4",
+        "unit-english-7-up-rjb-p5::u5",
+        "unit-english-7-up-rjb-p6::u6",
+        "unit-english-7-up-rjb-p7::u7"
+      ],
+      "dependencies": [
+        "unit-english-7-up-rjb-p1",
+        "unit-english-7-up-rjb-p2",
+        "unit-english-7-up-rjb-p3",
+        "unit-english-7-up-rjb-p4",
+        "unit-english-7-up-rjb-p5",
+        "unit-english-7-up-rjb-p6",
+        "unit-english-7-up-rjb-p7"
+      ]
+    },
+    {
+      "file": "special-english-7-up-vocab.json",
+      "packageId": "special-english-7-up-vocab",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": [
+        "unit-english-7-up-rjb-p1::u1",
+        "unit-english-7-up-rjb-p2::u2",
+        "unit-english-7-up-rjb-p3::u3",
+        "unit-english-7-up-rjb-p4::u4",
+        "unit-english-7-up-rjb-p5::u5",
+        "unit-english-7-up-rjb-p6::u6",
+        "unit-english-7-up-rjb-p7::u7"
+      ],
+      "dependencies": [
+        "unit-english-7-up-rjb-p1",
+        "unit-english-7-up-rjb-p2",
+        "unit-english-7-up-rjb-p3",
+        "unit-english-7-up-rjb-p4",
+        "unit-english-7-up-rjb-p5",
+        "unit-english-7-up-rjb-p6",
+        "unit-english-7-up-rjb-p7"
+      ]
+    },
+    {
+      "file": "sprint-english-7-up-final.json",
+      "packageId": "sprint-english-7-up-final",
+      "type": "sprint",
+      "visible": true,
+      "examMode": true,
+      "sourceUnitIds": [
+        "unit-english-7-up-rjb-p1::u1",
+        "unit-english-7-up-rjb-p2::u2",
+        "unit-english-7-up-rjb-p3::u3",
+        "unit-english-7-up-rjb-p4::u4",
+        "unit-english-7-up-rjb-p5::u5",
+        "unit-english-7-up-rjb-p6::u6",
+        "unit-english-7-up-rjb-p7::u7"
+      ],
+      "dependencies": [
+        "unit-english-7-up-rjb-p1",
+        "unit-english-7-up-rjb-p2",
+        "unit-english-7-up-rjb-p3",
+        "unit-english-7-up-rjb-p4",
+        "unit-english-7-up-rjb-p5",
+        "unit-english-7-up-rjb-p6",
+        "unit-english-7-up-rjb-p7"
+      ]
+    }
+  ],
+  "importOrder": [
+    "unit-english-7-up-rjb-p1",
+    "unit-english-7-up-rjb-p2",
+    "unit-english-7-up-rjb-p3",
+    "unit-english-7-up-rjb-p4",
+    "unit-english-7-up-rjb-p5",
+    "unit-english-7-up-rjb-p6",
+    "unit-english-7-up-rjb-p7",
+    "term-english-7-up-rjb",
+    "special-english-7-up-youandme",
+    "special-english-7-up-family",
+    "special-english-7-up-school",
+    "special-english-7-up-subject",
+    "special-english-7-up-club",
+    "special-english-7-up-dailylife",
+    "special-english-7-up-birthday",
+    "special-english-7-up-grammar",
+    "special-english-7-up-phrases",
+    "special-english-7-up-vocab",
+    "sprint-english-7-up-final"
+  ]
+}

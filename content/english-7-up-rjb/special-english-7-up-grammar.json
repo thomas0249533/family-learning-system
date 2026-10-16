@@ -1,0 +1,190 @@
+{
+  "manifest": {
+    "packageId": "special-english-7-up-grammar",
+    "type": "special",
+    "title": "七年级上册语法综合专项测验",
+    "dependencies": [
+      "unit-english-7-up-rjb-p1",
+      "unit-english-7-up-rjb-p2",
+      "unit-english-7-up-rjb-p3",
+      "unit-english-7-up-rjb-p4",
+      "unit-english-7-up-rjb-p5",
+      "unit-english-7-up-rjb-p6",
+      "unit-english-7-up-rjb-p7"
+    ],
+    "schemaVersion": "1.0",
+    "subject": "english",
+    "grade": 7,
+    "term": "up",
+    "edition": "人教版（2024新教材）",
+    "examMode": true,
+    "sourceUnitIds": [
+      "unit-english-7-up-rjb-p1::u1",
+      "unit-english-7-up-rjb-p2::u2",
+      "unit-english-7-up-rjb-p3::u3",
+      "unit-english-7-up-rjb-p4::u4",
+      "unit-english-7-up-rjb-p5::u5",
+      "unit-english-7-up-rjb-p6::u6",
+      "unit-english-7-up-rjb-p7::u7"
+    ]
+  },
+  "knowledgePoints": [],
+  "exercises": [],
+  "units": [
+    {
+      "id": "special-grammar",
+      "name": "专项测验",
+      "title": "七年级上册语法综合专项测验",
+      "desc": "针对人教版2024新教材七年级上册核心语法的高难度变式测验，覆盖 be 动词、主格代词、一般现在时 do/does、名词所有格、There be、方位介词、连词、Wh- 疑问句、can、时间表达与序数词。",
+      "topics": [
+        {
+          "id": "special-t1",
+          "title": "基础巩固",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p1::kp-grammar-001",
+            "unit-english-7-up-rjb-p1::kp-grammar-002",
+            "unit-english-7-up-rjb-p2::kp-grammar-001",
+            "unit-english-7-up-rjb-p2::kp-grammar-002"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-101",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. am; am; are; am",
+                "B. is; am; is; are",
+                "C. am; is; are; is",
+                "D. are; am; are; am"
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p1::kp-grammar-001",
+                "unit-english-7-up-rjb-p1::kp-grammar-002"
+              ],
+              "question": "— Hi, I ______ Li Hua. Are you from London?\n— No, I ______ not. My parents ______ from Canada, but I ______ in Beijing now.",
+              "explanation": "I 用 am；I am not 用 am；My parents 是复数，用 are；I 用 am。故选 A。易错点：受 parents 影响误把 I 后也用 are。"
+            },
+            {
+              "id": "special-ex-102",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "does; Does; like",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-001"
+              ],
+              "question": "用括号中所给动词的适当形式填空。\nMy cousin ______ (do) his homework every evening. ______ your sister ______ (like) reading books?",
+              "explanation": "My cousin 是第三人称单数，do 变为 does；一般疑问句主语 your sister 是第三人称单数，助动词用 Does，后接动词原形 like。易错点：Does 后误用 likes。"
+            },
+            {
+              "id": "special-ex-103",
+              "type": "single",
+              "difficulty": "提高",
+              "options": [
+                "A. parents",
+                "B. parents'",
+                "C. parent's",
+                "D. parents's"
+              ],
+              "answer": "B",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p2::kp-grammar-002"
+              ],
+              "question": "This is my ______ room. It's very clean. Tom and Jack share it.",
+              "explanation": "句意为：这是我父母的房间。他们共用这个房间。parents 是以 -s 结尾的复数名词，所有格直接加 '。故选 B。易错点：误加 's 或混淆单复数。"
+            },
+            {
+              "id": "special-ex-104",
+              "type": "blank",
+              "difficulty": "提高",
+              "options": [],
+              "answer": "is; is",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p3::kp-grammar-001",
+                "unit-english-7-up-rjb-p3::kp-grammar-002"
+              ],
+              "question": "用适当的 be 动词填空。\nThere ______ a library and two classroom buildings in my school. The library ______ between the two buildings.",
+              "explanation": "There be 遵循就近原则，靠近 be 动词的是 a library（单数），用 is；第二空主语 The library 是单数，用 is。易错点：受 two classroom buildings 影响误用 are。"
+            }
+          ]
+        },
+        {
+          "id": "special-t2",
+          "title": "举一反三",
+          "knowledgePointIds": [
+            "unit-english-7-up-rjb-p4::kp-grammar-001",
+            "unit-english-7-up-rjb-p4::kp-grammar-002",
+            "unit-english-7-up-rjb-p5::kp-grammar-001",
+            "unit-english-7-up-rjb-p6::kp-grammar-001",
+            "unit-english-7-up-rjb-p7::kp-grammar-001"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "special-ex-105",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. Because it is interesting, I like it.",
+                "B. It is interesting, so I like it.",
+                "C. Both A and B.",
+                "D. Because it is interesting, but I like it."
+              ],
+              "answer": "C",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-001"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nBecause it is interesting, so I like it.",
+              "explanation": "because 和 so 不能同时出现在一个句子中。A 只用 because，B 只用 so，均正确。故选 C。逆向思维：根据错误句子反推连词规则。"
+            },
+            {
+              "id": "special-ex-106",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "Why; Who",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p4::kp-grammar-002",
+                "unit-english-7-up-rjb-p7::kp-grammar-002"
+              ],
+              "question": "根据答语补全问句，每空一词。\n— ______ do you like English?\n— Because it is useful.\n— ______ is your English teacher?\n— Miss Li.",
+              "explanation": "Because 回答原因，问句用 Why；Miss Li 回答人，问句用 Who。考察 Wh- 疑问词的准确选用。"
+            },
+            {
+              "id": "special-ex-107",
+              "type": "single",
+              "difficulty": "挑战",
+              "options": [
+                "A. She can sing well, but she can't play the piano.",
+                "B. She can sings well, but she can't play the piano.",
+                "C. She can sing well, but she can't plays the piano.",
+                "D. She can sings well, but she can't plays the piano."
+              ],
+              "answer": "A",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p5::kp-grammar-001"
+              ],
+              "question": "下面句子有一处语法错误，请选择正确的句子。\nShe can sings well, but she can't plays the piano.",
+              "explanation": "can 和 can't 后必须接动词原形，不能加 -s。原句 sings 和 plays 均错误。故选 A。逆向思维：根据错误句子反推情态动词规则。"
+            },
+            {
+              "id": "special-ex-108",
+              "type": "blank",
+              "difficulty": "挑战",
+              "options": [],
+              "answer": "a quarter to eight; half past nine; twelfth",
+              "knowledgePointIds": [
+                "unit-english-7-up-rjb-p6::kp-grammar-001",
+                "unit-english-7-up-rjb-p7::kp-grammar-001"
+              ],
+              "question": "用英语写出下列时间或序数词。\n7:45 → ______    9:30 → ______    12 → ______ (序数词)",
+              "explanation": "7:45 差一刻八点，用 a quarter to eight；9:30 九点半，用 half past nine；12 的序数词是 twelfth。考察时间表达与序数词的综合。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

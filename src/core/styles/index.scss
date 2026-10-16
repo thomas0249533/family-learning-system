@@ -1,0 +1,23 @@
+@import './theme.scss';
+
+// =====================================================================
+// 全局基底（字体 / 盒模型 reset）
+// ---------------------------------------------------------------------
+// 背景色与文字色由 theme.scss 的 body 规则「单点定义」，
+// 这里不再重复，避免与深色主题变量相互覆盖。
+// （此前的 `.dark-mode` 冲突块已删除——它的特异性会压过 theme.scss 的
+//   --bg-color / --card-bg，导致深色下背景与卡片被写死。）
+// =====================================================================
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
