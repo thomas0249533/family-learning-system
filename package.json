@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "check:hex": "node scripts/check-hex.mjs",
+    "a11y:contrast": "vite-node scripts/a11y/contrast-report.ts",
     "lint:styles": "stylelint \"src/views/**/*.{vue,scss}\" \"src/modules/**/*.{vue,scss}\" \"src/components/**/*.{vue,scss}\"",
     "validate:set": "vite-node scripts/validate-lpkgset.ts --",
     "build:lpkgset": "vite-node scripts/build-lpkgset.ts --",
