@@ -1,0 +1,4 @@
+# 统一行尾为 LF —— 防「生成物逐字节比对」因 CRLF 漂移误报（§10 风险）。
+*.scss text eol=lf
+*.ts text eol=lf
+*.vue text eol=lf

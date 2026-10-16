@@ -5,7 +5,7 @@
 // 这样本文件保持纯逻辑、可直接单测，无 Vue / Pinia / Dexie 依赖。
 // =====================================================================
 
-import type { ThemePreset } from '@core/styles/palette'
+import type { ThemePreset } from '@core/styles/tokens'
 
 /** 推断的数据来源：一个学习包 manifest 的年级与时间戳。 */
 export interface GradeSource {

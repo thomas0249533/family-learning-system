@@ -1,3 +1,8 @@
+// ⚠️ AUTO-GENERATED FILE — DO NOT EDIT.
+// Source of truth : src/core/styles/tokens.ts
+// Regenerate      : npm run tokens:build
+// Drift is caught by: npm run tokens:check  AND  tests/tokens-generation.test.ts
+
 // =====================================================================
 // JS 侧唯一色源（naive-ui themeOverrides 的数值来源）
 // ---------------------------------------------------------------------
@@ -16,11 +21,10 @@
 // =====================================================================
 
 import type { GlobalThemeOverrides } from 'naive-ui'
+import type { ThemePreset, ThemeMode } from './tokens'
 
-/** 学段预设：primary=小学 / junior=初中(默认) / senior=高中 */
-export type ThemePreset = 'primary' | 'junior' | 'senior'
-/** 明暗模式 */
-export type ThemeMode = 'light' | 'dark'
+/** 学段预设与明暗模式：单点定义于 tokens.ts，此处 re-export 以保持既有导入面（§9-4）。 */
+export type { ThemePreset, ThemeMode }
 
 /** 一套主题（某 preset 的浅或深）下，themeOverrides 需要的颜色字段。 */
 export interface ThemeColors {

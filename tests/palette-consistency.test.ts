@@ -17,6 +17,12 @@
 //         「preset/深色只覆盖差异项」的等价语义，能捕获「漏了某覆盖」。）
 //   3. 断言 A 数值 / B 数值源齐全 / C 结构性 / D buildThemeOverrides。
 // 纪律：不引入 sass 运行时，仅用 Node 内置 fs + 手写解析。
+//
+// V1.2 批1 起（单源生成地基）：theme.scss 与 palette.ts 均由
+//   src/core/styles/tokens.ts 生成（见 scripts/tokens/*）。本文件在原有
+//   「palette ⇄ theme.scss」数值/结构断言之外，**新增**「生成物 ⇄ tokens.ts」
+//   的直接校验（见文末 describe），把「双源漂移」升级为「生成物 ⇄ 唯一源」。
+//   全部既有断言（含 6 组 × 14 hero、preset 子集、原始块级深色覆盖）**一条未删**。
 // =====================================================================
 
 import { describe, expect, it } from 'vitest'
@@ -30,6 +36,11 @@ import {
   type ThemeMode,
   type ThemePreset,
 } from '../src/core/styles/palette'
+import {
+  buildSemantic,
+  PRESETS as TOKEN_PRESETS,
+  MODES as TOKEN_MODES,
+} from '../src/core/styles/tokens'
 
 const themeScssPath = resolve(process.cwd(), 'src/core/styles/theme.scss')
 const variablesScssPath = resolve(process.cwd(), 'src/core/styles/variables.scss')
@@ -484,5 +495,37 @@ describe('theme.scss 深色覆盖完整性（原始块级，未经合成模型�
       const unknown = Object.keys(block).filter((k) => !(k in rootVars))
       expect(unknown, `${name} 含 :root 未定义的变量（拼写？）：${unknown.join(', ')}`).toEqual([])
     })
+  }
+})
+
+// =====================================================================
+// 生成校验 · tokens.ts（唯一源）⇄ theme.scss（生成物）
+// ---------------------------------------------------------------------
+// 逐 (preset,mode) 用 buildSemantic 派生**完整生效 semantic 表**，与浏览器级联
+// 合成出的 EFFECTIVE 逐键比对。派生 token（-rgb/-soft/-soft-strong）若有公式
+// 偏差、或显式 token 抄漏，这里必红（V1.2 单源生成地基的直接校验）。
+// =====================================================================
+describe('tokens.ts ⇄ theme.scss（生成校验）', () => {
+  it('tokens.PRESETS / MODES 与本测试一致（单点未漂移）', () => {
+    expect(TOKEN_PRESETS).toEqual(PRESETS)
+    expect(TOKEN_MODES).toEqual(MODES)
+  })
+
+  for (const preset of PRESETS) {
+    for (const mode of MODES) {
+      describe(`${preset}.${mode}`, () => {
+        const sem = buildSemantic(preset, mode)
+        const effective = EFFECTIVE[preset][mode]
+        for (const [key, value] of Object.entries(sem)) {
+          it(`--${key} 与 tokens.ts 派生值一致`, () => {
+            const scss = effective[`--${key}`]
+            expect(scss, `theme.scss ${preset}.${mode} 缺少 --${key}`).toBeDefined()
+            expect(normalizeColor(scss!), `--${key}：theme.scss=${scss} / tokens=${value}`).toBe(
+              normalizeColor(value),
+            )
+          })
+        }
+      })
+    }
   }
 })

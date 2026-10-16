@@ -1,0 +1,63 @@
+// =====================================================================
+// 组件级 token（第 3 层）—— 手写，纯 `var()` 别名，零真值、零字面量色
+// ---------------------------------------------------------------------
+// 为什么独立成文件（不进 theme.scss）：
+//   theme.scss 被一致性测试按「6 组变量块」解析（键集合相等 / preset 子集 /
+//   深色覆盖）。若把 --btn-* 等塞进 theme.scss 的 :root，会污染 rootVars 的
+//   键集合断言。故组件级 token 独立声明于本文件，天然随 6 组主题联动，
+//   且不打扰 theme.scss 的纯净结构。
+//
+// 命名：`--<component>-<element>-<property>`（§3）。
+// 约束：值只允许引用 semantic（`var(--x)`）或常量尺寸；**禁止** `#hex` /
+//       `rgba(数字)`（§8.4 不变量 5）。本文件与本仓 tokens.ts 的
+//       COMPONENT_TOKENS 常量由 tests/tokens-generation.test.ts 锁定一致。
+// 引入：由 index.scss `@import './components.scss'` 加载。
+// =====================================================================
+
+:root {
+  /* 按钮 */
+  --btn-primary-bg: var(--primary-color);
+  --btn-primary-bg-hover: var(--primary-hover);
+  --btn-primary-fg: var(--on-strong);
+  --btn-focus-ring: var(--focus-ring);
+
+  /* 卡片 */
+  --card-header-bg: var(--bg-color-hover);
+
+  /* 徽章（软色底） */
+  --badge-neutral-bg: var(--bg-color-hover);
+  --badge-primary-bg: var(--primary-light);
+  --badge-success-bg: var(--success-light);
+  --badge-warning-bg: var(--warning-light);
+  --badge-danger-bg: var(--danger-light);
+  --badge-info-bg: var(--info-light);
+
+  /* 统计卡 */
+  --stat-value-fg: var(--text-main);
+
+  /* 进度条 */
+  --progress-track-bg: var(--surface-2);
+  --progress-fill-bg: var(--gradient-primary);
+
+  /* 空态 */
+  --empty-icon-fg: var(--text-muted);
+
+  /* 页头 */
+  --page-header-border: var(--border-light);
+
+  /* 焦点环（§6.4，AA）：宽 / 色 / 偏移 */
+  --focus-ring: rgba(var(--primary-rgb), 0.55);
+  --focus-ring-w: 2px;
+  --focus-ring-offset: 2px;
+}
+
+/* ==================== 全局焦点可见（§6.4）==================== */
+/* 禁止无替代地去掉 outline；焦点态一律走 token 化焦点环。 */
+:focus-visible {
+  outline: var(--focus-ring-w) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}

@@ -1,3 +1,8 @@
+// ⚠️ AUTO-GENERATED FILE — DO NOT EDIT.
+// Source of truth : src/core/styles/tokens.ts
+// Regenerate      : npm run tokens:build
+// Drift is caught by: npm run tokens:check  AND  tests/tokens-generation.test.ts
+
 // =====================================================================
 // 主题变量（唯一来源）
 // ---------------------------------------------------------------------
@@ -367,61 +372,4 @@ body[data-theme-preset="senior"].dark-mode {
   --border-light: #1a222b;
 
   --gradient-primary: linear-gradient(135deg, #5b7d9e 0%, #7fa3c4 100%);
-}
-
-/* ==================== 全局基底 ==================== */
-body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
-}
-
-/* ==================== 深色下的组件微调（集中一处）==================== */
-body.dark-mode {
-  /* 欢迎横幅压暗，避免在深色背景上过于刺眼 */
-  .welcome-banner {
-    filter: brightness(0.9);
-  }
-
-  /* 卡片边框更清晰（深色下仅靠阴影层次不足） */
-  .n-card {
-    border: 1px solid var(--border-color);
-  }
-
-  /* 按钮边框加强 */
-  .n-button {
-    border-color: var(--border-color);
-  }
-
-  /* 分隔线跟随主题 */
-  .n-divider {
-    background-color: var(--border-color);
-  }
-
-  /* 推荐卡片左侧色条降饱和，更柔和 */
-  .rec-card .rec-accent {
-    opacity: 0.85;
-    filter: saturate(0.9);
-  }
-
-  /* 复习卡片「查看」按钮在深色下提高对比度 */
-  .review-card .action-pill:not(.primary) {
-    background: var(--bg-color-hover);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    font-weight: 700;
-  }
-
-  /* 分区计数徽章对比度加强 */
-  .section-count {
-    background: var(--bg-color-hover);
-    color: var(--text-sub);
-  }
-}
-
-/* ==================== 打印固定浅色（CSS 兜底，JS 为主）==================== */
-@media print {
-  body {
-    color-scheme: light;
-  }
 }
