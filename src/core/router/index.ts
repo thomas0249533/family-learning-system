@@ -22,6 +22,21 @@ const routes: RouteRecordRaw[] = [
   { path: '/parent', name: 'Parent', component: () => import('@/views/Parent.vue') }
 ]
 
+// 开发专用：设计系统基元预览页（§7）。
+// 仅在 DEV 注册；`import.meta.env.DEV` 在生产构建被替换为 false，
+// 三元恒取 else → 分支内动态 import 被 DCE，生产路由与产物均不含本页。
+const devRoutes: RouteRecordRaw[] = import.meta.env.DEV
+  ? [
+      {
+        path: '/design-system',
+        name: 'DesignSystem',
+        component: () => import('@/views/DesignSystem.vue')
+      }
+    ]
+  : []
+
+routes.push(...devRoutes)
+
 export const router = createRouter({
   history: createWebHistory(),
   routes
