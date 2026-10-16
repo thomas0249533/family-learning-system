@@ -34,8 +34,8 @@
           </button>
         </div>
 
-        <div v-if="currentQuestion.type === 'judge'" class="judge-hint">请判断下列说法是否正确：</div>
-        <h3 class="question-text" v-html="renderQuestionText(currentQuestion.question)"></h3>
+        <div v-if="currentQuestion.type === 'judge' && !judgeParts" class="judge-hint">请判断下列说法是否正确：</div>
+        <h3 class="question-text" v-html="renderQuestionText(judgeParts ? judgeParts.material : currentQuestion.question)"></h3>
 
         <div v-if="currentQuestion.type === 'single'" class="options">
           <n-radio-group v-model:value="userAnswer" name="quiz-single">
@@ -62,10 +62,29 @@
           <n-input v-model:value="userAnswer" placeholder="请输入你的答案..." size="large" @keyup.enter="onInputEnter" />
         </div>
 
-        <div v-else-if="currentQuestion.type === 'judge'" class="judge-group">
-          <n-button-group>
-            <n-button :type="userAnswer === '对' ? 'success' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '对'">✅ 对</n-button>
-            <n-button :type="userAnswer === '错' ? 'error' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '错'">❌ 错</n-button>
+        <div v-else-if="currentQuestion.type === 'judge'" :class="['judge-group', judgeParts ? 'judge-group--multi' : '']">
+          <!-- 多陈述判断题：逐句判断。judgeParts 解析失败时为 null → 降级成整块题干 -->
+          <ol v-if="judgeParts" class="judge-stmts">
+            <li v-for="(s, i) in judgeParts.statements" :key="i" class="judge-stmt">
+              <span class="judge-stmt__idx">{{ i + 1 }}</span>
+              <span class="judge-stmt__text" v-html="renderQuestionText(s)"></span>
+              <n-button-group class="judge-stmt__btns">
+                <n-button
+                  size="small"
+                  :type="userAnswer[i] === '对' ? 'success' : 'default'"
+                  @click="setJudgeAt(i, '对')"
+                >✅ {{ judgeLabel.t }}</n-button>
+                <n-button
+                  size="small"
+                  :type="userAnswer[i] === '错' ? 'error' : 'default'"
+                  @click="setJudgeAt(i, '错')"
+                >❌ {{ judgeLabel.f }}</n-button>
+              </n-button-group>
+            </li>
+          </ol>
+          <n-button-group v-else>
+            <n-button :type="userAnswer === '对' ? 'success' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '对'">✅ {{ judgeLabel.t }}</n-button>
+            <n-button :type="userAnswer === '错' ? 'error' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '错'">❌ {{ judgeLabel.f }}</n-button>
           </n-button-group>
         </div>
 
@@ -143,6 +162,10 @@ import {
 } from 'naive-ui'
 import { correctFeedback, wrongFeedback } from '@core/motivation/encouragement'
 import AppButton from '@/components/ui/AppButton.vue'
+import {
+  gradeJudge, isMultiJudge, judgeLabels, normalizeJudgeList,
+  formatJudgeTokens, splitJudgeStatements,
+} from '@core/quiz/judge'
 
 export type QuizQuestionType = 'single' | 'blank' | 'multiple' | 'judge' | 'matching' | 'spelling' | 'essay'
 
@@ -263,10 +286,33 @@ function handleTimeUp() {
   if (props.examMode) finalizeExam()
 }
 
-function normalizeJudge(a: any): string {
-  if (a === true || a === 'true' || a === '对' || a === '正确' || a === 'T') return '对'
-  if (a === false || a === 'false' || a === '错' || a === '错误' || a === 'F') return '错'
-  return String(a)
+/**
+ * 判断题归一化/判分已抽到 `@core/quiz/judge`（纯函数，可单测）。
+ * 旧实现在此处对数组做 `String(a)` 降级 → `"F,T,F,T"` 恒不匹配 → 多陈述判断题永远判错。
+ */
+/** 切题/重置时的空作答初值：多陈述判断题按句数建数组（与 `matching` 同型） */
+function blankAnswerFor(q: QuizQuestion): any {
+  if (q.type === 'multiple') return []
+  if (q.type === 'matching') return new Array(q.left?.length ?? 0).fill(null)
+  if (q.type === 'judge' && isMultiJudge(q.answer)) {
+    return new Array(normalizeJudgeList(q.answer).length).fill(null)
+  }
+  return ''
+}
+
+/** 多陈述判断题：把题干切成「材料」+「陈述句列表」；解析不了返回 null（降级整块显示） */
+const judgeParts = computed(() => {
+  const q = currentQuestion.value
+  if (!q || q.type !== 'judge' || !isMultiJudge(q.answer)) return null
+  return splitJudgeStatements(q.question, normalizeJudgeList(q.answer).length)
+})
+
+/** 判断题按钮文案取自题目标签域：`options:["T","F"]` → T/F，否则 对/错 */
+const judgeLabel = computed(() => judgeLabels(currentQuestion.value?.options))
+
+function setJudgeAt(i: number, v: string) {
+  if (!Array.isArray(userAnswer.value)) userAnswer.value = []
+  userAnswer.value[i] = v
 }
 
 function renderQuestionText(text: string): string {
@@ -344,7 +390,8 @@ function gradeWith(q: QuizQuestion, ua: any): boolean {
       return correct.every((v, i) => v === given[i])
     }
     case 'judge':
-      return normalizeJudge(ua) === normalizeJudge(q.answer)
+      // 多陈述（`answer` 为数组）与单陈述统一由 gradeJudge 处理；全对才算对
+      return gradeJudge(ua, q.answer)
     case 'matching': {
       if (!Array.isArray(ua) || !Array.isArray(q.answer)) return false
       if (ua.length !== q.answer.length) return false
@@ -361,7 +408,7 @@ function formatUserAnswer(q: QuizQuestion, ua: any): string {
     case 'multiple':
       return Array.isArray(ua) ? ua.slice().sort().join('') : ''
     case 'judge':
-      return normalizeJudge(ua)
+      return formatJudgeTokens(normalizeJudgeList(ua), q.options)
     case 'matching':
       if (!Array.isArray(ua) || !q.left || !q.right) return ''
       return ua.map((idx, i) => `${q.left![i]} → ${q.right![idx] ?? '?'}`).join('；')
@@ -400,9 +447,19 @@ const canSubmit = computed(() => {
   switch (q.type) {
     case 'single':
     case 'blank':
-    case 'judge':
     case 'spelling':
     case 'essay':
+      return !!userAnswer.value && String(userAnswer.value).trim() !== ''
+    case 'judge':
+      // 多陈述：必须每一句都选了才允许提交（不允许漏句蒙对）
+      if (isMultiJudge(q.answer)) {
+        const n = normalizeJudgeList(q.answer).length
+        return (
+          Array.isArray(userAnswer.value) &&
+          userAnswer.value.length === n &&
+          userAnswer.value.every((v: any) => v !== null && v !== undefined)
+        )
+      }
       return !!userAnswer.value && String(userAnswer.value).trim() !== ''
     case 'multiple':
       return Array.isArray(userAnswer.value) && userAnswer.value.length > 0
@@ -428,7 +485,7 @@ const correctAnswerDisplay = computed(() => {
       return arr.slice().sort().join('')
     }
     case 'judge':
-      return normalizeJudge(q.answer)
+      return formatJudgeTokens(normalizeJudgeList(q.answer), q.options)
     case 'matching':
       if (!Array.isArray(q.answer) || !q.left || !q.right) return ''
       return q.answer.map((idx, i) => `${q.left![i]} → ${q.right![Number(idx)] ?? '?'}`).join('；')
@@ -507,9 +564,7 @@ watch(currentQuestion, (q) => {
     const saved = examAnswers.value[q.id]
     if (saved !== undefined) userAnswer.value = saved
     else {
-      if (q.type === 'multiple') userAnswer.value = []
-      else if (q.type === 'matching') userAnswer.value = new Array(q.left?.length ?? 0).fill(null)
-      else userAnswer.value = ''
+      userAnswer.value = blankAnswerFor(q)
     }
   } else {
     const saved = props.initialAnswers?.[q.id]
@@ -810,6 +865,52 @@ function handleExit() {
 }
 
 .judge-group { display: flex; justify-content: center; padding: 16px 0; }
+/* 多陈述：整块列表，不再居中 */
+.judge-group--multi { display: block; }
+
+/* ---- 多陈述判断题：逐句 T/F ---- */
+.judge-stmts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.judge-stmt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid $border-color;
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+}
+
+.judge-stmt__idx {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  /* 实心语义底统一走 -text + text-on-primary（批 6a-2 约定） */
+  background: var(--primary-text);
+  color: var(--text-on-primary);
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.judge-stmt__text {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.6;
+  color: $text-main;
+}
+
+.judge-stmt__btns { flex: none; }
 
 .matching-group {
   display: flex; flex-direction: column; gap: 10px;

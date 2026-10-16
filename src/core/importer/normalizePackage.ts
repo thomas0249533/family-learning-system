@@ -1,3 +1,5 @@
+import { normalizeJudgeList } from '@core/quiz/judge'
+
 export interface NormalizeIssue {
   level: 'error' | 'warning'
   code: string
@@ -194,6 +196,35 @@ export function normalizePackage(
           if (ex.answer === undefined || ex.answer === null || ex.answer === '') {
             errors.push({ level: 'error', code: 'E007', path: exPath, message: `题目 ${ex.id} 缺少 answer`, hint: 'answer 是标准答案' })
             return
+          }
+
+          // 判断题 answer 形状校验。
+          // ⚠️ 必须写成「接受合法形态」而非「一律拒绝数组」：
+          //    现有 english-7-up-rjb 的 18 道**多陈述**判断题 answer 就是数组（如 ["F","T","F","T"]），
+          //    引擎已支持（@core/quiz/judge）。若此处拒绝数组，会把这些题全挡在导入之外 ——
+          //    那只是把「引擎判错」换成了「根本导不进来」。
+          if (ex.type === 'judge') {
+            const rawCount = Array.isArray(ex.answer) ? ex.answer.length : 1
+            const tokenCount = normalizeJudgeList(ex.answer).length
+            if (tokenCount !== rawCount) {
+              errors.push({
+                level: 'error',
+                code: 'E015',
+                path: exPath,
+                message: `判断题 ${ex.id} 的 answer 含无法识别的值`,
+                hint: `answer 每项应为 对/错 或 T/F（大小写均可）、true/false；当前 ${JSON.stringify(ex.answer)}`,
+              })
+              return
+            }
+            if (Array.isArray(ex.answer) && ex.answer.length === 1) {
+              warnings.push({
+                level: 'warning',
+                code: 'W015',
+                path: exPath,
+                message: `判断题 ${ex.id} 的 answer 是单元素数组`,
+                hint: '单句判断题请直接写标量（"对" / "错" / "T" / "F"）',
+              })
+            }
           }
 
           if (ex.type === 'matching') {
