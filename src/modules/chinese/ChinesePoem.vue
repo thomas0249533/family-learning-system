@@ -1,5 +1,5 @@
 <template>
-  <n-card class="chinese-poem-card">
+  <AppCard class="chinese-poem-card">
     <template v-for="(kp, i) in kps" :key="i">
       <div class="poem-header">
         <div class="poem-title-row">
@@ -35,15 +35,16 @@
         <div class="block-content">{{ kp.metadata.appreciation }}</div>
       </div>
     </template>
-    <n-empty v-if="kps.length === 0" description="暂无古诗文内容" />
-  </n-card>
+    <EmptyState v-if="kps.length === 0" description="暂无古诗文内容" />
+  </AppCard>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
-import { NCard, NEmpty } from 'naive-ui'
 import { useKnowledgePoints } from '@core/composables/useKnowledgePoints'
 import { speak, stop, isSpeechAvailable } from '@core/audio/speechService'
+import AppCard from '@/components/ui/AppCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const props = defineProps<{
   knowledgePointIds?: string[]
@@ -92,7 +93,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-.chinese-poem-card { border-radius: $radius-lg; box-shadow: $shadow-sm; margin-bottom: 12px; }
+/* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
+.chinese-poem-card { margin-bottom: 12px; }
 
 .poem-header {
   text-align: center;

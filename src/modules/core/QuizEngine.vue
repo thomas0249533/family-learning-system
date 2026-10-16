@@ -117,18 +117,18 @@
 
       <div class="quiz-actions">
         <template v-if="!examMode">
-          <n-button v-if="!showFeedback" type="primary" block size="large" @click="submitAnswer" :disabled="!canSubmit">
+          <AppButton v-if="!showFeedback" type="primary" block size="large" @click="submitAnswer" :disabled="!canSubmit">
             提交答案
-          </n-button>
-          <n-button v-else type="success" block size="large" @click="nextQuestion">
+          </AppButton>
+          <AppButton v-else type="success" block size="large" @click="nextQuestion">
             {{ currentIndex === questions.length - 1 ? '🏁 完成练习' : '下一题 ➡️' }}
-          </n-button>
+          </AppButton>
         </template>
 
         <template v-else>
-          <n-button type="primary" block size="large" @click="examNext" :disabled="!canSubmit">
+          <AppButton type="primary" block size="large" @click="examNext" :disabled="!canSubmit">
             {{ isLastQuestion ? '🏁 提交试卷' : '下一题 ➡️' }}
-          </n-button>
+          </AppButton>
         </template>
       </div>
     </template>
@@ -142,6 +142,7 @@ import {
   NButton, NButtonGroup, NInput, NSelect,
 } from 'naive-ui'
 import { correctFeedback, wrongFeedback } from '@core/motivation/encouragement'
+import AppButton from '@/components/ui/AppButton.vue'
 
 export type QuizQuestionType = 'single' | 'blank' | 'multiple' | 'judge' | 'matching' | 'spelling' | 'essay'
 

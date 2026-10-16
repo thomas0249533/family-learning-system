@@ -1,5 +1,5 @@
 <template>
-  <n-card class="english-sentence-card">
+  <AppCard class="english-sentence-card">
     <template v-for="(kp, i) in kps" :key="i">
       <div class="pattern-block" v-if="kp.metadata?.pattern">
         <div class="pattern-label">📐 句型</div>
@@ -16,14 +16,15 @@
         <div class="usage-text">{{ kp.metadata.usage }}</div>
       </div>
     </template>
-    <n-empty v-if="kps.length === 0" description="暂无句型内容" />
-  </n-card>
+    <EmptyState v-if="kps.length === 0" description="暂无句型内容" />
+  </AppCard>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { NCard, NEmpty } from 'naive-ui'
 import { useKnowledgePoints } from '@core/composables/useKnowledgePoints'
+import AppCard from '@/components/ui/AppCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const props = defineProps<{
   knowledgePointIds?: string[]
@@ -35,7 +36,8 @@ const kps = useKnowledgePoints(computed(() => props.knowledgePointIds))
 </script>
 
 <style scoped lang="scss">
-.english-sentence-card { border-radius: $radius-lg; box-shadow: $shadow-sm; margin-bottom: 12px; }
+/* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
+.english-sentence-card { margin-bottom: 12px; }
 
 .pattern-block {
   background: $info-light;

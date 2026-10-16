@@ -1,13 +1,14 @@
 <template>
-  <n-card class="math-module-card" title="📖 概念精讲">
+  <AppCard class="math-module-card" title="📖 概念精讲">
     <p>这里展示概念讲解。</p>
-  </n-card>
+  </AppCard>
 </template>
 
 <script setup lang="ts">
-import { NCard } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
 defineProps<{ type: string, knowledgePointIds?: string[], data?: any, packageId: string }>()
 </script>
 <style scoped>
-.math-module-card { margin-bottom: 16px; border-radius: 14px; }
+/* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
+.math-module-card { margin-bottom: 16px; }
 </style>

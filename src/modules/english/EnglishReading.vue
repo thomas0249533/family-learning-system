@@ -1,5 +1,5 @@
 <template>
-  <n-card class="english-reading-card">
+  <AppCard class="english-reading-card">
     <template v-for="(kp, i) in kps" :key="i">
       <h3 class="reading-title">📖 {{ kp.title }}</h3>
 
@@ -14,14 +14,15 @@
         <div class="trans-text">{{ kp.metadata.translation }}</div>
       </div>
     </template>
-    <n-empty v-if="kps.length === 0" description="暂无阅读内容" />
-  </n-card>
+    <EmptyState v-if="kps.length === 0" description="暂无阅读内容" />
+  </AppCard>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { NCard, NEmpty } from 'naive-ui'
 import { useKnowledgePoints } from '@core/composables/useKnowledgePoints'
+import AppCard from '@/components/ui/AppCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const props = defineProps<{
   knowledgePointIds?: string[]
@@ -33,7 +34,8 @@ const kps = useKnowledgePoints(computed(() => props.knowledgePointIds))
 </script>
 
 <style scoped lang="scss">
-.english-reading-card { border-radius: $radius-lg; box-shadow: $shadow-sm; margin-bottom: 12px; }
+/* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
+.english-reading-card { margin-bottom: 12px; }
 .reading-title { font-size: 16px; font-weight: 700; color: $subject-english; margin-bottom: 4px; font-family: 'Times New Roman', serif; }
 .reading-meta { font-size: 12px; color: $subject-english-light; margin-bottom: 12px; }
 .reading-body {

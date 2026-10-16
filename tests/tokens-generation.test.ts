@@ -120,3 +120,42 @@ describe('components.scss ⇄ tokens.ts COMPONENT_TOKENS（第三层不漂移）
     )
   })
 })
+
+// =====================================================================
+// 组件级 token 声明「作用域」守卫（防 81841fc 那类缺陷复发）
+// ---------------------------------------------------------------------
+// 根因：自定义属性在**声明所在元素**的 computed-value 阶段就完成 `var()`
+// 替换，子元素只继承替换后的结果。主题覆盖全部落在 `body[...]` / `body.dark-mode`
+// （theme.scss）。若把 components.scss 的别名声明在 `:root`，别名会在 `:root`
+// 处被**提前**求值为浅色值 → 深色 / 非默认预设下不再跟随覆盖 → 深色卡片上
+// 深色字、徽章用浅色底、焦点环用错色相。声明在 `body` 上即与覆盖同元素。
+// 该缺陷只有「深色渲染」能暴露（palette.ts 全等断言与浅色基线都抓不到），
+// 故必须显式加静态守卫。断言前先剥离注释，避免文档里解释 `:root` 时误报。
+// =====================================================================
+describe('components.scss 声明作用域守卫（链式 var() 不得置于 :root）', () => {
+  /** 剥离块注释与行注释，只留可执行代码。 */
+  const stripComments = (s: string): string =>
+    s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '')
+
+  it('components.scss 不得存在 :root 选择器块', () => {
+    const code = stripComments(componentsText)
+    expect(
+      /:\s*root\b/.test(code),
+      'components.scss 出现 :root 选择器。组件级 token 必须声明在 `body`：'
+        + '自定义属性在「声明所在元素」的 computed-value 阶段就完成 var() 替换，'
+        + '声明在 :root 会被提前求值为浅色值，深色 / 非默认预设下不跟随 '
+        + 'body[...] / body.dark-mode 覆盖 → 表现为深色卡片上深色字、徽章浅色底、焦点环错色相。'
+        + '请把别名块的选择器改为 `body`。',
+    ).toBe(false)
+  })
+
+  it('作用域守卫非空洞：:root 块必命中、注释中的 :root 必放行', () => {
+    // ① 非空洞：合成一个 :root 选择器块，同一检测必须命中（证明正则真的在把关）
+    expect(/:\s*root\b/.test(stripComments(':root {\n  --x: var(--y);\n}'))).toBe(true)
+    // ② 防误报：只出现在注释里的 :root 不得命中（本文件解释性注释会提到 :root）
+    const commentedOnly = stripComments(
+      '// 不要写在 :root\n/* :root 会被提前求值 */\nbody { --x: var(--y); }',
+    )
+    expect(/:\s*root\b/.test(commentedOnly)).toBe(false)
+  })
+})

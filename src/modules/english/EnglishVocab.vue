@@ -1,10 +1,10 @@
 <template>
-  <n-card class="english-vocab-card">
+  <AppCard class="english-vocab-card">
     <div class="card-header">
       <span class="header-title">📖 词汇</span>
-      <n-button v-if="!drilling && kps.length > 0" size="small" type="primary" @click="drilling = true">
+      <AppButton v-if="!drilling && kps.length > 0" size="small" type="primary" @click="drilling = true">
         🎴 开始背记
-      </n-button>
+      </AppButton>
     </div>
 
     <VocabDrill
@@ -43,16 +43,18 @@
       </div>
     </div>
 
-    <n-empty v-else description="暂无词汇内容" />
-  </n-card>
+    <EmptyState v-else description="暂无词汇内容" />
+  </AppCard>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
-import { NCard, NButton, NEmpty } from 'naive-ui'
 import { useKnowledgePoints } from '@core/composables/useKnowledgePoints'
 import { speak, stop, isSpeechAvailable } from '@core/audio/speechService'
 import VocabDrill from '@modules/core/VocabDrill.vue'
+import AppCard from '@/components/ui/AppCard.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const props = defineProps<{
   knowledgePointIds?: string[]
@@ -92,7 +94,8 @@ onUnmounted(() => { stop() })
 </script>
 
 <style scoped lang="scss">
-.english-vocab-card { border-radius: $radius-lg; box-shadow: $shadow-sm; margin-bottom: 12px; }
+/* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
+.english-vocab-card { margin-bottom: 12px; }
 
 .card-header {
   display: flex;

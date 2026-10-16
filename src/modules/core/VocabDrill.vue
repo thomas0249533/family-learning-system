@@ -39,10 +39,10 @@
       </div>
 
       <div class="intro-actions">
-        <n-button type="primary" size="large" block @click="startDrill">
+        <AppButton type="primary" size="large" block @click="startDrill">
           ▶ 开始背记（{{ sessionSize }} 题）
-        </n-button>
-        <n-button block @click="emit('close')">取消</n-button>
+        </AppButton>
+        <AppButton block @click="emit('close')">取消</AppButton>
       </div>
     </div>
 
@@ -119,18 +119,18 @@
       <!-- 底部按钮 -->
       <div class="drill-actions">
         <template v-if="mode === 'flip'">
-          <n-button size="large" @click="markWrong">🔄 再练练</n-button>
-          <n-button type="success" size="large" @click="markCorrect">✅ 我记住了</n-button>
+          <AppButton size="large" @click="markWrong">🔄 再练练</AppButton>
+          <AppButton type="success" size="large" @click="markCorrect">✅ 我记住了</AppButton>
         </template>
         <template v-else-if="!showFeedback">
-          <n-button type="primary" size="large" block @click="submitAnswer" :disabled="!userInput.trim()">
+          <AppButton type="primary" size="large" block @click="submitAnswer" :disabled="!userInput.trim()">
             提交
-          </n-button>
+          </AppButton>
         </template>
         <template v-else>
-          <n-button type="primary" size="large" block @click="nextWord">
+          <AppButton type="primary" size="large" block @click="nextWord">
             {{ currentIndex === sessionWords.length - 1 ? '🏁 完成' : '下一题 ➡️' }}
-          </n-button>
+          </AppButton>
         </template>
       </div>
     </div>
@@ -148,8 +148,8 @@
       <div class="done-time">用时 {{ formatDuration(elapsedSeconds) }}</div>
 
       <div class="done-actions">
-        <n-button type="primary" size="large" block @click="startDrill">🔁 再来一遍</n-button>
-        <n-button block @click="emit('close')">← 返回词汇表</n-button>
+        <AppButton type="primary" size="large" block @click="startDrill">🔁 再来一遍</AppButton>
+        <AppButton block @click="emit('close')">← 返回词汇表</AppButton>
       </div>
     </div>
   </div>
@@ -157,9 +157,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
-import { NButton, NInput } from 'naive-ui'
+import { NInput } from 'naive-ui'
 import { speak } from '@core/audio/speechService'
 import { useUserDataStore } from '@core/stores/userData'
+import AppButton from '@/components/ui/AppButton.vue'
 
 type Mode = 'flip' | 'input' | 'listen' | 'choice'
 type Phase = 'intro' | 'drilling' | 'done'

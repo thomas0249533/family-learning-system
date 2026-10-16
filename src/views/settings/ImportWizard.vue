@@ -1,12 +1,12 @@
 <template>
-  <n-card title="📥 导入学习包" class="wizard-card">
+  <AppCard title="📥 导入学习包" class="wizard-card">
     <n-space vertical>
       <n-upload :custom-request="handleUploadJson" :show-file-list="false" accept=".json">
-        <n-button type="primary" dashed>选择单个 JSON 学习包</n-button>
+        <AppButton type="primary" dashed>选择单个 JSON 学习包</AppButton>
       </n-upload>
 
       <n-upload :custom-request="handleUploadZip" :show-file-list="false" accept=".zip,.lpkgset">
-        <n-button type="success" dashed>选择包集合 ZIP（批量导入）</n-button>
+        <AppButton type="success" dashed>选择包集合 ZIP（批量导入）</AppButton>
       </n-upload>
     </n-space>
 
@@ -28,8 +28,8 @@
       </n-form>
       <template #footer>
         <n-space justify="end">
-          <n-button @click="showConfirmModal = false">取消</n-button>
-          <n-button type="primary" @click="submitJsonImport">确认导入</n-button>
+          <AppButton @click="showConfirmModal = false">取消</AppButton>
+          <AppButton type="primary" @click="submitJsonImport">确认导入</AppButton>
         </n-space>
       </template>
     </n-modal>
@@ -68,20 +68,22 @@
       </div>
       <template #footer>
         <n-space justify="end">
-          <n-button @click="showSetResultModal = false">关闭</n-button>
+          <AppButton @click="showSetResultModal = false">关闭</AppButton>
         </n-space>
       </template>
     </n-modal>
-  </n-card>
+  </AppCard>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
-  NCard, NUpload, NButton, NModal, NForm, NFormItem,
+  NUpload, NModal, NForm, NFormItem,
   NSelect, NInputNumber, NInput, NSpace, NTag, useMessage
 } from 'naive-ui'
 import { PackageImporter, type ImportIssue } from '@core/importer/importService'
+import AppCard from '@/components/ui/AppCard.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 
 const message = useMessage()
 
@@ -172,7 +174,8 @@ async function handleUploadZip({ file, onFinish }: any) {
 </script>
 
 <style scoped lang="scss">
-.wizard-card { margin-bottom: 16px; border-radius: $radius-lg; box-shadow: $shadow; }
+/* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
+.wizard-card { margin-bottom: 16px; }
 
 .set-result .result-summary {
   font-size: 15px;

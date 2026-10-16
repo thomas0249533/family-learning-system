@@ -1,18 +1,19 @@
 <template>
-  <n-card class="chinese-writing-card">
+  <AppCard class="chinese-writing-card">
     <template v-for="(kp, i) in kps" :key="i">
       <h3 class="writing-title">✍️ {{ kp.title }}</h3>
       <div class="writing-body" v-html="renderMarkdown(kp.content)"></div>
     </template>
-    <n-empty v-if="kps.length === 0" description="暂无写作内容" />
-  </n-card>
+    <EmptyState v-if="kps.length === 0" description="暂无写作内容" />
+  </AppCard>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { NCard, NEmpty } from 'naive-ui'
 import MarkdownIt from 'markdown-it'
 import { useKnowledgePoints } from '@core/composables/useKnowledgePoints'
+import AppCard from '@/components/ui/AppCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const props = defineProps<{
   knowledgePointIds?: string[]
@@ -26,7 +27,8 @@ function renderMarkdown(s: string) { return md.render(s ?? '') }
 </script>
 
 <style scoped lang="scss">
-.chinese-writing-card { border-radius: $radius-lg; box-shadow: $shadow-sm; margin-bottom: 12px; }
+/* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
+.chinese-writing-card { margin-bottom: 12px; }
 .writing-title { font-size: 16px; font-weight: 700; color: $subject-chinese-deep; margin-bottom: 12px; }
 .writing-body {
   font-size: 14px;
