@@ -12,6 +12,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { generateThemeScss, generatePaletteTs, BANNER } from '../scripts/tokens/emit'
 import { COMPONENT_TOKENS } from '../src/core/styles/tokens'
+import { findLiteralColors } from './helpers/colorLiterals'
 
 const ROOT = process.cwd()
 const themePath = resolve(ROOT, 'src/core/styles/theme.scss')
@@ -92,18 +93,13 @@ describe('components.scss ⇄ tokens.ts COMPONENT_TOKENS（第三层不漂移）
   // scripts/check-hex.mjs 的 SCAN_DIRS 不含 src/core/styles/**，故本文件必须单独守卫。
   // 只扫「声明值」而非整文件，避免中文注释误伤；var() 引用（如 rgba(var(--primary-rgb), 0.55)，
   // `rgba(` 后是 `var` 非数字）为合法引用，必须放行。
-  const HEX_RE = /#([0-9a-fA-F]{3,8})\b/
-  const RGB_RE = /rgba?\(\s*\d/i
-  const HSL_RE = /hsla?\(\s*\d/i
-  const NAMED_RE =
-    /\b(white|black|red|green|blue|gray|grey|orange|yellow|purple|pink|brown|silver|gold|navy|teal|olive|maroon|lime|aqua|fuchsia|cyan|magenta)\b/i
+  // 正则统一来自 tests/helpers/colorLiterals.ts（单一源；含「纯黑阴影」豁免）。
 
   it('components.scss 声明值零字面量色（hex / rgb / hsl / 命名色）', () => {
     const hits: string[] = []
     for (const [name, value] of Object.entries(scssVars)) {
-      if (HEX_RE.test(value) || RGB_RE.test(value) || HSL_RE.test(value) || NAMED_RE.test(value)) {
-        hits.push(`--${name}: ${value}`)
-      }
+      const kinds = findLiteralColors(value)
+      if (kinds.length > 0) hits.push(`--${name}: ${value} [${kinds.join(',')}]`)
     }
     expect(
       hits,

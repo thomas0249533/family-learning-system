@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
+import { findLiteralColors, HEX_RE, RGB_RE, HSL_RE, NAMED_RE } from './helpers/colorLiterals'
 
 // =====================================================================
 // 8 UI 基元静态检查（零新依赖，environment: 'node'）
@@ -57,13 +58,8 @@ function usedTokens(text: string): string[] {
 }
 
 // 与 check-hex.mjs 同口径的正则（防第二套真相漂移）
-const HEX_RE = /#([0-9a-fA-F]{3,8})\b/
-const RGB_RE = /rgba?\(\s*\d/i
-const HSL_RE = /hsla?\(\s*\d/i
-// 命名色：check-hex 不查此项，属本测试的加固扩展。
-// 用 lookaround（而非 \b）排除 CSS 标识符中的同形词，避免 `white-space` / `grid-row` 误报。
-const NAMED_RE =
-  /(?<![\w-])(white|black|red|green|blue|gray|grey|orange|yellow|purple|pink|brown|silver|gold|navy|teal|olive|maroon|lime|aqua|fuchsia|cyan|magenta)(?![\w-])/i
+// 单一源：tests/helpers/colorLiterals.ts（本文件与 tokens-generation.test.ts 共用）
+// 命名色用 lookaround（而非 \b）排除 CSS 标识符中的同形词，避免 `white-space` / `grid-row` 误报。
 
 describe('8 基元 · 文件与结构', () => {
   it('a) 8 个基元 SFC 均存在', () => {
@@ -85,11 +81,8 @@ describe('8 基元 · 零硬编码色', () => {
     for (const [name, text] of sfcText) {
       // 仅取 <style> 块，避免注释/文案误报
       const style = text.match(/<style[\s\S]*?<\/style>/)?.[0] ?? ''
-      if (HEX_RE.test(style) || RGB_RE.test(style) || HSL_RE.test(style)) {
-        hits.push(`${name}: 命中 hex/rgb/hsl`)
-      }
-      NAMED_RE.lastIndex = 0
-      if (NAMED_RE.test(style)) hits.push(`${name}: 命中命名色`)
+      const kinds = findLiteralColors(style)
+      if (kinds.length > 0) hits.push(`${name}: 命中 ${kinds.join(',')}`)
     }
     expect(hits).toEqual([])
   })
@@ -97,11 +90,40 @@ describe('8 基元 · 零硬编码色', () => {
   it('b2) 整个 SFC（含模板/script）亦无字面量色', () => {
     const hits: string[] = []
     for (const [name, text] of sfcText) {
-      if (HEX_RE.test(text) || RGB_RE.test(text) || HSL_RE.test(text)) {
-        hits.push(`${name}: 命中 hex/rgb/hsl`)
-      }
+      const kinds = findLiteralColors(text)
+      if (kinds.length > 0) hits.push(`${name}: 命中 ${kinds.join(',')}`)
     }
     expect(hits).toEqual([])
+  })
+})
+
+describe('守卫正则自身（单一源 colorLiterals 的语义自证）', () => {
+  it('catch 真值：hex / rgb / hsl / 命名色', () => {
+    expect(findLiteralColors('--x: #abcdef;')).toContain('hex')
+    expect(findLiteralColors('--x: rgba(1, 2, 3, 0.5);')).toContain('rgb')
+    expect(findLiteralColors('--x: hsl(120, 50%, 50%);')).toContain('hsl')
+    expect(findLiteralColors('--x: white;')).toContain('named')
+  })
+
+  it('放行合法：var() 引用与纯黑阴影（仅 alpha 片段被剔除）', () => {
+    expect(findLiteralColors('--x: var(--primary-color);')).toEqual([])
+    expect(findLiteralColors('--x: rgba(var(--primary-rgb), 0.55);')).toEqual([])
+    expect(findLiteralColors('--x: rgba(0, 0, 0, 0.05);')).toEqual([])
+    // 同行夹带真值色不得被整行放过
+    expect(findLiteralColors('--x: rgba(0, 0, 0, 0.05) #000000;')).toContain('hex')
+  })
+
+  it('不误报 CSS 标识符（lookaround 版与 \\b 版的关键区别）', () => {
+    for (const s of ['white-space: nowrap;', 'grid-row: 1;', 'prefers-reduced-motion: reduce;']) {
+      expect(findLiteralColors(s), s).toEqual([])
+    }
+    // 防止有人把 lookaround 改回 \b：直接断言正则不含裸 \b 包裹
+    expect(String(NAMED_RE)).toContain('(?<![\\w-])')
+    expect(String(NAMED_RE)).toContain('(?![\\w-])')
+  })
+
+  it('导出四个正则均为 RegExp（供跨文件共用）', () => {
+    for (const re of [HEX_RE, RGB_RE, HSL_RE, NAMED_RE]) expect(re).toBeInstanceOf(RegExp)
   })
 })
 
