@@ -43,6 +43,35 @@
       </div>
     </section>
 
+    <!-- 成就概览（只读） -->
+    <section class="section">
+      <h2 class="section-title">🏅 成就概览</h2>
+      <div class="ach-overview-card">
+        <div class="ach-total">
+          <div class="ach-total-value">{{ achUnlockedCount }} / {{ achTotal }}</div>
+          <div class="ach-total-label">已解锁成就</div>
+        </div>
+        <div class="ach-cats">
+          <div v-for="c in achByCategory" :key="c.cat" class="ach-cat">
+            <span class="ach-cat-icon">{{ c.icon }}</span>
+            <span class="ach-cat-name">{{ c.label }}</span>
+            <span class="ach-cat-count">{{ c.unlocked }} / {{ c.total }}</span>
+          </div>
+        </div>
+        <div class="ach-recent">
+          <div class="ach-recent-title">最近解锁</div>
+          <div v-if="recentUnlocked.length === 0" class="ach-recent-empty">还没有解锁成就</div>
+          <div v-else class="ach-recent-list">
+            <div v-for="r in recentUnlocked" :key="r.id" class="ach-recent-item">
+              <span class="recent-icon">{{ r.def!.icon }}</span>
+              <span class="recent-name">{{ r.def!.title }}</span>
+              <span class="recent-date">{{ r.unlockedAt || '较早' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 学科分布 -->
     <section class="section" v-if="subjectStats.length > 0">
       <h2 class="section-title">📚 学科分布</h2>
@@ -116,19 +145,62 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { NButton } from 'naive-ui'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
+import {
+  ACHIEVEMENTS,
+  loadUnlocked,
+  type AchievementCategory,
+  type UnlockedRecord,
+} from '@core/motivation/achievements'
 
 const router = useRouter()
 const userDataStore = useUserDataStore()
 const packageStore = usePackageStore()
 
+const unlockedRecords = ref<UnlockedRecord[]>([])
+
 onMounted(async () => {
   await userDataStore.loadUserData()
   await packageStore.loadPackages()
+  unlockedRecords.value = await loadUnlocked()
+})
+
+/** ===== 成就概览（A2-5，只读）===== */
+const CAT_ORDER: AchievementCategory[] = ['M', 'G', 'B', 'E']
+const CAT_META: Record<AchievementCategory, { label: string; icon: string }> = {
+  M: { label: '精熟目标', icon: '🎯' },
+  G: { label: '成长型思维', icon: '🌱' },
+  B: { label: '行为塑造', icon: '⏱️' },
+  E: { label: '探索', icon: '🧭' },
+}
+
+const achTotal = ACHIEVEMENTS.length
+const achUnlockedCount = computed(() => unlockedRecords.value.length)
+
+const achByCategory = computed(() =>
+  CAT_ORDER.map((cat) => {
+    const items = ACHIEVEMENTS.filter((a) => a.category === cat)
+    const unlocked = items.filter((a) => unlockedRecords.value.some((r) => r.id === a.id)).length
+    return { cat, ...CAT_META[cat], unlocked, total: items.length }
+  }),
+)
+
+const recentUnlocked = computed(() => {
+  const rows = unlockedRecords.value
+    .map((r) => ({ ...r, def: ACHIEVEMENTS.find((a) => a.id === r.id) }))
+    .filter((r) => !!r.def)
+  // unlockedAt 倒序；空日期排最后
+  rows.sort((a, b) => {
+    if (a.unlockedAt && b.unlockedAt) return b.unlockedAt.localeCompare(a.unlockedAt)
+    if (a.unlockedAt) return -1
+    if (b.unlockedAt) return 1
+    return 0
+  })
+  return rows.slice(0, 3)
 })
 
 /** 总览统计 */
@@ -331,6 +403,87 @@ function goToImport() {
     font-size: 12px;
     color: $text-sub;
     font-weight: 600;
+  }
+}
+
+/* ========== 成就概览 ========== */
+.ach-overview-card {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  padding: 18px 20px;
+  box-shadow: $shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ach-total {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+
+  .ach-total-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: $primary-color;
+    line-height: 1;
+  }
+  .ach-total-label {
+    font-size: 13px;
+    color: $text-sub;
+    font-weight: 600;
+  }
+}
+
+.ach-cats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  @media (max-width: 640px) { grid-template-columns: repeat(2, 1fr); }
+}
+
+.ach-cat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: $bg-color-hover;
+  border-radius: $radius-md;
+
+  .ach-cat-icon { font-size: 16px; line-height: 1; }
+  .ach-cat-name { font-size: 12px; font-weight: 700; color: $text-main; flex: 1; }
+  .ach-cat-count { font-size: 12px; font-weight: 800; color: $primary-color; }
+}
+
+.ach-recent {
+  .ach-recent-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: $text-main;
+    margin-bottom: 8px;
+  }
+  .ach-recent-empty {
+    font-size: 12px;
+    color: $text-muted;
+  }
+  .ach-recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ach-recent-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border: 1px solid $border-light;
+    border-radius: $radius-sm;
+
+    .recent-icon { font-size: 18px; line-height: 1; }
+    .recent-name { flex: 1; font-size: 13px; font-weight: 700; color: $text-main; }
+    .recent-date { font-size: 11px; color: $text-muted; font-weight: 600; }
   }
 }
 

@@ -1,0 +1,261 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+/**
+ * 成就单测：
+ *   · 28 枚每一枚的判定条件都有正/负两向覆盖（含边界）；
+ *   · 存储迁移 normalizeUnlocked（旧 string[] → {id,unlockedAt}[]）；
+ *   · syncAchievements 幂等 / 只增不减 / unlockedAt 本地日期。
+ *
+ * 用内存版 Dexie 替身替代 IndexedDB（settings 表即可）。
+ */
+const fake = vi.hoisted(() => {
+  type Row = Record<string, any>
+  const rows: Row[] = []
+  return {
+    rows,
+    settings: {
+      async get(k: any) { return rows.find((r) => r.key === k) },
+      async put(r: Row) {
+        const i = rows.findIndex((x) => x.key === r.key)
+        if (i >= 0) rows[i] = { ...r }
+        else rows.push({ ...r })
+        return r.key
+      },
+    },
+    __reset() { rows.length = 0 },
+  }
+})
+
+vi.mock('@/db', () => ({ db: fake }))
+
+const {
+  ACHIEVEMENTS,
+  evaluateAchievements,
+  normalizeUnlocked,
+  loadUnlocked,
+  syncAchievements,
+  achievementById,
+} = await import('@core/motivation/achievements')
+const { EMPTY_STREAK, localDayKey } = await import('@core/motivation/streak')
+
+type Ctx = Parameters<typeof evaluateAchievements>[0]
+
+function mastered(n: number, pkg = 'p'): any[] {
+  return Array.from({ length: n }, (_, i) => ({
+    packageId: pkg,
+    knowledgePointId: `${pkg}-kp-${i}`,
+    status: '已掌握' as const,
+  }))
+}
+
+function pkgMeta(over: Partial<{ packageId: string; subject: string; grade: number; term: string; packageType: string; kpCount: number }>) {
+  return { packageId: 'p', subject: 'math', grade: 4, term: 'up', packageType: 'base', kpCount: 0, ...over }
+}
+
+const base: Ctx = { progress: [], mistakes: [], streak: { ...EMPTY_STREAK } }
+
+beforeEach(() => {
+  fake.__reset()
+})
+
+// ---------------------------------------------------------------------
+// 每枚徽章：PASS 上下文 → 命中；FAIL 上下文 → 不命中
+// ---------------------------------------------------------------------
+describe('28 枚成就判定（每枚正/负覆盖）', () => {
+  const PASS: Record<string, Ctx> = {
+    'first-step': { ...base, progress: mastered(1) },
+    'ten-kp': { ...base, progress: mastered(10) },
+    'fifty-kp': { ...base, progress: mastered(50) },
+    'hundred-kp': { ...base, progress: mastered(100) },
+    'kp-300': { ...base, progress: mastered(300) },
+    'subject-master-3': {
+      ...base,
+      packages: [
+        pkgMeta({ packageId: 'm', subject: 'math', kpCount: 12 }),
+        pkgMeta({ packageId: 'c', subject: 'chinese', kpCount: 12 }),
+        pkgMeta({ packageId: 'e', subject: 'english', kpCount: 12 }),
+      ],
+      progress: [...mastered(10, 'm'), ...mastered(10, 'c'), ...mastered(10, 'e')],
+    },
+    'perfect-kp': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 10 } as any] },
+    'mastery-half': {
+      ...base,
+      packages: [pkgMeta({ kpCount: 20 })],
+      progress: mastered(10),
+    },
+    'mistake-first': { ...base, mistakes: [{ mastered: true, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1 }] },
+    'mistake-cleaner': { ...base, mistakes: Array.from({ length: 10 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'mistake-cleaner-50': { ...base, mistakes: Array.from({ length: 50 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'comeback': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '已掌握', wrongCount: 3 } as any] },
+    'review-20': { ...base, mistakes: [{ mastered: false, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1, reviewCorrectCount: 20 }] },
+    'patience': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctCount: 20, wrongCount: 10 } as any] },
+    'streak-master': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 5 } as any] },
+    'streak-3': { ...base, streak: { current: 3, longest: 3, lastDate: localDayKey() } },
+    'streak-7': { ...base, streak: { current: 7, longest: 7, lastDate: localDayKey() } },
+    'streak-30': { ...base, streak: { current: 30, longest: 30, lastDate: localDayKey() } },
+    'streak-60': { ...base, streak: { current: 60, longest: 60, lastDate: localDayKey() } },
+    'streak-100': { ...base, streak: { current: 100, longest: 100, lastDate: localDayKey() } },
+    'early-bird': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: new Date(2024, 0, 1, 6, 30).getTime(), lastStudyAt: new Date(2024, 0, 1, 6, 40).getTime() }] },
+    'night-owl': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: new Date(2024, 0, 1, 20, 0).getTime(), lastStudyAt: new Date(2024, 0, 1, 21, 30).getTime() }] },
+    'daily-20': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 20, firstStudyAt: 0, lastStudyAt: 0 }] },
+    'explorer-3': { ...base, progress: [...mastered(1, 'a'), ...mastered(1, 'b'), ...mastered(1, 'c')] },
+    'explorer-10': { ...base, progress: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'].flatMap((p) => mastered(1, p)) },
+    'type-collector': { ...base, attemptedTypes: ['single', 'blank', 'multiple', 'judge', 'spelling'] },
+    'term-cross': {
+      ...base,
+      packages: [pkgMeta({ packageId: 'a', term: 'up' }), pkgMeta({ packageId: 'b', term: 'down' })],
+      progress: [...mastered(1, 'a'), ...mastered(1, 'b')],
+    },
+    'senior-new': {
+      ...base,
+      packages: [pkgMeta({ packageId: 'c', subject: 'chinese' })],
+      progress: mastered(1, 'c'),
+    },
+  }
+
+  // 边界负例：恰好差一点
+  const FAIL: Record<string, Ctx> = {
+    'first-step': { ...base, progress: [] },
+    'ten-kp': { ...base, progress: mastered(9) },
+    'fifty-kp': { ...base, progress: mastered(49) },
+    'hundred-kp': { ...base, progress: mastered(99) },
+    'kp-300': { ...base, progress: mastered(299) },
+    'subject-master-3': {
+      ...base,
+      packages: [pkgMeta({ packageId: 'm', subject: 'math' }), pkgMeta({ packageId: 'c', subject: 'chinese' }), pkgMeta({ packageId: 'e', subject: 'english' })],
+      progress: [...mastered(10, 'm'), ...mastered(10, 'c'), ...mastered(9, 'e')],
+    },
+    'perfect-kp': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 9 } as any] },
+    'mastery-half': { ...base, packages: [pkgMeta({ kpCount: 20 })], progress: mastered(9) },
+    'mistake-first': { ...base, mistakes: [] },
+    'mistake-cleaner': { ...base, mistakes: Array.from({ length: 9 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'mistake-cleaner-50': { ...base, mistakes: Array.from({ length: 49 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'comeback': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '已掌握', wrongCount: 2 } as any] },
+    'review-20': { ...base, mistakes: [{ mastered: false, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1, reviewCorrectCount: 19 }] },
+    'patience': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctCount: 19, wrongCount: 10 } as any] },
+    'streak-master': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 4 } as any] },
+    'streak-3': { ...base, streak: { current: 2, longest: 2, lastDate: localDayKey() } },
+    'streak-7': { ...base, streak: { current: 6, longest: 6, lastDate: localDayKey() } },
+    'streak-30': { ...base, streak: { current: 29, longest: 29, lastDate: localDayKey() } },
+    'streak-60': { ...base, streak: { current: 59, longest: 59, lastDate: localDayKey() } },
+    'streak-100': { ...base, streak: { current: 99, longest: 99, lastDate: localDayKey() } },
+    'early-bird': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: new Date(2024, 0, 1, 7, 0).getTime(), lastStudyAt: new Date(2024, 0, 1, 7, 10).getTime() }] },
+    'night-owl': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: new Date(2024, 0, 1, 20, 0).getTime(), lastStudyAt: new Date(2024, 0, 1, 20, 59).getTime() }] },
+    'daily-20': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 19, firstStudyAt: 0, lastStudyAt: 0 }] },
+    'explorer-3': { ...base, progress: [...mastered(1, 'a'), ...mastered(1, 'b')] },
+    'explorer-10': { ...base, progress: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'].flatMap((p) => mastered(1, p)) },
+    'type-collector': { ...base, attemptedTypes: ['single', 'blank', 'multiple', 'judge'] },
+    'term-cross': { ...base, packages: [pkgMeta({ packageId: 'a', term: 'up' }), pkgMeta({ packageId: 'b', term: 'up' })], progress: [...mastered(1, 'a'), ...mastered(1, 'b')] },
+    'senior-new': { ...base, packages: [pkgMeta({ packageId: 'm', subject: 'math' })], progress: mastered(1, 'm') },
+  }
+
+  it('共 28 枚', () => {
+    expect(ACHIEVEMENTS).toHaveLength(28)
+  })
+
+  for (const a of ACHIEVEMENTS) {
+    it(`#${a.id}（${a.category}）命中 PASS 且不命中 FAIL`, () => {
+      expect(a.check(PASS[a.id]), `${a.id} 应在 PASS 上下文命中`).toBe(true)
+      expect(a.check(FAIL[a.id]), `${a.id} 不应在 FAIL 上下文命中`).toBe(false)
+    })
+  }
+
+  it('每枚 PASS 上下文都能被 evaluateAchievements 收集', () => {
+    for (const a of ACHIEVEMENTS) {
+      expect(evaluateAchievements(PASS[a.id]), `${a.id}`).toContain(a.id)
+    }
+  })
+
+  it('四类数量 = M8 / G7 / B8 / E5', () => {
+    const count = (c: string) => ACHIEVEMENTS.filter((a) => a.category === c).length
+    expect(count('M')).toBe(8)
+    expect(count('G')).toBe(7)
+    expect(count('B')).toBe(8)
+    expect(count('E')).toBe(5)
+  })
+
+  it('隐藏 3 枚：comeback / early-bird / night-owl', () => {
+    const hidden = ACHIEVEMENTS.filter((a) => a.hidden).map((a) => a.id).sort()
+    expect(hidden).toEqual(['comeback', 'early-bird', 'night-owl'])
+  })
+
+  it('旧 9 枚 id 全部保留且语义不变', () => {
+    const oldIds = ['first-step', 'ten-kp', 'fifty-kp', 'hundred-kp', 'streak-3', 'streak-7', 'streak-30', 'mistake-cleaner', 'streak-master']
+    for (const id of oldIds) expect(achievementById(id), `缺 ${id}`).toBeDefined()
+    expect(achievementById('first-step')!.title).toBe('迈出第一步')
+    expect(achievementById('streak-master')!.desc).toBe('单个知识点连续答对 5 题')
+  })
+
+  it('缺 packages/dailyStats/attemptedTypes 时不崩且相关徽章不命中', () => {
+    expect(evaluateAchievements(base)).not.toContain('subject-master-3')
+    expect(evaluateAchievements(base)).not.toContain('early-bird')
+    expect(evaluateAchievements(base)).not.toContain('type-collector')
+  })
+})
+
+// ---------------------------------------------------------------------
+// 存储迁移
+// ---------------------------------------------------------------------
+describe('normalizeUnlocked — 旧 string[] 兼容', () => {
+  it('string[] → {id,unlockedAt:""}', () => {
+    expect(normalizeUnlocked(['a', 'b'])).toEqual([
+      { id: 'a', unlockedAt: '' },
+      { id: 'b', unlockedAt: '' },
+    ])
+  })
+
+  it('混合半迁移态：字符串 + 对象', () => {
+    expect(normalizeUnlocked(['a', { id: 'b', unlockedAt: '2024-05-01' }])).toEqual([
+      { id: 'a', unlockedAt: '' },
+      { id: 'b', unlockedAt: '2024-05-01' },
+    ])
+  })
+
+  it('非数组 → []', () => {
+    expect(normalizeUnlocked(null)).toEqual([])
+    expect(normalizeUnlocked({})).toEqual([])
+  })
+
+  it('丢弃非法项', () => {
+    expect(normalizeUnlocked([123, { foo: 'bar' }, { id: 'ok' }])).toEqual([
+      { id: 'ok', unlockedAt: '' },
+    ])
+  })
+})
+
+describe('syncAchievements — 幂等 / 只增不减 / 解锁日期', () => {
+  const now = new Date(2025, 4, 20, 10, 0, 0)
+  const ctxFirst: Ctx = { ...base, progress: mastered(1) } // first-step
+
+  it('首次结算：写入 unlockedAt=localDayKey', async () => {
+    const r = await syncAchievements(ctxFirst, now)
+    expect(r.newlyUnlocked.map((a) => a.id)).toContain('first-step')
+    const saved = await loadUnlocked()
+    const rec = saved.find((s) => s.id === 'first-step')
+    expect(rec?.unlockedAt).toBe(localDayKey(now))
+  })
+
+  it('幂等：二次结算不重复、unlockedAt 保留、newlyUnlocked 为空', async () => {
+    await syncAchievements(ctxFirst, now)
+    const r2 = await syncAchievements(ctxFirst, new Date(2025, 5, 1))
+    expect(r2.newlyUnlocked).toHaveLength(0)
+    const rec = (await loadUnlocked()).find((s) => s.id === 'first-step')
+    expect(rec?.unlockedAt).toBe(localDayKey(now)) // 旧日期原样保留
+  })
+
+  it('只增不减：条件不再满足也不撤销', async () => {
+    await syncAchievements(ctxFirst, now)
+    // 空上下文（不再满足 first-step）
+    const r = await syncAchievements({ ...base }, new Date(2025, 5, 1))
+    expect(r.unlocked).toContain('first-step')
+  })
+
+  it('兼容旧存储：存 string[] 时能读出且不被清空', async () => {
+    await fake.settings.put({ key: 'achievements', value: ['ten-kp'] })
+    const saved = await loadUnlocked()
+    expect(saved).toEqual([{ id: 'ten-kp', unlockedAt: '' }])
+    // 再次结算（不满足 ten-kp）也应保留
+    const r = await syncAchievements({ ...base }, now)
+    expect(r.unlocked).toContain('ten-kp')
+  })
+})

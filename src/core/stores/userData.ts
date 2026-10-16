@@ -17,6 +17,8 @@ import {
 } from '@core/mastery/bkt'
 import { applyDecay, nextStatus } from '@core/mastery/masteryRules'
 import { touchStudyDay } from '@core/motivation/streak'
+import { bumpDailyStats } from '@core/motivation/dailyStats'
+import { addAttemptedType } from '@core/motivation/attemptedTypes'
 import { applyMistakeReview, mistakeLevel, mistakeReviewCount } from '@core/mistake/mistakeRules'
 
 function toPlain<T>(obj: T): T {
@@ -268,6 +270,22 @@ export const useUserDataStore = defineStore('userData', () => {
     await loadUserData()
   }
 
+  /**
+   * 记录一次「答题事件」（题目级，每题一次）。
+   *
+   * ⚠️ 计量口径 = 「题」不是「知识点」：一次作答可能触达多个 KP
+   * （recordProgress 内部有 for 循环），故本方法必须由调用方在**题目级点位**
+   * 调用一次，绝不放 recordProgress 内（否则多 KP 会重复计数）。
+   *
+   * 副作用：每日题量 +1（防抖落盘）+ 记录题型（去重，防抖落盘）。
+   */
+  function recordAnswerEvent(
+    payload: { exerciseId?: string; questionType?: string; at?: Date } = {},
+  ): void {
+    bumpDailyStats({ count: 1, at: payload.at })
+    if (payload.questionType) addAttemptedType(payload.questionType)
+  }
+
   return {
     mistakes,
     progress,
@@ -276,5 +294,6 @@ export const useUserDataStore = defineStore('userData', () => {
     resolveMistake,
     markAsMastered,
     recordProgress,
+    recordAnswerEvent,
   }
 })

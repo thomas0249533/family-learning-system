@@ -330,6 +330,9 @@ async function handleAnswer(payload: AnswerPayload) {
   const question = currentSessionQuestions.value.find(q => q.id === payload.exerciseId)
   const kpIds = payload.knowledgePointIds ?? []
 
+  // 题目级埋点（每题一次）：每日题量 + 题型
+  userDataStore.recordAnswerEvent({ exerciseId: payload.exerciseId, questionType: question?.type })
+
   // P0/P1 · 专项/冲刺包也要喂给掌握度与复习调度。
   // 否则孩子大量练习都发生在专项包里，掌握度与复习计划却完全没反应。
   for (const kpId of kpIds) {

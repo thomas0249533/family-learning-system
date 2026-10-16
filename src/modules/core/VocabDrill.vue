@@ -266,6 +266,8 @@ const currentModeLabel = computed(() => {
 async function writeProgress(word: any, isCorrect: boolean) {
   if (!word?.id || !props.packageId) return
   try {
+    // 题目级埋点（每题一次）：每日题量 + 题型
+    userDataStore.recordAnswerEvent({ exerciseId: word.id, questionType: 'spelling' })
     // 背单词本质上不可能"蒙对"，蒙对率按拼写题取低值，掌握度才会随着真实回忆上升
     await userDataStore.recordProgress(props.packageId, word.id, isCorrect, {
       questionType: 'spelling',

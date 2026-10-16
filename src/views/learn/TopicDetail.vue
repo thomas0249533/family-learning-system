@@ -437,6 +437,9 @@ async function handleWarmupAnswer(payload: AnswerPayload) {
 
   const question = warmupExercises.value.find((ex: any) => ex.id === exerciseId)
 
+  // 题目级埋点（每题一次）：每日题量 + 题型
+  userDataStore.recordAnswerEvent({ exerciseId, questionType: question?.type })
+
   for (const kpId of knowledgePointIds) {
     await userDataStore.recordProgress(
       ownerPackageIdOf(kpId),
@@ -499,6 +502,9 @@ async function handleAnswer(payload: AnswerPayload) {
   }
 
   const question = topicExercises.value.find((ex: any) => ex.id === exerciseId)
+
+  // 题目级埋点（每题一次）：每日题量 + 题型
+  userDataStore.recordAnswerEvent({ exerciseId, questionType: question?.type })
 
   for (const kpId of knowledgePointIds) {
     await userDataStore.recordProgress(

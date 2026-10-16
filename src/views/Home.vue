@@ -110,20 +110,51 @@
           <span class="section-icon">🏅</span>
           <span>我的成就</span>
         </h2>
-        <span class="section-count">{{ unlockedCount }} / {{ allAchievements.length }}</span>
+        <span class="section-count">{{ unlockedCount }} / {{ totalCount }}</span>
       </header>
 
-      <div class="ach-grid">
-        <div
-          v-for="a in allAchievements"
-          :key="a.id"
-          class="ach-card"
-          :class="{ unlocked: a.unlocked }"
-        >
-          <span class="ach-icon">{{ a.unlocked ? a.icon : '🔒' }}</span>
-          <div class="ach-body">
-            <div class="ach-title">{{ a.title }}</div>
-            <div class="ach-desc">{{ a.desc }}</div>
+      <!-- 总进度条 -->
+      <div class="ach-overview">
+        <div class="ach-bar">
+          <div class="ach-bar-fill" :style="{ width: achPercent + '%' }"></div>
+        </div>
+        <span class="ach-overview-text">已解锁 {{ unlockedCount }} / {{ totalCount }}</span>
+      </div>
+
+      <!-- 四类分段 -->
+      <div v-for="g in groups" :key="g.cat" class="ach-group">
+        <div class="ach-group-header">
+          <span class="ach-group-title">{{ g.icon }} {{ g.label }}</span>
+          <span class="ach-group-count">{{ g.unlocked }} / {{ g.total }}</span>
+        </div>
+        <div class="ach-grid">
+          <div
+            v-for="a in g.items"
+            :key="a.id"
+            class="ach-card"
+            :class="{ unlocked: a.unlocked, silhouette: a.hidden && !a.unlocked }"
+          >
+            <!-- 隐藏成就：未解锁前只显示灰底剪影 + 🔒 + ？？？，不泄露任何信息 -->
+            <template v-if="a.hidden && !a.unlocked">
+              <span class="ach-icon">🔒</span>
+              <div class="ach-body">
+                <div class="ach-title">？？？</div>
+                <div class="ach-desc">达成后揭晓</div>
+              </div>
+            </template>
+            <template v-else>
+              <span class="ach-icon">{{ a.unlocked ? a.icon : '🔒' }}</span>
+              <div class="ach-body">
+                <div class="ach-title">{{ a.title }}</div>
+                <div class="ach-desc">{{ a.desc }}</div>
+                <div v-if="a.unlocked" class="ach-date">解锁于 {{ a.unlockedAt || '较早' }}</div>
+              </div>
+            </template>
+
+            <!-- 连环：在最高已解锁环旁提示「下一环」 -->
+            <div v-if="a.nextRing" class="ach-next">
+              下一环：{{ a.nextRing.icon }} {{ a.nextRing.title }}
+            </div>
           </div>
         </div>
       </div>
@@ -171,22 +202,35 @@
         </div>
       </div>
     </section>
+
+    <AchievementToast ref="toastRef" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { NEmpty, useMessage } from 'naive-ui'
+import { ref, onMounted, onUnmounted, computed, watchEffect, nextTick } from 'vue'
+import { NEmpty } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import * as echarts from 'echarts'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
+import { useThemeStore } from '@core/stores/theme'
 import { generateRecommendations, type Recommendation } from '@core/recommendation/rulesEngine'
 import { findUnitByKnowledgePoint } from '@core/importer/resolvePackageUnits'
 import { isDueForReview, humanizeNextReview } from '@core/review/reviewScheduler'
-import { ACHIEVEMENTS, syncAchievements } from '@core/motivation/achievements'
+import {
+  ACHIEVEMENTS,
+  syncAchievements,
+  type AchievementCategory,
+  type AchievementDef,
+  type PackageMeta,
+} from '@core/motivation/achievements'
+import { CHAINS, chainNextOf } from '@core/motivation/chains'
+import { loadDailyStats } from '@core/motivation/dailyStats'
+import { loadAttemptedTypes } from '@core/motivation/attemptedTypes'
 import { EMPTY_STREAK, loadStreak, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
-import { palette } from '@core/styles/palette'
+import { useChartTheme } from '@core/theme/useChartTheme'
+import AchievementToast from '@/components/AchievementToast.vue'
 
 interface AggregatedRec extends Recommendation {
   sourcePackageId: string
@@ -195,41 +239,86 @@ interface AggregatedRec extends Recommendation {
 
 const userDataStore = useUserDataStore()
 const packageStore = usePackageStore()
+const themeStore = useThemeStore()
 const router = useRouter()
-const message = useMessage()
 
 const recommendations = ref<AggregatedRec[]>([])
 const chartRef = ref<HTMLElement | null>(null)
+const toastRef = ref<InstanceType<typeof AchievementToast> | null>(null)
 
 /** 体验激励：连续打卡 + 成就徽章 */
 const streak = ref<StreakState>({ ...EMPTY_STREAK })
-const unlockedIds = ref<string[]>([])
+const unlockedRecords = ref<Array<{ id: string; unlockedAt: string }>>([])
 
 const streakLabel = computed(() => streakText(streak.value))
 const studiedTodayFlag = computed(() => studiedToday(streak.value))
-const allAchievements = computed(() =>
-  ACHIEVEMENTS.map(a => ({ ...a, unlocked: unlockedIds.value.includes(a.id) }))
+
+const unlockedIds = computed(() => unlockedRecords.value.map((r) => r.id))
+const unlockedAtMap = computed(() => {
+  const m = new Map<string, string>()
+  for (const r of unlockedRecords.value) m.set(r.id, r.unlockedAt)
+  return m
+})
+
+const totalCount = ACHIEVEMENTS.length
+const unlockedCount = computed(() => unlockedRecords.value.length)
+const achPercent = computed(() =>
+  totalCount > 0 ? Math.round((unlockedCount.value / totalCount) * 100) : 0,
 )
-const unlockedCount = computed(() => allAchievements.value.filter(a => a.unlocked).length)
+
+/** 类别元数据 */
+const CAT_ORDER: AchievementCategory[] = ['M', 'G', 'B', 'E']
+const CAT_META: Record<AchievementCategory, { label: string; icon: string }> = {
+  M: { label: '精熟目标', icon: '🎯' },
+  G: { label: '成长型思维', icon: '🌱' },
+  B: { label: '行为塑造', icon: '⏱️' },
+  E: { label: '探索', icon: '🧭' },
+}
+
+/** 「下一环」映射：最高已解锁环 → 下一环成就 */
+const nextRingMap = computed(() => {
+  const map = new Map<string, AchievementDef>()
+  for (const chain of CHAINS) {
+    const nextId = chainNextOf(chain, unlockedIds.value)
+    if (!nextId) continue
+    const lastUnlocked = [...chain.ids].reverse().find((id) => unlockedIds.value.includes(id))
+    const nextDef = ACHIEVEMENTS.find((a) => a.id === nextId)
+    if (lastUnlocked && nextDef) map.set(lastUnlocked, nextDef)
+  }
+  return map
+})
+
+const groups = computed(() =>
+  CAT_ORDER.map((cat) => {
+    const items = ACHIEVEMENTS.filter((a) => a.category === cat).map((a) => ({
+      ...a,
+      unlocked: unlockedIds.value.includes(a.id),
+      unlockedAt: unlockedAtMap.value.get(a.id) ?? '',
+      nextRing: nextRingMap.value.get(a.id) ?? null,
+    }))
+    const unlocked = items.filter((i) => i.unlocked).length
+    return { cat, ...CAT_META[cat], items, unlocked, total: items.length }
+  }),
+)
 
 const stats = computed(() => {
   let total = 0
   for (const pkg of packageStore.packages) {
     total += pkg.knowledgePoints?.length ?? 0
   }
-  const mastered = userDataStore.progress.filter(p => p.status === '已掌握').length
-  const learning = userDataStore.progress.filter(p => p.status === '学习中' || p.status === '需复习').length
+  const mastered = userDataStore.progress.filter((p) => p.status === '已掌握').length
+  const learning = userDataStore.progress.filter((p) => p.status === '学习中' || p.status === '需复习').length
   const masteryRate = total > 0 ? Math.round((mastered / total) * 100) : 0
   return { total, mastered, learning, masteryRate }
 })
 
 const dueCount = computed(() =>
-  userDataStore.progress.filter(p => isDueForReview(p)).length
+  userDataStore.progress.filter((p) => isDueForReview(p)).length,
 )
 
 const nextUpText = computed(() => {
   const future = userDataStore.progress
-    .filter(p => p.nextReviewAt && new Date(p.nextReviewAt).getTime() > Date.now())
+    .filter((p) => p.nextReviewAt && new Date(p.nextReviewAt).getTime() > Date.now())
     .sort((a, b) => (a.nextReviewAt ?? '').localeCompare(b.nextReviewAt ?? ''))
   if (future.length === 0) return ''
   return `下次复习：${humanizeNextReview(future[0].nextReviewAt)}`
@@ -249,13 +338,11 @@ function generateAllRecommendations(): AggregatedRec[] {
   const all: AggregatedRec[] = []
   const usedKpIds = new Set<string>()
 
-  // ✅ 剥前缀工具
   const stripPrefix = (id: string) => {
     const idx = id?.indexOf('::') ?? -1
     return idx >= 0 ? id.slice(idx + 2) : id
   }
 
-  // ✅ 构建全局知识点索引（两种键）
   const globalKpMap = new Map<string, any>()
   const globalKpMapShort = new Map<string, any>()
   for (const pkg of packageStore.packages) {
@@ -278,14 +365,11 @@ function generateAllRecommendations(): AggregatedRec[] {
       if (usedKpIds.has(rec.knowledgePointId)) continue
       usedKpIds.add(rec.knowledgePointId)
 
-      // ✅ 全局查 title
       const kp = globalKpMap.get(rec.knowledgePointId)
         ?? globalKpMapShort.get(stripPrefix(rec.knowledgePointId))
 
-      // ✅ 找不到就跳过（宁缺毋滥）
       if (!kp?.title) continue
 
-      // ✅ 找到真正拥有该 kp 的包（用于跳转）
       const sourcePkg = packageStore.packages.find(
         p => p.knowledgePoints?.some((k: any) => k.id === kp.id)
       )
@@ -306,8 +390,6 @@ function generateAllRecommendations(): AggregatedRec[] {
   return all.slice(0, 6)
 }
 
-
-
 function goToReview() {
   router.push('/review')
 }
@@ -326,47 +408,101 @@ async function goToRecommendation(rec: AggregatedRec) {
   router.push('/learn')
 }
 
+// ---------- 图表（随主题即时重绘，B2/B3）----------
+const chartTheme = useChartTheme()
+let chart: echarts.ECharts | null = null
+
+function renderChart() {
+  if (!chart) return
+  const t = chartTheme.value
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: t.tooltipBg,
+      textStyle: { color: t.tooltipText },
+      borderColor: t.border,
+    },
+    series: [{
+      type: 'pie',
+      radius: ['65%', '88%'],
+      avoidLabelOverlap: false,
+      itemStyle: { borderRadius: 10, borderColor: t.cardBg, borderWidth: 3 },
+      label: { show: false },
+      data: [
+        { value: stats.value.mastered, name: '已掌握', itemStyle: { color: t.success } },
+        { value: stats.value.learning, name: '学习中', itemStyle: { color: t.warning } },
+        { value: Math.max(stats.value.total - stats.value.mastered - stats.value.learning, 0), name: '未学', itemStyle: { color: t.border } },
+      ],
+    }],
+  })
+  chart.resize()
+}
+
+function onResize() {
+  chart?.resize()
+}
+
+// 主题 / 学段切换 → 等一帧（body 上的 state 已应用）后重绘
+watchEffect(async () => {
+  void chartTheme.value
+  await nextTick()
+  if (chart) renderChart()
+})
+
 onMounted(async () => {
   await userDataStore.loadUserData()
   await packageStore.loadPackages()
 
-  // 体验激励：读取连续打卡；结算成就，新解锁的当场祝贺
+  // 学段主题：按孩子年级自动推荐（仅当未手动选择时）
+  themeStore.reconcilePreset(
+    packageStore.packages.map((pkg) => ({
+      grade: pkg.manifest.grade,
+      updatedAt: pkg.manifest.updatedAt,
+      createdAt: pkg.manifest.createdAt,
+    })),
+  )
+
+  // 体验激励：读取连续打卡；结算成就，新解锁的当场播放徽章动效
   streak.value = await loadStreak()
+
+  const packages: PackageMeta[] = packageStore.packages.map((pkg) => ({
+    packageId: pkg.packageId,
+    subject: pkg.manifest.subject,
+    grade: pkg.manifest.grade,
+    term: pkg.manifest.term,
+    packageType: pkg.manifest.packageType,
+    kpCount: pkg.knowledgePoints?.length ?? 0,
+  }))
+  const dailyStats = await loadDailyStats()
+  const attemptedTypes = await loadAttemptedTypes()
+
   const achResult = await syncAchievements({
     progress: userDataStore.progress,
     mistakes: userDataStore.mistakes,
     streak: streak.value,
+    packages,
+    dailyStats,
+    attemptedTypes,
   })
-  unlockedIds.value = achResult.unlocked
+  unlockedRecords.value = achResult.unlockedRecords
   if (achResult.newlyUnlocked.length > 0) {
-    const names = achResult.newlyUnlocked.map(a => `${a.icon} ${a.title}`).join('、')
-    message.success(`🏅 解锁新成就：${names}`, { duration: 5000 })
+    toastRef.value?.enqueue(achResult.newlyUnlocked)
   }
 
   recommendations.value = generateAllRecommendations()
 
   if (chartRef.value) {
-    const chart = echarts.init(chartRef.value)
-    const isDark = document.body.classList.contains('dark-mode')
-    const themeColors = isDark ? palette.dark : palette.light
-    const borderColor = themeColors.cardBg
-
-    chart.setOption({
-      tooltip: { trigger: 'item' },
-      series: [{
-        type: 'pie',
-        radius: ['65%', '88%'],
-        avoidLabelOverlap: false,
-        itemStyle: { borderRadius: 10, borderColor, borderWidth: 3 },
-        label: { show: false },
-        data: [
-          { value: stats.value.mastered, name: '已掌握', itemStyle: { color: themeColors.success } },
-          { value: stats.value.learning, name: '学习中', itemStyle: { color: themeColors.warning } },
-          { value: Math.max(stats.value.total - stats.value.mastered - stats.value.learning, 0), name: '未学', itemStyle: { color: themeColors.border } }
-        ]
-      }]
-    })
+    chart = echarts.init(chartRef.value)
+    renderChart()
+    window.addEventListener('resize', onResize)
   }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResize)
+  chart?.dispose()
+  chart = null
 })
 </script>
 
@@ -434,12 +570,12 @@ onMounted(async () => {
     z-index: 1;
     .decor-emoji {
       font-size: 52px;
+      /* check-hex-allow: 渐变横幅装饰 emoji 的纯黑投影，浅深同值、无主题价值 */
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
       display: inline-block;
     }
   }
 
-  /* 体验激励：连续打卡 */
   .streak-pill {
     position: relative;
     z-index: 1;
@@ -469,6 +605,57 @@ onMounted(async () => {
 }
 
 /* ========== 我的成就 ========== */
+.ach-overview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .ach-bar {
+    flex: 1;
+    height: 10px;
+    background: $bg-color-hover;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .ach-bar-fill {
+      height: 100%;
+      background: $gradient-primary;
+      border-radius: 8px;
+      transition: width 0.4s ease;
+    }
+  }
+
+  .ach-overview-text {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-sub;
+  }
+}
+
+.ach-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .ach-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .ach-group-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: $text-main;
+    }
+    .ach-group-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-muted;
+    }
+  }
+}
+
 .ach-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -476,6 +663,7 @@ onMounted(async () => {
 }
 
 .ach-card {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -510,6 +698,22 @@ onMounted(async () => {
     line-height: 1.4;
   }
 
+  .ach-date {
+    font-size: 10px;
+    color: $text-muted;
+    margin-top: 3px;
+    font-weight: 600;
+  }
+
+  /* 隐藏成就剪影：不泄露 icon/title/desc */
+  &.silhouette {
+    background: $bg-color-hover;
+    border-style: dashed;
+
+    .ach-icon { filter: grayscale(1) brightness(0.7); }
+    .ach-title { letter-spacing: 2px; }
+  }
+
   &.unlocked {
     opacity: 1;
     border-color: rgba(var(--warning-rgb), 0.45);
@@ -522,6 +726,19 @@ onMounted(async () => {
       transform: translateY(-2px);
       box-shadow: $shadow-md;
     }
+  }
+
+  .ach-next {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: $primary-color;
+    background: $primary-light;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
   }
 }
 
@@ -693,7 +910,6 @@ onMounted(async () => {
     border-color: $primary-color;
   }
 
-  /* 左侧色条 */
   .rec-accent {
     flex-shrink: 0;
     width: 4px;
