@@ -19,7 +19,11 @@ const PAGES = [
   { key: 'settings', path: '/settings' },
 ] as const
 
-/** 固定时刻（本地时间 2025-01-15 10:00:00） */
+/**
+ * 固定时刻（本地时间 2025-01-15 10:00:00）。
+ * 注意：字符串**无时区后缀**（无 Z / ±hh:mm）→ 按**本地时间**解析，故截图基线与运行时区绑定；
+ * 换时区/换机器渲染的「近 7 天」等相对文字可能不同。addInitScript 仅作用于本 test 的 page 上下文，不污染其它用例。
+ */
 const FIXED_NOW = new Date('2025-01-15T10:00:00').getTime()
 
 for (const mode of ['light', 'dark'] as const) {
