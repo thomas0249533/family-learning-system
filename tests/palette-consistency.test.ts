@@ -444,3 +444,45 @@ describe('buildThemeOverrides — palette 派生 naive-ui 覆盖（6 组）', ()
     }
   })
 })
+
+// =====================================================================
+// 原始块级「深色覆盖」与「子集」断言
+// ---------------------------------------------------------------------
+// 动机：合成模型 `{...:root, ...dark-mode}` 会用 :root 补齐键，导致
+//   「从 body.dark-mode 误删某个非 hero 颜色 token（如 --surface-2 / --primary-light）」
+//   无法被 6 组键集合断言捕获（它们又无数值断言）。此处直接在**原始块**上兜底：
+//   1) 覆盖断言：:root 的每个颜色类 token 必须也出现在 body.dark-mode；
+//   2) 子集断言：4 个 preset 块的键集合必须是 :root 键集合的子集（防拼写错变量名）。
+// =====================================================================
+describe('theme.scss 深色覆盖完整性（原始块级，未经合成模型）', () => {
+  // 非颜色类 token（尺寸/字号/间距/圆角/行高/动效）：不随明暗变，不入覆盖断言
+  const NON_COLOR_PREFIXES = ['--radius-', '--space-', '--font-', '--leading-', '--ease-', '--duration-']
+  // 恒白前景色：仅 :root 定义、深色有意不覆盖
+  const EXCLUDE = new Set(['--on-strong', '--on-strong-rgb'])
+  const isColorToken = (name: string) => !NON_COLOR_PREFIXES.some((p) => name.startsWith(p))
+
+  const colorTokensInRoot = Object.keys(rootVars).filter((n) => isColorToken(n) && !EXCLUDE.has(n))
+
+  it(':root 颜色类 token 数量合理（非空洞）', () => {
+    expect(colorTokensInRoot.length).toBeGreaterThan(30)
+  })
+
+  it('每个颜色类 token 必须也被 body.dark-mode 覆盖', () => {
+    const missing = colorTokensInRoot.filter((n) => !(n in darkVars))
+    expect(missing, `body.dark-mode 缺少覆盖（深色下会串用 :root 浅色值）：${missing.join(', ')}`).toEqual([])
+  })
+
+  const PRESET_BLOCKS: Array<[string, Record<string, string>]> = [
+    ['primary.light', primaryLightBlock],
+    ['senior.light', seniorLightBlock],
+    ['primary.dark', primaryDarkBlock],
+    ['senior.dark', seniorDarkBlock],
+  ]
+
+  for (const [name, block] of PRESET_BLOCKS) {
+    it(`${name} 的键集合是 :root 的子集`, () => {
+      const unknown = Object.keys(block).filter((k) => !(k in rootVars))
+      expect(unknown, `${name} 含 :root 未定义的变量（拼写？）：${unknown.join(', ')}`).toEqual([])
+    })
+  }
+})

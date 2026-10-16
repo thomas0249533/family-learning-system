@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 /**
  * dailyStats 单测：内存累加 / 多日 / 首末时刻 min-max / 裁剪 60 天 /
@@ -123,5 +123,58 @@ describe('dailyStats — 防抖落盘', () => {
     } finally {
       vi.useRealTimers()
     }
+  })
+})
+
+describe('dailyStats — 页面隐藏 / 卸载强制 flush（钩子路径）', () => {
+  const handlers: Record<string, Array<() => void>> = {}
+  const g = globalThis as any
+
+  beforeEach(() => {
+    for (const k of Object.keys(handlers)) delete handlers[k]
+    g.window = {
+      addEventListener: (t: string, cb: () => void) => { (handlers[t] ||= []).push(cb) },
+    }
+    g.document = {
+      addEventListener: (t: string, cb: () => void) => { (handlers[t] ||= []).push(cb) },
+      visibilityState: 'visible',
+    }
+    __resetDailyStatsForTest()
+  })
+
+  afterEach(() => {
+    delete g.window
+    delete g.document
+  })
+
+  it('visibilitychange → hidden 触发 flush', async () => {
+    await loadDailyStats()
+    bumpDailyStats({ count: 1, at: day(2025, 1, 1) })
+    expect(handlers['visibilitychange']?.length, '应已注册 visibilitychange').toBeGreaterThan(0)
+    const before = fake.putCalls
+    g.document.visibilityState = 'hidden'
+    handlers['visibilitychange'].forEach((cb) => cb())
+    await new Promise((r) => setTimeout(r, 0))
+    expect(fake.putCalls, 'hidden 应强制落盘').toBeGreaterThan(before)
+  })
+
+  it('visibilitychange 但 state=visible 不触发 flush', async () => {
+    await loadDailyStats()
+    bumpDailyStats({ count: 1, at: day(2025, 1, 1) })
+    const before = fake.putCalls
+    g.document.visibilityState = 'visible'
+    handlers['visibilitychange'].forEach((cb) => cb())
+    await new Promise((r) => setTimeout(r, 0))
+    expect(fake.putCalls).toBe(before)
+  })
+
+  it('beforeunload 触发 flush', async () => {
+    await loadDailyStats()
+    bumpDailyStats({ count: 2, at: day(2025, 1, 1) })
+    expect(handlers['beforeunload']?.length, '应已注册 beforeunload').toBeGreaterThan(0)
+    const before = fake.putCalls
+    handlers['beforeunload'].forEach((cb) => cb())
+    await new Promise((r) => setTimeout(r, 0))
+    expect(fake.putCalls, 'beforeunload 应强制落盘').toBeGreaterThan(before)
   })
 })
