@@ -10,7 +10,11 @@
 
       <div v-if="loading" class="loading">正在加载...</div>
 
-      <template v-else>
+      <div v-else-if="droppedCount > 0" class="dropped-hint">
+        有 {{ droppedCount }} 条学习记录无法定位到单元（对应学习包可能已删除或重新导入）
+      </div>
+      <template v-if="!loading">
+
         <n-empty v-if="dueItems.length === 0" description="太棒了！今天没有需要复习的知识点 🎉" />
 
         <div v-else class="review-list">
@@ -70,6 +74,7 @@ import { db, type ProgressRecord, type LearningPackageRecord } from '@/db'
 import { useUserDataStore } from '@core/stores/userData'
 import { isDueForReview, humanizeNextReview, memoryStrengthLabel, retrievabilityPercent, stageLabel } from '@core/review/reviewScheduler'
 import { findUnitByKnowledgePoint } from '@core/importer/resolvePackageUnits'
+import { stripPrefix } from '@core/progress/ownerIndex'
 
 interface ReviewItem extends ProgressRecord {
   kpTitle: string
@@ -86,6 +91,8 @@ const userDataStore = useUserDataStore()
 const loading = ref(true)
 const dueItems = ref<ReviewItem[]>([])
 const upcomingItems = ref<ReviewItem[]>([])
+/** 无法定位到单元的进度行数（V1.3 · E-01 · D3：**不许静默丢**，要显示出来） */
+const droppedCount = ref(0)
 
 const upcomingDays = computed(() => {
   const map = new Map<string, { date: string; label: string; items: ReviewItem[] }>()
@@ -130,26 +137,52 @@ async function loadReviewItems() {
   const pkgMap = new Map<string, LearningPackageRecord>()
   for (const p of packages) pkgMap.set(p.packageId, p)
 
-  // kp → title 索引
+  // kp 标题索引：键 = `(packageId, kpId)` 二元组，与 progress 口径一致（V1.3 · E-01 · D3）。
+  // 旧的裸 kpId 索引在多包共用同 id 时「后者覆盖前者」→ 标题与学科都会串到别的包上。
+  // 分隔符用 `\u0000`（与 `ownerIndex.KEY_SEP` 相同）：kpId 自身含 `::`，空格也可能出现在标题里。
   const kpTitleMap = new Map<string, { title: string; pkgId: string }>()
   for (const p of packages) {
     for (const kp of p.knowledgePoints ?? []) {
-      kpTitleMap.set(kp.id, { title: kp.title, pkgId: p.packageId })
+      kpTitleMap.set(`${p.packageId}\u0000${kp.id}`, { title: kp.title, pkgId: p.packageId })
     }
+  }
+
+  // 兜底：短 id 且**全库唯一**时才用（歧义即删，绝不猜）。
+  // 历史行可能只写了短 id（老版本 strip 过前缀），这条路径把它们救回来。
+  const kpTitleByShort = new Map<string, { title: string; pkgId: string }>()
+  {
+    const seen = new Map<string, number>()
+    for (const p of packages) {
+      for (const kp of p.knowledgePoints ?? []) {
+        const short = stripPrefix(kp.id)
+        seen.set(short, (seen.get(short) ?? 0) + 1)
+        kpTitleByShort.set(short, { title: kp.title, pkgId: p.packageId })
+      }
+    }
+    for (const [short, n] of seen) if (n > 1) kpTitleByShort.delete(short)
   }
 
   const all = userDataStore.progress
   const due: ReviewItem[] = []
   const upcoming: ReviewItem[] = []
+  let dropped = 0
 
   for (const p of all) {
-    const kpInfo = kpTitleMap.get(p.knowledgePointId)
-    if (!kpInfo) continue
-    const pkg = pkgMap.get(p.packageId)
-    if (!pkg) continue
+    const kpInfo =
+      kpTitleMap.get(`${p.packageId}\u0000${p.knowledgePointId}`) ??
+      kpTitleByShort.get(stripPrefix(p.knowledgePointId))
+    // 学科 / 包标题取自**声明了这个知识点的包**（归属包），不是进度行上的入口包
+    const pkg = kpInfo ? pkgMap.get(kpInfo.pkgId) ?? pkgMap.get(p.packageId) : pkgMap.get(p.packageId)
+    if (!kpInfo || !pkg) {
+      dropped++
+      continue
+    }
 
     const found = await findUnitByKnowledgePoint(pkg, p.knowledgePointId)
-    if (!found) continue
+    if (!found) {
+      dropped++
+      continue
+    }
 
     const item: ReviewItem = {
       ...p,
@@ -169,6 +202,7 @@ async function loadReviewItems() {
   due.sort((a, b) => (a.nextReviewAt ?? '').localeCompare(b.nextReviewAt ?? ''))
   dueItems.value = due
   upcomingItems.value = upcoming
+  droppedCount.value = dropped
   loading.value = false
 }
 

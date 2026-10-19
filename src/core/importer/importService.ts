@@ -1,6 +1,8 @@
 import { db } from '@/db'
 import { unzipSync } from 'fflate'
 import { normalizePackage, type NormalizeIssue } from './normalizePackage'
+import { invalidateOwnerIndex } from '@core/progress/ownerIndexCache'
+import { ensureE1Migrated } from '@core/storage/migrateV3Recovery'
 
 export type ImportIssue = NormalizeIssue
 
@@ -93,6 +95,27 @@ function sortByImportOrder(packages: any[], importOrder: string[]): any[] {
   })
 }
 
+/**
+ * 包集合变化后的收尾（V1.3 · E-01）。
+ *
+ * 两件事，顺序不能反：
+ *   1. `invalidateOwnerIndex()` —— 归属索引缓存里还是导入前的包数组，先失效；
+ *   2. `ensureE1Migrated({ orphanOnly: true })` —— 导入前"无主"的历史进度行
+ *      （`|own| === 0` 时保留的是入口包 id）现在可能有了归属包，趁这次机会改写。
+ *
+ * **必须 await**：调用方紧接着就会读进度列表，而且重归因与 `recordProgress`
+ * 的写入必须串行，否则同一条进度会被写两行。
+ * 失败只告警 —— 导入本身已经成功，重归因是加分项。
+ */
+async function afterPackagesChanged(): Promise<void> {
+  invalidateOwnerIndex()
+  try {
+    await ensureE1Migrated({ orphanOnly: true })
+  } catch (e) {
+    console.warn('[import] 进度重归因失败（不影响导入结果）', e)
+  }
+}
+
 export const PackageImporter = {
   async parseFileAndPreview(file: File): Promise<ParsePreview> {
     const text = await file.text()
@@ -170,6 +193,9 @@ export const PackageImporter = {
         errors: [{ level: 'error', code: 'E011', path: 'IndexedDB', message: `写入失败：${e.message}` }],
       }
     }
+
+    // 包集合变了 → 索引失效 + 老进度行重归因（见 afterPackagesChanged 注释）
+    await afterPackagesChanged()
 
     return { success: true, warnings, packageId: normalized.manifest.packageId }
   },
@@ -255,6 +281,9 @@ export const PackageImporter = {
         errors: [{ level: 'error', code: 'E011', path: 'IndexedDB', message: `批量写入失败：${e.message}`, hint: '数据已回滚，请重试' }],
       }
     }
+
+    // 一次导入十几个包（含链式依赖）→ 更要重归因：之前无主的历史行可能整批变得可归因
+    await afterPackagesChanged()
 
     return {
       success: true,

@@ -4,6 +4,10 @@ import type {
   MistakeRecord,
   SettingRecord,
 } from '@/db'
+import { canonicalKpId, resolveOwnerPackageId } from '@core/progress/ownerIndex'
+import { ensureOwnerIndex, invalidateOwnerIndex } from '@core/progress/ownerIndexCache'
+import { mergeProgressGroup } from '@core/progress/progressMerge'
+import { ensureE1Migrated } from '@core/storage/migrateV3Recovery'
 
 export interface ExportOptions {
   includePackages?: boolean
@@ -133,9 +137,40 @@ export async function importUserData(json: any, mode: 'merge' | 'replace' = 'mer
   try {
     if (Array.isArray(json.progress)) {
       if (mode === 'replace') await db.progress.clear()
-      for (const p of json.progress) {
-        const { id, ...rest } = p
-        // 用 packageId + knowledgePointId 去重
+
+      // 备份是"过去某个时刻"的快照，包可能在之后被导入/删除过 → 先让索引失效再重建，
+      // 否则会拿旧包数组判断归属（D1 的老毛病：拿错包等于把记录写到别的知识点上）
+      invalidateOwnerIndex()
+      const index = await ensureOwnerIndex()
+      // 老备份里同一个真实知识点可能有 2~3 行（写进了不同的入口包）。
+      // 逐行 upsert 会让后一行**覆盖**前一行的计数 → 先把备份内部合并干净，再写库。
+      const merged = new Map<string, ProgressRecord>()
+      for (const row of json.progress as ProgressRecord[]) {
+        if (!row || typeof row !== 'object') continue
+        const { id: rawId, ...rest } = row
+        const owner = resolveOwnerPackageId(rest.knowledgePointId, rest.packageId, index)
+        const packageId = owner ?? rest.packageId
+        const knowledgePointId = owner
+          ? canonicalKpId(owner, rest.knowledgePointId, index)
+          : rest.knowledgePointId
+        const key = `${packageId}\u0000${knowledgePointId}`
+        // id 只用于组内定序（承载体 / latest），写库时不带 id
+        const candidate = {
+          ...rest,
+          id: typeof rawId === 'number' && Number.isFinite(rawId) ? rawId : 0,
+          packageId,
+          knowledgePointId,
+        } as ProgressRecord
+        const prev = merged.get(key)
+        merged.set(
+          key,
+          prev ? mergeProgressGroup([prev, candidate], { packageId, knowledgePointId }) : candidate
+        )
+      }
+
+      for (const row of merged.values()) {
+        const { id: _ignored, ...rest } = row
+        // 用 packageId + knowledgePointId 去重（保持"备份覆盖库"的既有语义，不求和）
         const existing = await db.progress
           .where('[packageId+knowledgePointId]')
           .equals([rest.packageId, rest.knowledgePointId])
@@ -168,6 +203,16 @@ export async function importUserData(json: any, mode: 'merge' | 'replace' = 'mer
       for (const s of json.settings) {
         await db.settings.put(s as SettingRecord)
         result.settings++
+      }
+    }
+
+    // 备份里的包可能晚于进度行被导入 → 恢复完再按**当前**包列表归因一次，
+    // 把"写入时无法归属"的行尽量救回来。失败只告警（数据已经进来了）。
+    if (result.progress > 0) {
+      try {
+        await ensureE1Migrated({ orphanOnly: true })
+      } catch (e) {
+        console.warn('[export] 恢复后重归因失败（数据已导入，仅归因未收敛）', e)
       }
     }
   } catch (e: any) {

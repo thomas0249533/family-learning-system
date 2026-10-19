@@ -62,7 +62,7 @@
     <div v-else-if="phase === 'running' && currentSession">
       <QuizEngine
         :questions="currentSessionQuestions"
-        :package-id="sourcePackageId"
+        :package-id="entryPackageId"
         :initial-answers="currentSession.answers"
         :initial-index="currentSession.currentIndex"
         :started-at="currentSessionElapsed"
@@ -187,6 +187,8 @@ import { useUserDataStore } from '@core/stores/userData'
 import { useExamStore } from '@core/stores/exam'
 import { db } from '@/db'
 import type { LearningPackageRecord, ExamSessionRecord } from '@/db'
+import { resolveOwnerPackageId } from '@core/progress/ownerIndex'
+import { ensureOwnerIndex } from '@core/progress/ownerIndexCache'
 
 const props = defineProps<{ pkg: LearningPackageRecord }>()
 
@@ -263,10 +265,24 @@ const examTypeLabel = computed(() =>
     ? '冲刺模拟卷' : '专项测验'
 )
 
-const sourcePackageId = computed(() => {
-  const deps: string[] = props.pkg.manifest.dependencies ?? []
-  return deps[0] ?? props.pkg.packageId
-})
+/**
+ * 入口包 = **自己**（V1.3 · E-01 · D1）。
+ * 旧实现写成 `dependencies[0] ?? packageId`，等于"拿第一个依赖包冒充自己的包" ——
+ * 冲刺包做一道题，进度被记到了它的第一个依赖包上，掌握度与复习计划都跟着错。
+ * 现在归一化由 `recordProgress` 统一解析归属，这里只声明"我是从哪个包进来的"。
+ */
+const entryPackageId = computed(() => props.pkg.packageId)
+
+/**
+ * 错题的打包归属：`addMistake` **没有**归一化收口层（它不走 recordProgress），
+ * 所以必须在这里显式解析，否则错题本的学科标签 / 包标题会和进度对不上。
+ * 解析不出（|own| == 0 / >= 2 / 跨学科）→ 保留入口包，不猜。
+ */
+async function ownerPackageOf(kpId: string): Promise<string> {
+  if (!kpId) return props.pkg.packageId
+  const index = await ensureOwnerIndex()
+  return resolveOwnerPackageId(kpId, props.pkg.packageId, index) ?? props.pkg.packageId
+}
 
 function rateColor(rate: number): string {
   if (rate >= 80) return 'rate-good'
@@ -339,7 +355,7 @@ async function handleAnswer(payload: AnswerPayload) {
   // 否则孩子大量练习都发生在专项包里，掌握度与复习计划却完全没反应。
   for (const kpId of kpIds) {
     await userDataStore.recordProgress(
-      sourcePackageId.value,
+      entryPackageId.value,
       kpId,
       payload.isCorrect,
       {
@@ -352,9 +368,11 @@ async function handleAnswer(payload: AnswerPayload) {
 
   if (!payload.isCorrect) {
     if (question) {
+      // 一道题可能跨 2 个 KP、分属不同包 → 取 kpIds[0] 的归属包（与现状一致，不扩大改动面）
+      const mistakePkgId = await ownerPackageOf(kpIds[0] ?? '')
       await userDataStore.addMistake(
         question,
-        sourcePackageId.value,
+        mistakePkgId,
         kpIds,
         payload.userAnswer
       )
