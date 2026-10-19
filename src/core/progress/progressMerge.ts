@@ -15,7 +15,9 @@
  *   - 时间取最新：`lastStudiedAt`
  *   - **状态机产物取 `lastStudiedAt` 最新那条的值**（`status` / `correctStreak` / `wrongStreak`）
  *     —— 禁止求和、禁止取最高等级：取 max 会把一条 3 个月前的"已掌握"永久锁死，掩盖当前退步
- *   - `bkt` / `masteryProbability` 取 `bkt.observed` 最大那条（**禁止平均**，平均会造出一个"谁都不是"的概率）
+ *   - `bkt.observed` **求和**（累计观测次数可累加，它只是计数）；
+ *     `bkt.pKnown` / `masteryProbability` 取 `bkt.observed` 最大那条的**同源**值
+ *     （**禁止平均**，平均会造出一个"谁都不是"的概率）
  *   - `fsrs` 取 `last_review` 最新的整卡；`reviewStage` / `nextReviewAt` / `lastReviewAt`
  *     必须与选定 `fsrs` **同一来源行**（跨行拼装会让 `nextReviewAt` 与卡片 `due` 打架）
  *
@@ -103,16 +105,26 @@ export function mergeProgressGroup(group: ProgressRecord[], target: MergeTarget)
     studySeconds += row.studySeconds ?? 0
   }
 
-  // ---- bkt：取 observed 最大的那条整块（并列保留 latest 一方）----
-  let maxObsRow = latest
-  let maxObs = latest.bkt?.observed ?? 0
+  // ---- bkt：计数求和，概率取"证据最多"那条（禁止平均）----
+  // `observed` 是**累计观测次数**，可累加：组内两条本来就是同一个知识点被记了两遍，
+  // 观测次数必须相加（设计 §2.3.3 合并语义表的 `bkt.observed` → 求和）。
+  // `pKnown` 不可累加：把 0.92 和 0.2 平均出 0.56，会造出一个"谁都不是"的后验，
+  // 所以只认证据（observed）最多的那一行的值。两者来源不同，是刻意的。
+  let evidenceRow: ProgressRecord | undefined
+  let maxObs = Number.NEGATIVE_INFINITY
   for (const row of byLatest) {
-    const observed = row.bkt?.observed ?? 0
+    if (!row.bkt) continue
+    const observed = row.bkt.observed ?? 0
     if (observed > maxObs) {
       maxObs = observed
-      maxObsRow = row
+      evidenceRow = row
     }
   }
+
+  let observedTotal = 0
+  for (const row of byId) observedTotal += row.bkt?.observed ?? 0
+
+  const bkt = evidenceRow?.bkt ? { ...evidenceRow.bkt, observed: observedTotal } : undefined
 
   // ---- fsrs：取 last_review 最新的整卡；全组都没有则保持 undefined ----
   let fsrsRow: ProgressRecord | undefined
@@ -141,9 +153,11 @@ export function mergeProgressGroup(group: ProgressRecord[], target: MergeTarget)
     status: latest.status,
     correctStreak: latest.correctStreak ?? 0,
     wrongStreak: latest.wrongStreak ?? 0,
-    // 证据最多的一条
-    bkt: maxObsRow.bkt,
-    masteryProbability: maxObsRow.bkt?.pKnown ?? maxObsRow.masteryProbability,
+    // 证据计数求和；概率与 BKT 参数取证据最多的那条
+    bkt,
+    masteryProbability: evidenceRow
+      ? evidenceRow.bkt?.pKnown ?? evidenceRow.masteryProbability
+      : latest.masteryProbability,
     // 卡片与其排期同源
     fsrs: fsrsRow?.fsrs,
     reviewStage: scheduleSource.reviewStage,
@@ -171,6 +185,51 @@ function sumsOf(rows: ProgressRecord[]): { correct: number; wrong: number; secon
     seconds += row.studySeconds ?? 0
   }
   return { correct, wrong, seconds }
+}
+
+export interface ConservationReport {
+  ok: boolean
+  /** 人可读的差异描述；`ok === true` 时为空数组 */
+  diffs: string[]
+}
+
+/**
+ * 守恒校验：合并只能"搬字段"，不能"造数字"。
+ *
+ * 为什么把它抽成独立的纯函数，而不是留在 `planProgressMerge` 内部：
+ *   1. `planProgressMerge` 用它做**应用前**自检（失败即清空 puts/deletes，宁可不动）；
+ *   2. T02 的迁移在 apply 之后可以拿 DB 里的行再跑一次 —— 同一份判据既验"计划算对了"
+ *      又验"apply 真执行对了"，比复制一遍求和逻辑可靠；
+ *   3. 它是"迁移正确性的唯一硬指标"，值得被单独断言。
+ *
+ * 只校验**可累加量**与**行数方向**：`correctStreak` / `status` / `pKnown` 这类"状态机产物"
+ * 合并后本来就会变（取最新那条），拿它们做守恒判据会把正确行为判成损坏。
+ */
+export function checkConservation(
+  before: ProgressRecord[],
+  after: ProgressRecord[]
+): ConservationReport {
+  const beforeRows = before ?? []
+  const afterRows = after ?? []
+  const b = sumsOf(beforeRows)
+  const a = sumsOf(afterRows)
+  const diffs: string[] = []
+
+  if (b.correct !== a.correct) {
+    diffs.push(`ΣcorrectCount ${b.correct} → ${a.correct}（差 ${a.correct - b.correct}）`)
+  }
+  if (b.wrong !== a.wrong) {
+    diffs.push(`ΣwrongCount ${b.wrong} → ${a.wrong}（差 ${a.wrong - b.wrong}）`)
+  }
+  if (b.seconds !== a.seconds) {
+    diffs.push(`ΣstudySeconds ${b.seconds} → ${a.seconds}（差 ${a.seconds - b.seconds}）`)
+  }
+  // 合并只能减少行数：任何"变多"都说明计划里混进了新增（迁移必须只减不增）
+  if (afterRows.length > beforeRows.length) {
+    diffs.push(`行数 ${beforeRows.length} → ${afterRows.length}（合并只能减少，不许新增）`)
+  }
+
+  return { ok: diffs.length === 0, diffs }
 }
 
 /**
@@ -251,21 +310,16 @@ export function planProgressMerge(rows: ProgressRecord[], index: OwnerIndex): Me
   const final = total - mergedRowsRemoved
 
   // ---- 3. 守恒自检：只打日志、不抛；失败则放弃整次迁移 ----
-  const before = sumsOf(addressable)
-  const after = sumsOf([...untouched, ...puts])
-  const countOk = untouched.length + puts.length + (total - addressable.length) === final
-  const sumsOk =
-    before.correct === after.correct &&
-    before.wrong === after.wrong &&
-    before.seconds === after.seconds
+  // `numerable` 即"迁移后仍存在的全部可寻址行"：未动的 + 要写回的（合并行 / 改键行）。
+  const numerable = [...untouched, ...puts]
+  const conservation = checkConservation(addressable, numerable)
+  const countOk = numerable.length + (total - addressable.length) === final
 
-  if (!countOk || !sumsOk) {
+  if (!countOk || !conservation.ok) {
     // 宁可不动：动了就是不可逆的数据损坏
     console.error('[planProgressMerge] 守恒自检失败，放弃本次合并', {
-      before,
-      after,
+      diffs: conservation.diffs,
       countOk,
-      sumsOk,
       total,
       final,
       puts: puts.length,

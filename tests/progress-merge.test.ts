@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { ProgressRecord } from '@/db'
 import { buildOwnerIndex } from '@core/progress/ownerIndex'
-import { mergeProgressGroup, planProgressMerge } from '@core/progress/progressMerge'
+import { mergeProgressGroup, planProgressMerge, checkConservation } from '@core/progress/progressMerge'
 import { makeProgress, makePkg } from './helpers/progressFixtures'
 
 /** 5 个归属包：`unit-a` 声明 kp-a，`unit-b` 声明 kp-b… */
@@ -151,7 +151,7 @@ describe('mergeProgressGroup — 逐字段语义（C6 覆盖 PRD 的"取最高�
     expect(merged.packageId).toBe('unit-a')
   })
 
-  it('bkt 取 observed 最大的整块，masteryProbability 与 pKnown 同源（禁止平均）', () => {
+  it('bkt.observed 求和（计数可累加），pKnown / masteryProbability 取证据最多那条（禁止平均）', () => {
     const merged = mergeProgressGroup(
       [
         makeProgress({
@@ -173,7 +173,10 @@ describe('mergeProgressGroup — 逐字段语义（C6 覆盖 PRD 的"取最高�
       ],
       { packageId: 'unit-a', knowledgePointId: 'kp' }
     )
-    expect(merged.bkt).toEqual({ pKnown: 0.92, observed: 12 })
+    // 设计 §2.3.3：`bkt.observed` **求和** —— 12 + 2 = 14（它只是"观测了几次"的计数，
+    // 组内两条本来就是同一个知识点被记了两遍，次数当然要相加）
+    expect(merged.bkt).toEqual({ pKnown: 0.92, observed: 14 })
+    // 但概率不求和、也不平均（0.56 谁都不是）：只认证据最多的那一行（observed 12 的那条）
     expect(merged.masteryProbability).toBe(0.92)
   })
 
@@ -187,6 +190,25 @@ describe('mergeProgressGroup — 逐字段语义（C6 覆盖 PRD 的"取最高�
     )
     expect(merged.bkt).toBeUndefined()
     expect(merged.masteryProbability).toBe(0.4)
+  })
+
+  it('组内只有部分行有 bkt → 缺的那几行按 0 参与求和，不吞掉已有的证据', () => {
+    const merged = mergeProgressGroup(
+      [
+        makeProgress({
+          id: 1,
+          packageId: 'p',
+          knowledgePointId: 'kp',
+          bkt: { pKnown: 0.75, observed: 5 },
+          lastStudiedAt: '2026-01-01T00:00:00.000Z',
+        }),
+        // 老数据：这一行没有 bkt（升级前的行），不能因为"最新它在"就把 5 次观测丢掉
+        makeProgress({ id: 2, packageId: 'p', knowledgePointId: 'kp', lastStudiedAt: '2026-06-01T00:00:00.000Z' }),
+      ],
+      { packageId: 'unit-a', knowledgePointId: 'kp' }
+    )
+    expect(merged.bkt).toEqual({ pKnown: 0.75, observed: 5 })
+    expect(merged.masteryProbability).toBe(0.75)
   })
 
   it('fsrs 取 last_review 最新的整卡，且排期三件套与它同源', () => {
@@ -469,5 +491,60 @@ describe('planProgressMerge — 守恒（迁移正确性的唯一硬指标）', 
     expect(second.puts).toEqual([])
     expect(second.deletes).toEqual([])
     expect(sums(after)).toEqual(sums(rows))
+  })
+})
+
+describe('checkConservation —— 迁移正确性的独立探针', () => {
+  const row = (id: number, correct: number, wrong: number, seconds: number): ProgressRecord =>
+    makeProgress({
+      id,
+      packageId: 'unit-a',
+      knowledgePointId: 'kp-a',
+      correctCount: correct,
+      wrongCount: wrong,
+      studySeconds: seconds,
+    })
+
+  it('可累加量前后相等 + 行数不增 → ok，diffs 为空', () => {
+    const before = [row(1, 3, 1, 60), row(2, 2, 2, 40)]
+    const after = [row(1, 5, 3, 100)]
+    const report = checkConservation(before, after)
+    expect(report.ok).toBe(true)
+    expect(report.diffs).toEqual([])
+  })
+
+  it('ΣcorrectCount 被造多了 → ok false，diffs 指出是哪个字段差多少', () => {
+    const report = checkConservation([row(1, 3, 1, 60), row(2, 2, 2, 40)], [row(1, 6, 3, 100)])
+    expect(report.ok).toBe(false)
+    expect(report.diffs.some((d) => d.includes('ΣcorrectCount'))).toBe(true)
+  })
+
+  it('ΣwrongCount / ΣstudySeconds 各有一条独立判据（不是只看 correctCount）', () => {
+    const wrongUp = checkConservation([row(1, 3, 1, 60)], [row(1, 3, 2, 60)])
+    expect(wrongUp.ok).toBe(false)
+    expect(wrongUp.diffs.some((d) => d.includes('ΣwrongCount'))).toBe(true)
+
+    const secondsUp = checkConservation([row(1, 3, 1, 60)], [row(1, 3, 1, 90)])
+    expect(secondsUp.ok).toBe(false)
+    expect(secondsUp.diffs.some((d) => d.includes('ΣstudySeconds'))).toBe(true)
+  })
+
+  it('行数变多 → ok false（合并只许减不许增）', () => {
+    const report = checkConservation([row(1, 0, 0, 0)], [row(1, 0, 0, 0), row(2, 0, 0, 0)])
+    expect(report.ok).toBe(false)
+    expect(report.diffs.some((d) => d.includes('行数'))).toBe(true)
+  })
+
+  it('状态机产物（streak / status）变了不算破坏守恒 —— 它们本来就该变', () => {
+    const before = [
+      makeProgress({ id: 1, packageId: 'unit-a', knowledgePointId: 'kp-a', correctStreak: 5, status: '已掌握' }),
+      makeProgress({ id: 2, packageId: 'unit-a', knowledgePointId: 'kp-a', correctStreak: 1, status: '学习中' }),
+    ]
+    const after = [makeProgress({ id: 1, packageId: 'unit-a', knowledgePointId: 'kp-a', correctStreak: 1, status: '学习中' })]
+    expect(checkConservation(before, after).ok).toBe(true)
+  })
+
+  it('空输入 → ok，不抛', () => {
+    expect(checkConservation([], []).ok).toBe(true)
   })
 })
