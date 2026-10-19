@@ -71,6 +71,97 @@ async function seedMasteredOne(page: Page): Promise<void> {
 }
 
 /**
+ * 种数据：一次结算会同时解锁 **5 枚**（first-step / ten-kp / mistake-first / streak-3 / streak-7）。
+ *
+ * 刻意凑到 ≥4 枚，用来验证「合并成一条提示」这条规则（AC-07）。
+ * 其余成就都被压在门槛下面（掌握率 25%、没有 dailyStats、只有 1 个包…），
+ * 所以枚数是确定的，不存在"环境不同数量不同"的抖动。
+ */
+async function seedFiveUnlocks(page: Page): Promise<void> {
+  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+
+  await page.evaluate(() => {
+    return new Promise<void>((resolve, reject) => {
+      const req = indexedDB.open('FamilyLearningDB')
+      req.onerror = () => reject(req.error)
+      req.onsuccess = () => {
+        const db = req.result
+        const names = Array.from(db.objectStoreNames)
+        if (!names.includes('packages') || !names.includes('progress')) {
+          reject(new Error(`DB 尚未建表：${names.join(',')}`))
+          return
+        }
+        const tx = db.transaction(['packages', 'progress', 'mistakes', 'settings'], 'readwrite')
+
+        const kps = Array.from({ length: 10 }, (_, i) => ({
+          id: `unit-math-e2e::kp${i}`,
+          title: `知识点 ${i + 1}`,
+        }))
+        tx.objectStore('packages').put({
+          packageId: 'unit-math-e2e',
+          manifest: {
+            packageId: 'unit-math-e2e',
+            type: 'unit',
+            subject: 'math',
+            grade: 4,
+            term: 'up',
+            title: 'E2E 测试单元',
+          },
+          knowledgePoints: kps,
+          exercises: [],
+          units: [],
+        })
+
+        // 10 个已掌握 → first-step + ten-kp
+        for (const kp of kps) {
+          tx.objectStore('progress').put({
+            packageId: 'unit-math-e2e',
+            knowledgePointId: kp.id,
+            status: '已掌握',
+            correctCount: 2,
+            wrongCount: 0,
+            correctStreak: 2,
+            wrongStreak: 0,
+            lastStudiedAt: new Date().toISOString(),
+            studySeconds: 30,
+          })
+        }
+
+        // 1 道已攻克错题 → mistake-first
+        tx.objectStore('mistakes').put({
+          exerciseId: 'e2e-ex-1',
+          packageId: 'unit-math-e2e',
+          knowledgePointId: 'unit-math-e2e::kp0',
+          question: '1 + 1 = ?',
+          userAnswer: '3',
+          correctAnswer: '2',
+          mastered: true,
+          reviewCorrectCount: 0,
+          createdAt: new Date().toISOString(),
+          lastReviewedAt: new Date().toISOString(),
+        })
+
+        // 连续 7 天 → streak-3 + streak-7
+        const d = new Date()
+        const lastDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
+          d.getDate(),
+        ).padStart(2, '0')}`
+        tx.objectStore('settings').put({
+          key: 'studyStreak',
+          value: { current: 7, longest: 7, lastDate },
+        })
+
+        tx.oncomplete = () => {
+          db.close()
+          resolve()
+        }
+        tx.onerror = () => reject(tx.error)
+      }
+    })
+  })
+}
+
+/**
  * 清库，保证用例之间互不影响。
  *
  * ⚠️ **必须在 `goto` 之后调用**：about:blank 下 IndexedDB 被浏览器禁用（SecurityError）。
@@ -215,6 +306,37 @@ test.describe('成就图鉴 · 隐藏成就与文案（AC-13 / AC-14）', () => 
     const seniorNew = page.locator('.ach-card').filter({ hasText: '另辟蹊径' })
     await expect(seniorNew).toContainText('完成一次即可解锁')
     await expect(seniorNew.locator('.ach-progress')).toHaveCount(0)
+
+    // 未获得卡：小锁角标 + 灰化真实图标（两层信号，避免"以为已经有了"）
+    await expect(page.locator('.ach-card .ach-lock')).toHaveCount(25) // 28 − 3 枚剪影
+    await expect(page.locator('.ach-card .ach-seal')).toHaveCount(0)
+  })
+})
+
+test.describe('成就链路 · 合并提示（AC-07）', () => {
+  test('一次解锁 5 枚：只弹 1 条合并提示，5 枚全部进「已获得」', async ({ page }) => {
+    await page.goto('/home')
+    await resetAll(page)
+
+    await seedFiveUnlocks(page)
+    await page.reload()
+
+    const toast = page.locator('.ach-toast')
+    await expect(toast).toBeVisible({ timeout: 15_000 })
+    await expect(toast).toContainText('解锁 5 枚新成就')
+    // 合并态下不会逐条播放：任意时刻只有一条
+    await expect(toast).toHaveCount(1)
+
+    // 等它播完，确认**没有第二条**跟上来
+    await expect(toast).toHaveCount(0, { timeout: 20_000 })
+
+    // 计数与「已获得」区一枚不少（合并只影响播放形式，不影响数据）
+    await expect(page.locator('.ach-head-count')).toHaveText('5 / 28')
+    await page.locator('.ach-part-head').first().click()
+    await expect(earnedCards(page)).toHaveCount(5)
+    for (const id of ['迈出第一步', '小试牛刀', '知错能改', '三日之约', '一周不断']) {
+      await expect(page.locator('.ach-card.earned').filter({ hasText: id })).toHaveCount(1)
+    }
   })
 })
 

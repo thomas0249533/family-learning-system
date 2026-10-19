@@ -78,7 +78,7 @@ test.describe('学习主流程（导入 → 做题 → 判题 → 模拟考）',
     await expect(page.locator('.unit-header-title')).toHaveText('第一单元 乘法')
     const topicCard = page.locator('.topic-card').filter({ hasText: '主题一：口算' })
     await expect(topicCard).toBeVisible()
-    await expect(page.locator('.topic-card')).toHaveCount(2)
+    await expect(page.locator('.topic-card')).toHaveCount(3)
     await topicCard.click()
 
     // ---------- ⑤ 答题 + ⑥ 判题反馈 ----------

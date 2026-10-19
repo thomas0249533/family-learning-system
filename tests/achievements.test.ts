@@ -259,3 +259,74 @@ describe('syncAchievements — 幂等 / 只增不减 / 解锁日期', () => {
     expect(r.unlocked).toContain('ten-kp')
   })
 })
+
+describe('证据快照（A-06）', () => {
+  const now = new Date(2025, 4, 20, 10, 0, 0)
+
+  it('解锁瞬间写入 evidence，内容取自当时的进度', async () => {
+    await syncAchievements({ ...base, progress: mastered(10) }, now)
+    const rec = (await loadUnlocked()).find((s) => s.id === 'ten-kp')
+    expect(rec?.evidence).toBe('已掌握 10 个知识点')
+  })
+
+  it('证据此后不随数据变化（再次结算不覆盖）', async () => {
+    await syncAchievements({ ...base, progress: mastered(10) }, now)
+    await syncAchievements({ ...base, progress: mastered(20) }, now)
+    const rec = (await loadUnlocked()).find((s) => s.id === 'ten-kp')
+    expect(rec?.evidence).toBe('已掌握 10 个知识点')
+  })
+
+  it('旧记录没有 evidence：读取后仍是 undefined（不补算）', async () => {
+    await fake.settings.put({ key: 'achievements', value: [{ id: 'first-step', unlockedAt: '2026-01-01' }] })
+    const rec = (await loadUnlocked()).find((s) => s.id === 'first-step')
+    expect(rec?.evidence).toBeUndefined()
+    expect(rec?.unlockedAt).toBe('2026-01-01')
+  })
+
+  it('脏 evidence（数字 / 空串）归一化为"没有证据"', async () => {
+    await fake.settings.put({
+      key: 'achievements',
+      value: [
+        { id: 'first-step', unlockedAt: '', evidence: 42 },
+        { id: 'ten-kp', unlockedAt: '', evidence: '   ' },
+        { id: 'fifty-kp', unlockedAt: '', evidence: '已掌握 50 个知识点' },
+      ],
+    })
+    const saved = await loadUnlocked()
+    expect(saved.find((s) => s.id === 'first-step')?.evidence).toBeUndefined()
+    expect(saved.find((s) => s.id === 'ten-kp')?.evidence).toBeUndefined()
+    expect(saved.find((s) => s.id === 'fifty-kp')?.evidence).toBe('已掌握 50 个知识点')
+  })
+})
+
+describe('★ 写库失败：不落库、不产生"已解锁但没存"（AC-08）', () => {
+  const now = new Date(2025, 4, 20, 10, 0, 0)
+  const ctxFirst: Ctx = { ...base, progress: mastered(1) }
+
+  it('put 抛错 → syncAchievements 抛出，且库内没有任何记录', async () => {
+    const original = fake.settings.put
+    fake.settings.put = async () => {
+      throw new Error('IndexedDB 写入失败（模拟）')
+    }
+    try {
+      await expect(syncAchievements(ctxFirst, now)).rejects.toThrow('写入失败')
+    } finally {
+      fake.settings.put = original
+    }
+    // 关键：失败后不能留下半条记录（否则会出现"弹了提示但库里没有"或反过来的错位）
+    expect(await loadUnlocked()).toEqual([])
+  })
+
+  it('失败后重试能补上（下次触发自然重试）', async () => {
+    const original = fake.settings.put
+    fake.settings.put = async () => {
+      throw new Error('boom')
+    }
+    await expect(syncAchievements(ctxFirst, now)).rejects.toThrow()
+    fake.settings.put = original
+
+    const r = await syncAchievements(ctxFirst, now)
+    expect(r.newlyUnlocked.map((a) => a.id)).toContain('first-step')
+    expect((await loadUnlocked()).some((s) => s.id === 'first-step')).toBe(true)
+  })
+})

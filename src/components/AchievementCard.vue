@@ -44,7 +44,12 @@
       <div v-else class="ach-hint">达成后揭晓</div>
     </div>
 
+    <!-- 已获得 → 打勾；未获得（未揭晓的剪影除外）→ 小锁角标。
+         锁与真实图标**并存**：PRD §5.3 表 B 原意是"别让孩子误以为自己已经有了"，
+         但 25 枚全换成 🔒 会让图鉴失去辨识度（与 §5.1"未获得的也能看"冲突），
+         所以用"灰化真实图标 + 锁角标"同时满足两个意图。 -->
     <span v-if="item.earned" class="ach-seal" aria-hidden="true">✓</span>
+    <span v-else-if="!item.silhouetted" class="ach-lock" aria-hidden="true">🔒</span>
   </li>
 </template>
 
@@ -79,7 +84,7 @@ const showBar = computed(() => props.item.metered && props.item.target > 1)
 const ariaLabel = computed(() => {
   const it = props.item
   if (it.silhouetted) return '隐藏成就，达成后揭晓'
-  const state = it.earned ? `已解锁，${it.unlockedAt || '较早'}` : it.hint
+  const state = it.earned ? `已解锁，${it.unlockedAt || '较早'}` : `未解锁，${it.hint}`
   // 层级只给中性描述（"层级：进阶"），不出现"稀有"这类稀缺暗示
   const tier = it.tier === 'hidden' ? '' : `，${TIER_META[it.tier].ariaSuffix}`
   return `${it.title}，${state}${tier}`
@@ -248,6 +253,14 @@ const ariaLabel = computed(() => {
   &.earned:hover {
     transform: translateY(-1px);
     box-shadow: $shadow-sm;
+  }
+
+  .ach-lock {
+    flex-shrink: 0;
+    font-size: $font-2xs;
+    line-height: 1;
+    opacity: 0.55;
+    align-self: center;
   }
 
   .ach-seal {

@@ -35,28 +35,48 @@
           "id": "unit-mini-e2e::t1",
           "title": "主题一：口算",
           "desc": "两道口算题",
-          "knowledgePointIds": ["unit-mini-e2e::kp1"],
+          "knowledgePointIds": [
+            "unit-mini-e2e::kp1"
+          ],
           "modules": [],
           "exercises": [
             {
               "id": "mini-ex-001",
               "type": "single",
               "question": "12 × 3 = ?",
-              "options": ["A. 36", "B. 33", "C. 26", "D. 63"],
+              "options": [
+                "A. 36",
+                "B. 33",
+                "C. 26",
+                "D. 63"
+              ],
               "answer": "A",
               "explanation": "12 × 3 = 36。",
-              "knowledgePointIds": ["unit-mini-e2e::kp1"],
-              "metadata": { "difficulty": "基础" }
+              "knowledgePointIds": [
+                "unit-mini-e2e::kp1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
             },
             {
               "id": "mini-ex-002",
               "type": "single",
               "question": "23 × 2 = ?",
-              "options": ["A. 26", "B. 46", "C. 56", "D. 43"],
+              "options": [
+                "A. 26",
+                "B. 46",
+                "C. 56",
+                "D. 43"
+              ],
               "answer": "B",
               "explanation": "20 × 2 = 40，3 × 2 = 6，合计 46。",
-              "knowledgePointIds": ["unit-mini-e2e::kp1"],
-              "metadata": { "difficulty": "基础" }
+              "knowledgePointIds": [
+                "unit-mini-e2e::kp1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
             }
           ]
         },
@@ -64,28 +84,78 @@
           "id": "unit-mini-e2e::t2",
           "title": "主题二：笔算",
           "desc": "两道进位题",
-          "knowledgePointIds": ["unit-mini-e2e::kp2"],
+          "knowledgePointIds": [
+            "unit-mini-e2e::kp2"
+          ],
           "modules": [],
           "exercises": [
             {
               "id": "mini-ex-003",
               "type": "single",
               "question": "123 × 4 = ?",
-              "options": ["A. 482", "B. 492", "C. 512", "D. 442"],
+              "options": [
+                "A. 482",
+                "B. 492",
+                "C. 512",
+                "D. 442"
+              ],
               "answer": "B",
               "explanation": "123 × 4 = 492。",
-              "knowledgePointIds": ["unit-mini-e2e::kp2"],
-              "metadata": { "difficulty": "提高" }
+              "knowledgePointIds": [
+                "unit-mini-e2e::kp2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
             },
             {
               "id": "mini-ex-004",
               "type": "single",
               "question": "256 × 3 = ?",
-              "options": ["A. 768", "B. 758", "C. 668", "D. 868"],
+              "options": [
+                "A. 768",
+                "B. 758",
+                "C. 668",
+                "D. 868"
+              ],
               "answer": "A",
               "explanation": "256 × 3 = 768。",
-              "knowledgePointIds": ["unit-mini-e2e::kp2"],
-              "metadata": { "difficulty": "提高" }
+              "knowledgePointIds": [
+                "unit-mini-e2e::kp2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ]
+        },
+        {
+          "id": "unit-mini-e2e::t3",
+          "title": "主题三：看表答题",
+          "desc": "验证题干 GFM 表格在窄屏下的表现",
+          "knowledgePointIds": [
+            "unit-mini-e2e::kp2"
+          ],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "mini-ex-005",
+              "type": "single",
+              "question": "阅读下面的课程表，回答问题：\n\n| 节次 | 周一 | 周二 | 周三 | 周四 | 周五 |\n|---|---|---|---|---|---|\n| 第一节 | 数学 A101 | 语文 B202 | 英语 C303 | 数学 A101 | 体育 操场 |\n| 第二节 | 语文 B202 | 数学 A101 | 科学 D404 | 英语 C303 | 音乐 E505 |\n\n周三第一节在哪个教室上课？",
+              "options": [
+                "A. A101",
+                "B. B202",
+                "C. C303",
+                "D. D404"
+              ],
+              "answer": "C",
+              "explanation": "表格里周三第一节对应「英语 C303」。",
+              "knowledgePointIds": [
+                "unit-mini-e2e::kp2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
             }
           ]
         }
