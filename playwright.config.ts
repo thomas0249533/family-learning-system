@@ -14,8 +14,10 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5173',
     viewport: { width: 1280, height: 900 },
-    // 失败时留证据（PRD §7.3 AC-E3-6）：trace 只在失败用例上保留，不占空间
-    trace: 'retain-on-failure',
+    // 失败时留证据（PRD §7.3 AC-E3-6）：trace 只在失败用例上保留，不占空间。
+    // 本机安全软件会拦 `test-results/**` 的写入，导致 browserContext.close 抛 EPERM、
+    // 把一个正常的用例记成失败。可用 `PW_TRACE=off npx playwright test` 关掉取证后复跑。
+    trace: process.env.PW_TRACE === 'off' ? 'off' : 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
   webServer: {

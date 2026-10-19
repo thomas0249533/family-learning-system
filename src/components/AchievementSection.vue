@@ -472,7 +472,9 @@ function onToggleAll(): void {
   margin: 0;
   padding: 0 $space-3 $space-3;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  /* 196px 是"目标 10 个知识点""完成一次即可解锁"能单行放下的下限。
+     160px 时正文只剩 ~85px，中文会被拆成"知识/点"，读起来像排版坏了。 */
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
   gap: $space-2;
 }
 

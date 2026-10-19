@@ -103,6 +103,10 @@ export default defineConfig({
       ignored: [
         '**/src-tauri/**',
         '**/dist/**',
+        // 打包前 `mv dist .dist-prev` 的临时目录：不忽略会每次搬运触发一次整页 reload
+        '**/.dist-prev/**',
+        '**/test-results/**',
+        '**/playwright-report/**',
         '**/.vite/**',
         '**/node_modules/**',
       ],

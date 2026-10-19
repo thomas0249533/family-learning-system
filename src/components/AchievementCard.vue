@@ -192,6 +192,8 @@ const ariaLabel = computed(() => {
 
   .ach-hint {
     margin-top: $space-1;
+    /* 右下角有锁角标（absolute），文案让出 18px 免得压在上面 */
+    padding-right: 18px;
     font-size: $font-2xs;
     font-weight: 600;
     color: $text-muted;
@@ -255,12 +257,15 @@ const ariaLabel = computed(() => {
     box-shadow: $shadow-sm;
   }
 
+  /* 右下角状态角标：脱离文档流，不再从正文里抢 26px 宽度 */
   .ach-lock {
-    flex-shrink: 0;
+    position: absolute;
+    right: $space-2;
+    bottom: $space-2;
     font-size: $font-2xs;
     line-height: 1;
     opacity: 0.55;
-    align-self: center;
+    pointer-events: none;
   }
 
   .ach-seal {
