@@ -3,6 +3,7 @@ import type { LearningPackageManifest } from '../schemas/manifest';
 import type { KnowledgePoint } from '../schemas/knowledge-point';
 import type { FsrsCardState } from '../core/review/fsrs';
 import type { BktState } from '../core/mastery/bkt';
+import { migrateProgressV3 } from '../core/storage/migrateV3';
 
 export interface LearningPackageRecord {
   packageId: string;
@@ -106,6 +107,18 @@ export class FamilyLearningDB extends Dexie {
       settings: 'key',
       examSessions: '++id, packageId, status, startedAt'
     });
+    // V1.3 · E-01：升到 v3 **只为了拿到 upgrade() 钩子**，schema 与 v2 逐字符相同。
+    // 这一点是本方案最重要的安全属性：即使迁移永远失败，v2 结构也能正常跑，下次打开自动重试。
+    this.version(3)
+      .stores({
+        packages: 'packageId, manifest.subject, manifest.grade',
+        progress: '++id, [packageId+knowledgePointId], packageId, status',
+        mistakes: '++id, packageId, exerciseId, mastered',
+        settings: 'key',
+        examSessions: '++id, packageId, status, startedAt'
+      })
+      // 迁移实现见 core/storage/migrateV3.ts：纯函数算计划 + 哑 IO 应用，永不 rethrow
+      .upgrade((tx) => migrateProgressV3(tx));
   }
 }
 

@@ -162,8 +162,12 @@ export function mergeProgressGroup(group: ProgressRecord[], target: MergeTarget)
     masteryProbability: evidenceRow
       ? evidenceRow.bkt?.pKnown ?? evidenceRow.masteryProbability
       : latest.masteryProbability,
-    // 卡片与其排期同源
-    fsrs: fsrsRow?.fsrs,
+    // 卡片与其排期同源。
+    // ⚠️ 这里**不能用 `fsrsRow?.fsrs`**：卡片存在但 `last_review` 缺失时 `timeOf` 返回 -Infinity，
+    // `-Infinity > -Infinity` 为 false → `fsrsRow` 保持 undefined → 会把 `...latest` 里的
+    // 卡片**覆盖成 undefined**（一次"合并"把唯一的记忆模型删掉了）。
+    // 取 `scheduleSource.fsrs` 既避免这个问题，也保证"卡片 ↔ 排期三件套"永远同一来源行。
+    fsrs: scheduleSource.fsrs,
     reviewStage: scheduleSource.reviewStage,
     nextReviewAt: scheduleSource.nextReviewAt,
     lastReviewAt: scheduleSource.lastReviewAt,

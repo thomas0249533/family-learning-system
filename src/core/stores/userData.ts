@@ -8,37 +8,19 @@ import {
   scheduleReview,
   shouldAdvanceSchedule,
 } from '@core/review/reviewScheduler'
-import {
-  guessProbFor,
-  initBkt,
-  stateFromProbability,
-  updateBkt,
-  type BktState,
-} from '@core/mastery/bkt'
+import { guessProbFor, initBkt, updateBkt, type BktState } from '@core/mastery/bkt'
 import { applyDecay, nextStatus } from '@core/mastery/masteryRules'
 import { touchStudyDay } from '@core/motivation/streak'
 import { bumpDailyStats } from '@core/motivation/dailyStats'
 import { addAttemptedType } from '@core/motivation/attemptedTypes'
 import { applyMistakeReview, mistakeLevel, mistakeReviewCount } from '@core/mistake/mistakeRules'
+import { canonicalKpId, resolveOwnerPackageId } from '@core/progress/ownerIndex'
+import { ensureOwnerIndex } from '@core/progress/ownerIndexCache'
+import { ensureFields } from '@core/progress/progressRecord'
+import { awaitE1Settled } from '@core/storage/migrateV3Recovery'
 
 function toPlain<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
-}
-
-/** 补全所有可能缺失的字段，保证老数据平滑升级 */
-function ensureFields(rec: ProgressRecord): ProgressRecord {
-  const reviewStage = rec.reviewStage ?? 0
-  const bkt = rec.bkt ?? stateFromProbability(rec.masteryProbability) ?? undefined
-  return {
-    ...rec,
-    correctStreak: rec.correctStreak ?? 0,
-    wrongStreak: rec.wrongStreak ?? 0,
-    reviewStage,
-    nextReviewAt: rec.nextReviewAt ?? rec.lastStudiedAt,
-    lastReviewAt: rec.lastReviewAt ?? null,
-    bkt,
-    masteryProbability: rec.masteryProbability ?? bkt?.pKnown,
-  }
 }
 
 export interface RecordProgressOptions {
@@ -164,6 +146,14 @@ export const useUserDataStore = defineStore('userData', () => {
   /**
    * 记录一次知识点的作答：同时推进掌握状态机、BKT 概率、FSRS 排期。
    * 兼容旧签名（第 4 个参数可选，不传时退化为"只有对错信息"）。
+   *
+   * V1.3 · E-01：**归一化收口在这里**（D2）。第 1 个参数的语义已从「最终写入的包」
+   * 变为「**入口包**」——真正落库的 `packageId` 由归属包解析决定：
+   *   |own| == 1 且 subject 相容 → 归属包（kpId 也一并规范化）
+   *   |own| == 0 / >= 2 / 跨学科 → 保留入口包（**不猜**）
+   *
+   * 四个调用点（TopicDetail ×2 / ExamPanel / VocabDrill）因此**不需要改传参语义**：
+   * 任何新调用方也不可能再"自己猜错包"，缺陷结构性地消失了。
    */
   async function recordProgress(
     packageId: string,
@@ -171,7 +161,16 @@ export const useUserDataStore = defineStore('userData', () => {
     isCorrect: boolean,
     opts: RecordProgressOptions = {}
   ) {
-    const key = [packageId, knowledgePointId]
+    // 启动补偿可能正在重写全表：等它结束再写，否则两边各写一行、合并结果被覆盖。
+    // 补偿永不 rethrow（AC-E1-7），这里的 catch 只是防御性兜底。
+    await awaitE1Settled().catch(() => undefined)
+
+    const index = await ensureOwnerIndex()
+    const owner = resolveOwnerPackageId(knowledgePointId, packageId, index)
+    const targetPackageId = owner ?? packageId
+    const targetKpId = owner ? canonicalKpId(owner, knowledgePointId, index) : knowledgePointId
+
+    const key = [targetPackageId, targetKpId]
     const raw = await db.progress
       .where('[packageId+knowledgePointId]').equals(key).first()
 
@@ -181,8 +180,8 @@ export const useUserDataStore = defineStore('userData', () => {
     const existing: ProgressRecord = raw
       ? ensureFields(raw)
       : {
-          packageId,
-          knowledgePointId,
+          packageId: targetPackageId,
+          knowledgePointId: targetKpId,
           status: '未学',
           correctCount: 0,
           wrongCount: 0,

@@ -196,6 +196,7 @@ import { usePackageStore } from '@core/stores/package'
 import { useThemeStore } from '@core/stores/theme'
 import { generateRecommendations, type Recommendation } from '@core/recommendation/rulesEngine'
 import { findUnitByKnowledgePoint } from '@core/importer/resolvePackageUnits'
+import { packageTypeOf } from '@/schemas/manifest'
 import { isDueForReview, humanizeNextReview } from '@core/review/reviewScheduler'
 import {
   ACHIEVEMENTS,
@@ -450,7 +451,8 @@ onMounted(async () => {
     subject: pkg.manifest.subject,
     grade: pkg.manifest.grade,
     term: pkg.manifest.term,
-    packageType: pkg.manifest.packageType,
+    // 运行时 JSON 只写 `type`（`packageType` 是历史别名）→ 统一走 packageTypeOf，避免拿到 undefined
+    packageType: packageTypeOf(pkg.manifest) ?? '',
     kpCount: pkg.knowledgePoints?.length ?? 0,
   }))
   const dailyStats = await loadDailyStats()

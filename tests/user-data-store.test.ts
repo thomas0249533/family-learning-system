@@ -48,6 +48,9 @@ const fake = vi.hoisted(() => {
         if (i >= 0) rows[i] = { ...rows[i], ...patch }
       },
       where(field: string) {
+        // ★ 未知索引名必须抛错：静默返回空结果会让"归一化根本没生效"这类缺陷假通过
+        const KNOWN = new Set(['[packageId+knowledgePointId]', 'exerciseId'])
+        if (!KNOWN.has(field)) throw new Error(`fake db: 未知索引 ${field}`)
         return {
           equals: (value: any) => ({
             async first() {
@@ -70,15 +73,19 @@ const fake = vi.hoisted(() => {
   const progress = makeTable(r => r.id, true)
   const mistakes = makeTable(r => r.id, true)
   const settings = makeTable(r => r.key, false)
+  /** V1.3 · E-01 起 recordProgress 会读 packages 建归属索引，替身必须提供这张表 */
+  const packages = makeTable(r => r.packageId, false)
 
   return {
     progress,
     mistakes,
     settings,
+    packages,
     __reset() {
       progress.__reset()
       mistakes.__reset()
       settings.__reset()
+      packages.__reset()
     },
   }
 })
@@ -86,6 +93,7 @@ const fake = vi.hoisted(() => {
 vi.mock('@/db', () => ({ db: fake }))
 
 const { useUserDataStore } = await import('@core/stores/userData')
+const { invalidateOwnerIndex } = await import('@core/progress/ownerIndexCache')
 
 const PKG = 'unit-math-4-up-rjb-p1'
 const KP = 'kp-num-001'
@@ -97,6 +105,8 @@ function store() {
 
 beforeEach(() => {
   fake.__reset()
+  // 归属索引是进程内缓存，测试之间必须清掉，否则上一个用例的包数组会漏到下一个
+  invalidateOwnerIndex()
 })
 
 describe('recordProgress — 新建进度记录', () => {
@@ -279,5 +289,88 @@ describe('错题三级状态 — 通过 store 走完整链路', () => {
     // 复习一次 → 被规则判定为部分掌握
     await s.resolveMistake('legacy-ex', true)
     expect(fake.mistakes.rows[0].masteryLevel).toBe('partial')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// V1.3 · E-01 · D2：写入端归一化（入口包 → 归属包）
+// ---------------------------------------------------------------------------
+
+function seedPackage(packageId: string, subject: string, kpIds: string[]) {
+  fake.packages.add({
+    packageId,
+    manifest: { packageId, subject, type: 'unit', title: packageId },
+    knowledgePoints: kpIds.map(id => ({ id, title: id })),
+    exercises: [],
+    units: [],
+  })
+}
+
+describe('recordProgress — 写入端归一化（归属包解析）', () => {
+  it('★ 从专项包作答、知识点属于单元包 → 记到单元包上（不再写进入口包）', async () => {
+    seedPackage('unit-p1', 'english', ['unit-p1::kp1'])
+    seedPackage('special-x', 'english', [])
+
+    const s = store()
+    await s.recordProgress('special-x', 'unit-p1::kp1', true, { questionType: 'blank' })
+
+    expect(fake.progress.rows).toHaveLength(1)
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
+    expect(fake.progress.rows[0].knowledgePointId).toBe('unit-p1::kp1')
+  })
+
+  it('★★ 同一知识点从两个入口包各答一次 → 只有一行、计数累加（掌握率不再被稀释）', async () => {
+    seedPackage('unit-p1', 'english', ['unit-p1::kp1'])
+    seedPackage('special-x', 'english', [])
+    seedPackage('sprint-y', 'english', [])
+
+    const s = store()
+    await s.recordProgress('special-x', 'unit-p1::kp1', true, { questionType: 'blank' })
+    await s.recordProgress('sprint-y', 'unit-p1::kp1', true, { questionType: 'blank' })
+
+    expect(fake.progress.rows).toHaveLength(1)
+    expect(fake.progress.rows[0].correctCount).toBe(2)
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
+  })
+
+  it('短 id（缺包前缀）且全库唯一声明者 → 归到归属包并把 kpId 补成完整 id', async () => {
+    seedPackage('unit-p1', 'english', ['unit-p1::kp-abc'])
+    seedPackage('special-x', 'english', [])
+
+    const s = store()
+    await s.recordProgress('special-x', 'kp-abc', true, { questionType: 'blank' })
+
+    expect(fake.progress.rows).toHaveLength(1)
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
+    expect(fake.progress.rows[0].knowledgePointId).toBe('unit-p1::kp-abc')
+  })
+
+  it('★ 归属歧义（两个包都声明同一 kpId）→ 保留入口包，绝不猜', async () => {
+    seedPackage('unit-a', 'english', ['shared-kp'])
+    seedPackage('unit-b', 'english', ['shared-kp'])
+    seedPackage('special-x', 'english', [])
+
+    const s = store()
+    await s.recordProgress('special-x', 'shared-kp', true, { questionType: 'blank' })
+
+    expect(fake.progress.rows[0].packageId).toBe('special-x')
+  })
+
+  it('★ 跨学科归属 → 保留入口包（不把语文知识点记到数学包上）', async () => {
+    seedPackage('unit-math', 'math', ['math-kp'])
+    seedPackage('special-eng', 'english', [])
+
+    const s = store()
+    await s.recordProgress('special-eng', 'math-kp', true, { questionType: 'blank' })
+
+    expect(fake.progress.rows[0].packageId).toBe('special-eng')
+  })
+
+  it('包里没声明任何知识点（裸 JSON 导入 / 包已删除）→ 保留入口包，不崩', async () => {
+    const s = store()
+    await s.recordProgress('unknown-pkg', 'unknown-kp', true, { questionType: 'blank' })
+
+    expect(fake.progress.rows).toHaveLength(1)
+    expect(fake.progress.rows[0].packageId).toBe('unknown-pkg')
   })
 })

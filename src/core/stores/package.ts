@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { db } from '@/db'
 import type { LearningPackageRecord } from '@/db'
+import { invalidateOwnerIndex, setOwnerIndexSource } from '@core/progress/ownerIndexCache'
 
 export const usePackageStore = defineStore('package', () => {
   const packages = ref<LearningPackageRecord[]>([])
@@ -9,10 +10,17 @@ export const usePackageStore = defineStore('package', () => {
 
   async function loadPackages() {
     packages.value = await db.packages.toArray()
+    // V1.3 · E-01：包数组是归属索引的唯一来源，加载后立刻刷新（导入/删除后同样走这里）
+    setOwnerIndexSource(packages.value)
   }
 
   function setCurrentPackage(pkg: LearningPackageRecord) {
     currentPackage.value = pkg
+  }
+
+  /** 包被删除/替换后调用：让归属索引下次用时重建（避免拿旧数组做写入决策） */
+  function invalidateOwnerIndexCache() {
+    invalidateOwnerIndex()
   }
 
   // ✅ 新增：如果内存中丢失了 currentPackage，根据 packageId 从 IndexedDB 重新拉取
@@ -26,5 +34,12 @@ export const usePackageStore = defineStore('package', () => {
     }
   }
 
-  return { packages, currentPackage, loadPackages, setCurrentPackage, loadPackageById }
+  return {
+    packages,
+    currentPackage,
+    loadPackages,
+    setCurrentPackage,
+    invalidateOwnerIndexCache,
+    loadPackageById,
+  }
 })
