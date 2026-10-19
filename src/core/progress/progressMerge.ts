@@ -127,6 +127,10 @@ export function mergeProgressGroup(group: ProgressRecord[], target: MergeTarget)
   const bkt = evidenceRow?.bkt ? { ...evidenceRow.bkt, observed: observedTotal } : undefined
 
   // ---- fsrs：取 last_review 最新的整卡；全组都没有则保持 undefined ----
+  // ⚠️ 这一步**有损，且不可逆**：两张 FSRS 卡（各自的 stability / difficulty / 复习轮次）
+  // 在数学上无法合并，只能整卡择优保留 `last_review` 最新的那张，**另一张的复习历史被主动丢弃**。
+  // 之所以宁可丢历史也不拼装：拼出一张"谁都没经历过"的卡，会让下一次 advance() 以错误间隔排期，
+  // 孩子会在本该校复习时被排到很久以后 —— 丢一段历史，好过制造一个假的记忆模型。
   let fsrsRow: ProgressRecord | undefined
   let bestReview = Number.NEGATIVE_INFINITY
   for (const row of byLatest) {
