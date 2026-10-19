@@ -8,6 +8,9 @@
     ]"
     :role="interactive ? 'button' : undefined"
     :tabindex="interactive ? 0 : undefined"
+    @click="emit('click')"
+    @keydown.enter="onKeyActivate"
+    @keydown.space="onKeyActivate"
   >
     <span v-if="icon" class="stat-card__icon" aria-hidden="true">{{ icon }}</span>
     <span v-else-if="$slots.icon" class="stat-card__icon" aria-hidden="true">
@@ -45,13 +48,25 @@ interface StatCardProps {
   interactive?: boolean
 }
 
-withDefaults(defineProps<StatCardProps>(), {
+const props = withDefaults(defineProps<StatCardProps>(), {
   icon: undefined,
   value: undefined,
   tone: 'neutral',
   layout: 'vertical',
   interactive: false,
 })
+
+// 可聚焦就必须可激活（§6.4/AA）：interactive 卡片除鼠标 @click 透传外，
+// 还须支持 Enter / Space 键盘激活。target === currentTarget 防止插槽内
+// 焦点元素（如链接/按钮）的按键冒泡误触发整卡激活。
+const emit = defineEmits<{ click: [] }>()
+
+function onKeyActivate(e: KeyboardEvent) {
+  if (!props.interactive) return
+  if (e.target !== e.currentTarget) return
+  e.preventDefault()
+  emit('click')
+}
 </script>
 
 <style scoped lang="scss">

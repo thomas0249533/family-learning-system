@@ -6,12 +6,13 @@
  * | 入口 | 触发时机 | 写迁移标记 | 用途 |
  * |---|---|---|---|
  * | `recoverV3IfNeeded()` | 应用启动一次 | 写（`ok-recovered` / `failed`+attempts） | `upgrade()` 里计划构建失败后的补跑 |
- * | `ensureE1Migrated({ orphanOnly })` | 导入包 / 恢复备份之后 | **不写**（只写 `progress:lastRecovery`） | 新包进来后，原本"无主"的老进度行变得可归因 → 改写它们 |
+ * | `ensureE1Migrated({ orphanOnly })` | 导入包 / 恢复备份之后 / 应用启动（一天最多一次，见 `startupOrphanRecovery.ts`） | **不写**（只写 `progress:lastRecovery`） | 新包进来后，原本"无主"的老进度行变得可归因 → 改写它们 |
  *
  * 为什么要区分：`migration:v3` 是**一次性版本迁移**的语义，一旦写成 `ok` 就不该再被改写；
  * 而"包变了 → 再归因一次"是**可重复发生**的日常动作，两者混写会让迁移状态变成谎言。
  *
- * 成本：正常启动只读一条 settings。`orphanOnly` 才会扫全表，且只在导入/恢复这种用户主动动作后发生。
+ * 成本：正常启动只读一条 settings。`orphanOnly` 才会扫全表，且只在导入/恢复之后、
+ * 或启动时（同一本地日期内只跑一次）发生。
  */
 import { db } from '@/db'
 import type { MigrationMarker } from './migrateV3'
@@ -134,14 +135,25 @@ export async function recoverV3IfNeeded(): Promise<MigrationMarker | null> {
 /**
  * 把当前库里的进度行**按最新包列表**重新归因一次。用于：
  *   - 导入包之后（原本 `|own| === 0` 的历史行，现在可能有了归属包）；
- *   - 恢复用户数据备份之后（备份里可能带着老的入口包 packageId）。
+ *   - 恢复用户数据备份之后（备份里可能带着老的入口包 packageId）；
+ *   - 应用启动（`startupOrphanRecovery.ts`，同一本地日期内最多一次）—— 兜住"用户既不导入
+ *     也不恢复备份"时永远消不掉的孤儿行。
  *
  * 与 `recoverV3IfNeeded` 的差别：**永不写 `migration:v3`**。
  * 零计划时不起写事务（省掉一次无意义的 rw 事务）。
  *
+ * `mode` 只影响 `progress:lastRecovery.mode` 这个**观察字段**（谁触发的），不参与任何判断：
+ * 不传时按老规则推断（`orphanOnly ? 'import' : 'manual'`），两个旧调用点因此无需改动。
+ *
  * 并发：单一飞行锁 + 先等启动补偿结束。
  */
-export async function ensureE1Migrated(opts: { orphanOnly?: boolean } = {}): Promise<MergeStats | null> {
+export async function ensureE1Migrated(
+  opts: {
+    orphanOnly?: boolean
+    /** 触发来源，仅用于日志/排查；不传则按 `orphanOnly` 推断 */
+    mode?: 'import' | 'restore' | 'startup'
+  } = {}
+): Promise<MergeStats | null> {
   if (inflight) return (await inflight) as MergeStats | null
 
   const run = (async (): Promise<MergeStats | null> => {
@@ -169,7 +181,7 @@ export async function ensureE1Migrated(opts: { orphanOnly?: boolean } = {}): Pro
         await applyMergePlan(tx, plan)
         await tx.table('settings').put({
           key: RECOVERY_KEY,
-          value: { at: new Date().toISOString(), stats: plan.stats, mode: opts.orphanOnly ? 'import' : 'manual' },
+          value: { at: new Date().toISOString(), stats: plan.stats, mode: opts.mode ?? (opts.orphanOnly ? 'import' : 'manual') },
         })
       })
       console.info('[migrateV3] 进度重归因完成', plan.stats)

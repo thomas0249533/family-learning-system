@@ -37,3 +37,5 @@ Thumbs.db
 tests/e2e/**/*-diff.png
 test-results/
 playwright-report/
+# vite/vitest 解析配置时落在仓库根的临时 mjs（不是源码）
+*.config.ts.timestamp-*.mjs

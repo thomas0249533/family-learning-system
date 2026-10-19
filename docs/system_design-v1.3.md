@@ -215,18 +215,19 @@ async function recordProgress(
 | 文件 | 内容 |
 |---|---|
 | `src/core/storage/migrateV3.ts` | `planV3Migration(tx)`（只读+纯计算，唯一 try/catch 面）、`applyMergePlan(tx, plan)`（哑 IO：put 先于 delete）、`migrateProgressV3(tx)`（upgrade 钩子，永不 rethrow）、`writeMarker`、`MAX_ATTEMPTS` |
-| `src/core/storage/migrateV3Recovery.ts` | `readMigrationMarker`、`shouldRunRecovery`（纯函数，判断是否补跑）、`recoverV3IfNeeded`（启动补偿）、`ensureE1Migrated({ orphanOnly })`（导入/恢复后重归因）、`awaitE1Settled`（写入端等待信号） |
+| `src/core/storage/migrateV3Recovery.ts` | `readMigrationMarker`、`shouldRunRecovery`（纯函数，判断是否补跑）、`recoverV3IfNeeded`（启动补偿）、`ensureE1Migrated({ orphanOnly, mode? })`（导入/恢复/启动后重归因）、`awaitE1Settled`（写入端等待信号） |
+| `src/core/storage/startupOrphanRecovery.ts` | `runStartupOrphanRecovery()`（启动兜底重归因，**同一本地日期最多一次**，永不抛）、`shouldRunOrphanRecovery(lastDay, today)`（纯函数）、`STARTUP_RECOVERY_KEY = 'progress:lastStartupRecovery'` |
 | `src/db/index.ts` | `version(3).stores({...与 v2 逐字符相同}).upgrade(tx => migrateProgressV3(tx))` |
-| `src/main.ts` | `router.isReady().then(() => { app.mount('#app'); void recoverV3IfNeeded() })` |
+| `src/main.ts` | `router.isReady().then(() => { app.mount('#app'); void recoverV3IfNeeded().then(() => runStartupOrphanRecovery()) })` |
 
 #### 2.3.2 `ensureE1Migrated({ orphanOnly })` —— 与启动补偿**不是**同一件事
 
 | 维度 | `recoverV3IfNeeded()` | `ensureE1Migrated({ orphanOnly: true })` |
 |---|---|---|
-| 时机 | 应用启动一次 | **每次导入包 / 恢复备份之后** |
+| 时机 | 应用启动一次 | **每次导入包 / 恢复备份之后**；以及应用启动（同一本地日期最多一次，见 `startupOrphanRecovery.ts`） |
 | 语义 | 一次性版本迁移 | 可重复的"按当前包列表重新归因" |
 | 写 `migration:v3` | 写（`ok-recovered` / `failed`+attempts） | **绝不写**（否则 `ok` 变谎言） |
-| 另记 | — | `settings['progress:lastRecovery'] = { at, stats, mode }` |
+| 另记 | — | `settings['progress:lastRecovery'] = { at, stats, mode }`（`mode` ∈ `import` / `restore` / `startup`，仅观察字段） |
 | 零计划 | 仍写标记 | **不起写事务**（先只读算计划，为空直接返回） |
 
 两条入口**共用同一把单飞锁**（module 级 `inflight`）：否则启动迁移还没结束、导入补跑并发进来，同一批行会被求两次和 → `correctCount` 翻倍，而**守恒自检照样通过**（它比的是"本次迁移前后"，不是"两次叠加后"）。

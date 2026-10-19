@@ -1,55 +1,63 @@
 <template>
-  <li
-    class="ach-card"
-    :class="[`tier-${item.tier}`, { earned: item.earned, silhouette: item.silhouetted }]"
-    :aria-label="ariaLabel"
-  >
-    <span class="ach-icon" aria-hidden="true">{{ item.icon }}</span>
+  <!-- li 只负责列表语义 + 同排等高；真正可点的是里面的原生控件 -->
+  <li class="ach-card-wrap">
+    <component
+      :is="clickable ? 'button' : 'div'"
+      class="ach-card"
+      :class="[`tier-${item.tier}`, { earned: item.earned, silhouette: item.silhouetted }]"
+      :type="clickable ? 'button' : undefined"
+      :aria-label="clickable ? ariaLabel : undefined"
+      @click="onActivate"
+      @keydown.enter.prevent="onActivate"
+      @keydown.space.prevent="onActivate"
+    >
+      <span class="ach-icon" aria-hidden="true">{{ item.icon }}</span>
 
-    <div class="ach-body">
-      <div class="ach-title-row">
-        <span class="ach-title">{{ item.title }}</span>
-        <!-- 层级用星标数量表达（色觉冗余），不是唯一编码 -->
-        <span v-if="item.stars > 0" class="ach-stars" aria-hidden="true">{{ stars }}</span>
-        <span v-if="item.earned && item.tier === 'hidden'" class="ach-hidden-tag">隐藏成就</span>
+      <div class="ach-body">
+        <div class="ach-title-row">
+          <span class="ach-title">{{ item.title }}</span>
+          <!-- 层级用星标数量表达（色觉冗余），不是唯一编码 -->
+          <span v-if="item.stars > 0" class="ach-stars" aria-hidden="true">{{ stars }}</span>
+          <span v-if="item.earned && item.tier === 'hidden'" class="ach-hidden-tag">隐藏成就</span>
+        </div>
+
+        <div class="ach-desc">{{ item.desc }}</div>
+
+        <!-- 已获得：证据快照 + 解锁日期 + 连环标记，**不显示进度**（"10/10"是无意义回放） -->
+        <template v-if="item.earned">
+          <!-- 旧记录没有 evidence → 空串 → 该行不渲染（绝不事后补算） -->
+          <div v-if="item.evidence" class="ach-evidence">{{ item.evidence }}</div>
+          <div class="ach-meta">解锁于 {{ item.unlockedAt || '较早' }}</div>
+          <div v-if="item.chainLabel" class="ach-chain">{{ item.chainLabel }}</div>
+        </template>
+
+        <!-- 未获得（非隐藏）：可进度化 → 细进度条 + 文案；二值 → 只给文案 -->
+        <template v-else-if="!item.silhouetted">
+          <div
+            v-if="showBar"
+            class="ach-progress"
+            role="progressbar"
+            :aria-valuenow="item.current"
+            aria-valuemin="0"
+            :aria-valuemax="item.target"
+            :aria-label="`${item.title} 进度 ${item.current}/${item.target}`"
+          >
+            <div class="ach-progress-fill" :style="{ width: item.percent + '%' }"></div>
+          </div>
+          <div class="ach-hint">{{ item.hint }}</div>
+        </template>
+
+        <!-- 隐藏成就：达成前不泄露任何信息（真实标题/描述不进 DOM） -->
+        <div v-else class="ach-hint">达成后揭晓</div>
       </div>
 
-      <div class="ach-desc">{{ item.desc }}</div>
-
-      <!-- 已获得：证据快照 + 解锁日期 + 连环标记，**不显示进度**（"10/10"是无意义回放） -->
-      <template v-if="item.earned">
-        <!-- 旧记录没有 evidence → 空串 → 该行不渲染（绝不事后补算） -->
-        <div v-if="item.evidence" class="ach-evidence">{{ item.evidence }}</div>
-        <div class="ach-meta">解锁于 {{ item.unlockedAt || '较早' }}</div>
-        <div v-if="item.chainLabel" class="ach-chain">{{ item.chainLabel }}</div>
-      </template>
-
-      <!-- 未获得（非隐藏）：可进度化 → 细进度条 + 文案；二值 → 只给文案 -->
-      <template v-else-if="!item.silhouetted">
-        <div
-          v-if="showBar"
-          class="ach-progress"
-          role="progressbar"
-          :aria-valuenow="item.current"
-          aria-valuemin="0"
-          :aria-valuemax="item.target"
-          :aria-label="`${item.title} 进度 ${item.current}/${item.target}`"
-        >
-          <div class="ach-progress-fill" :style="{ width: item.percent + '%' }"></div>
-        </div>
-        <div class="ach-hint">{{ item.hint }}</div>
-      </template>
-
-      <!-- 隐藏成就：达成前不泄露任何信息（真实标题/描述不进 DOM） -->
-      <div v-else class="ach-hint">达成后揭晓</div>
-    </div>
-
-    <!-- 已获得 → 打勾；未获得（未揭晓的剪影除外）→ 小锁角标。
-         锁与真实图标**并存**：PRD §5.3 表 B 原意是"别让孩子误以为自己已经有了"，
-         但 25 枚全换成 🔒 会让图鉴失去辨识度（与 §5.1"未获得的也能看"冲突），
-         所以用"灰化真实图标 + 锁角标"同时满足两个意图。 -->
-    <span v-if="item.earned" class="ach-seal" aria-hidden="true">✓</span>
-    <span v-else-if="!item.silhouetted" class="ach-lock" aria-hidden="true">🔒</span>
+      <!-- 已获得 → 打勾；未获得（未揭晓的剪影除外）→ 小锁角标。
+           锁与真实图标**并存**：PRD §5.3 表 B 原意是"别让孩子误以为自己已经有了"，
+           但 25 枚全换成 🔒 会让图鉴失去辨识度（与 §5.1"未获得的也能看"冲突），
+           所以用"灰化真实图标 + 锁角标"同时满足两个意图。 -->
+      <span v-if="item.earned" class="ach-seal" aria-hidden="true">✓</span>
+      <span v-else-if="!item.silhouetted" class="ach-lock" aria-hidden="true">🔒</span>
+    </component>
   </li>
 </template>
 
@@ -65,13 +73,31 @@
 // 颜色**不是唯一编码**（星标数量与 aria-label 里的中性描述承担冗余）。
 // 儿童视图不出现"稀有 / 史诗 / SSR"字样。
 //
-// 语义用 <li>，由父级 <ul> 提供列表语义；aria-label 保证读屏不会只读到锁图标。
+// 语义用 `<li>` 包一层原生控件：可点的是 `<button>`，剪影是 `<div>`。
+// 这样 `<ul>` 仍然是列表（28 个 listitem），控件也自带 role / 焦点 / 键盘行为，
+// aria-label 保证读屏不会只读到锁图标。
+//
+// ## 可点开详情（V1.3 · P1）
+// `.ach-card` 这个类名必须继续挂在**可点的那个元素**上 —— e2e 的 28 / 25 / 3
+// 计数与 375px 的 getBoundingClientRect 断言全靠它，所以 li 换成
+// `.ach-card-wrap`（只负责列表语义与同排等高），卡片本体用 `:is` 切 button/div。
+// 剪影卡是 div：不可聚焦、不可点，DOM 里也没有任何真实信息。
 // =====================================================================
 import { computed } from 'vue'
 import type { AchievementItem } from '@core/motivation/achievementMeta'
 import { TIER_META } from '@core/motivation/achievementTaxonomy'
 
 const props = defineProps<{ item: AchievementItem }>()
+
+/** 点开详情：剪影不可点（未解锁的隐藏成就必须保持"点不开"） */
+const emit = defineEmits<{ (e: 'select', item: AchievementItem): void }>()
+
+const clickable = computed(() => !props.item.silhouetted)
+
+function onActivate(): void {
+  if (!clickable.value) return
+  emit('select', props.item)
+}
 
 const stars = computed(() => '★'.repeat(props.item.stars))
 
@@ -83,7 +109,6 @@ const showBar = computed(() => props.item.metered && props.item.target > 1)
 
 const ariaLabel = computed(() => {
   const it = props.item
-  if (it.silhouetted) return '隐藏成就，达成后揭晓'
   const state = it.earned ? `已解锁，${it.unlockedAt || '较早'}` : `未解锁，${it.hint}`
   // 层级只给中性描述（"层级：进阶"），不出现"稀有"这类稀缺暗示
   const tier = it.tier === 'hidden' ? '' : `，${TIER_META[it.tier].ariaSuffix}`
@@ -92,6 +117,14 @@ const ariaLabel = computed(() => {
 </script>
 
 <style scoped lang="scss">
+/* li 不再自己当卡片：只提供列表语义，并让里面的控件撑满同一行的高度。
+   grid + 单格：li 被外层 .ach-list 的 grid 拉成同排等高后，这一格（auto 行）
+   会被 align-content: stretch 撑满，里面的 button 再 align-self: stretch 填满，
+   于是同排卡片仍然等高（换成 flex 也能做到，这里按 grid 写法保持最少假设）。 */
+.ach-card-wrap {
+  display: grid;
+}
+
 .ach-card {
   position: relative;
   display: flex;
@@ -101,6 +134,20 @@ const ariaLabel = computed(() => {
   border: 1px solid $border-color;
   border-radius: $radius-md;
   padding: $space-3 $space-4;
+
+  /* ---- 原生 button 重置（本组件唯一的视觉风险点，逐条说明） ----
+     · width: 100%      —— button 默认按内容收缩，不撑满 li，会破坏同排对齐；
+     · font: inherit    —— 否则 button 用系统 UI 字体（字号/行高/字重全变），中文观感与全站不一致；
+     · color: inherit   —— 避免 UA 的 buttontext 色透到未显式着色的文本（如图标）；
+     · text-align: left —— button 默认居中，卡片正文必须左对齐；
+     · appearance: none —— 去掉各平台原生按钮的立体/圆角外观，交给下面的 border/background。
+     background / border / padding 上面已经写过，不需要重复。 */
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  appearance: none;
+
   transition: border-color $duration-fast $ease-standard,
     box-shadow $duration-fast $ease-standard,
     transform $duration-fast $ease-standard;
@@ -255,6 +302,22 @@ const ariaLabel = computed(() => {
   &.earned:hover {
     transform: translateY(-1px);
     box-shadow: $shadow-sm;
+  }
+
+  /* ---------- 可点开详情（只有非剪影卡才是 button） ---------- */
+  &:is(button) {
+    cursor: pointer;
+  }
+
+  &:is(button):hover {
+    border-color: $primary-color;
+    box-shadow: $shadow-sm;
+  }
+
+  /* 原生 button 自带键盘可达，焦点环直接命中它，比之前挂在 li 上更自然 */
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
   }
 
   /* 右下角状态角标：脱离文档流，不再从正文里抢 26px 宽度 */

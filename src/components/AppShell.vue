@@ -162,6 +162,7 @@ const backTarget = computed<string | null>(() => {
   if (pkgMatch) return '/learn'
   if (path.startsWith('/settings/')) return '/settings'
   if (path === '/review') return '/home'
+  if (path === '/achievements') return '/home'
   return null
 })
 
@@ -179,6 +180,7 @@ const pageTitle = computed(() => {
   if (path === '/mistakes') return '错题本'
   if (path === '/search') return '搜索'
   if (path === '/report') return '学习报告'
+  if (path === '/achievements') return '我的成就'
   if (path === '/review') return '今日复习'
   if (path === '/parent') return '家长视图'
   if (path === '/settings' || path.startsWith('/settings/')) return '设置'

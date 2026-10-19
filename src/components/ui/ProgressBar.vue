@@ -1,6 +1,7 @@
 <template>
   <div class="progress-wrap" :class="`progress-wrap--${size}`">
     <div
+      v-bind="$attrs"
       class="progress"
       :class="[
         `progress--${tone}`,
@@ -8,9 +9,10 @@
         { 'progress--gradient': gradient },
       ]"
       role="progressbar"
-      :aria-valuenow="clamped"
       :aria-valuemin="0"
-      :aria-valuemax="max"
+      :aria-valuemax="100"
+      :aria-valuenow="pct"
+      :aria-valuetext="valuetext"
     >
       <div class="progress__fill" :style="{ width: `${pct}%` }" />
     </div>
@@ -27,6 +29,11 @@
 // =====================================================================
 import { computed } from 'vue'
 
+// 无障碍名称（aria-label 等）必须落在带 role="progressbar" 的内层本体上，
+// 故关闭 attrs 继承、由内层 v-bind="$attrs" 接住（外层 wrap 只吃不到 attrs，
+// 调用方如需定位外层请用内层 class 语义）。
+defineOptions({ inheritAttrs: false })
+
 interface ProgressBarProps {
   /** 当前值（0–100 语义，超过 max 会被裁剪） */
   value: number
@@ -35,6 +42,8 @@ interface ProgressBarProps {
   size?: 'sm' | 'md'
   gradient?: boolean
   showLabel?: boolean
+  /** 进度条的人类可读名称（aria-valuetext 前缀，如「今日进度」） */
+  label?: string
 }
 
 const props = withDefaults(defineProps<ProgressBarProps>(), {
@@ -43,6 +52,7 @@ const props = withDefaults(defineProps<ProgressBarProps>(), {
   size: 'md',
   gradient: false,
   showLabel: false,
+  label: undefined,
 })
 
 const clamped = computed(() => {
@@ -54,6 +64,14 @@ const pct = computed(() => {
   const m = props.max <= 0 ? 0 : props.max
   if (m === 0) return 0
   return Math.round((clamped.value / m) * 100)
+})
+
+// 读屏朗读文案：label 时「今日进度 60%」；非百分比量纲（max≠100）时给
+// 「原始值 / 目标值」，比一个裸数字更有信息量。
+const valuetext = computed(() => {
+  const display =
+    props.max === 100 ? `${pct.value}%` : `${clamped.value} / ${props.max}`
+  return props.label ? `${props.label} ${display}` : display
 })
 </script>
 

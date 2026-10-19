@@ -6,9 +6,15 @@
         <h2 class="ach-head-name">成就图鉴</h2>
         <span class="ach-head-count" :class="{ done: view.complete }">{{ overallText }}</span>
       </div>
-      <button v-if="!view.complete" class="ach-head-toggle" type="button" @click="onToggleAll">
-        {{ allExpanded ? '全部收起' : '全部展开' }}
-      </button>
+      <div class="ach-head-right">
+        <!-- 首页只是"摘要"，完整图鉴在独立页；独立页自己不再给这个入口 -->
+        <RouterLink v-if="!standalone" class="ach-head-link" to="/achievements">
+          查看全部 →
+        </RouterLink>
+        <button v-if="!view.complete" class="ach-head-toggle" type="button" @click="onToggleAll">
+          {{ allExpanded ? '全部收起' : '全部展开' }}
+        </button>
+      </div>
     </header>
 
     <!-- 总进度：0 枚时也显示（0% 本身是真实状态，不算误导） -->
@@ -89,13 +95,21 @@
               :aria-labelledby="`ach-head-${sec.key}-${g.category}`"
             >
               <ul class="ach-list">
-                <AchievementCard v-for="item in g.items" :key="item.id" :item="item" />
+                <AchievementCard
+                  v-for="item in g.items"
+                  :key="item.id"
+                  :item="item"
+                  @select="onSelect"
+                />
               </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- 单枚详情：点卡片打开（剪影卡点不开，见 AchievementCard 的守卫） -->
+    <AchievementDetailModal v-model:show="detailOpen" :item="selected" />
   </section>
 </template>
 
@@ -113,12 +127,19 @@
 //   · 收起时面板整个不渲染（v-if），屏幕阅读器自然跳过，也不占内存。
 //   · 0 枚：只渲染「待解锁」区 + 一行引导；28 枚全解锁：隐藏「待解锁」区与一键按钮。
 //
+// V1.3 · P1 增量：
+//   · `standalone`（默认 false）只控制头部「查看全部 →」入口 —— 独立图鉴页
+//     自己就是"全部"，再给入口只会形成回环。Home 不传，保持现状。
+//   · 任意非剪影卡片可点开详情；弹层挂在组件内，这样 Home 与独立页共用同一套行为。
+//
 // 这里**不做任何成就相关的计算**（进度、排序、分区、文案全部来自视图模型），
 // 只负责折叠状态与 DOM 结构。折叠状态的算法在 `@core/motivation/achievementUi`。
 // =====================================================================
 import { computed, onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import AchievementCard from './AchievementCard.vue'
-import type { AchievementView } from '@core/motivation/achievementMeta'
+import AchievementDetailModal from './AchievementDetailModal.vue'
+import type { AchievementItem, AchievementView } from '@core/motivation/achievementMeta'
 import {
   DEFAULT_COLLAPSED,
   groupKey,
@@ -133,10 +154,24 @@ import {
   type UiSection,
 } from '@core/motivation/achievementUi'
 
-const props = defineProps<{ view: AchievementView }>()
+const props = withDefaults(
+  defineProps<{ view: AchievementView; standalone?: boolean }>(),
+  { standalone: false },
+)
 
 /** 折叠键集合（收起态） */
 const collapsed = ref<string[]>([...DEFAULT_COLLAPSED])
+
+/** 详情弹层：当前卡片 + 开关 */
+const selected = ref<AchievementItem | null>(null)
+const detailOpen = ref(false)
+
+function onSelect(item: AchievementItem): void {
+  // 双保险：剪影卡本身渲染成不可聚焦的 div，这里再挡一次 —— 隐藏成就绝不能点开
+  if (item.silhouetted) return
+  selected.value = item
+  detailOpen.value = true
+}
 
 // 先渲染默认态，读到持久化值后再应用 —— 绝不阻塞首屏
 onMounted(async () => {
@@ -234,6 +269,32 @@ function onToggleAll(): void {
     &.done {
       color: $success-text;
       background: $success-light;
+    }
+  }
+
+  .ach-head-right {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  .ach-head-link {
+    flex-shrink: 0;
+    font-size: $font-xs;
+    font-weight: 700;
+    color: $primary-text;
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: $radius-control;
+    padding: 4px $space-1;
+
+    &:hover {
+      text-decoration: underline;
+    }
+    &:focus-visible {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
     }
   }
 
@@ -479,6 +540,15 @@ function onToggleAll(): void {
 }
 
 @media (max-width: 640px) {
+  /* 窄屏：头部多了一个「查看全部」入口，允许换行，避免撑出页面级横向滚动（AC-17） */
+  .ach-head {
+    flex-wrap: wrap;
+  }
+
+  .ach-head-right {
+    margin-left: auto;
+  }
+
   .ach-list {
     grid-template-columns: 1fr;
   }

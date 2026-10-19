@@ -19,6 +19,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/search', name: 'Search', component: () => import('@/views/Search.vue') },
   { path: '/settings', name: 'Settings', component: () => import('@/views/Settings.vue') },
   { path: '/report', name: 'Report', component: () => import('@/views/Report.vue') },
+  { path: '/achievements', name: 'Achievements', component: () => import('@/views/Achievements.vue') },
   { path: '/parent', name: 'Parent', component: () => import('@/views/Parent.vue') }
 ]
 
