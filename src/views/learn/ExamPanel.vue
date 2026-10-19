@@ -103,7 +103,7 @@
           <div v-for="item in examWrongItems" :key="item.questionId" class="detail-card wrong">
             <div class="detail-head">
               <span class="detail-badge wrong-badge">错</span>
-              <span class="detail-question" v-html="renderQuestionText(item.question)"></span>
+              <QuestionText class="detail-question" :text="item.question" />
             </div>
 
             <!-- 选择题 -->
@@ -155,7 +155,7 @@
           <div v-for="item in examCorrectItems" :key="item.questionId" class="detail-card correct">
             <div class="detail-head">
               <span class="detail-badge correct-badge">对</span>
-              <span class="detail-question" v-html="renderQuestionText(item.question)"></span>
+              <QuestionText class="detail-question" :text="item.question" />
             </div>
             <div class="detail-answers">
               <div class="answer-row correct-row">
@@ -181,6 +181,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { NInputNumber, NSpace, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
+import QuestionText from '@/components/QuestionText.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuizEngine, { type AnswerPayload, type ExamDetailItem, type ExamDetailPayload } from '@modules/core/QuizEngine.vue'
 import { useUserDataStore } from '@core/stores/userData'
@@ -296,14 +297,7 @@ function formatDuration(sec: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-/** 题干换行渲染 */
-function renderQuestionText(text: string): string {
-  const escaped = String(text ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-  return escaped.replace(/\\n/g, '<br>')
-}
+// 题干渲染已抽到 <QuestionText>（见 @core/quiz/questionText）
 
 onMounted(async () => {
   await examStore.loadSessions(props.pkg.packageId)

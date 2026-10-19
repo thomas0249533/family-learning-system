@@ -1,22 +1,21 @@
 /**
- * 成就的**展示元数据 + 进度度量**（V1.3 · T03）。
+ * 成就的**展示视图模型**（V1.3 · A-04 / A-05）
  *
- * 为什么单独一个文件：`achievements.ts` 里的 28 枚定义是**冻结**的（口径定了就不许随手改），
- * 但"每枚成就现在走到哪了、差多少、达成提示写什么"是展示层的事，两者生命周期不同。
- * 拆开后：
- *   - `achievements.ts` 只负责「判定」（`check(ctx)`）；
- *   - 本文件负责「解释」（`current / target / hint`）。
- * 两者必须**语义等价**：`check(ctx) === (current >= target)`。
- * `tests/achievement-meta.test.ts` 用一组代表性上下文把这条等价关系钉死 ——
- * 否则会出现"进度显示 10/10 但徽章没亮"这种最伤人的 bug。
+ * 分工：
+ *   - `achievements.ts`         → 判定（`check`）+ 持久化（`syncAchievements`）
+ *   - `achievementProgress.ts`  → 进度（`progressOf` / `progressText` / `evidenceOf`）
+ *   - `achievementTaxonomy.ts`  → 静态分类（`source` / `tier`）
+ *   - 本文件                     → 把上面三者拼成**一份可直接渲染的数据**
  *
- * ## 铁律：进度**只算当前值，禁止缓存历史最大值**
+ * 组件里不允许再做任何成就相关的判断或计算：文案、排序、分区、空态全部在这里定，
+ * 这样"同一份数据在不同页面显示不一致"从结构上就不可能出现。
+ *
+ * ## 铁律：进度只算当前值，禁止缓存历史最大值
  * 曾经想过"记住最大值，避免孩子退步时进度回退"，但那会让
- * `current >= target ⇔ check(ctx)` 这条等价关系破裂（缓存值达标 ≠ 现在真的满足条件），
- * 于是会出现"进度条满了却永远不亮"或"亮着但进度显示 8/10"。
- * 正确做法：进度诚实地跟着数据走；**已解锁的徽章永不回收**（`syncAchievements` 只增不删，
- * 这是代码事实），所以孩子看到"已获得"的那一枚不会因为退步而消失，只是待解锁的进度会回退 ——
- * 那恰恰是真实状态。
+ * `current >= target ⇔ check(ctx)` 破裂（缓存值达标 ≠ 现在真的满足条件），
+ * 于是会出现"进度条满了却永远不亮"。正确做法：进度诚实地跟着数据走；
+ * **已解锁的徽章永不回收**（`syncAchievements` 只增不删），所以孩子看到
+ * "已获得"的那一枚不会因为退步而消失，只是待解锁的进度会回退 —— 那恰恰是真实状态。
  */
 import {
   ACHIEVEMENTS,
@@ -25,9 +24,17 @@ import {
   type AchievementDef,
   type UnlockedRecord,
 } from './achievements'
-import { bestStreak } from './streak'
+import { progressOf, progressText, type Measure } from './achievementProgress'
+import {
+  TIER_META,
+  sourceOf,
+  tierOf,
+  type AchievementSource,
+  type AchievementTier,
+} from './achievementTaxonomy'
+import { CHAINS } from './chains'
 
-export type { AchievementCategory }
+export type { AchievementCategory, AchievementSource, AchievementTier }
 
 // ==================== 分类元数据 ====================
 
@@ -50,203 +57,9 @@ export const CATEGORY_META: Record<AchievementCategory, CategoryMeta> = {
   E: { category: 'E', label: '探索发现', desc: '多走走，看看还有什么', icon: '🧭' },
 }
 
-// ==================== 度量 ====================
+// ==================== 视图类型 ====================
 
-export interface Measure {
-  /** 当前进度值（**实时计算，不缓存**） */
-  current: number
-  /** 达标值 */
-  target: number
-  /** 一句人话提示：还差什么 / 已经到哪了 */
-  hint: string
-}
-
-export type MeasureFn = (ctx: AchievementContext) => Measure
-
-// ---------- 与 achievements.ts 同口径的统计（刻意重复实现，避免把展示层耦合进判定层）----------
-const masteredCount = (p: AchievementContext['progress']) =>
-  p.filter((x) => x.status === '已掌握').length
-const clearedMistakes = (ctx: AchievementContext) =>
-  ctx.mistakes.filter((x) => x.mastered).length
-const bestCorrectStreak = (ctx: AchievementContext) =>
-  ctx.progress.reduce((max, x) => Math.max(max, x.correctStreak ?? 0), 0)
-const maxAnswers = (ctx: AchievementContext) =>
-  ctx.progress.reduce((max, x) => Math.max(max, (x.correctCount ?? 0) + (x.wrongCount ?? 0)), 0)
-const reviewCorrect = (ctx: AchievementContext) =>
-  ctx.mistakes.reduce((sum, x) => sum + (x.reviewCorrectCount ?? 0), 0)
-const comebackHit = (ctx: AchievementContext) =>
-  ctx.progress.some((x) => x.status === '已掌握' && (x.wrongCount ?? 0) >= 3)
-
-const subjectMap = (ctx: AchievementContext) => {
-  const m = new Map<string, string>()
-  for (const p of ctx.packages ?? []) m.set(p.packageId, p.subject)
-  return m
-}
-const masteredBySubject = (ctx: AchievementContext) => {
-  const map = subjectMap(ctx)
-  const counts: Record<string, number> = {}
-  for (const pr of ctx.progress) {
-    if (pr.status !== '已掌握') continue
-    const s = map.get(pr.packageId)
-    if (!s) continue
-    counts[s] = (counts[s] ?? 0) + 1
-  }
-  return counts
-}
-const totalKp = (ctx: AchievementContext) =>
-  (ctx.packages ?? []).reduce((sum, p) => sum + (p.kpCount ?? 0), 0)
-const studiedPackageIds = (ctx: AchievementContext) =>
-  new Set(ctx.progress.map((x) => x.packageId))
-const studiedTerms = (ctx: AchievementContext) => {
-  const studied = studiedPackageIds(ctx)
-  const terms = new Set<string>()
-  for (const p of ctx.packages ?? []) if (studied.has(p.packageId)) terms.add(p.term)
-  return terms
-}
-const studiedSubjects = (ctx: AchievementContext) => {
-  const studied = studiedPackageIds(ctx)
-  const subs = new Set<string>()
-  for (const p of ctx.packages ?? []) if (studied.has(p.packageId)) subs.add(p.subject)
-  return subs
-}
-const maxDayQuestions = (ctx: AchievementContext) =>
-  (ctx.dailyStats ?? []).reduce((max, s) => Math.max(max, s.questionCount ?? 0), 0)
-const anyFirstHourBefore = (ctx: AchievementContext, hour: number) =>
-  (ctx.dailyStats ?? []).some(
-    (s) => Number.isFinite(s.firstStudyAt) && new Date(s.firstStudyAt).getHours() < hour,
-  )
-const anyLastHourAtLeast = (ctx: AchievementContext, hour: number) =>
-  (ctx.dailyStats ?? []).some(
-    (s) => Number.isFinite(s.lastStudyAt) && new Date(s.lastStudyAt).getHours() >= hour,
-  )
-
-/** 数值型度量的工厂：提示统一成「还差 X 单位 · 当前 a/b」，孩子一眼能懂 */
-function counter(value: number, target: number, unit: string, label: string): Measure {
-  const current = Math.max(0, Math.floor(value))
-  if (current >= target) return { current, target, hint: `${label}已达成（${current}/${target}）` }
-  return { current, target, hint: `还差 ${target - current} ${unit} · 当前 ${current}/${target}` }
-}
-
-const SUBJECT_LABEL: Record<string, string> = { math: '数学', chinese: '语文', english: '英语' }
-
-/**
- * 每枚成就的度量。**必须覆盖 ACHIEVEMENTS 的每一个 id**
- * （`tests/achievement-meta.test.ts` 有覆盖率断言，漏一个就变红）。
- */
-export const MEASURES: Record<string, MeasureFn> = {
-  // ---------- M · 精熟 ----------
-  'first-step': (ctx) => counter(masteredCount(ctx.progress), 1, '个知识点', '掌握第一个'),
-  'ten-kp': (ctx) => counter(masteredCount(ctx.progress), 10, '个知识点', '掌握 10 个'),
-  'fifty-kp': (ctx) => counter(masteredCount(ctx.progress), 50, '个知识点', '掌握 50 个'),
-  'hundred-kp': (ctx) => counter(masteredCount(ctx.progress), 100, '个知识点', '掌握 100 个'),
-  'kp-300': (ctx) => counter(masteredCount(ctx.progress), 300, '个知识点', '掌握 300 个'),
-
-  'subject-master-3': (ctx) => {
-    const c = masteredBySubject(ctx)
-    const math = c.math ?? 0
-    const chinese = c.chinese ?? 0
-    const english = c.english ?? 0
-    const min = Math.min(math, chinese, english)
-    return {
-      current: min,
-      target: 10,
-      hint: `数学 ${math}/10 · 语文 ${chinese}/10 · 英语 ${english}/10（看最少的那个）`,
-    }
-  },
-
-  'perfect-kp': (ctx) => counter(bestCorrectStreak(ctx), 10, '题连对', '单点连对 10 题'),
-  'mastery-half': (ctx) => {
-    const total = totalKp(ctx)
-    const mastered = masteredCount(ctx.progress)
-    const rate = total > 0 ? Math.round((mastered / total) * 100) : 0
-    // 前置条件（总数 ≥20）没满足时进度按 0 计 —— 与 check() 的口径保持一致
-    const current = total >= 20 ? rate : 0
-    return {
-      current,
-      target: 50,
-      hint:
-        total < 20
-          ? `需要先有 ≥20 个知识点（当前 ${total} 个）`
-          : `全库掌握率 ${rate}%，目标 50%（${mastered}/${total}）`,
-    }
-  },
-
-  // ---------- G · 成长 ----------
-  'mistake-first': (ctx) => counter(clearedMistakes(ctx), 1, '道错题', '攻克第一道错题'),
-  'mistake-cleaner': (ctx) => counter(clearedMistakes(ctx), 10, '道错题', '攻克 10 道'),
-  'mistake-cleaner-50': (ctx) => counter(clearedMistakes(ctx), 50, '道错题', '攻克 50 道'),
-  comeback: (ctx) => {
-    const hit = comebackHit(ctx)
-    return {
-      current: hit ? 1 : 0,
-      target: 1,
-      hint: hit ? '已经做到过' : '某个知识点错够 3 次后，把它彻底学会',
-    }
-  },
-  'review-20': (ctx) => counter(reviewCorrect(ctx), 20, '次复习答对', '复习答对 20 次'),
-  patience: (ctx) => counter(maxAnswers(ctx), 30, '题', '单点累计 30 题'),
-  'streak-master': (ctx) => counter(bestCorrectStreak(ctx), 5, '题连对', '单点连对 5 题'),
-
-  // ---------- B · 行为 ----------
-  'streak-3': (ctx) => counter(bestStreak(ctx.streak), 3, '天', '连续 3 天'),
-  'streak-7': (ctx) => counter(bestStreak(ctx.streak), 7, '天', '连续 7 天'),
-  'streak-30': (ctx) => counter(bestStreak(ctx.streak), 30, '天', '连续 30 天'),
-  'streak-60': (ctx) => counter(bestStreak(ctx.streak), 60, '天', '连续 60 天'),
-  'streak-100': (ctx) => counter(bestStreak(ctx.streak), 100, '天', '连续 100 天'),
-  'early-bird': (ctx) => {
-    const hit = anyFirstHourBefore(ctx, 7)
-    return { current: hit ? 1 : 0, target: 1, hint: hit ? '已经做到过' : '试着在早上 7 点前学一会儿' }
-  },
-  'night-owl': (ctx) => {
-    const hit = anyLastHourAtLeast(ctx, 21)
-    return { current: hit ? 1 : 0, target: 1, hint: hit ? '已经做到过' : '晚上 9 点后还在学习' }
-  },
-  'daily-20': (ctx) => counter(maxDayQuestions(ctx), 20, '题', '单日 20 题'),
-
-  // ---------- E · 探索 ----------
-  'explorer-3': (ctx) => counter(studiedPackageIds(ctx).size, 3, '个学习包', '学过 3 个包'),
-  'explorer-10': (ctx) => counter(studiedPackageIds(ctx).size, 10, '个学习包', '学过 10 个包'),
-  'type-collector': (ctx) => counter(ctx.attemptedTypes?.length ?? 0, 5, '种题型', '试过 5 种题型'),
-  'term-cross': (ctx) => {
-    const terms = studiedTerms(ctx)
-    const names = [...terms].sort().map((t) => (t === 'up' ? '上册' : t === 'down' ? '下册' : t))
-    return {
-      current: terms.size,
-      target: 2,
-      hint: terms.size >= 2 ? '上下册都学了' : `已学 ${names.join('、') || '（还没有）'}，目标 2 个学期`,
-    }
-  },
-  'senior-new': (ctx) => {
-    const subs = [...studiedSubjects(ctx)]
-    const other = subs.filter((s) => s !== 'math')
-    return {
-      current: other.length > 0 ? 1 : 0,
-      target: 1,
-      hint:
-        other.length > 0
-          ? `已学过 ${other.map((s) => SUBJECT_LABEL[s] ?? s).join('、')}`
-          : '去学一学数学以外的学科',
-    }
-  },
-}
-
-/** 单枚成就的度量；缺度量返回 null（测试会拦住，生产里不至于崩） */
-export function progressOf(id: string, ctx: AchievementContext): Measure | null {
-  const fn = MEASURES[id]
-  if (!fn) return null
-  try {
-    return fn(ctx)
-  } catch {
-    return null
-  }
-}
-
-/** 缺少度量的成就 id（供测试与自检用；正常应为空数组） */
-export function missingMeasures(): string[] {
-  return ACHIEVEMENTS.filter((a) => !MEASURES[a.id]).map((a) => a.id)
-}
-
-// ==================== 视图 ====================
+export type AchievementSectionKey = 'earned' | 'pending'
 
 export interface AchievementItem {
   id: string
@@ -254,18 +67,30 @@ export interface AchievementItem {
   title: string
   desc: string
   category: AchievementCategory
+  /** 来源（静态派生，不入库） */
+  source: AchievementSource
+  /** 稀有层级（静态规则算出，不入库） */
+  tier: AchievementTier
+  /** 星标数量（非颜色编码，色觉冗余） */
+  stars: number
   /** 已解锁（**只看持久化记录，绝不因为条件暂时不满足而回收**） */
   earned: boolean
   /** 解锁日期 YYYY-MM-DD；旧数据可能为 '' */
   unlockedAt: string
+  /** 证据快照；旧记录为空串 → 卡片不渲染该行 */
+  evidence: string
   /** 隐藏成就且未解锁 → 剪影，不泄露任何信息 */
   silhouetted: boolean
+  /** 可否进度化（false = 3 枚隐藏成就） */
+  metered: boolean
   current: number
   target: number
   /** 0~100；已解锁恒 100，剪影恒 0 */
   percent: number
-  /** 达成提示（剪影时为占位文案） */
+  /** 进度提示文案（来自 `progressText`，**唯一来源**） */
   hint: string
+  /** 连环标记，如「精熟之链 2/5」；不属于任何链为空串 */
+  chainLabel: string
 }
 
 export interface AchievementGroup {
@@ -273,50 +98,99 @@ export interface AchievementGroup {
   label: string
   desc: string
   icon: string
-  earned: number
-  total: number
+  /** **该组在本区内的**枚数（已获得区不显示 /总数，总数已在总览条） */
+  count: number
   items: AchievementItem[]
-  /** 组内"最接近解锁"的那一枚（未解锁中 percent 最高者），供折叠态摘要 */
+  /** 折叠态摘要：本区内"最接近解锁"的那一枚（仅待解锁区有值） */
   closest: AchievementItem | null
+  /** 组级引导文案（例如"导入学习包后开始探索"），无则为空串 */
+  guide: string
+}
+
+export interface AchievementSectionData {
+  key: AchievementSectionKey
+  label: string
+  /** 该区总枚数 */
+  count: number
+  groups: AchievementGroup[]
+  /** 默认是否展开（已获得默认收起、待解锁默认展开） */
+  defaultOpen: boolean
 }
 
 export interface AchievementView {
-  groups: AchievementGroup[]
+  /** 已获得枚数 */
   earned: number
+  /** 总数（28） */
   total: number
   /** 整体进度 0~100（按枚数） */
   percent: number
+  /** 28 枚全部解锁 */
+  complete: boolean
+  /** 一枚都没有（→ 不渲染「已获得」区） */
+  empty: boolean
+  /** 两个分区：已获得 / 待解锁（空区不出现） */
+  sections: AchievementSectionData[]
+  /** 0 枚时的引导文案 */
+  emptyHint: string
   /** 最近解锁（按日期倒序，最多 3 条） */
   recent: AchievementItem[]
   /** 最接近解锁的待解锁项（跨分组，percent 倒序，最多 3 条） */
   closest: AchievementItem[]
 }
 
-function toItem(def: AchievementDef, earnedAt: string | undefined, ctx: AchievementContext): AchievementItem {
-  const earned = earnedAt !== undefined
-  const silhouetted = !!def.hidden && !earned
+// ==================== 单枚成就 → 视图项 ====================
 
+/** 连环标记：`精熟之链 2/5` */
+function chainLabelOf(def: AchievementDef): string {
+  for (const chain of CHAINS) {
+    const i = chain.ids.indexOf(def.id)
+    if (i >= 0) return `${chain.name} ${i + 1}/${chain.ids.length}`
+  }
+  return ''
+}
+
+function toItem(
+  def: AchievementDef,
+  record: UnlockedRecord | undefined,
+  ctx: AchievementContext,
+): AchievementItem {
+  const earned = record !== undefined
+  const silhouetted = def.hidden === true && !earned
+  const tier = tierOf(def.id)
+  const base = {
+    id: def.id,
+    category: def.category,
+    source: sourceOf(def.id),
+    tier,
+    stars: TIER_META[tier].stars,
+    earned,
+    unlockedAt: record?.unlockedAt ?? '',
+    chainLabel: earned ? chainLabelOf(def) : '',
+  }
+
+  // 剪影：**只输出占位文本**，真实 title/desc 连字符串都不进入视图对象，
+  // 这样"用 CSS 藏起来但源码里能搜到"的泄底路径不存在（PRD AC-14）。
   if (silhouetted) {
     return {
-      id: def.id,
+      ...base,
       icon: '🔒',
       title: '？？？',
       desc: '达成后揭晓',
-      category: def.category,
-      earned: false,
-      unlockedAt: '',
+      evidence: '',
       silhouetted: true,
+      metered: false,
       current: 0,
-      target: 1,
+      target: 0,
       percent: 0,
       hint: '达成后揭晓',
     }
   }
 
-  const m = progressOf(def.id, ctx)
+  const m: Measure | null = progressOf(def.id, ctx)
   const current = m?.current ?? 0
-  const target = m?.target ?? 1
-  // ★ 未获得时上限 **99**：`current/target` 四舍五入可能算出 100（如 999/1000），
+  const target = m?.target ?? 0
+
+  // ★ 未获得时上限 **99**：`current/target` 四舍五入可能算出 100（如 99/100），
   // 那会渲染出"进度条满格但徽章没亮"——正是本模块最想避免的观感。
   // 未获得 ⇒ current < target（与 check 等价）⇒ 进度条永远差一点点，语义自洽。
   const percent = earned
@@ -326,19 +200,70 @@ function toItem(def: AchievementDef, earnedAt: string | undefined, ctx: Achievem
       : 0
 
   return {
-    id: def.id,
+    ...base,
     icon: def.icon,
     title: def.title,
     desc: def.desc,
-    category: def.category,
-    earned,
-    unlockedAt: earnedAt ?? '',
+    // 旧记录没有 evidence → 空串 → 卡片不渲染该行（绝不事后补算）
+    evidence: record?.evidence ?? '',
     silhouetted: false,
+    metered: m !== null,
     current,
     target,
     percent,
-    hint: earned ? '已获得' : (m?.hint ?? def.desc),
+    hint: earned ? '已获得' : m ? progressText(m) : def.desc,
   }
+}
+
+// ==================== 排序 ====================
+
+/** 已获得：解锁日期倒序（最近拿到的在前），空日期排最后 */
+function sortEarned(items: AchievementItem[]): AchievementItem[] {
+  return [...items].sort((a, b) => {
+    if (a.unlockedAt && b.unlockedAt) return b.unlockedAt.localeCompare(a.unlockedAt)
+    if (a.unlockedAt) return -1
+    if (b.unlockedAt) return 1
+    return 0
+  })
+}
+
+/**
+ * 待解锁：完成度降序；不可进度化（剪影）排最后；同分保持既有定义顺序。
+ * `Array.prototype.sort` 在 ES2019 起是稳定排序，所以"同分按定义顺序"是免费得到的。
+ */
+function sortPending(items: AchievementItem[]): AchievementItem[] {
+  return [...items].sort((a, b) => {
+    if (a.silhouetted !== b.silhouetted) return a.silhouetted ? 1 : -1
+    return b.percent - a.percent
+  })
+}
+
+// ==================== 组装 ====================
+
+function buildSection(
+  key: AchievementSectionKey,
+  label: string,
+  defaultOpen: boolean,
+  items: AchievementItem[],
+  guideFor: (cat: AchievementCategory) => string,
+): AchievementSectionData {
+  const groups: AchievementGroup[] = CATEGORY_ORDER.map((category) => {
+    const inGroup = items.filter((i) => i.category === category)
+    const sorted = key === 'earned' ? sortEarned(inGroup) : sortPending(inGroup)
+    const closest =
+      key === 'pending'
+        ? (sorted.find((i) => !i.silhouetted) ?? null)
+        : null
+    return {
+      ...CATEGORY_META[category],
+      count: sorted.length,
+      items: sorted,
+      closest,
+      guide: sorted.length > 0 ? guideFor(category) : '',
+    }
+  }).filter((g) => g.count > 0) // ★ §5.4「某组 0 枚 → 该组不渲染」，避免空白组头
+
+  return { key, label, count: items.length, groups, defaultOpen }
 }
 
 /**
@@ -351,44 +276,46 @@ export function buildAchievementView(
   ctx: AchievementContext,
   records: UnlockedRecord[],
 ): AchievementView {
-  const at = new Map<string, string>()
-  for (const r of records ?? []) at.set(r.id, r.unlockedAt ?? '')
+  const at = new Map<string, UnlockedRecord>()
+  for (const r of records ?? []) at.set(r.id, r)
 
-  const groups: AchievementGroup[] = CATEGORY_ORDER.map((category) => {
-    const items = ACHIEVEMENTS.filter((a) => a.category === category).map((a) =>
-      toItem(a, at.get(a.id), ctx),
-    )
-    const earned = items.filter((i) => i.earned).length
-    const closest = items
-      .filter((i) => !i.earned && !i.silhouetted)
-      .sort((a, b) => b.percent - a.percent || a.target - b.target)[0] ?? null
-    return { ...CATEGORY_META[category], earned, total: items.length, items, closest }
-  })
+  const all = ACHIEVEMENTS.map((a) => toItem(a, at.get(a.id), ctx))
+  const earnedItems = all.filter((i) => i.earned)
+  const pendingItems = all.filter((i) => !i.earned)
 
-  const all = groups.flatMap((g) => g.items)
-  const earned = all.filter((i) => i.earned).length
+  const earned = earnedItems.length
+  const total = all.length
+  const complete = total > 0 && earned === total
+  const empty = earned === 0
+  // 没有任何学习包时，探索类的"0/3"会显得莫名其妙 → 补一句引导
+  const noPackages = (ctx.packages ?? []).length === 0
+  const guideFor = (cat: AchievementCategory) =>
+    noPackages && cat === 'E' ? '导入学习包后开始探索' : ''
 
-  const recent = all
-    .filter((i) => i.earned)
-    .sort((a, b) => {
-      if (a.unlockedAt && b.unlockedAt) return b.unlockedAt.localeCompare(a.unlockedAt)
-      if (a.unlockedAt) return -1
-      if (b.unlockedAt) return 1
-      return 0
-    })
-    .slice(0, 3)
+  const sections: AchievementSectionData[] = []
+  // ★ §5.4：0 枚时不渲染「已获得」区（避免一个空壳分区）
+  if (!empty) {
+    // ★ §5.4：全收集时「已获得」区强制展开、隐藏「待解锁」区
+    sections.push(buildSection('earned', '已获得', complete, earnedItems, guideFor))
+  }
+  if (!complete) {
+    sections.push(buildSection('pending', '待解锁', true, pendingItems, guideFor))
+  }
 
-  const closest = all
-    .filter((i) => !i.earned && !i.silhouetted)
-    .sort((a, b) => b.percent - a.percent || a.target - b.target)
+  const closest = pendingItems
+    .filter((i) => !i.silhouetted)
+    .sort((a, b) => b.percent - a.percent)
     .slice(0, 3)
 
   return {
-    groups,
     earned,
-    total: all.length,
-    percent: all.length > 0 ? Math.round((earned / all.length) * 100) : 0,
-    recent,
+    total,
+    percent: total > 0 ? Math.round((earned / total) * 100) : 0,
+    complete,
+    empty,
+    sections,
+    emptyHint: '还没有徽章。掌握第一个知识点，就能拿到第 1 枚。',
+    recent: sortEarned(earnedItems).slice(0, 3),
     closest,
   }
 }

@@ -25,6 +25,7 @@
 // =====================================================================
 import { ref, onUnmounted } from 'vue'
 import type { AchievementDef } from '@core/motivation/achievements'
+import { tierOf } from '@core/motivation/achievementTaxonomy'
 
 const current = ref<AchievementDef | null>(null)
 const queue: AchievementDef[] = []
@@ -39,10 +40,35 @@ const reduceMotion =
 const DISPLAY_MS = reduceMotion ? 2200 : 2600
 const GAP_MS = reduceMotion ? 0 : 180
 
-/** 依次播放队列中的徽章。 */
+/** 超过这个枚数就合并成一条（避免一次弹 5 条像中奖广告，PRD §6.3） */
+const MERGE_THRESHOLD = 4
+
+/** 层级权重：合并提示取"最高层级那枚"的图标 */
+const TIER_RANK: Record<string, number> = { common: 1, advanced: 2, rare: 3, hidden: 4 }
+
+/**
+ * 合并成一条提示。**信息不丢失**：全部记录仍然进「已获得」区，
+ * 这里只是不做逐条播放。
+ */
+function mergedDef(defs: AchievementDef[]): AchievementDef {
+  const top = [...defs].sort((a, b) => (TIER_RANK[tierOf(b.id)] ?? 0) - (TIER_RANK[tierOf(a.id)] ?? 0))[0]
+  const names = defs.slice(0, 3).map((d) => d.title).join('、')
+  return {
+    id: '__merged__',
+    icon: top?.icon ?? '🏅',
+    title: `解锁 ${defs.length} 枚新成就`,
+    desc: defs.length > 3 ? `${names} 等` : names,
+    category: top?.category ?? 'M',
+    check: () => true,
+  }
+}
+
+/** 依次播放队列中的徽章（≥4 枚时合并为一条）。 */
 function enqueue(defs: AchievementDef[]) {
-  if (!defs || defs.length === 0) return
-  queue.push(...defs)
+  const list = (defs ?? []).filter(Boolean)
+  if (list.length === 0) return
+  if (list.length >= MERGE_THRESHOLD) queue.push(mergedDef(list))
+  else queue.push(...list)
   if (!current.value) playNext()
 }
 

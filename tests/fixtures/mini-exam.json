@@ -1,0 +1,96 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "sprint-mini-e2e",
+    "type": "sprint",
+    "subject": "math",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "E2E 迷你模拟卷",
+    "subtitle": "端到端回归网的固定测试数据（examMode）",
+    "isInternal": false,
+    "examMode": true,
+    "sourceUnitIds": [],
+    "author": "tests/fixtures"
+  },
+  "knowledgePoints": [
+    {
+      "id": "sprint-mini-e2e::kp1",
+      "title": "乘法综合",
+      "content": "两位数、三位数乘一位数的综合应用。"
+    }
+  ],
+  "units": [
+    {
+      "id": "sprint-mini-e2e::u1",
+      "name": "迷你模拟考",
+      "title": "迷你模拟考",
+      "desc": "6 道小题，用于验证交卷与成绩页",
+      "topics": [
+        {
+          "id": "sprint-mini-e2e::t1",
+          "title": "综合练习",
+          "knowledgePointIds": ["sprint-mini-e2e::kp1"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "mini-exam-001",
+              "type": "single",
+              "question": "14 × 2 = ?",
+              "options": ["A. 28", "B. 24", "C. 18", "D. 38"],
+              "answer": "A",
+              "explanation": "14 × 2 = 28。",
+              "knowledgePointIds": ["sprint-mini-e2e::kp1"]
+            },
+            {
+              "id": "mini-exam-002",
+              "type": "single",
+              "question": "31 × 3 = ?",
+              "options": ["A. 91", "B. 93", "C. 96", "D. 83"],
+              "answer": "B",
+              "explanation": "31 × 3 = 93。",
+              "knowledgePointIds": ["sprint-mini-e2e::kp1"]
+            },
+            {
+              "id": "mini-exam-003",
+              "type": "single",
+              "question": "25 × 4 = ?",
+              "options": ["A. 90", "B. 100", "C. 110", "D. 80"],
+              "answer": "B",
+              "explanation": "25 × 4 = 100。",
+              "knowledgePointIds": ["sprint-mini-e2e::kp1"]
+            },
+            {
+              "id": "mini-exam-004",
+              "type": "single",
+              "question": "108 × 5 = ?",
+              "options": ["A. 540", "B. 504", "C. 550", "D. 450"],
+              "answer": "A",
+              "explanation": "108 × 5 = 540。",
+              "knowledgePointIds": ["sprint-mini-e2e::kp1"]
+            },
+            {
+              "id": "mini-exam-005",
+              "type": "single",
+              "question": "222 × 3 = ?",
+              "options": ["A. 666", "B. 656", "C. 676", "D. 646"],
+              "answer": "A",
+              "explanation": "222 × 3 = 666。",
+              "knowledgePointIds": ["sprint-mini-e2e::kp1"]
+            },
+            {
+              "id": "mini-exam-006",
+              "type": "single",
+              "question": "407 × 2 = ?",
+              "options": ["A. 814", "B. 804", "C. 824", "D. 800"],
+              "answer": "A",
+              "explanation": "407 × 2 = 814。",
+              "knowledgePointIds": ["sprint-mini-e2e::kp1"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

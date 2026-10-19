@@ -1,0 +1,95 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "unit-mini-e2e",
+    "type": "unit",
+    "subject": "math",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "E2E 迷你单元",
+    "subtitle": "端到端回归网的固定测试数据",
+    "isInternal": false,
+    "author": "tests/fixtures"
+  },
+  "knowledgePoints": [
+    {
+      "id": "unit-mini-e2e::kp1",
+      "title": "两位数乘一位数",
+      "content": "把两位数拆成整十数与个位数，分别与一位数相乘后相加。"
+    },
+    {
+      "id": "unit-mini-e2e::kp2",
+      "title": "三位数乘一位数",
+      "content": "从个位起逐位相乘，满十进一。"
+    }
+  ],
+  "units": [
+    {
+      "id": "unit-mini-e2e::u1",
+      "name": "第一单元",
+      "title": "第一单元 乘法",
+      "desc": "两位数与三位数乘法的小样本",
+      "topics": [
+        {
+          "id": "unit-mini-e2e::t1",
+          "title": "主题一：口算",
+          "desc": "两道口算题",
+          "knowledgePointIds": ["unit-mini-e2e::kp1"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "mini-ex-001",
+              "type": "single",
+              "question": "12 × 3 = ?",
+              "options": ["A. 36", "B. 33", "C. 26", "D. 63"],
+              "answer": "A",
+              "explanation": "12 × 3 = 36。",
+              "knowledgePointIds": ["unit-mini-e2e::kp1"],
+              "metadata": { "difficulty": "基础" }
+            },
+            {
+              "id": "mini-ex-002",
+              "type": "single",
+              "question": "23 × 2 = ?",
+              "options": ["A. 26", "B. 46", "C. 56", "D. 43"],
+              "answer": "B",
+              "explanation": "20 × 2 = 40，3 × 2 = 6，合计 46。",
+              "knowledgePointIds": ["unit-mini-e2e::kp1"],
+              "metadata": { "difficulty": "基础" }
+            }
+          ]
+        },
+        {
+          "id": "unit-mini-e2e::t2",
+          "title": "主题二：笔算",
+          "desc": "两道进位题",
+          "knowledgePointIds": ["unit-mini-e2e::kp2"],
+          "modules": [],
+          "exercises": [
+            {
+              "id": "mini-ex-003",
+              "type": "single",
+              "question": "123 × 4 = ?",
+              "options": ["A. 482", "B. 492", "C. 512", "D. 442"],
+              "answer": "B",
+              "explanation": "123 × 4 = 492。",
+              "knowledgePointIds": ["unit-mini-e2e::kp2"],
+              "metadata": { "difficulty": "提高" }
+            },
+            {
+              "id": "mini-ex-004",
+              "type": "single",
+              "question": "256 × 3 = ?",
+              "options": ["A. 768", "B. 758", "C. 668", "D. 868"],
+              "answer": "A",
+              "explanation": "256 × 3 = 768。",
+              "knowledgePointIds": ["unit-mini-e2e::kp2"],
+              "metadata": { "difficulty": "提高" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

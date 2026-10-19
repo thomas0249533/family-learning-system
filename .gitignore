@@ -2,6 +2,8 @@
 node_modules/
 # 构建产物
 dist/
+# 打包前把 dist 挪走的临时目录（tauri build 会再跑一次 vite，避免 safe-delete 拦 bulk 删除）
+.dist-prev/
 dist-ssr/
 .vite/
 # Rust / Tauri 构建产物与打包

@@ -14,6 +14,9 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5173',
     viewport: { width: 1280, height: 900 },
+    // 失败时留证据（PRD §7.3 AC-E3-6）：trace 只在失败用例上保留，不占空间
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
   },
   webServer: {
     command: 'npm run dev -- --port 5173 --strictPort',

@@ -35,7 +35,10 @@
         </div>
 
         <div v-if="currentQuestion.type === 'judge' && !judgeParts" class="judge-hint">请判断下列说法是否正确：</div>
-        <h3 class="question-text" v-html="renderQuestionText(judgeParts ? judgeParts.material : currentQuestion.question)"></h3>
+        <QuestionText
+          class="question-text"
+          :text="judgeParts ? judgeParts.material : currentQuestion.question"
+        />
 
         <div v-if="currentQuestion.type === 'single'" class="options">
           <n-radio-group v-model:value="userAnswer" name="quiz-single">
@@ -67,7 +70,7 @@
           <ol v-if="judgeParts" class="judge-stmts">
             <li v-for="(s, i) in judgeParts.statements" :key="i" class="judge-stmt">
               <span class="judge-stmt__idx">{{ i + 1 }}</span>
-              <span class="judge-stmt__text" v-html="renderQuestionText(s)"></span>
+              <QuestionText class="judge-stmt__text" :text="s" />
               <n-button-group class="judge-stmt__btns">
                 <n-button
                   size="small"
@@ -162,6 +165,7 @@ import {
 } from 'naive-ui'
 import { correctFeedback, wrongFeedback } from '@core/motivation/encouragement'
 import AppButton from '@/components/ui/AppButton.vue'
+import QuestionText from '@/components/QuestionText.vue'
 import {
   gradeJudge, isMultiJudge, judgeLabels, normalizeJudgeList,
   formatJudgeTokens, splitJudgeStatements,
@@ -315,13 +319,8 @@ function setJudgeAt(i: number, v: string) {
   userAnswer.value[i] = v
 }
 
-function renderQuestionText(text: string): string {
-  const escaped = String(text ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-  return escaped.replace(/\\n/g, '<br>')
-}
+// 题干渲染已抽到 <QuestionText>（纯函数 @core/quiz/questionText）：
+// 真实换行 → <br>、GFM 表格 → <table>，其余按纯文本转义。
 
 /** ✅ 归一化：分号统一转成逗号，中英文标点统一 */
 function normalizeBlank(text: string): string {

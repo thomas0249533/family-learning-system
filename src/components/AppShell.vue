@@ -77,26 +77,30 @@
 // ---------------------------------------------------------------------
 // 从 App.vue 原样搬迁（纯搬迁，不改变行为）；App.vue 收敛为组合。
 //
-// V1.3 · T03：成就结算的**唯一后台触发器**放这里 ——
-//   监听「进度数组 / 错题数组 / 路由」的变化，去抖后调 achievementStore.settle()。
+// V1.3 · T03/A-03：成就结算的**唯一后台触发器**放这里 ——
+//   监听「进度数组 / 错题数组 / 学习包列表」的变化，去抖后调 achievementStore.settle()。
 //   为什么不做在 7 个做题点位：
 //     · 那些点位分散在 4 个组件里，任何一处漏掉就会出现"徽章要等回首页才亮"；
-//     · 三个信号已经覆盖了全部解锁途径（进度变化 = 答题；错题变化 = 复习；
-//       路由变化 = 跨页面的数据加载完成）；
+//     · 三个信号已经覆盖了全部解锁途径（进度变化 = 答题 / 交卷 / 背单词；
+//       错题变化 = 复习 / 攻克；包列表变化 = 导入后 distinctPackages 与掌握率分母变了）；
 //     · settle 本身是单飞 + 幂等，多触发几次没有副作用。
+//   刻意**不监听路由**（PRD §6.1「不触发」）：切页面本身不产生成就证据，
+//   加了只会让"从学习页回到首页"白结算一次。首屏由 onMounted 兜底。
 // =====================================================================
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AchievementToast from './AchievementToast.vue'
 import { useAchievementStore } from '@core/stores/achievement'
 import { useUserDataStore } from '@core/stores/userData'
+import { usePackageStore } from '@core/stores/package'
 
 const route = useRoute()
 const router = useRouter()
 
-// ---------- 成就结算触发器（V1.3 · T03）----------
+// ---------- 成就结算触发器（V1.3 · T03 / A-03）----------
 const achievementStore = useAchievementStore()
 const userDataStore = useUserDataStore()
+const packageStore = usePackageStore()
 const toastRef = ref<InstanceType<typeof AchievementToast> | null>(null)
 
 /** 把 store 攒下的解锁提示交给 toast 依次播放 */
@@ -127,7 +131,11 @@ onUnmounted(() => {
 })
 
 watch(
-  () => [userDataStore.progress, userDataStore.mistakes, route.path],
+  () => [
+    userDataStore.progress,
+    userDataStore.mistakes,
+    packageStore.packages.length,
+  ],
   () => scheduleSettle(),
 )
 

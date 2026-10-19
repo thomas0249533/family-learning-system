@@ -97,7 +97,7 @@
             <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
               <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
             </div>
-            <h3 class="question-text">{{ m.questionData?.question || '题目数据已过期' }}</h3>
+            <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
             <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
               <div
@@ -145,7 +145,7 @@
           <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
           <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
         </div>
-        <h3 class="question-text">{{ m.questionData?.question || '题目数据已过期' }}</h3>
+        <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
         <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
           <div
@@ -190,6 +190,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { NInput, useMessage } from 'naive-ui'
 import AppButton from '@/components/ui/AppButton.vue'
+import QuestionText from '@/components/QuestionText.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
@@ -591,7 +592,7 @@ function formatDate(iso: string): string {
     color: $text-main;
     margin: 0 0 10px;
     line-height: 1.5;
-    white-space: pre-wrap;
+    /* 换行已由 <QuestionText> 转成 <br>，这里再加 pre-wrap 会变成双倍行距 */
   }
 
   .options-preview {

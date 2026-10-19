@@ -16,6 +16,7 @@
  */
 import { db, type ProgressRecord, type MistakeRecord } from '@/db'
 import { bestStreak, localDayKey, type StreakState } from './streak'
+import { evidenceOf } from './achievementProgress'
 import type { DailyStat } from './dailyStats'
 
 export type AchievementCategory = 'M' | 'G' | 'B' | 'E'
@@ -404,6 +405,13 @@ export interface UnlockedRecord {
   id: string
   /** 解锁日期 YYYY-MM-DD（本地）；'' 表示旧数据未知 */
   unlockedAt: string
+  /**
+   * 证据快照（V1.3 · A-06）：解锁瞬间固化的一句话事实，≤40 字，**此后不随数据变化**。
+   *
+   * 旧记录没有这个字段 → 已获得卡**不显示证据行**，绝不事后补算：
+   * 补算出来的"证据"已经不是当时的证据了（PRD §4.1 迁移说明 2）。
+   */
+  evidence?: string
 }
 
 /** 兼容旧 `string[]` 与半迁移态，归一化为 UnlockedRecord[]。 */
@@ -412,7 +420,13 @@ export function normalizeUnlocked(raw: unknown): UnlockedRecord[] {
   return raw.flatMap((v) => {
     if (typeof v === 'string') return [{ id: v, unlockedAt: '' }]
     if (v && typeof (v as UnlockedRecord).id === 'string') {
-      return [{ id: (v as UnlockedRecord).id, unlockedAt: String((v as UnlockedRecord).unlockedAt ?? '') }]
+      const rec = v as UnlockedRecord
+      const out: UnlockedRecord = { id: rec.id, unlockedAt: String(rec.unlockedAt ?? '') }
+      // 只搬运非空字符串，脏数据（数字 / null / 空串）一律当"没有证据"
+      if (typeof rec.evidence === 'string' && rec.evidence.trim() !== '') {
+        out.evidence = rec.evidence
+      }
+      return [out]
     }
     return []
   })
@@ -433,13 +447,22 @@ export async function loadUnlockedIds(): Promise<string[]> {
   return (await loadUnlocked()).map((r) => r.id)
 }
 
-/** 写入已解锁记录（去重，保留已有 unlockedAt）。 */
+/** 写入已解锁记录（去重，保留已有 unlockedAt 与 evidence）。 */
 export async function saveUnlocked(records: UnlockedRecord[]): Promise<void> {
   const map = new Map<string, UnlockedRecord>()
   for (const r of records) {
     const prev = map.get(r.id)
     if (!prev) map.set(r.id, r)
-    else if (!prev.unlockedAt && r.unlockedAt) map.set(r.id, r)
+    else {
+      // 已有的日期/证据优先 —— "先到的那次"才是最接近真实解锁时刻的记录
+      const merged: UnlockedRecord = {
+        id: r.id,
+        unlockedAt: prev.unlockedAt || r.unlockedAt,
+      }
+      const evidence = prev.evidence || r.evidence
+      if (evidence) merged.evidence = evidence
+      map.set(r.id, merged)
+    }
   }
   await db.settings.put({ key: KEY, value: [...map.values()] })
 }
@@ -466,6 +489,10 @@ export interface AchievementSyncResult {
 /**
  * 结算徽章：把"已满足条件"的并入已解锁集合，返回新增的部分。
  * 已解锁的即使条件暂时不再满足也不会撤销；旧记录 unlockedAt 原样保留。
+ *
+ * 证据快照（A-06）在**这里**写：此刻 `ctx` 就是"达成时"的数据，
+ * 写库成功后才返回 `newlyUnlocked`（调用方据此弹提示）——
+ * 也就是"先落库、后提示"：宁可不弹，不可弹了却没存。
  */
 export async function syncAchievements(
   ctx: AchievementContext,
@@ -479,7 +506,14 @@ export async function syncAchievements(
   const mergedMap = new Map<string, UnlockedRecord>()
   for (const r of saved) mergedMap.set(r.id, r)
   for (const id of earned) {
-    if (!mergedMap.has(id)) mergedMap.set(id, { id, unlockedAt: localDayKey(now) })
+    if (!mergedMap.has(id)) {
+      const evidence = evidenceOf(id, ctx)
+      mergedMap.set(id, {
+        id,
+        unlockedAt: localDayKey(now),
+        ...(evidence ? { evidence } : {}),
+      })
+    }
   }
   const unlockedRecords = [...mergedMap.values()]
 
