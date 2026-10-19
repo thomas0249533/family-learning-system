@@ -5,6 +5,7 @@ import {
   computeMasterySummary,
   countMasteredKps,
   domainKeySet,
+  masteryBySubject,
   progressKeyOf,
 } from '@core/mastery/masterySummary'
 import { makeEnglishSeven, makeProgress, makePkg } from './helpers/progressFixtures'
@@ -342,5 +343,62 @@ describe('canonicalizeProgressRows —— 三处展示共用的唯一收敛实�
     expect(entries.map((e) => e.kpId).sort()).toEqual(['kp-a', 'kp-b'])
     expect(rowByKey.get(progressKeyOf({ packageId: 'unit-math-1', knowledgePointId: 'kp-a' }))?.id).toBe(1)
     expect(orphanRows).toHaveLength(1)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// V1.3 · T04：学科分布与整体掌握率必须同源
+// ---------------------------------------------------------------------------
+
+describe('masteryBySubject —— 学科分布', () => {
+  it('按学科汇总知识点与已掌握数，率与总量一致', () => {
+    const packages: LearningPackageRecord[] = [mathPkg, chinesePkg]
+    const progress = [
+      makeProgress({ id: 1, packageId: 'unit-math-1', knowledgePointId: 'kp-a', status: '已掌握' }),
+      makeProgress({ id: 2, packageId: 'unit-chinese-1', knowledgePointId: 'kp-c', status: '学习中' }),
+    ]
+    const rows = masteryBySubject(packages, progress)
+
+    const math = rows.find((r) => r.subject === 'math')!
+    const chinese = rows.find((r) => r.subject === 'chinese')!
+    expect(math).toMatchObject({ total: 2, mastered: 1, rate: 50 })
+    expect(chinese).toMatchObject({ total: 2, mastered: 0, rate: 0 })
+
+    // 与整体口径同源：各学科 total 之和 = 整体 total
+    const sum = computeMasterySummary(packages, progress)
+    expect(rows.reduce((n, r) => n + r.total, 0)).toBe(sum.total)
+    expect(rows.reduce((n, r) => n + r.mastered, 0)).toBe(sum.mastered)
+  })
+
+  it('★ 同 kpId 分属两个学科时不会串味（旧实现用裸 kpId 映射会被覆盖）', () => {
+    const a = makePkg('unit-math-9', 'math', [{ id: 'shared', title: 'X' }])
+    const b = makePkg('unit-chinese-9', 'chinese', [{ id: 'shared', title: 'Y' }])
+    const progress = [
+      makeProgress({ id: 1, packageId: 'unit-math-9', knowledgePointId: 'shared', status: '已掌握' }),
+    ]
+    const rows = masteryBySubject([a, b], progress)
+    expect(rows.find((r) => r.subject === 'math')).toMatchObject({ total: 1, mastered: 1 })
+    expect(rows.find((r) => r.subject === 'chinese')).toMatchObject({ total: 1, mastered: 0 })
+  })
+
+  it('孤儿进度行不计入任何学科', () => {
+    const rows = masteryBySubject([mathPkg], [
+      makeProgress({ id: 1, packageId: 'gone', knowledgePointId: 'kp-x', status: '已掌握' }),
+    ])
+    expect(rows.find((r) => r.subject === 'math')).toMatchObject({ total: 2, mastered: 0 })
+  })
+
+  it('空输入 → 空数组，不抛', () => {
+    expect(masteryBySubject([], [])).toEqual([])
+  })
+
+  it('按 total 降序排列（学科分布图的展示顺序）', () => {
+    const big = makePkg('unit-math-big', 'math', [
+      { id: 'a', title: 'a' },
+      { id: 'b', title: 'b' },
+      { id: 'c', title: 'c' },
+    ])
+    const rows = masteryBySubject([big, chinesePkg], [])
+    expect(rows[0].subject).toBe('math')
   })
 })

@@ -1,4 +1,5 @@
 import { db } from '@/db'
+import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 import type { ProgressRecord } from '@/db'
 import { effectiveCurrent, loadStreak } from '@core/motivation/streak'
 import { mistakeLevel } from '@core/mistake/mistakeRules'
@@ -62,15 +63,17 @@ export async function generateReportData(): Promise<ReportData> {
     }
   }
 
-  const totalKnowledgePoints = allKpIds.size
-
-  const mastered = progress.filter(p => p.status === '已掌握').length
-  const learning = progress.filter(p => p.status === '学习中').length
-  const needReview = progress.filter(p => p.status === '需复习').length
-  const notStarted = totalKnowledgePoints - progress.length
-  const masteryRate = totalKnowledgePoints > 0
-    ? Math.round((mastered / totalKnowledgePoints) * 100)
-    : 0
+  // V1.3 · T04：掌握率统一口径（去重 + 两层收敛）。
+  // 旧实现分母是 `Set(裸 kp.id)`：english-7 有 49 个不同知识点共用 7 个裸 id，
+  // 分母被压成 7 而分子照旧按行数算 → 掌握率常年 >100%。notStarted 也因
+  // `total - progress.length` 而可能为负。统一后 I1~I4 由 computeMasterySummary 保证。
+  const summary = computeMasterySummary(packages, progress)
+  const totalKnowledgePoints = summary.total
+  const mastered = summary.mastered
+  const learning = summary.learning
+  const needReview = summary.needReview
+  const notStarted = summary.notStarted
+  const masteryRate = summary.rate
 
   const totalStudyMinutes = Math.round(
     progress.reduce((sum, p) => sum + (p.studySeconds ?? 0), 0) / 60
@@ -82,27 +85,13 @@ export async function generateReportData(): Promise<ReportData> {
   const pkgIdToSubject = new Map<string, string>()
   for (const pkg of packages) pkgIdToSubject.set(pkg.packageId, pkg.manifest.subject)
 
-  const subjectMap = new Map<string, { total: number; mastered: number }>()
-  for (const kpId of allKpIds) {
-    const pkgId = kpIdToPkgId.get(kpId)!
-    const subject = pkgIdToSubject.get(pkgId) ?? 'unknown'
-    if (!subjectMap.has(subject)) subjectMap.set(subject, { total: 0, mastered: 0 })
-    subjectMap.get(subject)!.total++
-  }
-  for (const p of progress) {
-    if (p.status !== '已掌握') continue
-    const pkgId = kpIdToPkgId.get(p.knowledgePointId)
-    if (!pkgId) continue
-    const subject = pkgIdToSubject.get(pkgId) ?? 'unknown'
-    if (subjectMap.has(subject)) subjectMap.get(subject)!.mastered++
-  }
-
-  const subjectBreakdown = Array.from(subjectMap.entries()).map(([subject, s]) => ({
-    subject,
-    label: SUBJECT_LABEL[subject] ?? subject,
+  // 学科分布同样走共享实现（分母分子都与整体掌握率同源）
+  const subjectBreakdown = masteryBySubject(packages, progress).map((s) => ({
+    subject: s.subject,
+    label: SUBJECT_LABEL[s.subject] ?? s.subject,
     total: s.total,
     mastered: s.mastered,
-    masteryRate: s.total > 0 ? Math.round((s.mastered / s.total) * 100) : 0,
+    masteryRate: s.rate,
   }))
 
   // 3. 错题统计

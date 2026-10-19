@@ -94,57 +94,9 @@
       </div>
     </section>
 
-    <!-- ========== 我的成就 ========== -->
-    <section class="section">
-      <SectionTitle title="我的成就" icon="🏅">
-        <AppBadge size="md">{{ unlockedCount }} / {{ totalCount }}</AppBadge>
-      </SectionTitle>
-
-      <!-- 总进度条 -->
-      <div class="ach-overview">
-        <div class="ach-bar">
-          <div class="ach-bar-fill" :style="{ width: achPercent + '%' }"></div>
-        </div>
-        <span class="ach-overview-text">已解锁 {{ unlockedCount }} / {{ totalCount }}</span>
-      </div>
-
-      <!-- 四类分段 -->
-      <div v-for="g in groups" :key="g.cat" class="ach-group">
-        <div class="ach-group-header">
-          <span class="ach-group-title">{{ g.icon }} {{ g.label }}</span>
-          <span class="ach-group-count">{{ g.unlocked }} / {{ g.total }}</span>
-        </div>
-        <div class="ach-grid">
-          <div
-            v-for="a in g.items"
-            :key="a.id"
-            class="ach-card"
-            :class="{ unlocked: a.unlocked, silhouette: a.hidden && !a.unlocked }"
-          >
-            <!-- 隐藏成就：未解锁前只显示灰底剪影 + 🔒 + ？？？，不泄露任何信息 -->
-            <template v-if="a.hidden && !a.unlocked">
-              <span class="ach-icon">🔒</span>
-              <div class="ach-body">
-                <div class="ach-title">？？？</div>
-                <div class="ach-desc">达成后揭晓</div>
-              </div>
-            </template>
-            <template v-else>
-              <span class="ach-icon">{{ a.unlocked ? a.icon : '🔒' }}</span>
-              <div class="ach-body">
-                <div class="ach-title">{{ a.title }}</div>
-                <div class="ach-desc">{{ a.desc }}</div>
-                <div v-if="a.unlocked" class="ach-date">解锁于 {{ a.unlockedAt || '较早' }}</div>
-              </div>
-            </template>
-
-            <!-- 连环：在最高已解锁环旁提示「下一环」 -->
-            <div v-if="a.nextRing" class="ach-next">
-              下一环：{{ a.nextRing.icon }} {{ a.nextRing.title }}
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- ========== 我的成就（V1.3 · 成就图鉴：分组折叠，默认收起） ========== -->
+    <section v-if="achView" class="section">
+      <AchievementSection :view="achView" />
     </section>
 
     <!-- ========== 学习进度 ========== -->
@@ -178,8 +130,6 @@
         </div>
       </div>
     </section>
-
-    <AchievementToast ref="toastRef" />
   </div>
 </template>
 
@@ -196,21 +146,12 @@ import { usePackageStore } from '@core/stores/package'
 import { useThemeStore } from '@core/stores/theme'
 import { generateRecommendations, type Recommendation } from '@core/recommendation/rulesEngine'
 import { findUnitByKnowledgePoint } from '@core/importer/resolvePackageUnits'
-import { packageTypeOf } from '@/schemas/manifest'
 import { isDueForReview, humanizeNextReview } from '@core/review/reviewScheduler'
-import {
-  ACHIEVEMENTS,
-  syncAchievements,
-  type AchievementCategory,
-  type AchievementDef,
-  type PackageMeta,
-} from '@core/motivation/achievements'
-import { CHAINS, chainNextOf } from '@core/motivation/chains'
-import { loadDailyStats } from '@core/motivation/dailyStats'
-import { loadAttemptedTypes } from '@core/motivation/attemptedTypes'
+import { useAchievementStore } from '@core/stores/achievement'
+import { computeMasterySummary } from '@core/mastery/masterySummary'
+import AchievementSection from '@/components/AchievementSection.vue'
 import { EMPTY_STREAK, loadStreak, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
 import { useChartTheme } from '@core/theme/useChartTheme'
-import AchievementToast from '@/components/AchievementToast.vue'
 
 interface AggregatedRec extends Recommendation {
   sourcePackageId: string
@@ -224,72 +165,33 @@ const router = useRouter()
 
 const recommendations = ref<AggregatedRec[]>([])
 const chartRef = ref<HTMLElement | null>(null)
-const toastRef = ref<InstanceType<typeof AchievementToast> | null>(null)
 
-/** 体验激励：连续打卡 + 成就徽章 */
+/** 体验激励：连续打卡 */
 const streak = ref<StreakState>({ ...EMPTY_STREAK })
-const unlockedRecords = ref<Array<{ id: string; unlockedAt: string }>>([])
 
 const streakLabel = computed(() => streakText(streak.value))
 const studiedTodayFlag = computed(() => studiedToday(streak.value))
 
-const unlockedIds = computed(() => unlockedRecords.value.map((r) => r.id))
-const unlockedAtMap = computed(() => {
-  const m = new Map<string, string>()
-  for (const r of unlockedRecords.value) m.set(r.id, r.unlockedAt)
-  return m
-})
-
-const totalCount = ACHIEVEMENTS.length
-const unlockedCount = computed(() => unlockedRecords.value.length)
-const achPercent = computed(() =>
-  totalCount > 0 ? Math.round((unlockedCount.value / totalCount) * 100) : 0,
-)
-
-/** 类别元数据 */
-const CAT_ORDER: AchievementCategory[] = ['M', 'G', 'B', 'E']
-const CAT_META: Record<AchievementCategory, { label: string; icon: string }> = {
-  M: { label: '精熟目标', icon: '🎯' },
-  G: { label: '成长型思维', icon: '🌱' },
-  B: { label: '行为塑造', icon: '⏱️' },
-  E: { label: '探索', icon: '🧭' },
-}
-
-/** 「下一环」映射：最高已解锁环 → 下一环成就 */
-const nextRingMap = computed(() => {
-  const map = new Map<string, AchievementDef>()
-  for (const chain of CHAINS) {
-    const nextId = chainNextOf(chain, unlockedIds.value)
-    if (!nextId) continue
-    const lastUnlocked = [...chain.ids].reverse().find((id) => unlockedIds.value.includes(id))
-    const nextDef = ACHIEVEMENTS.find((a) => a.id === nextId)
-    if (lastUnlocked && nextDef) map.set(lastUnlocked, nextDef)
-  }
-  return map
-})
-
-const groups = computed(() =>
-  CAT_ORDER.map((cat) => {
-    const items = ACHIEVEMENTS.filter((a) => a.category === cat).map((a) => ({
-      ...a,
-      unlocked: unlockedIds.value.includes(a.id),
-      unlockedAt: unlockedAtMap.value.get(a.id) ?? '',
-      nextRing: nextRingMap.value.get(a.id) ?? null,
-    }))
-    const unlocked = items.filter((i) => i.unlocked).length
-    return { cat, ...CAT_META[cat], items, unlocked, total: items.length }
-  }),
-)
+/**
+ * 成就图鉴：数据来自 achievement store（V1.3 · T03）。
+ * 页面**不再自己结算** —— 结算统一由 AppShell 的后台触发器负责，
+ * 否则会出现"首页结算一次、别的页面又各自结算一次"的重复弹窗。
+ */
+const achievementStore = useAchievementStore()
+const achView = computed(() => achievementStore.view)
 
 const stats = computed(() => {
-  let total = 0
-  for (const pkg of packageStore.packages) {
-    total += pkg.knowledgePoints?.length ?? 0
+  // V1.3 · T04：掌握率统一走 computeMasterySummary（去重口径）。
+  // 旧实现用 "已掌握行数 / Σ kpCount"：分母把重复登记的知识点数了两遍、
+  // 分子却是裸行数（同一知识点在多包有记录会被重复计），于是出现过 >100% 的掌握率。
+  const s = computeMasterySummary(packageStore.packages, userDataStore.progress)
+  return {
+    total: s.total,
+    mastered: s.mastered,
+    // 页面只有一个"学习中"卡片：把「需复习」也算进"还在推进中"，不丢人
+    learning: s.learning + s.needReview,
+    masteryRate: s.rate,
   }
-  const mastered = userDataStore.progress.filter((p) => p.status === '已掌握').length
-  const learning = userDataStore.progress.filter((p) => p.status === '学习中' || p.status === '需复习').length
-  const masteryRate = total > 0 ? Math.round((mastered / total) * 100) : 0
-  return { total, mastered, learning, masteryRate }
 })
 
 const dueCount = computed(() =>
@@ -446,30 +348,8 @@ onMounted(async () => {
   // 体验激励：读取连续打卡；结算成就，新解锁的当场播放徽章动效
   streak.value = await loadStreak()
 
-  const packages: PackageMeta[] = packageStore.packages.map((pkg) => ({
-    packageId: pkg.packageId,
-    subject: pkg.manifest.subject,
-    grade: pkg.manifest.grade,
-    term: pkg.manifest.term,
-    // 运行时 JSON 只写 `type`（`packageType` 是历史别名）→ 统一走 packageTypeOf，避免拿到 undefined
-    packageType: packageTypeOf(pkg.manifest) ?? '',
-    kpCount: pkg.knowledgePoints?.length ?? 0,
-  }))
-  const dailyStats = await loadDailyStats()
-  const attemptedTypes = await loadAttemptedTypes()
-
-  const achResult = await syncAchievements({
-    progress: userDataStore.progress,
-    mistakes: userDataStore.mistakes,
-    streak: streak.value,
-    packages,
-    dailyStats,
-    attemptedTypes,
-  })
-  unlockedRecords.value = achResult.unlockedRecords
-  if (achResult.newlyUnlocked.length > 0) {
-    toastRef.value?.enqueue(achResult.newlyUnlocked)
-  }
+  // 成就图鉴：只刷新只读视图（结算与持久化由 AppShell 的触发器统一负责）
+  await achievementStore.refreshView()
 
   recommendations.value = generateAllRecommendations()
 
@@ -582,144 +462,6 @@ onUnmounted(() => {
       background: rgba(var(--on-strong-rgb), 0.28);
       box-shadow: $shadow;
     }
-  }
-}
-
-/* ========== 我的成就 ========== */
-.ach-overview {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  .ach-bar {
-    flex: 1;
-    height: 10px;
-    background: $bg-color-hover;
-    border-radius: 8px;
-    overflow: hidden;
-
-    .ach-bar-fill {
-      height: 100%;
-      background: $gradient-primary;
-      border-radius: 8px;
-      transition: width 0.4s ease;
-    }
-  }
-
-  .ach-overview-text {
-    flex-shrink: 0;
-    font-size: 12px;
-    font-weight: 700;
-    color: $text-sub;
-  }
-}
-
-.ach-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  .ach-group-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .ach-group-title {
-      font-size: 13px;
-      font-weight: 800;
-      color: $text-main;
-    }
-    .ach-group-count {
-      font-size: 12px;
-      font-weight: 600;
-      color: $text-muted;
-    }
-  }
-}
-
-.ach-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 10px;
-}
-
-.ach-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: $card-bg;
-  border: 1px solid $border-color;
-  border-radius: $radius-md;
-  padding: 12px 14px;
-  box-shadow: $shadow-sm;
-  opacity: 0.62;
-  transition: all 0.2s ease;
-
-  .ach-icon {
-    font-size: 22px;
-    line-height: 1;
-    flex-shrink: 0;
-    filter: grayscale(0.6);
-  }
-
-  .ach-body { min-width: 0; }
-
-  .ach-title {
-    font-size: 13px;
-    font-weight: 800;
-    color: $text-sub;
-    line-height: 1.3;
-  }
-
-  .ach-desc {
-    font-size: 11px;
-    color: $text-muted;
-    margin-top: 2px;
-    line-height: 1.4;
-  }
-
-  .ach-date {
-    font-size: 10px;
-    color: $text-muted;
-    margin-top: 3px;
-    font-weight: 600;
-  }
-
-  /* 隐藏成就剪影：不泄露 icon/title/desc */
-  &.silhouette {
-    background: $bg-color-hover;
-    border-style: dashed;
-
-    .ach-icon { filter: grayscale(1) brightness(0.7); }
-    .ach-title { letter-spacing: 2px; }
-  }
-
-  &.unlocked {
-    opacity: 1;
-    border-color: rgba(var(--warning-rgb), 0.45);
-    background: linear-gradient(135deg, rgba(var(--warning-rgb), 0.08), rgba(var(--primary-rgb), 0.06));
-
-    .ach-icon { filter: none; }
-    .ach-title { color: $text-main; }
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: $shadow-md;
-    }
-  }
-
-  .ach-next {
-    position: absolute;
-    right: 10px;
-    bottom: 8px;
-    font-size: 10px;
-    font-weight: 700;
-    color: $primary-text;
-    background: $primary-light;
-    padding: 2px 8px;
-    border-radius: 10px;
-    white-space: nowrap;
   }
 }
 

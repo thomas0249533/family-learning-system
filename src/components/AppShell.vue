@@ -65,6 +65,9 @@
         </router-link>
       </nav>
     </div>
+
+    <!-- 成就解锁提示：挂在布局层而不是某个页面里，任何页面解锁都能弹（V1.3 · T03） -->
+    <AchievementToast ref="toastRef" />
   </div>
 </template>
 
@@ -73,12 +76,60 @@
 // AppShell · 布局骨架（侧栏 + 顶栏 + 底部 tab + .app-main + router-view）
 // ---------------------------------------------------------------------
 // 从 App.vue 原样搬迁（纯搬迁，不改变行为）；App.vue 收敛为组合。
+//
+// V1.3 · T03：成就结算的**唯一后台触发器**放这里 ——
+//   监听「进度数组 / 错题数组 / 路由」的变化，去抖后调 achievementStore.settle()。
+//   为什么不做在 7 个做题点位：
+//     · 那些点位分散在 4 个组件里，任何一处漏掉就会出现"徽章要等回首页才亮"；
+//     · 三个信号已经覆盖了全部解锁途径（进度变化 = 答题；错题变化 = 复习；
+//       路由变化 = 跨页面的数据加载完成）；
+//     · settle 本身是单飞 + 幂等，多触发几次没有副作用。
 // =====================================================================
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import AchievementToast from './AchievementToast.vue'
+import { useAchievementStore } from '@core/stores/achievement'
+import { useUserDataStore } from '@core/stores/userData'
 
 const route = useRoute()
 const router = useRouter()
+
+// ---------- 成就结算触发器（V1.3 · T03）----------
+const achievementStore = useAchievementStore()
+const userDataStore = useUserDataStore()
+const toastRef = ref<InstanceType<typeof AchievementToast> | null>(null)
+
+/** 把 store 攒下的解锁提示交给 toast 依次播放 */
+function flushToasts(): void {
+  const defs = achievementStore.drainPending()
+  if (defs.length > 0) toastRef.value?.enqueue(defs)
+}
+
+let settleTimer: ReturnType<typeof setTimeout> | null = null
+/** 去抖：一节课连着答 10 题会连续触发，攒 800ms 只结算一次 */
+function scheduleSettle(delay = 800): void {
+  if (settleTimer !== null) clearTimeout(settleTimer)
+  settleTimer = setTimeout(async () => {
+    settleTimer = null
+    await achievementStore.settle()
+    flushToasts()
+  }, delay)
+}
+
+onMounted(() => {
+  // 首屏：数据可能还没加载完（各页面自己在 onMounted 里 load），
+  // 这里先结算一次，加载完成后由下面的 watch 再补一次。
+  scheduleSettle(0)
+})
+
+onUnmounted(() => {
+  if (settleTimer !== null) clearTimeout(settleTimer)
+})
+
+watch(
+  () => [userDataStore.progress, userDataStore.mistakes, route.path],
+  () => scheduleSettle(),
+)
 
 /** 导航项：mobile=true 时同时出现在底部 tab */
 const navItems = [

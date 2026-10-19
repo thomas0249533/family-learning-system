@@ -129,9 +129,10 @@ import { usePackageStore } from '@core/stores/package'
 import {
   ACHIEVEMENTS,
   loadUnlocked,
-  type AchievementCategory,
   type UnlockedRecord,
 } from '@core/motivation/achievements'
+import { CATEGORY_META, CATEGORY_ORDER } from '@core/motivation/achievementMeta'
+import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 
 const router = useRouter()
 const userDataStore = useUserDataStore()
@@ -146,13 +147,9 @@ onMounted(async () => {
 })
 
 /** ===== 成就概览（A2-5，只读）===== */
-const CAT_ORDER: AchievementCategory[] = ['M', 'G', 'B', 'E']
-const CAT_META: Record<AchievementCategory, { label: string; icon: string }> = {
-  M: { label: '精熟目标', icon: '🎯' },
-  G: { label: '成长型思维', icon: '🌱' },
-  B: { label: '行为塑造', icon: '⏱️' },
-  E: { label: '探索', icon: '🧭' },
-}
+// 分类元数据与 Home 的成就图鉴共用同一份定义（避免标签/图标漂移）
+const CAT_ORDER = CATEGORY_ORDER
+const CAT_META = CATEGORY_META
 
 const achTotal = ACHIEVEMENTS.length
 const achUnlockedCount = computed(() => unlockedRecords.value.length)
@@ -181,15 +178,13 @@ const recentUnlocked = computed(() => {
 
 /** 总览统计 */
 const stats = computed(() => {
-  let totalKp = 0
-  for (const pkg of packageStore.packages) {
-    totalKp += pkg.knowledgePoints?.length ?? 0
-  }
-
+  // V1.3 · T04：与 Home / Report 同源（去重口径），见 computeMasterySummary
+  const summary = computeMasterySummary(packageStore.packages, userDataStore.progress)
+  const totalKp = summary.total
   const progress = userDataStore.progress
-  const mastered = progress.filter(p => p.status === '已掌握').length
-  const learning = progress.filter(p => p.status === '学习中').length
-  const needReview = progress.filter(p => p.status === '需复习').length
+  const mastered = summary.mastered
+  const learning = summary.learning
+  const needReview = summary.needReview
   const studySeconds = progress.reduce((sum, p) => sum + (p.studySeconds ?? 0), 0)
   const studyMinutes = Math.round(studySeconds / 60)
 
@@ -214,34 +209,15 @@ const stats = computed(() => {
 /** 学科分布 */
 const subjectStats = computed(() => {
   const labelMap: Record<string, string> = { math: '数学', chinese: '语文', english: '英语' }
-  const kpToSubject = new Map<string, string>()
-  const perSubject = new Map<string, { total: number; mastered: number }>()
-
-  for (const pkg of packageStore.packages) {
-    const subj = pkg.manifest.subject
-    if (!subj) continue
-    for (const kp of pkg.knowledgePoints ?? []) {
-      kpToSubject.set(kp.id, subj)
-      if (!perSubject.has(subj)) perSubject.set(subj, { total: 0, mastered: 0 })
-      perSubject.get(subj)!.total++
-    }
-  }
-
-  for (const p of userDataStore.progress) {
-    if (p.status !== '已掌握') continue
-    const subj = kpToSubject.get(p.knowledgePointId)
-    if (subj && perSubject.has(subj)) perSubject.get(subj)!.mastered++
-  }
-
-  return Array.from(perSubject.entries())
-    .map(([subject, s]) => ({
-      subject,
-      label: labelMap[subject] ?? subject,
-      total: s.total,
-      mastered: s.mastered,
-      rate: s.total > 0 ? Math.round((s.mastered / s.total) * 100) : 0,
-    }))
-    .sort((a, b) => b.total - a.total)
+  // V1.3 · T04：与整体掌握率同源（masteryBySubject 内部走 canonicalize，
+  // 不再用"裸 kpId → 学科"映射——那会被后写入的包覆盖学科归属）
+  return masteryBySubject(packageStore.packages, userDataStore.progress).map((s) => ({
+    subject: s.subject,
+    label: labelMap[s.subject] ?? s.subject,
+    total: s.total,
+    mastered: s.mastered,
+    rate: s.rate,
+  }))
 })
 
 /** 高频错题 Top 5 */

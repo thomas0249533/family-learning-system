@@ -223,6 +223,54 @@ export function computeMasterySummary(
 }
 
 /**
+ * 学科分布（Parent / Report 共用）。**与 `computeMasterySummary` 同源**：
+ * 分母是收敛后的知识点全集、分子是"该学科内已掌握"的去重条目。
+ *
+ * 为什么不能用"裸 kpId → subject"映射（旧实现）：
+ * 同一个裸 id 在多个包里出现时，后写入的包会覆盖前面的学科归属，
+ * 导致语文知识点被算进英语、分子分母都错。
+ */
+export interface SubjectMastery {
+  subject: string
+  total: number
+  mastered: number
+  /** 0..100 */
+  rate: number
+}
+
+export function masteryBySubject(
+  packages: LearningPackageRecord[],
+  progress: ProgressRecord[]
+): SubjectMastery[] {
+  const { entries, rowByKey } = canonicalizeProgressRows(packages, progress)
+
+  const subjectOf = new Map<string, string>()
+  for (const pkg of packages ?? []) {
+    const s = pkg?.manifest?.subject
+    if (pkg?.packageId && typeof s === 'string' && s) subjectOf.set(pkg.packageId, s)
+  }
+
+  const acc = new Map<string, { total: number; mastered: number }>()
+  for (const entry of entries) {
+    const subject = subjectOf.get(entry.packageId)
+    if (!subject) continue
+    const bucket = acc.get(subject) ?? { total: 0, mastered: 0 }
+    bucket.total += 1
+    if (rowByKey.get(entry.key)?.status === '已掌握') bucket.mastered += 1
+    acc.set(subject, bucket)
+  }
+
+  return [...acc.entries()]
+    .map(([subject, v]) => ({
+      subject,
+      total: v.total,
+      mastered: v.mastered,
+      rate: v.total > 0 ? Math.min(100, Math.max(0, Math.round((v.mastered / v.total) * 100))) : 0,
+    }))
+    .sort((a, b) => b.total - a.total || a.subject.localeCompare(b.subject))
+}
+
+/**
  * 已掌握的去重知识点数。`(packageId, kpId)` 去重 —— 与掌握率、成就同源。
  *
  * @param domainKeys 传了就把 domain 外的行（孤儿）排除；不传 = 全量（供成就使用）
