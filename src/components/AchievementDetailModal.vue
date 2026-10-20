@@ -26,6 +26,28 @@
         <p class="ach-detail__hint">{{ detail.hint }}</p>
       </div>
 
+      <!-- 故事卡（V1.4 · B6）：只补"关联学习记录"这一段 ——
+           解锁日期与证据已经在上面 rows 里了，再列一遍是同一条信息出现两次。
+           这一段的标题必须是「现在的记录」：它是实时算的，会随学习变化，
+           而上面那两行是解锁瞬间固化的事实。两者口径不同，文案上必须分开说。 -->
+      <section v-if="story && story.canSave" class="ach-detail__story">
+        <h3 class="ach-detail__story-title">现在的记录</h3>
+        <dl v-if="story.related.length > 0" class="ach-detail__rows">
+          <div v-for="row in story.related" :key="row.label" class="ach-detail__row">
+            <dt>{{ row.label }}</dt>
+            <dd>{{ row.value }}</dd>
+          </div>
+        </dl>
+        <p v-else class="ach-detail__story-empty">
+          还读不到关联的学习记录（可能是学习包被删掉了）。
+        </p>
+        <p class="ach-detail__story-note">
+          故事卡会把「解锁日期 + 当时的证据 + 现在的记录」拼成一张图片，可以保存在相册里。
+        </p>
+        <div class="ach-detail__story-actions">
+          <AppButton size="small" :loading="saving" @click="saveStory">保存故事卡</AppButton>
+        </div>
+      </section>
       <footer class="ach-detail__footer">
         <AppBadge
           :tone="item.earned ? 'success' : 'primary'"
@@ -48,9 +70,16 @@
 //
 // 剪影（隐藏成就未解锁）：`canOpen === false` → `visible` 恒为 false，
 // 弹层根本不会渲染，`n-modal` 默认 `display-directive="if"` 也不留 DOM。
+//
+// ## 故事卡（V1.4 · B6）
+// 打开时异步取一次"实时上下文"再调 `storyOf()` 纯函数。三条约束：
+//   1. **只在已解锁时取** —— 未解锁的卡片不需要故事卡，省一次库读；
+//   2. **取不到就让这一段消失**，不弹错、不阻塞弹层（详情本身仍然有信息量）；
+//   3. 关联记录里的知识点标题来自 packageStore，包没加载时先补一次 `loadPackages()`
+//      （否则所有人都会看到"还读不到关联的学习记录"，而这其实只是没加载）。
 // =====================================================================
-import { computed } from 'vue'
-import { NModal } from 'naive-ui'
+import { computed, ref, watch } from 'vue'
+import { NModal, useMessage } from 'naive-ui'
 import AppBadge from './ui/AppBadge.vue'
 import AppButton from './ui/AppButton.vue'
 import ProgressBar from './ui/ProgressBar.vue'
@@ -58,6 +87,12 @@ import type { AchievementItem } from '@core/motivation/achievementMeta'
 import { CATEGORY_META } from '@core/motivation/achievementMeta'
 import { TIER_META } from '@core/motivation/achievementTaxonomy'
 import { detailOf } from '@core/motivation/achievementDetail'
+import { storyOf, type AchievementStory } from '@core/motivation/achievementStory'
+import { exportStoryCard } from '@core/report/storyImage'
+import { localDateKey } from '@core/report/canvasKit'
+import { useAchievementStore } from '@core/stores/achievement'
+import { usePackageStore } from '@core/stores/package'
+import { currentProfile } from '@core/profile/currentProfile'
 
 const props = defineProps<{
   show: boolean
@@ -65,6 +100,10 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{ (e: 'update:show', value: boolean): void }>()
+
+const store = useAchievementStore()
+const packageStore = usePackageStore()
+const message = useMessage()
 
 const detail = computed(() => {
   const it = props.item
@@ -80,6 +119,69 @@ const visible = computed({
     if (!v) emit('update:show', false)
   },
 })
+
+/* ---------------- 故事卡 ---------------- */
+
+const story = ref<AchievementStory | null>(null)
+const saving = ref(false)
+
+/** 知识点标题解析器：包 id + 知识点 id → 标题（查不到返回空串，故事卡会少一行） */
+function kpTitleOf(packageId: string, kpId: string): string {
+  const pkg = packageStore.packages.find((p) => p.packageId === packageId)
+  if (!pkg) return ''
+  return pkg.knowledgePoints?.find((kp) => kp.id === kpId)?.title ?? ''
+}
+
+async function loadStory(item: AchievementItem): Promise<void> {
+  if (!item.earned || item.silhouetted) {
+    story.value = null
+    return
+  }
+  try {
+    if (packageStore.packages.length === 0) await packageStore.loadPackages()
+    const ctx = await store.storyContext()
+    story.value = storyOf(item, ctx, {
+      profileName: currentProfile()?.name ?? '我',
+      today: localDateKey(),
+      tierLabel: TIER_META[item.tier].label,
+      categoryLabel: CATEGORY_META[item.category].label,
+      kpTitleOf,
+    })
+  } catch (e) {
+    // 故事卡是附加信息：读失败就让这一段不出现，不影响详情本身
+    console.warn('[AchievementDetailModal] 故事卡上下文读取失败', e)
+    story.value = null
+  }
+}
+
+/**
+ * 弹层打开时才取上下文，关闭时清空。
+ *
+ * 用 `watch(visible)` 而不是 `watch(item)`：同一枚成就反复开关时，
+ * 关掉再打开必须**重算**（孩子可能刚做完一组题），所以以"可见"为触发条件。
+ */
+watch(
+  visible,
+  (open) => {
+    if (open && props.item) void loadStory(props.item)
+    else story.value = null
+  },
+  { immediate: true },
+)
+
+async function saveStory(): Promise<void> {
+  const s = story.value
+  if (!s || saving.value) return
+  saving.value = true
+  try {
+    const filename = await exportStoryCard(s)
+    message.success(`已保存 ${filename}`)
+  } catch (e) {
+    message.error('保存故事卡失败：' + (e instanceof Error ? e.message : String(e)))
+  } finally {
+    saving.value = false
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -164,5 +266,38 @@ const visible = computed({
   justify-content: space-between;
   gap: $space-3;
   padding-top: $space-1;
+}
+
+/* ========== 故事卡（V1.4 · B6） ========== */
+.ach-detail__story {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding-top: $space-3;
+  border-top: 1px solid $border-color;
+}
+
+.ach-detail__story-title {
+  margin: 0;
+  font-size: $font-2xs;
+  font-weight: 800;
+  color: $text-sub;
+  letter-spacing: 0.2px;
+}
+
+/* 说明文字与"读不到"都走 muted：这两句都不是主角，
+   不能抢上面那两行真实记录的注意力 */
+.ach-detail__story-note,
+.ach-detail__story-empty {
+  margin: 0;
+  font-size: $font-2xs;
+  color: $text-muted;
+  line-height: $leading-normal;
+}
+
+/* 按钮不撑满整行：弹层主体是内容，操作靠左贴住内容左边缘 */
+.ach-detail__story-actions {
+  display: flex;
+  align-self: flex-start;
 }
 </style>

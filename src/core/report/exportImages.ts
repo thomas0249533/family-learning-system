@@ -13,13 +13,22 @@
  * - 层级不靠颜色：★ 数量 + 边框粗细 + 层级文字（AC-P2-10，去色后仍可辨）。
  *
  * ## 这个模块依赖 DOM（canvas / a[download]），因此**不做单测**
- * 能测的部分（分页、文件名规则）全部下沉到 `printLayout.ts` / `imageFileName()`。
+ * 能测的部分（分页、文件名规则）全部下沉到 `printLayout.ts` / `imageFileName()`；
+ * 画布工具（圆角矩形 / 折行 / 下载）在 `canvasKit.ts`，与故事卡共用（V1.4 · B6）。
  */
 import {
   CATEGORY_META,
   type AchievementItem,
 } from '@core/motivation/achievementMeta'
 import { TIER_META } from '@core/motivation/achievementTaxonomy'
+import {
+  CANVAS_FONT,
+  canvasToPng,
+  downloadBlob,
+  localDateKey,
+  roundRect,
+  wrapText,
+} from './canvasKit'
 import { PRINT_PER_PAGE, paginateByCategory, pageLabel } from './printLayout'
 
 /** A4 @150dpi */
@@ -39,7 +48,7 @@ const C = {
   tint: '#f5f7fa',
 } as const
 
-const FONT = 'system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif'
+const FONT = CANVAS_FONT
 
 /**
  * 图片文件名。
@@ -59,67 +68,6 @@ export interface ExportedImage {
   pageIndex: number
   pageCount: number
   filename: string
-}
-
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-): void {
-  ctx.beginPath()
-  if (typeof ctx.roundRect === 'function') {
-    ctx.roundRect(x, y, w, h, r)
-    return
-  }
-  // 老 WebView 没有 roundRect：用四段圆弧拼一个（视觉一致，只是代码啰嗦）
-  ctx.moveTo(x + r, y)
-  ctx.lineTo(x + w - r, y)
-  ctx.arcTo(x + w, y, x + w, y + r, r)
-  ctx.lineTo(x + w, y + h - r)
-  ctx.arcTo(x + w, y + h, x + w - r, y + h, r)
-  ctx.lineTo(x + r, y + h)
-  ctx.arcTo(x, y + h, x, y + h - r, r)
-  ctx.lineTo(x, y + r)
-  ctx.arcTo(x, y, x + r, y, r)
-  ctx.closePath()
-}
-
-/** 按宽度折行，最多 maxLines 行，超出补省略号 */
-function wrapText(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  maxWidth: number,
-  maxLines: number,
-): string[] {
-  if (text === '') return []
-  const lines: string[] = []
-  let line = ''
-  for (const ch of text) {
-    const next = line + ch
-    if (ctx.measureText(next).width > maxWidth && line !== '') {
-      lines.push(line)
-      line = ch
-      if (lines.length === maxLines) break
-    } else {
-      line = next
-    }
-  }
-  if (lines.length < maxLines && line !== '') lines.push(line)
-  if (lines.length === maxLines) {
-    // 还有没画完的内容 → 最后一行加省略号
-    const rest = text.slice(lines.join('').length)
-    if (rest.length > 0) {
-      let last = lines[maxLines - 1]
-      while (last.length > 0 && ctx.measureText(`${last}…`).width > maxWidth) {
-        last = last.slice(0, -1)
-      }
-      lines[maxLines - 1] = `${last}…`
-    }
-  }
-  return lines
 }
 
 function drawCard(
@@ -268,18 +216,6 @@ function drawPage(
   return canvas
 }
 
-function downloadBlob(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  // 立刻 revoke 会让部分浏览器来不及取数据，延后一拍
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
-
 /**
  * 导出四张（或更多，若某组超容量）PNG。
  *
@@ -292,8 +228,7 @@ export async function exportAchievementImages(
   const pages = paginateByCategory(items, PRINT_PER_PAGE)
   if (pages.length === 0) return []
 
-  const d = new Date()
-  const exportDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  const exportDate = localDateKey()
 
   const perCategory = new Map<string, number>()
   for (const p of pages) perCategory.set(p.category, (perCategory.get(p.category) ?? 0) + 1)
@@ -307,7 +242,7 @@ export async function exportAchievementImages(
     seen.set(page.category, idxInCategory + 1)
 
     const canvas = drawPage(page, i, pages.length, profileName, exportDate)
-    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
+    const blob = await canvasToPng(canvas)
     if (!blob) continue
 
     const filename = imageFileName(page.category, idxInCategory, pageCount)

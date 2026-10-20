@@ -239,6 +239,20 @@ export const useAchievementStore = defineStore('achievement', () => {
     return out
   }
 
+  /**
+   * 故事卡用的上下文快照（V1.4 · B6）。
+   *
+   * **只读、不缓存、不写库**，而且刻意复用同一个 `buildContext()` ——
+   * 故事卡上的"已掌握 N 个"与图鉴里的进度必须是同一份数据算出来的。
+   * 若在这里另拼一个精简上下文，就会出现"卡片说 42、进度条说 40"，
+   * 而这种不一致家长一定会截图来问。
+   *
+   * 每次都现读（与 `loadExtraDefs` 同理）：孩子可能刚做完一组题就点开卡片。
+   */
+  async function storyContext(): Promise<AchievementContext> {
+    return buildContext()
+  }
+
   return {
     records,
     pending,
@@ -251,6 +265,7 @@ export const useAchievementStore = defineStore('achievement', () => {
     load,
     settle,
     refreshView,
+    storyContext,
     drainPending,
     resetForProfileSwitch,
   }
