@@ -88,6 +88,20 @@
       <AppCard v-else>
         <AchievementSection :view="view" standalone />
       </AppCard>
+
+      <!-- 打印与导出（V1.4 · B5）。放在图鉴页而不是设置页：
+           "把这张墙打出来贴墙上"是看到成就之后的下一个念头。 -->
+      <AppCard title="🖨️ 打印与导出">
+        <div class="export-actions">
+          <AppButton size="small" :loading="printing" @click="goPrint">打印 / 存成 PDF</AppButton>
+          <AppButton size="small" :loading="exportingImage" @click="exportImages">导出图片（按小组 4 张）</AppButton>
+          <AppButton size="small" :loading="exportingJson" @click="exportJson">导出成就记录（JSON）</AppButton>
+        </div>
+        <p class="export-hint">
+          打印件按小组分页（每页 {{ PRINT_PER_PAGE }} 枚），固定浅色，黑白打印机也能看出层级；
+          成就记录导的是 JSON，可以在另一台设备上导入合并，不会覆盖对方已有的徽章。
+        </p>
+      </AppCard>
     </template>
 
     <EmptyState v-else size="large" icon="🏅" description="正在加载成就…" />
@@ -107,6 +121,8 @@
 // 未加载完：给一句占位，而不是渲染空图鉴 —— 空图鉴会被误读成"一枚都没有"。
 // =====================================================================
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useMessage } from 'naive-ui'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import StatCard from '@/components/ui/StatCard.vue'
@@ -134,8 +150,59 @@ import {
   type DiscoveryState,
 } from '@core/motivation/achievementDiscovery'
 import { localDayKey } from '@core/motivation/streak'
+import { PRINT_PER_PAGE } from '@core/report/printLayout'
+import { exportAchievementImages } from '@core/report/exportImages'
+import { exportAchievementsJson } from '@core/export/exportService'
+import { currentProfile } from '@core/profile/currentProfile'
 
 const achievementStore = useAchievementStore()
+
+// ---- 打印与导出（B5）----
+const router = useRouter()
+const message = useMessage()
+const printing = ref(false)
+const exportingImage = ref(false)
+const exportingJson = ref(false)
+
+function goPrint(): void {
+  printing.value = true
+  router.push('/achievements/print').finally(() => {
+    printing.value = false
+  })
+}
+
+/**
+ * 导出图片：4 张（某组超容量时该组是多张）。
+ *
+ * 失败必须报出来：`canvas.toBlob` 返回 null 或浏览器拦截下载时，
+ * 静默失败会让用户以为"点了没反应"，然后反复点。
+ */
+async function exportImages(): Promise<void> {
+  if (exportingImage.value) return
+  exportingImage.value = true
+  try {
+    const files = await exportAchievementImages(achievementStore.items, currentProfile()?.name ?? '我')
+    if (files.length === 0) message.warning('还没有成就可导出')
+    else message.success(`已导出 ${files.length} 张图片`)
+  } catch (e) {
+    message.error('导出图片失败：' + (e instanceof Error ? e.message : String(e)))
+  } finally {
+    exportingImage.value = false
+  }
+}
+
+async function exportJson(): Promise<void> {
+  if (exportingJson.value) return
+  exportingJson.value = true
+  try {
+    const r = await exportAchievementsJson()
+    message.success(`已导出 ${r.records} 条成就记录`)
+  } catch (e) {
+    message.error('导出成就记录失败：' + (e instanceof Error ? e.message : String(e)))
+  } finally {
+    exportingJson.value = false
+  }
+}
 
 /**
  * 筛选条件。**只影响可见集合，不影响 28 的总口径** ——
@@ -402,5 +469,19 @@ onMounted(async () => {
   .overview {
     grid-template-columns: 1fr;
   }
+}
+
+/* ========== 打印与导出（V1.4 · B5） ========== */
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.export-hint {
+  margin: $space-2 0 0;
+  font-size: $font-xs;
+  color: $text-muted;
+  line-height: $leading-relaxed;
 }
 </style>

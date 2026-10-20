@@ -25,6 +25,7 @@ import { db } from '@/db'
 import type { LearningPackageRecord } from '@/db'
 import { currentProfile, currentProfileId } from '@core/profile/currentProfile'
 import { buildBackupV2 } from '@core/backup/bundleIO'
+import type { BackupV2 } from '@core/backup/types'
 import { executeImport, previewImport } from '@core/backup/importOrchestrator'
 
 /** 旧导出选项（`@deprecated`：v2 备份总是全量，不再支持挑选字段） */
@@ -144,6 +145,61 @@ export async function exportPackage(packageId: string): Promise<boolean> {
   if (!pkg) return false
   downloadJson(pkg, `${packageId}.json`)
   return true
+}
+
+/**
+ * 只含**成就相关键**的 v2 备份（B5「导出成就记录」）。
+ *
+ * ## 为什么是"v2 的投影"而不是新格式
+ * 新格式就得配一套新导入器，而导入器是这个项目里最容易出事的一层（跨档案、并集、
+ * 单调不减、单事务）。投影之后：导出文件仍然是一份**合法的 `formatVersion: 2`**，
+ * 导入走既有的 `routeBackup` → `planMerge` → `applyMergePlan`，一行新代码都不用。
+ * AC-P2-9（同机导出再导入，记录完全一致）因此是**结构性成立**的，不靠额外测试去撞。
+ *
+ * ## 保留哪些键
+ * - `achievements:<pid>`：解锁记录（含 `unlockedAt` / `evidence` / `repeatCount`）；
+ * - `customChecks:<pid>`：家长手工勾选（自定义成就的**输入**）。
+ *
+ * ## 故意**不**保留
+ * - `progress` / `mistakes` / `examSessions`：置空数组。合并是并集，空数组 = 不参与，
+ *   所以这个文件绝不会动到接收方的学习进度（这一点比"少导了几个键"重要得多）；
+ * - `globalSettings`：置空。自定义包的**包体**（`achievement:customPacks`）是设备级资产、
+ *   永不参与合并，写进来只会让用户以为"导了文件就把包也搬过去了"。
+ *   想在另一台设备上看到自定义卡，要另外导入包文件 —— 记录会等在那里，
+ *   包一装上就显示出来（与 B1 对孤儿进度行的处理同向：保留不删）。
+ */
+export function buildAchievementsExport(backup: BackupV2): BackupV2 {
+  const KEEP = ['achievements:', 'customChecks:']
+  return {
+    ...backup,
+    profiles: backup.profiles.map((p) => ({
+      ...p,
+      progress: [],
+      mistakes: [],
+      examSessions: [],
+      settings: p.settings.filter((s) => KEEP.some((prefix) => s.key.startsWith(prefix))),
+    })),
+    globalSettings: [],
+  }
+}
+
+/**
+ * 导出成就记录（JSON），返回文件里含几个档案、多少条解锁记录。
+ *
+ * 文件名带档案名，与家庭备份同一套规则（`safeFileSegment` + 时间戳）。
+ */
+export async function exportAchievementsJson(): Promise<{ profiles: number; records: number }> {
+  const full = await buildBackupV2()
+  const subset = buildAchievementsExport(full)
+
+  const records = subset.profiles.reduce((n, p) => {
+    const row = p.settings.find((s) => s.key.startsWith('achievements:'))
+    return n + (Array.isArray(row?.value) ? (row.value as unknown[]).length : 0)
+  }, 0)
+
+  const name = safeFileSegment(currentProfile()?.name ?? '')
+  downloadJson(subset, makeFilename(`fls-achievements-${name}`))
+  return { profiles: subset.profiles.length, records }
 }
 
 /** 导出全部包（同上，不分片） */

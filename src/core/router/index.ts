@@ -20,6 +20,13 @@ const routes: RouteRecordRaw[] = [
   { path: '/settings', name: 'Settings', component: () => import('@/views/Settings.vue') },
   { path: '/report', name: 'Report', component: () => import('@/views/Report.vue') },
   { path: '/achievements', name: 'Achievements', component: () => import('@/views/Achievements.vue') },
+  // 打印件（V1.4 · B5）。独立路由：成就页有筛选/折叠/发现卡，
+  // 盖在上面打印等于把一堆交互控件印到纸上。
+  {
+    path: '/achievements/print',
+    name: 'AchievementsPrint',
+    component: () => import('@/views/AchievementsPrint.vue')
+  },
   { path: '/parent', name: 'Parent', component: () => import('@/views/Parent.vue') },
   // 家庭成就墙（V1.4 · B4）。家长端页面：并排看几个孩子是家长的需求，
   // 孩子端只该看到自己那一墙（孩子之间不比较）。

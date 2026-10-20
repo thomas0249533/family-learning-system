@@ -1,0 +1,270 @@
+/**
+ * 打印样式（V1.4 · B5 / D4）
+ *
+ * ## 这个文件**故意**使用字面色值，不走 token
+ * 打印件必须固定浅色：在暗色主题下 `var(--text-main)` 是近白色，白纸打印出来是一片空白。
+ * 这不是"忘了用 token"，而是打印的物理约束 —— 纸永远是白的。
+ * 所以这里定义一组 `--print-*`，值全部是浅色方案下的字面量，**只在本文件的根作用域生效**，
+ * 不影响应用主题（也不被主题影响）。
+ *
+ * ## 灰度可辨（AC-P2-10）
+ * 层级不靠颜色编码，靠三件事叠加：
+ *   1. 星标数量（★ 的个数）；
+ *   2. 边框粗细（1 / 2 / 3px）；
+ *   3. 层级文字（家长版直接印 `常见 / 进阶 / 稀有`）。
+ * 去色后三者都还在，所以黑白打印机也能看出层级。
+ *
+ * ## 分页
+ * 一页 = 一个小组（见 `printLayout.ts`）。`page-break-after: always` 换成
+ * `break-after: page` 更现代，但要兼容 Tauri 里较老的 WebView，两个都写。
+ */
+
+.print-root {
+  --print-ink: #1f2933;
+  --print-ink-soft: #52606d;
+  --print-line: #d9e2ec;
+  --print-line-strong: #9aa5b1;
+  --print-paper: #ffffff;
+  --print-tint: #f5f7fa;
+
+  color: var(--print-ink);
+  background: var(--print-paper);
+  font-family: system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+
+/* 屏幕上给一点"纸"的感觉 + 工具栏；打印时全部去掉（见 @media print） */
+.print-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 24px;
+  background: var(--print-tint);
+  border-bottom: 1px solid var(--print-line);
+}
+
+.print-toolbar-hint {
+  color: var(--print-ink-soft);
+  font-size: 13px;
+}
+
+.print-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+}
+
+.print-page {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 12mm;
+  background: var(--print-paper);
+  border: 1px solid var(--print-line);
+  /* 一页一个小组：打印时强制换页 */
+  break-after: page;
+  page-break-after: always;
+
+  &:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
+
+.print-page-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 6mm;
+  border-bottom: 2px solid var(--print-line-strong);
+}
+
+.print-group-name {
+  margin: 0;
+  font-size: 20pt;
+  font-weight: 700;
+  letter-spacing: 0.5pt;
+}
+
+.print-continued {
+  font-size: 11pt;
+  font-weight: 500;
+  color: var(--print-ink-soft);
+}
+
+.print-head-meta {
+  margin-left: auto;
+  font-size: 11pt;
+  color: var(--print-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.print-profile {
+  font-size: 12pt;
+  color: var(--print-ink-soft);
+}
+
+.print-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4mm;
+  margin: 8mm 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 一页最多 4 行；行高固定，避免"卡少的时候整页拉得很长" */
+.print-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+  height: 46mm;
+  padding: 3mm;
+  box-sizing: border-box;
+  border: 1px solid var(--print-line-strong);
+  border-radius: 2mm;
+  /* 未获得：不填充底色（省墨），只靠边框与文字区分 */
+  background: var(--print-paper);
+
+  &.is-earned {
+    background: var(--print-tint);
+  }
+
+  /* 层级 = 边框粗细。刻意用 1/2/3px 三档（0.5pt 级差在喷墨上几乎看不出来） */
+  &.tier-common {
+    border-width: 1px;
+  }
+
+  &.tier-advanced {
+    border-width: 2px;
+  }
+
+  &.tier-rare {
+    border-width: 3px;
+    border-color: var(--print-ink);
+  }
+
+  &.tier-hidden {
+    border-style: dashed;
+  }
+}
+
+.print-card-top {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+}
+
+.print-icon {
+  font-size: 14pt;
+  line-height: 1;
+}
+
+.print-title {
+  font-size: 10.5pt;
+  font-weight: 700;
+  line-height: 1.25;
+  /* 两行截断：标题长短不一时卡片仍然等高 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 星标 + 层级文字：两者都是颜色的替代编码 */
+.print-tier {
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+  font-size: 8.5pt;
+  color: var(--print-ink-soft);
+}
+
+.print-stars {
+  letter-spacing: 0.5pt;
+}
+
+.print-desc {
+  font-size: 9pt;
+  color: var(--print-ink-soft);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.print-card-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  font-size: 8.5pt;
+  color: var(--print-ink-soft);
+}
+
+.print-state {
+  font-weight: 600;
+  color: var(--print-ink);
+}
+
+.print-repeat {
+  padding: 0 1.5mm;
+  border: 1px solid var(--print-line-strong);
+  border-radius: 1mm;
+  font-size: 8pt;
+}
+
+.print-page-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 6mm;
+  border-top: 1px solid var(--print-line);
+  font-size: 9pt;
+  color: var(--print-ink-soft);
+}
+
+.print-page-no {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.print-empty {
+  padding: 24px;
+  color: var(--print-ink-soft);
+  font-size: 13px;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  /* 打印时 @page 已经给了 12mm 页边距，页面内再留 12mm 就会变成 24mm */
+  .print-pages {
+    gap: 0;
+    padding: 0;
+  }
+
+  .print-page {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .print-toolbar {
+    display: none;
+  }
+
+  /* 屏幕上的阴影/底色一律不打印（省墨，也避免深色块） */
+  .print-card {
+    box-shadow: none;
+  }
+}
