@@ -59,6 +59,26 @@ export async function loadAttemptedTypes(): Promise<string[]> {
   return [...cache!]
 }
 
+/**
+ * **只读**某个档案的已尝试题型（不碰 `cache`、不写库、不注册钩子）。
+ *
+ * 存在的理由与 `readDailyStatsFor` 相同：家庭成就墙要一屏读多个档案，
+ * 而 `cache` 是**单档案**的（切档案时由钩子清空）。墙若走 `loadAttemptedTypes()`，
+ * 后一个孩子会把前一个孩子的题型留进缓存，热路径（`addAttemptedType`）随后
+ * 就往别人的档案上记 —— 不报错，只是数据串了。
+ *
+ * 归一化口径与 `ensure()` 逐字一致（只留 string、去重），共用同一个 `Set` 构造。
+ */
+export async function readAttemptedTypesFor(profileId: string): Promise<string[]> {
+  try {
+    const rec = await db.settings.get(attemptedTypesKey(profileId))
+    const v = rec?.value
+    return [...new Set(Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [])]
+  } catch {
+    return []
+  }
+}
+
 /** 记录一个题型（去重）。 */
 export function addAttemptedType(type: string): void {
   if (!type) return

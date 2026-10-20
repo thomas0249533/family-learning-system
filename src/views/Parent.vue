@@ -214,6 +214,22 @@
     </section>
 
     <!--
+      家庭成就墙（V1.4 · B4）。入口放在家长端而不是孩子端：
+      并排看几个孩子是**家长**的需求；孩子端只该看到自己那一墙（孩子之间不比较）。
+    -->
+    <section class="section">
+      <AppCard title="🏠 家庭成就墙">
+        <div class="wall-entry">
+          <div class="wall-entry-text">
+            <div class="wall-entry-title">一屏看几个孩子走到哪了</div>
+            <div class="wall-entry-desc">每个孩子一列，并排看。没有名次，也没有合计算分。</div>
+          </div>
+          <AppButton size="small" @click="router.push('/family-wall')">去看看</AppButton>
+        </div>
+      </AppCard>
+    </section>
+
+    <!--
       自定义成就包（V1.4 · B3）。放在家长视图里而不是设置页：
       "给孩子加一条我们家的家规"是家长的决定，不是技术设置。
     -->
@@ -927,6 +943,26 @@ function goToImport() {
       font-size: 16px;
       margin: 0 3px;
     }
+  }
+}
+
+/* ========== 家庭成就墙入口（V1.4 · B4） ========== */
+.wall-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  .wall-entry-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-main;
+    margin-bottom: 4px;
+  }
+
+  .wall-entry-desc {
+    font-size: 12px;
+    color: $text-sub;
   }
 }
 

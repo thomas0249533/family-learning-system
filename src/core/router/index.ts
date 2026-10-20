@@ -20,7 +20,10 @@ const routes: RouteRecordRaw[] = [
   { path: '/settings', name: 'Settings', component: () => import('@/views/Settings.vue') },
   { path: '/report', name: 'Report', component: () => import('@/views/Report.vue') },
   { path: '/achievements', name: 'Achievements', component: () => import('@/views/Achievements.vue') },
-  { path: '/parent', name: 'Parent', component: () => import('@/views/Parent.vue') }
+  { path: '/parent', name: 'Parent', component: () => import('@/views/Parent.vue') },
+  // 家庭成就墙（V1.4 · B4）。家长端页面：并排看几个孩子是家长的需求，
+  // 孩子端只该看到自己那一墙（孩子之间不比较）。
+  { path: '/family-wall', name: 'FamilyWall', component: () => import('@/views/FamilyWall.vue') }
 ]
 
 // 开发专用：设计系统基元预览页（§7）。

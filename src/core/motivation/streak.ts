@@ -47,9 +47,16 @@ function dayDiff(a: string, b: string): number {
   return Math.round((ta - tb) / 86400000)
 }
 
-export async function loadStreak(): Promise<StreakState> {
+/**
+ * 读某个档案的连续天数状态。
+ *
+ * @param profileId 目标档案。**默认当前档案**，所以既有调用点（`touchStudyDay` /
+ *   `settle` 等）一个都不用改；家庭成就墙这类"一次要读多个孩子"的页面显式传入，
+ *   才不会把当前档案的打卡天数填进别人的墙。
+ */
+export async function loadStreak(profileId: string = currentProfileId()): Promise<StreakState> {
   try {
-    const rec = await db.settings.get(streakKey())
+    const rec = await db.settings.get(streakKey(profileId))
     const v = rec?.value
     if (v && typeof v === 'object' && typeof v.current === 'number') {
       return { ...EMPTY_STREAK, ...v }

@@ -58,6 +58,21 @@ function isDailyStat(v: unknown): v is DailyStat {
   return !!o && typeof o.date === 'string' && typeof o.questionCount === 'number'
 }
 
+/**
+ * 把库里读出来的原始值归一化成 `DailyStat[]`（**唯一的形状归一化实现**）。
+ *
+ * 非数组 → `[]`；数组里形状不对的项（null / 字符串 / 缺 date 或 questionCount）逐条丢弃；
+ * 留下来的**拷贝一份**，避免调用方拿到库里那份对象引用。
+ *
+ * `ensureLoaded()`（单档案缓存）与 `readDailyStatsFor()`（多档案只读）都走这里 ——
+ * 复制第二份的话，"什么算一条合法统计"就会有两个答案，而这两个答案只在遇到脏数据时
+ * 才会分叉（一个页面有数字、另一个页面没有），排查成本极高。
+ */
+function normalizeDailyStats(raw: unknown): DailyStat[] {
+  if (!Array.isArray(raw)) return []
+  return (raw as unknown[]).filter(isDailyStat).map((s) => ({ ...s }))
+}
+
 function applyDelta(count: number, at: Date): void {
   const key = localDayKey(at)
   const ts = at.getTime()
@@ -100,8 +115,7 @@ async function ensureLoaded(): Promise<void> {
   bindProfileHooks()
   try {
     const rec = await db.settings.get(dailyStatsKey())
-    const v = rec?.value
-    stats = Array.isArray(v) ? (v as unknown[]).filter(isDailyStat).map((s) => ({ ...s })) : []
+    stats = normalizeDailyStats(rec?.value)
   } catch {
     stats = []
   }
@@ -116,6 +130,26 @@ async function ensureLoaded(): Promise<void> {
 export async function loadDailyStats(): Promise<DailyStat[]> {
   await ensureLoaded()
   return stats.map((s) => ({ ...s }))
+}
+
+/**
+ * **只读**某个档案的每日统计（不写 `stats` 缓存、不写库、不注册钩子）。
+ *
+ * 存在的唯一理由：家庭成就墙要一屏读 4 个档案。若墙去调 `loadDailyStats()`，
+ * 模块级缓存会把第一个档案的数据留在 `stats` 里并标记 `loaded = true`，
+ * 之后热路径（`bumpDailyStats` 累加今日题量）就会往**别人的档案**上记 ——
+ * 而且完全不报错，只是老二今天的题量长到了老大头上。
+ *
+ * 所以墙用这个函数绕开缓存；热路径完全不受影响（`loadDailyStats()` 仍是唯一缓存入口）。
+ * 读失败 / 脏数据一律返回干净数组（墙是展示层，不能因为一个档案的坏数据白屏）。
+ */
+export async function readDailyStatsFor(profileId: string): Promise<DailyStat[]> {
+  try {
+    const rec = await db.settings.get(dailyStatsKey(profileId))
+    return normalizeDailyStats(rec?.value)
+  } catch {
+    return []
+  }
 }
 
 /**
