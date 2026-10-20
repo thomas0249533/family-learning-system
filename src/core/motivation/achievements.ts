@@ -19,6 +19,13 @@ import { currentProfileId } from '@core/profile/currentProfile'
 import { scopedKey } from '@core/profile/settingsScope'
 import { bestStreak, localDayKey, type StreakState } from './streak'
 import { evidenceOf } from './achievementProgress'
+// 两个 `import type` 都不能变成运行时 import，否则成环：
+//   - `achievementProgress` 在运行时只 import 本文件的 `AchievementContext`（type-only），
+//     这里反向只取 `Measure` 的形状；
+//   - `achievementTaxonomy` 在运行时 import 本文件的 `ACHIEVEMENTS`（真值），反向必须 type-only。
+// type-only 在编译后整条消失，环就断在这里。
+import type { Measure } from './achievementProgress'
+import type { AchievementSource, AchievementTier } from './achievementTaxonomy'
 import type { DailyStat } from './dailyStats'
 
 export type AchievementCategory = 'M' | 'G' | 'B' | 'E'
@@ -58,6 +65,25 @@ export interface AchievementDef {
   chain?: string
   /** 链内顺序（从 1 开始） */
   order?: number
+  /**
+   * 来源（V1.4 · B3）。内置 28 枚**不写**这个字段，由
+   * `achievementTaxonomy.sourceOf(id)` 派生；自定义包的定义自带（包作者声明的来源），
+   * 且**不可能**靠 id 反查出来 —— `TAXONOMY` 里没有它。
+   */
+  source?: AchievementSource
+  /**
+   * 稀有层级（同上）：自定义定义自带。省略时的回落由视图层决定 ——
+   * 内置走 `achievementTaxonomy.tierOf(id)`，自定义包由 `customPack.deriveCustomTier` 推导。
+   */
+  tier?: AchievementTier
+  /**
+   * 进度度量（V1.4 · B3）。自定义定义自带（`manual-check` 的 0/1、
+   * `counter` 的规则度量）；内置 28 枚不写，进度由 `progressOf(id, ctx)` 唯一提供。
+   *
+   * 为什么挂在定义上而不是另开一张 `id → measure` 的映射表：自定义 id 是运行时
+   * 从库里读出来的，静态表装不下；挂在定义上则"定义在哪、度量在哪"，不会漏。
+   */
+  measure?: (ctx: AchievementContext) => Measure
   check: (ctx: AchievementContext) => boolean
 }
 
@@ -483,9 +509,18 @@ export async function saveUnlockedIds(ids: string[]): Promise<void> {
   await saveUnlocked([...new Set(ids)].map((id) => ({ id, unlockedAt: '' })))
 }
 
-/** 当前数据下所有满足条件的徽章 id */
-export function evaluateAchievements(ctx: AchievementContext): string[] {
-  return ACHIEVEMENTS.filter((a) => a.check(ctx)).map((a) => a.id)
+/**
+ * 当前数据下所有满足条件的徽章 id。
+ *
+ * @param extraDefs 额外定义（V1.4 · B3 的自定义包）。**默认空数组** = 老行为逐字节不变。
+ *   刻意不把自定义定义合进 `ACHIEVEMENTS`：那是内置 28 枚的唯一真相，
+ *   混进去会污染 `missingTaxonomy()` / `MEASURABLE_IDS` 之类按"内置 28 枚"成立的推导。
+ */
+export function evaluateAchievements(
+  ctx: AchievementContext,
+  extraDefs: AchievementDef[] = [],
+): string[] {
+  return [...ACHIEVEMENTS, ...extraDefs].filter((a) => a.check(ctx)).map((a) => a.id)
 }
 
 export interface AchievementSyncResult {
@@ -508,16 +543,19 @@ export interface AchievementSyncResult {
 export async function syncAchievements(
   ctx: AchievementContext,
   now: Date = new Date(),
+  extraDefs: AchievementDef[] = [],
 ): Promise<AchievementSyncResult> {
   const saved = await loadUnlocked()
   const savedIds = new Set(saved.map((r) => r.id))
-  const earned = evaluateAchievements(ctx)
+  const earned = evaluateAchievements(ctx, extraDefs)
 
   const newlyIds = earned.filter((id) => !savedIds.has(id))
   const mergedMap = new Map<string, UnlockedRecord>()
   for (const r of saved) mergedMap.set(r.id, r)
   for (const id of earned) {
     if (!mergedMap.has(id)) {
+      // 自定义 id 在 `EVIDENCE_TPL` 里没有模板 → 空串 → 卡片不显示证据行。
+      // 这是对的：证据文案是"内置 28 枚的口径"，不该给家长自建的卡临时编一句。
       const evidence = evidenceOf(id, ctx)
       mergedMap.set(id, {
         id,
@@ -535,10 +573,20 @@ export async function syncAchievements(
   return {
     unlocked: unlockedRecords.map((r) => r.id),
     unlockedRecords,
-    newlyUnlocked: ACHIEVEMENTS.filter((a) => newlyIds.includes(a.id)),
+    // 用"全部定义"过滤而不是只查 ACHIEVEMENTS：否则自定义卡解锁了却弹不出 toast
+    // （结算已经落库，提示却永远不来 —— 孩子看不到自己刚拿到的徽章）
+    newlyUnlocked: [...ACHIEVEMENTS, ...extraDefs].filter((a) => newlyIds.includes(a.id)),
   }
 }
 
-export function achievementById(id: string): AchievementDef | undefined {
-  return ACHIEVEMENTS.find((a) => a.id === id)
+/**
+ * 按 id 找定义。
+ * @param extraDefs 额外定义（自定义包）。内置优先 —— id 撞车时（结构上不可能，
+ *   校验器会拦）内置的定义才是可信的那一份。
+ */
+export function achievementById(
+  id: string,
+  extraDefs: AchievementDef[] = [],
+): AchievementDef | undefined {
+  return ACHIEVEMENTS.find((a) => a.id === id) ?? extraDefs.find((a) => a.id === id)
 }

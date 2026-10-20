@@ -162,6 +162,25 @@ function chainLabelOf(def: AchievementDef): string {
   return ''
 }
 
+/**
+ * 单枚成就的度量（V1.4 · B3 起有两条来源）。
+ *
+ * - 自定义定义自带 `measure`（家长的 `counter` 规则 / `manual-check` 的 0/1）；
+ * - 内置 28 枚没有 `measure` → 回落到 `progressOf`（唯一进度真相）。
+ *
+ * `def.measure` 是**外部数据驱动的闭包**（规则来自家长导入的 JSON），一次抛错不能把
+ * 整页 28 枚一起搞崩 —— 吞掉异常并当作"不可进度化"，卡片仍能正常显示标题与描述。
+ */
+function measureOf(def: AchievementDef, ctx: AchievementContext): Measure | null {
+  if (!def.measure) return progressOf(def.id, ctx)
+  try {
+    return def.measure(ctx)
+  } catch (e) {
+    console.warn('[achievementMeta] 自定义成就度量抛错，按不可进度化处理', def.id, e)
+    return null
+  }
+}
+
 function toItem(
   def: AchievementDef,
   record: UnlockedRecord | undefined,
@@ -169,11 +188,12 @@ function toItem(
 ): AchievementItem {
   const earned = record !== undefined
   const silhouetted = def.hidden === true && !earned
-  const tier = tierOf(def.id)
+  // 层级/来源：自定义定义自带（`TAXONOMY` 里没有它们的 id），内置则由静态表派生
+  const tier = def.tier ?? tierOf(def.id)
   const base = {
     id: def.id,
     category: def.category,
-    source: sourceOf(def.id),
+    source: def.source ?? sourceOf(def.id),
     tier,
     stars: TIER_META[tier].stars,
     earned,
@@ -199,7 +219,7 @@ function toItem(
     }
   }
 
-  const m: Measure | null = progressOf(def.id, ctx)
+  const m: Measure | null = measureOf(def, ctx)
   const current = m?.current ?? 0
   const target = m?.target ?? 0
 
@@ -282,27 +302,38 @@ function buildSection(
 /**
  * 组装成就图鉴。
  *
- * @param ctx     当前数据上下文（**必须实时构建**，不要缓存）
- * @param records 已解锁记录（持久化来源）
+ * @param ctx       当前数据上下文（**必须实时构建**，不要缓存）
+ * @param records   已解锁记录（持久化来源）
+ * @param filter    筛选条件
+ * @param extraDefs 额外定义（V1.4 · B3 自定义包；默认空 = 老行为逐字节不变）。
+ *                  放在**最后**而不是第 3 个参数：`filter` 是既有调用点全部会传的位置，
+ *                  插在中间等于让所有调用方静默把 filter 当成 extraDefs。
  */
 export function buildAchievementView(
   ctx: AchievementContext,
   records: UnlockedRecord[],
   filter?: AchievementFilter,
+  extraDefs: AchievementDef[] = [],
 ): AchievementView {
-  return buildAchievementViewFromItems(buildAchievementItems(ctx, records), {
+  return buildAchievementViewFromItems(buildAchievementItems(ctx, records, extraDefs), {
     noPackages: (ctx.packages ?? []).length === 0,
   }, filter)
 }
 
-/** 只组装 28 枚（不带分区/折叠），供页面在**已缓存 items** 上反复筛选而不重读库 */
+/**
+ * 只组装全部卡片（内置 28 枚 + 额外定义），供页面在**已缓存 items** 上反复筛选而不重读库。
+ *
+ * @param extraDefs 额外定义（V1.4 · B3 自定义包）。追加在内置之后 → 同 category 分组内
+ *   保持"内置在前、自定义在后"，与家长"后来装的"直觉一致。
+ */
 export function buildAchievementItems(
   ctx: AchievementContext,
   records: UnlockedRecord[],
+  extraDefs: AchievementDef[] = [],
 ): AchievementItem[] {
   const at = new Map<string, UnlockedRecord>()
   for (const r of records ?? []) at.set(r.id, r)
-  return ACHIEVEMENTS.map((a) => toItem(a, at.get(a.id), ctx))
+  return [...ACHIEVEMENTS, ...extraDefs].map((a) => toItem(a, at.get(a.id), ctx))
 }
 
 /** 关键词规范化：合并空白、去首尾、小写（全角空格一并折叠） */

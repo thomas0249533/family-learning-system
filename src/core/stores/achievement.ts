@@ -16,6 +16,20 @@
  * 结算会被多个入口并发触发（路由跳转 + 组件完成事件几乎同时发生）。
  * 并发跑没有数据风险（`syncAchievements` 幂等），但会**重复弹同一枚徽章**，
  * 所以：正在跑时只记一个 `rerun` 标记，跑完再补一次，期间所有调用共享同一个 promise。
+ *
+ * ## 自定义成就（V1.4 · B3）
+ * 家长导入的 JSON 包通过 `enabledPackDefs()` 变成 `AchievementDef[]`，作为
+ * **额外定义（extraDefs）** 传给 `syncAchievements` / `buildAchievementItems`。两条铁律：
+ *
+ * 1. **每次现读，不许缓存**。勾选变更、包启停、切换档案都只改库（settings），
+ *    缓存 `extra` 就会继续显示旧卡 —— 那正是 V1.3 那批"界面与数据不一致"的病根。
+ *    所以 `loadExtraDefs()` 每次都重新 `loadPackState()` + `loadChecks()`。
+ * 2. **不并进 `ACHIEVEMENTS`**。那个常量是内置 28 枚的唯一真相；
+ *    混进去会污染 `missingTaxonomy()` / `MEASURABLE_IDS` 这类"按 28 枚成立"的推导，
+ *    且是那种"测试变绿但语义已经错了"的污染。自定义卡只在调用点以 extraDefs 追加。
+ *
+ * 另外 `loadChecks()` **不传 profileId** = 当前档案：勾选是 per-profile 的输入，
+ * 老二没做过就是没做过。
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
@@ -34,6 +48,10 @@ import {
   type AchievementItem,
   type AchievementView,
 } from '@core/motivation/achievementMeta'
+// 自定义包的读取与"包 → 定义"翻译（V1.4 · B3）。这两个模块都是纯逻辑 + 库读写，
+// 不 import 本 store，所以不会成环。
+import { enabledPackDefs } from '@core/motivation/customPackDefs'
+import { loadChecks, loadPackState } from '@core/motivation/customPackStore'
 import { loadStreak } from '@core/motivation/streak'
 import { loadDailyStats } from '@core/motivation/dailyStats'
 import { loadAttemptedTypes } from '@core/motivation/attemptedTypes'
@@ -63,7 +81,14 @@ export const useAchievementStore = defineStore('achievement', () => {
   const loaded = ref(false)
 
   const earnedCount = computed(() => records.value.length)
-  const totalCount = ACHIEVEMENTS.length
+  /**
+   * 已启用的自定义卡枚数（**每次重建视图时刷新**）。
+   *
+   * 为什么要单独记一个数字：`totalCount` 过去是常量 `ACHIEVEMENTS.length`，
+   * 装了自定义包之后会出现"已解锁 30 / 28"这种自相矛盾的进度。
+   */
+  const customCount = ref(0)
+  const totalCount = computed(() => ACHIEVEMENTS.length + customCount.value)
 
   let inflight: Promise<AchievementDef[]> | null = null
   let rerun = false
@@ -96,11 +121,32 @@ export const useAchievementStore = defineStore('achievement', () => {
     }
   }
 
+  /**
+   * 读当前**已启用**的自定义包定义（V1.4 · B3）。
+   *
+   * **每次现读，不缓存**（见文件头「自定义成就」第 1 条）：勾选、启停、切档案
+   * 都只改库，缓存会让界面继续显示旧卡。
+   *
+   * 读失败 → 空数组 + 告警：自定义包是家长扩展出来的激励内容，
+   * 它的读取故障绝不能把内置 28 枚的图鉴一起搞崩（那才是孩子每天都在看的东西）。
+   */
+  async function loadExtraDefs(): Promise<AchievementDef[]> {
+    try {
+      const [state, checks] = await Promise.all([loadPackState(), loadChecks()])
+      return enabledPackDefs(state, checks)
+    } catch (e) {
+      console.warn('[achievement] 读取自定义包失败，按无自定义成就处理', e)
+      return []
+    }
+  }
+
   /** 只重建视图，不写库（图鉴刷新用） */
   async function refreshView(): Promise<AchievementView> {
     if (!loaded.value) await load()
     const ctx = await buildContext()
-    items.value = buildAchievementItems(ctx, records.value)
+    const extra = await loadExtraDefs()
+    items.value = buildAchievementItems(ctx, records.value, extra)
+    customCount.value = extra.length
     noPackages.value = (ctx.packages ?? []).length === 0
     view.value = buildAchievementViewFromItems(items.value, { noPackages: noPackages.value })
     return view.value
@@ -128,9 +174,14 @@ export const useAchievementStore = defineStore('achievement', () => {
       try {
         await load()
         const ctx = await buildContext()
-        const result = await syncAchievements(ctx)
+        // 每次现读（见文件头「自定义成就」）：勾完选、启停包之后这一次结算必须看到新状态
+        const extra = await loadExtraDefs()
+        // ★ 第 3 个参数才是 extraDefs（第 2 个是 now）。把 extraDefs 故意放在最后，
+        //   就是为了让 `syncAchievements(ctx, extra)` 这种写法直接被 tsc 拦下来。
+        const result = await syncAchievements(ctx, new Date(), extra)
         records.value = result.unlockedRecords
-        items.value = buildAchievementItems(ctx, result.unlockedRecords)
+        items.value = buildAchievementItems(ctx, result.unlockedRecords, extra)
+        customCount.value = extra.length
         noPackages.value = (ctx.packages ?? []).length === 0
         view.value = buildAchievementViewFromItems(items.value, { noPackages: noPackages.value })
 
@@ -174,6 +225,10 @@ export const useAchievementStore = defineStore('achievement', () => {
     pending.value = []
     view.value = null
     items.value = []
+    // 勾选是 per-profile 的：切完档案启用卡数量可能变（同一个包在两个档案里
+    // 勾选不同 → 手工卡的解锁态不同，但**枚数**只跟已启用包有关）。
+    // 清零只是为了让"切档案后、重建视图前"这一瞬间不显示上一个档案的总数。
+    customCount.value = 0
     loaded.value = false
   }
 
