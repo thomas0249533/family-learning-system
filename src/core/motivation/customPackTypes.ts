@@ -81,6 +81,23 @@ export type CustomRule =
   | { kind: 'manual-check'; prompt: string }
   | { kind: 'counter'; metric: CounterMetric; target: number }
 
+/**
+ * 可重复达成的周期（V1.5）。**只有周**，周一起算。
+ *
+ * ## 为什么是字符串而不是对象
+ * 家长写的是 JSON，`"repeat": "weekly"` 比 `"repeat": { "period": "weekly" }` 少一层，
+ * 抄错的机会也少一层。等真的有第二种周期（`daily`）再加值，
+ * 校验器按白名单判定，多写一个值就是一条 E_REPEAT_PERIOD。
+ *
+ * ## 为什么 `manual-check` 不允许 repeat
+ * 「家长勾一次」没有可累计的量：勾选态是 0/1，重复达成无从度量。
+ * 放开它只有一个做法 —— 允许同一张卡每周被再勾一次，那会把 `customChecks`
+ * 从"一次性输入"变成"按周的表"，是另一个数据结构，不在这一版做（见 §校验的 E_REPEAT_MANUAL）。
+ */
+export type CustomRepeatPeriod = 'weekly'
+
+export const CUSTOM_REPEAT_PERIODS: readonly CustomRepeatPeriod[] = ['weekly']
+
 export type CustomCategory = 'M' | 'G' | 'B' | 'E'
 export const CUSTOM_CATEGORIES: readonly CustomCategory[] = ['M', 'G', 'B', 'E']
 
@@ -107,6 +124,12 @@ export interface CustomAchievement {
   /** 量词覆盖（`counter` 用）；省略取 `METRIC_META[metric]` */
   unit?: string
   noun?: string
+  /**
+   * 可重复达成（V1.5）。只有 `counter` 规则可以带 —— 语义是
+   * 「本周期内该指标又推进了**一份 `target` 那么多** → 记一次」，一周最多一次。
+   * 见 `customPackDefs` 里翻成 `RepeatRule(mode: 'grow')` 的那一段。
+   */
+  repeat?: CustomRepeatPeriod
   rule: CustomRule
 }
 
@@ -198,7 +221,20 @@ export interface PackPreview {
    * 把它们算进 `added` 会让 UI 的"将新增 N 枚"变成"重复导入一批"的误读。
    * 需要"本版总共多少枚"就读 `provided`，两个数分开，调用方不可能再理解错。
    */
-  added: Array<{ id: string; title: string; category: CustomCategory; ruleKind: CustomRule['kind'] }>
+  added: Array<{
+    id: string
+    title: string
+    category: CustomCategory
+    ruleKind: CustomRule['kind']
+    /**
+     * 这张卡是否可重复达成（V1.5）。`undefined` = 一次性成就。
+     *
+     * 为什么让 preview 带上它：可重复是**家长看得懂、也在乎**的属性
+     * （"这枚每周都能再拿一次"），而导入前那张清单是唯一能看到它的地方 ——
+     * 导入完成后再发现，孩子的图鉴上已经多了枚会重复计数的卡。
+     */
+    repeat?: CustomRepeatPeriod
+  }>
   /** 旧版本已有、本版仍保留的枚数（按 id 计；新包恒 0） */
   retained: number
   /** 本版总共提供多少枚（= `added.length + retained`，不含冲突项） */

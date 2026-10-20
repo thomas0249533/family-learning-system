@@ -71,6 +71,11 @@
           <li v-for="added in preview.added" :key="added.id" class="cp-added">
             <span class="cp-added-icon" aria-hidden="true">{{ iconFor(added.id, added.category) }}</span>
             <span class="cp-added-title">{{ added.title }}</span>
+            <!-- 可重复（V1.5）：这是家长唯一能在导入**之前**看到它的地方。
+                 导入后再发现，图鉴上已经多了枚会一直计次数的卡。 -->
+            <AppBadge v-if="added.repeat === 'weekly'" tone="info" size="sm" icon="🔁">
+              每周可重复
+            </AppBadge>
             <span class="cp-added-category">{{ categoryLabel(added.category) }}</span>
           </li>
         </ul>
@@ -163,6 +168,10 @@
                 {{ pack.enabled ? '已启用' : '已停用' }}
               </AppBadge>
               <span class="cp-row-count">{{ pack.pack.achievements.length }} 枚</span>
+              <!-- 已经装上的包里有多少枚会重复计数：停用/启用的判断依据之一 -->
+              <span v-if="repeatableCount(pack) > 0" class="cp-row-repeat">
+                {{ repeatableCount(pack) }} 枚每周可重复
+              </span>
             </div>
             <div class="cp-row-actions">
               <AppButton
@@ -557,6 +566,16 @@ function manualItems(pack: StoredPack): ManualAchievement[] {
 /** 勾选键统一走 `checkKey`，不在这里手拼字符串（拼错了就是"勾了但不算"） */
 function isChecked(packId: string, achievementId: string): boolean {
   return checks.value[checkKey(packId, achievementId)] !== undefined
+}
+
+/**
+ * 这个包里有多少枚会**每周重复计数**（V1.5）。
+ *
+ * 面板上只说"共 N 枚"会漏掉这个属性：家长看到图鉴上「第 3 次」时，
+ * 最需要能回头确认是哪张卡在重复，以及是不是自己写的。
+ */
+function repeatableCount(pack: StoredPack): number {
+  return pack.pack.achievements.filter((a) => a.repeat !== undefined).length
 }
 
 // ---------------------------------------------------------------------
@@ -1141,6 +1160,14 @@ onMounted(async () => {
   font-size: var(--font-2xs);
   font-weight: 600;
   color: var(--text-muted);
+}
+
+/* 可重复徽标的纯文字版（行内紧凑，不抢 AppBadge 的视觉重量） */
+.cp-row-repeat {
+  font-size: var(--font-2xs);
+  font-weight: 600;
+  color: var(--info-text);
+  white-space: nowrap;
 }
 
 .cp-row-actions {

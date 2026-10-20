@@ -21,7 +21,7 @@
  * `achievementTaxonomy.deriveTier()` 从 `target` / `hidden` 推导 —— 复用内置 28 枚同一套
  * 规则，**不另写一份阈值**。包里写了就以包里为准（家长/包作者可以手动调层级）。
  */
-import type { AchievementDef } from './achievements'
+import type { AchievementContext, AchievementDef } from './achievements'
 import { deriveCustomTier } from './customPack'
 import { evaluateRule, ruleMeasure } from './customRule'
 import {
@@ -85,6 +85,25 @@ function toDef(packId: string, a: CustomAchievement, checks: CustomCheckState): 
     check: (ctx) => evaluateRule(rule, ctx) >= target,
     // 量词覆盖透传：包里写了 unit/noun 就用它，没写由 ruleMeasure 回落到 METRIC_META
     measure: ruleMeasure(rule, { unit: a.unit, noun: a.noun }),
+    /*
+     * 可重复达成（V1.5）。翻成 `mode: 'grow'`：
+     * 「本周这个指标又推进了**一份 `target` 那么多**」= 又达成了一次。
+     *
+     * 为什么 step 就是 target、不给家长单独配：`target` 是这张卡对"一次达成"的定义，
+     * 重复一次自然就是"再完成一遍同样的量"。多一个 knob 就多一个要解释、要校验、
+     * 要防写错的字段，而它换来的表达能力（"每周只要动一点点就算又一次"）
+     * 恰好会让「第 N 次」失去分量。
+     */
+    ...(a.repeat === 'weekly'
+      ? {
+          repeat: {
+            period: 'weekly' as const,
+            mode: 'grow' as const,
+            step: target,
+            valueOf: (ctx: AchievementContext) => evaluateRule(rule, ctx),
+          },
+        }
+      : {}),
   }
 }
 

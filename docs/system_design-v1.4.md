@@ -649,6 +649,53 @@ export function evaluateRule(rule: CustomRule, ctx: CounterContext): number  // 
 
 > 注：这一项的**包导入 UI、预览 diff、回滚、审计**在 B3 才做。本版先把 `evaluateRule` 与校验器做成纯函数。
 
+#### 8.4.1 可重复达成（V1.5 追加）
+
+包格式只加一个**可选字符串**字段：
+
+```jsonc
+{ "id": "custom::read-10", "rule": { "kind": "counter", "metric": "masteredKp", "target": 10 },
+  "repeat": "weekly" }
+```
+
+| 取值 | 含义 | 校验 |
+|---|---|---|
+| 省略 | 一次性成就（默认，绝大多数卡） | — |
+| `"weekly"` | 每满一周、且指标**又推进了一份 `target`** → 记一次（周一起算） | 只认白名单值 |
+| 其它任何值 | 拒绝 | `E_REPEAT_PERIOD` |
+| 配在 `manual-check` 上 | 拒绝 | `E_REPEAT_MANUAL` |
+
+**为什么 `manual-check` 不许 repeat**：勾选态是 0/1，没有可累计的量。放开它只有一条路 ——
+让同一张卡每周被再勾一次，那会把 `customChecks` 从"一次性输入"变成"按周的表"，是另一个数据结构。
+
+**翻译成运行时规则**（`customPackDefs.toDef`）：
+
+```ts
+repeat: { period: 'weekly', mode: 'grow', step: rule.target, valueOf: (ctx) => evaluateRule(rule, ctx) }
+```
+
+`RepeatRule` 是判别式联合，两种"又做到了一次"：
+
+| mode | 判据 | 用在哪 |
+|---|---|---|
+| `hold` | 布尔：这一周期是否**仍然保持着**那个状态（必须非单调，不能用 `def.check`） | 内置 `streak-7` |
+| `grow` | 增量：这一周期是否**又推进了 `step` 那么多** | 自定义 `counter` 卡 |
+
+`grow` 需要一个基线游标 `UnlockedRecord.repeatBase`，且增量是**相对上次计数**而不是相对本周期开始 ——
+后者会让"只在周末打开一次应用"的家庭永远算不出增长（每次打开都正好是新周期起点，差值恒 0）。
+
+结算四条（`syncAchievements`）：
+
+1. 没有游标（升级 / 合并后丢失）→ 只落游标，不计数；
+2. 本周（或更晚的周）已计过 → 幂等，直接跳过；
+3. `value - base < step` → 不动，**且游标不前移**（零头累计到下个周期，否则"每周进步一点点"永远凑不够）；
+4. 否则 +1，游标前移到当前值（一周最多一次，暴涨 10 倍也只记一次）。
+
+**合并口径**：`repeatBase` **有意不合并**（`repeatCount` 取 max、`lastRepeatPeriod` 取较晚）。
+游标是"本机看到过的最后一个值"，不是事实；搬过来会造出"没做到却 +1"。合并后本机重新落基线，
+最多丢一周增量。`dedupeUnlocked` 内部则取**较大**游标（宁可少记，不可虚涨）。
+
+
 ### 8.5 打印分页（D4）
 
 分页算法是纯函数，不依赖 DOM：

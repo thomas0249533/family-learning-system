@@ -249,3 +249,104 @@ test.describe('自定义成就包（V1.4 · B3）', () => {
     await expect(page.locator('.ach-card')).toHaveCount(28)
   })
 })
+
+/**
+ * V1.5 · 自定义包的 `"repeat": "weekly"`（真机验证）
+ * ------------------------------------------------------------------
+ * 单测（`tests/custom-pack-repeat.test.ts`，45 条）已经把校验码、grow 的四条结算、
+ * 合并口径全部穷举过。这里只验**结构上单测验不到的两件事**：
+ *
+ *   1. 可重复属性在**导入之前**就出现在预览清单上 —— 这是家长唯一能发现它的机会，
+ *      导入之后再发现，图鉴上已经多了枚会一直计次数的卡；
+ *   2. 装好之后面板行上能看出"这个包里有几枚会重复计数"（停用/启用的判断依据）。
+ */
+test.describe('自定义包 · 可重复达成（V1.5）', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/home')
+    await resetDb(page)
+    await waitDbReady(page)
+    await seedProfiles(page)
+  })
+
+  /** 一枚 counter 卡 + 一枚普通 card（对照：不该出现徽标的那一张） */
+  function counterPack(over: Record<string, unknown> = {}): Record<string, unknown> {
+    return {
+      schemaVersion: 1,
+      packId: 'home-weekly',
+      name: '每周挑战',
+      achievements: [
+        {
+          id: 'custom::read-10',
+          icon: '📖',
+          title: '掌握 10 个',
+          desc: '累计掌握 10 个知识点',
+          category: 'B',
+          source: 'habit',
+          rule: { kind: 'counter', metric: 'masteredKp', target: 10 },
+          repeat: 'weekly',
+        },
+        {
+          id: 'custom::tidy-desk',
+          icon: '🧹',
+          title: '自己整理书桌',
+          desc: '家长确认',
+          category: 'M',
+          source: 'core',
+          rule: { kind: 'manual-check', prompt: '做到了吗' },
+        },
+      ],
+      ...over,
+    }
+  }
+
+  test('预览清单标出「每周可重复」→ 导入后面板行也标出枚数', async ({ page }) => {
+    await page.goto('/parent')
+    await page.locator('.custom-pack-panel').waitFor({ state: 'visible', timeout: 20_000 })
+
+    await pickPack(page, counterPack())
+
+    // 只有 counter 那张带徽标（manual-check 不许 repeat，也拿不到徽标）
+    await expect(page.locator('.cp-added')).toHaveCount(2)
+    await expect(page.locator('.cp-added .app-badge', { hasText: '每周可重复' })).toHaveCount(1)
+
+    await page.locator('.cp-confirm').click()
+    await expect(page.locator('.cp-row')).toHaveCount(1)
+    await expect(page.locator('.cp-row-repeat')).toHaveText('1 枚每周可重复')
+
+    // 卡真的进了图鉴：28 + 2
+    await page.goto('/achievements')
+    await waitDbReady(page)
+    await expect(page.locator('.ach-card')).toHaveCount(30)
+  })
+
+  test('repeat 写了不支持的周期 → 预览前就报错，导入按钮根本不出现', async ({ page }) => {
+    await page.goto('/parent')
+    await page.locator('.custom-pack-panel').waitFor({ state: 'visible', timeout: 20_000 })
+
+    await pickPack(
+      page,
+      counterPack({
+        achievements: [
+          {
+            id: 'custom::read-10',
+            icon: '📖',
+            title: '掌握 10 个',
+            desc: '累计掌握 10 个知识点',
+            category: 'B',
+            source: 'habit',
+            rule: { kind: 'counter', metric: 'masteredKp', target: 10 },
+            repeat: 'daily',
+          },
+        ],
+      }),
+    )
+
+    await expect(page.locator('.cp-errors')).toBeVisible()
+    // 文案要指到 repeat 上，家长才知道改哪儿（不是"JSON 读不出来"）
+    await expect(page.locator('.cp-error-msg')).toContainText('repeat')
+    // 校验失败时连"确认导入"都不渲染 —— 那份预览是另一条分支
+    await expect(page.locator('.cp-confirm')).toHaveCount(0)
+    // 拒绝的导入不留痕迹：面板上仍然没有包
+    await expect(page.locator('.cp-row')).toHaveCount(0)
+  })
+})

@@ -29,6 +29,7 @@ import {
   CUSTOM_CATEGORIES,
   CUSTOM_ID_PREFIX,
   CUSTOM_PACK_SCHEMA_VERSION,
+  CUSTOM_REPEAT_PERIODS,
   CUSTOM_SOURCES,
   CUSTOM_TIERS,
   LIMITS,
@@ -39,6 +40,7 @@ import {
   type CustomAchievement,
   type CustomCategory,
   type CustomPack,
+  type CustomRepeatPeriod,
   type CustomRule,
   type CustomSource,
   type CustomTier,
@@ -382,6 +384,32 @@ export function parseCustomPack(
       }
     }
 
+    // ---- 可重复达成（V1.5）----
+    // 两条规则：
+    //   1) 只认白名单里的周期值（`"weekly"`），写别的按"不支持"拒 —— 与 rule.kind 同一套态度：
+    //      不猜、不降级，否则家长以为配好了、实际没生效；
+    //   2) `manual-check` 不能带 repeat：勾选态是 0/1，没有可累计的量，
+    //      "每周再勾一次"需要把 customChecks 改成按周的表，是另一个数据结构。
+    const rawRepeat = item['repeat']
+    let repeatOk = false
+    if (rawRepeat !== undefined) {
+      if (!CUSTOM_REPEAT_PERIODS.includes(rawRepeat as CustomRepeatPeriod)) {
+        addError(
+          `${path}.repeat`,
+          'E_REPEAT_PERIOD',
+          `repeat 只支持 ${CUSTOM_REPEAT_PERIODS.map((p) => `"${p}"`).join(' / ')}（当前：${brief(rawRepeat)}）`,
+        )
+      } else if (rule !== null && rule.kind === 'manual-check') {
+        addError(
+          `${path}.repeat`,
+          'E_REPEAT_MANUAL',
+          'manual-check 的卡片不能声明 repeat：勾选态是 0/1，没有可累计的量。想每周重复，请改用 counter 规则',
+        )
+      } else {
+        repeatOk = true
+      }
+    }
+
     // 这枚有任何问题 → 不参与归一化产物（反正整包会被拒，产物只用于 preview 之外的下游展示）
     if (errors.length !== errorsBefore) continue
     if (rule === null) continue // 理论上到不了：上面必有一条 E_RULE_KIND
@@ -426,6 +454,9 @@ export function parseCustomPack(
     if (targetOut !== undefined) achievement.target = targetOut
     // 家长写的合法 tier 原样保留；没写才推导
     achievement.tier = tierOk && typeof rawTier === 'string' ? (rawTier as CustomTier) : deriveCustomTier(achievement)
+    // 同理：没写 repeat 就**不写**这个键（而不是写 undefined），
+    // 这样 `'repeat' in a` 恒等于"这张卡可重复"，下游不用区分"没写"和"写了空"
+    if (repeatOk) achievement.repeat = rawRepeat as CustomRepeatPeriod
 
     normalized.push(achievement)
   }
@@ -509,7 +540,14 @@ export function previewCustomPack(
       retained += 1
       continue
     }
-    added.push({ id: a.id, title: a.title, category: a.category, ruleKind: a.rule.kind })
+    added.push({
+      id: a.id,
+      title: a.title,
+      category: a.category,
+      ruleKind: a.rule.kind,
+      // 只在真的可重复时带上这个键（与 `parseCustomPack` 里"没写就不写"同一套约定）
+      ...(a.repeat !== undefined ? { repeat: a.repeat } : {}),
+    })
   }
 
   return {

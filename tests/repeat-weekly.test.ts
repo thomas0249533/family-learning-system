@@ -141,11 +141,14 @@ describe('可重复成就的范围（这是裁决出来的，不是随手加的�
     expect(ids).toEqual(['streak-7'])
   })
 
-  it('streak-7 的 repeat 用周口径，且 holds 与 check 不是同一个谓词', () => {
+  it('streak-7 的 repeat 用周口径、hold 模式，且 holds 与 check 不是同一个谓词', () => {
     const def = ACHIEVEMENTS.find((a) => a.id === 'streak-7')
     expect(def?.repeat?.period).toBe('weekly')
+    // 内置卡一律 hold：它要判的是"这一周是否仍然保持在一周不断"，不是"又推进了多少"
+    expect(def?.repeat?.mode).toBe('hold')
     // 同一个谓词 = 单调 = 每周白涨一次（躺平也「第 N 次」）。这条断言守的是"没有偷懒复用 check"
-    expect(def?.repeat?.holds).not.toBe(def?.check)
+    const rule = def?.repeat
+    expect(rule?.mode === 'hold' ? rule.holds : null).not.toBe(def?.check)
   })
 })
 
@@ -301,6 +304,7 @@ describe('syncAchievements · weekly 重复', () => {
       check: () => true,
       repeat: {
         period: 'weekly' as const,
+        mode: 'hold' as const,
         holds: () => {
           throw new Error('boom')
         },
@@ -328,7 +332,7 @@ describe('syncAchievements · weekly 重复', () => {
       desc: '测试用',
       category: 'B' as const,
       check: () => true,
-      repeat: { period: 'weekly' as const, holds: () => true },
+      repeat: { period: 'weekly' as const, mode: 'hold' as const, holds: () => true },
     }
     await seed([
       { id: 'custom-repeat', unlockedAt: '2026-10-01', lastRepeatPeriod: 'W2026-10-12' },

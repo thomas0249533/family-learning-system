@@ -58,27 +58,45 @@ export type RepeatPeriod = 'weekly'
 /**
  * 可重复达成规则（V1.5）。
  *
- * ## 为什么是"一个对象"而不是两个平铺字段
- * `period` 单独存在毫无意义，`holds` 单独存在不知道按什么周期比 ——
- * 拆成两个可选字段就会出现"只填了一个"的半配置，而这种半配置在运行时
- * 表现为`repeatCount` 悄悄不涨（不报错）。做成一个对象，
- * **要么都有、要么都没有**，tsc 直接拦住。
+ * ## 为什么是"一个对象 + mode 判别"而不是几个平铺可选字段
+ * `period` 单独存在毫无意义，判据单独存在不知道按什么周期比 ——
+ * 拆成多个可选字段就会出现"只填了一个"的半配置，而这种半配置在运行时
+ * 表现为 `repeatCount` 悄悄不涨（不报错）。做成判别式联合，
+ * **填错组合 tsc 直接拦**。
  *
- * ## `holds` 必须是**非单调**谓词
- * 不能用 `def.check`：那是"曾经达到过"的单调语义（一旦为真永远为真）。
- * 拿它当重复判据 = 每过一周 `repeatCount` 就 +1，哪怕孩子从解锁那天起再没学过。
- * `streak-7` 用的是**当前**连续天数（`effectiveCurrent`），断了就回落 ——
- * 那才是"又坚持了一整周"。这一条是本模块唯一的正确性关键点。
+ * ## 两种 mode 对应两种"又做到了一次"
+ *
+ * | mode | 判据 | 用在哪 |
+ * |---|---|---|
+ * | `hold` | 布尔：这一周期是否**仍然保持着**那个状态 | 内置 `streak-7` |
+ * | `grow` | 增量：这一周期是否**又推进了 `step` 那么多** | 自定义包 `counter` 卡 |
+ *
+ * `hold` 的 `holds` **必须是非单调**谓词，不能用 `def.check`：后者是"曾经达到过"
+ * 的单调语义（一旦为真永远为真），拿它当重复判据 = 每过一周 +1，孩子躺平也「第 N 次」。
+ *
+ * `grow` 需要一个**基线游标**（`UnlockedRecord.repeatBase`）才能算增量，
+ * 且增量是"相对上次计数"，不是"相对本周期开始" —— 后者会让
+ * "只在周末打开一次应用"的家庭永远算不出增长（每次打开都正好是新周期的起点）。
  */
-export interface RepeatRule {
-  period: RepeatPeriod
-  /**
-   * 这一周期里是否真的又做到了一次。
-   * @param now 结算时刻（`syncAchievements` 传入），用于算"当前"口径
-   *   （`effectiveCurrent` 需要它来判断打卡是否已经断了）。**不要在里面读 `new Date()`**。
-   */
-  holds: (ctx: AchievementContext, now: Date) => boolean
-}
+export type RepeatRule =
+  | {
+      period: RepeatPeriod
+      mode: 'hold'
+      /**
+       * 这一周期里是否仍然保持着那个状态。
+       * @param now 结算时刻（`syncAchievements` 传入），用于算"当前"口径
+       *   （如 `effectiveCurrent` 要判断打卡有没有断）。**不要在里面读 `new Date()`**。
+       */
+      holds: (ctx: AchievementContext, now: Date) => boolean
+    }
+  | {
+      period: RepeatPeriod
+      mode: 'grow'
+      /** 又推进多少才算"又一次达成"（自定义卡取该卡自己的 target） */
+      step: number
+      /** 当下的计数值（与 `check` 同源，避免"进度满了但次数不涨"） */
+      valueOf: (ctx: AchievementContext) => number
+    }
 
 export interface AchievementDef {
   id: string
@@ -366,6 +384,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
      */
     repeat: {
       period: 'weekly',
+      mode: 'hold',
       holds: (ctx, now) => effectiveCurrent(ctx.streak, now) >= 7,
     },
   },
@@ -526,11 +545,33 @@ export interface UnlockedRecord {
    * （升级前的旧记录都长这样，第一次结算只落基线、不计数）。
    */
   lastRepeatPeriod?: string
+  /**
+   * `mode: 'grow'` 卡的**基线游标**：上一次计数时（或第一次观察时）的指标值，V1.5。
+   *
+   * 只有自定义包的 `counter` 卡会写它（内置 `streak-7` 是 `hold` 型，用不到）。
+   *
+   * ## 为什么基线是"相对上次计数"而不是"相对本周期开始"
+   * 若按周期开始记基线，只在周末打开一次应用的家庭会永远算不出增长
+   * （每次打开都是新周期的起点，差值恒为 0）。用游标则增长会累计到够 `step` 为止。
+   *
+   * ## 合并时**不搬运**这个字段（见 `mergeSettings.mergeAchievements`）
+   * 它是"本机看到过的最后一个值"，不是事实。合并后由本机重新落基线，
+   * 最多丢掉一周的增量 —— 而随便挑一边合进来会造出无法解释的 +1。
+   */
+  repeatBase?: number
 }
 
 /** 重复次数的归一化：只认 ≥1 的整数；脏数据一律当"没有这个字段"（= 1 次）。 */
 export function normalizeRepeatCount(raw: unknown): number | undefined {
   return typeof raw === 'number' && Number.isInteger(raw) && raw >= 1 ? raw : undefined
+}
+
+/**
+ * 基线游标的归一化：只认有限数（负值不合法 —— 指标没有负数口径）。
+ * 脏值当"没有游标" → 下次结算重新落基线，最多丢一周增量，不会造成虚涨。
+ */
+export function normalizeRepeatBase(raw: unknown): number | undefined {
+  return typeof raw === 'number' && Number.isFinite(raw) && raw >= 0 ? raw : undefined
 }
 
 /**
@@ -566,6 +607,9 @@ export function normalizeUnlocked(raw: unknown): UnlockedRecord[] {
       // 周键同理：只搬运形状合法的，脏值当"还没开始记重复"（下次结算落基线）
       const period = normalizeRepeatPeriod(rec.lastRepeatPeriod)
       if (period !== undefined) out.lastRepeatPeriod = period
+      // 基线游标（grow 型才用）：负数/NaN 当没有
+      const base = normalizeRepeatBase(rec.repeatBase)
+      if (base !== undefined) out.repeatBase = base
       return [out]
     }
     return []
@@ -627,9 +671,20 @@ export function dedupeUnlocked(records: UnlockedRecord[]): UnlockedRecord[] {
       normalizeRepeatPeriod(r.lastRepeatPeriod),
     )
     if (period) merged.lastRepeatPeriod = period
+    // 基线游标取**较大**：游标越大，同样的指标越难再凑够 step —— 是"宁可少记一次"的方向。
+    // 取小值会让两份记录里的较低基线胜出，凭空多记一次（虚涨），而"少记"下个周期还能补回来。
+    const base = mergeRepeatBase(normalizeRepeatBase(prev.repeatBase), normalizeRepeatBase(r.repeatBase))
+    if (base !== undefined) merged.repeatBase = base
     map.set(r.id, merged)
   }
   return [...map.values()]
+}
+
+/** 取较大的基线游标（任一侧缺失取另一侧） */
+function mergeRepeatBase(a: number | undefined, b: number | undefined): number | undefined {
+  if (a === undefined) return b
+  if (b === undefined) return a
+  return a >= b ? a : b
 }
 
 /** 取较晚的周期键（任一侧缺失取另一侧；形状非法已在 `normalizeRepeatPeriod` 滤掉） */
@@ -726,30 +781,62 @@ export async function syncAchievements(
         unlockedAt: localDayKey(now),
         ...(evidence ? { evidence } : {}),
       }
-      // 解锁当周就算作已计入：否则同一周里 `holds` 也为真时会立刻变成「第 2 次」
-      if (def.repeat) record.lastRepeatPeriod = weekKey
+      if (def.repeat) {
+        // 解锁当周就算作已计入：否则同一周里判据也为真时会立刻变成「第 2 次」
+        record.lastRepeatPeriod = weekKey
+        // grow 型还要落基线，否则下周第一次结算会把"解锁以来的全部增长"当成一次重复
+        if (def.repeat.mode === 'grow') record.repeatBase = repeatValue(def, ctx)
+      }
       mergedMap.set(def.id, record)
       continue
     }
 
     // ---------- 已解锁：只有声明了 repeat 的才可能涨 ----------
     if (!def.repeat) continue
+    const rule = def.repeat
 
-    // ① 升级路径：旧记录没有锚点 → 落基线，不计数
-    if (prev.lastRepeatPeriod === undefined) {
-      mergedMap.set(def.id, { ...prev, lastRepeatPeriod: weekKey })
+    if (rule.mode === 'hold') {
+      // ① 升级路径：旧记录没有锚点 → 落基线，不计数
+      if (prev.lastRepeatPeriod === undefined) {
+        mergedMap.set(def.id, { ...prev, lastRepeatPeriod: weekKey })
+        changed = true
+        continue
+      }
+      // ② 本周期（或更晚的周期）已计过 → 幂等
+      if (prev.lastRepeatPeriod >= weekKey) continue
+      // ③ 这一周期没真的又做到一次 → 不涨
+      if (!repeatHolds(rule, ctx, now, def.id)) continue
+
+      mergedMap.set(def.id, {
+        ...prev,
+        repeatCount: (normalizeRepeatCount(prev.repeatCount) ?? 1) + 1,
+        lastRepeatPeriod: weekKey,
+      })
       changed = true
       continue
     }
-    // ② 本周期（或更晚的周期）已计过 → 幂等
-    if (prev.lastRepeatPeriod >= weekKey) continue
-    // ③ 这一周期没真的又做到一次 → 不涨
-    if (!repeatHolds(def, ctx, now)) continue
+
+    // ---------- grow：本周期又推进了 step ----------
+    const value = repeatValue(def, ctx)
+    const base = prev.repeatBase
+
+    // ① 没有游标（升级路径 / 合并后丢失）→ 只落游标，不计数
+    if (base === undefined) {
+      mergedMap.set(def.id, { ...prev, repeatBase: value })
+      changed = true
+      continue
+    }
+    // ② 本周期（或更晚的周期）已计过 → 幂等 + 时钟回拨保护
+    if (prev.lastRepeatPeriod !== undefined && prev.lastRepeatPeriod >= weekKey) continue
+    // ③ 增长不够一份目标 → 不动（游标**不前移**，增量继续累计到下个周期）
+    if (value - base < rule.step) continue
 
     mergedMap.set(def.id, {
       ...prev,
       repeatCount: (normalizeRepeatCount(prev.repeatCount) ?? 1) + 1,
       lastRepeatPeriod: weekKey,
+      // 游标前移到当前值：下一份目标要从这里重新累计（否则一次大涨会连记好几周）
+      repeatBase: value,
     })
     changed = true
   }
@@ -770,20 +857,39 @@ export async function syncAchievements(
 }
 
 /**
- * `repeat.holds` 的安全调用。
+ * `hold.holds` 的安全调用。
  *
- * 自定义包的 `holds` 是**外部数据驱动的闭包**（未来开放给家长 JSON 时），
- * 一次抛错不能把 `streak-7` 之外的所有徽章结算一起搞崩：吞掉异常并当作
- * "这一周期不算"，下一周期还有机会。与 `achievementMeta.measureOf` 同一条防御。
+ * 自定义包的判据是**外部数据驱动的闭包**（家长 JSON 里描述的东西），
+ * 一次抛错不能把其他徽章的结算一起搞崩：吞掉异常并当作"这一周期不算"，
+ * 下一周期还有机会。与 `achievementMeta.measureOf` 同一条防御。
  */
-function repeatHolds(def: AchievementDef, ctx: AchievementContext, now: Date): boolean {
-  const rule = def.repeat
-  if (!rule) return false
+function repeatHolds(
+  rule: Extract<RepeatRule, { mode: 'hold' }>,
+  ctx: AchievementContext,
+  now: Date,
+  id: string,
+): boolean {
   try {
     return rule.holds(ctx, now) === true
   } catch (e) {
-    console.warn('[achievements] repeat.holds 抛错，本周不计入重复', def.id, e)
+    console.warn('[achievements] repeat.holds 抛错，本周不计入重复', id, e)
     return false
+  }
+}
+
+/**
+ * `grow.valueOf` 的安全调用：非有限数一律当 0。
+ * 抛错时返回 0 —— 于是 `value - base` 为负，等同于"这一周期没增长"，不会虚涨。
+ */
+function repeatValue(def: AchievementDef, ctx: AchievementContext): number {
+  const rule = def.repeat
+  if (!rule || rule.mode !== 'grow') return 0
+  try {
+    const v = rule.valueOf(ctx)
+    return Number.isFinite(v) ? v : 0
+  } catch (e) {
+    console.warn('[achievements] repeat.valueOf 抛错，按 0 处理', def.id, e)
+    return 0
   }
 }
 

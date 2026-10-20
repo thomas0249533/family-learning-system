@@ -164,6 +164,10 @@ function mergeAchievements(
       normalizeRepeatPeriod(r.lastRepeatPeriod),
     )
     if (period) merged.lastRepeatPeriod = period
+    // `repeatBase` **有意不合并**（V1.5）。它是 grow 型卡的"本机看到过的最后一个指标值"，
+    // 不是事实：另一台设备的游标指向的是它在**它的**数据上看到的值，搬过来算增量没有意义。
+    // 合并后本机第一次结算会重新落基线（`base === undefined` 分支），最多丢一周的增量；
+    // 而随便挑一边合进来，会造出"明明没做到却又 +1"这种没法解释的记录。
     map.set(r.id, merged)
   }
 
