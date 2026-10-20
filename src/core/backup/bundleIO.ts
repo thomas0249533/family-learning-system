@@ -11,11 +11,12 @@
  *
  * ## 为什么导出的 settings 要两套口径
  * - `LocalSnapshot.bundles[].settings` 是 `Record<基名, 值>`（合并引擎用它，键不带 pid，
- *   由合并函数再拼回去，见 `types.ts` 的 `Bundle` 注释）。**只取 8 个分片键**：
- *   合并函数只认识这 8 个，塞进去更多只会被静默丢掉，反而掩盖问题。
+ *   由合并函数再拼回去，见 `types.ts` 的 `Bundle` 注释）。**只取 `PROFILE_SCOPED_KEYS`
+ *   里登记的分片键**（V1.4·B3 起含 `customChecks`）：
+ *   合并函数只认识登记过的那些，塞进去更多只会被静默丢掉，反而掩盖问题。
  * - `BackupV2.profiles[].settings` 是 `SettingRecord[]`（**全名**键，直接 `settings.put`）。
  *   这里**要尽量带全** —— 备份是"用户的全部数据"，静默漏掉一个键，用户恢复后
- *   那个键就永久消失了，且没有任何提示。所以除了 8 个分片键，还带上
+ *   那个键就永久消失了，且没有任何提示。所以除了登记过的分片键，还带上
  *   "能确定属于这个档案的未知键"（见 `splitSettings`）。
  *
  * ## 全局键的黑名单
@@ -77,7 +78,7 @@ interface ScopedSetting {
   profileId: string
   /** 剥掉 `:<pid>` 之后的基名（`dailyStats`） */
   base: string
-  /** 是不是 `PROFILE_SCOPED_KEYS` 里登记过的 8 个键之一 */
+  /** 是不是 `PROFILE_SCOPED_KEYS` 里登记过的键之一 */
   registered: boolean
   record: SettingRecord
 }
@@ -189,7 +190,7 @@ function emptyRows(): ProfileRows {
 /**
  * 读本机现状，供合并引擎使用。
  *
- * `bundles` 的 `settings` 是**基名 → 值**，且只含 8 个分片键中出现过的那些
+ * `bundles` 的 `settings` 是**基名 → 值**，且只含登记过的分片键中出现过的那些
  * （`Bundle` 契约）。某张表为空 → `[]`，不省略字段。
  */
 export async function readLocalSnapshot(): Promise<LocalSnapshot> {
@@ -199,7 +200,7 @@ export async function readLocalSnapshot(): Promise<LocalSnapshot> {
   const settingsByPid = new Map<string, Record<string, unknown>>()
   for (const profile of dump.profiles) settingsByPid.set(profile.id, {})
   for (const entry of dump.scopedSettings) {
-    // 只有 8 个分片键进 Bundle：合并函数只认识这 8 个，其它塞进来会被静默丢掉，
+    // 只有登记过的分片键进 Bundle：合并函数只认识这些，其它塞进来会被静默丢掉，
     // 反而掩盖"某个键没被合并"的问题（未知键在备份文件里仍然带，见 buildBackupV2）
     if (!entry.registered) continue
     const bucket = settingsByPid.get(entry.profileId)

@@ -36,7 +36,7 @@ import {
 } from './mergeProgress'
 import { mergeMistakes, mistakeKey } from './mergeMistakes'
 import { mergeSessions, sessionKey } from './mergeSessions'
-import { mergeSettingValue, mergeSettings } from './mergeSettings'
+import { isSkippedBase, mergeSettingValue, mergeSettings } from './mergeSettings'
 
 /**
  * 全局键里**绝不合并**的两个：
@@ -105,6 +105,9 @@ function foldBundles(pid: string, bundles: readonly Bundle[]): Bundle {
 
     const raw = (bundle.settings ?? {}) as Record<string, unknown>
     for (const base of PROFILE_SCOPED_KEYS) {
+      // 明确不合并的键（如 `customChecks`，理由见 mergeSettings 的 `SKIP_REASONS`）：
+      // 在折叠阶段就丢掉，别让它以 `undefined` 值的形式占住 key 位置
+      if (isSkippedBase(base)) continue
       if (!(base in raw) || raw[base] === undefined) continue
       settings[base] = mergeSettingValue(base, settings[base], raw[base])
     }
@@ -197,7 +200,7 @@ export function planMerge(
   }
   plan.stats.profilesAdded = plan.newProfiles.length
 
-  // ---- 3. 逐档案合并三张表 + 8 个分片键 ----
+  // ---- 3. 逐档案合并三张表 + 全部分片键（键的真相是 PROFILE_SCOPED_KEYS）----
   for (const [pid, bundles] of remoteByPid) {
     const localBundle = localBundles.get(pid)
     const folded = foldBundles(pid, bundles)

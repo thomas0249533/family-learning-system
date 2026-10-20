@@ -52,7 +52,9 @@ function withOwner<T extends object>(row: Record<string, unknown>, pid: string):
  * v1 的 `settings` 是 `[{key, value}]`，键**没有** `:<pid>` 后缀（v1 时代只有一个档案）。
  *
  * 处理规则（与 v4 迁移的 `classifyKey` 口径完全一致）：
- *   - 8 个 per-profile 键 → 放进 `Bundle.settings`，键保持基名；
+ *   - 登记过的 per-profile 键（`customChecks` 之类的键是后来才引入的，v1 老文件里不会有
+ *     它们是**事实**，不是"当前有几个键"的断言 —— 写死数字会随 `PROFILE_SCOPED_KEYS` 漂）
+ *     → 放进 `Bundle.settings`，键保持基名；
  *   - global 键（`profiles` / `achievement:customPacks` / 迁移标记 …）→ **丢弃**，
  *     由调用方从 `globalSettings` 走另一条路（导入 global 键会覆盖本机的档案列表，
  *     那是"换设备"的语义，不是"合并"的语义）；

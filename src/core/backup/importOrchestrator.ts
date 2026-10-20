@@ -149,7 +149,7 @@ export function bundlesFromV2(doc: BackupV2): Bundle[] {
  * 是一堆未分类的键值对（真实的 v1 全量备份里混着 `profiles`、`achievement:customPacks`、
  * 甚至迁移标记）。把它们当全局键搬过去，等于让一份"可能被手工编辑过的旧文件"
  * 直接改写本机的档案列表/成就包配置 —— 那是"换设备"的语义，不是"合并"的语义。
- * v1 里真正该恢复的东西（进度、错题、8 个分片键）适配器已经全部接过来了；
+ * v1 里真正该恢复的东西（进度、错题、登记过的分片键）适配器已经全部接过来了；
  * 主题这类纯偏好不 restore 也不会丢数据。**有意为之，不是漏搬。**
  */
 function globalsFromV2(doc: BackupV2): Record<string, unknown> {

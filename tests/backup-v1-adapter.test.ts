@@ -105,7 +105,7 @@ describe('adaptV1ToBundles — 不做字段猜测（负面断言）', () => {
 })
 
 describe('adaptV1ToBundles — settings 的作用域划分', () => {
-  it('8 个 per-profile 键进 Bundle（键保持基名）', () => {
+  it('per-profile 键进 Bundle（键保持基名）', () => {
     const b = adaptV1ToBundles({
       version: '1.0',
       settings: [

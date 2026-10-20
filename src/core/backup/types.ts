@@ -40,7 +40,7 @@ export interface Bundle {
   progress: ProgressRecord[]
   mistakes: MistakeRecord[]
   examSessions: ExamSessionRecord[]
-  /** 基名 → 值。只含 8 个分片键中出现的那些 */
+  /** 基名 → 值。只含 `PROFILE_SCOPED_KEYS` 里登记过的键中出现的那些 */
   settings: Record<string, unknown>
 }
 

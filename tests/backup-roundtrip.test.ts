@@ -138,6 +138,7 @@ const { importBackupFile, previewImport } = await import('@core/backup/importOrc
 const { initProfile, __resetProfileForTest, switchProfile, listProfilesSync, profilesState, onProfileChange } =
   await import('@core/profile/currentProfile')
 const { invalidateOwnerIndex } = await import('@core/progress/ownerIndexCache')
+const { PROFILE_SCOPED_KEYS } = await import('@core/profile/settingsScope')
 
 const T = '2025-03-01T00:00:00.000Z'
 
@@ -288,7 +289,7 @@ describe('buildBackupV2 — 导出', () => {
       'somethingFromTheFuture:default',
     )
 
-    // 快照只带 8 个登记过的键（合并函数不认识别的，塞进去会被静默丢掉）
+    // 快照只带登记过的分片键（合并函数不认识别的，塞进去会被静默丢掉）
     const local = await readLocalSnapshot()
     expect(Object.keys(local.bundles[0].settings)).not.toContain('somethingFromTheFuture')
   })
@@ -300,8 +301,31 @@ describe('buildBackupV2 — 导出', () => {
   })
 })
 
-describe('readLocalSnapshot — 逐档案读，不串数据', () => {
-  it('每个档案只拿到自己的行；不在档案列表里的孤儿行被忽略', async () => {
+// ---------------------------------------------------------------------------
+// 反漂移：导出层不许对 `PROFILE_SCOPED_KEYS` 写死清单
+// ---------------------------------------------------------------------------
+describe('PROFILE_SCOPED_KEYS 反漂移', () => {
+  it('★ 登记的每个分片键都能双向带出（以后加键不用改导出代码）', async () => {
+    await seedTwoProfiles()
+    // 逐个登记键塞一份，值里带 marker 便于认领
+    for (const base of PROFILE_SCOPED_KEYS) {
+      await fake.settings.put({ key: `${base}:default`, value: { marker: base } })
+    }
+
+    const backup = await buildBackupV2()
+    const backupKeys = backup.profiles[0].settings.map((s) => s.key)
+    const local = await readLocalSnapshot()
+
+    for (const base of PROFILE_SCOPED_KEYS) {
+      // 备份要**带全**：漏一个键 = 用户恢复后那个键永久消失，且没有任何提示
+      expect(backupKeys, `备份漏了 ${base}`).toContain(`${base}:default`)
+      // 快照要给**全**：合并函数按基名取（旧）值，漏了等于这个键永远不参与合并
+      expect(local.bundles[0].settings, `快照漏了 ${base}`).toHaveProperty(base)
+    }
+  })
+})
+
+describe('readLocalSnapshot — 逐档案读，不串数据', () => {  it('每个档案只拿到自己的行；不在档案列表里的孤儿行被忽略', async () => {
     await seedTwoProfiles()
     // 已删除档案留下的孤儿行（pid 不在列表里）
     await fake.progress.add({

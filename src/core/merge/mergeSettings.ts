@@ -1,13 +1,18 @@
 /**
  * 跨设备合并 · 分片 settings（V1.4 · B2 / `system_design-v1.4.md` §6.3）
  *
- * ## 为什么这 8 个键要各写一条规则
- * 它们的**语义完全不同**，用一条通用规则（比如"取更晚"或"取远端"）必然有一半是错的：
+ * ## 为什么登记在 `PROFILE_SCOPED_KEYS` 里的键必须**逐个**写规则
+ * 它们的**语义各不相同**，用一条通用规则（比如"取更晚"或"取远端"）必然有一半是错的：
  *   - 徽章集合 → 并集（少一个 = 抹掉孩子的成就）
- *   - 打卡天数 → 逐字段 max（整对象取一边会出现 current > longest 或 best 倒退）
+ *   - 打卡天数 → 逐字段 max（整对象取一边会出现 current > longest 或 longest 倒退）
  *   - 每日题量 → 逐字段 max（少算 = 今天的成就不达标）
  *   - 折叠状态 → 本机优先（纯界面态，跨设备合并没有意义）
  *   - "总结卡看过了" → 逻辑或（看过就是看过）
+ *   - 自定义包勾选 → 本版**明确不合并**（理由见 `SKIP_REASONS`）
+ *
+ * 这里刻意**不写"共 N 个键"**：键数会随版本变（V1.4–B3 就把 8 变成了 9），
+ * 写在注释里的数字只会变成下一个人的绊脚石。数字的唯一真相是 `PROFILE_SCOPED_KEYS`，
+ * 而"每个键都有归属"由 `RULES` 的 `Record` 穷尽性在编译期保证。
  *
  * ## 值形状一律从真源读，不在这里猜
  * 每个键的形状定义在它自己的模块里（`core/motivation/*` 的读写函数）。
@@ -17,7 +22,7 @@
  *
  * ## 结果与现值逐字节相同就不写
  * 这是幂等（AC-P2-13）的另一半前提：`planMerge(merged, remote)` 必须产出空计划。
- * 若每次导入都把 8 个键原样重写一遍，`noop` 永远是 false，UI 会一直弹"发现新数据"。
+ * 若每次导入都把分片键原样重写一遍，`noop` 永远是 false，UI 会一直弹"发现新数据"。
  */
 
 import type { SettingRecord } from '@/db'
@@ -263,8 +268,82 @@ function mergeDiscovery(localRaw: unknown, remoteRaw: unknown): DiscoveryState {
 }
 
 // ---------------------------------------------------------------------------
-// 逐键规则
+// 逐键规则登记表
 // ---------------------------------------------------------------------------
+
+/** 标记：本版**明确不合并**这个键（理由见 `SKIP_REASONS`） */
+const SKIP = Symbol('settings-merge-skip')
+
+interface SettingRule {
+  /** 本机值 + 备份值 → 合并结果 */
+  merge(localRaw: unknown, remoteRaw: unknown): unknown
+  /** 比较用视图：把本机现值归一化后再与合并结果比，避免格式差异导致每次都重写 */
+  view(localRaw: unknown): unknown
+}
+
+/** 纯界面态 / 家长开关：本机有值就绝不让备份覆盖 */
+const LOCAL_FIRST: SettingRule = {
+  merge: (localRaw, remoteRaw) => (localRaw !== undefined ? localRaw : remoteRaw),
+  view: (localRaw) => localRaw,
+}
+
+/**
+ * ⚠️ 本模块**唯一的登记表**。
+ *
+ * `Record<ProfileScopedBase, …>` 的穷尽性由 `tsc` 兜底：`PROFILE_SCOPED_KEYS` 里新增一个键
+ * 而这里不登记，**编译直接失败**。
+ *
+ * 为什么不能继续用 `switch`（这是 V1.4–B3 的真实教训）：B3 把 `customChecks` 登记进
+ * `PROFILE_SCOPED_KEYS` 时，`switch` 只是"少一个 case"，运行时安静地返回 `undefined`，
+ * 被下游当成"本机缺失"跳过 —— 一个"新功能没接上合并"的缺陷，**没有任何报错**。
+ * `Record` 把这类遗漏提前到第一道门禁。加 `default` 也不行：`default` 会把
+ * "漏登记"变成"永远不报错"，比不加更糟。
+ */
+const RULES: Record<ProfileScopedBase, SettingRule | typeof SKIP> = {
+  achievements: {
+    merge: (localRaw, remoteRaw) => mergeAchievements(localRaw, remoteRaw).value,
+    view: normalizeUnlocked,
+  },
+  dailyStats: { merge: mergeDailyStats, view: normalizeDailyStats },
+  studyStreak: { merge: mergeStreak, view: normalizeStreak },
+  'achievement:discovery': { merge: mergeDiscovery, view: normalizeDiscoveryState },
+  attemptedTypes: {
+    merge: (localRaw, remoteRaw) => unionStrings(localRaw, remoteRaw),
+    view: (localRaw) => unionStrings(localRaw, undefined),
+  },
+  'achievement:collectionSeen': {
+    // 逻辑或：看过就算看过。远端看过而本机没见过 → 结果是 true，写进去
+    merge: (localRaw, remoteRaw) => localRaw === true || remoteRaw === true,
+    view: (localRaw) => localRaw === true,
+  },
+  achievementUi: LOCAL_FIRST,
+  'achievement:discoveryEnabled': LOCAL_FIRST,
+  customChecks: SKIP,
+}
+
+/**
+ * 本版**明确不合并**的分片键 → 理由（理由不能为空，测试会检查）。
+ *
+ * `customChecks`（B3 自定义成就包的手动勾选）为什么不合并：
+ * 勾选的对象是**自定义包的内容**，而 `achievement:customPacks` 是 `GLOBAL_NEVER_MERGE`
+ * （包是设备级资产，内容不在数据备份里，见 `mergeBundle.ts` 头部注释）。
+ * 更关键的是：`planMerge` 是**纯函数，看不到 `db.packages`**，因此它无法判断
+ * "这台设备上到底有没有那个包"。盲写会有一半概率产出**孤儿勾选**
+ * （有勾选、没有对应的包），等用户下次真把包搬过来时会"凭空多出几个勾"——
+ * 比不导更让人困惑，也更难排查。
+ *
+ * 终态（V1.5 包进备份、或勾选改成独立表）：「按键取并集、`at` 取更早」——
+ * 那时把 `customChecks` 从 `SKIP` 换成一个正常规则即可，其余代码一行不用动。
+ */
+export const SKIP_REASONS: Partial<Record<ProfileScopedBase, string>> = {
+  customChecks:
+    '勾选对象是自定义包内容，而包不在数据备份里；planMerge 看不到 db.packages，盲写会产出孤儿勾选',
+}
+
+/** 这个键是否属于"本版明确不合并"（`mergeSettings` 与 `planMerge` 的折叠都要先问它） */
+export function isSkippedBase(base: ProfileScopedBase): boolean {
+  return RULES[base] === SKIP
+}
 
 /**
  * 单个分片键的合并规则。
@@ -272,56 +351,27 @@ function mergeDiscovery(localRaw: unknown, remoteRaw: unknown): DiscoveryState {
  * 「本机缺失」（`localRaw === undefined`）时按空值参与合并，
  * 于是"本机优先"的两条规则（`achievementUi` / `achievement:discoveryEnabled`）
  * 会自然退化为"远端有就取远端"，不需要额外分支。
+ *
+ * 返回 `undefined` 只可能来自被跳过的键 —— 调用方应先过 `isSkippedBase()`。
  */
 export function mergeSettingValue(
   base: ProfileScopedBase,
   localRaw: unknown,
   remoteRaw: unknown,
 ): unknown {
-  switch (base) {
-    case 'achievements':
-      return mergeAchievements(localRaw, remoteRaw).value
-    case 'dailyStats':
-      return mergeDailyStats(localRaw, remoteRaw)
-    case 'studyStreak':
-      return mergeStreak(localRaw, remoteRaw)
-    case 'achievement:discovery':
-      return mergeDiscovery(localRaw, remoteRaw)
-    case 'attemptedTypes':
-      return unionStrings(localRaw, remoteRaw)
-    case 'achievement:collectionSeen':
-      // 逻辑或：看过就算看过。远端看过而本机没见过 → 结果是 true，写进去
-      return localRaw === true || remoteRaw === true
-    case 'achievementUi':
-    case 'achievement:discoveryEnabled':
-      // 纯界面态 / 家长开关：本机优先，不被备份覆盖
-      return localRaw !== undefined ? localRaw : remoteRaw
-  }
+  const rule = RULES[base]
+  if (rule === SKIP) return undefined
+  return rule.merge(localRaw, remoteRaw)
 }
 
 /** 比较用的"本机视图"：把脏数据归一化后再比，避免格式差异导致每次都重写 */
 function localViewOf(base: ProfileScopedBase, localRaw: unknown): unknown {
-  switch (base) {
-    case 'achievements':
-      return normalizeUnlocked(localRaw)
-    case 'dailyStats':
-      return normalizeDailyStats(localRaw)
-    case 'studyStreak':
-      return normalizeStreak(localRaw)
-    case 'achievement:discovery':
-      return normalizeDiscoveryState(localRaw)
-    case 'attemptedTypes':
-      return unionStrings(localRaw, undefined)
-    case 'achievement:collectionSeen':
-      return localRaw === true
-    case 'achievementUi':
-    case 'achievement:discoveryEnabled':
-      return localRaw
-  }
+  const rule = RULES[base]
+  return rule === SKIP ? localRaw : rule.view(localRaw)
 }
 
 /**
- * 合并一个档案的 8 个分片键。
+ * 合并一个档案的**全部分片键**（`PROFILE_SCOPED_KEYS`，逐键规则见 `RULES`）。
  *
  * @param local        本机现值（基名 → 值，已剥掉 `:<pid>` 后缀）
  * @param remote       备份里的值（同上）
@@ -340,7 +390,12 @@ export function mergeSettings(
   }
 
   for (const base of PROFILE_SCOPED_KEYS) {
-    // 备份里根本没有这个键 → 什么都没发生，不计数（计入 keptLocal 会让预览数字虚高）
+    // 本版明确不合并的键（`SKIP_REASONS` 有理由）：**在计数之前**就跳过。
+    // 若让它走到下面的 `merged === undefined` 分支，`keptLocal` 会多计 1，
+    // 预览里的"本机保留 N 项"就会虚高，而用户没有任何办法理解多出来的那 1 项是什么。
+    if (isSkippedBase(base)) continue
+
+    // 备份里根本没有这个键 → 什么都没发生，不计数（同样会让预览数字虚高）
     if (!(base in remote) || remote[base] === undefined) continue
 
     const localRaw = local[base]

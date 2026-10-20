@@ -1,13 +1,23 @@
 import { describe, expect, it } from 'vitest'
-import { mergeSettingValue, mergeSettings, type SettingsMergeOutcome } from '@core/merge/mergeSettings'
+import {
+  SKIP_REASONS,
+  isSkippedBase,
+  mergeSettingValue,
+  mergeSettings,
+  type SettingsMergeOutcome,
+} from '@core/merge/mergeSettings'
+import { PROFILE_SCOPED_KEYS, type ProfileScopedBase } from '@core/profile/settingsScope'
 
 /**
  * 分片 settings 合并（§6.3）。
  *
- * 8 个键的语义各不相同，用一条通用规则必然有一半是错的。本文件逐个键钉死规则，
- * 并额外守住两条"不写库"的边界：
+ * 登记在 `PROFILE_SCOPED_KEYS` 里的键语义各不相同，用一条通用规则必然有一半是错的。
+ * 本文件逐个键钉死规则，并额外守住三条"不写库 / 不漏键"的边界：
  *   - 结果与现值逐字节相同 → 不进 upserts（幂等的前提）；
- *   - 输出键必须是**全名** `base:pid`（自己拼字符串迟早拼出 `dailyStats:p1:p1`）。
+ *   - 输出键必须是**全名** `base:pid`（自己拼字符串迟早拼出 `dailyStats:p1:p1`）；
+ *   - **每个登记键都必须有归属**：要么有合并规则，要么在 `SKIP_REASONS` 里写明理由。
+ *     最后这条是 V1.4–B3 加 `customChecks` 时漏掉的教训：`switch` 少一个 case 不报错，
+ *     于是"新功能没接上跨设备合并"静默过了 2580 条测试。
  */
 
 const PID = 'p1'
@@ -316,26 +326,89 @@ describe('mergeSettingValue — 供折叠多份备份时使用', () => {
   })
 })
 
-describe('mergeSettings — 计数语义', () => {
-  it('8 个键全都有变化时 changed 与 upserts 条数一致', () => {
-    const remote = {
-      achievements: [{ id: 'x', unlockedAt: '2026-01-01' }],
-      achievementUi: { v: 1, collapsed: [] },
-      'achievement:collectionSeen': true,
-      'achievement:discovery': { v: 1, chances: 1, revealed: ['a'], streakWithoutNew: 0, lastGrantDay: '2026-01-01' },
-      'achievement:discoveryEnabled': true,
-      dailyStats: [{ date: '2026-01-01', questionCount: 1, firstStudyAt: 1, lastStudyAt: 1 }],
-      studyStreak: { current: 1, longest: 1, lastDate: '2026-01-01' },
-      attemptedTypes: ['blank'],
+/**
+ * 每个登记键的"有内容"样本。
+ *
+ * 用 `Record<ProfileScopedBase, unknown>` 而不是随手写的对象字面量：
+ * 将来 `PROFILE_SCOPED_KEYS` 再加键时，**这里和 `RULES` 会同时逼人补一行**
+ * （V1.4–B3 加 `customChecks` 时，就是因为没有这层约束，"新键没接上合并"静默过关了）。
+ */
+const SAMPLE: Record<ProfileScopedBase, unknown> = {
+  achievements: [{ id: 'x', unlockedAt: '2026-01-01' }],
+  achievementUi: { v: 1, collapsed: [] },
+  'achievement:collectionSeen': true,
+  'achievement:discovery': {
+    v: 1,
+    chances: 1,
+    revealed: ['a'],
+    streakWithoutNew: 0,
+    lastGrantDay: '2026-01-01',
+  },
+  'achievement:discoveryEnabled': true,
+  dailyStats: [{ date: '2026-01-01', questionCount: 1, firstStudyAt: 1, lastStudyAt: 1 }],
+  studyStreak: { current: 1, longest: 1, lastDate: '2026-01-01' },
+  attemptedTypes: ['blank'],
+  customChecks: [{ packId: 'my-pack', itemId: 'i1', checked: true, at: '2026-01-01' }],
+}
+
+describe('逐键规则的登记完整性', () => {
+  it('★ 每个登记的分片键都必须有归属：有合并规则，或明确写在 SKIP_REASONS 里', () => {
+    const unowned = PROFILE_SCOPED_KEYS.filter(
+      (base) => !isSkippedBase(base) && mergeSettingValue(base, undefined, SAMPLE[base]) === undefined,
+    )
+    expect(unowned).toEqual([])
+  })
+
+  it('★ 被跳过的键必须给出非空理由（只写标签等于把规则关掉）', () => {
+    for (const base of PROFILE_SCOPED_KEYS) {
+      if (!isSkippedBase(base)) continue
+      expect(typeof SKIP_REASONS[base]).toBe('string')
+      expect((SKIP_REASONS[base] ?? '').trim().length).toBeGreaterThan(0)
     }
-    const out = mergeSettings({}, remote, PID)
-    expect(out.upserts).toHaveLength(8)
-    expect(out.changed).toBe(8)
+  })
+
+  it('反向：写了理由的键必须真的被跳过（防止理由留下、规则又被打开）', () => {
+    for (const base of Object.keys(SKIP_REASONS) as ProfileScopedBase[]) {
+      expect(PROFILE_SCOPED_KEYS).toContain(base)
+      expect(isSkippedBase(base)).toBe(true)
+    }
+  })
+})
+
+describe('customChecks — 本版明确不合并', () => {
+  it('★ 备份里的勾选不搬，且**不计** keptLocal（否则预览数字虚高）', () => {
+    const out = mergeSettings({}, { customChecks: SAMPLE.customChecks }, PID)
+    expect(out.upserts).toHaveLength(0)
+    expect(out.changed).toBe(0)
+    expect(out.keptLocal).toBe(0)
+  })
+
+  it('本机已有勾选时也不动（不写、不计）', () => {
+    const local = { customChecks: [{ packId: 'p', itemId: 'i', checked: true, at: '2026-01-01' }] }
+    const out = mergeSettings(local, { customChecks: SAMPLE.customChecks }, PID)
+    expect(out.upserts).toHaveLength(0)
+    expect(out.keptLocal).toBe(0)
+  })
+
+  it('mergeSettingValue 对 skipped 键返回 undefined（调用方须先问 isSkippedBase）', () => {
+    expect(isSkippedBase('customChecks')).toBe(true)
+    expect(mergeSettingValue('customChecks', undefined, SAMPLE.customChecks)).toBeUndefined()
+    expect(isSkippedBase('attemptedTypes')).toBe(false)
+  })
+})
+
+describe('mergeSettings — 计数语义', () => {
+  it('除显式跳过者外，每个登记键有变化时各产出 1 条 upsert，无变化则全部 keptLocal', () => {
+    const merged = PROFILE_SCOPED_KEYS.filter((base) => !isSkippedBase(base))
+
+    const out = mergeSettings({}, SAMPLE, PID)
+    expect(out.upserts.map((u) => u.key.slice(0, u.key.lastIndexOf(':')))).toEqual(merged)
+    expect(out.changed).toBe(merged.length)
     expect(out.keptLocal).toBe(0)
 
     // 回放后再合一次：全部保持本机，零写入（AC-P2-13）
-    const again = mergeSettings(applyLocal({}, out), remote, PID)
+    const again = mergeSettings(applyLocal({}, out), SAMPLE, PID)
     expect(again.upserts).toHaveLength(0)
-    expect(again.keptLocal).toBe(8)
+    expect(again.keptLocal).toBe(merged.length)
   })
 })
