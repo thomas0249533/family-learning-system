@@ -691,9 +691,10 @@ repeat: { period: 'weekly', mode: 'grow', step: rule.target, valueOf: (ctx) => e
 3. `value - base < step` → 不动，**且游标不前移**（零头累计到下个周期，否则"每周进步一点点"永远凑不够）；
 4. 否则 +1，游标前移到当前值（一周最多一次，暴涨 10 倍也只记一次）。
 
-**合并口径**：`repeatBase` **有意不合并**（`repeatCount` 取 max、`lastRepeatPeriod` 取较晚）。
+**合并口径**：同一 id 两边都有时 `repeatBase` **有意不合并**（`repeatCount` 取 max、`lastRepeatPeriod` 取较晚）。
 游标是"本机看到过的最后一个值"，不是事实；搬过来会造出"没做到却 +1"。合并后本机重新落基线，
 最多丢一周增量。`dedupeUnlocked` 内部则取**较大**游标（宁可少记，不可虚涨）。
+只在远端存在的记录（本机从没见过这枚卡）是整体照抄的，游标一起带过来。
 
 
 ### 8.5 打印分页（D4）
