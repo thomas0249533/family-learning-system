@@ -31,6 +31,11 @@
           <span v-if="item.evidence" class="ach-evidence">{{ item.evidence }}</span>
           <span class="ach-meta">解锁于 {{ item.unlockedAt || '较早' }}</span>
           <span v-if="item.chainLabel" class="ach-chain">{{ item.chainLabel }}</span>
+          <!-- 重复纪念印记（V1.4 · B6）：只记录事实，不加分、不改层级、不给奖励。
+               徽章是"我做到过"，印记是"我又做到了一次"——两者语义不同，所以不做成
+               更亮的勾，而是一个安静的次级标签。次数进 aria-label（见 script），
+               否则读屏用户完全得不到这个信息。 -->
+          <span v-if="item.repeatCount >= 2" class="ach-repeat">第 {{ item.repeatCount }} 次</span>
         </template>
 
         <!-- 未获得（非隐藏）：可进度化 → 细进度条 + 文案；二值 → 只给文案 -->
@@ -114,7 +119,10 @@ const ariaLabel = computed(() => {
   const state = it.earned ? `已解锁，${it.unlockedAt || '较早'}` : `未解锁，${it.hint}`
   // 层级只给中性描述（"层级：进阶"），不出现"稀有"这类稀缺暗示
   const tier = it.tier === 'hidden' ? '' : `，${TIER_META[it.tier].ariaSuffix}`
-  return `${it.title}，${state}${tier}`
+  // 重复次数必须进读屏文本：卡面上的"第 2 次"是纯视觉的，
+  // 只写 aria-hidden 徽章等于把这条信息对读屏用户藏起来了
+  const repeat = it.earned && it.repeatCount >= 2 ? `，第 ${it.repeatCount} 次达成` : ''
+  return `${it.title}，${state}${tier}${repeat}`
 })
 </script>
 
@@ -227,6 +235,22 @@ const ariaLabel = computed(() => {
     margin-top: 2px;
     font-size: $font-2xs;
     color: $text-muted;
+    letter-spacing: 0.2px;
+  }
+
+  /* 重复印记：靠右、方角、比"隐藏成就"更安静 ——
+     它不该抢已获得打勾的注意力，只回答"这是第几次"。
+     用 warning 软底而不是 success：success 已经是"已获得"的语义，
+     再用一次会让人以为重复达成是更高级的奖励（PRD 明确不额外给奖励）。 */
+  .ach-repeat {
+    display: inline-block;
+    margin-top: $space-1;
+    padding: 1px 6px;
+    border-radius: $radius-sm;
+    background: $warning-light;
+    color: $warning-text;
+    font-size: $font-2xs;
+    font-weight: 600;
     letter-spacing: 0.2px;
   }
 

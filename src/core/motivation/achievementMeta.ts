@@ -19,6 +19,7 @@
  */
 import {
   ACHIEVEMENTS,
+  normalizeRepeatCount,
   type AchievementCategory,
   type AchievementContext,
   type AchievementDef,
@@ -91,6 +92,14 @@ export interface AchievementItem {
   hint: string
   /** 连环标记，如「精熟之链 2/5」；不属于任何链为空串 */
   chainLabel: string
+  /**
+   * 重复达成次数（V1.4 · B6）。**1 = 只达成过一次**，≥2 时卡面显示「第 N 次」。
+   *
+   * 恒有值（不设 optional）：卡面模板拿它做比较，`undefined >= 2` 虽然也是 false，
+   * 但那让"没这个字段"和"第一次"在类型上变成两件事，模板里迟早有人写 `!item.repeatCount`
+   * 把第一次当成假值。归一化在 `toItem` 里做一次，下游只读数字。
+   */
+  repeatCount: number
 }
 
 export interface AchievementGroup {
@@ -199,6 +208,9 @@ function toItem(
     earned,
     unlockedAt: record?.unlockedAt ?? '',
     chainLabel: earned ? chainLabelOf(def) : '',
+    // 剪影恒 1：没解锁的卡不该泄露"这个成就被重复达成过"
+    // （隐藏成就的重复次数本身就是信息，等于告诉你"这条路你已经走通过"）
+    repeatCount: silhouetted ? 1 : (normalizeRepeatCount(record?.repeatCount) ?? 1),
   }
 
   // 剪影：**只输出占位文本**，真实 title/desc 连字符串都不进入视图对象，

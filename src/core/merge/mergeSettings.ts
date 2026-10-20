@@ -31,7 +31,7 @@ import {
   scopedKey,
   type ProfileScopedBase,
 } from '@core/profile/settingsScope'
-import { normalizeUnlocked, type UnlockedRecord } from '@core/motivation/achievements'
+import { normalizeRepeatCount, normalizeUnlocked, type UnlockedRecord } from '@core/motivation/achievements'
 import {
   normalizeDiscoveryState,
   type DiscoveryState,
@@ -137,6 +137,12 @@ function mergeAchievements(
     }
     const evidence = prev.evidence || r.evidence
     if (evidence) merged.evidence = evidence
+    // 重复次数取**较大**（V1.4 · B6 / 设计稿 R11）。
+    // 与 `unlockedAt` 方向相反：日期要"最早那次"（第一次拿到），次数要"最多那次"。
+    // 这一条是 B6 的 DoD —— 加字段不补规则，跨设备导入会把重复次数抹成单次，且无告警。
+    // 注意 `?? 1`：老记录没有这个字段 = 只达成过一次。
+    const repeat = Math.max(normalizeRepeatCount(prev.repeatCount) ?? 1, normalizeRepeatCount(r.repeatCount) ?? 1)
+    if (repeat >= 2) merged.repeatCount = repeat
     map.set(r.id, merged)
   }
 

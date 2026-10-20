@@ -449,6 +449,29 @@ export interface UnlockedRecord {
    * 补算出来的"证据"已经不是当时的证据了（PRD §4.1 迁移说明 2）。
    */
   evidence?: string
+  /**
+   * 重复达成次数（V1.4 · B6）。**1 或省略 = 只达成过一次**，≥2 时卡面显示「第 N 次」。
+   *
+   * ## 为什么这个字段现在**只写不涨**
+   * B6 只落基础设施（字段 + 合并规则 + 卡面印记），写入侧**刻意不递增**。
+   * 因为内置 28 枚的判定全是单调语义（`anyDayQuestionAtLeast` / `bestStreak` /
+   * `totalAttempts`：一旦为真永远为真），而 `syncAchievements` 每次结算都会把
+   * 已解锁项重新判为"满足" —— 字面实现「再次达成 +1」会让计数随路由跳转涨到几十，
+   * 卡面出现"第 37 次"这种纯噪声。
+   *
+   * 真正的「再次达成」需要**周期化的成就定义**（`repeatable: 'daily' | 'weekly'`），
+   * 让条件能回落再重新满足。那是成就定义模型的新能力，不在 V1.4 范围。
+   *
+   * 现在就把合并规则写好的理由（设计稿 R11）：字段一旦存在，跨设备导入就必须知道
+   * 怎么合它。等将来真的开始递增再补规则，中间那段时间的备份会把重复次数抹成单次，
+   * 而且**没有任何告警**。所以 DoD 是"加字段必须同时加合并规则"，不是"以后再说"。
+   */
+  repeatCount?: number
+}
+
+/** 重复次数的归一化：只认 ≥1 的整数；脏数据一律当"没有这个字段"（= 1 次）。 */
+export function normalizeRepeatCount(raw: unknown): number | undefined {
+  return typeof raw === 'number' && Number.isInteger(raw) && raw >= 1 ? raw : undefined
 }
 
 /** 兼容旧 `string[]` 与半迁移态，归一化为 UnlockedRecord[]。 */
@@ -463,16 +486,27 @@ export function normalizeUnlocked(raw: unknown): UnlockedRecord[] {
       if (typeof rec.evidence === 'string' && rec.evidence.trim() !== '') {
         out.evidence = rec.evidence
       }
+      // 重复次数：旧记录没有 → 不写这个字段（而不是写 1）——
+      // "没有这个字段"和"达成过一次"在显示上是同一件事，但在**合并**上不同：
+      // 写死的 1 会与远端的 3 取 max 时看起来正常，可一旦将来改成省略即 1 的口径，
+      // 满地显式 1 会让"这次备份到底带没带这个信息"无法判断
+      const repeat = normalizeRepeatCount(rec.repeatCount)
+      if (repeat !== undefined) out.repeatCount = repeat
       return [out]
     }
     return []
   })
 }
 
-/** 读取全部已解锁记录（含解锁日期）。 */
-export async function loadUnlocked(): Promise<UnlockedRecord[]> {
+/**
+ * 读取某个档案的全部已解锁记录（含解锁日期）。
+ *
+ * @param profileId 默认当前档案。**家庭墙必须传**：它要并排渲染所有档案，
+ *   用默认值会把当前档案的解锁记录填进别人的列里（症状是"老二和老大的徽章一模一样"）。
+ */
+export async function loadUnlocked(profileId: string = currentProfileId()): Promise<UnlockedRecord[]> {
   try {
-    const rec = await db.settings.get(achievementsKey())
+    const rec = await db.settings.get(achievementsKey(profileId))
     return normalizeUnlocked(rec?.value)
   } catch {
     return []
@@ -484,24 +518,41 @@ export async function loadUnlockedIds(): Promise<string[]> {
   return (await loadUnlocked()).map((r) => r.id)
 }
 
-/** 写入已解锁记录（去重，保留已有 unlockedAt 与 evidence）。 */
-export async function saveUnlocked(records: UnlockedRecord[]): Promise<void> {
+/**
+ * 同 id 去重（写入前的唯一口径）。抽成纯函数是为了能直接测 ——
+ * `saveUnlocked` 一碰 db 就必须 mock 整套 things，而这里要守的恰恰是三条容易写反的规则：
+ *
+ * 1. `unlockedAt` 取**先到的那次**（最接近真实解锁时刻）；
+ * 2. `evidence` **优先本机**，本机为空才用后来的；
+ * 3. `repeatCount` 取**较大**（累计事实，方向与上面两条相反）。
+ */
+export function dedupeUnlocked(records: UnlockedRecord[]): UnlockedRecord[] {
   const map = new Map<string, UnlockedRecord>()
   for (const r of records) {
     const prev = map.get(r.id)
-    if (!prev) map.set(r.id, r)
-    else {
-      // 已有的日期/证据优先 —— "先到的那次"才是最接近真实解锁时刻的记录
-      const merged: UnlockedRecord = {
-        id: r.id,
-        unlockedAt: prev.unlockedAt || r.unlockedAt,
-      }
-      const evidence = prev.evidence || r.evidence
-      if (evidence) merged.evidence = evidence
-      map.set(r.id, merged)
+    if (!prev) {
+      map.set(r.id, r)
+      continue
     }
+    // 已有的日期/证据优先 —— "先到的那次"才是最接近真实解锁时刻的记录
+    const merged: UnlockedRecord = {
+      id: r.id,
+      unlockedAt: prev.unlockedAt || r.unlockedAt,
+    }
+    const evidence = prev.evidence || r.evidence
+    if (evidence) merged.evidence = evidence
+    // 重复次数取**较大**：同一条记录在内存里出现两份时，取小值等于把已发生的重复抹掉
+    // （与合并引擎 R11 同一个坑，只是发生在单机内）
+    const repeat = Math.max(prev.repeatCount ?? 1, normalizeRepeatCount(r.repeatCount) ?? 1)
+    if (repeat >= 2) merged.repeatCount = repeat
+    map.set(r.id, merged)
   }
-  await db.settings.put({ key: achievementsKey(), value: [...map.values()] })
+  return [...map.values()]
+}
+
+/** 写入已解锁记录（去重，保留已有 unlockedAt / evidence / repeatCount）。 */
+export async function saveUnlocked(records: UnlockedRecord[]): Promise<void> {
+  await db.settings.put({ key: achievementsKey(), value: dedupeUnlocked(records) })
 }
 
 /** 兼容旧签名：按 id 数组写入（unlockedAt=''）。 */
@@ -552,6 +603,10 @@ export async function syncAchievements(
   const newlyIds = earned.filter((id) => !savedIds.has(id))
   const mergedMap = new Map<string, UnlockedRecord>()
   for (const r of saved) mergedMap.set(r.id, r)
+  // 已解锁且本轮**仍满足**的项：这里**不**递增 repeatCount（B6 裁决）。
+  // 原因见 `UnlockedRecord.repeatCount` 的注释：内置判定全是单调的，而本函数每次结算都会
+  // 跑一遍（AppShell 去抖 + 路由跳转都会触发），"满足即 +1"会让计数随翻页上涨。
+  // 将来要做真重复，判据必须是"条件从 false 变 true 的跃迁"，且得先有周期化定义。
   for (const id of earned) {
     if (!mergedMap.has(id)) {
       // 自定义 id 在 `EVIDENCE_TPL` 里没有模板 → 空串 → 卡片不显示证据行。
