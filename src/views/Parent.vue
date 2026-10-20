@@ -213,6 +213,16 @@
       </div>
     </section>
 
+    <!--
+      自定义成就包（V1.4 · B3）。放在家长视图里而不是设置页：
+      "给孩子加一条我们家的家规"是家长的决定，不是技术设置。
+    -->
+    <section class="section">
+      <AppCard title="🧩 自定义成就包">
+        <CustomPackPanel />
+      </AppCard>
+    </section>
+
     <!-- 学习包管理 -->
     <section class="section">
       <SectionTitle title="📦 学习包管理" />
@@ -236,6 +246,8 @@ import SectionTitle from '@/components/ui/SectionTitle.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import AppCard from '@/components/ui/AppCard.vue'
+import CustomPackPanel from '@/components/CustomPackPanel.vue'
 import {
   MAX_PROFILES,
   ProfileLimitError,
