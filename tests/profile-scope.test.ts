@@ -26,11 +26,15 @@ import {
  */
 
 describe('settingsScope — 键清单', () => {
-  it('8 个 per-profile 键、9 个 global 键一个都不能少（删键等于那个键不再被搬）', () => {
-    expect(PROFILE_SCOPED_KEYS).toHaveLength(8)
+  it('9 个 per-profile 键、9 个 global 键一个都不能少（删键等于那个键不再被搬）', () => {
+    // V1.4 · B3 起是 9 个：新增 `customChecks`（家长手工勾选，per-profile）。
+    // 断言写**字面量**而不是 `PROFILE_SCOPED_KEYS.length`：这条测试要挡的正是
+    // "清单被悄悄改动"，用清单自己的长度去断言等于把它关掉。
+    expect(PROFILE_SCOPED_KEYS).toHaveLength(9)
     expect(GLOBAL_KEYS).toHaveLength(9)
-    // 抽查两组里最容易被人"顺手删掉"的成员：家长开关与迁移标记
+    // 抽查两组里最容易被人"顺手删掉"的成员：家长开关、勾选态与迁移标记
     expect(PROFILE_SCOPED_KEYS).toContain('achievement:discoveryEnabled')
+    expect(PROFILE_SCOPED_KEYS).toContain('customChecks')
     expect(GLOBAL_KEYS).toContain('migration:v4')
   })
 
@@ -46,7 +50,7 @@ describe('settingsScope — 键清单', () => {
 })
 
 describe('settingsScope — classifyKey 的判定顺序', () => {
-  it('★ 8 个 base 键本身（v3 形态）都判 profile-legacy，base 原样返回', () => {
+  it('★ 9 个 base 键本身（v3 形态）都判 profile-legacy，base 原样返回', () => {
     for (const base of PROFILE_SCOPED_KEYS) {
       expect(classifyKey(base)).toEqual({ kind: 'profile-legacy', base })
     }

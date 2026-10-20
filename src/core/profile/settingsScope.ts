@@ -34,6 +34,20 @@ export const PROFILE_SCOPED_KEYS = [
   'dailyStats',
   'studyStreak',
   'attemptedTypes',
+  /**
+   * 家长手工勾选的自定义成就（V1.4 · B3）。
+   *
+   * **per-profile，不是 global**：勾选是"这个孩子的输入"（"他这周确实自己整理了书桌"），
+   * 老二没做过就是没做过。包本身（`achievement:customPacks`）反而是 global ——
+   * 包是家里的资产，同一份包被两个孩子共用。
+   *
+   * 与 `achievements` **分开存**是刻意的：勾选是输入、解锁是输出（见 `customPackTypes.ts`）。
+   * 混在一起会导致停用包后重新启用时出现"没勾过却已解锁"。
+   *
+   * 注意：登记在这里意味着它进了 v4 迁移的搬键清单与跨设备合并的键清单。
+   * 停用包**不清空**它（PRD §8.2 裁决），所以不需要任何"清理"逻辑。
+   */
+  'customChecks',
 ] as const
 
 /** global 的键：不分片，原样保留 */
