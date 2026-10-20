@@ -85,10 +85,14 @@ import { TIER_META } from '@core/motivation/achievementTaxonomy'
 import { paginateByCategory, pageLabel } from '@core/report/printLayout'
 import { currentProfile } from '@core/profile/currentProfile'
 import { useAchievementStore } from '@core/stores/achievement'
+import { useUserDataStore } from '@core/stores/userData'
+import { usePackageStore } from '@core/stores/package'
 import '@/core/styles/print.scss'
 
 const router = useRouter()
 const achievementStore = useAchievementStore()
+const userDataStore = useUserDataStore()
+const packageStore = usePackageStore()
 
 const profileName = computed(() => currentProfile()?.name ?? '我')
 
@@ -104,8 +108,15 @@ const exportDate = (() => {
 })()
 
 onMounted(async () => {
-  // 直接进这个路由（刷新/分享链接）时 store 可能是空的
-  if (achievementStore.items.length === 0) await achievementStore.refreshView()
+  // 直接进这个路由（刷新/分享链接）时 store 可能是空的。
+  // 与 Achievements.vue 同一条理由：`refreshView()` 用的上下文来自这两个 store，
+  // 不先补齐就会重建出"进度全 0"的 items（打印件上的层级/星标不受影响，
+  // 但分组内的顺序与"已获得 x / y"会跟着错）。
+  if (achievementStore.items.length === 0) {
+    await userDataStore.loadUserData()
+    await packageStore.loadPackages()
+    await achievementStore.refreshView()
+  }
 })
 
 function doPrint(): void {

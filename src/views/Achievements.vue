@@ -154,8 +154,12 @@ import { PRINT_PER_PAGE } from '@core/report/printLayout'
 import { exportAchievementImages } from '@core/report/exportImages'
 import { exportAchievementsJson } from '@core/export/exportService'
 import { currentProfile } from '@core/profile/currentProfile'
+import { useUserDataStore } from '@core/stores/userData'
+import { usePackageStore } from '@core/stores/package'
 
 const achievementStore = useAchievementStore()
+const userDataStore = useUserDataStore()
+const packageStore = usePackageStore()
 
 // ---- 打印与导出（B5）----
 const router = useRouter()
@@ -285,6 +289,18 @@ async function useDiscovery(): Promise<void> {
 }
 
 onMounted(async () => {
+  // ★ 先补齐进度与包元信息，再重建视图。
+  //
+  // 之前这里只调 `refreshView()`，默认"用户是从首页点进来的"——
+  // 直接从链接进 /achievements（或在这个路由上刷新）时 `userDataStore.progress`
+  // 与 `packageStore.packages` 都还是空数组，于是：
+  //   · 待解锁 26 枚的进度全部显示 0（"目标 50 个知识点"），
+  //   · 故事卡的「现在的记录」整段为空。
+  // 两者都**不报错**，只是安静地显示成"这孩子的数据是空的"——
+  // 而 Home 与 TopicDetail 一直是先 `loadUserData()` 的，只有这个路由漏了。
+  await userDataStore.loadUserData()
+  await packageStore.loadPackages()
+
   collectionSeen.value = await hasSeenCollection()
   discoveryEnabled.value = await loadDiscoveryEnabled()
   if (discoveryEnabled.value) {
