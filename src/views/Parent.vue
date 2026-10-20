@@ -28,11 +28,20 @@
           <div class="ach-total-value">{{ achUnlockedCount }} / {{ achTotal }}</div>
           <div class="ach-total-label">已解锁成就</div>
         </div>
+        <div class="ach-row-label">按小组</div>
         <div class="ach-cats">
           <div v-for="c in achByCategory" :key="c.cat" class="ach-cat">
             <span class="ach-cat-icon">{{ c.icon }}</span>
             <span class="ach-cat-name">{{ c.label }}</span>
             <span class="ach-cat-count">{{ c.unlocked }} / {{ c.total }}</span>
+          </div>
+        </div>
+        <!-- 四类来源分布（PRD §4.1 的 source 四类；四个桶恒定出现，某类为 0 也显示） -->
+        <div class="ach-row-label">按来源</div>
+        <div class="ach-sources">
+          <div v-for="s in achBySource" :key="s.source" class="ach-source">
+            <span class="ach-source-name">{{ s.label }}</span>
+            <span class="ach-source-count">{{ s.earned }} / {{ s.total }}</span>
           </div>
         </div>
         <div class="ach-recent">
@@ -45,6 +54,16 @@
               <span class="recent-date">{{ r.unlockedAt || '较早' }}</span>
             </div>
           </div>
+        </div>
+        <!-- 解锁证据（快照，不重算）：家长判断"这枚是不是真学会了"的依据 -->
+        <div class="ach-evidence" v-if="recentEvidence.length > 0">
+          <div class="ach-evidence-title">解锁证据</div>
+          <ul class="ach-evidence-list">
+            <li v-for="e in recentEvidence" :key="e.id" class="ach-evidence-item">
+              <span class="evidence-icon" aria-hidden="true">{{ e.icon }}</span>
+              <span class="evidence-text"><b>{{ e.title }}</b> · {{ e.evidence }}</span>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -132,6 +151,12 @@ import {
   type UnlockedRecord,
 } from '@core/motivation/achievements'
 import { CATEGORY_META, CATEGORY_ORDER } from '@core/motivation/achievementMeta'
+import { TAXONOMY } from '@core/motivation/achievementTaxonomy'
+import {
+  distributionBySource,
+  evidenceLines,
+  type OverviewItem,
+} from '@core/motivation/achievementOverview'
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 
 const router = useRouter()
@@ -161,6 +186,29 @@ const achByCategory = computed(() =>
     return { cat, ...CAT_META[cat], unlocked, total: items.length }
   }),
 )
+
+/** 家长端只拿得到「静态定义 + 库里的记录」，先拼成概览输入（与图鉴页同一套字段语义） */
+const overviewItems = computed<OverviewItem[]>(() => {
+  const byId = new Map(unlockedRecords.value.map((r) => [r.id, r]))
+  return ACHIEVEMENTS.map((a) => {
+    const rec = byId.get(a.id)
+    return {
+      id: a.id,
+      source: TAXONOMY[a.id].source,
+      earned: !!rec,
+      unlockedAt: rec?.unlockedAt,
+      evidence: rec?.evidence,
+      title: a.title,
+      icon: a.icon,
+    }
+  })
+})
+
+/** 四类来源分布（恒 4 桶，顺序固定） */
+const achBySource = computed(() => distributionBySource(overviewItems.value))
+
+/** 解锁证据（只取已解锁且证据非空的，按日期倒序，最多 3 条） */
+const recentEvidence = computed(() => evidenceLines(overviewItems.value, 3))
 
 const recentUnlocked = computed(() => {
   const rows = unlockedRecords.value
@@ -301,6 +349,88 @@ function goToImport() {
 /* `.ov-card` 已由 StatCard 基元承载（card-bg + border-color + radius-md + shadow-sm + tone 值色）。 */
 
 /* ========== 成就概览 ========== */
+/* 两排"x / y"小卡（小组 / 来源）需要标题区分，否则家长分不清哪排是什么 */
+.ach-row-label {
+  font-size: $font-2xs;
+  font-weight: 700;
+  color: $text-muted;
+  margin-bottom: -8px;
+}
+
+.ach-sources {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+
+  @media (max-width: 640px) { grid-template-columns: repeat(2, 1fr); }
+}
+
+.ach-source {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 10px;
+  background: $bg-color-hover;
+  border-radius: $radius-md;
+
+  .ach-source-name {
+    font-size: $font-2xs;
+    font-weight: 700;
+    color: $text-sub;
+  }
+  .ach-source-count {
+    font-size: $font-2xs;
+    font-weight: 800;
+    color: $text-main;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.ach-evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed $border-color;
+
+  .ach-evidence-title {
+    font-size: $font-2xs;
+    font-weight: 700;
+    color: $text-muted;
+  }
+}
+
+.ach-evidence-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ach-evidence-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: $font-2xs;
+  line-height: $leading-normal;
+  color: $text-sub;
+
+  .evidence-icon {
+    flex-shrink: 0;
+  }
+  .evidence-text {
+    min-width: 0;
+    word-break: break-word;
+  }
+  b {
+    color: $text-main;
+    font-weight: 700;
+  }
+}
+
 .ach-overview-card {
   background: $card-bg;
   border: 1px solid $border-color;

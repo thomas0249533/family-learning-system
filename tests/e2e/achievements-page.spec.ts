@@ -102,3 +102,68 @@ test.describe('独立成就页', () => {
     }
   })
 })
+
+/**
+ * 全收集总结卡是"一次性里程碑"：必须 ①集齐后出现 ②点掉后消失 ③刷新不再出现。
+ * 真凑齐 28 枚要跑满整本教材，所以这里直接把 28 条解锁记录写进 settings
+ * （应用自己的存储就是 `db.settings['achievements'] = UnlockedRecord[]`）。
+ */
+const ALL_IDS = [
+  'first-step', 'ten-kp', 'fifty-kp', 'hundred-kp', 'kp-300', 'subject-master-3', 'perfect-kp',
+  'mastery-half', 'mistake-first', 'mistake-cleaner', 'mistake-cleaner-50', 'comeback',
+  'review-20', 'patience', 'streak-master', 'streak-3', 'streak-7', 'streak-30', 'streak-60',
+  'streak-100', 'early-bird', 'night-owl', 'daily-20', 'explorer-3', 'explorer-10',
+  'type-collector', 'term-cross', 'senior-new',
+]
+
+async function seedAllUnlocked(page: Page): Promise<void> {
+  await page.evaluate(async (ids: string[]) => {
+    const value = ids.map((id) => ({ id, unlockedAt: '2026-10-01', evidence: '端到端种子数据' }))
+    await new Promise<void>((resolve, reject) => {
+      const open = indexedDB.open('FamilyLearningDB')
+      open.onsuccess = () => {
+        const db = open.result
+        const tx = db.transaction('settings', 'readwrite')
+        tx.objectStore('settings').put({ key: 'achievements', value })
+        tx.oncomplete = () => { db.close(); resolve() }
+        tx.onerror = () => reject(tx.error)
+      }
+      open.onerror = () => reject(open.error)
+      // 没处理 onblocked 会**静默挂到超时**（Dexie 正在建库时裸开连接会被挡）
+      open.onblocked = () => reject(new Error('IDB 被阻塞：应用还没建完库就想写'))
+    })
+  }, ALL_IDS)
+  await page.reload()
+}
+
+test.describe('全收集总结卡（一次性里程碑）', () => {
+  test('集齐 28 枚 → 出现总结卡；点「知道了」后消失，刷新也不再出现', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    // 必须等应用把库建完再裸开连接，否则会抢在 Dexie 升级之前（本机踩过的坑）
+    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await seedAllUnlocked(page)
+
+    const card = page.locator('.collection-card')
+    await expect(card).toBeVisible()
+    await expect(card).toContainText('全部 28 枚成就已收集')
+
+    await card.getByRole('button', { name: '知道了' }).click()
+    await expect(card).toHaveCount(0)
+
+    // 「只弹一次」= 写进 settings，刷新后不该再出现
+    // 注意：集齐后 28 张卡都在「已获得」区、该区默认收起 → 这里**不能**断言 `.ach-card` 有 28 个，
+    //       改看总览卡的「28 / 28」（那是视图算出来的，不受折叠影响）
+    await page.reload()
+    await expect(page.locator('.stat-card__value').filter({ hasText: '28 / 28' })).toBeVisible()
+    await expect(page.locator('.ach-head-count')).toContainText('全部收集完成')
+    await expect(page.locator('.collection-card')).toHaveCount(0)
+  })
+
+  test('没集齐时不出总结卡（避免"空加载也算集齐"）', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.collection-card')).toHaveCount(0)
+  })
+})
