@@ -31,7 +31,12 @@ import {
   scopedKey,
   type ProfileScopedBase,
 } from '@core/profile/settingsScope'
-import { normalizeRepeatCount, normalizeUnlocked, type UnlockedRecord } from '@core/motivation/achievements'
+import {
+  normalizeRepeatCount,
+  normalizeRepeatPeriod,
+  normalizeUnlocked,
+  type UnlockedRecord,
+} from '@core/motivation/achievements'
 import {
   normalizeDiscoveryState,
   type DiscoveryState,
@@ -113,6 +118,13 @@ function earlierUnlockStamp(a: string, b: string): string {
   return a < b ? a : b
 }
 
+/** 取较晚的周键（周键定宽 `WYYYY-MM-DD`，字符串序即时间序） */
+function laterRepeatPeriod(a: string | undefined, b: string | undefined): string | undefined {
+  if (a === undefined) return b
+  if (b === undefined) return a
+  return a >= b ? a : b
+}
+
 function mergeAchievements(
   localRaw: unknown,
   remoteRaw: unknown,
@@ -143,6 +155,15 @@ function mergeAchievements(
     // 注意 `?? 1`：老记录没有这个字段 = 只达成过一次。
     const repeat = Math.max(normalizeRepeatCount(prev.repeatCount) ?? 1, normalizeRepeatCount(r.repeatCount) ?? 1)
     if (repeat >= 2) merged.repeatCount = repeat
+    // 幂等锚点取**较晚**（V1.5）。必须与 `repeatCount` 一起取 max，否则合并不自洽：
+    // 假设本机本周已计入（锚点 W43、3 次），远端是上周的旧备份（锚点 W42、2 次），
+    // 只取 count 的 max 会得到"3 次 + 锚点 W42" —— 合并后第一次结算就发现
+    // "本周还没记过"，于是同一周又 +1，变成 4 次。两个字段方向必须一致。
+    const period = laterRepeatPeriod(
+      normalizeRepeatPeriod(prev.lastRepeatPeriod),
+      normalizeRepeatPeriod(r.lastRepeatPeriod),
+    )
+    if (period) merged.lastRepeatPeriod = period
     map.set(r.id, merged)
   }
 

@@ -37,6 +37,36 @@ export function localDayKey(d: Date = new Date()): string {
   return `${y}-${m}-${day}`
 }
 
+/**
+ * 该日期所在周的**周一**（本地零点）。
+ *
+ * `getDay()` 是 0=周日 … 6=周六，而周一起算的口径里周日属于**上一周**，
+ * 所以要回退 6 天。用 `new Date(y, m, d - back)` 构造而不是 `setDate()`：
+ * 前者让运行时自己处理跨月/跨年（`new Date(2026, 0, 1 - 5)` 会正确落到 2025-12-27），
+ * 也不需要关心 DST（本项目全用本地日期，不做时区换算）。
+ */
+export function mondayOf(d: Date = new Date()): Date {
+  const dow = d.getDay()
+  const back = dow === 0 ? 6 : dow - 1
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() - back)
+}
+
+/**
+ * 本地周键 `W<那周周一的日期>`，例如 `W2026-10-19`。**周一起算**。
+ *
+ * ## 为什么不是 `YYYY-Www`
+ * ISO 周号在年边界上要跨年换算（2026-12-28 究竟是 `2026-W53` 还是 `2027-W01`
+ * 取决于用哪套口径），算错了不会报错、只会把某一周静默并到隔壁。
+ * 直接给"那周周一的日期"则：定宽、可直接字符串比大小（判断哪个周期更晚）、
+ * 日志里一眼看出是哪一周、也不用维护周号表。
+ *
+ * 前缀 `W` 的作用是避免与 `localDayKey()` 的日键混淆 —— 两种键会同时出现在
+ * `UnlockedRecord` 里（`unlockedAt` 是日、`lastRepeatPeriod` 是周）。
+ */
+export function localWeekKey(d: Date = new Date()): string {
+  return `W${localDayKey(mondayOf(d))}`
+}
+
 /** a 比 b 晚多少天 */
 function dayDiff(a: string, b: string): number {
   const [ay, am, ad] = a.split('-').map(Number)

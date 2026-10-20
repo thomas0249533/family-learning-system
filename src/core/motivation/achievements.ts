@@ -17,7 +17,7 @@
 import { db, type ProgressRecord, type MistakeRecord } from '@/db'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { scopedKey } from '@core/profile/settingsScope'
-import { bestStreak, localDayKey, type StreakState } from './streak'
+import { bestStreak, effectiveCurrent, localDayKey, localWeekKey, type StreakState } from './streak'
 import { evidenceOf } from './achievementProgress'
 // 两个 `import type` 都不能变成运行时 import，否则成环：
 //   - `achievementProgress` 在运行时只 import 本文件的 `AchievementContext`（type-only），
@@ -52,6 +52,34 @@ export interface AchievementContext {
   attemptedTypes?: string[]
 }
 
+/** 重复达成的周期口径。目前只有周（周一起算，见 `localWeekKey`） */
+export type RepeatPeriod = 'weekly'
+
+/**
+ * 可重复达成规则（V1.5）。
+ *
+ * ## 为什么是"一个对象"而不是两个平铺字段
+ * `period` 单独存在毫无意义，`holds` 单独存在不知道按什么周期比 ——
+ * 拆成两个可选字段就会出现"只填了一个"的半配置，而这种半配置在运行时
+ * 表现为`repeatCount` 悄悄不涨（不报错）。做成一个对象，
+ * **要么都有、要么都没有**，tsc 直接拦住。
+ *
+ * ## `holds` 必须是**非单调**谓词
+ * 不能用 `def.check`：那是"曾经达到过"的单调语义（一旦为真永远为真）。
+ * 拿它当重复判据 = 每过一周 `repeatCount` 就 +1，哪怕孩子从解锁那天起再没学过。
+ * `streak-7` 用的是**当前**连续天数（`effectiveCurrent`），断了就回落 ——
+ * 那才是"又坚持了一整周"。这一条是本模块唯一的正确性关键点。
+ */
+export interface RepeatRule {
+  period: RepeatPeriod
+  /**
+   * 这一周期里是否真的又做到了一次。
+   * @param now 结算时刻（`syncAchievements` 传入），用于算"当前"口径
+   *   （`effectiveCurrent` 需要它来判断打卡是否已经断了）。**不要在里面读 `new Date()`**。
+   */
+  holds: (ctx: AchievementContext, now: Date) => boolean
+}
+
 export interface AchievementDef {
   id: string
   icon: string
@@ -84,6 +112,12 @@ export interface AchievementDef {
    * 从库里读出来的，静态表装不下；挂在定义上则"定义在哪、度量在哪"，不会漏。
    */
   measure?: (ctx: AchievementContext) => Measure
+  /**
+   * 可重复达成规则（V1.5）。**省略 = 永不重复**（内置 28 枚里只有 `streak-7` 声明了它）。
+   *
+   * 判据见 `RepeatRule`：`holds` 必须非单调，否则会白涨。
+   */
+  repeat?: RepeatRule
   check: (ctx: AchievementContext) => boolean
 }
 
@@ -320,6 +354,20 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     chain: 'streak',
     order: 2,
     check: (ctx) => bestStreak(ctx.streak) >= 7,
+    /*
+     * 唯一的可重复成就（V1.5，口径：周一起算的一整周）。
+     *
+     * `holds` 用 `effectiveCurrent`（**当前**连续天数，断两天以上归零），
+     * 而不是 `check` 里的 `bestStreak`（max(历史最长, 当前)）——
+     * 后者一旦为真永远为真，每周都会 +1，孩子躺平也照样"第 N 次"。
+     *
+     * 「今天没打卡但昨天打过」仍然算数（`effectiveCurrent` 的宽限期）：
+     * 一周的最后一天还没开始学，不该在早上就把这周的重复扣掉。
+     */
+    repeat: {
+      period: 'weekly',
+      holds: (ctx, now) => effectiveCurrent(ctx.streak, now) >= 7,
+    },
   },
   {
     id: 'streak-30',
@@ -450,28 +498,51 @@ export interface UnlockedRecord {
    */
   evidence?: string
   /**
-   * 重复达成次数（V1.4 · B6）。**1 或省略 = 只达成过一次**，≥2 时卡面显示「第 N 次」。
+   * 重复达成次数（V1.4 · B6 落字段 / V1.5 起真的会涨）。**1 或省略 = 只达成过一次**，
+   * ≥2 时卡面显示「第 N 次」。
    *
-   * ## 为什么这个字段现在**只写不涨**
-   * B6 只落基础设施（字段 + 合并规则 + 卡面印记），写入侧**刻意不递增**。
-   * 因为内置 28 枚的判定全是单调语义（`anyDayQuestionAtLeast` / `bestStreak` /
+   * ## V1.4：只写不涨，为什么
+   * 内置 28 枚的判定几乎全是单调语义（`anyDayQuestionAtLeast` / `bestStreak` /
    * `totalAttempts`：一旦为真永远为真），而 `syncAchievements` 每次结算都会把
-   * 已解锁项重新判为"满足" —— 字面实现「再次达成 +1」会让计数随路由跳转涨到几十，
-   * 卡面出现"第 37 次"这种纯噪声。
+   * 已解锁项重新判为"满足" —— 字面实现「再次达成 +1」会让计数随路由跳转涨到几十。
    *
-   * 真正的「再次达成」需要**周期化的成就定义**（`repeatable: 'daily' | 'weekly'`），
-   * 让条件能回落再重新满足。那是成就定义模型的新能力，不在 V1.4 范围。
+   * ## V1.5：只有声明了 `repeat` 的成就才会涨
+   * 判据从"条件满足"换成"**这一周期里 `repeat.holds` 为真，且本周期还没记过**"，
+   * 锚点是 `lastRepeatPeriod`。内置只有 `streak-7`（一周不断）声明了 `repeat: weekly`，
+   * 其余 27 枚 `repeatCount` 恒为 1 —— 它们的"再做一次"没有可周期化的语义。
    *
-   * 现在就把合并规则写好的理由（设计稿 R11）：字段一旦存在，跨设备导入就必须知道
-   * 怎么合它。等将来真的开始递增再补规则，中间那段时间的备份会把重复次数抹成单次，
-   * 而且**没有任何告警**。所以 DoD 是"加字段必须同时加合并规则"，不是"以后再说"。
+   * ## 合并方向（设计稿 R11 的 DoD）
+   * 一旦字段存在，跨设备导入就必须知道怎么合它，所以规则在 B6 就写好了：
+   * `repeatCount` 取**较大**、`lastRepeatPeriod` 取**较晚**。
+   * 两条都取了 max 才自洽 —— 只取 count 不取 period 的话，合并后本机会看到
+   * "上周期"的旧锚点，于是同一周再结算一次就凭空 +1。
    */
   repeatCount?: number
+  /**
+   * 上一次被计入 `repeatCount` 的周期键（`WYYYY-MM-DD`，周一起算），V1.5。
+   *
+   * 它是**幂等锚点**：同一天里 AppShell 去抖 + 路由跳转各结算一次，
+   * 没有这个字段就会 +2。省略 = 这张卡还没开始记重复
+   * （升级前的旧记录都长这样，第一次结算只落基线、不计数）。
+   */
+  lastRepeatPeriod?: string
 }
 
 /** 重复次数的归一化：只认 ≥1 的整数；脏数据一律当"没有这个字段"（= 1 次）。 */
 export function normalizeRepeatCount(raw: unknown): number | undefined {
   return typeof raw === 'number' && Number.isInteger(raw) && raw >= 1 ? raw : undefined
+}
+
+/**
+ * 周键的归一化：只认 `W` + `YYYY-MM-DD`。
+ *
+ * 严格到"形状"而不只是"是字符串"的理由：这个值会参与**字符串比较**
+ * （合并取较晚、结算比是否同周期）。一个大小写不对或形状不对的脏值
+ * 不会报错，只会让比较结果永远偏向某一侧 —— 那种错查起来极痛。
+ */
+export function normalizeRepeatPeriod(raw: unknown): string | undefined {
+  if (typeof raw !== 'string') return undefined
+  return /^W\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : undefined
 }
 
 /** 兼容旧 `string[]` 与半迁移态，归一化为 UnlockedRecord[]。 */
@@ -492,6 +563,9 @@ export function normalizeUnlocked(raw: unknown): UnlockedRecord[] {
       // 满地显式 1 会让"这次备份到底带没带这个信息"无法判断
       const repeat = normalizeRepeatCount(rec.repeatCount)
       if (repeat !== undefined) out.repeatCount = repeat
+      // 周键同理：只搬运形状合法的，脏值当"还没开始记重复"（下次结算落基线）
+      const period = normalizeRepeatPeriod(rec.lastRepeatPeriod)
+      if (period !== undefined) out.lastRepeatPeriod = period
       return [out]
     }
     return []
@@ -524,7 +598,7 @@ export async function loadUnlockedIds(): Promise<string[]> {
  *
  * 1. `unlockedAt` 取**先到的那次**（最接近真实解锁时刻）；
  * 2. `evidence` **优先本机**，本机为空才用后来的；
- * 3. `repeatCount` 取**较大**（累计事实，方向与上面两条相反）。
+ * 3. `repeatCount` 取**较大**、`lastRepeatPeriod` 取**较晚**（累计事实 + 幂等锚点，方向与上面两条相反）。
  */
 export function dedupeUnlocked(records: UnlockedRecord[]): UnlockedRecord[] {
   const map = new Map<string, UnlockedRecord>()
@@ -545,9 +619,24 @@ export function dedupeUnlocked(records: UnlockedRecord[]): UnlockedRecord[] {
     // （与合并引擎 R11 同一个坑，只是发生在单机内）
     const repeat = Math.max(prev.repeatCount ?? 1, normalizeRepeatCount(r.repeatCount) ?? 1)
     if (repeat >= 2) merged.repeatCount = repeat
+    // 周键取**较晚**：它只回答"这周期记过没有"。取较早的那份会让合并后的记录
+    // 退回上一周期，同一周再结算一次就凭空 +1（与 repeatCount 的 max 配套才自洽）。
+    // 周键定宽（`WYYYY-MM-DD`），字符串比较即时间比较 —— 这也是当初不用 ISO 周号的原因之一。
+    const period = laterPeriod(
+      normalizeRepeatPeriod(prev.lastRepeatPeriod),
+      normalizeRepeatPeriod(r.lastRepeatPeriod),
+    )
+    if (period) merged.lastRepeatPeriod = period
     map.set(r.id, merged)
   }
   return [...map.values()]
+}
+
+/** 取较晚的周期键（任一侧缺失取另一侧；形状非法已在 `normalizeRepeatPeriod` 滤掉） */
+function laterPeriod(a: string | undefined, b: string | undefined): string | undefined {
+  if (a === undefined) return b
+  if (b === undefined) return a
+  return a >= b ? a : b
 }
 
 /** 写入已解锁记录（去重，保留已有 unlockedAt / evidence / repeatCount）。 */
@@ -590,6 +679,21 @@ export interface AchievementSyncResult {
  * 证据快照（A-06）在**这里**写：此刻 `ctx` 就是"达成时"的数据，
  * 写库成功后才返回 `newlyUnlocked`（调用方据此弹提示）——
  * 也就是"先落库、后提示"：宁可不弹，不可弹了却没存。
+ *
+ * ## 重复达成（V1.5）
+ * 只有声明了 `repeat` 的成就（内置仅 `streak-7`）才会让 `repeatCount` 增长，
+ * 判据是三步，顺序不能换：
+ *
+ * 1. **没有 `lastRepeatPeriod` → 只落基线，不计数**。这是升级路径：
+ *    旧记录里没有锚点，我们无法判断"这一周是否又做到了一次"（可能是从解锁起
+ *    一直保持，也可能昨天刚续上）。宁可晚一周开始计数，也不要在升级当天
+ *    让所有人凭空多出「第 2 次」—— 那种"我什么都没做就多了"的观感比少记一次糟得多。
+ * 2. **锚点 ≥ 本周键 → 跳过**。同周期幂等（AppShell 去抖 + 路由跳转都会结算），
+ *    顺便兜住"系统时间被调回过去"的情况：锚点更晚就什么都不做，等时间追上来。
+ * 3. **`holds(ctx, now)` 为假 → 跳过**。这是防虚涨的唯一一道闸：
+ *    `holds` 必须是非单调谓词（见 `RepeatRule`）。
+ *
+ * 三步任一命中都不写库 —— 结算每次路由跳转都跑，不能每次都落一次盘。
  */
 export async function syncAchievements(
   ctx: AchievementContext,
@@ -598,30 +702,61 @@ export async function syncAchievements(
 ): Promise<AchievementSyncResult> {
   const saved = await loadUnlocked()
   const savedIds = new Set(saved.map((r) => r.id))
-  const earned = evaluateAchievements(ctx, extraDefs)
+  const allDefs = [...ACHIEVEMENTS, ...extraDefs]
+  const earned = new Set(evaluateAchievements(ctx, extraDefs))
 
-  const newlyIds = earned.filter((id) => !savedIds.has(id))
   const mergedMap = new Map<string, UnlockedRecord>()
   for (const r of saved) mergedMap.set(r.id, r)
-  // 已解锁且本轮**仍满足**的项：这里**不**递增 repeatCount（B6 裁决）。
-  // 原因见 `UnlockedRecord.repeatCount` 的注释：内置判定全是单调的，而本函数每次结算都会
-  // 跑一遍（AppShell 去抖 + 路由跳转都会触发），"满足即 +1"会让计数随翻页上涨。
-  // 将来要做真重复，判据必须是"条件从 false 变 true 的跃迁"，且得先有周期化定义。
-  for (const id of earned) {
-    if (!mergedMap.has(id)) {
+
+  const weekKey = localWeekKey(now)
+  /** 是否有"记录内容变了"（换周期 +1 / 落基线）。长度不变也可能要写库，不能只看 length */
+  let changed = false
+
+  for (const def of allDefs) {
+    if (!earned.has(def.id)) continue
+    const prev = mergedMap.get(def.id)
+
+    // ---------- 首次解锁 ----------
+    if (!prev) {
       // 自定义 id 在 `EVIDENCE_TPL` 里没有模板 → 空串 → 卡片不显示证据行。
       // 这是对的：证据文案是"内置 28 枚的口径"，不该给家长自建的卡临时编一句。
-      const evidence = evidenceOf(id, ctx)
-      mergedMap.set(id, {
-        id,
+      const evidence = evidenceOf(def.id, ctx)
+      const record: UnlockedRecord = {
+        id: def.id,
         unlockedAt: localDayKey(now),
         ...(evidence ? { evidence } : {}),
-      })
+      }
+      // 解锁当周就算作已计入：否则同一周里 `holds` 也为真时会立刻变成「第 2 次」
+      if (def.repeat) record.lastRepeatPeriod = weekKey
+      mergedMap.set(def.id, record)
+      continue
     }
+
+    // ---------- 已解锁：只有声明了 repeat 的才可能涨 ----------
+    if (!def.repeat) continue
+
+    // ① 升级路径：旧记录没有锚点 → 落基线，不计数
+    if (prev.lastRepeatPeriod === undefined) {
+      mergedMap.set(def.id, { ...prev, lastRepeatPeriod: weekKey })
+      changed = true
+      continue
+    }
+    // ② 本周期（或更晚的周期）已计过 → 幂等
+    if (prev.lastRepeatPeriod >= weekKey) continue
+    // ③ 这一周期没真的又做到一次 → 不涨
+    if (!repeatHolds(def, ctx, now)) continue
+
+    mergedMap.set(def.id, {
+      ...prev,
+      repeatCount: (normalizeRepeatCount(prev.repeatCount) ?? 1) + 1,
+      lastRepeatPeriod: weekKey,
+    })
+    changed = true
   }
+
   const unlockedRecords = [...mergedMap.values()]
 
-  if (unlockedRecords.length !== saved.length) {
+  if (unlockedRecords.length !== saved.length || changed) {
     await saveUnlocked(unlockedRecords)
   }
 
@@ -630,7 +765,25 @@ export async function syncAchievements(
     unlockedRecords,
     // 用"全部定义"过滤而不是只查 ACHIEVEMENTS：否则自定义卡解锁了却弹不出 toast
     // （结算已经落库，提示却永远不来 —— 孩子看不到自己刚拿到的徽章）
-    newlyUnlocked: [...ACHIEVEMENTS, ...extraDefs].filter((a) => newlyIds.includes(a.id)),
+    newlyUnlocked: allDefs.filter((a) => !savedIds.has(a.id) && earned.has(a.id)),
+  }
+}
+
+/**
+ * `repeat.holds` 的安全调用。
+ *
+ * 自定义包的 `holds` 是**外部数据驱动的闭包**（未来开放给家长 JSON 时），
+ * 一次抛错不能把 `streak-7` 之外的所有徽章结算一起搞崩：吞掉异常并当作
+ * "这一周期不算"，下一周期还有机会。与 `achievementMeta.measureOf` 同一条防御。
+ */
+function repeatHolds(def: AchievementDef, ctx: AchievementContext, now: Date): boolean {
+  const rule = def.repeat
+  if (!rule) return false
+  try {
+    return rule.holds(ctx, now) === true
+  } catch (e) {
+    console.warn('[achievements] repeat.holds 抛错，本周不计入重复', def.id, e)
+    return false
   }
 }
 
