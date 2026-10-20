@@ -423,18 +423,55 @@ const rank = (r: ProgressRecord) => r.lastReviewAt ?? r.lastStudiedAt ?? ''
 
 | 键 | 合并 |
 |---|---|
-| `achievements:<pid>` | `UnlockedRecord[]` 按 `id` 取**并集**；`unlockedAt` 取更早（空串<任意）；`repeatCount` 取 max；`evidence` 本机非空则保留 |
-| `dailyStats:<pid>` | 按 `date` 对齐，`questions/seconds/correct` 逐字段 max |
-| `studyStreak:<pid>` | `lastDate` 取更晚；`current`/`best` 取 max（**分别取**，不整对象取，否则会出现 current > best） |
+| `achievements:<pid>` | `UnlockedRecord[]` 按 `id` 取**并集**；`unlockedAt` **两边都非空取更早、只有一边非空取非空那侧、都空取空**（见下方 §6.3.1）；`evidence` 本机非空则保留 |
+| `dailyStats:<pid>` | 按 `date` 对齐；`questionCount` / `lastStudyAt` 取 max，`firstStudyAt` 取 **min** |
+| `studyStreak:<pid>` | `lastDate` 取更晚；`current` / `longest` **分别取 max**（不整对象取，否则会出现 current > longest） |
 | `achievementUi:<pid>` | 本机优先（纯界面状态，不值得合并） |
 | `achievement:collectionSeen:<pid>` | 逻辑或（看过就算看过） |
-| `achievement:discovery:<pid>` | `lastDrawDay` 取更晚；`clues` 取并集 |
+| `achievement:discovery:<pid>` | `lastGrantDay` 取更晚；`revealed` 取并集；`chances` / `streakWithoutNew` 取 **max** |
 | `achievement:discoveryEnabled:<pid>` | 本机优先（家长在本机的设置是更近的意图） |
 | `attemptedTypes:<pid>` | 取并集 |
+| `customChecks:<pid>` | **B3 新增时补**：按勾选 id 取并集（停用不清空，见 §13.4 裁决） |
 
-**`best` 与 `current` 必须分别取 max** 这个细节很容易漏：如果整对象按 `lastDate` 取，会出现
-"`current=3` 但 `best=9`"（本机 best 大、备份 current 大）——不算错但难看；
-反过来若按 `current` 取整对象，`best` 可能从 9 掉到 3，这是**可见的倒退**。
+**字段名以真源为准，不要照抄本表旧稿**：实施时发现本表初版有三处字段名写错（`dailyStats` 实际是
+`{date, questionCount, firstStudyAt, lastStudyAt}`、`studyStreak` 实际是 `{current, longest, lastDate}`、
+`achievement:discovery` 实际是 `{chances, revealed, streakWithoutNew, lastGrantDay}`）。
+合并函数一律以 `src/core/motivation/*.ts` 的读写函数为形状定义。
+
+**`repeatCount` 目前不存在**（`UnlockedRecord` 没有这个字段）。B6 加「重复印记」时**必须同时补合并规则**，
+否则跨设备导入会把重复次数抹成单次 —— 这是 B6 的 DoD 之一，别漏。
+
+#### 6.3.1 `unlockedAt` 为什么不能用「空串最早」
+
+初稿写的是「`unlockedAt` 取更早（空串 `<` 任意）」，字面实现会**永久毁掉真实日期**：
+只要有一台设备是老数据（`unlockedAt: ''`），导入后那枚徽章的日期就变成 `''` 且再也回不来。
+而仓库自己的写入口 `saveUnlocked()` 用的是 `prev.unlockedAt || r.unlockedAt`（**优先非空**），
+两处语义直接打架。所以规则改成：
+
+```
+两边都非空 → 取更早
+只有一边非空 → 取非空那侧
+都空 → ''
+```
+
+这条不是"更加固"，而是**修一个会丢数据的规则**：日期是「什么时候拿到的」的唯一证据，
+B5 的打印件和成就卡都要显示它。
+
+#### 6.3.2 整行胜的已知代价：`status` 可以回落
+
+整行胜（R3）意味着：备份侧该行 `lastReviewAt` 更晚时，本机整行被替换，
+`status` / `masteryProbability` / `wrongCount` 都可能一起变低。**这是有意为之，不加闸门**：
+
+- 加「已掌握不得回退」就是**字段级合并** —— 会造出「`status`=已掌握 但排期明天到期」的自相矛盾行，
+  而 FSRS 下次复习本来就会重算状态，人工拼接只会让调度器读到假状态。
+- AC-P2-12 守的是「**旧**备份不覆盖新进度」。备份侧**更晚**且状态更低，是忠实反映更晚的真实状态
+  （孩子在另一台设备上答错了），不是"越导越差"。
+- `mistakes` 有等级闸门（只升不降）而 `progress` 没有，这个不对称是故意的：错题等级是**累计努力**，
+  进度状态是**当前估计**，前者不该被覆盖，后者应该跟着最新证据走。
+
+**`longest` 与 `current` 必须分别取 max** 这个细节很容易漏：如果整对象按 `lastDate` 取，会出现
+"`current=3` 但 `longest=9`"（本机 longest 大、备份 current 大）——不算错但难看；
+反过来若按 `current` 取整对象，`longest` 可能从 9 掉到 3，这是**可见的倒退**。
 
 **全局键**：本机存在即保留，本机缺失才写入。`achievement:customPacks` 特例：**绝不合并**
 （两边的包集合不同，合并会产生"启用了但内容不在本机"的假卡片）——导入不改包，只改数据。
@@ -692,6 +729,9 @@ tokens:check → typecheck → lint:styles → check:hex → check:text-color
 | R6 | `profileId` 生成撞车 | 两台设备都用递增序号 | 两个孩子被并成一个 | 用时间戳+随机，不用序号（§3.2） | 极低 |
 | R7 | 迁移后"看不见的行" | 部分行缺 `profileId` | 统计偏低且无报错 | 启动计数核对 + `partial` 标记 + 家长端提示 | 低 |
 | R8 | 打印样式吃掉暗色主题 | 直接复用屏幕 token | 白底印出黑块 | 单独 `print.scss` + 固定浅色 | 低 |
+| R9 | 导入后某 kp 的掌握态**回落** | 备份侧该行 `lastReviewAt` 更晚且状态更低 | 家长看到"掌握数变少" | **有意接受**（§6.3.2）：整行胜，加闸门会造出自相矛盾行；AC-P2-12 守的是"旧备份不覆盖新进度" | 中（文案需解释） |
+| R10 | 导入时漏传全局键 | `planMerge` 第 4 参可选 | 主题/审计等全局设置静默不导 | 第 4 参**必填**（无默认值）→ 编译期就炸 | 极低 |
+| R11 | 合并把重复印记抹成单次 | B6 加 `repeatCount` 时没补合并规则 | 重复解锁的历史消失 | B6 的 DoD 里直接写明"加字段必须同时加合并规则" | 低（有清单兜） |
 
 ---
 
@@ -723,5 +763,10 @@ tokens:check → typecheck → lint:styles → check:hex → check:text-color
 3. **`achievement:discoveryEnabled` 到底是"每个孩子一个开关"还是"全设备一个"**：
    本文按 per-profile 设计（家长对某个孩子的设置）。若产品认为它是"家长总开关"，改回全局即可，
    改动只在 §3.3 表的一行。
-4. **待 PRD 补充**：自定义包停用后，`customChecks:<pid>` 里的勾选记录是否保留。
-   建议保留（与"解锁记录停用后保留"同构），但需要 PRD 确认。
+4. ~~**待 PRD 补充**：自定义包停用后，`customChecks:<pid>` 里的勾选记录是否保留。~~
+   **已裁决（2026-10-20）：保留。** 与"解锁记录停用后保留"同构 —— 停用是"我不想要这张卡了"，
+   不是"把这个孩子达成的证据删掉"；删了之后重新启用会回到零且**不可恢复**，代价不对称。
+   B3 实施时必须同时做一件事：**把 `customChecks` 登记进 `PROFILE_SCOPED_KEYS`**。
+   现状是它连键都还不存在（`grep customChecks src/` 零命中），若 B3 直接按 `customChecks:<pid>`
+   读写而不登记，它会落进 `classifyKey()` 的 `unknown` 分支 —— 迁移会"多搬一份"、
+   导出会被当成未知键，两处口径都与设计不符。
