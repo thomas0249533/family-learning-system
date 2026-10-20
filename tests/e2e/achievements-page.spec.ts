@@ -218,3 +218,38 @@ test.describe('筛选与搜索', () => {
     await expect(page.locator('.ach-card.silhouette')).toHaveCount(3)
   })
 })
+
+test.describe('隐藏成就的发现机制', () => {
+  test('每天一次机会：抽到的是线索，用完当天不再有；刷新不补发', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+
+    const card = page.locator('.discovery-card')
+    await expect(card).toBeVisible()
+    await expect(card).toContainText('有 1 次发现机会')
+
+    await card.getByRole('button', { name: '用掉一次机会' }).click()
+    // 线索出现，且明确写着"不是成就本身"
+    await expect(card.locator('.discovery-clue')).toBeVisible()
+    await expect(card).toContainText('今天的机会用完了')
+    await expect(card.getByRole('button', { name: '用掉一次机会' })).toHaveCount(0)
+
+    // 刷新：同一天不再发新机会（不累积、不补发）
+    await page.reload()
+    await expect(page.locator('.discovery-card')).toContainText('今天的机会用完了')
+    await expect(page.locator('.discovery-card').getByRole('button')).toHaveCount(0)
+
+    // 抽到线索**没有**解锁任何成就
+    await expect(page.locator('.ach-seal')).toHaveCount(0)
+  })
+
+  test('家长关掉开关后，发现卡整体消失（图鉴回到纯剪影）', async ({ page }) => {
+    await page.goto('/parent')
+    await resetDb(page)
+    await page.getByRole('checkbox').first().uncheck()
+
+    await page.goto('/achievements')
+    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.discovery-card')).toHaveCount(0)
+  })
+})

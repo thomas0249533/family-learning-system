@@ -10,6 +10,23 @@
         <StatCard icon="🔒" :value="view.total - view.earned" label="待解锁" />
       </div>
 
+      <!-- 发现机制：一天一次机会，抽到的是**线索**不是成就；家长可关 -->
+      <AppCard v-if="discoveryEnabled" class="discovery-card">
+        <div class="discovery-body">
+          <div class="discovery-emoji" aria-hidden="true">🔍</div>
+          <div class="discovery-text">
+            <h2 class="discovery-title">{{ discoveryTitle }}</h2>
+            <p class="discovery-desc">{{ discoveryDesc }}</p>
+            <p v-if="lastClue" class="discovery-clue" :class="{ fresh: lastClue.wasNew }">
+              {{ CLUE_TEXT[lastClue.id] }}
+            </p>
+          </div>
+          <AppButton v-if="canDiscover" size="small" type="primary" @click="useDiscovery">
+            用掉一次机会
+          </AppButton>
+        </div>
+      </AppCard>
+
       <!-- 全收集总结卡：**只弹一次**（db.settings 里的 achievement:collectionSeen）。
            规则来源是 view.complete（buildAchievementView 算的），这里不另算一遍口径。 -->
       <AppCard v-if="showCollection" class="collection-card">
@@ -104,6 +121,19 @@ import {
   type AchievementSource,
 } from '@core/motivation/achievementMeta'
 import { SOURCE_LABEL, SOURCE_ORDER } from '@core/motivation/achievementOverview'
+import {
+  CLUE_TEXT,
+  canDraw,
+  drawDiscovery,
+  emptyDiscoveryState,
+  grantDailyChance,
+  loadDiscoveryEnabled,
+  loadDiscoveryState,
+  remainingUnrevealed,
+  saveDiscoveryState,
+  type DiscoveryState,
+} from '@core/motivation/achievementDiscovery'
+import { localDayKey } from '@core/motivation/streak'
 
 const achievementStore = useAchievementStore()
 
@@ -157,13 +187,108 @@ async function dismissCollection(): Promise<void> {
   await markCollectionSeen()
 }
 
+/* ---------------- 发现机制 ---------------- */
+
+const discoveryEnabled = ref(false)
+const discovery = ref<DiscoveryState>(emptyDiscoveryState())
+/** 本次会话刚抽到的线索（刷新后清空：线索本身存在 revealed 里，不用再回放） */
+const lastClue = ref<{ id: string; wasNew: boolean } | null>(null)
+
+const canDiscover = computed(() => discoveryEnabled.value && canDraw(discovery.value))
+const allRevealed = computed(() => remainingUnrevealed(discovery.value).length === 0)
+
+const discoveryTitle = computed(() => {
+  if (allRevealed.value) return '线索都找到了'
+  if (canDiscover.value) return `有 ${discovery.value.chances} 次发现机会`
+  return '今天的机会用完了'
+})
+
+const discoveryDesc = computed(() => {
+  if (allRevealed.value) return '三枚隐藏成就的线索已经全部揭开，剩下的靠你自己做到。'
+  if (canDiscover.value) return '抽到的是一句提示，不是成就本身 —— 成就还得真的做到才会解锁。'
+  return '明天学习时会再给你一次。机会不累积，也不会因为没用来催你。'
+})
+
+async function useDiscovery(): Promise<void> {
+  const result = drawDiscovery(discovery.value)
+  if (!result.clueId) return
+  discovery.value = result.state
+  lastClue.value = { id: result.clueId, wasNew: result.wasNew }
+  await saveDiscoveryState(result.state)
+}
+
 onMounted(async () => {
   collectionSeen.value = await hasSeenCollection()
+  discoveryEnabled.value = await loadDiscoveryEnabled()
+  if (discoveryEnabled.value) {
+    const granted = grantDailyChance(await loadDiscoveryState(), localDayKey())
+    discovery.value = granted.state
+    if (granted.granted) await saveDiscoveryState(granted.state)
+  }
   await achievementStore.refreshView()
 })
 </script>
 
 <style scoped lang="scss">
+.discovery-body {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.discovery-emoji {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.discovery-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.discovery-title {
+  margin: 0;
+  font-size: $font-sm;
+  font-weight: 800;
+  color: $text-main;
+  line-height: $leading-tight;
+}
+
+.discovery-desc {
+  margin: 2px 0 0;
+  font-size: $font-2xs;
+  color: $text-sub;
+  line-height: $leading-normal;
+}
+
+/* 线索出现时淡入一次；新线索多一个描边强调（颜色不是唯一编码：还有"新"的文案差） */
+.discovery-clue {
+  margin: $space-2 0 0;
+  padding: $space-2 $space-3;
+  font-size: $font-2xs;
+  font-weight: 700;
+  color: $primary-text;
+  background: $primary-soft;
+  border-left: 3px solid $primary-color;
+  border-radius: $radius-md;
+  line-height: $leading-normal;
+  animation: clue-in $duration-base $ease-decelerate;
+
+  &.fresh {
+    border-left-width: 6px;
+  }
+}
+
+@keyframes clue-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discovery-clue { animation: none; }
+}
+
 .filters {
   display: flex;
   flex-direction: column;

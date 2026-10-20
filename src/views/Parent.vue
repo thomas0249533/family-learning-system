@@ -55,6 +55,16 @@
             </div>
           </div>
         </div>
+        <!-- 家长开关：发现机制（抽线索）。关掉后图鉴回到纯剪影，不给孩子任何"再来一次"的钩子 -->
+        <label class="ach-discovery-toggle">
+          <input
+            type="checkbox"
+            :checked="discoveryEnabled"
+            @change="toggleDiscovery(($event.target as HTMLInputElement).checked)"
+          />
+          <span>允许「发现线索」机制（隐藏成就的模糊提示，每天一次，随时可关）</span>
+        </label>
+
         <!-- 解锁证据（快照，不重算）：家长判断"这枚是不是真学会了"的依据 -->
         <div class="ach-evidence" v-if="recentEvidence.length > 0">
           <div class="ach-evidence-title">解锁证据</div>
@@ -157,6 +167,10 @@ import {
   evidenceLines,
   type OverviewItem,
 } from '@core/motivation/achievementOverview'
+import {
+  loadDiscoveryEnabled,
+  saveDiscoveryEnabled,
+} from '@core/motivation/achievementDiscovery'
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 
 const router = useRouter()
@@ -164,11 +178,19 @@ const userDataStore = useUserDataStore()
 const packageStore = usePackageStore()
 
 const unlockedRecords = ref<UnlockedRecord[]>([])
+/** 发现机制开关（家长可关；默认开，见 achievementDiscovery 的注释） */
+const discoveryEnabled = ref(true)
+
+async function toggleDiscovery(enabled: boolean): Promise<void> {
+  discoveryEnabled.value = enabled
+  await saveDiscoveryEnabled(enabled)
+}
 
 onMounted(async () => {
   await userDataStore.loadUserData()
   await packageStore.loadPackages()
   unlockedRecords.value = await loadUnlocked()
+  discoveryEnabled.value = await loadDiscoveryEnabled()
 })
 
 /** ===== 成就概览（A2-5，只读）===== */
@@ -349,6 +371,23 @@ function goToImport() {
 /* `.ov-card` 已由 StatCard 基元承载（card-bg + border-color + radius-md + shadow-sm + tone 值色）。 */
 
 /* ========== 成就概览 ========== */
+.ach-discovery-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-2;
+  font-size: $font-2xs;
+  font-weight: 600;
+  color: $text-sub;
+  line-height: $leading-normal;
+  cursor: pointer;
+
+  input {
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: $primary-color;
+  }
+}
+
 /* 两排"x / y"小卡（小组 / 来源）需要标题区分，否则家长分不清哪排是什么 */
 .ach-row-label {
   font-size: $font-2xs;
