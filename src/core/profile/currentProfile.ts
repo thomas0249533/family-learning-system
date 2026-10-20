@@ -124,6 +124,59 @@ async function persist(next: ProfilesState): Promise<void> {
   await db.settings.put({ key: PROFILES_KEY, value: next })
 }
 
+/** 两份档案列表是否等价（顺序、id、名字、创建时间任一不同即不等价） */
+function sameProfiles(a: ProfilesState, b: ProfilesState): boolean {
+  if (a.activeId !== b.activeId) return false
+  if (a.list.length !== b.list.length) return false
+  return a.list.every((p, i) => {
+    const q = b.list[i]
+    return !!q && p.id === q.id && p.name === q.name && p.createdAt === q.createdAt
+  })
+}
+
+/**
+ * 从库里**重读**档案列表并落定状态；有变化时 `emit`（V1.4 · B2）。
+ *
+ * ## 为什么不能直接用 `initProfile()`
+ * `initProfile()` 是**启动入口**，它有两件只该在启动时做的事：
+ *   1. 把 `profiles` 键**写回库**（首建兜底）—— 导入后调它等于在合并事务之外
+ *      又写了一次同一个键，违反"所有写入只在 applyMergePlan 的单事务里"；
+ *   2. **不 emit** —— 于是档案切换器（顶栏）看不到刚导入进来的那个孩子，
+ *      家长会以为"导入失败了"。这个症状比数据问题更贵：数据其实已经进来了。
+ *
+ * ## 什么时候用
+ * 外部把 `profiles` 键改掉之后（目前唯一场景：导入备份新增了档案）。
+ * `switchProfile` / `createProfile` / `renameProfile` / `deleteProfile` 自己会
+ * 更新内存状态并 emit，**不需要**再调这个。
+ *
+ * 读库失败 → 保持当前状态（不抛）：调用方（导入流程）此时数据已经写进库了，
+ * 因为"刷新档案列表失败"把一次成功的导入变成异常是最糟的处理。
+ */
+export async function refreshProfilesFromDb(): Promise<ProfilesState> {
+  let next: ProfilesState
+  try {
+    const rec = await db.settings.get(PROFILES_KEY)
+    // 键被人为删掉时**不能**回落成单档案 default：那等于把 4 个孩子并成 1 个，
+    // 且会 emit 出去让 UI 立刻撤掉切换器。保持现值，等下次启动的 initProfile 兜。
+    if (!rec?.value) return state
+    next = normalizeProfilesState(rec.value)
+  } catch (e) {
+    console.warn('[profile] 重读档案列表失败，保持当前状态', e)
+    return state
+  }
+
+  // 读成功就算"状态已落定"：之后 `isProfileInitialized()` 为 true，
+  // 导入路径不会再走 `initProfile()` 的首建写入。
+  initialized = true
+
+  const prev = state
+  if (sameProfiles(prev, next)) return state
+
+  state = next
+  emit(next, prev)
+  return next
+}
+
 /** 切换当前档案。id 不存在 → 抛错（不静默切换，否则 UI 与数据会不一致） */
 export async function switchProfile(id: string): Promise<ProfilesState> {
   if (!state.list.some((p) => p.id === id)) {
