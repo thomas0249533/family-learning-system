@@ -18,9 +18,25 @@
  */
 
 import { db } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
+import { scopedKey } from '@core/profile/settingsScope'
 
 export const DISCOVERY_KEY = 'achievement:discovery'
 export const DISCOVERY_ENABLED_KEY = 'achievement:discoveryEnabled'
+
+/** 当前档案的发现状态键（"今天抽过没"是**每个孩子各自的**） */
+export function discoveryKey(profileId: string = currentProfileId()): string {
+  return scopedKey(DISCOVERY_KEY, profileId)
+}
+
+/**
+ * 家长开关的键。按 per-profile 处理：语义是"允许这个孩子通过发现机制拿线索"，
+ * 两个孩子年龄不同时家长完全可能只要一个开。
+ * 若产品改成"家里总开关"，把它挪到 `GLOBAL_KEYS` 即可，这里不用动。
+ */
+export function discoveryEnabledKey(profileId: string = currentProfileId()): string {
+  return scopedKey(DISCOVERY_ENABLED_KEY, profileId)
+}
 
 /** 隐藏成就池（顺序固定，抽签只在这 3 枚里） */
 export const HIDDEN_POOL = ['comeback', 'early-bird', 'night-owl'] as const
@@ -152,7 +168,7 @@ export function drawDiscovery(
 /** 读发现状态（失败 → 当没玩过；脏数据 → 降级，不抛错） */
 export async function loadDiscoveryState(): Promise<DiscoveryState> {
   try {
-    const rec = await db.settings.get(DISCOVERY_KEY)
+    const rec = await db.settings.get(discoveryKey())
     return normalizeDiscoveryState(rec?.value)
   } catch {
     return emptyDiscoveryState()
@@ -162,7 +178,7 @@ export async function loadDiscoveryState(): Promise<DiscoveryState> {
 /** 写发现状态（失败静默：本次会话内已揭示的线索照常显示） */
 export async function saveDiscoveryState(state: DiscoveryState): Promise<void> {
   try {
-    await db.settings.put({ key: DISCOVERY_KEY, value: state })
+    await db.settings.put({ key: discoveryKey(), value: state })
   } catch {
     /* 存不了就算了，不影响使用 */
   }
@@ -174,7 +190,7 @@ export async function saveDiscoveryState(state: DiscoveryState): Promise<void> {
  */
 export async function loadDiscoveryEnabled(): Promise<boolean> {
   try {
-    const rec = await db.settings.get(DISCOVERY_ENABLED_KEY)
+    const rec = await db.settings.get(discoveryEnabledKey())
     return rec?.value !== false
   } catch {
     return true
@@ -183,7 +199,7 @@ export async function loadDiscoveryEnabled(): Promise<boolean> {
 
 export async function saveDiscoveryEnabled(enabled: boolean): Promise<void> {
   try {
-    await db.settings.put({ key: DISCOVERY_ENABLED_KEY, value: enabled })
+    await db.settings.put({ key: discoveryEnabledKey(), value: enabled })
   } catch {
     /* 存不了就算了 */
   }

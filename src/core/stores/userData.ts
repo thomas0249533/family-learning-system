@@ -18,6 +18,7 @@ import { canonicalKpId, resolveOwnerPackageId } from '@core/progress/ownerIndex'
 import { ensureOwnerIndex } from '@core/progress/ownerIndexCache'
 import { ensureFields } from '@core/progress/progressRecord'
 import { awaitE1Settled } from '@core/storage/migrateV3Recovery'
+import { currentProfileId } from '@core/profile/currentProfile'
 
 function toPlain<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
@@ -36,9 +37,17 @@ export const useUserDataStore = defineStore('userData', () => {
   const mistakes = ref<MistakeRecord[]>([])
   const progress = ref<ProgressRecord[]>([])
 
+  /**
+   * 读当前档案的进度与错题。
+   *
+   * V1.4 · B1：**必须按 `profileId` 过滤**。这里用 `where('profileId')` 而不是
+   * `toArray().filter()`：`profileId` 是单列索引，Dexie 会走索引而不用把整表搬进内存。
+   * 漏掉这个过滤的表现是"老二看到老大的错题本"，而不是报错。
+   */
   async function loadUserData() {
-    mistakes.value = await db.mistakes.toArray()
-    const all = (await db.progress.toArray()).map(ensureFields)
+    const pid = currentProfileId()
+    mistakes.value = await db.mistakes.where('profileId').equals(pid).toArray()
+    const all = (await db.progress.where('profileId').equals(pid).toArray()).map(ensureFields)
     const decayed = all.map(r => {
       const status = applyDecay(r)
       return status === r.status ? r : { ...r, status }
@@ -76,7 +85,9 @@ export const useUserDataStore = defineStore('userData', () => {
     const plainKpIds = Array.isArray(knowledgePointIds) ? [...knowledgePointIds] : []
     const plainUserAnswer = String(userAnswer ?? '').slice(0, 500)
 
-    const existing = await db.mistakes.where('exerciseId').equals(question.id).first()
+    const pid = currentProfileId()
+    const existing = await db.mistakes
+      .where('[profileId+exerciseId]').equals([pid, question.id]).first()
 
     if (existing) {
       await db.mistakes.update(existing.id!, toPlain({
@@ -92,6 +103,7 @@ export const useUserDataStore = defineStore('userData', () => {
       }))
     } else {
       await db.mistakes.add(toPlain({
+        profileId: pid,
         packageId,
         exerciseId: question.id,
         knowledgePointIds: plainKpIds,
@@ -114,7 +126,8 @@ export const useUserDataStore = defineStore('userData', () => {
    */
   async function resolveMistake(exerciseId: string, isCorrect: boolean) {
     if (!exerciseId) return
-    const existing = await db.mistakes.where('exerciseId').equals(exerciseId).first()
+    const existing = await db.mistakes
+      .where('[profileId+exerciseId]').equals([currentProfileId(), exerciseId]).first()
     if (!existing) return
 
     const curLevel = mistakeLevel(existing)
@@ -170,9 +183,11 @@ export const useUserDataStore = defineStore('userData', () => {
     const targetPackageId = owner ?? packageId
     const targetKpId = owner ? canonicalKpId(owner, knowledgePointId, index) : knowledgePointId
 
-    const key = [targetPackageId, targetKpId]
+    // V1.4 · B1：`profileId` 从门面取，**不作为参数传进来**（传参=必然有一处漏改）。
+    const pid = currentProfileId()
+    const key = [pid, targetPackageId, targetKpId]
     const raw = await db.progress
-      .where('[packageId+knowledgePointId]').equals(key).first()
+      .where('[profileId+packageId+knowledgePointId]').equals(key).first()
 
     const now = new Date()
     const nowIso = now.toISOString()
@@ -180,6 +195,7 @@ export const useUserDataStore = defineStore('userData', () => {
     const existing: ProgressRecord = raw
       ? ensureFields(raw)
       : {
+          profileId: pid,
           packageId: targetPackageId,
           knowledgePointId: targetKpId,
           status: '未学',

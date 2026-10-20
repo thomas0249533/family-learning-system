@@ -15,6 +15,8 @@
  * `{ id, unlockedAt }[]`（读时兼容旧格式）；一旦解锁就不再撤销。
  */
 import { db, type ProgressRecord, type MistakeRecord } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
+import { scopedKey } from '@core/profile/settingsScope'
 import { bestStreak, localDayKey, type StreakState } from './streak'
 import { evidenceOf } from './achievementProgress'
 import type { DailyStat } from './dailyStats'
@@ -399,7 +401,16 @@ export const ACHIEVEMENTS: AchievementDef[] = [
 
 // ==================== 存储（只增不减 · 兼容旧 string[]） ====================
 
-const KEY = 'achievements'
+/**
+ * 键的**基名**。真实落库的键带档案后缀（`achievements:<profileId>`）。
+ * 保留这个常量是因为测试与文档要按"逻辑键"引用；读写一律走 `achievementsKey()`。
+ */
+export const ACHIEVEMENTS_KEY = 'achievements'
+
+/** 当前档案的成就键 */
+export function achievementsKey(profileId: string = currentProfileId()): string {
+  return scopedKey(ACHIEVEMENTS_KEY, profileId)
+}
 
 export interface UnlockedRecord {
   id: string
@@ -435,7 +446,7 @@ export function normalizeUnlocked(raw: unknown): UnlockedRecord[] {
 /** 读取全部已解锁记录（含解锁日期）。 */
 export async function loadUnlocked(): Promise<UnlockedRecord[]> {
   try {
-    const rec = await db.settings.get(KEY)
+    const rec = await db.settings.get(achievementsKey())
     return normalizeUnlocked(rec?.value)
   } catch {
     return []
@@ -464,7 +475,7 @@ export async function saveUnlocked(records: UnlockedRecord[]): Promise<void> {
       map.set(r.id, merged)
     }
   }
-  await db.settings.put({ key: KEY, value: [...map.values()] })
+  await db.settings.put({ key: achievementsKey(), value: [...map.values()] })
 }
 
 /** 兼容旧签名：按 id 数组写入（unlockedAt=''）。 */

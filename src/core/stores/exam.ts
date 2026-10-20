@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { db, type ExamSessionRecord } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
 
 function toPlain<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
@@ -9,10 +10,16 @@ function toPlain<T>(obj: T): T {
 export const useExamStore = defineStore('exam', () => {
   const sessions = ref<ExamSessionRecord[]>([])
 
-  /** 加载某学习包的所有会话 */
+  /**
+   * 加载当前档案在某学习包下的所有会话。
+   *
+   * V1.4 · B1：复合索引 `[profileId+packageId]` 取代原来的 `packageId` 单列索引。
+   * 不分片的话老二在模考页能看到老大的历史成绩 —— 而成绩是最容易被拿来比较的东西，
+   * 与"不做排行"的产品红线直接冲突。
+   */
   async function loadSessions(packageId: string) {
     sessions.value = await db.examSessions
-      .where('packageId').equals(packageId)
+      .where('[profileId+packageId]').equals([currentProfileId(), packageId])
       .reverse()
       .sortBy('startedAt')
   }
@@ -25,11 +32,14 @@ export const useExamStore = defineStore('exam', () => {
   }): Promise<number> {
     const { packageId, questionIds, timeLimit = 0 } = params
 
+    const pid = currentProfileId()
     const existing = await db.examSessions
-      .where('packageId').equals(packageId).toArray()
+      .where('[profileId+packageId]').equals([pid, packageId]).toArray()
+    // 序号按**档案内**计数：否则老二的第 1 次模考会因为老大做过两次而变成"第 3 次"
     const sessionIndex = existing.length + 1
 
     const rec: ExamSessionRecord = {
+      profileId: pid,
       packageId,
       sessionIndex,
       questionIds: [...questionIds],
@@ -104,7 +114,7 @@ export const useExamStore = defineStore('exam', () => {
   /** 查询某包的未完成会话 */
   async function getOngoing(packageId: string): Promise<ExamSessionRecord | null> {
     const list = await db.examSessions
-      .where('packageId').equals(packageId)
+      .where('[profileId+packageId]').equals([currentProfileId(), packageId])
       .filter(s => s.status === 'ongoing')
       .reverse()
       .sortBy('startedAt')
@@ -114,7 +124,7 @@ export const useExamStore = defineStore('exam', () => {
   /** 查询某包的所有已答题目 ID */
   async function getAllAnsweredIds(packageId: string): Promise<Set<string>> {
     const list = await db.examSessions
-      .where('packageId').equals(packageId)
+      .where('[profileId+packageId]').equals([currentProfileId(), packageId])
       .toArray()
     const ids = new Set<string>()
     for (const s of list) {

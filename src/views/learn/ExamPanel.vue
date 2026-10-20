@@ -187,6 +187,7 @@ import QuizEngine, { type AnswerPayload, type ExamDetailItem, type ExamDetailPay
 import { useUserDataStore } from '@core/stores/userData'
 import { useExamStore } from '@core/stores/exam'
 import { db } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
 import type { LearningPackageRecord, ExamSessionRecord } from '@/db'
 import { resolveOwnerPackageId } from '@core/progress/ownerIndex'
 import { ensureOwnerIndex } from '@core/progress/ownerIndexCache'
@@ -395,6 +396,12 @@ async function handleSaveProgress(patch: {
 
   if (patch.examAnswers) {
     const s = await db.examSessions.get(sid)
+    // V1.4 · B1：主键唯一，理论上拿不到别人的会话；但当前会话可能来自"切换档案前"
+    // 渲染的旧状态，多一道判断比多一次事故便宜。
+    if (s && s.profileId !== currentProfileId()) {
+      console.warn('[ExamPanel] 会话不属于当前档案，忽略本次写入', { sid, owner: s.profileId })
+      return
+    }
     if (s) {
       const answers = { ...(s.answers ?? {}) }
       for (const [qid, ua] of Object.entries(patch.examAnswers)) {

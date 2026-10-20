@@ -159,6 +159,24 @@ export const useAchievementStore = defineStore('achievement', () => {
     }
   }
 
+  /**
+   * 切换档案时清空内存态（V1.4 · B1）。
+   *
+   * 为什么必须有这个函数：`records` / `view` / `items` 都缓存了"当前档案"的派生结果，
+   * `loaded` 还挡住了重新读库。不清的话切完档案页面显示的还是上一个孩子的徽章，
+   * 而库里数据是对的 —— 这种"界面与数据不一致"最难排查。
+   *
+   * **先 `drainPending()` 再切**：待播放的解锁提示属于旧档案，不能弹在新档案里
+   * （孩子会以为"我解锁了"）。这一点由调用方 `switchProfileAndReload` 保证顺序。
+   */
+  function resetForProfileSwitch(): void {
+    records.value = []
+    pending.value = []
+    view.value = null
+    items.value = []
+    loaded.value = false
+  }
+
   /** 取出并清空待播放队列（AppShell 用） */
   function drainPending(): AchievementDef[] {
     const out = pending.value
@@ -179,5 +197,6 @@ export const useAchievementStore = defineStore('achievement', () => {
     settle,
     refreshView,
     drainPending,
+    resetForProfileSwitch,
   }
 })

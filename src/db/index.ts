@@ -4,6 +4,7 @@ import type { KnowledgePoint } from '../schemas/knowledge-point';
 import type { FsrsCardState } from '../core/review/fsrs';
 import type { BktState } from '../core/mastery/bkt';
 import { migrateProgressV3 } from '../core/storage/migrateV3';
+import { migrateProfileV4 } from '../core/storage/migrateV4';
 
 export interface LearningPackageRecord {
   packageId: string;
@@ -25,6 +26,12 @@ export type MistakeMasteryLevel = 'none' | 'partial' | 'mastered';
 
 export interface ProgressRecord {
   id?: number;
+  /**
+   * 归属档案（V1.4 · B1）。**必填**，没有"全局/默认"形态 ——
+   * 可空就意味着存在一条代码路径忘了判断，而写错档案不会报错、只会静默串数据。
+   * 取值只有一个来源：`currentProfileId()`（见 core/profile/currentProfile.ts）。
+   */
+  profileId: string;
   packageId: string;
   knowledgePointId: string;
   status: MasteryStatus;
@@ -48,6 +55,8 @@ export interface ProgressRecord {
 
 export interface MistakeRecord {
   id?: number;
+  /** 归属档案（V1.4 · B1），同 `ProgressRecord.profileId` */
+  profileId: string;
   packageId: string;
   exerciseId: string;
   knowledgePointIds: string[];
@@ -70,6 +79,8 @@ export interface SettingRecord {
 
 export interface ExamSessionRecord {
   id?: number;
+  /** 归属档案（V1.4 · B1）。考试记录也必须分片，否则老二能看到老大的成绩。 */
+  profileId: string;
   packageId: string;
   sessionIndex: number;
   questionIds: string[];
@@ -119,6 +130,23 @@ export class FamilyLearningDB extends Dexie {
       })
       // 迁移实现见 core/storage/migrateV3.ts：纯函数算计划 + 哑 IO 应用，永不 rethrow
       .upgrade((tx) => migrateProgressV3(tx));
+    // V1.4 · B1：三张表加 profileId + settings 按档案分片。
+    //
+    // 与 v3 的一个关键差异：**这里删掉了 `[packageId+knowledgePointId]` 旧索引**。
+    // 保留它 = 旧查询继续能跑 = 跨档案串数据（老大答错的题出现在老二错题本里）且不报错。
+    // 删掉后任何漏改的 `where('[packageId+knowledgePointId]')` 会直接抛，逼调用点改。
+    this.version(4)
+      .stores({
+        packages: 'packageId, manifest.subject, manifest.grade',
+        progress:
+          '++id, [profileId+packageId+knowledgePointId], [profileId+packageId], profileId, status',
+        // 错题仍按 exerciseId 去重，但同一条错题在两个档案里是两行 → 复合索引
+        mistakes: '++id, [profileId+exerciseId], packageId, profileId, mastered',
+        settings: 'key',
+        examSessions: '++id, [profileId+packageId], profileId, status, startedAt'
+      })
+      // 迁移实现见 core/storage/migrateV4.ts：加列 + 搬键，永不 rethrow
+      .upgrade((tx) => migrateProfileV4(tx));
   }
 }
 

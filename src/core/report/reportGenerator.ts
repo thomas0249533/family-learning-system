@@ -1,4 +1,5 @@
 import { db } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 import type { ProgressRecord } from '@/db'
 import { effectiveCurrent, loadStreak } from '@core/motivation/streak'
@@ -48,8 +49,11 @@ const SUBJECT_LABEL: Record<string, string> = {
  */
 export async function generateReportData(): Promise<ReportData> {
   const packages = await db.packages.toArray()
-  const progress = await db.progress.toArray()
-  const mistakes = await db.mistakes.toArray()
+  // V1.4 · B1：报告必须只看**当前档案**。漏了这两行过滤的后果不是报错，
+  // 而是家长端报告里混进另一个孩子的进度与错题 —— 数字看起来还挺"合理"。
+  const pid = currentProfileId()
+  const progress = await db.progress.where('profileId').equals(pid).toArray()
+  const mistakes = await db.mistakes.where('profileId').equals(pid).toArray()
 
   // 1. 全局统计
   const allKpIds = new Set<string>()

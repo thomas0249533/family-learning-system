@@ -22,8 +22,15 @@
  * 单点某个组则只影响它自己（不再跟随），直到下次动它的父区。
  */
 import { db } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
+import { scopedKey } from '@core/profile/settingsScope'
 
 export const ACH_UI_KEY = 'achievementUi'
+
+/** 当前档案的折叠状态键（V1.4：折叠是"这个孩子的界面"，必须分片） */
+export function achUiKey(profileId: string = currentProfileId()): string {
+  return scopedKey(ACH_UI_KEY, profileId)
+}
 
 export const UI_SECTIONS = ['earned', 'pending'] as const
 export type UiSection = (typeof UI_SECTIONS)[number]
@@ -122,7 +129,7 @@ export function toggleAll(collapsed: string[], visibleKeys: string[]): string[] 
 /** 读取折叠状态（失败 → 默认态） */
 export async function loadCollapsed(): Promise<string[]> {
   try {
-    const rec = await db.settings.get(ACH_UI_KEY)
+    const rec = await db.settings.get(achUiKey())
     return normalizeCollapsed(rec?.value)
   } catch {
     return [...DEFAULT_COLLAPSED]
@@ -132,7 +139,7 @@ export async function loadCollapsed(): Promise<string[]> {
 /** 写入折叠状态（失败静默：本次会话内的折叠仍然有效） */
 export async function saveCollapsed(collapsed: string[]): Promise<void> {
   try {
-    await db.settings.put({ key: ACH_UI_KEY, value: { v: 1, collapsed } })
+    await db.settings.put({ key: achUiKey(), value: { v: 1, collapsed } })
   } catch {
     /* 存不了就算了，不影响使用 */
   }

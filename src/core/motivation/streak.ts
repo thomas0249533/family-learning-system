@@ -8,6 +8,8 @@
  * 后者按 UTC 算，中国时区下晚上 8 点之后会被算成第二天，连续天数会莫名其妙断掉。
  */
 import { db } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
+import { scopedKey } from '@core/profile/settingsScope'
 
 export interface StreakState {
   /** 当前连续天数 */
@@ -18,7 +20,12 @@ export interface StreakState {
   lastDate: string
 }
 
-const KEY = 'studyStreak'
+export const STREAK_KEY = 'studyStreak'
+
+/** 当前档案的连续天数键。漏分片的表现是"打卡天数突然归零"，最刺眼。 */
+export function streakKey(profileId: string = currentProfileId()): string {
+  return scopedKey(STREAK_KEY, profileId)
+}
 
 export const EMPTY_STREAK: StreakState = { current: 0, longest: 0, lastDate: '' }
 
@@ -42,7 +49,7 @@ function dayDiff(a: string, b: string): number {
 
 export async function loadStreak(): Promise<StreakState> {
   try {
-    const rec = await db.settings.get(KEY)
+    const rec = await db.settings.get(streakKey())
     const v = rec?.value
     if (v && typeof v === 'object' && typeof v.current === 'number') {
       return { ...EMPTY_STREAK, ...v }
@@ -54,7 +61,7 @@ export async function loadStreak(): Promise<StreakState> {
 }
 
 export async function saveStreak(s: StreakState): Promise<void> {
-  await db.settings.put({ key: KEY, value: { ...s, lastDate: s.lastDate } })
+  await db.settings.put({ key: streakKey(), value: { ...s, lastDate: s.lastDate } })
 }
 
 /** 今天是否已经打过卡 */

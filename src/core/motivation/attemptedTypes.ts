@@ -7,18 +7,45 @@
 // =====================================================================
 
 import { db } from '@/db'
+import { currentProfileId, onBeforeProfileSwitch, onProfileChange } from '@core/profile/currentProfile'
+import { scopedKey } from '@core/profile/settingsScope'
 
-const KEY = 'attemptedTypes'
+export const ATTEMPTED_TYPES_KEY = 'attemptedTypes'
+
+/** 当前档案的题型集合键（漏分片会让"题型收藏家"按另一个孩子的进度判定） */
+export function attemptedTypesKey(profileId: string = currentProfileId()): string {
+  return scopedKey(ATTEMPTED_TYPES_KEY, profileId)
+}
 export const FLUSH_DEBOUNCE_MS = 1500
 
 let cache: Set<string> | null = null
 let flushTimer: ReturnType<typeof setTimeout> | null = null
 let hooksRegistered = false
+/** 是否已登记"档案切换"钩子（幂等；测试重置会复位） */
+let profileHooksBound = false
+
+/** 档案切换钩子：先落盘到旧档案，再清缓存（与 dailyStats 同一套理由） */
+function bindProfileHooks(): void {
+  if (profileHooksBound) return
+  profileHooksBound = true
+  onBeforeProfileSwitch(() => flushAttemptedTypes())
+  onProfileChange(() => resetAttemptedTypesCache())
+}
+
+/** 丢弃内存缓存（不落盘） */
+export function resetAttemptedTypesCache(): void {
+  cache = null
+  if (flushTimer !== null) {
+    clearTimeout(flushTimer)
+    flushTimer = null
+  }
+}
 
 async function ensure(): Promise<void> {
   if (cache) return
+  bindProfileHooks()
   try {
-    const rec = await db.settings.get(KEY)
+    const rec = await db.settings.get(attemptedTypesKey())
     const v = rec?.value
     cache = new Set(Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [])
   } catch {
@@ -51,7 +78,7 @@ export async function flushAttemptedTypes(): Promise<void> {
   }
   await ensure()
   try {
-    await db.settings.put({ key: KEY, value: [...cache!] })
+    await db.settings.put({ key: attemptedTypesKey(), value: [...cache!] })
   } catch {
     /* 落盘失败：内存态保留 */
   }
@@ -86,4 +113,5 @@ export function __resetAttemptedTypesForTest(): void {
     flushTimer = null
   }
   hooksRegistered = false
+  profileHooksBound = false
 }

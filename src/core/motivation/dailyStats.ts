@@ -14,6 +14,8 @@
 
 import { db } from '@/db'
 import { localDayKey } from './streak'
+import { currentProfileId, onBeforeProfileSwitch, onProfileChange } from '@core/profile/currentProfile'
+import { scopedKey } from '@core/profile/settingsScope'
 
 export interface DailyStat {
   /** 本地日期 YYYY-MM-DD */
@@ -26,7 +28,13 @@ export interface DailyStat {
   lastStudyAt: number
 }
 
-const KEY = 'dailyStats'
+export const DAILY_STATS_KEY = 'dailyStats'
+
+/** 当前档案的每日统计键（漏分片 → 统计图归零，且无报错） */
+export function dailyStatsKey(profileId: string = currentProfileId()): string {
+  return scopedKey(DAILY_STATS_KEY, profileId)
+}
+
 /** 保留天数 */
 export const RETAIN_DAYS = 60
 /** 防抖落盘时长（ms） */
@@ -37,6 +45,8 @@ let loaded = false
 const queue: Array<{ count: number; at: Date }> = []
 let flushTimer: ReturnType<typeof setTimeout> | null = null
 let hooksRegistered = false
+/** 是否已登记"档案切换"钩子（幂等；`__resetDailyStatsForTest` 会复位） */
+let profileHooksBound = false
 
 /** 复用 streak.ts 的本地日期键口径（勿用 UTC）。 */
 export function localDayKeyOf(d: Date = new Date()): string {
@@ -61,10 +71,35 @@ function applyDelta(count: number, at: Date): void {
   row.lastStudyAt = Math.max(row.lastStudyAt, ts)
 }
 
+/**
+ * 档案切换的两个钩子（幂等登记）：
+ *   - 切换**前**：把内存里待落盘的题量刷到**旧档案**的键上（否则会写进新档案）；
+ *   - 切换**后**：清空内存缓存，下一次读会从新档案的键重新加载。
+ * 顺序不能反。只清不刷 = 丢今天的题量；只刷不清 = 老二看到老大的题量。
+ */
+function bindProfileHooks(): void {
+  if (profileHooksBound) return
+  profileHooksBound = true
+  onBeforeProfileSwitch(() => flushDailyStats())
+  onProfileChange(() => resetDailyStatsCache())
+}
+
+/** 丢弃内存缓存（切档案时用；不落盘，调用方负责先 flush） */
+export function resetDailyStatsCache(): void {
+  stats = []
+  loaded = false
+  queue.length = 0
+  if (flushTimer !== null) {
+    clearTimeout(flushTimer)
+    flushTimer = null
+  }
+}
+
 async function ensureLoaded(): Promise<void> {
   if (loaded) return
+  bindProfileHooks()
   try {
-    const rec = await db.settings.get(KEY)
+    const rec = await db.settings.get(dailyStatsKey())
     const v = rec?.value
     stats = Array.isArray(v) ? (v as unknown[]).filter(isDailyStat).map((s) => ({ ...s })) : []
   } catch {
@@ -110,7 +145,7 @@ export async function flushDailyStats(): Promise<void> {
   await ensureLoaded()
   pruneOld()
   try {
-    await db.settings.put({ key: KEY, value: stats.map((s) => ({ ...s })) })
+    await db.settings.put({ key: dailyStatsKey(), value: stats.map((s) => ({ ...s })) })
   } catch {
     /* 落盘失败：内存态保留，下次再试 */
   }
@@ -147,4 +182,5 @@ export function __resetDailyStatsForTest(): void {
     flushTimer = null
   }
   hooksRegistered = false
+  profileHooksBound = false
 }

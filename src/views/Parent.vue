@@ -7,6 +7,88 @@
       subtitle="查看孩子的学习情况 · 数据只读"
     />
 
+    <!--
+      档案管理（V1.4 · B1）。放在最上面而不是塞进设置页：
+      家长进"家长视图"第一个要确认的就是"我现在看的是哪个孩子"。
+      改名/新建/删除只在这里出现 —— 孩子端只能切换（AppShell），不能改。
+    -->
+    <section class="section">
+      <SectionTitle title="👧 档案管理" />
+      <div class="profile-panel">
+        <p class="profile-hint">
+          每个档案的进度、错题、成就、打卡互相独立。最多 {{ MAX_PROFILES }} 个。
+          <strong>删除档案只删条目、不删数据</strong>，但删掉后那些记录就找不回来了 ——
+          建议先把该档案的备份导出再删。
+        </p>
+
+        <ul class="profile-list">
+          <li v-for="p in profileState.list" :key="p.id" class="profile-row">
+            <template v-if="editingId === p.id">
+              <input
+                v-model="editingName"
+                class="profile-input"
+                type="text"
+                maxlength="12"
+                aria-label="档案名"
+                @keydown.enter.prevent="commitRename"
+                @keydown.esc="editingId = null"
+              />
+              <button class="profile-btn profile-btn--primary" type="button" @click="commitRename">保存</button>
+              <button class="profile-btn" type="button" @click="editingId = null">取消</button>
+            </template>
+            <template v-else>
+              <span class="profile-row__name">{{ p.name }}</span>
+              <span v-if="p.id === profileState.activeId" class="profile-row__badge">当前</span>
+              <span class="profile-row__spacer" />
+              <button
+                v-if="p.id !== profileState.activeId"
+                class="profile-btn profile-btn--primary"
+                type="button"
+                @click="onSwitch(p.id)"
+              >
+                切换
+              </button>
+              <button class="profile-btn" type="button" @click="startRename(p)">改名</button>
+              <button
+                class="profile-btn profile-btn--danger"
+                type="button"
+                :disabled="profileState.list.length <= 1"
+                :title="profileState.list.length <= 1 ? '至少要保留一个档案' : ''"
+                @click="onDelete(p)"
+              >
+                删除
+              </button>
+            </template>
+          </li>
+        </ul>
+
+        <div v-if="creating" class="profile-create">
+          <input
+            v-model="draftName"
+            class="profile-input"
+            type="text"
+            maxlength="12"
+            placeholder="新档案的名字，比如「妹妹」"
+            aria-label="新档案名字"
+            @keydown.enter.prevent="commitCreate"
+            @keydown.esc="creating = false"
+          />
+          <button class="profile-btn profile-btn--primary" type="button" @click="commitCreate">创建</button>
+          <button class="profile-btn" type="button" @click="creating = false">取消</button>
+        </div>
+        <div v-else class="profile-create">
+          <button
+            class="profile-btn"
+            type="button"
+            :disabled="profileState.list.length >= MAX_PROFILES"
+            @click="startCreate"
+          >
+            新建档案（{{ profileState.list.length }} / {{ MAX_PROFILES }}）
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- 总览指标 -->
     <section class="section">
       <SectionTitle title="📊 学习总览" />
@@ -146,13 +228,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useDialog, useMessage } from 'naive-ui'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import {
+  MAX_PROFILES,
+  ProfileLimitError,
+  createProfile,
+  deleteProfile,
+  onProfileChange,
+  profilesState,
+  renameProfile,
+  type ProfileMeta,
+  type ProfilesState,
+} from '@core/profile/currentProfile'
+import { switchProfileAndReload } from '@core/profile/switchProfileService'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import {
@@ -177,6 +272,106 @@ const router = useRouter()
 const userDataStore = useUserDataStore()
 const packageStore = usePackageStore()
 
+// ---------- 档案管理（V1.4 · B1）----------
+const dialog = useDialog()
+const message = useMessage()
+const profileState = ref<ProfilesState>(profilesState())
+const creating = ref(false)
+const draftName = ref('')
+const editingId = ref<string | null>(null)
+const editingName = ref('')
+let offProfileChange: (() => void) | null = null
+
+/** 档案变了（不管是谁触发的：本页或 AppShell 的切换器）→ 本页数据全部重读 */
+async function reloadProfileScopedData(): Promise<void> {
+  await userDataStore.loadUserData()
+  unlockedRecords.value = await loadUnlocked()
+  discoveryEnabled.value = await loadDiscoveryEnabled()
+}
+
+function startCreate(): void {
+  if (profileState.value.list.length >= MAX_PROFILES) {
+    message.warning(`最多 ${MAX_PROFILES} 个档案`)
+    return
+  }
+  creating.value = true
+  draftName.value = ''
+}
+
+async function commitCreate(): Promise<void> {
+  const name = draftName.value.trim()
+  if (!name) {
+    message.warning('给档案起个名字')
+    return
+  }
+  try {
+    await createProfile(name)
+    creating.value = false
+    draftName.value = ''
+    // 新建后会自动切到新档案（见 createProfile），所以要把页面数据切过去
+    await reloadProfileScopedData()
+    message.success(`已创建档案「${name}」`)
+  } catch (e) {
+    if (e instanceof ProfileLimitError) {
+      message.error(`最多 ${MAX_PROFILES} 个档案，可以先把不用的档案导出后再删`)
+      return
+    }
+    message.error('创建失败：' + (e as Error).message)
+  }
+}
+
+function startRename(p: ProfileMeta): void {
+  editingId.value = p.id
+  editingName.value = p.name
+}
+
+async function commitRename(): Promise<void> {
+  const id = editingId.value
+  if (!id) return
+  const name = editingName.value.trim()
+  if (!name) {
+    message.warning('档案名不能为空')
+    return
+  }
+  try {
+    await renameProfile(id, name)
+    editingId.value = null
+  } catch (e) {
+    message.error('改名失败：' + (e as Error).message)
+  }
+}
+
+async function onSwitch(id: string): Promise<void> {
+  if (id === profileState.value.activeId) return
+  try {
+    await switchProfileAndReload(id)
+  } catch (e) {
+    message.error('切换失败：' + (e as Error).message)
+  }
+}
+
+/**
+ * 删除档案：二次确认用 `dialog.error`（红色按钮），文案里明确写"数据不回收"。
+ * 不强制先导出 —— 强制拦截只会让人去找破解办法，不如把风险说清楚。
+ */
+function onDelete(p: ProfileMeta): void {
+  dialog.error({
+    title: `删除档案「${p.name}」？`,
+    content: '该档案的进度、错题、成就、打卡将无法再访问，此操作不可恢复。建议先导出备份。',
+    positiveText: '删除',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await deleteProfile(p.id)
+        await reloadProfileScopedData()
+        message.success('已删除档案')
+      } catch (e) {
+        message.error('删除失败：' + (e as Error).message)
+      }
+    },
+  })
+}
+
 const unlockedRecords = ref<UnlockedRecord[]>([])
 /** 发现机制开关（家长可关；默认开，见 achievementDiscovery 的注释） */
 const discoveryEnabled = ref(true)
@@ -187,10 +382,17 @@ async function toggleDiscovery(enabled: boolean): Promise<void> {
 }
 
 onMounted(async () => {
+  offProfileChange = onProfileChange((next) => {
+    profileState.value = next
+  })
   await userDataStore.loadUserData()
   await packageStore.loadPackages()
   unlockedRecords.value = await loadUnlocked()
   discoveryEnabled.value = await loadDiscoveryEnabled()
+})
+
+onUnmounted(() => {
+  offProfileChange?.()
 })
 
 /** ===== 成就概览（A2-5，只读）===== */
@@ -739,6 +941,116 @@ function goToImport() {
       font-size: 12px;
       color: $text-sub;
     }
+  }
+}
+/* ========== 档案管理（V1.4 · B1） ========== */
+.profile-panel {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  padding: 16px 18px;
+  box-shadow: $shadow-sm;
+}
+
+.profile-hint {
+  font-size: 12px;
+  line-height: 1.7;
+  color: $text-sub;
+  margin: 0 0 12px;
+
+  strong { color: $text-main; }
+}
+
+.profile-list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: $radius-md;
+  background: $bg-color-hover;
+
+  &__name {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-main;
+  }
+
+  &__badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: $primary-light;
+    color: $primary-text;
+  }
+
+  &__spacer { flex: 1; }
+}
+
+.profile-input {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 14px;
+  color: $text-main;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 1px;
+  }
+}
+
+.profile-create {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-btn {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: $text-main;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) { background: $bg-color-hover; }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    color: $primary-text;
+    border-color: $primary-text;
+  }
+
+  &--danger {
+    color: var(--danger-text);
+    border-color: var(--danger-text);
   }
 }
 </style>

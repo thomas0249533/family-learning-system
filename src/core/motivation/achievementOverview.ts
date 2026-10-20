@@ -11,6 +11,8 @@
  * 硬造完整的 view model 会白算一遍进度。`AchievementItem` 天然满足这个接口，所以两处共用。
  */
 import { db } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
+import { scopedKey } from '@core/profile/settingsScope'
 import type { AchievementSource } from './achievementMeta'
 
 /** 四类来源的固定展示顺序（与 PRD §4.1 `source` 表一致） */
@@ -112,10 +114,15 @@ export function evidenceLines(items: OverviewItem[], limit = 3): EvidenceLine[] 
 
 export const COLLECTION_SEEN_KEY = 'achievement:collectionSeen'
 
+/** 当前档案的"全收集卡看过了"标记键 */
+export function collectionSeenKey(profileId: string = currentProfileId()): string {
+  return scopedKey(COLLECTION_SEEN_KEY, profileId)
+}
+
 /** 是否已经看过总结卡（读失败 → 当作没看过，宁可多弹一次也别把里程碑吞掉） */
 export async function hasSeenCollection(): Promise<boolean> {
   try {
-    const rec = await db.settings.get(COLLECTION_SEEN_KEY)
+    const rec = await db.settings.get(collectionSeenKey())
     return rec?.value === true
   } catch {
     return false
@@ -125,7 +132,7 @@ export async function hasSeenCollection(): Promise<boolean> {
 /** 标记已看过（失败静默：本次会话内关闭即生效，下次进来可能再弹一次，可接受） */
 export async function markCollectionSeen(): Promise<void> {
   try {
-    await db.settings.put({ key: COLLECTION_SEEN_KEY, value: true })
+    await db.settings.put({ key: collectionSeenKey(), value: true })
   } catch {
     /* 存不了就算了 */
   }

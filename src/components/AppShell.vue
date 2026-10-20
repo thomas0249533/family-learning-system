@@ -38,6 +38,27 @@
           </div>
         </div>
         <div class="header-right">
+          <!--
+            档案切换器（V1.4 · B1）。**只在有 2 个以上档案时出现** ——
+            单娃家庭看到它只会困惑"档案是什么"。
+            孩子端只允许切换，不允许改名/新建/删除（那些在家长端），
+            否则孩子可以把自己换个名字绕过家长判断。
+          -->
+          <n-dropdown
+            v-if="profileList.length > 1"
+            trigger="click"
+            :options="profileOptions"
+            @select="onProfileSelect"
+          >
+            <button
+              class="profile-chip"
+              type="button"
+              :aria-label="`当前档案：${activeProfile.name}，点击切换`"
+            >
+              <span class="profile-chip__avatar" aria-hidden="true">{{ activeProfile.name.slice(0, 1) }}</span>
+              <span class="profile-chip__name">{{ activeProfile.name }}</span>
+            </button>
+          </n-dropdown>
           <div class="today-text">{{ todayText }}</div>
           <div class="version-badge">V1.9</div>
         </div>
@@ -90,12 +111,49 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AchievementToast from './AchievementToast.vue'
+import { NDropdown } from 'naive-ui'
+import { onProfileChange, profilesState, type ProfilesState } from '@core/profile/currentProfile'
+import { switchProfileAndReload } from '@core/profile/switchProfileService'
 import { useAchievementStore } from '@core/stores/achievement'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 
 const route = useRoute()
 const router = useRouter()
+
+// ---------- 档案切换（V1.4 · B1）----------
+/**
+ * 档案状态是模块级单例（不是 ref），所以用一个本地 ref 跟着 `onProfileChange` 走。
+ * 不在模板里直接调 `profilesState()`：那样切换后模板不会重算。
+ */
+const profileState = ref<ProfilesState>(profilesState())
+const profileList = computed(() => profileState.value.list)
+const activeProfile = computed(
+  () =>
+    profileState.value.list.find((p) => p.id === profileState.value.activeId) ??
+    profileState.value.list[0]
+)
+
+const profileOptions = computed(() => [
+  ...profileList.value.map((p) => ({
+    key: p.id,
+    label: p.id === activeProfile.value.id ? `${p.name}（当前）` : p.name,
+    disabled: p.id === activeProfile.value.id,
+  })),
+  { type: 'divider' as const, key: '__divider' },
+  { key: '__manage', label: '管理档案…' },
+])
+
+let offProfileChange: (() => void) | null = null
+
+async function onProfileSelect(key: string): Promise<void> {
+  if (key === '__manage') {
+    router.push('/parent')
+    return
+  }
+  if (key === activeProfile.value.id) return
+  await switchProfileAndReload(key)
+}
 
 // ---------- 成就结算触发器（V1.3 · T03 / A-03）----------
 const achievementStore = useAchievementStore()
@@ -124,10 +182,15 @@ onMounted(() => {
   // 首屏：数据可能还没加载完（各页面自己在 onMounted 里 load），
   // 这里先结算一次，加载完成后由下面的 watch 再补一次。
   scheduleSettle(0)
+
+  offProfileChange = onProfileChange((next) => {
+    profileState.value = next
+  })
 })
 
 onUnmounted(() => {
   if (settleTimer !== null) clearTimeout(settleTimer)
+  offProfileChange?.()
 })
 
 watch(
@@ -349,6 +412,51 @@ const todayText = computed(() => {
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
+
+    /* 档案切换器：小圆头像 + 名字，点击开下拉 */
+    .profile-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 160px;
+      padding: 4px 10px 4px 4px;
+      border: 1px solid $border-light;
+      border-radius: 999px;
+      background: $card-bg;
+      color: $text-main;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background: $bg-color-hover;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--primary-text);
+        outline-offset: 2px;
+      }
+
+      &__avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: $primary-light;
+        color: $primary-text;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      &__name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
 
     .today-text {
       display: none;

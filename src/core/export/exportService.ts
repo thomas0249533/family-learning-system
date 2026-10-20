@@ -1,3 +1,4 @@
+// profile-scope-ok-file: v1 扁平备份格式，按定义跨档案（B2 重写为 v2 分档案）
 import { db } from '@/db'
 import type {
   ProgressRecord,

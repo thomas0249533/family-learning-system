@@ -157,6 +157,7 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { useThemeStore } from '@core/stores/theme'
+import { currentProfileId } from '@core/profile/currentProfile'
 import { usePackageStore } from '@core/stores/package'
 import { db } from '@/db'
 import {
@@ -267,7 +268,12 @@ function doClearMistakes() {
   dialog.warning({
     title: '确认清空错题？', content: '此操作不可恢复',
     positiveText: '清空', negativeText: '取消',
-    onPositiveClick: async () => { await db.mistakes.clear(); message.success('已清空错题') },
+    onPositiveClick: async () => {
+      // V1.4 · B1：只清**当前档案**的错题。`clear()` 会把另一个孩子的错题一起删掉，
+      // 而且没有任何提示能让人发现这件事。
+      await db.mistakes.where('profileId').equals(currentProfileId()).delete()
+      message.success('已清空错题')
+    },
   })
 }
 
@@ -275,7 +281,11 @@ function doClearProgress() {
   dialog.warning({
     title: '确认清空进度？', content: '此操作不可恢复',
     positiveText: '清空', negativeText: '取消',
-    onPositiveClick: async () => { await db.progress.clear(); message.success('已清空进度') },
+    onPositiveClick: async () => {
+      // 同上：只清当前档案
+      await db.progress.where('profileId').equals(currentProfileId()).delete()
+      message.success('已清空进度')
+    },
   })
 }
 
@@ -285,6 +295,7 @@ function clearAllData() {
     content: '将删除所有学习包、进度、错题、设置。此操作不可恢复！',
     positiveText: '我确定', negativeText: '取消',
     onPositiveClick: async () => {
+      // profile-scope-ok: 「清空所有数据」的语义就是整库重置（含学习包与档案列表本身），跨档案删除是需求
       await Promise.all([db.packages.clear(), db.progress.clear(), db.mistakes.clear(), db.settings.clear()])
       message.success('已清空所有数据')
     },
