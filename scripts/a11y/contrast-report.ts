@@ -14,7 +14,7 @@
 
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
-import { buildSemantic, PRESETS, MODES, type ThemePreset, type ThemeMode } from '../../src/core/styles/tokens'
+import { buildSemantic, FONT, PRESETS, MODES, type ThemePreset, type ThemeMode } from '../../src/core/styles/tokens'
 
 /* ---------------------- 颜色工具 ---------------------- */
 
@@ -223,13 +223,20 @@ for (const [preset, mode, label] of GROUPS) {
 
 /* ---------------------- §--on-strong 消费者实测 ---------------------- */
 
-interface OnStrongSpot { file: string; line: number; name: string; gradient: 'gradient-primary' | 'gradient-warm'; changed: boolean }
+/**
+ * `--on-strong` 的保留消费者（品牌渐变 / hero）。
+ *
+ * ⚠️ **这里刻意不带行号**：上一版写死 `Home.vue:823` 等具体行号，而该文件早就没那么长了
+ * （QA 查到 `.action-pill.primary` 实际在 416/567 一带）—— 行号必然漂移，写进去就是把陈旧埋下一次。
+ * 改用「文件 + 选择器/用途名」做标识，既能定位也不会随时间失真。
+ */
+interface OnStrongSpot { file: string; name: string; gradient: 'gradient-primary' | 'gradient-warm'; changed: boolean }
 const ON_STRONG_SPOTS: OnStrongSpot[] = [
-  { file: 'Home.vue', line: 534, name: '.welcome-hi（22px/800 大号）', gradient: 'gradient-primary', changed: false },
-  { file: 'Home.vue', line: 575, name: '.streak-pill .streak-text', gradient: 'gradient-primary', changed: false },
-  { file: 'Home.vue', line: 823, name: '.action-pill.primary', gradient: 'gradient-primary', changed: false },
-  { file: 'Parent.vue', line: 476, name: '.top-rank:first-child', gradient: 'gradient-warm', changed: false },
-  { file: 'VocabDrill.vue', line: 620, name: '.listen-btn', gradient: 'gradient-primary', changed: false },
+  { file: 'Home.vue', name: '.welcome-hi（欢迎区问候语）', gradient: 'gradient-primary', changed: false },
+  { file: 'Home.vue', name: '.streak-pill .streak-text', gradient: 'gradient-primary', changed: false },
+  { file: 'Home.vue', name: '.action-pill.primary（快捷入口主按钮）', gradient: 'gradient-primary', changed: false },
+  { file: 'Parent.vue', name: '.top-rank:first-child（排行榜第一名）', gradient: 'gradient-warm', changed: false },
+  { file: 'VocabDrill.vue', name: '.listen-btn（听写/朗读按钮）', gradient: 'gradient-primary', changed: false },
 ]
 
 /* ---------------------- 渲染 ---------------------- */
@@ -241,11 +248,26 @@ md.push('> 自动生成：`npm run a11y:contrast`（`scripts/a11y/contrast-repor
 md.push('> 数据源：`src/core/styles/tokens.ts` 的 `buildSemantic`（6 组 = 3 学段 × 浅/深）')
 md.push('> 阈值：正文 **4.5** / 大号 **3.0**')
 md.push('')
+/**
+ * 大号文本判据（WCAG 1.4.3：粗体 ≥14pt ≈ 18.66px 即算大号，阈值 3.0 而非 4.5）。
+ *
+ * 字号**从 tokens 推导**，不再手写 px：这里曾经写死 20px/700（`--font-2xl`），
+ * 而 `PageHeader.vue` 实际用的是 `--font-3xl` + 800 —— 判据与源码漂移了也没人发现。
+ * 从 `FONT['3xl']` 取之后，改 token 就是改判据，`--font-3xl` 一旦变更这里立刻跟着变。
+ */
+const PAGE_HEADER_STEP = '3xl' // PageHeader.vue .page-header__title → var(--font-3xl)
+const PAGE_HEADER_WEIGHT = 800 // PageHeader.vue .page-header__title → font-weight: 800（非 token，故字面量）
+// 组件内的字面量，不是 token —— 无法推导，只能照抄并注明来源
+const STATCARD_VALUE = { px: 26, weight: 800 }
+
 md.push('## 大号文本判据')
 md.push('')
-md.push('仅两处算大号（≥20px 且 ≥700）：')
-md.push('- `PageHeader.vue` 标题（`--font-2xl` 20px + 700）')
-md.push('- `StatCard.vue` 数值（26px + 800）')
+md.push('仅两处算大号（粗体且 ≥18.66px，即 WCAG 大号文本 → 阈值 3.0）：')
+md.push(
+  `- \`PageHeader.vue\` 标题（\`var(--font-${PAGE_HEADER_STEP})\` = ${FONT[PAGE_HEADER_STEP]} + ${PAGE_HEADER_WEIGHT}`
+  + `；字号由本脚本从 \`tokens.FONT\` 推导）`
+)
+md.push(`- \`StatCard.vue\` 数值（${STATCARD_VALUE.px}px + ${STATCARD_VALUE.weight}，组件内字面量，非 token）`)
 md.push('')
 md.push('其余**全部按正文 4.5**。')
 md.push('')
@@ -324,7 +346,7 @@ for (const [preset, mode, label] of GROUPS) {
     const c1 = contrast('#ffffff', ends[1])
     const worst = Math.min(c0 ?? 99, c1 ?? 99)
     md.push(
-      `| ${label} · ${spot.file}:${spot.line} | ${spot.gradient} | ${c0?.toFixed(2)} | ${c1?.toFixed(2)} | ${worst >= 3.0 ? '✅(≥3.0)' : '⚠️ 浅端 <3.0'} |`,
+      `| ${label} · ${spot.file} · ${spot.name} | ${spot.gradient} | ${c0?.toFixed(2)} | ${c1?.toFixed(2)} | ${worst >= 3.0 ? '✅(≥3.0)' : '⚠️ 浅端 <3.0'} |`,
     )
   }
 }

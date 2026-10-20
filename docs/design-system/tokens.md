@@ -128,13 +128,23 @@ V1.2 允许新增的 semantic token 就这些，**在白名单外新增 = 改设
 > 求值成浅色值 → 深色/非主预设下不再跟随覆盖 → 表现为「深色卡片上深色字、徽章用浅色底、焦点环用错色相」。
 > 声明在 `body` 上即与覆盖同元素，替换时取到覆盖后的值。
 
+> **注 1 · 这三个 `--btn-primary-*` 别名目前全仓零 `var()` 消费者，别照名单去用它。**
+> AppButton 主按钮的**实际底色**来自 `src/core/styles/palette.ts` 的
+> `Button.colorPrimary = --primary-text`（更深的 AA 变体，白字实测 **5.12:1** 达 AA），
+> 文字色来自同处的 `Button.textColorPrimary`。
+> **禁止用 `--btn-primary-bg` 承托白色文字**：其值 `#f2760c` 配白字仅 **2.85:1**，
+> 会**复活批 6a 已经修掉的 AA 缺陷**；而这属于 token 定义而非 CSS 声明，
+> `check:hex` / `check:text-color` / `lint:styles` **都拦不住**（没有 `color:` 语句命中）。
+> 要做 styled 按钮请先接 `--primary-text` / `--text-on-primary`；真要启用这三个别名，
+> 应连同 `palette.ts` 的 Button 覆盖一起改，并跑一遍 `npm run a11y:contrast`。
+
 ### 全量清单（19 项）
 
 | # | token | 值（= `COMPONENT_TOKENS`） | 消费者 |
 |---|---|---|---|
-| 1 | `--btn-primary-bg` | `var(--primary-color)` | AppButton 主按钮底 |
-| 2 | `--btn-primary-bg-hover` | `var(--primary-hover)` | AppButton hover |
-| 3 | `--btn-primary-fg` | `var(--text-on-primary)` | AppButton 主按钮文字 |
+| 1 | `--btn-primary-bg` | `var(--primary-color)` | ⚠️**当前无消费者**（见上方「注 1」） |
+| 2 | `--btn-primary-bg-hover` | `var(--primary-hover)` | ⚠️**当前无消费者**（见上方「注 1」） |
+| 3 | `--btn-primary-fg` | `var(--text-on-primary)` | ⚠️**当前无消费者**（见上方「注 1」） |
 | 4 | `--btn-focus-ring` | `var(--focus-ring)` | AppButton 焦点环（比通用环更贴按钮） |
 | 5 | `--card-header-bg` | `var(--bg-color-hover)` | AppCard 标题栏底（**当前不启用**，见 primitives.md） |
 | 6 | `--badge-neutral-bg` | `var(--bg-color-hover)` | AppBadge 中性软底；SectionTitle 计数 pill |

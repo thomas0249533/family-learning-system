@@ -255,7 +255,15 @@ export const COMPONENT_TOKENS: Record<string, string> = {
 **样式来源（全部 token）**：
 - AppButton：naive `Button` 覆盖（`buildThemeOverrides`）+ `var(--btn-*)` 补圆角/焦点环。
 - AppCard：`$radius-lg` + `$shadow-sm` + `var(--card-header-bg)`；`variant=danger` 用 `$danger-light` 边框。
+  > **勘误（2026-10 · 终验补充，原文保留作决策记录）**：`--card-header-bg` 实际**零 `var()` 消费者** ——
+  > 全仓只剩 `components.scss:35` 的声明与 `tokens.ts` 的定义，`AppCard` **刻意不使用它**：
+  > 见 `src/components/ui/AppCard.vue:56` 的注释（边框 = `--border-color`，标题栏**不铺底色**）。
+  > 照原文理解成"AppCard 已消费该 token"是错的。
 - AppBadge：`tone` → `var(--{tone}-light)` 底 + `var(--{tone}-color)` 字（soft）；实心态用 `var(--{tone}-color)` 底 + `var(--on-strong)` 字。
+  > **勘误（2026-10 · 终验补充，原文保留作决策记录）**：批 6a-2「语义色分工」后实际实现是
+  > （`src/components/ui/AppBadge.vue:89-131`）：软底的**文字**是 `var(--{tone}-text)`（不是 `-color`）；
+  > 实心态的**底色**是 `var(--{tone}-text)`、**文字**是 `var(--text-on-primary)`（不是 `--on-strong`）。
+  > 即 `color:` 一律 `-text`，`-color` 只用于图形/填充。**照原文写字色会被 `npm run check:text-color` 直接打回。**
 - StatCard：`$card-bg`/`$border-color`/`$shadow-sm` + `tone` → `--stat-value-fg`（默认 `--text-main`，tone 时取语义色）。
 - SectionTitle：`--text-main` + `accent` 用 `$primary-color` 左条。
 - ProgressBar：`var(--progress-track-bg)` / `var(--progress-fill-bg)`。
