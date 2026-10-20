@@ -230,7 +230,15 @@ async function recordProgress(
 | 另记 | — | `settings['progress:lastRecovery'] = { at, stats, mode }`（`mode` ∈ `import` / `restore` / `startup`，仅观察字段） |
 | 零计划 | 仍写标记 | **不起写事务**（先只读算计划，为空直接返回） |
 
-两条入口**共用同一把单飞锁**（module 级 `inflight`）：否则启动迁移还没结束、导入补跑并发进来，同一批行会被求两次和 → `correctCount` 翻倍，而**守恒自检照样通过**（它比的是"本次迁移前后"，不是"两次叠加后"）。
+两条入口**走同一条串行队列**（module 级 promise 链 `tail` / `serialize()`）：否则启动迁移还没结束、导入补跑并发进来，同一批行会被求两次和 → `correctCount` 翻倍，而**守恒自检照样通过**（它比的是"本次迁移前后"，不是"两次叠加后"）。
+
+> **2026-10 修订（终验后）**：原先用的是「共用一把 `inflight` 锁 + 撞锁就复用对方那个 promise」。
+> 问题是两个入口的返回类型不同（`MigrationMarker | null` vs `MergeStats | null`），
+> 复用必须写 `(await inflight) as MergeStats` 这种断言 —— 在「启动补偿正在飞、用户正好导入包」时
+> 会把 marker 当成 stats 返回（`rewritten` 变 `undefined`），**并且静默跳过自己的重归因**。
+> 现改为串行队列：每个调用者拿自己的结果，撞车时后者在前者结束后**按最新库状态重算**
+> （真没活可干时计划为空 → 零写事务）。回归测试见 `tests/progress-migrate.test.ts`
+> 的「串行队列 — 两个入口同时触发时不许互相串味」，两条用例在旧实现下都会红。
 
 #### 2.3.3 marker：`db.settings['migration:v3']`
 

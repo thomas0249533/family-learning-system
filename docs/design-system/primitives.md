@@ -65,7 +65,6 @@
 | `--radius-control` | 圆角（10px，与输入框统一） |
 | `--btn-focus-ring` | 焦点环颜色 |
 | `--focus-ring-w` / `--focus-ring-offset` | 焦点环宽 / 偏移 |
-| `--btn-primary-bg` / `--btn-primary-bg-hover` / `--btn-primary-fg` | 主按钮别名（见下方"坑"） |
 
 主按钮的**实际**前景/底色不来自本文件的 CSS，而来自 `palette.ts` 的 `buildThemeOverrides`：
 `Button.colorPrimary = --primary-text`（比品牌色更深，保证白字达标）、`textColorPrimary = --text-on-primary`。
@@ -87,9 +86,11 @@
 
 ### 坑（源码约定）
 
-- `--btn-primary-bg`、`--btn-primary-bg-hover`、`--btn-primary-fg` 目前**没有任何组件 CSS 消费者**
-  （全仓只有注释提到）。它们是给"未来自建按钮"预留的别名，实际主按钮色由 naive 覆盖驱动。
-  改主按钮色请改 `tokens.ts` 的 `brand/brandText`，**不要**去改这三个别名指望生效。
+- `--btn-primary-bg`、`--btn-primary-bg-hover`、`--btn-primary-fg` 这三个"预留别名"**已于 2026-10
+  V1.2 终验后从 `COMPONENT_TOKENS` / `components.scss` 删除**：它们全仓零 `var()` 消费者，
+  且 `--btn-primary-bg` 编码的是 AA 不达标色（`#f2760c` 配白字 2.85:1），留着等于给后来人指坑。
+  改主按钮色请改 `tokens.ts` 的 `brand/brandText`（经 `palette.ts` 的 `Button.colorPrimary`
+  落到 `--primary-text`），**不要**自己新起一个按钮别名去接 `--primary-color`。
 - `type` 用 `error`，而 token 侧叫 `danger`。写 `type="danger"` 会被类型拒绝（不属于该联合类型），
   运行时则会落到 naive 的未知值分支——两套词表的交界就在这一行。
 
@@ -155,9 +156,9 @@
 ### 坑（源码约定）
 
 - **刻意不覆盖边框与标题栏底色**。源码注释写明：现有各页 `n-card` 用的是 naive 默认
-  （边框 = `--border-color`，标题栏无底色），强行套 `--border-light` / `--card-header-bg`
+  （边框 = `--border-color`，标题栏无底色），强行套 `--border-light` / 标题栏底色
   会让每一张被替换的卡片产生非预期可见变化。
-- 因此 `--card-header-bg` 目前**无消费者**（同 `--btn-primary-*`，属预留别名）。
+- 因此原先那个"卡片标题栏底"别名（`--card-header-bg`）**从未被启用，已于 2026-10 终验后删除**。
 - `paddingless` 通过 `:deep(.n-card__content)` 置 `padding: 0`，依赖 naive 的内部类名。
 
 ---

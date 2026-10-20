@@ -33,7 +33,7 @@ tokens.ts  ──tokens:build──▶  theme.scss  (CSS 变量，6 组主题)
 |---|---|---|---|---|
 | **1 · primitive** | `tokens.ts` 里的 `HUES` / `NEUTRALS` / `RADIUS` / `SPACE` / `FONT` / `LEADING` / `MOTION` / `SUBJECTS` | 手写（**唯一色源**） | 字面值 + 成对（浅/深、三学段） | **不可**，只有 `buildSemantic` 与生成器用 |
 | **2 · semantic** | `theme.scss` 的 `--x` + `palette.ts` 的数值 | ✅ `npm run tokens:build`（**禁手改**） | 由第 1 层派生或显式给出 | 可以：`var(--x)` / `$x` |
-| **3 · component** | `components.scss` 的 `--<component>-<element>-<property>` | 手写（`tokens.ts` 的 `COMPONENT_TOKENS` 是权威镜像，测试锁定双写一致） | **只允许** `var(--语义token)` 或常量尺寸 | 可以：`var(--btn-primary-bg)` |
+| **3 · component** | `components.scss` 的 `--<component>-<element>-<property>` | 手写（`tokens.ts` 的 `COMPONENT_TOKENS` 是权威镜像，测试锁定双写一致） | **只允许** `var(--语义token)` 或常量尺寸 | 可以：`var(--badge-warning-bg)` |
 | naive 组件覆盖 | `palette.ts` 的 `buildThemeOverrides` | ✅ 生成 | — | 由 `ThemeProvider` 注入 |
 
 **两条铁律**
@@ -98,7 +98,7 @@ npm run tokens:check
 
 | 基元 | 关系 | 用途 | 最关键 token | 详见 |
 |---|---|---|---|---|
-| `AppButton` | 包 `n-button` | 所有按钮入口，统一圆角与焦点环 | `--btn-primary-bg` `--btn-focus-ring` | [primitives.md#appbutton](./primitives.md#appbutton) |
+| `AppButton` | 包 `n-button` | 所有按钮入口，统一圆角与焦点环 | `--btn-focus-ring`（主按钮底色来自 `palette.ts` 的 `Button.colorPrimary`） | [primitives.md#appbutton](./primitives.md#appbutton) |
 | `AppCard` | 包 `n-card` | 内容卡片；`hoverable` 可抬升、`paddingless` 去内边距 | `--radius-lg` `--shadow-sm` `--danger-light` | [primitives.md#appcard](./primitives.md#appcard) |
 | `AppBadge` | 自建 `span` | 计数 / 状态标签（软色 pill，可关闭） | `--badge-{tone}-bg` `--{tone}-text` | [primitives.md#appbadge](./primitives.md#appbadge) |
 | `EmptyState` | 包 `n-empty` | 空列表占位，可选一个主行动 | `--empty-icon-fg` `--text-sub` | [primitives.md#emptystate](./primitives.md#emptystate) |

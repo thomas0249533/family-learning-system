@@ -15,7 +15,7 @@
 | primitive | TS 常量（camelCase 字段） | `HUES.junior.light.brand` | 不落成 CSS 变量，组件永不引用 |
 | semantic | `--<role>` | `--primary-color`、`--text-main`、`--border-light` | 角色名，不带组件名 |
 | semantic（成族） | `--<tone>-<variant>` | `--danger-light`、`--danger-text`、`--danger-soft`、`--danger-rgb` | tone ∈ `primary/success/warning/danger/info` |
-| component | `--<component>-<element>-<property>` | `--btn-primary-bg`、`--badge-warning-bg`、`--progress-fill-bg` | 带组件名，值只能是 `var()` 或尺寸 |
+| component | `--<component>-<element>-<property>` | `--badge-warning-bg`、`--progress-fill-bg`、`--stat-value-fg` | 带组件名，值只能是 `var()` 或尺寸 |
 | 尺寸/字号/动效 | `--radius-*` `--space-*` `--font-*` `--leading-*` `--duration-*` `--ease-*` | `--radius-control`、`--space-4` | 不随主题变 |
 
 **反例（历史踩过）**：`--primaryColor`（不用 camelCase）、`--badge-bg`（缺 component 段，会和别的组件撞名）、
@@ -128,39 +128,36 @@ V1.2 允许新增的 semantic token 就这些，**在白名单外新增 = 改设
 > 求值成浅色值 → 深色/非主预设下不再跟随覆盖 → 表现为「深色卡片上深色字、徽章用浅色底、焦点环用错色相」。
 > 声明在 `body` 上即与覆盖同元素，替换时取到覆盖后的值。
 
-> **注 1 · 这三个 `--btn-primary-*` 别名目前全仓零 `var()` 消费者，别照名单去用它。**
+> **注 1 · `--btn-primary-bg` / `-bg-hover` / `-fg` 与 `--card-header-bg` 已于 2026-10 终验后删除。**
+> 删除理由（不是喜好问题）：四个都**全仓零 `var()` 消费者**，其中 `--btn-primary-bg` 的值是
+> `#f2760c`，配白字仅 **2.85:1**，正好是批 6a 修掉的 AA 缺陷——留着它就是给后来人一条
+> 「照着名字用就会踩坑」的路，而且 `check:hex` / `check:text-color` / `lint:styles` **都拦不住**
+> （这是 token 定义，不是 CSS 声明，没有 `color:` 语句可命中）。
 > AppButton 主按钮的**实际底色**来自 `src/core/styles/palette.ts` 的
-> `Button.colorPrimary = --primary-text`（更深的 AA 变体，白字实测 **5.12:1** 达 AA），
-> 文字色来自同处的 `Button.textColorPrimary`。
-> **禁止用 `--btn-primary-bg` 承托白色文字**：其值 `#f2760c` 配白字仅 **2.85:1**，
-> 会**复活批 6a 已经修掉的 AA 缺陷**；而这属于 token 定义而非 CSS 声明，
-> `check:hex` / `check:text-color` / `lint:styles` **都拦不住**（没有 `color:` 语句命中）。
-> 要做 styled 按钮请先接 `--primary-text` / `--text-on-primary`；真要启用这三个别名，
-> 应连同 `palette.ts` 的 Button 覆盖一起改，并跑一遍 `npm run a11y:contrast`。
+> `Button.colorPrimary = --primary-text`（更深的 AA 变体，白字实测 **5.12:1**），
+> 文字色来自同处的 `Button.textColorPrimary = --text-on-primary`。
+> 若将来真要给按钮加组件级别名，**值必须指向 `--primary-text` / `--text-on-primary`**，
+> 并跑一遍 `npm run a11y:contrast` 再合入；不要再从 `--primary-color` 起手。
 
-### 全量清单（19 项）
+### 全量清单（15 项）
 
 | # | token | 值（= `COMPONENT_TOKENS`） | 消费者 |
 |---|---|---|---|
-| 1 | `--btn-primary-bg` | `var(--primary-color)` | ⚠️**当前无消费者**（见上方「注 1」） |
-| 2 | `--btn-primary-bg-hover` | `var(--primary-hover)` | ⚠️**当前无消费者**（见上方「注 1」） |
-| 3 | `--btn-primary-fg` | `var(--text-on-primary)` | ⚠️**当前无消费者**（见上方「注 1」） |
-| 4 | `--btn-focus-ring` | `var(--focus-ring)` | AppButton 焦点环（比通用环更贴按钮） |
-| 5 | `--card-header-bg` | `var(--bg-color-hover)` | AppCard 标题栏底（**当前不启用**，见 primitives.md） |
-| 6 | `--badge-neutral-bg` | `var(--bg-color-hover)` | AppBadge 中性软底；SectionTitle 计数 pill |
-| 7 | `--badge-primary-bg` | `var(--primary-light)` | AppBadge 主色软底 |
-| 8 | `--badge-success-bg` | `var(--success-light)` | AppBadge 成功软底 |
-| 9 | `--badge-warning-bg` | `var(--warning-light)` | AppBadge 警告软底 |
-| 10 | `--badge-danger-bg` | `var(--danger-light)` | AppBadge 危险软底 |
-| 11 | `--badge-info-bg` | `var(--info-light)` | AppBadge 信息软底 |
-| 12 | `--stat-value-fg` | `var(--text-main)` | StatCard 默认数值色 |
-| 13 | `--progress-track-bg` | `var(--surface-2)` | ProgressBar 轨道 |
-| 14 | `--progress-fill-bg` | `var(--gradient-primary)` | ProgressBar `gradient` 填充 |
-| 15 | `--empty-icon-fg` | `var(--text-muted)` | EmptyState 大图标 |
-| 16 | `--page-header-border` | `var(--border-light)` | PageHeader 底边 |
-| 17 | `--focus-ring` | `rgba(var(--primary-rgb), 0.55)` | 全站 `:focus-visible` 环 |
-| 18 | `--focus-ring-w` | `2px` | 焦点环宽度 |
-| 19 | `--focus-ring-offset` | `2px` | 焦点环偏移（避免贴边裁切） |
+| 1 | `--btn-focus-ring` | `var(--focus-ring)` | AppButton 焦点环（比通用环更贴按钮） |
+| 2 | `--badge-neutral-bg` | `var(--bg-color-hover)` | AppBadge 中性软底；SectionTitle 计数 pill |
+| 3 | `--badge-primary-bg` | `var(--primary-light)` | AppBadge 主色软底 |
+| 4 | `--badge-success-bg` | `var(--success-light)` | AppBadge 成功软底 |
+| 5 | `--badge-warning-bg` | `var(--warning-light)` | AppBadge 警告软底 |
+| 6 | `--badge-danger-bg` | `var(--danger-light)` | AppBadge 危险软底 |
+| 7 | `--badge-info-bg` | `var(--info-light)` | AppBadge 信息软底 |
+| 8 | `--stat-value-fg` | `var(--text-main)` | StatCard 默认数值色 |
+| 9 | `--progress-track-bg` | `var(--surface-2)` | ProgressBar 轨道 |
+| 10 | `--progress-fill-bg` | `var(--gradient-primary)` | ProgressBar `gradient` 填充 |
+| 11 | `--empty-icon-fg` | `var(--text-muted)` | EmptyState 大图标 |
+| 12 | `--page-header-border` | `var(--border-light)` | PageHeader 底边 |
+| 13 | `--focus-ring` | `rgba(var(--primary-rgb), 0.55)` | 全站 `:focus-visible` 环 |
+| 14 | `--focus-ring-w` | `2px` | 焦点环宽度 |
+| 15 | `--focus-ring-offset` | `2px` | 焦点环偏移（避免贴边裁切） |
 
 > 本表由 `tests/design-system-docs.test.ts` 与 `COMPONENT_TOKENS` 双向锁定：
 > 少一行 → 红；多一行（写了不存在的 token）→ 红。

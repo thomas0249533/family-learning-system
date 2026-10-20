@@ -26,8 +26,8 @@
 // =====================================================================
 // AppCard · 包 naive `n-card`（标题栏 / 动作区透传）
 // ---------------------------------------------------------------------
-// 关系：包 `n-card`（§4）。样式：$radius-lg + $shadow-sm +
-// --card-header-bg；variant=danger 用 danger-light 作边框。全走 token。
+// 关系：包 `n-card`（§4）。样式：$radius-lg + $shadow-sm；
+// variant=danger 用 danger-light 作边框。全走 token。
 // =====================================================================
 import { NCard } from 'naive-ui'
 
@@ -53,9 +53,10 @@ withDefaults(defineProps<AppCardProps>(), {
 <style scoped lang="scss">
 /* 复刻现有观感的「最主流的那一套」：radius-lg + shadow-sm。
    刻意 **不** 覆盖 border 与 header 背景 —— 现有各页的 n-card 用的是 naive 默认
-   （边框 = --border-color，标题栏无底色）；强行上 --border-light / --card-header-bg
+   （边框 = --border-color，标题栏无底色）；强行上 border-light / 给标题栏铺底
    会让每一张被替换的卡片产生非预期可见变化（批3/批4 铁律：差异只应出现在
-   「原本各页就不一致」的地方）。 */
+   「原本各页就不一致」的地方）。
+   曾经存在的 card-header-bg 组件别名因零消费者 + 无真实语义，已于 2026-10 删除。 */
 .app-card {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);

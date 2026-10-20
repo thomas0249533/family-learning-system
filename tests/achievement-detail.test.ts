@@ -225,6 +225,26 @@ describe('静态接线（组件层）', () => {
     expect(card).not.toContain('ach-sr')
   })
 
+  it('卡片内层只用 phrasing content，进度条在 button 里只当装饰', () => {
+    const card = read('src/components/AchievementCard.vue')
+    // HTML：<button> 的合法内容只有 phrasing content，塞 <div> 会被严格校验判违规
+    //（只看模板体、先剥掉注释 —— 注释里本来就要提到 `<div>` 说明剪影卡的事）
+    const template = card
+      // 用 lastIndexOf：模板内部还有 <template v-if> 块，indexOf('</template>') 会提前截断
+      .slice(card.indexOf('<template>'), card.lastIndexOf('</template>'))
+      .replace(/<!--[\s\S]*?-->/g, '')
+    expect(template).not.toContain('<div')
+    // ARIA：button 的后代一律 presentational，内层 role="progressbar" 会被读屏器丢弃
+    //（留着只会让源码说谎）→ 视觉条保留，进度信息交给 aria-label 里的 hint
+    expect(template).not.toContain('role="progressbar"')
+    expect(template).not.toContain('aria-valuenow')
+    expect(template).toContain('class="ach-progress"')
+    // 进度文案不能因此丢失：hint 是 progressText 的唯一来源，必须进 aria-label
+    expect(card).toContain('未解锁，${it.hint}')
+    // 反向自证：带语义的进度条在详情弹层（不在 button 内），别被一起删掉
+    expect(read('src/components/AchievementDetailModal.vue')).toContain('<ProgressBar')
+  })
+
   it('独立图鉴页存在，且以 standalone 复用同一个成就区', () => {
     expect(existsSync(join(ROOT, 'src/views/Achievements.vue'))).toBe(true)
     const page = read('src/views/Achievements.vue')

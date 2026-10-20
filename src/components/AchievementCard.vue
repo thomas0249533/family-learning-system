@@ -13,43 +13,45 @@
     >
       <span class="ach-icon" aria-hidden="true">{{ item.icon }}</span>
 
-      <div class="ach-body">
-        <div class="ach-title-row">
+      <!-- 内层一律 span：<button> 的合法内容只有 phrasing content，塞 div 会被严格校验判违规。
+           视觉上用 display:block 还原块级排布（见样式里逐条说明）。 -->
+      <span class="ach-body">
+        <span class="ach-title-row">
           <span class="ach-title">{{ item.title }}</span>
           <!-- 层级用星标数量表达（色觉冗余），不是唯一编码 -->
           <span v-if="item.stars > 0" class="ach-stars" aria-hidden="true">{{ stars }}</span>
           <span v-if="item.earned && item.tier === 'hidden'" class="ach-hidden-tag">隐藏成就</span>
-        </div>
+        </span>
 
-        <div class="ach-desc">{{ item.desc }}</div>
+        <span class="ach-desc">{{ item.desc }}</span>
 
         <!-- 已获得：证据快照 + 解锁日期 + 连环标记，**不显示进度**（"10/10"是无意义回放） -->
         <template v-if="item.earned">
           <!-- 旧记录没有 evidence → 空串 → 该行不渲染（绝不事后补算） -->
-          <div v-if="item.evidence" class="ach-evidence">{{ item.evidence }}</div>
-          <div class="ach-meta">解锁于 {{ item.unlockedAt || '较早' }}</div>
-          <div v-if="item.chainLabel" class="ach-chain">{{ item.chainLabel }}</div>
+          <span v-if="item.evidence" class="ach-evidence">{{ item.evidence }}</span>
+          <span class="ach-meta">解锁于 {{ item.unlockedAt || '较早' }}</span>
+          <span v-if="item.chainLabel" class="ach-chain">{{ item.chainLabel }}</span>
         </template>
 
         <!-- 未获得（非隐藏）：可进度化 → 细进度条 + 文案；二值 → 只给文案 -->
         <template v-else-if="!item.silhouetted">
-          <div
+          <!-- 进度条在 <button> 里只能是装饰：ARIA 规定 button 的后代全部 presentational，
+               内层 role="progressbar" 会被读屏器丢弃。进度信息**不丢**——按钮的 aria-label
+               里已含 item.hint，而 hint 的唯一来源就是 progressText（"已完成 3/10 · 还差 7"）。
+               带语义的进度条在详情弹层里（不在 button 内），那边保留 role。 -->
+          <span
             v-if="showBar"
             class="ach-progress"
-            role="progressbar"
-            :aria-valuenow="item.current"
-            aria-valuemin="0"
-            :aria-valuemax="item.target"
-            :aria-label="`${item.title} 进度 ${item.current}/${item.target}`"
+            aria-hidden="true"
           >
-            <div class="ach-progress-fill" :style="{ width: item.percent + '%' }"></div>
-          </div>
-          <div class="ach-hint">{{ item.hint }}</div>
+            <span class="ach-progress-fill" :style="{ width: item.percent + '%' }"></span>
+          </span>
+          <span class="ach-hint">{{ item.hint }}</span>
         </template>
 
         <!-- 隐藏成就：达成前不泄露任何信息（真实标题/描述不进 DOM） -->
-        <div v-else class="ach-hint">达成后揭晓</div>
-      </div>
+        <span v-else class="ach-hint">达成后揭晓</span>
+      </span>
 
       <!-- 已获得 → 打勾；未获得（未揭晓的剪影除外）→ 小锁角标。
            锁与真实图标**并存**：PRD §5.3 表 B 原意是"别让孩子误以为自己已经有了"，
@@ -160,7 +162,9 @@ const ariaLabel = computed(() => {
     opacity: 0.7;
   }
 
+  /* span 还原块级：<button> 只允许 phrasing content，布局靠 display 补回来 */
   .ach-body {
+    display: block;
     min-width: 0;
     flex: 1;
   }
@@ -195,6 +199,7 @@ const ariaLabel = computed(() => {
   }
 
   .ach-desc {
+    display: block;
     font-size: $font-2xs;
     color: $text-muted;
     margin-top: 2px;
@@ -202,6 +207,7 @@ const ariaLabel = computed(() => {
   }
 
   .ach-evidence {
+    display: block;
     margin-top: $space-1;
     font-size: $font-2xs;
     color: $text-muted;
@@ -209,6 +215,7 @@ const ariaLabel = computed(() => {
   }
 
   .ach-meta {
+    display: block;
     margin-top: 2px;
     font-size: $font-2xs;
     font-weight: 700;
@@ -216,6 +223,7 @@ const ariaLabel = computed(() => {
   }
 
   .ach-chain {
+    display: block;
     margin-top: 2px;
     font-size: $font-2xs;
     color: $text-muted;
@@ -223,6 +231,7 @@ const ariaLabel = computed(() => {
   }
 
   .ach-progress {
+    display: block;
     margin-top: $space-2;
     height: 6px;
     background: $bg-color-hover;
@@ -230,6 +239,7 @@ const ariaLabel = computed(() => {
     overflow: hidden;
 
     .ach-progress-fill {
+      display: block;
       height: 100%;
       background: $gradient-primary;
       border-radius: $radius-full;
@@ -238,6 +248,7 @@ const ariaLabel = computed(() => {
   }
 
   .ach-hint {
+    display: block;
     margin-top: $space-1;
     /* 右下角有锁角标（absolute），文案让出 18px 免得压在上面 */
     padding-right: 18px;

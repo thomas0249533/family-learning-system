@@ -418,12 +418,11 @@ export function buildSemantic(preset: ThemePreset, mode: ThemeMode): SemanticTok
  */
 export const COMPONENT_TOKENS: Record<string, string> = {
   // 按钮
-  'btn-primary-bg': 'var(--primary-color)',
-  'btn-primary-bg-hover': 'var(--primary-hover)',
-  'btn-primary-fg': 'var(--text-on-primary)',
+  // 曾有三个 `btn-primary-bg` / `btn-primary-bg-hover` / `btn-primary-fg` 别名，
+  // 全仓零 `var()` 消费者，且 `btn-primary-bg` 编码的是 AA 不达标色（白字 2.85:1）——
+  // 2026-10 V1.2 终验后删除。主按钮实际底色来自 palette.ts 的
+  // `Button.colorPrimary`（指向 `--primary-text`，白字 5.12:1 达 AA）。
   'btn-focus-ring': 'var(--focus-ring)',
-  // 卡片
-  'card-header-bg': 'var(--bg-color-hover)',
   // 徽章（软色底）
   'badge-neutral-bg': 'var(--bg-color-hover)',
   'badge-primary-bg': 'var(--primary-light)',

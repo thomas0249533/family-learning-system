@@ -25,14 +25,9 @@
 // =====================================================================
 
 body {
-  /* 按钮 */
-  --btn-primary-bg: var(--primary-color);
-  --btn-primary-bg-hover: var(--primary-hover);
-  --btn-primary-fg: var(--text-on-primary);
+  /* 按钮：主按钮的底色/文字色**不在这里**，来自 palette.ts 的 Button 覆盖
+     （指向 primary-text / text-on-primary，为的是白字达 AA）。这里只留焦点环。 */
   --btn-focus-ring: var(--focus-ring);
-
-  /* 卡片 */
-  --card-header-bg: var(--bg-color-hover);
 
   /* 徽章（软色底） */
   --badge-neutral-bg: var(--bg-color-hover);

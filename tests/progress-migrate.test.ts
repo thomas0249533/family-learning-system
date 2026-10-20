@@ -441,3 +441,56 @@ describe('ensureE1Migrated({ orphanOnly }) — 导入后重归因', () => {
     expect(await readMigrationMarker()).toBeNull()
   })
 })
+
+// ---------- 两个入口撞在一起 ----------
+
+describe('串行队列 — 两个入口同时触发时不许互相串味', () => {
+  it('★ 启动补偿与导入重归因并发 → 各自拿到自己类型的结果，重归因不被静默跳过', async () => {
+    seedStandard()
+    // 一行孤儿：写在入口包 special-x 上，但真正声明 kp 的是 unit-p1
+    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    // 补偿会真的干活（failed 且未到上限）
+    fake.state.settings.push({
+      key: MIGRATION_KEY,
+      value: { status: 'failed', at: 'x', error: 'boom', attempts: 0 },
+    })
+
+    const [marker, stats] = await Promise.all([
+      recoverV3IfNeeded(),
+      ensureE1Migrated({ orphanOnly: true, mode: 'import' }),
+    ])
+
+    /*
+     * 这里断言的是**返回契约**，也就是曾经被类型断言藏起来的那条 bug：
+     * 旧实现撞锁时 `(await inflight) as MergeStats` —— 会把 MigrationMarker
+     * 当成 MergeStats 返回，`stats.rewritten` 变成 undefined，且自己的重归因被静默跳过。
+     * 所以不要只断言"都成功了"，要断言两者的**形状**互不相同。
+     */
+    expect(marker?.status).toBe('ok-recovered') // MigrationMarker
+    expect(typeof stats?.rewritten).toBe('number') // MergeStats（不是 marker 冒名顶替）
+    expect(stats?.status).toBeUndefined()
+
+    // 数据层结果：孤儿行确实被改写到归属包，且**迁移标记没被重归因改写**
+    expect(fake.state.progress[0].packageId).toBe('unit-p1')
+    const row2 = fake.state.settings.find((s) => s.key === MIGRATION_KEY)!
+    expect(row2.value.status).toBe('ok-recovered')
+  })
+
+  it('★ 两次同入口并发 → 串行执行，第二次按最新状态重算（不重复写）', async () => {
+    seedStandard()
+    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.state.settings.push({ key: MIGRATION_KEY, value: { status: 'ok', at: 'x' } })
+
+    const [a, b] = await Promise.all([
+      ensureE1Migrated({ orphanOnly: true }),
+      ensureE1Migrated({ orphanOnly: true }),
+    ])
+
+    // 第一个真干活，第二个看到已被改写 → 零计划
+    expect(a?.rewritten).toBe(1)
+    expect(b?.rewritten).toBe(0)
+    // 行只被改写一次（第二次没有写事务）
+    expect(fake.state.progress).toHaveLength(1)
+    expect(fake.state.progress[0].packageId).toBe('unit-p1')
+  })
+})

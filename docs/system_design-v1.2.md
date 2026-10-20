@@ -230,7 +230,11 @@ export const COMPONENT_TOKENS: Record<string, string> = {
 
 **命名规范**：
 - semantic：`--<role>`（`--primary-color`、`--text-main`、`--border-light`）；
-- component：`--<component>-<element>-<property>`：`--btn-primary-bg`、`--btn-primary-bg-hover`、`--card-header-bg`、`--badge-warning-bg`、`--stat-value-fg`、`--progress-track-bg`、`--progress-fill-bg`、`--empty-icon-fg`、`--page-header-border`。
+- component：`--<component>-<element>-<property>`：`--btn-focus-ring`、`--badge-warning-bg`、`--stat-value-fg`、`--progress-track-bg`、`--progress-fill-bg`、`--empty-icon-fg`、`--page-header-border`。
+  > **勘误（2026-10 · 终验后清理，原文保留作决策记录）**：本节早先列出的 `--btn-primary-bg`、
+  > `--btn-primary-bg-hover`、`--card-header-bg` 已于 2026-10 删除 —— 三者全仓零 `var()` 消费者，
+  > 且 `--btn-primary-bg` 编码的是 AA 不达标色（配白字 2.85:1）。现状与理由见
+  > [`docs/design-system/tokens.md`](./design-system/tokens.md) 的「注 1」与全量清单（现为 15 项）。
 - **组件级 token 只允许**：引用 semantic（`var(--x)`）或常量尺寸；**禁止**写 `#hex`/`rgba(数字)`（`components.scss` 虽不在 `check:hex` 扫描目录，但**沿用 §8 不变量，靠评审 + 可选把 styles 目录纳入自检**）。
 
 **为什么 component token 不放进 `theme.scss`**：`theme.scss` 被一致性测试按"6 组变量块"解析。若在 `:root` 追加 `--btn-*`（`var()` 引用、6 组同值），实测会变红的**不是**"键集合相等"断言（该断言因 `:root` 传播到 6 组而恒等、不触发），而是 **「每个颜色类 token 必须也被 `body.dark-mode` 覆盖」断言**与**生成物逐字节比对**（`--btn-*` 既未出现在 `body.dark-mode`、也不在生成产物里）。故**独立成 `components.scss`**，保持 `theme.scss` 的 6 组纯净。
@@ -259,6 +263,7 @@ export const COMPONENT_TOKENS: Record<string, string> = {
   > 全仓只剩 `components.scss:35` 的声明与 `tokens.ts` 的定义，`AppCard` **刻意不使用它**：
   > 见 `src/components/ui/AppCard.vue:56` 的注释（边框 = `--border-color`，标题栏**不铺底色**）。
   > 照原文理解成"AppCard 已消费该 token"是错的。
+  > **后续**：该 token 已于 2026-10 终验后从 `tokens.ts` / `components.scss` **删除**（零消费者 + 无真实语义）。
 - AppBadge：`tone` → `var(--{tone}-light)` 底 + `var(--{tone}-color)` 字（soft）；实心态用 `var(--{tone}-color)` 底 + `var(--on-strong)` 字。
   > **勘误（2026-10 · 终验补充，原文保留作决策记录）**：批 6a-2「语义色分工」后实际实现是
   > （`src/components/ui/AppBadge.vue:89-131`）：软底的**文字**是 `var(--{tone}-text)`（不是 `-color`）；

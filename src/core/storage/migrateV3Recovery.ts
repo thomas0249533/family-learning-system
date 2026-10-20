@@ -28,11 +28,33 @@ import type { MergePlan, MergeStats } from '@core/progress/progressMerge'
 /** 导入后重归因的"最后结果"标记（与 `migration:v3` 分开，互不覆盖） */
 export const RECOVERY_KEY = 'progress:lastRecovery'
 
-/** 迁移期单一飞行锁：启动补偿与导入重归因必须串行，否则两个事务会互相打架 */
-let inflight: Promise<unknown> | null = null
+/** 迁移期**串行队列**：启动补偿与导入重归因必须一个接一个，否则两个事务会互相打架 */
+let tail: Promise<unknown> = Promise.resolve()
 
 /** 启动补偿的 promise（写入端可以 `await` 它，避免和正在跑的迁移抢事务） */
 let settled: Promise<unknown> | null = null
+
+/**
+ * 把任务排进串行队列。
+ *
+ * 为什么是队列，而不是"撞锁就复用对方那个 promise"：
+ * 两个入口的返回类型不同（`MigrationMarker | null` vs `MergeStats | null`），
+ * 复用就必须写 `(await inflight) as MergeStats` 这种断言 —— 它会在
+ * 「启动补偿正在飞、用户正好导入包」时把 `MigrationMarker` 当成 `MergeStats` 返回，
+ * 并且**静默跳过自己的重归因**（类型断言把 bug 藏进了返回值）。
+ *
+ * 队列让每个调用者拿到**自己的**结果：撞车时后者在前者结束后**按最新库状态重算**，
+ * 真没活可干时计划为空 → 零写事务，不会重复干活。
+ */
+function serialize<T>(task: () => Promise<T>): Promise<T> {
+  // 前一个无论成功失败都要继续排队（失败已由各自内部 catch 处理），所以两个回调都是 task
+  const run = tail.then(task, task)
+  tail = run.then(
+    () => undefined,
+    () => undefined
+  )
+  return run
+}
 
 /** 等启动补偿结束；没跑过就立即返回 */
 export function awaitE1Settled(): Promise<unknown> {
@@ -67,9 +89,7 @@ export function shouldRunRecovery(marker: MigrationMarker | null): boolean {
  * 失败仍然只告警不阻塞（AC-E1-7）—— 补偿是加分项，不是正确性前提。
  */
 export async function recoverV3IfNeeded(): Promise<MigrationMarker | null> {
-  if (inflight) return (await inflight) as MigrationMarker | null
-
-  const run = (async (): Promise<MigrationMarker | null> => {
+  const run = serialize(async (): Promise<MigrationMarker | null> => {
     const marker = await readMigrationMarker()
     if (!shouldRunRecovery(marker)) {
       if (marker?.status === 'failed') {
@@ -121,15 +141,11 @@ export async function recoverV3IfNeeded(): Promise<MigrationMarker | null> {
       }
       return null
     }
-  })()
+  })
 
-  inflight = run
-  settled = run
-  try {
-    return await run
-  } finally {
-    if (inflight === run) inflight = null
-  }
+  // 写入端会在写库前 `await awaitE1Settled()`，所以这条链必须**永不 reject**
+  settled = run.catch(() => undefined)
+  return run
 }
 
 /**
@@ -145,7 +161,8 @@ export async function recoverV3IfNeeded(): Promise<MigrationMarker | null> {
  * `mode` 只影响 `progress:lastRecovery.mode` 这个**观察字段**（谁触发的），不参与任何判断：
  * 不传时按老规则推断（`orphanOnly ? 'import' : 'manual'`），两个旧调用点因此无需改动。
  *
- * 并发：单一飞行锁 + 先等启动补偿结束。
+ * 并发：**串行队列**（两个入口一个接一个跑，撞车时后者等前者结束后按最新状态重算）
+ * + 先等启动补偿结束。
  */
 export async function ensureE1Migrated(
   opts: {
@@ -154,9 +171,7 @@ export async function ensureE1Migrated(
     mode?: 'import' | 'restore' | 'startup'
   } = {}
 ): Promise<MergeStats | null> {
-  if (inflight) return (await inflight) as MergeStats | null
-
-  const run = (async (): Promise<MergeStats | null> => {
+  return serialize(async (): Promise<MergeStats | null> => {
     await awaitE1Settled()
 
     // 非 orphanOnly 模式下，迁移已经成功过就不用再扫（一次性语义）
@@ -175,7 +190,8 @@ export async function ensureE1Migrated(
     }
     if (plan.puts.length === 0 && plan.deletes.length === 0) return plan.stats
 
-    // 阶段 2：写。串行锁保证阶段 1、2 之间没有别的写入端插进来（进度写入也走这条锁的同一线程）
+    // 阶段 2：写。串行队列保证阶段 1、2 之间没有另一个迁移任务插进来
+    //（注意：这**不是**全局写锁，`recordProgress` 等写入端不经过它）
     try {
       await db.transaction('rw', db.progress, db.settings, async (tx) => {
         await applyMergePlan(tx, plan)
@@ -190,12 +206,5 @@ export async function ensureE1Migrated(
       console.warn('[migrateV3] 进度重归因写入失败，本次跳过（下次导入/启动再说）', e)
       return null
     }
-  })()
-
-  inflight = run
-  try {
-    return await run
-  } finally {
-    if (inflight === run) inflight = null
-  }
+  })
 }
