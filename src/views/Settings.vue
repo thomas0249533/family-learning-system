@@ -229,8 +229,8 @@ async function doExportPackages() {
 /**
  * 家庭备份（v2）：一次导出**全部档案**的进度、错题、模考、成就与设置。
  *
- * 调 `exportBackupV2()` 而不是旧的 `exportAll()`：后者已 `@deprecated`，
- * 且 v2 备份不含学习包（包是设备级资产，要另外用「导出全部包」搬）。
+ * 调 `exportBackupV2()`（唯一导出入口）：v2 备份不含学习包
+ * （包是设备级资产，要另外用「导出全部包」搬）。
  */
 async function doExportFamilyBackup() {
   try {

@@ -520,27 +520,6 @@ describe('AC-P2-17 — 导入 v1 备份不抹掉本机成就', () => {
   })
 })
 
-describe('旧入口 importUserData（兼容层）', () => {
-  it("仍能导入，且 mode='replace' 只返回一条说明、不再清库", async () => {
-    await seedTwoProfiles()
-    const backup = await buildBackupV2()
-    fake.progress.__reset()
-
-    const { importUserData } = await import('@core/export/exportService')
-    const res = await importUserData(backup, 'replace')
-
-    expect(res.errors.join('；')).toContain('不支持覆盖导入')
-    expect(res.progress).toBe(3)
-    expect(fake.progress.rows).toHaveLength(3)
-  })
-
-  it('格式无效 → errors 非空且不抛', async () => {
-    const { importUserData } = await import('@core/export/exportService')
-    const res = await importUserData(null)
-    expect(res.errors.length).toBeGreaterThan(0)
-  })
-})
-
 // ---------------------------------------------------------------------------
 // outcome 判序：reject → noop → ready（UI 只读这一个字段）
 // ---------------------------------------------------------------------------

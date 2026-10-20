@@ -4,7 +4,7 @@
  * 为什么单独一个文件：
  *   - `userData.recordProgress` 需要它（写入收口）；
  *   - `packageStore.loadPackages` 需要把最新的 packages 塞进来（包变更时刷新）；
- *   - `exportService.importUserData` 需要它（备份内的行也要归一化）。
+ *   - `backup/importOrchestrator` 需要它（备份内的行也要归一化）。
  * 如果缓存放在 `userData.ts`，`packageStore` 就得反向 import store → 循环依赖。
  *
  * 失效时机：包导入/删除（`invalidateOwnerIndex()` / `setOwnerIndexSource()`）。

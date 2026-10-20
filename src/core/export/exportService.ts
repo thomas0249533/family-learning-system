@@ -1,5 +1,5 @@
 /**
- * 导出 / 导入的**对外入口**（V1.4 · B2 重写）
+ * 导出 / 导入的**对外入口**（V1.4 · B2 重写；B6 清理旧入口）
  *
  * ## 重写的原因
  * V1.3 的这个文件是"扁平备份"的实现：`db.progress.toArray()` 整表读、整表写，
@@ -9,11 +9,14 @@
  *   - 导出走 `buildBackupV2()`（逐档案读，见 `core/backup/bundleIO.ts`）；
  *   - 导入走 `core/backup/importOrchestrator`（预览 + 单事务合并）。
  *
- * ## 为什么旧函数名还留着
- * UI（`views/Settings.vue`、`views/Mistakes.vue`）还在调 `exportUserData` /
- * `exportAll` / `importUserData`。B2 这一批不改 UI，若直接删函数，UI 一次性改不完
- * 就会编译不过。所以旧入口全部保留签名、内部委托新引擎，并标 `@deprecated`。
- * **B2 完成后 UI 只应调用 `exportBackupV2()`**。
+ * ## 旧入口已**物理删除**（2026-10-20）
+ * `exportUserData` / `exportAll` / `importUserData` 三个兼容函数曾是 B2 的过渡垫片：
+ * 那一批不动 UI，直接删签名会让 `Settings.vue` / `Mistakes.vue` 编译不过。
+ * UI 改完后它们**零调用方**，于是删掉 —— 留着 `@deprecated` 的空壳比删掉更危险：
+ *   - `importUserData` 内部还压着一条"`mode: 'replace'` 不再清库，只回一句说明"的
+ *     语义陷阱，下一个人照签名调用就会以为覆盖生效了；
+ *   - `exportUserData` 返回的 `settings` 计数在 v2 之后没有任何 UI 消费。
+ * 判断依据：`grep -rn "exportUserData\|importUserData\|exportAll\b" src/` 零命中。
  *
  * ## profile-scope 门禁
  * 这个文件曾经有一行 `// profile-scope-ok-file:` 整文件豁免（旧格式按定义跨档案）。
@@ -26,15 +29,6 @@ import type { LearningPackageRecord } from '@/db'
 import { currentProfile, currentProfileId } from '@core/profile/currentProfile'
 import { buildBackupV2 } from '@core/backup/bundleIO'
 import type { BackupV2 } from '@core/backup/types'
-import { executeImport, previewImport } from '@core/backup/importOrchestrator'
-
-/** 旧导出选项（`@deprecated`：v2 备份总是全量，不再支持挑选字段） */
-export interface ExportOptions {
-  includePackages?: boolean
-  includeProgress?: boolean
-  includeMistakes?: boolean
-  includeSettings?: boolean
-}
 
 /** 时间戳片段：`yyyyMMdd-HHmm`（文件名用，本地时区） */
 function stamp(d: Date = new Date()): string {
@@ -99,9 +93,9 @@ function countBackup(backup: {
 /**
  * 构建 + 下载一份 v2 备份，返回"这份文件里有什么"。
  *
- * 两个导出入口（`exportBackupV2` / 兼容用的 `exportUserData`）共用这一段，
- * 避免出现两份文件名规则或两份"空备份不导出"的判据 —— 那种分叉的症状是
- * "一个按钮导出的文件名带档案名，另一个不带"。
+ * 两个导出入口（`exportBackupV2` / `exportAchievementsJson`）共用 `downloadJson`
+ * 与 `safeFileSegment`，避免出现两份文件名规则或两份"空备份不导出"的判据 ——
+ * 那种分叉的症状是"一个按钮导出的文件名带档案名，另一个不带"。
  *
  * 文件名形如 `fls-backup-老大-20251020-1149.json`。
  * 注意：文件名里放的是**档案名**（昵称），不是真实姓名；非法字符统一换成 `-`
@@ -233,88 +227,4 @@ export async function exportMistakes(): Promise<number> {
     makeFilename('mistakes')
   )
   return mistakes.length
-}
-
-/**
- * @deprecated v2 备份总是全量（含全部档案），不再支持 `includeXxx` 选择。
- * 保留签名只为让 UI 一次性改不完时仍能编译。新代码用 `exportBackupV2()`。
- */
-export async function exportUserData(_opts: ExportOptions = {}): Promise<{
-  progress: number
-  mistakes: number
-  settings: number
-}> {
-  const counts = await downloadBackupV2()
-  return { progress: counts.progress, mistakes: counts.mistakes, settings: counts.settings }
-}
-
-/**
- * @deprecated 同上，委托 `exportBackupV2()`。v2 备份**不含 packages**
- * （包是设备级资产，PRD §P0-3b）——"完整备份"这个名字在 v2 之后名不副实，
- * 所以这里只导出数据，包要用 `exportAllPackages()` 单独搬。
- */
-export async function exportAll(): Promise<void> {
-  await exportBackupV2()
-}
-
-/**
- * 导入备份（旧入口）。
- *
- * @deprecated 新代码用 `previewImport()` + `executeImport()` 两阶段（UI 要先给用户
- * 看"会发生什么"）。这个函数为了兼容旧调用点，一步做完并返回扁平统计。
- *
- * `mode` 的语义变化：v2 只做**合并**。传 `'replace'` 不再清库，
- * 而是在 `errors` 里返回一条明确说明 —— 静默按合并处理，用户会以为"覆盖成功了"。
- */
-export async function importUserData(
-  json: unknown,
-  mode: 'merge' | 'replace' = 'merge'
-): Promise<{
-  progress: number
-  mistakes: number
-  settings: number
-  errors: string[]
-}> {
-  const errors: string[] = []
-  if (mode === 'replace') {
-    errors.push('v2 起不支持覆盖导入，已按合并处理')
-  }
-
-  if (!json || typeof json !== 'object') {
-    errors.push('数据格式无效')
-    return { progress: 0, mistakes: 0, settings: 0, errors }
-  }
-
-  try {
-    const preview = await previewImport(json)
-
-    // 结论统一读 `outcome`（判序收死在编排层）。这里若自己再排一次 reject/noop，
-    // 就成了第二套口径 —— 而 UI 读的是 `outcome`，两边分叉的症状是"提示说可以导入，
-    // 点下去却什么都没发生"。
-    if (preview.outcome === 'reject') {
-      const detail =
-        preview.route.kind === 'reject'
-          ? preview.route.detail
-          : (preview.plan?.reject?.detail ?? '这份备份不能导入')
-      errors.push(detail)
-      return { progress: 0, mistakes: 0, settings: 0, errors }
-    }
-    // 新增为 0 **不是错误**（AC-P2-13 的正常结果：本机已有全部数据）。
-    // 不能塞进 `errors` —— 旧 UI 把 errors 非空当成"导入失败"，那会骗用户。
-    if (preview.outcome === 'noop' || !preview.plan) {
-      return { progress: 0, mistakes: 0, settings: 0, errors }
-    }
-
-    const applied = await executeImport(preview.plan)
-    return {
-      progress: applied.progress,
-      mistakes: applied.mistakes,
-      settings: applied.settings,
-      errors,
-    }
-  } catch (e) {
-    const message = e instanceof Error ? e.message : String(e)
-    errors.push(message)
-    return { progress: 0, mistakes: 0, settings: 0, errors }
-  }
 }
