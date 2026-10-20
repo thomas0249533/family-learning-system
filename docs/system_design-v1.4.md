@@ -669,6 +669,53 @@ export function paginateByCategory(items: AchievementItem[], perPage: number): P
 打印 CSS：`src/styles/print.scss`，单独一份，**固定浅色 token**，不继承主题变量。
 `@media print` 里 `@page { size: A4 portrait; margin: 12mm }`。
 
+### 8.6 故事卡（B6）
+
+入口：图鉴里点开任意**已解锁**卡片 → 详情弹层里的「现在的记录」段 + 「保存故事卡」。
+
+#### 三段时间不能混（这条是本节的唯一重点）
+
+| 段落 | 时间 | 来源 | 会不会变 |
+|---|---|---|---|
+| 解锁日期 | **当时**（固化） | `UnlockedRecord.unlockedAt` | 永不 |
+| 证据 | **当时**（固化） | `UnlockedRecord.evidence` | 永不 |
+| 现在的记录 | **此刻** | 实时 `AchievementContext` | 每次都在变 |
+
+"达成那一刻的其他数据"当年没存，无法重建。拿今天的数字冒充当时的快照，
+等于给家长看一张假的历史照片。所以第三段的 UI 标题与图片段标题都写
+**「现在的记录」**，并且旧记录没有 `evidence` 时**整段不画**（A-06 铁律）。
+
+#### 关联记录：按类目给 2 行，只对 8 枚做特例
+
+- 默认（按 M/G/B/E）：精熟看知识点、成长看错题、行为看天数与题量、探索看包与学科；
+- 特例（替换类目默认，不叠加）：`perfect-kp` / `streak-master`（连对最多的那个知识点）、
+  `patience`（答对+答错累计）、`comeback`（错够 3 次还学会的那枚）、
+  `subject-master-3`（分科枚数）、`early-bird` / `night-owl`（具体到日期+时刻）。
+- 28 枚各写一套文案会退化成 28 条硬编码，改口径要核 28 遍 —— 这是刻意不做的事。
+
+#### 「拿不到就不写」
+
+`kpTitleOf` 查不到标题、包里没有该包、旧数据没有 `dailyStats`：
+每条都只是**少一行**，绝不用 id 兜底。故事卡是给孩子看的，
+`unit-math::kp12` 出现在卡片上比空白糟得多。
+
+#### 实现分工
+
+| 文件 | 职责 |
+|---|---|
+| `src/core/motivation/achievementStory.ts` | 纯函数 `storyOf(item, ctx, opts)` + `storyFileName(id)`，27 条单测 |
+| `src/core/report/canvasKit.ts` | 圆角/折行/下载/本地日期（从 `exportImages.ts` 抽出，与打印件共用） |
+| `src/core/report/storyImage.ts` | `drawStoryCard()` / `exportStoryCard()`，A4 竖版 1000×1400，字面色值 |
+| `AchievementDetailModal.vue` | 只在已解锁时取上下文；取不到就让这一段消失，不弹错 |
+
+#### 接口副作用（B6 顺手修掉的真 bug）
+
+`/achievements` 与 `/achievements/print` 的 `onMounted` **只调了 `refreshView()`**，
+默认"用户是从首页点进来的"。直接从链接进入或在该路由刷新时，
+`userDataStore.progress` 与 `packageStore.packages` 仍是空数组 → 待解锁 26 枚的
+进度全显示 0、故事卡的「现在的记录」整段为空，**且不报错**。
+两处都补上了 `loadUserData()` + `loadPackages()`。
+
 ---
 
 ## 9. 测试策略
