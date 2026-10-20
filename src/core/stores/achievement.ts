@@ -28,7 +28,12 @@ import {
   type PackageMeta,
   type UnlockedRecord,
 } from '@core/motivation/achievements'
-import { buildAchievementView, type AchievementView } from '@core/motivation/achievementMeta'
+import {
+  buildAchievementItems,
+  buildAchievementViewFromItems,
+  type AchievementItem,
+  type AchievementView,
+} from '@core/motivation/achievementMeta'
 import { loadStreak } from '@core/motivation/streak'
 import { loadDailyStats } from '@core/motivation/dailyStats'
 import { loadAttemptedTypes } from '@core/motivation/attemptedTypes'
@@ -44,8 +49,16 @@ export const useAchievementStore = defineStore('achievement', () => {
   const records = ref<UnlockedRecord[]>([])
   /** 待播放的解锁提示队列（AppShell 消费后清空） */
   const pending = ref<AchievementDef[]>([])
-  /** 只读图鉴视图 */
+  /** 只读图鉴视图（**未筛选**；图鉴页按自己的筛选条件另算，见 `items`） */
   const view = ref<AchievementView | null>(null)
+  /**
+   * 28 枚的原始视图模型（不含分区/折叠）。
+   * 图鉴页要支持搜索与筛选，若每敲一个字都重建一遍进度，代价不必要也很吵；
+   * 这里缓存一份，页面用 `buildAchievementViewFromItems(items, ..., filter)` 纯计算派生。
+   */
+  const items = ref<AchievementItem[]>([])
+  /** 没有任何学习包（决定探索组是否显示"导入后开始探索"的引导） */
+  const noPackages = ref(true)
   const settling = ref(false)
   const loaded = ref(false)
 
@@ -87,7 +100,9 @@ export const useAchievementStore = defineStore('achievement', () => {
   async function refreshView(): Promise<AchievementView> {
     if (!loaded.value) await load()
     const ctx = await buildContext()
-    view.value = buildAchievementView(ctx, records.value)
+    items.value = buildAchievementItems(ctx, records.value)
+    noPackages.value = (ctx.packages ?? []).length === 0
+    view.value = buildAchievementViewFromItems(items.value, { noPackages: noPackages.value })
     return view.value
   }
 
@@ -115,7 +130,9 @@ export const useAchievementStore = defineStore('achievement', () => {
         const ctx = await buildContext()
         const result = await syncAchievements(ctx)
         records.value = result.unlockedRecords
-        view.value = buildAchievementView(ctx, result.unlockedRecords)
+        items.value = buildAchievementItems(ctx, result.unlockedRecords)
+        noPackages.value = (ctx.packages ?? []).length === 0
+        view.value = buildAchievementViewFromItems(items.value, { noPackages: noPackages.value })
 
         if (result.newlyUnlocked.length > 0) {
           pending.value = [...pending.value, ...result.newlyUnlocked]
@@ -153,6 +170,8 @@ export const useAchievementStore = defineStore('achievement', () => {
     records,
     pending,
     view,
+    items,
+    noPackages,
     settling,
     earnedCount,
     totalCount,

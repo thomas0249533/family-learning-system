@@ -25,7 +25,50 @@
         </div>
       </AppCard>
 
-      <AppCard>
+      <!-- 筛选：搜索 + 状态 + 来源。筛选只影响"看哪些"，不影响总览的 28 口径 -->
+      <div class="filters">
+        <input
+          v-model="filter.query"
+          class="filter-search"
+          type="search"
+          placeholder="搜索成就名称或描述"
+          aria-label="搜索成就"
+        />
+        <div class="filter-row">
+          <span class="filter-label">状态</span>
+          <button
+            v-for="opt in STATE_OPTIONS"
+            :key="opt.value"
+            type="button"
+            class="chip"
+            :class="{ active: filter.state === opt.value }"
+            :aria-pressed="filter.state === opt.value"
+            @click="filter.state = opt.value"
+          >{{ opt.label }}</button>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">来源</span>
+          <button
+            v-for="opt in SOURCE_OPTIONS"
+            :key="opt.value"
+            type="button"
+            class="chip"
+            :class="{ active: filter.source === opt.value }"
+            :aria-pressed="filter.source === opt.value"
+            @click="filter.source = opt.value"
+          >{{ opt.label }}</button>
+        </div>
+      </div>
+
+      <!-- 筛空了要明确说"是筛空的"，不能说"还没有徽章"（那是另一回事） -->
+      <EmptyState
+        v-if="view.filteredTotal === 0"
+        size="large"
+        icon="🔍"
+        :description="view.emptyHint"
+      />
+
+      <AppCard v-else>
         <AchievementSection :view="view" standalone />
       </AppCard>
     </template>
@@ -46,7 +89,7 @@
 // （`refreshView()` 只重建视图、不写库，多次调用无副作用）。
 // 未加载完：给一句占位，而不是渲染空图鉴 —— 空图鉴会被误读成"一枚都没有"。
 // =====================================================================
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import StatCard from '@/components/ui/StatCard.vue'
@@ -55,15 +98,51 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AchievementSection from '@/components/AchievementSection.vue'
 import { useAchievementStore } from '@core/stores/achievement'
 import { hasSeenCollection, markCollectionSeen } from '@core/motivation/achievementOverview'
+import {
+  buildAchievementViewFromItems,
+  type AchievementFilter,
+  type AchievementSource,
+} from '@core/motivation/achievementMeta'
+import { SOURCE_LABEL, SOURCE_ORDER } from '@core/motivation/achievementOverview'
 
 const achievementStore = useAchievementStore()
-const view = computed(() => achievementStore.view)
 
-const subtitle = computed(() =>
-  view.value
-    ? `已获得 ${view.value.earned} / ${view.value.total} 枚 · 点开任意一枚查看细节`
-    : '正在加载成就…',
-)
+/**
+ * 筛选条件。**只影响可见集合，不影响 28 的总口径** ——
+ * 总览卡上的"已获得 x / 28"不该因为搜了个词就变成"x / 3"。
+ */
+const filter = reactive<AchievementFilter>({ query: '', state: 'all', source: 'all' })
+
+const STATE_OPTIONS: { value: 'all' | 'earned' | 'pending'; label: string }[] = [
+  { value: 'all', label: '全部' },
+  { value: 'earned', label: '已获得' },
+  { value: 'pending', label: '待解锁' },
+]
+
+const SOURCE_OPTIONS: { value: AchievementSource | 'all'; label: string }[] = [
+  { value: 'all', label: '全部来源' },
+  ...SOURCE_ORDER.map((s) => ({ value: s, label: SOURCE_LABEL[s] })),
+]
+
+/**
+ * 视图 = 缓存 items + 纯函数派生（不重读库、不重算进度）。
+ * 未加载时 `items` 为空 → 回落到 store 的 view（null → 页面显示"正在加载"）。
+ */
+const view = computed(() => {
+  if (achievementStore.items.length === 0) return achievementStore.view
+  return buildAchievementViewFromItems(
+    achievementStore.items,
+    { noPackages: achievementStore.noPackages },
+    filter,
+  )
+})
+
+const subtitle = computed(() => {
+  const v = view.value
+  if (!v) return '正在加载成就…'
+  if (v.filterActive) return `已获得 ${v.earned} / ${v.total} 枚 · 当前筛出 ${v.filteredTotal} 枚`
+  return `已获得 ${v.earned} / ${v.total} 枚 · 点开任意一枚查看细节`
+})
 
 /**
  * 总结卡是否还要显示。
@@ -85,6 +164,70 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.filter-search {
+  width: 100%;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: $font-2xs;
+  color: $text-main;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 1px;
+  }
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.filter-label {
+  font-size: $font-2xs;
+  font-weight: 700;
+  color: $text-muted;
+}
+
+.chip {
+  padding: 3px 10px;
+  font: inherit;
+  font-size: $font-2xs;
+  font-weight: 700;
+  color: $text-sub;
+  background: $bg-color-hover;
+  border: 1px solid transparent;
+  border-radius: $radius-full;
+  cursor: pointer;
+  transition: border-color $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+  &:hover {
+    border-color: $border-color;
+  }
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+  &.active {
+    color: $primary-text;
+    background: $primary-soft;
+    border-color: $primary-color;
+  }
+}
+
 .collection-body {
   display: flex;
   align-items: center;

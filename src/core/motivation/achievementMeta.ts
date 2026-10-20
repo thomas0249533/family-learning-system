@@ -117,6 +117,15 @@ export interface AchievementSectionData {
   defaultOpen: boolean
 }
 
+export interface AchievementFilter {
+  /** 关键词（匹配标题/描述；**剪影卡不参与匹配**，不泄底） */
+  query?: string
+  /** 解锁状态 */
+  state?: 'all' | 'earned' | 'pending'
+  /** 来源 */
+  source?: AchievementSource | 'all'
+}
+
 export interface AchievementView {
   /** 已获得枚数 */
   earned: number
@@ -130,7 +139,11 @@ export interface AchievementView {
   empty: boolean
   /** 两个分区：已获得 / 待解锁（空区不出现） */
   sections: AchievementSectionData[]
-  /** 0 枚时的引导文案 */
+  /** 是否处于筛选态（关键词 / 状态 / 来源任一非默认） */
+  filterActive: boolean
+  /** 筛选后可见枚数（未筛选时等于 total） */
+  filteredTotal: number
+  /** 0 枚（或被筛空）时的引导文案 */
   emptyHint: string
   /** 最近解锁（按日期倒序，最多 3 条） */
   recent: AchievementItem[]
@@ -275,34 +288,101 @@ function buildSection(
 export function buildAchievementView(
   ctx: AchievementContext,
   records: UnlockedRecord[],
+  filter?: AchievementFilter,
 ): AchievementView {
+  return buildAchievementViewFromItems(buildAchievementItems(ctx, records), {
+    noPackages: (ctx.packages ?? []).length === 0,
+  }, filter)
+}
+
+/** 只组装 28 枚（不带分区/折叠），供页面在**已缓存 items** 上反复筛选而不重读库 */
+export function buildAchievementItems(
+  ctx: AchievementContext,
+  records: UnlockedRecord[],
+): AchievementItem[] {
   const at = new Map<string, UnlockedRecord>()
   for (const r of records ?? []) at.set(r.id, r)
+  return ACHIEVEMENTS.map((a) => toItem(a, at.get(a.id), ctx))
+}
 
-  const all = ACHIEVEMENTS.map((a) => toItem(a, at.get(a.id), ctx))
-  const earnedItems = all.filter((i) => i.earned)
-  const pendingItems = all.filter((i) => !i.earned)
+/** 关键词规范化：合并空白、去首尾、小写（全角空格一并折叠） */
+function normalizeQuery(q?: string): string {
+  return (q ?? '').replace(/\s+/g, ' ').trim().toLowerCase()
+}
 
-  const earned = earnedItems.length
-  const total = all.length
+/**
+ * 筛选（纯函数，顺序不变）。
+ *
+ * 两条硬约束：
+ *   1. **剪影卡不参与关键词匹配** —— 未解锁的隐藏成就连"被搜到"都不该发生，
+ *      否则搜一个词命中 3 枚剪影就等于确认了隐藏成就的存在与数量；
+ *   2. 只按状态/来源筛时，剪影卡**照常保留**（它们也是"待解锁"的一部分）。
+ */
+export function filterAchievementItems(
+  items: AchievementItem[],
+  filter?: AchievementFilter,
+): AchievementItem[] {
+  const q = normalizeQuery(filter?.query)
+  const state = filter?.state ?? 'all'
+  const source = filter?.source ?? 'all'
+  if (!q && state === 'all' && source === 'all') return items
+
+  return items.filter((it) => {
+    if (state === 'earned' && !it.earned) return false
+    if (state === 'pending' && it.earned) return false
+    if (source !== 'all' && it.source !== source) return false
+    if (q) {
+      if (it.silhouetted) return false
+      if (!`${it.title} ${it.desc}`.toLowerCase().includes(q)) return false
+    }
+    return true
+  })
+}
+
+/**
+ * 从**已有的 items** 组装视图（页面筛选走这里，避免每次输入都重算 28 枚的进度）。
+ *
+ * 口径分层（容易搞混，写清楚）：
+ *   - `total` / `earned` / `percent` / `complete` / `empty` / `recent` / `closest` → **全量**口径，
+ *     筛选不改变"28 枚里已得几枚"，否则总览卡会随筛选跳数字；
+ *   - `sections` → **筛选后**的可见集合（这才是筛选该影响的）；
+ *   - 新增 `filterActive` / `filteredTotal` 让页面知道"当前是筛过的空"还是"真的一枚都没有"。
+ */
+export function buildAchievementViewFromItems(
+  items: AchievementItem[],
+  opts: { noPackages?: boolean } = {},
+  filter?: AchievementFilter,
+): AchievementView {
+  const visible = filterAchievementItems(items, filter)
+  const filterActive =
+    normalizeQuery(filter?.query) !== ''
+    || (filter?.state ?? 'all') !== 'all'
+    || (filter?.source ?? 'all') !== 'all'
+
+  const earnedAll = items.filter((i) => i.earned)
+  const pendingAll = items.filter((i) => !i.earned)
+  const total = items.length
+  const earned = earnedAll.length
   const complete = total > 0 && earned === total
   const empty = earned === 0
-  // 没有任何学习包时，探索类的"0/3"会显得莫名其妙 → 补一句引导
-  const noPackages = (ctx.packages ?? []).length === 0
+
   const guideFor = (cat: AchievementCategory) =>
-    noPackages && cat === 'E' ? '导入学习包后开始探索' : ''
+    opts.noPackages && cat === 'E' ? '导入学习包后开始探索' : ''
+
+  const visibleEarned = visible.filter((i) => i.earned)
+  const visiblePending = visible.filter((i) => !i.earned)
 
   const sections: AchievementSectionData[] = []
   // ★ §5.4：0 枚时不渲染「已获得」区（避免一个空壳分区）
-  if (!empty) {
+  if (visibleEarned.length > 0) {
     // ★ §5.4：全收集时「已获得」区强制展开、隐藏「待解锁」区
-    sections.push(buildSection('earned', '已获得', complete, earnedItems, guideFor))
+    sections.push(buildSection('earned', '已获得', complete, visibleEarned, guideFor))
   }
-  if (!complete) {
-    sections.push(buildSection('pending', '待解锁', true, pendingItems, guideFor))
+  if (visiblePending.length > 0) {
+    sections.push(buildSection('pending', '待解锁', true, visiblePending, guideFor))
   }
 
-  const closest = pendingItems
+  const closest = pendingAll
     .filter((i) => !i.silhouetted)
     .sort((a, b) => b.percent - a.percent)
     .slice(0, 3)
@@ -314,8 +394,12 @@ export function buildAchievementView(
     complete,
     empty,
     sections,
-    emptyHint: '还没有徽章。掌握第一个知识点，就能拿到第 1 枚。',
-    recent: sortEarned(earnedItems).slice(0, 3),
+    filterActive,
+    filteredTotal: visible.length,
+    emptyHint: filterActive && visible.length === 0
+      ? '没有匹配的成就。换个关键词，或把筛选切回「全部」。'
+      : '还没有徽章。掌握第一个知识点，就能拿到第 1 枚。',
+    recent: sortEarned(earnedAll).slice(0, 3),
     closest,
   }
 }

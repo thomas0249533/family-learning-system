@@ -167,3 +167,54 @@ test.describe('全收集总结卡（一次性里程碑）', () => {
     await expect(page.locator('.collection-card')).toHaveCount(0)
   })
 })
+
+test.describe('筛选与搜索', () => {
+  test('关键词缩小可见范围，且总览的 28 口径不变', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    await expect(page.locator('.ach-card')).toHaveCount(28)
+
+    await page.getByRole('searchbox', { name: '搜索成就' }).fill('连续')
+    // 不写死命中数量（文案会改）：只要求"确实缩小了"且"每一张都真的含关键词"
+    const cards = page.locator('.ach-card')
+    await expect(cards.first()).toBeVisible()
+    expect(await cards.count()).toBeLessThan(28)
+    for (const text of await cards.allInnerTexts()) {
+      expect(text).toContain('连续')
+    }
+    // 分母仍是 28：总览卡不受筛选影响
+    await expect(page.locator('.stat-card__value').filter({ hasText: '0 / 28' })).toBeVisible()
+  })
+
+  test('★ 搜不到剪影：用"达成后揭晓"这类遮罩文案搜不出任何隐藏成就', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    await expect(page.locator('.ach-card')).toHaveCount(28)
+
+    // 剪影卡本来就在页面上（3 枚），但关键词匹配必须把它们排除掉
+    await expect(page.locator('.ach-card.silhouette')).toHaveCount(3)
+    await page.getByRole('searchbox', { name: '搜索成就' }).fill('达成后揭晓')
+    await expect(page.locator('.ach-card')).toHaveCount(0)
+    await expect(page.locator('.ach-card.silhouette')).toHaveCount(0)
+  })
+
+  test('状态筛选：已获得为空时给"筛空了"的提示，切回待解锁恢复 28 枚', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+
+    await page.getByRole('button', { name: '已获得', exact: true }).click()
+    await expect(page.locator('.ach-card')).toHaveCount(0)
+    await expect(page.getByText(/没有匹配的成就/)).toBeVisible()
+
+    await page.getByRole('button', { name: '待解锁', exact: true }).click()
+    await expect(page.locator('.ach-card')).toHaveCount(28)
+  })
+
+  test('来源筛选：切成「隐藏」只剩 3 枚剪影', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    await page.getByRole('button', { name: '隐藏', exact: true }).click()
+    await expect(page.locator('.ach-card')).toHaveCount(3)
+    await expect(page.locator('.ach-card.silhouette')).toHaveCount(3)
+  })
+})
