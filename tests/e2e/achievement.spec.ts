@@ -49,7 +49,10 @@ async function seedMasteredOne(page: Page): Promise<void> {
           exercises: [],
           units: [],
         })
+        // V1.4 · B1：行上必须带 profileId，否则 v4 之后这些行读不到
+        //（迁移只在 upgrade 时补列，这里是在 v4 库上"事后种数据"，不会再被补）
         tx.objectStore('progress').put({
+          profileId: 'default',
           packageId: 'unit-math-e2e',
           knowledgePointId: 'unit-math-e2e::kp1',
           status: '已掌握',
@@ -115,6 +118,7 @@ async function seedFiveUnlocks(page: Page): Promise<void> {
         // 10 个已掌握 → first-step + ten-kp
         for (const kp of kps) {
           tx.objectStore('progress').put({
+            profileId: 'default',
             packageId: 'unit-math-e2e',
             knowledgePointId: kp.id,
             status: '已掌握',
@@ -129,6 +133,7 @@ async function seedFiveUnlocks(page: Page): Promise<void> {
 
         // 1 道已攻克错题 → mistake-first
         tx.objectStore('mistakes').put({
+          profileId: 'default',
           exerciseId: 'e2e-ex-1',
           packageId: 'unit-math-e2e',
           knowledgePointId: 'unit-math-e2e::kp0',
@@ -147,7 +152,8 @@ async function seedFiveUnlocks(page: Page): Promise<void> {
           d.getDate(),
         ).padStart(2, '0')}`
         tx.objectStore('settings').put({
-          key: 'studyStreak',
+          // V1.4 · B1：settings 键按档案分片，实际落库键带 `:default` 后缀
+          key: 'studyStreak:default',
           value: { current: 7, longest: 7, lastDate },
         })
 

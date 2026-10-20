@@ -41,6 +41,7 @@ const {
   distributionBySource,
   evidenceLines,
   COLLECTION_SEEN_KEY,
+  collectionSeenKey,
   hasSeenCollection,
   markCollectionSeen,
 } = await import('@core/motivation/achievementOverview')
@@ -172,6 +173,8 @@ describe('静态接线（页面真的用了这套口径）', () => {
 
   it('标记键落在熟悉的命名空间里（导出/恢复会一起带走）', () => {
     expect(COLLECTION_SEEN_KEY).toBe('achievement:collectionSeen')
+    // V1.4 · B1：真正落库的键带档案后缀，基名常量只是命名空间
+    expect(collectionSeenKey()).toBe('achievement:collectionSeen:default')
   })
 })
 
@@ -180,13 +183,15 @@ describe('总结卡「只弹一次」的状态读写', () => {
     store.rows.clear()
     expect(await hasSeenCollection()).toBe(false)
     await markCollectionSeen()
-    expect(store.rows.get(COLLECTION_SEEN_KEY)).toBe(true)
+    // 落库键必须是**带档案后缀**的那个；写成基名 = 换档案后两个孩子共用一张卡
+    expect(store.rows.get(collectionSeenKey())).toBe(true)
+    expect(store.rows.has(COLLECTION_SEEN_KEY)).toBe(false)
     expect(await hasSeenCollection()).toBe(true)
   })
 
   it('读失败 → 当作没看过（宁可多弹一次，也不要把里程碑吞掉）', async () => {
     store.rows.clear()
-    store.rows.set(COLLECTION_SEEN_KEY, true)
+    store.rows.set(collectionSeenKey(), true)
     store.state.failGet = true
     expect(await hasSeenCollection()).toBe(false)
     store.state.failGet = false
@@ -201,9 +206,9 @@ describe('总结卡「只弹一次」的状态读写', () => {
 
   it('只认严格的 true（脏值不冒充"看过"）', async () => {
     store.rows.clear()
-    store.rows.set(COLLECTION_SEEN_KEY, 'true')
+    store.rows.set(collectionSeenKey(), 'true')
     expect(await hasSeenCollection()).toBe(false)
-    store.rows.set(COLLECTION_SEEN_KEY, 1)
+    store.rows.set(collectionSeenKey(), 1)
     expect(await hasSeenCollection()).toBe(false)
   })
 })

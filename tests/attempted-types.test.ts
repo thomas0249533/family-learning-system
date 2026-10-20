@@ -26,8 +26,13 @@ const fake = vi.hoisted(() => {
 
 vi.mock('@/db', () => ({ db: fake }))
 
-const { loadAttemptedTypes, addAttemptedType, flushAttemptedTypes, __resetAttemptedTypesForTest } =
-  await import('@core/motivation/attemptedTypes')
+const {
+  loadAttemptedTypes,
+  addAttemptedType,
+  flushAttemptedTypes,
+  attemptedTypesKey,
+  __resetAttemptedTypesForTest,
+} = await import('@core/motivation/attemptedTypes')
 
 beforeEach(() => {
   fake.__reset()
@@ -65,13 +70,15 @@ describe('attemptedTypes', () => {
     addAttemptedType('judge')
     addAttemptedType('spelling')
     await flushAttemptedTypes()
-    const row = fake.rows.find((r) => r.key === 'attemptedTypes')
+    // 落库键带档案后缀：写成基名 = 换档案后"题型收藏家"按另一个孩子的进度判定
+    expect(attemptedTypesKey()).toBe('attemptedTypes:default')
+    const row = fake.rows.find((r) => r.key === attemptedTypesKey())
     expect(row).toBeTruthy()
     expect([...row!.value].sort()).toEqual(['judge', 'spelling'])
   })
 
   it('能读取既有存储（去重后）', async () => {
-    await fake.settings.put({ key: 'attemptedTypes', value: ['multiple', 'blank', 'blank'] })
+    await fake.settings.put({ key: attemptedTypesKey(), value: ['multiple', 'blank', 'blank'] })
     __resetAttemptedTypesForTest()
     const types = await loadAttemptedTypes()
     expect(types.sort()).toEqual(['blank', 'multiple'])

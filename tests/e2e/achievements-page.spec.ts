@@ -106,7 +106,8 @@ test.describe('独立成就页', () => {
 /**
  * 全收集总结卡是"一次性里程碑"：必须 ①集齐后出现 ②点掉后消失 ③刷新不再出现。
  * 真凑齐 28 枚要跑满整本教材，所以这里直接把 28 条解锁记录写进 settings
- * （应用自己的存储就是 `db.settings['achievements'] = UnlockedRecord[]`）。
+ * （应用自己的存储是 `db.settings['achievements:<profileId>'] = UnlockedRecord[]`，
+ * V1.4 起按档案分片；测试里当前档案恒为 `default`）。
  */
 const ALL_IDS = [
   'first-step', 'ten-kp', 'fifty-kp', 'hundred-kp', 'kp-300', 'subject-master-3', 'perfect-kp',
@@ -124,7 +125,7 @@ async function seedAllUnlocked(page: Page): Promise<void> {
       open.onsuccess = () => {
         const db = open.result
         const tx = db.transaction('settings', 'readwrite')
-        tx.objectStore('settings').put({ key: 'achievements', value })
+        tx.objectStore('settings').put({ key: 'achievements:default', value })
         tx.oncomplete = () => { db.close(); resolve() }
         tx.onerror = () => reject(tx.error)
       }

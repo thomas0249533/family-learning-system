@@ -33,6 +33,7 @@ const {
   flushDailyStats,
   RETAIN_DAYS,
   FLUSH_DEBOUNCE_MS,
+  dailyStatsKey,
   __resetDailyStatsForTest,
 } = await import('@core/motivation/dailyStats')
 
@@ -108,7 +109,9 @@ describe('dailyStats — 防抖落盘', () => {
     bumpDailyStats({ count: 3, at: day(2025, 1, 1) })
     await flushDailyStats()
     expect(fake.putCalls).toBeGreaterThan(0)
-    const row = fake.rows.find((r) => r.key === 'dailyStats')
+    // 落库键带档案后缀：漏分片 = 老二的今日题量算到老大头上（且无报错）
+    expect(dailyStatsKey()).toBe('dailyStats:default')
+    const row = fake.rows.find((r) => r.key === dailyStatsKey())
     expect(row?.value).toHaveLength(1)
     expect(row?.value[0].questionCount).toBe(3)
   })

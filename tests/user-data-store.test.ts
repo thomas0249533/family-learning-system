@@ -11,9 +11,24 @@ import { createPinia, setActivePinia } from 'pinia'
 const fake = vi.hoisted(() => {
   type Row = Record<string, any>
 
-  function makeTable(keyOf: (r: Row) => any, autoId = false) {
+  /**
+   * @param keyOf   主键取值（get / put / update 用）
+   * @param autoId  add 时是否补自增 id
+   * @param indices 该表在 v4 schema 里**真实存在**的索引名（单列如 `profileId`，
+   *                复合如 `[profileId+packageId]`）。按索引名拆字段比较即可，
+   *                不需要为每个索引写特判。
+   */
+  function makeTable(keyOf: (r: Row) => any, autoId = false, indices: string[] = []) {
     const rows: Row[] = []
     let seq = 1
+
+    /** 索引名 → 字段列表；未登记的索引名一律抛错（见 where 的注释） */
+    function fieldsOf(index: string): string[] {
+      if (!indices.includes(index)) throw new Error(`fake db: 未知索引 ${index}`)
+      return index.startsWith('[') && index.endsWith(']')
+        ? index.slice(1, -1).split('+')
+        : [index]
+    }
 
     const table = {
       rows,
@@ -48,20 +63,21 @@ const fake = vi.hoisted(() => {
         if (i >= 0) rows[i] = { ...rows[i], ...patch }
       },
       where(field: string) {
-        // ★ 未知索引名必须抛错：静默返回空结果会让"归一化根本没生效"这类缺陷假通过
-        const KNOWN = new Set(['[packageId+knowledgePointId]', 'exerciseId'])
-        if (!KNOWN.has(field)) throw new Error(`fake db: 未知索引 ${field}`)
+        // ★ 未知索引名必须抛错：静默返回空结果会让"归一化根本没生效"这类缺陷假通过。
+        // v4 删掉了 `[packageId+knowledgePointId]` / 单列 `exerciseId`，
+        // 漏改的查询在这里会直接炸，而不是安静地跨档案串数据。
+        const fields = fieldsOf(field)
+        const matches = (r: Row, value: any) =>
+          Array.isArray(value)
+            ? fields.every((f, i) => r[f] === value[i])
+            : r[fields[0]] === value
         return {
           equals: (value: any) => ({
             async first() {
-              if (field === '[packageId+knowledgePointId]') {
-                const [p, k] = value as [string, string]
-                return rows.find(r => r.packageId === p && r.knowledgePointId === k)
-              }
-              return rows.find(r => r[field] === value)
+              return rows.find(r => matches(r, value))
             },
             async toArray() {
-              return rows.filter(r => r[field] === value).map(r => ({ ...r }))
+              return rows.filter(r => matches(r, value)).map(r => ({ ...r }))
             },
           }),
         }
@@ -70,11 +86,19 @@ const fake = vi.hoisted(() => {
     return table
   }
 
-  const progress = makeTable(r => r.id, true)
-  const mistakes = makeTable(r => r.id, true)
-  const settings = makeTable(r => r.key, false)
+  const progress = makeTable(
+    r => r.id,
+    true,
+    ['[profileId+packageId+knowledgePointId]', '[profileId+packageId]', 'profileId', 'status'],
+  )
+  const mistakes = makeTable(
+    r => r.id,
+    true,
+    ['[profileId+exerciseId]', 'packageId', 'profileId', 'mastered'],
+  )
+  const settings = makeTable(r => r.key, false, ['key'])
   /** V1.3 · E-01 起 recordProgress 会读 packages 建归属索引，替身必须提供这张表 */
-  const packages = makeTable(r => r.packageId, false)
+  const packages = makeTable(r => r.packageId, false, ['packageId'])
 
   return {
     progress,
@@ -94,6 +118,7 @@ vi.mock('@/db', () => ({ db: fake }))
 
 const { useUserDataStore } = await import('@core/stores/userData')
 const { invalidateOwnerIndex } = await import('@core/progress/ownerIndexCache')
+const { streakKey } = await import('@core/motivation/streak')
 
 const PKG = 'unit-math-4-up-rjb-p1'
 const KP = 'kp-num-001'
@@ -185,7 +210,9 @@ describe('recordProgress — 新建进度记录', () => {
     await s.recordProgress(PKG, KP, true, { questionType: 'blank' })
     await s.recordProgress(PKG, KP, true, { questionType: 'blank' })
 
-    const streakRow = await fake.settings.get('studyStreak')
+    // V1.4 · B1：打卡也按档案分片（键带 `:default` 后缀），写成基名会让两个孩子共用一条连续天数
+    expect(streakKey()).toBe('studyStreak:default')
+    const streakRow = await fake.settings.get(streakKey())
     expect(streakRow).toBeTruthy()
     expect(streakRow!.value.current).toBe(1)
     expect(streakRow!.value.lastDate).toMatch(/^\d{4}-\d{2}-\d{2}$/)
@@ -195,6 +222,7 @@ describe('recordProgress — 新建进度记录', () => {
     // 模拟升级前遗留的进度记录
     await fake.progress.add({
       id: 99,
+      profileId: 'default',
       packageId: PKG,
       knowledgePointId: KP,
       status: '学习中',
@@ -273,6 +301,7 @@ describe('错题三级状态 — 通过 store 走完整链路', () => {
   it('老错题（只有 mastered=false）能被三级规则正确识别', async () => {
     await fake.mistakes.add({
       id: 7,
+      profileId: 'default',
       packageId: PKG,
       exerciseId: 'legacy-ex',
       knowledgePointIds: [KP],

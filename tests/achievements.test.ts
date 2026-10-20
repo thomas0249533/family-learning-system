@@ -35,6 +35,7 @@ const {
   loadUnlocked,
   syncAchievements,
   achievementById,
+  achievementsKey,
 } = await import('@core/motivation/achievements')
 const { EMPTY_STREAK, localDayKey } = await import('@core/motivation/streak')
 
@@ -42,6 +43,7 @@ type Ctx = Parameters<typeof evaluateAchievements>[0]
 
 function mastered(n: number, pkg = 'p'): any[] {
   return Array.from({ length: n }, (_, i) => ({
+    profileId: 'default',
     packageId: pkg,
     knowledgePointId: `${pkg}-kp-${i}`,
     status: '已掌握' as const,
@@ -77,19 +79,19 @@ describe('28 枚成就判定（每枚正/负覆盖）', () => {
       ],
       progress: [...mastered(10, 'm'), ...mastered(10, 'c'), ...mastered(10, 'e')],
     },
-    'perfect-kp': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 10 } as any] },
+    'perfect-kp': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 10 } as any] },
     'mastery-half': {
       ...base,
       packages: [pkgMeta({ kpCount: 20 })],
       progress: mastered(10),
     },
-    'mistake-first': { ...base, mistakes: [{ mastered: true, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1 }] },
-    'mistake-cleaner': { ...base, mistakes: Array.from({ length: 10 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
-    'mistake-cleaner-50': { ...base, mistakes: Array.from({ length: 50 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
-    'comeback': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '已掌握', wrongCount: 3 } as any] },
-    'review-20': { ...base, mistakes: [{ mastered: false, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1, reviewCorrectCount: 20 }] },
-    'patience': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctCount: 20, wrongCount: 10 } as any] },
-    'streak-master': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 5 } as any] },
+    'mistake-first': { ...base, mistakes: [{ profileId: 'default', mastered: true, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1 }] },
+    'mistake-cleaner': { ...base, mistakes: Array.from({ length: 10 }, (_, i) => ({ profileId: 'default', mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'mistake-cleaner-50': { ...base, mistakes: Array.from({ length: 50 }, (_, i) => ({ profileId: 'default', mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'comeback': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '已掌握', wrongCount: 3 } as any] },
+    'review-20': { ...base, mistakes: [{ profileId: 'default', mastered: false, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1, reviewCorrectCount: 20 }] },
+    'patience': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '学习中', correctCount: 20, wrongCount: 10 } as any] },
+    'streak-master': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 5 } as any] },
     'streak-3': { ...base, streak: { current: 3, longest: 3, lastDate: localDayKey() } },
     'streak-7': { ...base, streak: { current: 7, longest: 7, lastDate: localDayKey() } },
     'streak-30': { ...base, streak: { current: 30, longest: 30, lastDate: localDayKey() } },
@@ -125,15 +127,15 @@ describe('28 枚成就判定（每枚正/负覆盖）', () => {
       packages: [pkgMeta({ packageId: 'm', subject: 'math' }), pkgMeta({ packageId: 'c', subject: 'chinese' }), pkgMeta({ packageId: 'e', subject: 'english' })],
       progress: [...mastered(10, 'm'), ...mastered(10, 'c'), ...mastered(9, 'e')],
     },
-    'perfect-kp': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 9 } as any] },
+    'perfect-kp': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 9 } as any] },
     'mastery-half': { ...base, packages: [pkgMeta({ kpCount: 20 })], progress: mastered(9) },
     'mistake-first': { ...base, mistakes: [] },
-    'mistake-cleaner': { ...base, mistakes: Array.from({ length: 9 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
-    'mistake-cleaner-50': { ...base, mistakes: Array.from({ length: 49 }, (_, i) => ({ mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
-    'comeback': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '已掌握', wrongCount: 2 } as any] },
-    'review-20': { ...base, mistakes: [{ mastered: false, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1, reviewCorrectCount: 19 }] },
-    'patience': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctCount: 19, wrongCount: 10 } as any] },
-    'streak-master': { ...base, progress: [{ packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 4 } as any] },
+    'mistake-cleaner': { ...base, mistakes: Array.from({ length: 9 }, (_, i) => ({ profileId: 'default', mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'mistake-cleaner-50': { ...base, mistakes: Array.from({ length: 49 }, (_, i) => ({ profileId: 'default', mastered: true, packageId: 'p', exerciseId: 'e' + i, knowledgePointIds: [], wrongAt: '', wrongCount: 1 })) },
+    'comeback': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '已掌握', wrongCount: 2 } as any] },
+    'review-20': { ...base, mistakes: [{ profileId: 'default', mastered: false, packageId: 'p', exerciseId: 'e', knowledgePointIds: [], wrongAt: '', wrongCount: 1, reviewCorrectCount: 19 }] },
+    'patience': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '学习中', correctCount: 19, wrongCount: 10 } as any] },
+    'streak-master': { ...base, progress: [{ profileId: 'default', packageId: 'p', knowledgePointId: 'k', status: '学习中', correctStreak: 4 } as any] },
     'streak-3': { ...base, streak: { current: 2, longest: 2, lastDate: localDayKey() } },
     'streak-7': { ...base, streak: { current: 6, longest: 6, lastDate: localDayKey() } },
     'streak-30': { ...base, streak: { current: 29, longest: 29, lastDate: localDayKey() } },
@@ -230,6 +232,9 @@ describe('syncAchievements — 幂等 / 只增不减 / 解锁日期', () => {
   it('首次结算：写入 unlockedAt=localDayKey', async () => {
     const r = await syncAchievements(ctxFirst, now)
     expect(r.newlyUnlocked.map((a) => a.id)).toContain('first-step')
+    // 落库键必须带档案后缀（写成基名 = 换档案后两个孩子的成就串台）
+    expect(achievementsKey()).toBe('achievements:default')
+    expect(fake.rows.map((row) => row.key)).toEqual([achievementsKey()])
     const saved = await loadUnlocked()
     const rec = saved.find((s) => s.id === 'first-step')
     expect(rec?.unlockedAt).toBe(localDayKey(now))
@@ -251,7 +256,7 @@ describe('syncAchievements — 幂等 / 只增不减 / 解锁日期', () => {
   })
 
   it('兼容旧存储：存 string[] 时能读出且不被清空', async () => {
-    await fake.settings.put({ key: 'achievements', value: ['ten-kp'] })
+    await fake.settings.put({ key: achievementsKey(), value: ['ten-kp'] })
     const saved = await loadUnlocked()
     expect(saved).toEqual([{ id: 'ten-kp', unlockedAt: '' }])
     // 再次结算（不满足 ten-kp）也应保留
@@ -277,7 +282,7 @@ describe('证据快照（A-06）', () => {
   })
 
   it('旧记录没有 evidence：读取后仍是 undefined（不补算）', async () => {
-    await fake.settings.put({ key: 'achievements', value: [{ id: 'first-step', unlockedAt: '2026-01-01' }] })
+    await fake.settings.put({ key: achievementsKey(), value: [{ id: 'first-step', unlockedAt: '2026-01-01' }] })
     const rec = (await loadUnlocked()).find((s) => s.id === 'first-step')
     expect(rec?.evidence).toBeUndefined()
     expect(rec?.unlockedAt).toBe('2026-01-01')
@@ -285,7 +290,7 @@ describe('证据快照（A-06）', () => {
 
   it('脏 evidence（数字 / 空串）归一化为"没有证据"', async () => {
     await fake.settings.put({
-      key: 'achievements',
+      key: achievementsKey(),
       value: [
         { id: 'first-step', unlockedAt: '', evidence: 42 },
         { id: 'ten-kp', unlockedAt: '', evidence: '   ' },
