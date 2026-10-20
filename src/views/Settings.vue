@@ -90,14 +90,6 @@
 
         <div class="export-row">
           <div class="export-info">
-            <div class="export-title">导出学习进度</div>
-            <div class="export-desc">知识点掌握度、答题统计</div>
-          </div>
-          <AppButton @click="doExportProgress">导出</AppButton>
-        </div>
-
-        <div class="export-row">
-          <div class="export-info">
             <div class="export-title">导出全部包</div>
             <div class="export-desc">所有学习包 JSON</div>
           </div>
@@ -106,20 +98,18 @@
 
         <div class="export-row">
           <div class="export-info">
-            <div class="export-title">全量备份</div>
-            <div class="export-desc">包 + 进度 + 错题 + 设置</div>
+            <div class="export-title">家庭备份</div>
+            <div class="export-desc">全部档案的进度、错题、模考、成就与设置</div>
           </div>
-          <AppButton type="primary" @click="doExportAll">导出</AppButton>
+          <AppButton type="primary" @click="doExportFamilyBackup">导出</AppButton>
         </div>
       </n-space>
     </AppCard>
 
-    <!-- 导入用户数据 -->
-    <AppCard title="📥 导入用户数据" class="card">
-      <n-upload :custom-request="handleImportUserData" :show-file-list="false" accept=".json">
-        <AppButton dashed>选择用户数据 JSON</AppButton>
-      </n-upload>
-      <div class="hint">导入进度、错题、设置。已存在的记录会合并更新。</div>
+    <!-- 从备份导入（两步向导：先预览，确认后才写入） -->
+    <AppCard title="📥 从备份导入" class="card">
+      <ImportPreview />
+      <div class="hint">来自另一台设备的备份可以合并进来；本机已有的较新记录不会被覆盖</div>
     </AppCard>
 
     <!-- 搜索历史 -->
@@ -149,19 +139,20 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import {
-  NSpace, NRadioGroup, NRadioButton, NUpload, NTag,
+  NSpace, NRadioGroup, NRadioButton, NTag,
   useMessage, useDialog
 } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import ImportPreview from '@/views/settings/ImportPreview.vue'
 import { useThemeStore } from '@core/stores/theme'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { usePackageStore } from '@core/stores/package'
 import { db } from '@/db'
 import {
-  exportMistakes, exportUserData, exportAllPackages, exportAll, importUserData,
+  exportMistakes, exportBackupV2, exportAllPackages,
 } from '@/core/export/exportService'
 import type { ThemePreset } from '@core/styles/palette'
 import type { GradeSource } from '@core/theme/presetInference'
@@ -230,37 +221,28 @@ async function doExportMistakes() {
   n > 0 ? message.success(`已导出 ${n} 条错题`) : message.warning('没有可导出的错题')
 }
 
-async function doExportProgress() {
-  const r = await exportUserData({ includeProgress: true })
-  r.progress > 0
-    ? message.success(`已导出 ${r.progress} 条进度`)
-    : message.warning('没有可导出的进度')
-}
-
 async function doExportPackages() {
   const n = await exportAllPackages()
   n > 0 ? message.success(`已导出 ${n} 个包`) : message.warning('没有可导出的包')
 }
 
-async function doExportAll() {
-  await exportAll()
-  message.success('已导出完整备份')
-}
-
-async function handleImportUserData({ file, onFinish }: any) {
+/**
+ * 家庭备份（v2）：一次导出**全部档案**的进度、错题、模考、成就与设置。
+ *
+ * 调 `exportBackupV2()` 而不是旧的 `exportAll()`：后者已 `@deprecated`，
+ * 且 v2 备份不含学习包（包是设备级资产，要另外用「导出全部包」搬）。
+ */
+async function doExportFamilyBackup() {
   try {
-    const text = await (file.file as File).text()
-    const json = JSON.parse(text)
-    const result = await importUserData(json, 'merge')
-    if (result.errors.length > 0) {
-      message.error('导入失败：' + result.errors.join('; '))
-    } else {
-      message.success(`导入完成：进度 ${result.progress}，错题 ${result.mistakes}，设置 ${result.settings}`)
+    const r = await exportBackupV2()
+    if (r.profiles === 0) {
+      message.warning('没有可导出的档案数据')
+      return
     }
-    onFinish()
-  } catch (e: any) {
-    message.error('导入失败：' + e.message)
-    onFinish()
+    message.success(`已导出家庭备份：${r.profiles} 个档案、${r.progress} 条进度`)
+  } catch (e) {
+    // 不吞异常：下载失败时用户必须知道"没有文件生成"
+    message.error('导出失败：' + (e instanceof Error ? e.message : String(e)))
   }
 }
 
