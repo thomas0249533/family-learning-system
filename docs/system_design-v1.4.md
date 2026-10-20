@@ -127,7 +127,7 @@ export async function createProfile(name: string): Promise<ProfileMeta>
 
 ### 3.3 settings 键分片总表（**本版最重要的清单**）
 
-**per-profile（8 个，键名加 `:<profileId>` 后缀）**
+**per-profile（9 个，键名加 `:<profileId>` 后缀）**
 
 | 原键 | v4 键名 | 内容 | 漏搬的可见症状 |
 |---|---|---|---|
@@ -139,6 +139,13 @@ export async function createProfile(name: string): Promise<ProfileMeta>
 | `dailyStats` | `dailyStats:<pid>` | 每日题数/时长 | 统计图归零 |
 | `studyStreak` | `studyStreak:<pid>` | 连续天数 | **打卡天数归零（最刺眼）** |
 | `attemptedTypes` | `attemptedTypes:<pid>` | 做过的题型 | 相关成就重新变灰 |
+| `customChecks` | `customChecks:<pid>` | 家长手工勾选的自定义成就（B3） | 勾过的卡变回未解锁（分数看着掉了） |
+
+**为什么 `customChecks` 是 per-profile 而 `achievement:customPacks` 是 global**：包是家里的
+**资产**（买/攒一次，两个孩子共用同一份规则），勾选是**这个孩子的输入**（"他这周确实自己
+整理了书桌"）。两者混为一谈会出现"老二没做过的事也亮着"。
+另：勾选与解锁记录**分开存**（前者是输入、后者是输出），混存会导致停用包再启用后出现
+"没勾过却已解锁"——见 `customPackTypes.ts` 文件头。
 
 **global（不 shard，白名单）**
 
@@ -348,7 +355,7 @@ src/core/merge/
   mergeProgress.ts    // 单表：progress
   mergeMistakes.ts
   mergeSessions.ts
-  mergeSettings.ts    // 8 个分片键 + 全局键
+  mergeSettings.ts    // 登记的分片键 + 全局键（V1.4·B3 起含 customChecks，明确 SKIP）
   mergeBundle.ts      // 组合：planMerge(local, remote) → MergePlan
   applyMergePlan.ts   // 哑 IO：单事务内 apply
 ```
