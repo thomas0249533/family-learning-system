@@ -10,6 +10,9 @@
  *   2. 幂等：对同一输入连跑两次，第二次 `puts` / `deletes` 都为空；
  *   3. 守恒失败 → **宁可不动**（puts/deletes 清空）—— 动了就是不可逆的数据损坏。
  *
+ * 第 4 条（V1.4 · B2 补）：**去重只在档案内**。终键含 `profileId`——
+ * 两个孩子学同一本教材是两行，"一个知识点一行"不跨档案成立。
+ *
  * 合并语义（逐字段，C6 覆盖 PRD AC-E1-5）：
  *   - 可累加量求和：`correctCount` / `wrongCount` / `studySeconds` / `bkt.observed`
  *   - 时间取最新：`lastStudiedAt`
@@ -86,7 +89,12 @@ function sortByLatest(group: ProgressRecord[]): ProgressRecord[] {
 /**
  * 合并一组同键行。**对外导出是为了能逐字段单测**（生产调用方只有 `planProgressMerge`）。
  *
- * @param group 同终键的行，至少一条
+ * ⚠️ **必须先保证组内是同一个档案**：下面复用 `keeper.id` 作为承载体，
+ * 若组内混进了两个档案的行，就会出现"A 档案那一行被改写成了 B 档案的数据"
+ * （行数没变、数据串了，最坏的一种损坏）。这个前提由调用方
+ * `planProgressMerge` 的终键（含 `profileId`）保证，本函数不做二次校验。
+ *
+ * @param group 同终键的行，至少一条（且同 `profileId`）
  * @param target 归一化后的终键（`packageId` + `knowledgePointId`）
  */
 export function mergeProgressGroup(group: ProgressRecord[], target: MergeTarget): ProgressRecord {
@@ -243,6 +251,10 @@ export function checkConservation(
 /**
  * 纯函数：给定行集合与归属索引，算出"应该怎么改"，不碰 DB。
  *
+ * **分组是档案内的**：终键 = `(profileId, packageId, knowledgePointId)`。
+ * 两个档案学同一个知识点是两行，绝不是"同一个知识点的两条历史"——
+ * 跨档案合并会把一个孩子的进度静默删掉（V1.4 · B2 修的就是这个）。
+ *
  * 幂等：对同一输入连跑两次，第二次 `puts` / `deletes` 都为空。
  *
  * @param rows `progress` 表的全部行
@@ -266,7 +278,14 @@ export function planProgressMerge(rows: ProgressRecord[], index: OwnerIndex): Me
     if (owner === null) ambiguousKept += 1
     const packageId = owner ?? row.packageId
     const knowledgePointId = owner ? canonicalKpId(owner, row.knowledgePointId, index) : row.knowledgePointId
-    const key = `${packageId}\u0000${knowledgePointId}`
+    // ⚠️ 分组键**必须含 `profileId`**（V1.4 · B2 修复）：
+    // "一个知识点一行"是**档案内**的不变量。v4 之前没有档案这一层，键 = (包, 知识点) 是对的；
+    // v4 之后两个孩子学同一本教材时，(包, 知识点) 会撞在一起 → 这两行被当成"同一知识点的
+    // 两条历史记录"合并成 1 行并删掉另一行 → **一个孩子的进度静默消失**（`mergeProgressGroup`
+    // 的 `...latest` 只保留其中一行的 `profileId`，被删那行的 pid 也就没了归属）。
+    // 这个函数仍要保留"同档案内去重"的能力（v3 的原始目的：同一知识点被两个入口包各记过一次），
+    // 所以键是"档案 + 包 + 知识点"三元组，而不是简单地取消合并。
+    const key = `${row.profileId ?? ''}\u0000${packageId}\u0000${knowledgePointId}`
     const existing = buckets.get(key)
     if (existing) {
       existing.rows.push(row)
