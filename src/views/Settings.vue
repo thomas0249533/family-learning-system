@@ -78,7 +78,9 @@
     </AppCard>
 
     <!-- 导出 -->
-    <AppCard title="📤 导出" class="card">
+    <!-- id="family-backup" 是 B4 的落地锚点：「导出并删除旧档案」按钮会带着它跳过来，
+         指向的正是家长唯一能"把数据先存下来"的那一行（见下方 scrollToHash） -->
+    <AppCard id="family-backup" title="📤 导出" class="card">
       <n-space vertical>
         <div class="export-row">
           <div class="export-info">
@@ -137,7 +139,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import {
   NSpace, NRadioGroup, NRadioButton, NTag,
   useMessage, useDialog
@@ -163,6 +166,25 @@ const themeStore = useThemeStore()
 const packageStore = usePackageStore()
 const message = useMessage()
 const dialog = useDialog()
+const route = useRoute()
+
+/**
+ * 把 `/settings#family-backup` 落到「家庭备份」那一行上（B4）。
+ *
+ * 本项目的 router **没有配 `scrollBehavior`**，所以 hash 只是地址栏好看、页面纹丝不动。
+ * 而「导出并删除旧档案」这个按钮的全部价值就是"把人送到能导出的地方"——
+ * 跳过去却停在页面顶部，家长还得自己滚着找，等于没做。
+ *
+ * 用 `scrollIntoView` 而不是 `window.scrollTo`：页面滚动容器可能是 `AppShell`
+ * 里那个可滚动的 div 而不是 `window`，`scrollIntoView` 会自己找最近的可滚动祖先。
+ */
+async function scrollToHash(): Promise<void> {
+  const hash = route.hash
+  if (!hash) return
+  await nextTick()
+  const el = document.getElementById(hash.slice(1))
+  el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
 
 const searchHistory = ref<string[]>([])
 
@@ -203,6 +225,9 @@ onMounted(async () => {
   // 载入学习包后按年级自动推断（仅当未手动选择时生效）
   await packageStore.loadPackages()
   themeStore.reconcilePreset(gradeSources())
+
+  // 带 anchor 进来时（「导出并删除旧档案」）滚到对应区块
+  await scrollToHash()
 })
 
 function removeHistory(i: number) {

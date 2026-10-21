@@ -15,12 +15,49 @@
 
         <div class="import-hint">选中后会先告诉你「将会导入什么」，这一步不会改动任何数据。</div>
 
+        <!-- B4：家长真正会卡住的地方不是"点哪个按钮"，而是"文件怎么到这台设备上"。
+             用原生 `<details>`：无需 JS、键盘可达、读屏器能播报展开状态，
+             而且默认收起 —— 会用的人不必看，不会用的人不必上网搜。 -->
+        <details class="import-help">
+          <summary class="import-help-summary">怎么把备份文件弄到这台设备上？</summary>
+          <div class="import-help-body">
+            <p class="import-help-lead">
+              备份文件长这样：<code class="import-help-file">家庭备份-20261021.json</code
+              >（以 <code class="import-help-file">.json</code> 结尾，微信里显示成一个文档图标）。
+            </p>
+
+            <div class="import-help-item">
+              <div class="import-help-title">用微信传（最省事）</div>
+              <ol class="import-help-steps">
+                <li>在旧设备上，把备份文件发到微信的「文件传输助手」；</li>
+                <li>在这台设备上打开同一个微信，点进「文件传输助手」；</li>
+                <li>点一下那个文件，选「用其他应用打开」→ 存到「文件」或「下载」；</li>
+                <li>回到本页，点上面的「选择备份文件（.json）」，找到它就行。</li>
+              </ol>
+            </div>
+
+            <div class="import-help-item">
+              <div class="import-help-title">用 U 盘 / 数据线拷（没有微信也能做）</div>
+              <ol class="import-help-steps">
+                <li>把备份文件从旧设备复制到 U 盘（或直接用数据线连两台设备）；</li>
+                <li>把 U 盘插到这台设备，打开 U 盘，把文件拖到「桌面」或「下载」；</li>
+                <li>回到本页点「选择备份文件（.json）」，在左边一栏找「桌面」即可。</li>
+              </ol>
+            </div>
+
+            <p class="import-help-note">
+              还是找不到文件？多半是它被存进了微信的缓存目录。在微信里长按该文件，
+              选「保存到手机 / 电脑」之后再来选一次。
+            </p>
+          </div>
+        </details>
+
         <!-- 读文件 / 解析 / 预览失败：就地显示，不吞异常 -->
         <div v-if="readError" class="import-error" role="alert">
           <div class="import-error-title">无法读取这份文件</div>
           <div class="import-error-hint">本机数据未做任何改动，可以换一个文件再试。</div>
           <details class="import-detail">
-            <summary>详情</summary>
+            <summary>技术细节（反馈问题时可以把它复制给开发者）</summary>
             <pre class="import-error-text">{{ readError }}</pre>
           </details>
         </div>
@@ -34,9 +71,17 @@
         <div v-if="outcome === 'reject'" class="import-reject">
           <AppBadge tone="danger" size="sm" icon="⛔">无法导入</AppBadge>
           <div class="import-reject-text">{{ rejectMessage }}</div>
+          <!-- B4：唯一"有明确下一步"的拒绝就是档案超限。原实现只给一句话，
+               家长知道"不行"，但不知道该去哪儿腾出位置。 -->
+          <div v-if="rejectFriendly" class="import-reject-hint">{{ rejectFriendly.hint }}</div>
+          <div v-if="rejectAction" class="import-reject-action">
+            <AppButton type="primary" size="small" @click="onRejectAction">
+              {{ rejectAction.label }}
+            </AppButton>
+          </div>
           <div class="import-reject-note">未做任何改动。</div>
           <details v-if="rejectDetail" class="import-detail">
-            <summary>详情</summary>
+            <summary>技术细节（反馈问题时可以把它复制给开发者）</summary>
             <pre class="import-error-text">{{ rejectDetail }}</pre>
           </details>
         </div>
@@ -68,12 +113,10 @@
 
           <!-- 执行失败：必须说清"一行都没写进去"（AC-P2-15） -->
           <div v-if="applyError" class="import-error" role="alert">
-            <div class="import-error-title">未导入任何数据</div>
-            <div class="import-error-hint">
-              {{ applyErrorCode === 'stale-local-data' ? STALE_LOCAL_COPY : '这次导入没有写入任何一行数据，本机数据保持原样。' }}
-            </div>
+            <div class="import-error-title">{{ applyFriendly.title }}</div>
+            <div class="import-error-hint">{{ applyFriendly.hint }}</div>
             <details class="import-detail">
-              <summary>详情</summary>
+              <summary>技术细节（反馈问题时可以把它复制给开发者）</summary>
               <pre class="import-error-text">{{ applyError }}</pre>
             </details>
           </div>
@@ -120,6 +163,7 @@
 // 两句话对家长的含义完全相反（一个要换文件，一个不用管）。
 // =====================================================================
 import { computed, ref, shallowRef } from 'vue'
+import { useRouter } from 'vue-router'
 import { NUpload, useMessage, type UploadCustomRequestOptions } from 'naive-ui'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import AppButton from '@/components/ui/AppButton.vue'
@@ -130,9 +174,16 @@ import {
   type ImportOutcome,
   type ImportPreview as ImportPreviewResult,
 } from '@core/backup/importOrchestrator'
+import {
+  errorCodeOf,
+  friendlyOf,
+  type FriendlyAction,
+  type FriendlyError,
+} from '@core/errors/messages'
 import type { BackupRejectReason } from '@core/backup/types'
 
 const message = useMessage()
+const router = useRouter()
 
 /** 向导当前在第几步（同一个卡片内切换，不走路由） */
 type Step = 'pick' | 'review'
@@ -192,21 +243,34 @@ const REJECT_COPY: Record<BackupRejectReason, string> = {
   unknown: '这不是本应用生成的备份文件',
 }
 
-/** 档案超限（`plan.reject.reason === 'profile-limit'`）的文案 */
-const PROFILE_LIMIT_COPY = '导入后会超过 4 个档案，请先导出并删除一个再试'
+/** 档案超限（`plan.reject.reason === 'profile-limit'`）的文案来自 `friendlyOf`，
+ *  这里只留一个常量名给追代码的人（文案本体在 `src/core/errors/messages.ts`） */
+const PROFILE_LIMIT_CODE = 'profile-limit'
 
 /**
- * 陈旧数据（`code === 'stale-local-data'`）的专属文案（A6-L1）。
+ * 拒绝态里**唯一**有下一步动作的分支：档案数到上限。
  *
- * 与 `PROFILE_LIMIT_COPY` 同模式：错误码 → 人话的映射集中在这里，模板只做选择。
- * 这句必须明确告诉家长**怎么做**（回首页同步、再预览一次）——AC-P2-15 的教训是
- * 只写"导入失败"等于没说：他不知道该重试还是该换文件。
+ * 只有它能给按钮，因为只有它有确定动作（先导出备份 → 再去删掉一个旧档案）。
+ * 版本太新 / 文件损坏这些给不了按钮 —— 家长能做的只有换文件或升级，
+ * 硬塞一个按钮反而是噪音。
  */
-const STALE_LOCAL_COPY = '检测到新的学习记录，为了数据安全，请重新预览后再导入。'
+const rejectFriendly = computed<FriendlyError | null>(() =>
+  preview.value?.plan?.reject?.reason === PROFILE_LIMIT_CODE
+    ? friendlyOf(PROFILE_LIMIT_CODE)
+    : null
+)
+
+const rejectAction = computed<FriendlyAction | null>(() => rejectFriendly.value?.action ?? null)
+
+/**
+ * 执行失败的人话（B4）。**`friendlyOf` 永不返回 null**，模板因此不需要 `??` 兜底 ——
+ * 之前那段 `applyErrorCode === 'stale-local-data' ? A : B` 的三元就是"翻译散在 UI 里"的样子。
+ */
+const applyFriendly = computed<FriendlyError>(() => friendlyOf(applyErrorCode.value))
 
 const rejectMessage = computed<string>(() => {
   const plan = preview.value?.plan
-  if (plan?.reject?.reason === 'profile-limit') return PROFILE_LIMIT_COPY
+  if (plan?.reject?.reason === PROFILE_LIMIT_CODE) return friendlyOf(PROFILE_LIMIT_CODE).title
   const route = preview.value?.route
   if (route && route.kind === 'reject') return REJECT_COPY[route.reason]
   return '这份备份无法导入'
@@ -219,6 +283,25 @@ const rejectDetail = computed<string>(() => {
   const route = preview.value?.route
   return route && route.kind === 'reject' ? route.detail : ''
 })
+
+/**
+ * 拒绝态按钮的落地（B4）。
+ *
+ * `action.id` 是**语义**（`export-profiles` = "去把数据存下来再腾地方"），
+ * 路由由这里翻译 —— `core/errors/messages.ts` 不认识 `/settings`，
+ * 一旦它开始 `router.push`，那张表就没法单测了。
+ */
+function onRejectAction(): void {
+  const action = rejectAction.value
+  if (!action) return
+  if (action.id === 'export-profiles') {
+    // 落到设置页的「家庭备份」那一行（`Settings.vue` 的 scrollToHash 负责滚过去）
+    void router.push({ path: '/settings', hash: '#family-backup' })
+    return
+  }
+  // `repreview`：重新走一遍选文件（reset 会清掉冷却窗口，这是刻意的）
+  reset()
+}
 
 // ---------------------------------------------------------------------
 // 统计行
@@ -371,8 +454,9 @@ async function confirmImport(): Promise<void> {
   } catch (e) {
     // AC-P2-15：失败时必须明确告诉用户"一行都没写进去"
     applyError.value = describeError(e)
-    // `stale-local-data` 走专属文案；其它（含没有 code）留给兜底
-    applyErrorCode.value = e instanceof Error ? ((e as { code?: string }).code ?? '') : ''
+    // 文案选择交给 `friendlyOf`（`stale-local-data` 有专属解释，其余走兜底）。
+    // `errorCodeOf` 会先看 `code` 再退回 `name` —— `DataCloneError` 只有 `name`。
+    applyErrorCode.value = errorCodeOf(e)
     message.error('导入失败，未导入任何数据')
   } finally {
     isImporting.value = false
@@ -430,6 +514,72 @@ function reset(): void {
   color: var(--text-sub);
 }
 
+/* ---- 第 1 步 · 帮助面板（B4）----
+   刻意做成"看起来能点开"而不是一条常驻长文：老手不需要，新手才展开。 */
+.import-help {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-color);
+}
+
+.import-help-summary {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--primary-text);
+  cursor: pointer;
+}
+
+/* 焦点环不必在这里再写一遍：`components.scss` 已有一条全局 `:focus-visible`
+   规则（outline = --focus-ring-w solid --focus-ring），重复定义只会多一处漂移源。 */
+
+.import-help-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.import-help-lead {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--text-sub);
+}
+
+.import-help-file {
+  padding: 0 4px;
+  border-radius: var(--radius-xs);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: var(--font-xs);
+}
+
+.import-help-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.import-help-title {
+  font-size: var(--font-xs);
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.import-help-steps {
+  margin: 0;
+  padding-left: var(--space-4);
+  font-size: var(--font-xs);
+  color: var(--text-sub);
+  line-height: 1.7;
+}
+
+.import-help-note {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+}
+
 /* ---- 拒绝态 ---- */
 .import-reject {
   display: flex;
@@ -447,9 +597,20 @@ function reset(): void {
   color: var(--danger-text);
 }
 
-.import-reject-note {
+.import-reject-hint {
   font-size: var(--font-xs);
   color: var(--text-sub);
+  line-height: 1.6;
+}
+
+.import-reject-action {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.import-reject-note {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
 }
 
 /* ---- 无变化 ---- */

@@ -317,9 +317,32 @@ async function reloadProfileScopedData(): Promise<void> {
   discoveryEnabled.value = await loadDiscoveryEnabled()
 }
 
+/**
+ * 档案数到上限时的提示（B4）。
+ *
+ * 原实现是 `message.warning('最多 4 个档案')` —— 一句话飘三秒就没了，家长知道
+ * "不行"，但不知道"去哪儿腾位置"，于是只能反复点、反复看到同一句飘字。
+ * 这里升级成带动作的弹窗：**把下一步直接做成按钮**，落到设置页的家庭备份区。
+ *
+ * 为什么要先去导出再删：删除档案是不可恢复的（见 `confirmDelete` 的警示文案），
+ * 而"超出上限"这个场景恰恰发生在**刚导入/新建**的时候 —— 此时最容易顺手删错。
+ */
+function showProfileLimit(): void {
+  dialog.warning({
+    title: `最多 ${MAX_PROFILES} 个档案`,
+    content: '先导出一份家庭备份，再删掉一个不用的档案（回到本页，点档案右边的删除），就能建新档案了。',
+    positiveText: '导出并删除旧档案',
+    negativeText: '知道了',
+    onPositiveClick: () => {
+      // `#family-backup` 由 `Settings.vue` 的 scrollToHash 负责滚到位
+      void router.push({ path: '/settings', hash: '#family-backup' })
+    },
+  })
+}
+
 function startCreate(): void {
   if (profileState.value.list.length >= MAX_PROFILES) {
-    message.warning(`最多 ${MAX_PROFILES} 个档案`)
+    showProfileLimit()
     return
   }
   creating.value = true
@@ -341,7 +364,10 @@ async function commitCreate(): Promise<void> {
     message.success(`已创建档案「${name}」`)
   } catch (e) {
     if (e instanceof ProfileLimitError) {
-      message.error(`最多 ${MAX_PROFILES} 个档案，可以先把不用的档案导出后再删`)
+      // 与 `startCreate` 同一条路径：入口判过一次，这里再判是因为并发窗口
+      // （另一个标签页刚建了第 5 个档案）能绕过前端的检查
+      creating.value = false
+      showProfileLimit()
       return
     }
     message.error('创建失败：' + (e as Error).message)

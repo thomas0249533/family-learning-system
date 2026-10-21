@@ -118,6 +118,12 @@ const MUST_PASS = new Set<string>([
   'text-on-primary ↔ text-sub',
   // StatCard primary 数值
   'primary-text ↔ card-bg',
+  /**
+   * `--bg-color` 作「凹槽底」：导入向导第 1 步的帮助面板（V1.6 · B4）用它当折叠行底色，
+   * 行标题是 `--primary-text`。原来是"能过但没登记"，登记进来才算门禁覆盖 ——
+   * 没登记的失败项会被判"未分类"直接红，这是本项目比"小小白名单"更强的地方。
+   */
+  'primary-text ↔ bg-color',
 ])
 
 /** 例外表：真实但接受低于 AA；`floor` = 「不得变差」下限（复算不得低于此值）。 */
