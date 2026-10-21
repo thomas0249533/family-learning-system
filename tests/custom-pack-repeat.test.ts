@@ -531,6 +531,35 @@ describe('mergeSettings · 游标**有意不合并**', () => {
     expect(out[0]).not.toHaveProperty('repeatBase')
   })
 
+  it('★ 两边都有游标 → 远端的游标不得变成本机基线（防"明明没做到却又 +1"）', () => {
+    const out = merged(
+      [
+        {
+          id: 'a',
+          unlockedAt: '2026-03-01',
+          repeatCount: 3,
+          lastRepeatPeriod: 'W2026-10-19',
+          repeatBase: 20,
+        },
+      ],
+      [
+        {
+          id: 'a',
+          unlockedAt: '2026-03-01',
+          repeatCount: 2,
+          lastRepeatPeriod: 'W2026-10-12',
+          repeatBase: 40,
+        },
+      ],
+    )
+    // 次数取较大、锚点取较晚（两个字段必须同向，否则合并后第一次结算就双算）
+    expect(out[0].repeatCount).toBe(3)
+    expect(out[0].lastRepeatPeriod).toBe('W2026-10-19')
+    // 游标是"本机看到过的值"：远端的 40 搬过来，下次结算 50-40=10 ≥ step → 凭空 +1。
+    // 安全降级 = 两边游标都不落盘，本机首次结算重新基线（最多丢一周增量，绝不虚涨）。
+    expect(out[0]).not.toHaveProperty('repeatBase')
+  })
+
   it('★ 端到端：合并后同一周再结算，不会凭空 +1', async () => {
     const out = merged(
       [

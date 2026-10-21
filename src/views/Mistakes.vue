@@ -97,7 +97,7 @@
             <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
               <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
             </div>
-            <div v-if="pkgLabel(m)" class="mistake-pkg">📦 {{ pkgLabel(m) }}</div>
+            <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
             <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
             <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
@@ -146,7 +146,7 @@
           <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
           <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
         </div>
-        <div v-if="pkgLabel(m)" class="mistake-pkg">📦 {{ pkgLabel(m) }}</div>
+        <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
         <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
         <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
@@ -637,6 +637,12 @@ function formatDate(iso: string): string {
     font-size: 12px;
     color: $text-sub;
     margin: -2px 0 10px;
+    /* V1.6 · 方案对齐：归属包标题可能很长（跨包 + 长标题）。
+       单行截断加省略号，不折行把卡片撑高 —— 与 V1.5"组件极简，
+       不引入多余配置"同一条思路；全名走原生 title 提示，不加浮层组件。 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .question-text {

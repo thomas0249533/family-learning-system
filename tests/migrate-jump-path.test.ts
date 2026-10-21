@@ -154,7 +154,15 @@ const ACHIEVEMENT_IDS = ['first-step', 'streak-7', 'ten-kp']
 function legacyValue(base: string): unknown {
   switch (base) {
     case 'achievements':
-      return ACHIEVEMENT_IDS.map((id) => ({ id, unlockedAt: '2026-03-01' }))
+      // V1.5 形状：带重复计数 / 幂等锚点 / grow 游标。打过 V1.5 补丁的库
+      // 完全可能是这个形状，迁移必须原样保留（断言 ⑦）。
+      return ACHIEVEMENT_IDS.map((id) => ({
+        id,
+        unlockedAt: '2026-03-01',
+        repeatCount: 2,
+        lastRepeatPeriod: 'W2026-09-28',
+        repeatBase: 12,
+      }))
     case 'achievementUi':
       return { v: 1, collapsed: false }
     case 'achievement:collectionSeen':
@@ -309,6 +317,26 @@ function assertAchievementIdsUnchanged(before: string[]) {
   expect([...after].sort()).toEqual([...before].sort())
 }
 
+/**
+ * 断言 ⑦（V1.6 · 方案增补）：V1.5 重复字段**原样过迁移**。
+ *
+ * v1/v2 没有 `repeatCount` / `lastRepeatPeriod` / `repeatBase`，但打过
+ * V1.5 `repeat: weekly` 补丁的库有 —— 跳版用户完全可能带着它们升 v4。
+ * 迁移只搬键、不改值：游标被改一个字节，下一次结算就按错误基线算增量
+ * （`repeatBase` 是"本机看到过的最后一个指标值"，不是可重算的事实）。
+ */
+function assertRepeatCursorIntact() {
+  for (const key of ['achievements', `achievements:${DEFAULT_PID}`]) {
+    const rows = (settingsMap().get(key) ?? []) as Array<Record<string, unknown>>
+    expect(rows, `${key} 应存在`).toHaveLength(ACHIEVEMENT_IDS.length)
+    for (const r of rows) {
+      expect(r.repeatCount, `${key} · ${r.id} 的 repeatCount`).toBe(2)
+      expect(r.lastRepeatPeriod, `${key} · ${r.id} 的 lastRepeatPeriod`).toBe('W2026-09-28')
+      expect(r.repeatBase, `${key} · ${r.id} 的 repeatBase`).toBe(12)
+    }
+  }
+}
+
 /** 断言 ⑥：第二次跑 plan 为零 */
 async function assertPlansAreIdempotent() {
   const v3 = await import('@core/storage/migrateV3')
@@ -323,18 +351,6 @@ async function assertPlansAreIdempotent() {
   expect(v4Plan.settingPuts, 'v4 第二次 settings 写入应为零').toEqual([])
   // 未知键每轮都会被报出来（家长端的核对提示不该消失），但**不能膨胀**
   expect(v4Plan.stats.unknownKeys).toEqual(['weird:thing'])
-}
-
-/** 六条断言一把跑完 */
-async function assertMigrated(before: { correct: number; wrong: number; seconds: number }) {
-  assertAllRowsScoped()
-  assertOwnerNormalized()
-  // 断言 ③：守恒（允许合并删行，但计数一秒都不能少）
-  const after = progressSums()
-  expect(after).toEqual(before)
-  assertSettingsSharded()
-  assertAchievementIdsUnchanged(ACHIEVEMENT_IDS)
-  await assertPlansAreIdempotent()
 }
 
 beforeEach(() => {
@@ -402,6 +418,7 @@ describe('A1 · v1→v4（老版本直接装最新版）', () => {
   it('⑤ achievements 解锁 id 集合前后完全相同', async () => {
     await runV1ToV4()
     assertAchievementIdsUnchanged(ACHIEVEMENT_IDS)
+    assertRepeatCursorIntact()
   })
 
   it('⑥ 第二次跑 plan 为零（幂等）', async () => {
@@ -449,6 +466,7 @@ describe('A1 · v2→v4（带 examSessions 的老版本）', () => {
   it('⑤ achievements 解锁 id 集合前后完全相同', async () => {
     await runV2ToV4()
     assertAchievementIdsUnchanged(ACHIEVEMENT_IDS)
+    assertRepeatCursorIntact()
   })
 
   it('⑥ 第二次跑 plan 为零（幂等）', async () => {
@@ -486,6 +504,7 @@ describe('A1 · v3→v4（v3 已在上一版跑过，直接升）', () => {
   it('⑤ achievements 解锁 id 集合前后完全相同', async () => {
     await runV3ToV4()
     assertAchievementIdsUnchanged(ACHIEVEMENT_IDS)
+    assertRepeatCursorIntact()
   })
 
   it('⑥ 第二次跑 plan 为零（幂等）', async () => {
@@ -529,6 +548,7 @@ describe('A1 · v3 的三种结局', () => {
     assertOwnerNormalized()
     expect(progressSums()).toEqual(before)
     assertAchievementIdsUnchanged(ACHIEVEMENT_IDS)
+    assertRepeatCursorIntact()
     await assertPlansAreIdempotent()
   })
 
@@ -569,6 +589,7 @@ describe('A1 · v3 的三种结局', () => {
     expect(progressSums()).toEqual(before)
     assertSettingsSharded()
     assertAchievementIdsUnchanged(ACHIEVEMENT_IDS)
+    assertRepeatCursorIntact()
     await assertPlansAreIdempotent()
   })
 
