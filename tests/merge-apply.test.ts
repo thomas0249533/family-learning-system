@@ -15,137 +15,33 @@ import { emptyPlan, type MergePlan } from '@core/backup/types'
  * 事务用一个很笨但足够的手写快照实现：提交前备份三张表，抛错时整张还原。
  */
 
-const fake = vi.hoisted(() => {
-  type Row = Record<string, unknown>
+import { createFakeDexie } from './helpers/fakeDexie'
 
-  const hooks = { failOnSettingsPutKey: '', txSessions: 0 }
+/**
+ * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）：
+ * 索引清单与 `src/db/index.ts` 的 `version(4)` 逐字对应，未知索引抛错。
+ *
+ * 事务用手写快照实现回滚（提交前备份涉及表的 rows，抛错整张还原），
+ * 这正是本文件"中途抛错不能留下半截数据"断言所需要的语义。
+ *
+ * 本文件的两个注入点：
+ *   - `fake.settings` 的 `onPut` 钩子 → 模拟"写某个键时磁盘失败"
+ *   - `fake.txCount` → 断言"noop 时一个事务都不开"
+ */
+/** 哪个键写入时该炸（空 = 不炸）。可变，用例里随时改 */
+const failKey = { current: '' }
 
-  function makeTable(opts: {
-    keyOf: (r: Row) => unknown
-    autoId?: boolean
-    indices: string[]
-  }) {
-    const rows: Row[] = []
-    let seq = 1
-
-    function fieldsOf(index: string): string[] {
-      if (!opts.indices.includes(index)) throw new Error(`fake db: 未知索引 ${index}`)
-      return index.startsWith('[') && index.endsWith(']')
-        ? index.slice(1, -1).split('+')
-        : [index]
-    }
-
-    const table = {
-      rows,
-      __reset() {
-        rows.length = 0
-        seq = 1
+const fake = createFakeDexie({
+  overrides: {
+    settings: {
+      onPut: (row) => {
+        if (failKey.current && row.key === failKey.current) throw new Error('模拟写盘失败')
       },
-      async toArray() {
-        return rows.map((r) => ({ ...r }))
-      },
-      async get(k: unknown) {
-        return rows.find((r) => opts.keyOf(r) === k)
-      },
-      async put(r: Row) {
-        const key = opts.keyOf(r)
-        const i = rows.findIndex((x) => opts.keyOf(x) === key)
-        if (i >= 0) rows[i] = { ...r }
-        else rows.push({ ...r })
-        return key
-      },
-      async add(r: Row) {
-        const row = { ...r }
-        if (opts.autoId && row.id === undefined) row.id = seq++
-        rows.push(row)
-        return opts.keyOf(row)
-      },
-      async update(id: unknown, patch: Row) {
-        const i = rows.findIndex((r) => opts.keyOf(r) === id)
-        if (i >= 0) rows[i] = { ...rows[i], ...patch }
-      },
-      where(index: string) {
-        const fields = fieldsOf(index)
-        const matches = (r: Row, value: unknown) =>
-          Array.isArray(value)
-            ? fields.every((f, i) => r[f] === value[i])
-            : r[fields[0]] === value
-        return {
-          equals: (value: unknown) => ({
-            async first() {
-              return rows.find((r) => matches(r, value))
-            },
-            async toArray() {
-              return rows.filter((r) => matches(r, value)).map((r) => ({ ...r }))
-            },
-          }),
-        }
-      },
-    }
-    return table
-  }
-
-  const progress = makeTable({
-    keyOf: (r) => r.id,
-    autoId: true,
-    indices: ['[profileId+packageId+knowledgePointId]', '[profileId+packageId]', 'profileId', 'status'],
-  })
-  const mistakes = makeTable({
-    keyOf: (r) => r.id,
-    autoId: true,
-    indices: ['[profileId+exerciseId]', 'packageId', 'profileId', 'mastered'],
-  })
-  const examSessions = makeTable({
-    keyOf: (r) => r.id,
-    autoId: true,
-    indices: ['[profileId+packageId]', 'profileId', 'status', 'startedAt'],
-  })
-  const settings = makeTable({ keyOf: (r) => r.key, indices: ['key'] })
-
-  const rawPut = settings.put.bind(settings)
-  settings.put = async (rec: Row) => {
-    if (hooks.failOnSettingsPutKey && rec.key === hooks.failOnSettingsPutKey) {
-      throw new Error('模拟写盘失败')
-    }
-    return rawPut(rec)
-  }
-
-  /** 手写事务：提交前快照，抛错整张还原（Dexie 的真实语义这里只需近似） */
-  async function transaction(_mode: string, ...args: unknown[]) {
-    const fn = args[args.length - 1] as () => Promise<unknown>
-    const tables = args.slice(0, -1) as Array<{ rows: Row[] }>
-    const snapshot = tables.map((t) => t.rows.map((r) => ({ ...r })))
-    hooks.txSessions++
-    try {
-      return await fn()
-    } catch (err) {
-      tables.forEach((t, i) => {
-        t.rows.length = 0
-        snapshot[i].forEach((r) => t.rows.push({ ...r }))
-      })
-      throw err
-    }
-  }
-
-  return {
-    progress,
-    mistakes,
-    examSessions,
-    settings,
-    transaction,
-    hooks,
-    __reset() {
-      progress.__reset()
-      mistakes.__reset()
-      examSessions.__reset()
-      settings.__reset()
-      hooks.txSessions = 0
-      hooks.failOnSettingsPutKey = ''
     },
-  }
+  },
 })
 
-vi.mock('@/db', () => ({ db: fake }))
+vi.mock('@/db', () => ({ db: fake.db }))
 
 const { applyMergePlan } = await import('@core/merge/applyMergePlan')
 
@@ -211,7 +107,7 @@ describe('applyMergePlan — 不写库的两条短路', () => {
   it('★ noop 计划：返回全 0，且**不开启事务**', async () => {
     const result = await applyMergePlan(emptyPlan())
     expect(result).toEqual({ progress: 0, mistakes: 0, sessions: 0, settings: 0, profiles: 0 })
-    expect(fake.hooks.txSessions).toBe(0)
+    expect(fake.txCount).toBe(0)
     expect(fake.progress.rows).toHaveLength(0)
     expect(fake.settings.rows).toHaveLength(0)
   })
@@ -223,7 +119,7 @@ describe('applyMergePlan — 不写库的两条短路', () => {
     })
 
     await expect(applyMergePlan(rejectPlan)).rejects.toThrow('超过档案上限，已整笔取消')
-    expect(fake.hooks.txSessions).toBe(0)
+    expect(fake.txCount).toBe(0)
     expect(fake.progress.rows).toHaveLength(0)
   })
 })
@@ -359,7 +255,7 @@ describe('applyMergePlan — 原子性（AC-P2-15）', () => {
     await fake.progress.add(progressRow({ knowledgePointId: 'kp-1', correctCount: 1 }))
     const before = fake.progress.rows.map((r) => ({ ...r }))
 
-    fake.hooks.failOnSettingsPutKey = 'dailyStats:default'
+    failKey.current = 'dailyStats:default'
 
     await expect(
       applyMergePlan(
@@ -376,7 +272,7 @@ describe('applyMergePlan — 原子性（AC-P2-15）', () => {
     expect(fake.progress.rows).toEqual(before)
     expect(fake.mistakes.rows).toHaveLength(0)
     expect(await fake.settings.get('dailyStats:default')).toBeUndefined()
-    expect(fake.hooks.txSessions).toBe(1)
+    expect(fake.txCount).toBe(1)
   })
 
   it('回滚也覆盖"新建档案"这一步写进去的 profiles 记录', async () => {
@@ -388,7 +284,7 @@ describe('applyMergePlan — 原子性（AC-P2-15）', () => {
     const failRec = await fake.settings.get('zzz:fail')
     expect(failRec).toBeTruthy()
 
-    fake.hooks.failOnSettingsPutKey = 'zzz:fail'
+    failKey.current = 'zzz:fail'
 
     await expect(
       applyMergePlan(

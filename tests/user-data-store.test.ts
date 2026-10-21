@@ -8,113 +8,17 @@ import { createPinia, setActivePinia } from 'pinia'
  * （计数 → BKT → FSRS 排期 → 掌握状态机 → 落库 → 打卡）真实跑一遍。
  * 这是本次改动最核心、最容易出错的一段，必须有回归网。
  */
-const fake = vi.hoisted(() => {
-  type Row = Record<string, any>
+import { createFakeDexie } from './helpers/fakeDexie'
 
-  /**
-   * @param keyOf   主键取值（get / put / update 用）
-   * @param autoId  add 时是否补自增 id
-   * @param indices 该表在 v4 schema 里**真实存在**的索引名（单列如 `profileId`，
-   *                复合如 `[profileId+packageId]`）。按索引名拆字段比较即可，
-   *                不需要为每个索引写特判。
-   */
-  function makeTable(keyOf: (r: Row) => any, autoId = false, indices: string[] = []) {
-    const rows: Row[] = []
-    let seq = 1
+/**
+ * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）。
+ *
+ * 索引清单只有那一份，与 `src/db/index.ts` 的 `version(4)` 逐字对应；
+ * 未知索引抛错，因此"漏改索引名"会让测试炸，而不是安静地换一条语义。
+ */
+const fake = createFakeDexie()
 
-    /** 索引名 → 字段列表；未登记的索引名一律抛错（见 where 的注释） */
-    function fieldsOf(index: string): string[] {
-      if (!indices.includes(index)) throw new Error(`fake db: 未知索引 ${index}`)
-      return index.startsWith('[') && index.endsWith(']')
-        ? index.slice(1, -1).split('+')
-        : [index]
-    }
-
-    const table = {
-      rows,
-      __reset() {
-        rows.length = 0
-        seq = 1
-      },
-      async toArray() {
-        return rows.map(r => ({ ...r }))
-      },
-      async get(k: any) {
-        return rows.find(r => keyOf(r) === k)
-      },
-      async put(r: Row) {
-        const key = keyOf(r)
-        const i = rows.findIndex(x => keyOf(x) === key)
-        if (i >= 0) rows[i] = { ...r }
-        else rows.push({ ...r })
-        return key
-      },
-      async add(r: Row) {
-        const row = { ...r }
-        if (autoId && row.id === undefined) row.id = seq++
-        rows.push(row)
-        return keyOf(row)
-      },
-      async bulkPut(rs: Row[]) {
-        for (const r of rs) await table.put(r)
-      },
-      async update(id: any, patch: Row) {
-        const i = rows.findIndex(r => keyOf(r) === id)
-        if (i >= 0) rows[i] = { ...rows[i], ...patch }
-      },
-      where(field: string) {
-        // ★ 未知索引名必须抛错：静默返回空结果会让"归一化根本没生效"这类缺陷假通过。
-        // v4 删掉了 `[packageId+knowledgePointId]` / 单列 `exerciseId`，
-        // 漏改的查询在这里会直接炸，而不是安静地跨档案串数据。
-        const fields = fieldsOf(field)
-        const matches = (r: Row, value: any) =>
-          Array.isArray(value)
-            ? fields.every((f, i) => r[f] === value[i])
-            : r[fields[0]] === value
-        return {
-          equals: (value: any) => ({
-            async first() {
-              return rows.find(r => matches(r, value))
-            },
-            async toArray() {
-              return rows.filter(r => matches(r, value)).map(r => ({ ...r }))
-            },
-          }),
-        }
-      },
-    }
-    return table
-  }
-
-  const progress = makeTable(
-    r => r.id,
-    true,
-    ['[profileId+packageId+knowledgePointId]', '[profileId+packageId]', 'profileId', 'status'],
-  )
-  const mistakes = makeTable(
-    r => r.id,
-    true,
-    ['[profileId+exerciseId]', 'packageId', 'profileId', 'mastered'],
-  )
-  const settings = makeTable(r => r.key, false, ['key'])
-  /** V1.3 · E-01 起 recordProgress 会读 packages 建归属索引，替身必须提供这张表 */
-  const packages = makeTable(r => r.packageId, false, ['packageId'])
-
-  return {
-    progress,
-    mistakes,
-    settings,
-    packages,
-    __reset() {
-      progress.__reset()
-      mistakes.__reset()
-      settings.__reset()
-      packages.__reset()
-    },
-  }
-})
-
-vi.mock('@/db', () => ({ db: fake }))
+vi.mock('@/db', () => ({ db: fake.db }))
 
 const { useUserDataStore } = await import('@core/stores/userData')
 const { invalidateOwnerIndex } = await import('@core/progress/ownerIndexCache')

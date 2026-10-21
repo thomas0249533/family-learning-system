@@ -135,100 +135,15 @@ describe('planProgressMerge — 跨档案同 (packageId, kpId) 不得合并', ()
 // ---------------------------------------------------------------------------
 // 第二层：applyMergePlan 不得跨档案复用自增 id
 // ---------------------------------------------------------------------------
-const fake = vi.hoisted(() => {
-  type Row = Record<string, any>
+import { createFakeDexie } from './helpers/fakeDexie'
 
-  function makeTable(keyOf: (r: Row) => any, autoId = false, indices: string[] = []) {
-    const rows: Row[] = []
-    let seq = 1
-    function fieldsOf(index: string): string[] {
-      if (!indices.includes(index)) throw new Error(`fake db: 未知索引 ${index}`)
-      return index.startsWith('[') && index.endsWith(']')
-        ? index.slice(1, -1).split('+')
-        : [index]
-    }
-    const table = {
-      rows,
-      __reset() {
-        rows.length = 0
-        seq = 1
-      },
-      async toArray() {
-        return rows.map((r) => ({ ...r }))
-      },
-      async get(k: any) {
-        return rows.find((r) => keyOf(r) === k)
-      },
-      async put(r: Row) {
-        const key = keyOf(r)
-        const i = rows.findIndex((x) => keyOf(x) === key)
-        if (i >= 0) rows[i] = { ...r }
-        else rows.push({ ...r })
-        return key
-      },
-      async add(r: Row) {
-        const row = { ...r }
-        if (autoId && row.id === undefined) {
-          // 模仿 IndexedDB 的自增语义：**max(id)+1**，而不是"内部计数器 +1"。
-          // 直接 `seq++` 会在"测试先手工塞了一行 id:1"时也给出 1（假库里出现两行同 id），
-          // 于是"新增行没有复用本机 id"这类断言变成假通过/假失败。
-          const maxId = rows.reduce((m, x) => (typeof x.id === 'number' ? Math.max(m, x.id) : m), 0)
-          row.id = Math.max(seq, maxId + 1)
-          seq = row.id + 1
-        }
-        rows.push(row)
-        return keyOf(row)
-      },
-      async bulkPut(rs: Row[]) {
-        for (const r of rs) await table.put(r)
-      },
-      async update(id: any, patch: Row) {
-        const i = rows.findIndex((r) => keyOf(r) === id)
-        if (i >= 0) rows[i] = { ...rows[i], ...patch }
-      },
-      where(field: string) {
-        const fields = fieldsOf(field)
-        const matches = (r: Row, value: any) =>
-          Array.isArray(value) ? fields.every((f, i) => r[f] === value[i]) : r[fields[0]] === value
-        return {
-          equals: (value: any) => ({
-            async first() {
-              return rows.find((r) => matches(r, value))
-            },
-            async toArray() {
-              return rows.filter((r) => matches(r, value)).map((r) => ({ ...r }))
-            },
-          }),
-        }
-      },
-    }
-    return table
-  }
+/**
+ * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）：
+ * 索引清单与 `src/db/index.ts` 的 `version(4)` 逐字对应，未知索引抛错。
+ */
+const fake = createFakeDexie()
 
-  const progress = makeTable(
-    (r) => r.id,
-    true,
-    ['[profileId+packageId+knowledgePointId]', '[profileId+packageId]', 'profileId', 'status'],
-  )
-  const mistakes = makeTable((r) => r.id, true, ['[profileId+exerciseId]', 'packageId', 'profileId', 'mastered'])
-  const examSessions = makeTable((r) => r.id, true, ['[profileId+packageId]', 'profileId', 'status', 'startedAt'])
-  const settings = makeTable((r) => r.key, false, ['key'])
-
-  const db: any = { progress, mistakes, examSessions, settings }
-  db.transaction = async (_mode: string, ...args: any[]) => {
-    const cb = args[args.length - 1]
-    return cb({ table: (name: string) => db[name] })
-  }
-  db.__reset = () => {
-    progress.__reset()
-    mistakes.__reset()
-    examSessions.__reset()
-    settings.__reset()
-  }
-  return db
-})
-
-vi.mock('@/db', () => ({ db: fake }))
+vi.mock('@/db', () => ({ db: fake.db }))
 
 const { applyMergePlan } = await import('@core/merge/applyMergePlan')
 const { emptyPlan } = await import('@core/backup/types')

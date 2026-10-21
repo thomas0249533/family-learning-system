@@ -11,98 +11,19 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
  * 这里用假 `db`（而不是假 `tx`）覆盖 `recoverV3IfNeeded` / `ensureE1Migrated`，
  * 因为它们自己开事务、读写 `settings`，属于"编排层"，值得整条链路验一遍。
  */
-const fake = vi.hoisted(() => {
-  type Row = Record<string, any>
+import { createFakeDexie } from './helpers/fakeDexie'
 
-  const state = {
-    packages: [] as Row[],
-    progress: [] as Row[],
-    settings: [] as Row[],
-    /** 写入顺序日志：`put:progress` / `delete:progress` / `put:settings` … */
-    writes: [] as string[],
-  }
-
-  const KEY: Record<string, (r: Row) => any> = {
-    packages: (r) => r.packageId,
-    progress: (r) => r.id,
-    settings: (r) => r.key,
-  }
-
-  const throwOn: { toArray: Record<string, boolean>; put: Record<string, boolean> } = {
-    toArray: {},
-    put: {},
-  }
-
-  function api(name: 'packages' | 'progress' | 'settings') {
-    return {
-      async toArray() {
-        if (throwOn.toArray[name]) throw new Error(`fake db: ${name}.toArray 失败`)
-        return state[name].map((r) => ({ ...r }))
-      },
-      async get(k: any) {
-        return state[name].find((r) => KEY[name](r) === k)
-      },
-      /** 未知索引名直接抛错：静默返回空结果会让测试"假通过" */
-      where(field: string) {
-        const KNOWN = new Set(['[packageId+knowledgePointId]', 'exerciseId', 'status'])
-        if (!KNOWN.has(field)) throw new Error(`fake db: 未知索引 ${field}`)
-        return {
-          equals: (value: any) => ({
-            async first() {
-              if (field === '[packageId+knowledgePointId]') {
-                const [p, k] = value as [string, string]
-                return state[name].find((r) => r.packageId === p && r.knowledgePointId === k)
-              }
-              return state[name].find((r) => r[field] === value)
-            },
-            async toArray() {
-              return state[name].filter((r) => r[field] === value).map((r) => ({ ...r }))
-            },
-          }),
-        }
-      },
-      async put(v: Row) {
-        state.writes.push(`put:${name}`)
-        if (throwOn.put[name]) throw new Error(`fake db: ${name}.put 失败`)
-        const k = KEY[name](v)
-        const i = state[name].findIndex((r) => KEY[name](r) === k)
-        if (i >= 0) state[name][i] = { ...v }
-        else state[name].push({ ...v })
-        return k
-      },
-      async delete(k: any) {
-        state.writes.push(`delete:${name}`)
-        const i = state[name].findIndex((r) => KEY[name](r) === k)
-        if (i >= 0) state[name].splice(i, 1)
-      },
-    }
-  }
-
-  const db = {
-    packages: api('packages'),
-    progress: api('progress'),
-    settings: api('settings'),
-    /** 只支持本文件用到的两种调用形态；`fn` 永远是最后一个参数 */
-    async transaction(_mode: any, ...args: any[]) {
-      const fn = args[args.length - 1]
-      return fn({ table: (n: any) => api(n) })
-    },
-  }
-
-  return {
-    db,
-    state,
-    throwOn,
-    reset() {
-      state.packages = []
-      state.progress = []
-      state.settings = []
-      state.writes = []
-      throwOn.toArray = {}
-      throwOn.put = {}
-    },
-  }
-})
+/**
+ * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）。
+ *
+ * 注意 `indices: 'v3'`：本文件测的是 **v3 迁移本身**，那时的库里还没有
+ * `profileId`，索引名也不同（`[packageId+knowledgePointId]` / `exerciseId`）。
+ * 用 v4 清单会让 `where('[packageId+knowledgePointId]')` 直接抛错，
+ * 从而测不到想测的东西 —— 这也是清单必须可切换的原因。
+ *
+ * IO 失败注入用 `fake.failOn.add('toArray:progress')`（原来是 `throwOn.toArray.x = true`）。
+ */
+const fake = createFakeDexie({ indices: 'v3' })
 
 vi.mock('@/db', () => ({ db: fake.db }))
 
@@ -145,14 +66,14 @@ function row(id: number, entryPackageId: string, kpId: string, extra: Record<str
 
 /** 标准场景：unit-p1 声明 kp1；special-x 是入口包（自己不声明任何 kp） */
 function seedStandard() {
-  fake.state.packages.push(
+  fake.packages.rows.push(
     makePackage('unit-p1', 'english', ['unit-p1::kp1', 'unit-p1::kp2']),
     makePackage('special-x', 'english', [])
   )
 }
 
 beforeEach(() => {
-  fake.reset()
+  fake.__reset()
 })
 
 // ---------- 阶段 1：计划 ----------
@@ -160,7 +81,7 @@ beforeEach(() => {
 describe('planV3Migration — 只读算计划', () => {
   it('入口包上的历史行 → 计划改写为归属包 + 规范化 kpId', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
 
     const plan = await planV3Migration({ table: (n: string) => fake.db[n as 'progress'] } as any)
 
@@ -174,7 +95,7 @@ describe('planV3Migration — 只读算计划', () => {
 
   it('已经是归属包的行 → 零计划（幂等）', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'unit-p1', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'unit-p1', 'unit-p1::kp1'))
 
     const plan = await planV3Migration({ table: (n: string) => fake.db[n as 'progress'] } as any)
 
@@ -183,11 +104,11 @@ describe('planV3Migration — 只读算计划', () => {
   })
 
   it('★ 归属歧义（两个包都声明同一 kpId）→ 不改写，原样保留', async () => {
-    fake.state.packages.push(
+    fake.packages.rows.push(
       makePackage('unit-a', 'english', ['shared-kp']),
       makePackage('unit-b', 'english', ['shared-kp'])
     )
-    fake.state.progress.push(row(1, 'special-x', 'shared-kp'))
+    fake.progress.rows.push(row(1, 'special-x', 'shared-kp'))
 
     const plan = await planV3Migration({ table: (n: string) => fake.db[n as 'progress'] } as any)
 
@@ -197,11 +118,11 @@ describe('planV3Migration — 只读算计划', () => {
   })
 
   it('跨学科归属 → 不改写（subject 闸门）', async () => {
-    fake.state.packages.push(
+    fake.packages.rows.push(
       makePackage('unit-math', 'math', ['math-kp']),
       makePackage('special-eng', 'english', [])
     )
-    fake.state.progress.push(row(1, 'special-eng', 'math-kp'))
+    fake.progress.rows.push(row(1, 'special-eng', 'math-kp'))
 
     const plan = await planV3Migration({ table: (n: string) => fake.db[n as 'progress'] } as any)
 
@@ -211,7 +132,7 @@ describe('planV3Migration — 只读算计划', () => {
 
   it('同一知识点写在两个入口包上 → 合并成一行，多出来的 id 进 deletes', async () => {
     seedStandard()
-    fake.state.progress.push(
+    fake.progress.rows.push(
       row(1, 'special-x', 'unit-p1::kp1', { lastStudiedAt: '2026-10-02T00:00:00.000Z' }),
       row(2, 'other-entry', 'unit-p1::kp1', { lastStudiedAt: '2026-10-01T00:00:00.000Z' })
     )
@@ -229,7 +150,7 @@ describe('planV3Migration — 只读算计划', () => {
   it('★ 卡片存在但 last_review 缺失时，合并不会把卡片抹掉', async () => {
     seedStandard()
     const cardNoReview = { due: '2026-10-05T00:00:00.000Z', stability: 2, difficulty: 5, reps: 1 }
-    fake.state.progress.push(
+    fake.progress.rows.push(
       row(1, 'special-x', 'unit-p1::kp1', { fsrs: cardNoReview, lastStudiedAt: '2026-10-02T00:00:00.000Z' }),
       row(2, 'other-entry', 'unit-p1::kp1', { fsrs: undefined, lastStudiedAt: '2026-10-01T00:00:00.000Z' })
     )
@@ -242,7 +163,7 @@ describe('planV3Migration — 只读算计划', () => {
   })
 
   it('无 packages 表数据（全新库）→ 零计划，不抛错', async () => {
-    fake.state.progress.push(row(1, 'unit-p1', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'unit-p1', 'unit-p1::kp1'))
     const plan = await planV3Migration({ table: (n: string) => fake.db[n as 'progress'] } as any)
     expect(plan.puts).toEqual([])
     expect(plan.deletes).toEqual([])
@@ -258,15 +179,15 @@ describe('applyMergePlan — 哑 IO 的顺序契约', () => {
       deletes: [2, 3],
       stats: { total: 3, rewritten: 0, mergedGroups: 1, mergedRowsRemoved: 2, ambiguousKept: 0, final: 1 },
     }
-    fake.state.progress.push(row(1, 'unit-p1', 'unit-p1::kp1'), row(2, 'x', 'y'), row(3, 'x', 'y'))
+    fake.progress.rows.push(row(1, 'unit-p1', 'unit-p1::kp1'), row(2, 'x', 'y'), row(3, 'x', 'y'))
 
     await applyMergePlan({ table: (n: string) => fake.db[n as 'progress'] } as any, plan as any)
 
-    const firstDelete = fake.state.writes.indexOf('delete:progress')
-    const lastPut = fake.state.writes.lastIndexOf('put:progress')
+    const firstDelete = fake.writes.indexOf('delete:progress')
+    const lastPut = fake.writes.lastIndexOf('put:progress')
     expect(firstDelete).toBeGreaterThan(-1)
     expect(lastPut).toBeLessThan(firstDelete)
-    expect(fake.state.progress.map((r) => r.id)).toEqual([1])
+    expect(fake.progress.rows.map((r) => r.id)).toEqual([1])
   })
 
   it('空计划 → 一次写入都不发生', async () => {
@@ -276,7 +197,7 @@ describe('applyMergePlan — 哑 IO 的顺序契约', () => {
       stats: { total: 0, rewritten: 0, mergedGroups: 0, mergedRowsRemoved: 0, ambiguousKept: 0, final: 0 },
     }
     await applyMergePlan({ table: (n: string) => fake.db[n as 'progress'] } as any, plan as any)
-    expect(fake.state.writes).toEqual([])
+    expect(fake.writes).toEqual([])
   })
 })
 
@@ -285,24 +206,24 @@ describe('applyMergePlan — 哑 IO 的顺序契约', () => {
 describe('migrateProgressV3 — upgrade() 钩子永不抛', () => {
   it('成功路径：改写行 + 写入 ok 标记（带 stats）', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
 
     await migrateProgressV3({ table: (n: string) => fake.db[n as 'progress'] } as any)
 
-    expect(fake.state.progress[0].packageId).toBe('unit-p1')
-    const marker = fake.state.settings.find((s) => s.key === MIGRATION_KEY)
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
+    const marker = fake.settings.rows.find((s) => s.key === MIGRATION_KEY)
     expect(marker?.value.status).toBe('ok')
     expect(marker?.value.stats.rewritten).toBe(1)
   })
 
   it('★ 计划构建失败 → 写 failed 标记 + attempts=0，且**不向外抛**（AC-E1-7）', async () => {
-    fake.throwOn.toArray.packages = true
+    fake.failOn.add('toArray:packages')
 
     await expect(
       migrateProgressV3({ table: (n: string) => fake.db[n as 'progress'] } as any)
     ).resolves.toBeUndefined()
 
-    const marker = fake.state.settings.find((s) => s.key === MIGRATION_KEY)
+    const marker = fake.settings.rows.find((s) => s.key === MIGRATION_KEY)
     expect(marker?.value.status).toBe('failed')
     expect(marker?.value.attempts).toBe(0)
     expect(marker?.value.error).toContain('失败')
@@ -327,21 +248,21 @@ describe('shouldRunRecovery — 什么时候放弃补偿', () => {
 
 describe('recoverV3IfNeeded — 启动补跑', () => {
   it('标记 ok → 什么都不做（连进度表都不读）', async () => {
-    fake.state.settings.push({ key: MIGRATION_KEY, value: { status: 'ok', at: 'x' } })
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.settings.rows.push({ key: MIGRATION_KEY, value: { status: 'ok', at: 'x' } })
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
     seedStandard()
 
     const result = await recoverV3IfNeeded()
 
     expect(result).toBeNull()
-    expect(fake.state.writes).toEqual([])
-    expect(fake.state.progress[0].packageId).toBe('special-x')
+    expect(fake.writes).toEqual([])
+    expect(fake.progress.rows[0].packageId).toBe('special-x')
   })
 
   it('★ 标记 failed 且未到上限 → 重跑并写成 ok-recovered', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
-    fake.state.settings.push({
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.settings.rows.push({
       key: MIGRATION_KEY,
       value: { status: 'failed', at: 'x', error: 'boom', attempts: 0 },
     })
@@ -349,39 +270,39 @@ describe('recoverV3IfNeeded — 启动补跑', () => {
     const result = await recoverV3IfNeeded()
 
     expect(result?.status).toBe('ok-recovered')
-    expect(fake.state.progress[0].packageId).toBe('unit-p1')
-    const marker = fake.state.settings.find((s) => s.key === MIGRATION_KEY)!
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
+    const marker = fake.settings.rows.find((s) => s.key === MIGRATION_KEY)!
     expect(marker.value.status).toBe('ok-recovered')
   })
 
   it('★ 尝试次数累加：补偿再失败 → attempts + 1，状态仍为 failed', async () => {
-    fake.state.settings.push({
+    fake.settings.rows.push({
       key: MIGRATION_KEY,
       value: { status: 'failed', at: 'x', error: 'boom', attempts: 1 },
     })
-    fake.throwOn.toArray.packages = true
+    fake.failOn.add('toArray:packages')
 
     const result = await recoverV3IfNeeded()
 
     expect(result).toBeNull()
-    const marker = fake.state.settings.find((s) => s.key === MIGRATION_KEY)!
+    const marker = fake.settings.rows.find((s) => s.key === MIGRATION_KEY)!
     expect(marker.value.status).toBe('failed')
     expect(marker.value.attempts).toBe(2)
   })
 
   it('★ 已达上限 → 不再扫表、不写任何东西', async () => {
-    fake.state.settings.push({
+    fake.settings.rows.push({
       key: MIGRATION_KEY,
       value: { status: 'failed', at: 'x', attempts: MAX_ATTEMPTS },
     })
     seedStandard()
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
 
     const result = await recoverV3IfNeeded()
 
     expect(result).toBeNull()
-    expect(fake.state.writes).toEqual([])
-    expect(fake.state.progress[0].packageId).toBe('special-x')
+    expect(fake.writes).toEqual([])
+    expect(fake.progress.rows[0].packageId).toBe('special-x')
   })
 })
 
@@ -390,51 +311,51 @@ describe('recoverV3IfNeeded — 启动补跑', () => {
 describe('ensureE1Migrated({ orphanOnly }) — 导入后重归因', () => {
   it('★ 改写孤儿行，但**不碰** migration:v3 标记', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
-    fake.state.settings.push({ key: MIGRATION_KEY, value: { status: 'ok', at: 'x' } })
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.settings.rows.push({ key: MIGRATION_KEY, value: { status: 'ok', at: 'x' } })
 
     const stats = await ensureE1Migrated({ orphanOnly: true })
 
     expect(stats?.rewritten).toBe(1)
-    expect(fake.state.progress[0].packageId).toBe('unit-p1')
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
     // 迁移标记保持原样（一次性语义，不许被日常动作改写）
-    const marker = fake.state.settings.find((s) => s.key === MIGRATION_KEY)!
+    const marker = fake.settings.rows.find((s) => s.key === MIGRATION_KEY)!
     expect(marker.value).toEqual({ status: 'ok', at: 'x' })
     // 另写一条"最后重归因"记录
-    const recovery = fake.state.settings.find((s) => s.key === RECOVERY_KEY)!
+    const recovery = fake.settings.rows.find((s) => s.key === RECOVERY_KEY)!
     expect(recovery.value.mode).toBe('import')
   })
 
   it('★ 零计划 → 不起写事务（writes 为空）', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'unit-p1', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'unit-p1', 'unit-p1::kp1'))
 
     const stats = await ensureE1Migrated({ orphanOnly: true })
 
     expect(stats?.rewritten).toBe(0)
-    expect(fake.state.writes).toEqual([])
+    expect(fake.writes).toEqual([])
   })
 
   it('★ 新包导入后，原本无主的历史行变得可归因（导入 → 重归因 → 被改写）', async () => {
     // 1) 一开始只有入口包，kp 归属解析不出来
-    fake.state.packages.push(makePackage('special-x', 'english', []))
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.packages.rows.push(makePackage('special-x', 'english', []))
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
     let stats = await ensureE1Migrated({ orphanOnly: true })
     expect(stats?.rewritten).toBe(0)
-    expect(fake.state.progress[0].packageId).toBe('special-x')
+    expect(fake.progress.rows[0].packageId).toBe('special-x')
 
     // 2) 导入归属包（声明了该 kpId）
-    fake.state.packages.push(makePackage('unit-p1', 'english', ['unit-p1::kp1']))
+    fake.packages.rows.push(makePackage('unit-p1', 'english', ['unit-p1::kp1']))
 
     // 3) 再重归因 → 这次能解析了
     stats = await ensureE1Migrated({ orphanOnly: true })
     expect(stats?.rewritten).toBe(1)
-    expect(fake.state.progress[0].packageId).toBe('unit-p1')
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
   })
 
   it('读标记失败（settings.get 抛错）不影响主流程', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'unit-p1', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'unit-p1', 'unit-p1::kp1'))
     // 不塞标记 → readMigrationMarker 返回 null，orphanOnly 模式照常跑
     const stats = await ensureE1Migrated({ orphanOnly: true })
     expect(stats).not.toBeNull()
@@ -448,9 +369,9 @@ describe('串行队列 — 两个入口同时触发时不许互相串味', () =>
   it('★ 启动补偿与导入重归因并发 → 各自拿到自己类型的结果，重归因不被静默跳过', async () => {
     seedStandard()
     // 一行孤儿：写在入口包 special-x 上，但真正声明 kp 的是 unit-p1
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
     // 补偿会真的干活（failed 且未到上限）
-    fake.state.settings.push({
+    fake.settings.rows.push({
       key: MIGRATION_KEY,
       value: { status: 'failed', at: 'x', error: 'boom', attempts: 0 },
     })
@@ -471,15 +392,15 @@ describe('串行队列 — 两个入口同时触发时不许互相串味', () =>
     expect(stats?.status).toBeUndefined()
 
     // 数据层结果：孤儿行确实被改写到归属包，且**迁移标记没被重归因改写**
-    expect(fake.state.progress[0].packageId).toBe('unit-p1')
-    const row2 = fake.state.settings.find((s) => s.key === MIGRATION_KEY)!
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
+    const row2 = fake.settings.rows.find((s) => s.key === MIGRATION_KEY)!
     expect(row2.value.status).toBe('ok-recovered')
   })
 
   it('★ 两次同入口并发 → 串行执行，第二次按最新状态重算（不重复写）', async () => {
     seedStandard()
-    fake.state.progress.push(row(1, 'special-x', 'unit-p1::kp1'))
-    fake.state.settings.push({ key: MIGRATION_KEY, value: { status: 'ok', at: 'x' } })
+    fake.progress.rows.push(row(1, 'special-x', 'unit-p1::kp1'))
+    fake.settings.rows.push({ key: MIGRATION_KEY, value: { status: 'ok', at: 'x' } })
 
     const [a, b] = await Promise.all([
       ensureE1Migrated({ orphanOnly: true }),
@@ -490,7 +411,7 @@ describe('串行队列 — 两个入口同时触发时不许互相串味', () =>
     expect(a?.rewritten).toBe(1)
     expect(b?.rewritten).toBe(0)
     // 行只被改写一次（第二次没有写事务）
-    expect(fake.state.progress).toHaveLength(1)
-    expect(fake.state.progress[0].packageId).toBe('unit-p1')
+    expect(fake.progress.rows).toHaveLength(1)
+    expect(fake.progress.rows[0].packageId).toBe('unit-p1')
   })
 })

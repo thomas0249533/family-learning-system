@@ -8,110 +8,28 @@ import { createPinia, setActivePinia } from 'pinia'
  * 另一个孩子的档案，而统计层看不出任何异常（数字都对，只是归属错）。
  * 所以断言全部落在"另一个人看不到"这类**可见后果**上，而不是"函数被调用了"。
  */
-const fake = vi.hoisted(() => {
-  type Row = Record<string, any>
-  const flags = { failSettingsGet: false }
+import { createFakeDexie } from './helpers/fakeDexie'
 
-  function makeTable(name: string, keyOf: (r: Row) => any, autoId = false) {
-    const rows: Row[] = []
-    let seq = 1
+/**
+ * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）。
+ *
+ * 本文件的两个注入点：
+ *   - `flagFailSettingsGet` → 让 `settings.get` 抛错（模拟读失败）
+ *   - `fake.settings.puts` → 写入次数，用来断言"同 id 切换不该落库"
+ */
+let flagFailSettingsGet = false
 
-    const table: any = {
-      name,
-      rows,
-      /** settings 的写入次数：用来断言"同 id 切换不该落库"这类副作用 */
-      puts: 0,
-      __reset() {
-        rows.length = 0
-        seq = 1
-        table.puts = 0
+const fake = createFakeDexie({
+  overrides: {
+    settings: {
+      onGet: () => {
+        if (flagFailSettingsGet) throw new Error('settings get failed')
       },
-      async toArray() {
-        return rows.map((r) => ({ ...r }))
-      },
-      async get(k: any) {
-        if (name === 'settings' && flags.failSettingsGet) throw new Error('settings get failed')
-        return rows.find((r) => keyOf(r) === k)
-      },
-      async put(r: Row) {
-        table.puts++
-        const k = keyOf(r)
-        const i = rows.findIndex((x) => keyOf(x) === k)
-        if (i >= 0) rows[i] = { ...r }
-        else rows.push({ ...r })
-        return k
-      },
-      async add(r: Row) {
-        const row = { ...r }
-        if (autoId && row.id === undefined) row.id = seq++
-        rows.push(row)
-        return keyOf(row)
-      },
-      async bulkPut(rs: Row[]) {
-        for (const r of rs) await table.put(r)
-      },
-      async update(id: any, patch: Row) {
-        const i = rows.findIndex((r) => keyOf(r) === id)
-        if (i >= 0) rows[i] = { ...rows[i], ...patch }
-      },
-      where(field: string) {
-        // ★ 未知索引必须抛错：静默返回空结果会让"没按档案过滤"的缺陷假通过
-        const KNOWN = new Set([
-          'profileId',
-          '[profileId+exerciseId]',
-          '[profileId+packageId+knowledgePointId]',
-        ])
-        if (!KNOWN.has(field)) throw new Error(`fake db: 未知索引 ${field}`)
-        return {
-          equals: (value: any) => ({
-            async first() {
-              if (field === '[profileId+exerciseId]') {
-                const [pid, ex] = value as [string, string]
-                return rows.find((r) => r.profileId === pid && r.exerciseId === ex)
-              }
-              if (field === '[profileId+packageId+knowledgePointId]') {
-                const [pid, pkg, kp] = value as [string, string, string]
-                return rows.find(
-                  (r) => r.profileId === pid && r.packageId === pkg && r.knowledgePointId === kp
-                )
-              }
-              return rows.find((r) => r[field] === value)
-            },
-            async toArray() {
-              if (field === 'profileId') {
-                return rows.filter((r) => r.profileId === value).map((r) => ({ ...r }))
-              }
-              throw new Error(`fake db: 复合索引 ${field} 不支持 toArray`)
-            },
-          }),
-        }
-      },
-    }
-    return table
-  }
-
-  const progress = makeTable('progress', (r) => r.id, true)
-  const mistakes = makeTable('mistakes', (r) => r.id, true)
-  const settings = makeTable('settings', (r) => r.key)
-  const packages = makeTable('packages', (r) => r.packageId)
-
-  return {
-    progress,
-    mistakes,
-    settings,
-    packages,
-    flags,
-    __reset() {
-      progress.__reset()
-      mistakes.__reset()
-      settings.__reset()
-      packages.__reset()
-      flags.failSettingsGet = false
     },
-  }
+  },
 })
 
-vi.mock('@/db', () => ({ db: fake }))
+vi.mock('@/db', () => ({ db: fake.db }))
 
 const { useUserDataStore } = await import('@core/stores/userData')
 const { invalidateOwnerIndex } = await import('@core/progress/ownerIndexCache')
@@ -135,6 +53,8 @@ const {
 
 beforeEach(() => {
   fake.__reset()
+  // 注入的读失败必须跟着复位：否则"读库抛错"那个用例会把后面全部用例都带崩
+  flagFailSettingsGet = false
   // 档案状态与监听器都是模块级单例，测试之间必须复位，否则上一个用例的档案会漏到下一个
   __resetProfileForTest()
   invalidateOwnerIndex()
@@ -176,7 +96,7 @@ describe('currentProfile — 未初始化 / 读库', () => {
   })
 
   it('★ 读库抛错 → 回落 default 且不抛（v4 的口径就是存量数据都在 default）', async () => {
-    fake.flags.failSettingsGet = true
+    flagFailSettingsGet = true
 
     const state = await initProfile()
 

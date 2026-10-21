@@ -8,130 +8,19 @@ import { createPinia, setActivePinia } from 'pinia'
  * "导出写的字段名和导入读的字段名一致"。这一层用内存版 Dexie 替身跑完整链路，
  * 任何一侧改了键名/形状都会在这里断掉。
  *
- * 替身的两个要求（与 `tests/user-data-store.test.ts` 同款）：
- *   1. `where(索引名)` 按**索引名**解析字段，未知索引名直接抛错 ——
- *      v4 删掉了 `[packageId+knowledgePointId]`，漏改的查询必须炸，不能静默跨档案。
- *   2. 每张表声明 v4 schema 里**真实存在**的索引清单。
+ * 替身来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）：
+ * `where(索引名)` 按索引名解析字段，未知索引名直接抛错 ——
+ * v4 删掉了 `[packageId+knowledgePointId]`，漏改的查询必须炸，不能静默跨档案。
  */
-const fake = vi.hoisted(() => {
-  type Row = Record<string, any>
+import { createFakeDexie } from './helpers/fakeDexie'
 
-  function makeTable(keyOf: (r: Row) => any, autoId = false, indices: string[] = []) {
-    const rows: Row[] = []
-    let seq = 1
+/**
+ * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）：
+ * 索引清单与 `src/db/index.ts` 的 `version(4)` 逐字对应，未知索引抛错。
+ */
+const fake = createFakeDexie()
 
-    function fieldsOf(index: string): string[] {
-      if (!indices.includes(index)) throw new Error(`fake db: 未知索引 ${index}`)
-      return index.startsWith('[') && index.endsWith(']')
-        ? index.slice(1, -1).split('+')
-        : [index]
-    }
-
-    const table = {
-      rows,
-      __reset() {
-        rows.length = 0
-        seq = 1
-      },
-      async toArray() {
-        return rows.map((r) => ({ ...r }))
-      },
-      async get(k: any) {
-        return rows.find((r) => keyOf(r) === k)
-      },
-      async put(r: Row) {
-        const key = keyOf(r)
-        const i = rows.findIndex((x) => keyOf(x) === key)
-        if (i >= 0) rows[i] = { ...r }
-        else rows.push({ ...r })
-        return key
-      },
-      async add(r: Row) {
-        const row = { ...r }
-        if (autoId && row.id === undefined) row.id = seq++
-        rows.push(row)
-        return keyOf(row)
-      },
-      async bulkPut(rs: Row[]) {
-        for (const r of rs) await table.put(r)
-      },
-      async update(id: any, patch: Row) {
-        const i = rows.findIndex((r) => keyOf(r) === id)
-        if (i >= 0) rows[i] = { ...rows[i], ...patch }
-      },
-      async delete(id: any) {
-        const i = rows.findIndex((r) => keyOf(r) === id)
-        if (i >= 0) rows.splice(i, 1)
-      },
-      where(field: string) {
-        const fields = fieldsOf(field)
-        const matches = (r: Row, value: any) =>
-          Array.isArray(value)
-            ? fields.every((f, i) => r[f] === value[i])
-            : r[fields[0]] === value
-        return {
-          equals: (value: any) => ({
-            async first() {
-              return rows.find((r) => matches(r, value))
-            },
-            async toArray() {
-              return rows.filter((r) => matches(r, value)).map((r) => ({ ...r }))
-            },
-            async delete() {
-              for (let i = rows.length - 1; i >= 0; i--) {
-                if (matches(rows[i], value)) rows.splice(i, 1)
-              }
-            },
-          }),
-        }
-      },
-    }
-    return table
-  }
-
-  const progress = makeTable(
-    (r) => r.id,
-    true,
-    ['[profileId+packageId+knowledgePointId]', '[profileId+packageId]', 'profileId', 'status'],
-  )
-  const mistakes = makeTable(
-    (r) => r.id,
-    true,
-    ['[profileId+exerciseId]', 'packageId', 'profileId', 'mastered'],
-  )
-  const examSessions = makeTable(
-    (r) => r.id,
-    true,
-    ['[profileId+packageId]', 'profileId', 'status', 'startedAt'],
-  )
-  const settings = makeTable((r) => r.key, false, ['key'])
-  const packages = makeTable((r) => r.packageId, false, ['packageId'])
-
-  const db: any = { progress, mistakes, examSessions, settings, packages }
-
-  /**
-   * 事务：直接把回调跑掉，`tx.table(name)` 返回同一张假表。
-   * `applyMergePlan` 只用 `db.transaction(..., cb)` 包一层，不碰 `tx`，
-   * 所以这里"假装在事务里"就足够了 —— 回滚语义由真实 Dexie 保证，不在单测范围。
-   */
-  db.transaction = async (_mode: string, ...args: any[]) => {
-    const cb = args[args.length - 1]
-    if (typeof cb !== 'function') throw new Error('fake db: transaction 缺少回调')
-    return cb({ table: (name: string) => db[name] })
-  }
-
-  db.__reset = () => {
-    progress.__reset()
-    mistakes.__reset()
-    examSessions.__reset()
-    settings.__reset()
-    packages.__reset()
-  }
-
-  return db
-})
-
-vi.mock('@/db', () => ({ db: fake }))
+vi.mock('@/db', () => ({ db: fake.db }))
 
 const { buildBackupV2, readLocalSnapshot } = await import('@core/backup/bundleIO')
 const { importBackupFile, previewImport } = await import('@core/backup/importOrchestrator')
