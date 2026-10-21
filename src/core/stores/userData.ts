@@ -14,7 +14,7 @@ import { touchStudyDay } from '@core/motivation/streak'
 import { bumpDailyStats } from '@core/motivation/dailyStats'
 import { addAttemptedType } from '@core/motivation/attemptedTypes'
 import { applyMistakeReview, mistakeLevel, mistakeReviewCount } from '@core/mistake/mistakeRules'
-import { canonicalKpId, resolveOwnerPackageId } from '@core/progress/ownerIndex'
+import { canonicalKpId, resolveMistakeTarget, resolveOwnerPackageId } from '@core/progress/ownerIndex'
 import { ensureOwnerIndex } from '@core/progress/ownerIndexCache'
 import { ensureFields } from '@core/progress/progressRecord'
 import { awaitE1Settled } from '@core/storage/migrateV3Recovery'
@@ -67,9 +67,14 @@ export const useUserDataStore = defineStore('userData', () => {
   /**
    * 添加错题
    * @param question 题目
-   * @param packageId 学习包 ID
+   * @param packageId 学习包 ID（**入口包**，语义同 `recordProgress` 的第 1 参数）
    * @param knowledgePointIds 知识点 ID 列表
    * @param userAnswer 本次用户答案（用于记录错误选项）
+   *
+   * V1.6 · A4：落库的 `packageId` 由归属包解析决定（与 `recordProgress` 同一套
+   * 三分支，只解析 `kpIds[0]`、不规范化 kpId）。入口包是专项/冲刺包时，
+   * 错题因此归到**声明这个知识点的单元包**上 —— 专项包删掉之后，错题本里
+   * 仍然指着那个还在的包，而不是跟着一起消失。
    */
   async function addMistake(
     question: QuizQuestion,
@@ -89,6 +94,12 @@ export const useUserDataStore = defineStore('userData', () => {
     const existing = await db.mistakes
       .where('[profileId+exerciseId]').equals([pid, question.id]).first()
 
+    // 归属包解析失败（歧义 / 零候选 / 跨学科）→ 保留入口包；
+    // 已经存在的行则保留**行上的现值**（自愈：下次能解析时再归位，不退回入口包）。
+    const index = await ensureOwnerIndex()
+    const target = resolveMistakeTarget(plainKpIds, packageId, index)
+    const targetPackageId = target.resolved ? target.packageId : (existing?.packageId ?? packageId)
+
     if (existing) {
       await db.mistakes.update(existing.id!, toPlain({
         wrongCount: existing.wrongCount + 1,
@@ -98,13 +109,14 @@ export const useUserDataStore = defineStore('userData', () => {
         mastered: false,
         masteryLevel: 'none',
         reviewCorrectCount: 0,
+        packageId: targetPackageId,
         knowledgePointIds: plainKpIds.length ? plainKpIds : [...(existing.knowledgePointIds ?? [])],
         lastUserAnswer: plainUserAnswer || existing.lastUserAnswer,
       }))
     } else {
       await db.mistakes.add(toPlain({
         profileId: pid,
-        packageId,
+        packageId: targetPackageId,
         exerciseId: question.id,
         knowledgePointIds: plainKpIds,
         wrongAt: new Date().toISOString(),

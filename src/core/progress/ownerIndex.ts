@@ -168,3 +168,31 @@ export function resolveProgressKey(
     resolved: true,
   }
 }
+
+/**
+ * 解析**错题行**上的归属包（V1.6 · A4）。
+ *
+ * 与 `resolveOwnerPackageId` 同一套三分支（唯一才归一化；歧义 / 零候选 / 跨学科
+ * 一律不动），两点差异：
+ *
+ * 1. **只解析 `kpIds[0]`**。一道错题常挂多个知识点（比如一道应用题同时考
+ *    "进位加法"和"单位换算"），跨包时"取哪一个"不该由写入端猜 —— 取第一个
+ *    至少是确定的，且题目里的第一个通常是主知识点。
+ * 2. **不规范化 kpId**。错题的 `knowledgePointIds` 是**题目携带的原值**，
+ *    复习和分组都按它反查；换成归属包声明的完整 id 会让老行对不上。
+ *
+ * @returns `resolved: false` 时 `packageId` 就是入口包。调用方在 **update**
+ *   路径上应当保留行上的现值（自愈：下次能解析时再归位），而不是回退到入口包 ——
+ *   否则"包被删过一次"就会把已经归好位的行打回入口包。
+ */
+export function resolveMistakeTarget(
+  knowledgePointIds: readonly string[] | undefined | null,
+  entryPackageId: string,
+  index: OwnerIndex
+): { packageId: string; resolved: boolean } {
+  const kpId = Array.isArray(knowledgePointIds) ? knowledgePointIds[0] : undefined
+  if (!kpId) return { packageId: entryPackageId, resolved: false }
+  const owner = resolveOwnerPackageId(kpId, entryPackageId, index)
+  if (!owner) return { packageId: entryPackageId, resolved: false }
+  return { packageId: owner, resolved: true }
+}

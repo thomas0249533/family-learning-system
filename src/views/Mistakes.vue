@@ -97,6 +97,7 @@
             <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
               <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
             </div>
+            <div v-if="pkgLabel(m)" class="mistake-pkg">📦 {{ pkgLabel(m) }}</div>
             <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
             <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
@@ -145,6 +146,7 @@
           <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
           <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
         </div>
+        <div v-if="pkgLabel(m)" class="mistake-pkg">📦 {{ pkgLabel(m) }}</div>
         <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
         <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
@@ -242,6 +244,49 @@ function remainingToMaster(m: any): number {
 }
 
 const LEVEL_ORDER: Record<MistakeMasteryLevel, number> = { none: 0, partial: 1, mastered: 2 }
+
+/**
+ * 包元数据 + 知识点 → 归属包（与 Review.vue 同源口径：`knowledgePoints` 里
+ * **声明**了这个 kpId 的包）。多个包声明同一个 kpId 时保留全部候选，
+ * 由 `pkgLabel` 按"唯一才用"裁决 —— 与写入端的零 tie-break 是同一条纪律。
+ */
+const pkgMeta = computed(() => {
+  const byId = new Map<string, { title: string; subject?: string }>()
+  const kpOwners = new Map<string, string[]>()
+  for (const pkg of packageStore.packages) {
+    byId.set(pkg.packageId, { title: pkg.manifest?.title ?? '', subject: pkg.manifest?.subject })
+    for (const kp of pkg.knowledgePoints ?? []) {
+      const list = kpOwners.get(kp.id) ?? []
+      if (!list.includes(pkg.packageId)) list.push(pkg.packageId)
+      kpOwners.set(kp.id, list)
+    }
+  }
+  return { byId, kpOwners }
+})
+
+const subjectLabel = (s?: string) =>
+  s === 'math' ? '数学' : s === 'chinese' ? '语文' : s === 'english' ? '英语' : s ?? ''
+
+/**
+ * 卡片上的「学科 · 归属包标题」（V1.6 · A4）。
+ *
+ * 优先用行上的 `packageId` —— A4 起它就是归属包（写入端已归一化），
+ * 老行则是入口包；那个包已经被删掉时，按第一个知识点反查归属包
+ * （与 Review.vue 同源）。两者都找不到 → 空串，由模板 `v-if` 掉：
+ * **绝不显示裸 packageId**，那对家长没有任何意义。
+ */
+function pkgLabel(m: any): string {
+  const meta = pkgMeta.value
+  const direct = meta.byId.get(m.packageId)
+  if (direct?.title) return `${subjectLabel(direct.subject)} · ${direct.title}`
+  const kpId = m.knowledgePointIds?.[0]
+  const owners = kpId ? meta.kpOwners.get(kpId) ?? [] : []
+  if (owners.length === 1) {
+    const viaOwner = meta.byId.get(owners[0])
+    if (viaOwner?.title) return `${subjectLabel(viaOwner.subject)} · ${viaOwner.title}`
+  }
+  return ''
+}
 
 /** 待复习 = 未掌握 + 部分掌握（已掌握的不再出现在这里） */
 const pendingMistakes = computed(() =>
@@ -584,6 +629,14 @@ function formatDate(iso: string): string {
       font-size: 11px;
       color: $text-muted;
     }
+  }
+
+  /* V1.6 · A4 · 「学科 · 归属包标题」。放在卡片头与题干之间：
+     家长一眼能看出这道错题属于哪本书，专项包删掉之后也不会变成悬空行。*/
+  .mistake-pkg {
+    font-size: 12px;
+    color: $text-sub;
+    margin: -2px 0 10px;
   }
 
   .question-text {
