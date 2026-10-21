@@ -194,6 +194,8 @@ export async function applyV4Plan(tx: Transaction, plan: V4Plan): Promise<void> 
   for (const p of plan.progressPatches) await progress.update(p.id, { profileId: p.profileId })
   for (const p of plan.mistakePatches) await mistakes.update(p.id, { profileId: p.profileId })
   for (const p of plan.sessionPatches) await sessions.update(p.id, { profileId: p.profileId })
+  // settings-key-ok: 键由 planV4Migration 按 settingsScope 两张登记表生成
+  // （分片键搬成 <base>:<profileId>、全局键原样复制），这里只负责落库。
   for (const s of plan.settingPuts) await settings.put(s)
 }
 

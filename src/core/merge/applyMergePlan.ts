@@ -113,6 +113,8 @@ export async function applyMergePlan(plan: MergePlan): Promise<ApplyMergeResult>
       }
 
       // ---------------- settings（分片键与全局键走同一条路：put 整条记录）----------------
+      // settings-key-ok: 键由 plan 侧统一构造（planProgressMerge / planCustomPackMerge），
+      // 那里的每个键都过 scopedKey() 或直接取登记表常量；这里只负责原样落库。
       for (const record of plan.settingUpserts) {
         await db.settings.put(record)
         result.settings++
