@@ -140,6 +140,10 @@ function groupBundles(remote: readonly Bundle[]): Map<string, Bundle[]> {
 /**
  * 算出"要写什么"。
  *
+ * 计划里除了"要写什么"，还带一份 `stalenessGuard`（plan 生成时**本机行的基线**）。
+ * 它只是 `local` 的投影，**不影响 planMerge 的纯度**（仍然无时钟、无 db、无随机）；
+ * 用途与三个取舍见 `applyMergePlan` 文件头的「A6 · L2 陈旧快照守卫」。
+ *
  * @param local  本机现状（在事务**外**读好，见 §6.4）
  * @param remote 备份内容（一个档案一份）
  * @param now    调用方传入的时间戳，仅用作缺失 `createdAt` 时的兜底 ——
@@ -205,15 +209,50 @@ export function planMerge(
     const localBundle = localBundles.get(pid)
     const folded = foldBundles(pid, bundles)
 
+    // A6 · L2 陈旧快照守卫的**本机基线**：plan 生成时这些行长什么样。
+    // 为什么用 Map 而不是数组 find：同一 key 可能出现多行（脏数据），Map 取最后一行，
+    // 与 `mergeProgress` 自我收敛后的"胜者"一致 —— 否则基线记的是被合并器丢掉的那行，
+    // apply 时会拿它跟库里的胜者比，误报"有新记录"。
+    const localProgressByKey = new Map(
+      (localBundle?.progress ?? []).map((r) => [progressKey(r), r] as const),
+    )
+    const localMistakesByKey = new Map(
+      (localBundle?.mistakes ?? []).map((r) => [mistakeKey(r), r] as const),
+    )
+
     const progress = mergeProgress(localBundle?.progress ?? [], folded.progress)
     plan.progressUpserts.push(...progress.upserts)
     plan.stats.progressAdded += progress.added
     plan.stats.progressKeptLocal += progress.keptLocal
 
+    // 守卫基线只记"plan 真的要写的行"：没写的行 apply 时也不会碰它，
+    // 记了只会让计划变大（要 JSON 往返、要过 structured clone）。
+    // 用 `?? null` 而不是 `??=`：本机没有这一行时基线是 `null`（"快照时不存在"），
+    // 到 apply 时它突然出现同样是"有新记录"，必须中止（见 StalenessGuard 注释）。
+    for (const row of progress.upserts) {
+      const k = progressKey(row)
+      let bucket = plan.stalenessGuard.progress[row.profileId]
+      if (!bucket) {
+        bucket = {}
+        plan.stalenessGuard.progress[row.profileId] = bucket
+      }
+      bucket[k] = localProgressByKey.get(k) ?? null
+    }
+
     const mistakes = mergeMistakes(localBundle?.mistakes ?? [], folded.mistakes)
     plan.mistakeUpserts.push(...mistakes.upserts)
     plan.stats.mistakesAdded += mistakes.added
     plan.stats.mistakesKeptLocal += mistakes.keptLocal
+
+    for (const row of mistakes.upserts) {
+      const k = mistakeKey(row)
+      let bucket = plan.stalenessGuard.mistakes[row.profileId]
+      if (!bucket) {
+        bucket = {}
+        plan.stalenessGuard.mistakes[row.profileId] = bucket
+      }
+      bucket[k] = localMistakesByKey.get(k) ?? null
+    }
 
     const sessions = mergeSessions(localBundle?.examSessions ?? [], folded.examSessions)
     plan.sessionUpserts.push(...sessions.upserts)

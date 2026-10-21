@@ -72,6 +72,31 @@ export interface MergeStats {
   noop: boolean
 }
 
+/**
+ * A6 · L2 **陈旧快照守卫**的基线（V1.6 · Stage A）。
+ *
+ * ## 它要防的是什么事故
+ * 导入是两步：`previewImport` 在事务**外**读快照 → 家长点确认 → `executeImport` 才落库。
+ * 两步之间孩子可能跑去学习页答题，本地 `progress` / `mistakes` 行被更新。
+ * 直接 apply 就会用**备份里的旧值覆盖孩子刚产生的新记录** —— 而且不报错，
+ * 症状只是"刚答对的题又变成未掌握"，家长根本不会把它和几分钟前的导入联系起来。
+ *
+ * ## 为什么是两层 Record
+ * `progressKey`（`packageId\0knowledgePointId`）**故意不含 profileId** ——
+ * 合并按档案逐个进行（见 `mergeProgress.ts` 文件头）。于是同一个 key 在两个档案下
+ * 是两行，外层必须再套一层 `profileId` 才能唯一定位到"哪一行的基线"。
+ *
+ * ## 值为什么可以是 `null`
+ * `null` = 快照时本机**没有**这一行（备份里新增的知识点）。
+ * 到 apply 时它突然出现了，说明这两步之间本地新增了学习记录 —— 同样要中止。
+ */
+export interface StalenessGuard {
+  /** 外层键 = profileId；内层键 = `progressKey`（`packageId\0knowledgePointId`） */
+  progress: Record<string, Record<string, ProgressRecord | null>>
+  /** 外层键 = profileId；内层键 = `exerciseId` */
+  mistakes: Record<string, Record<string, MistakeRecord | null>>
+}
+
 export interface MergePlan {
   /** 只含**本机没有**的档案；已有档案的 name/createdAt 一律保持本机 */
   newProfiles: ProfileMeta[]
@@ -80,6 +105,17 @@ export interface MergePlan {
   sessionUpserts: ExamSessionRecord[]
   /** 键是**全名**（`dailyStats:p1`），直接 `settings.put` */
   settingUpserts: SettingRecord[]
+  /**
+   * A6 · L2 陈旧快照守卫：plan 生成时**本机行的基线**，由 `planMerge` 填充。
+   *
+   * `applyMergePlan` 在事务内、任何写入之前，按 plan 涉及的行重读库与此比对；
+   * 不一致则抛 `code = 'stale-local-data'`（UI 提示"检测到新的学习记录，请重新预览"）。
+   *
+   * 为什么必填：守卫的失败模式是"没有基线"而不是"基线错了"。给它默认值
+   * （`{}`）就等于让所有忘了填的调用方静默失去保护 —— 与 `planMerge` 第 4 个
+   * 参数 `remoteGlobals` 同一条理由。
+   */
+  stalenessGuard: StalenessGuard
   stats: MergeStats
   /**
    * AC-P2-14：导入会超过档案上限 → **整笔拒绝**，不做部分导入。
@@ -96,6 +132,8 @@ export function emptyPlan(): MergePlan {
     mistakeUpserts: [],
     sessionUpserts: [],
     settingUpserts: [],
+    // A6 · L2：空计划没有要写的行，也就没有基线可记（见 StalenessGuard）
+    stalenessGuard: { progress: {}, mistakes: {} },
     stats: {
       profilesAdded: 0,
       progressAdded: 0,

@@ -635,9 +635,11 @@ describe('A3 · settings 键分片静态扫描', () => {
 
   it('豁免恰好是那两处「键来自合并计划」的写入，且都写了理由', () => {
     const r = scanSrc(LISTS)
+    // ⚠️ 行号对源码编辑敏感：applyMergePlan.ts 加过 A6 · L2 守卫（在豁免注释之前），
+    // 那一处的行号就从 119 挪到了 228。改行号不等于放宽断言 —— 位置与条数都还钉着。
     const at = (e: Exempt) => `${e.file.split('src')[1].split('\\').join('/')}:${e.line}`
     expect(r.exempts.map(at).sort()).toEqual([
-      '/core/merge/applyMergePlan.ts:119',
+      '/core/merge/applyMergePlan.ts:228',
       '/core/storage/migrateV4.ts:199',
     ])
     for (const e of r.exempts) expect(e.reason.length).toBeGreaterThan(4)

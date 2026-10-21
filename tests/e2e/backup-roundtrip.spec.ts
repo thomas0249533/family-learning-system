@@ -255,8 +255,42 @@ test.describe('跨设备备份往返（V1.4 · B2）', () => {
       pageB.locator('.import-stat').filter({ hasText: '新增进度' }).locator('.import-stat-value')
     ).toContainText('1')
 
-    await pageB.locator('.import-confirm').click()
+    // A6-L1：导入期警告条在**预览态**就要常驻（不是等点完导入才出现），
+    // 文案是产品定稿原文，逐字断言，避免以后被人"优化"成别的说法
+    const warning = pageB.locator('.import-warning')
+    await expect(warning).toBeVisible()
+    await expect(warning).toContainText('导入期间请不要在学习页答题')
+    await expect(warning).toContainText('若刚答过题，请返回首页同步后再导入')
+
+    // A6-L1 防连点：**同一个元素**上连点两次，只应产生一次导入。
+    //
+    // 必须先拿 ElementHandle、再两次 `dispatchEvent`：直接写两次
+    // `locator.dispatchEvent('click')` 会在第一次点击后**重新解析选择器** ——
+    // 导入一旦成功，按钮按 `v-if="canConfirm"` 直接离开 DOM，第二次就会
+    // 干等到超时（本轮实测踩过，报 `waiting for locator('.import-confirm')`）。
+    // 用 handle 派发等价于"手指在按钮刚亮起来时又按了一下"，中间不等任何东西。
+    //
+    // 覆盖面说明：成功路径上这次连点主要被 `isImporting`（in-flight）挡住；
+    // 冷却窗口独有的场景是「快速失败后连点」，那需要一个会失败的导入才能稳定复现
+    // （`stale-local-data` 正在由合并引擎那边落地），本 spec 暂无该场景，
+    // 所以这里只断言**可观测结果**：导入效果只发生一次。
+    const confirmHandle = await pageB.locator('.import-confirm').elementHandle()
+    expect(confirmHandle, '第 2 步应出现「确认导入」按钮').not.toBeNull()
+    await confirmHandle!.dispatchEvent('click')
+    await confirmHandle!.dispatchEvent('click')
+
     await expect(pageB.locator('.import-preview')).toContainText('已导入')
+
+    // 可观测口径 = **成功 toast 的条数**（不能只看统计数字：合并本身幂等，
+    // 真导两遍数字也不会翻倍，那样断言就形同虚设）。
+    // 若 `isImporting` / 冷却任何一层失效，这里会是 2 条。
+    await expect(pageB.locator('.n-message--success-type')).toHaveCount(1)
+    // 成功导入后警告条按 `v-if="!applied"` 消失（不必再拦着一个已经导完的用户）
+    await expect(warning).toHaveCount(0)
+    // 统计不翻倍（幂等兜底，防的是"同一份计划被执行两次"这种回归）
+    await expect(
+      pageB.locator('.import-stat').filter({ hasText: '新增进度' }).locator('.import-stat-value')
+    ).toContainText('1')
 
     // AC-P2-11：导入后 ≥ 导入前（0 → 1），且 B 自己的知识点没丢
     await pageB.goto('/parent')
