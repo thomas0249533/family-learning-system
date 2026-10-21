@@ -14,7 +14,7 @@
  * 3. 若目标位置已有**别的**钩子，先备份成 `pre-commit.bak` 再覆盖 —— 覆盖别人的钩子
  *    是那种"半年后才发现 CI 少跑了一半检查"的事故。
  */
-import { chmodSync, copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -24,16 +24,28 @@ const source = join(here, 'pre-commit')
 const hooksDir = join(repoRoot, '.git', 'hooks')
 const target = join(hooksDir, 'pre-commit')
 
+/**
+ * 读出钩子源内容并**强制 LF**。
+ *
+ * `.gitattributes` 已声明 `scripts/git-hooks/* eol=lf`，但那只管新 checkout；
+ * 已经落在别人工作区里的 CRLF 副本仍然会被复制过去，而 sh 垫片带 CRLF 的后果是
+ * `bad interpreter: /bin/sh^M` —— 只在别人机器上炸，排查极贵。这里兜一道。
+ */
+function readHookSource() {
+  return readFileSync(source, 'utf8').replace(/\r\n/g, '\n')
+}
+
 if (!existsSync(join(repoRoot, '.git'))) {
   console.error(`✗ 这里不是 git 仓库根目录：${repoRoot}`)
   process.exit(1)
 }
 mkdirSync(hooksDir, { recursive: true })
 
+const hookBody = readHookSource()
+
 if (existsSync(target)) {
   const existing = readFileSync(target, 'utf8')
-  const mine = readFileSync(source, 'utf8')
-  if (existing === mine) {
+  if (existing === hookBody) {
     console.log('[hooks] 已是最新，无需改动')
     process.exit(0)
   }
@@ -42,7 +54,7 @@ if (existsSync(target)) {
   console.log(`[hooks] 已备份原钩子 → ${backup}`)
 }
 
-copyFileSync(source, target)
+writeFileSync(target, hookBody)
 try {
   chmodSync(target, 0o755)
 } catch (err) {
