@@ -140,6 +140,7 @@ import { createFakeDexie } from './helpers/fakeDexie'
 /**
  * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相）：
  * 索引清单与 `src/db/index.ts` 的 `version(4)` 逐字对应，未知索引抛错。
+ * A6 起的形参校验 / 行级 profileId 断言及其回归证明见 `fakeDexie-guard.test.ts`。
  */
 const fake = createFakeDexie()
 

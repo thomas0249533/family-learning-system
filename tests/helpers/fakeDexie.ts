@@ -2,13 +2,15 @@
  * 假 Dexie 替身（V1.6 · Stage A · A2）—— 单一真相
  *
  * ## 为什么要有这个文件
- * 此前 6 个测试文件各自内联一份假 db。它们**都**做到了"未知索引抛错"，
- * 但索引清单是各写一份的：`src/db/index.ts`  bump 到 v5 时，改漏任何一份，
- * 那个文件里的查询就会静默 fallback 到"按字段比较"，看起来还在跑，
- * 实际上已经不代表真实索引行为了 —— 正是 A2 要堵的"假通过"。
+ * 此前 7 个测试文件各自内联一份假 db（A2 收掉 6 份，A6 把
+ * `migrate-jump-path.test.ts` 的第 7 份也收进来）。它们**都**做到了
+ * "未知索引抛错"，但索引清单是各写一份的：`src/db/index.ts` bump 到 v5 时，
+ * 改漏任何一份，那个文件里的查询就会静默 fallback 到"按字段比较"，
+ * 看起来还在跑，实际上已经不代表真实索引行为了 —— 正是 A2 要堵的"假通过"。
  *
  * 抽出来之后：**索引清单只有一份**（`V4_INDICES`，与 `version(4)` 逐字对应），
- * 未知索引抛错也只有一份实现。
+ * 未知索引抛错也只有一份实现；`fakeDexie-guard.test.ts` 还会把清单与
+ * `src/db/index.ts` 原文逐字比对，schema 一改不同步就红。
  *
  * ## 与真实 Dexie 的差异（刻意为之，别"修"）
  * 1. **没有查询计划器**。`where(idx).equals(v)` 就是"按索引字段逐行比"。
@@ -19,6 +21,22 @@
  * 3. **`where` 只支持 `.equals(v).first()/toArray()`**。
  *    生产代码用到的 `.reverse()/.sortBy()/.and()/.modify()` 一概没有 ——
  *    真用到了会让测试**炸**，而不是安静地换一条语义，这正是想要的效果。
+ * 4. **`equals()` 的形参校验比真库严**（V1.6 · A6 补牙，专抓"少传 profileId"）：
+ *    - 复合索引必须传**长度等于元数的数组**。真库对短数组是"静默空结果"
+ *      （查询永远查不到、不报错），对传标量更是直接空 —— 这里一律抛错。
+ *      漏掉 `profileId` 是 V1.4 · B1 之后最高频的回归形态，必须炸。
+ *    - 单列索引传数组抛错（真库静默空；旧替身按首字段比，会**多返**）。
+ *    - `equals(null/undefined)` 抛错（真库 reject；旧替身会匹配"字段为
+ *      undefined 的行"，纯静默 fallback）。
+ * 5. **`add()` 撞主键抛错**（真库 ConstraintError）。旧替身静默插入第二行
+ *    同 id 行 —— "upsert 被写成 add" 这类缺陷因此假通过。
+ * 6. **v4 索引形态下，progress / mistakes / examSessions 每行必须带非空
+ *    `profileId`**（真库不校验，但项目规则是必填：夹具漏了的测试在单档案下
+ *    照样全绿，正是 A2 要堵的静默串数据）。测老数据夹具传
+ *    `overrides.<table>.requireProfileId = false` 显式豁免。
+ * 7. **读接口返回浅拷贝**（真库是结构化克隆）：`first()/get()/toArray()`
+ *    改返回值顶层字段不污染库；嵌套对象仍共享引用 —— 生产代码全都
+ *    `toPlain` 过，碰不到这一层。
  *
  * ## 怎么用
  * ```ts
@@ -72,6 +90,7 @@ export const V3_INDICES: Record<string, readonly string[]> = {
   progress: ['[packageId+knowledgePointId]', 'packageId', 'status'],
   mistakes: ['packageId', 'exerciseId', 'mastered'],
   settings: ['key'],
+  examSessions: ['packageId', 'status', 'startedAt'],
 }
 
 /** 默认建哪些表（顺序即 `db` 上的属性顺序，便于快照与 reset） */
@@ -101,6 +120,12 @@ export interface TableOpts {
   keyOf?: (r: Row) => any
   /** 覆盖索引清单（默认 `V4_INDICES[name]`；测 v3 传 `V3_INDICES`） */
   indices?: readonly string[]
+  /**
+   * 行级 profileId 断言开关。默认按索引形态自动判断：
+   * 索引清单里出现 `profileId` / `[profileId+…]` → 开启。
+   * 测**老数据夹具**（迁移前本来就没有 profileId）显式传 `false`。
+   */
+  requireProfileId?: boolean
   /** `get` 的前置钩子：抛错即模拟"读失败" */
   onGet?: (key: any) => void
   /** `put` 的前置钩子：抛错即模拟"写失败" */
@@ -197,6 +222,25 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     const rows: Row[] = []
     let seq = 1
 
+    // ★ v4 索引形态（索引清单里出现 profileId）下，每一行都必须带非空
+    // profileId。真库不校验这条，但项目规则是必填（见 ProgressRecord 的
+    // 注释："可空就意味着存在一条代码路径忘了判断"）—— 夹具漏了 profileId
+    // 的测试在单档案数据下照样全绿，正是 A2 要堵的静默串数据。
+    const profileScoped =
+      over.requireProfileId ??
+      indices.some((i) => i === 'profileId' || i.startsWith('[profileId+'))
+    const assertScoped = (r: Row): void => {
+      if (!profileScoped) return
+      const pid = r?.profileId
+      if (typeof pid !== 'string' || pid === '') {
+        throw new Error(
+          `fake db: ${name} 行缺少 profileId（v4 语义必填）—— ` +
+            '单档案测试里漏了它照样全绿，正是 A2 要堵的静默串数据；' +
+            `确需造老数据夹具请传 overrides.${name}.requireProfileId = false`
+        )
+      }
+    }
+
     const table: FakeTable = {
       rows,
       puts: 0,
@@ -215,10 +259,13 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
       async get(k: any) {
         over.onGet?.(k)
         if (failOn.has(`get:${name}`)) throw new Error(`fake db: ${name}.get 失败`)
-        return rows.find((r) => keyOf(r) === k)
+        const hit = rows.find((r) => keyOf(r) === k)
+        // 同 first()：交副本，调用方改不到库里
+        return hit ? { ...hit } : undefined
       },
 
       async put(r: Row) {
+        assertScoped(r)
         over.onPut?.(r)
         writes.push(`put:${name}`)
         table.puts++
@@ -231,6 +278,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
       },
 
       async add(r: Row) {
+        assertScoped(r)
         writes.push(`add:${name}`)
         if (failOn.has(`add:${name}`)) throw new Error(`fake db: ${name}.add 失败`)
         const row = { ...r }
@@ -248,8 +296,17 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
           row.id = Math.max(seq, maxId + 1)
           seq = row.id + 1
         }
+        const k = keyOf(row)
+        // ★ 真库 add 撞已存在主键 → ConstraintError。旧替身静默插入第二行
+        // 同 id 行，"upsert 被写成 add" 这类缺陷因此假通过。
+        if (rows.some((x) => keyOf(x) === k)) {
+          throw new Error(
+            `fake db: ${name}.add 主键冲突（${JSON.stringify(k)}）—— ` +
+              '真实 Dexie 抛 ConstraintError；要覆盖同键行请用 put'
+          )
+        }
         rows.push(row)
-        return keyOf(row)
+        return k
       },
 
       async bulkPut(rs: Row[]) {
@@ -276,19 +333,51 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
 
       where(index: string): WhereChain {
         const fields = fieldsOf(name, index, indices)
+        const compound = index.startsWith('[')
+        // ★ 形参校验（A6 补牙）。见文件头"差异"第 4 条：
+        // 少传 profileId 的短数组、传给复合索引的标量，在真库里都是
+        // "静默空结果 / 静默多返"，不抛错就等于放回归过去。
+        const checkValue = (value: any): void => {
+          if (value == null) {
+            throw new Error(
+              `fake db: ${name}.where('${index}').equals(${String(value)}) —— ` +
+                '真实 Dexie 对 null/undefined key 直接 reject（Invalid key provided）'
+            )
+          }
+          if (compound) {
+            if (!Array.isArray(value) || value.length !== fields.length) {
+              throw new Error(
+                `fake db: ${name}.where('${index}') 是 ${fields.length} 元复合索引，` +
+                  `equals() 必须传长度 ${fields.length} 的数组，收到 ${JSON.stringify(value)}。` +
+                  '少传 profileId 在真实库里不报错、只会永远查不到 —— 这里必须炸'
+              )
+            }
+          } else if (Array.isArray(value)) {
+            throw new Error(
+              `fake db: ${name}.where('${index}') 是单列索引，equals() 不能传数组` +
+                `（收到 ${JSON.stringify(value)}；真库会静默空结果，旧替身按首字段比会多返）`
+            )
+          }
+        }
         const matches = (r: Row, value: any) =>
-          Array.isArray(value)
+          compound
             ? fields.every((f, i) => r[f] === value[i])
             : r[fields[0]] === value
         return {
-          equals: (value: any) => ({
-            async first() {
-              return rows.find((r) => matches(r, value))
-            },
-            async toArray() {
-              return rows.filter((r) => matches(r, value)).map((r) => ({ ...r }))
-            },
-          }),
+          equals: (value: any) => {
+            checkValue(value)
+            return {
+              async first() {
+                const hit = rows.find((r) => matches(r, value))
+                // 真库返回结构化克隆；旧替身把**活行**交出去，
+                // 调用方一改就污染库里数据
+                return hit ? { ...hit } : undefined
+              },
+              async toArray() {
+                return rows.filter((r) => matches(r, value)).map((r) => ({ ...r }))
+              },
+            }
+          },
         }
       },
     }

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createFakeDexie, type TableName } from './helpers/fakeDexie'
 
 /**
  * V1.6 · Stage A · A1 跳版迁移推演（v1→v4 / v2→v4 / v3→v4）
@@ -14,6 +15,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
  * 所以塞一个实现 `table(name) → { toArray/get/put/update/delete/add/bulkPut/where }`
  * 的假事务就能完整跑真代码。补偿入口 `recoverV3IfNeeded()` 自己开事务，
  * 由假 `db.transaction` 提供同一个 `tx` 工厂。
+ *
+ * V1.6 · A6：假事务从内联替身换成共享的 `tests/helpers/fakeDexie.ts` ——
+ * 本文件曾是最后一份"自带索引清单"的假 db（schema bump 时改漏它就静默
+ * fallback），迁过来之后未知索引抛错、复合索引形参校验、add 撞主键抛错
+ * 全部随单一真相一起生效。
  *
  * ## 三条路径 × 三种 v3 结局
  * | 结局 | 语义 |  Dexie 行为 |
@@ -36,155 +42,15 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const DEFAULT_PID = 'default'
 
-const fake = vi.hoisted(() => {
-  type Row = Record<string, any>
-
-  /** v4 schema 里**真实存在**的索引名（`src/db/index.ts` 的 version(4)）。未知索引一律抛错 */
-  const INDICES: Record<string, string[]> = {
-    packages: ['packageId', 'manifest.subject', 'manifest.grade'],
-    progress: [
-      '[profileId+packageId+knowledgePointId]',
-      '[profileId+packageId]',
-      'profileId',
-      'status',
-    ],
-    mistakes: ['[profileId+exerciseId]', 'packageId', 'profileId', 'mastered'],
-    settings: ['key'],
-    examSessions: ['[profileId+packageId]', 'profileId', 'status', 'startedAt'],
-  }
-
-  const KEY: Record<string, (r: Row) => any> = {
-    packages: (r) => r.packageId,
-    progress: (r) => r.id,
-    mistakes: (r) => r.id,
-    examSessions: (r) => r.id,
-    settings: (r) => r.key,
-  }
-
-  const AUTO_ID = new Set(['progress', 'mistakes', 'examSessions'])
-
-  const state: Record<string, Row[]> = {
-    packages: [],
-    progress: [],
-    mistakes: [],
-    examSessions: [],
-    settings: [],
-  }
-
-  /** 写入顺序日志：`put:progress` / `delete:progress` / `update:progress` / `put:settings` … */
-  const writes: string[] = []
-  /** 注入 IO 失败：键形如 `put:progress` / `toArray:progress` / `update:mistakes` */
-  const failOn = new Set<string>()
-
-  function fieldsOf(name: string, index: string): string[] {
-    const known = INDICES[name]
-    if (!known || !known.includes(index)) {
-      throw new Error(`fake db: 未知索引 ${name}.${index}`)
-    }
-    return index.startsWith('[') && index.endsWith(']')
-      ? index.slice(1, -1).split('+')
-      : [index]
-  }
-
-  function api(name: string) {
-    let seq = 1
-    const table = {
-      async toArray() {
-        if (failOn.has(`toArray:${name}`)) throw new Error(`fake db: ${name}.toArray 失败`)
-        return state[name].map((r) => ({ ...r }))
-      },
-      async get(k: any) {
-        return state[name].find((r) => KEY[name](r) === k)
-      },
-      async put(v: Row) {
-        writes.push(`put:${name}`)
-        if (failOn.has(`put:${name}`)) throw new Error(`fake db: ${name}.put 失败`)
-        const k = KEY[name](v)
-        const i = state[name].findIndex((r) => KEY[name](r) === k)
-        if (i >= 0) state[name][i] = { ...v }
-        else state[name].push({ ...v })
-        return k
-      },
-      async add(v: Row) {
-        writes.push(`add:${name}`)
-        if (failOn.has(`add:${name}`)) throw new Error(`fake db: ${name}.add 失败`)
-        const row = { ...v }
-        if (AUTO_ID.has(name) && row.id === undefined) row.id = seq++
-        state[name].push(row)
-        return KEY[name](row)
-      },
-      async bulkPut(rs: Row[]) {
-        for (const r of rs) await table.put(r)
-      },
-      async bulkDelete(ids: any[]) {
-        for (const id of ids) await table.delete(id)
-      },
-      async update(id: any, patch: Row) {
-        writes.push(`update:${name}`)
-        if (failOn.has(`update:${name}`)) throw new Error(`fake db: ${name}.update 失败`)
-        const i = state[name].findIndex((r) => KEY[name](r) === id)
-        if (i >= 0) state[name][i] = { ...state[name][i], ...patch }
-      },
-      async delete(k: any) {
-        writes.push(`delete:${name}`)
-        if (failOn.has(`delete:${name}`)) throw new Error(`fake db: ${name}.delete 失败`)
-        const i = state[name].findIndex((r) => KEY[name](r) === k)
-        if (i >= 0) state[name].splice(i, 1)
-      },
-      where(index: string) {
-        const fields = fieldsOf(name, index)
-        const matches = (r: Row, value: any) =>
-          Array.isArray(value)
-            ? fields.every((f, i) => r[f] === value[i])
-            : r[fields[0]] === value
-        return {
-          equals: (value: any) => ({
-            async first() {
-              return state[name].find((r) => matches(r, value))
-            },
-            async toArray() {
-              return state[name].filter((r) => matches(r, value)).map((r) => ({ ...r }))
-            },
-          }),
-        }
-      },
-    }
-    return table
-  }
-
-  const db = {
-    packages: api('packages'),
-    progress: api('progress'),
-    mistakes: api('mistakes'),
-    settings: api('settings'),
-    examSessions: api('examSessions'),
-    /** 只支持本文件用到的形态：`transaction(mode, ...tables, fn)`，`fn` 永远是最后一个参数 */
-    async transaction(_mode: any, ...args: any[]) {
-      const fn = args[args.length - 1]
-      return fn({ table: (n: string) => api(n) })
-    },
-  }
-
-  return {
-    db,
-    state,
-    writes,
-    failOn,
-    __reset() {
-      for (const k of Object.keys(state)) state[k] = []
-      writes.length = 0
-      failOn.clear()
-    },
-    /** 深快照（模拟 versionchange 事务回滚用） */
-    snapshot() {
-      const out: Record<string, Row[]> = {}
-      for (const k of Object.keys(state)) out[k] = state[k].map((r) => ({ ...r }))
-      return out
-    },
-    restore(snap: Record<string, Row[]>) {
-      for (const k of Object.keys(state)) state[k] = snap[k].map((r) => ({ ...r }))
-    },
-  }
+/**
+ * 假库 = 共享单一真相（A2 抽取，A6 收编本文件 —— 最后一份内联替身）。
+ *
+ * `progress` 关掉行级 profileId 断言：本文件的主角就是**迁移前的**老数据，
+ * 夹具与 v3 upgrade 的写入都还没有 profileId，要等 v4 upgrade 才补上。
+ * "所有行最终都补上 profileId"由断言 ① 自己查 —— 那正是本文件存在的意义。
+ */
+const fake = createFakeDexie({
+  overrides: { progress: { requireProfileId: false } },
 })
 
 vi.mock('@/db', () => ({ db: fake.db }))
@@ -318,7 +184,7 @@ function legacyValue(base: string): unknown {
  *   - `cross-kp`：归属 unit-m1（math），入口包 special-x 是 english → 跨学科，原样保留
  */
 function seedPackages() {
-  fake.state.packages.push(
+  fake.packages.rows.push(
     makePackage('unit-p1', 'english', ['unit-p1::kp1', 'unit-p1::kp2']),
     makePackage('unit-a', 'english', ['shared-kp']),
     makePackage('unit-b', 'english', ['shared-kp']),
@@ -329,7 +195,7 @@ function seedPackages() {
 
 /** 进度行：含一组**同键重复**（id 4/5），用来验守恒（漏 delete 就会双算） */
 function seedProgress() {
-  fake.state.progress.push(
+  fake.progress.rows.push(
     progRow(1, 'special-x', 'unit-p1::kp1', { correctCount: 3, wrongCount: 0, studySeconds: 100 }),
     progRow(2, 'special-x', 'unit-p1::kp2', { correctCount: 1, wrongCount: 2, studySeconds: 40 }),
     progRow(3, 'special-x', 'shared-kp', { correctCount: 5, wrongCount: 5, studySeconds: 200 }),
@@ -344,33 +210,33 @@ function seedProgress() {
 function seedV1() {
   seedPackages()
   seedProgress()
-  fake.state.mistakes.push(
+  fake.mistakes.rows.push(
     mistakeRow(1, 'special-x', 'ex-1'),
     mistakeRow(2, 'special-x', 'ex-2'),
   )
   for (const base of LEGACY_PER_PROFILE_KEYS) {
-    fake.state.settings.push({ key: base, value: legacyValue(base) })
+    fake.settings.rows.push({ key: base, value: legacyValue(base) })
   }
   // 一个未登记键：v4 会按 per-profile 复制一份并告警（`partial` 语义的来源）
-  fake.state.settings.push({ key: 'weird:thing', value: { note: '未知键' } })
+  fake.settings.rows.push({ key: 'weird:thing', value: { note: '未知键' } })
   // `profiles` 故意不种：v4 必须自己建
 }
 
 /** v2 状态 = v1 + examSessions 行 */
 function seedV2() {
   seedV1()
-  fake.state.examSessions.push(sessionRow(1, 'special-x'), sessionRow(2, 'special-x'))
+  fake.examSessions.rows.push(sessionRow(1, 'special-x'), sessionRow(2, 'special-x'))
 }
 
 // ---------------------------------------------------------------------------
 // 断言助手
 // ---------------------------------------------------------------------------
 
-function sums(table: string) {
+function sums(table: TableName) {
   let correct = 0
   let wrong = 0
   let seconds = 0
-  for (const r of fake.state[table]) {
+  for (const r of fake[table].rows) {
     correct += r.correctCount ?? 0
     wrong += r.wrongCount ?? 0
     seconds += r.studySeconds ?? 0
@@ -384,14 +250,14 @@ function progressSums(): { correct: number; wrong: number; seconds: number } {
 
 function settingsMap(): Map<string, unknown> {
   const m = new Map<string, unknown>()
-  for (const r of fake.state.settings) m.set(r.key, r.value)
+  for (const r of fake.settings.rows) m.set(r.key, r.value)
   return m
 }
 
 /** 断言 ①：三张表所有行 profileId 非空且是 default */
 function assertAllRowsScoped() {
-  for (const table of ['progress', 'mistakes', 'examSessions']) {
-    for (const r of fake.state[table]) {
+  for (const table of ['progress', 'mistakes', 'examSessions'] as const) {
+    for (const r of fake[table].rows) {
       expect(r.profileId, `${table}#${r.id} 的 profileId`).toBe(DEFAULT_PID)
     }
   }
@@ -400,7 +266,7 @@ function assertAllRowsScoped() {
 /** 断言 ②：唯一归属的归一化了，歧义/零候选/跨学科的原样保留 */
 function assertOwnerNormalized() {
   const byKey = new Map<string, any>()
-  for (const r of fake.state.progress) {
+  for (const r of fake.progress.rows) {
     byKey.set(`${r.packageId}\u0000${r.knowledgePointId}`, r)
   }
   // 归一化：id 4/5 与 id 1 合并成一行（同键），承载体的字段是合并后的
@@ -592,7 +458,7 @@ describe('A1 · v2→v4（带 examSessions 的老版本）', () => {
 
   it('v2 才有的 examSessions 同样被补上 profileId（不是只补 progress）', async () => {
     await runV2ToV4()
-    expect(fake.state.examSessions.map((s) => s.profileId)).toEqual([DEFAULT_PID, DEFAULT_PID])
+    expect(fake.examSessions.rows.map((s) => s.profileId)).toEqual([DEFAULT_PID, DEFAULT_PID])
   })
 })
 
@@ -647,7 +513,7 @@ describe('A1 · v3 的三种结局', () => {
     // v3 什么都没改，只写了 failed 标记
     expect((await readMigrationMarker())?.status).toBe('failed')
     expect(progressSums()).toEqual(before)
-    expect(fake.state.progress.every((r) => r.profileId === undefined)).toBe(true)
+    expect(fake.progress.rows.every((r) => r.profileId === undefined)).toBe(true)
 
     // v4 照常跑（版本号已推进，Dexie 不会回头重跑 v3 的 upgrade）
     fake.failOn.delete('toArray:progress')

@@ -15,6 +15,7 @@ import { createFakeDexie } from './helpers/fakeDexie'
  *
  * 索引清单只有那一份，与 `src/db/index.ts` 的 `version(4)` 逐字对应；
  * 未知索引抛错，因此"漏改索引名"会让测试炸，而不是安静地换一条语义。
+ * A6 起的形参校验 / 行级 profileId 断言及其回归证明见 `fakeDexie-guard.test.ts`。
  */
 const fake = createFakeDexie()
 
