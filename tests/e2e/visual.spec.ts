@@ -36,7 +36,7 @@ for (const mode of ['light', 'dark'] as const) {
 
           // ---- 冻结时钟（确定化截图）----
           const RealDate = Date
-          // @ts-expect-error 覆写全局 Date
+          // 显式 `any`：造一个"形状像 Date"的替身再挂到 window 上
           const FrozenDate: any = function (...args: any[]) {
             if (args.length === 0) return new RealDate(fixedNow)
             // @ts-expect-error 透传参数

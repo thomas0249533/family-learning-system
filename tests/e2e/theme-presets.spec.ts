@@ -42,7 +42,9 @@ for (const preset of ['primary', 'senior'] as const) {
         await page.addInitScript(
           (cfg: { preset: string; mode: string; fixedNow: number }) => {
             const RealDate = Date
-            // @ts-expect-error 覆写全局 Date（报告页有相对时间，不冻结则基线不稳定）
+            // 显式 `any`：造一个"形状像 Date"的替身再挂到 window 上（报告页有相对时间，
+            // 不冻结则基线不稳定）。原来这里挂了 `@ts-expect-error`，但 `any` 本来就不报错，
+            // 指令失效 → `vue-tsc` 报 TS2578（B1 打开 tests 类型检查时暴露）
             const FrozenDate: any = function (...args: any[]) {
               if (args.length === 0) return new RealDate(cfg.fixedNow)
               // @ts-expect-error 透传参数

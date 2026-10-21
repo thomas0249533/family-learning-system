@@ -178,7 +178,7 @@ describe('shouldRunOrphanRecovery — 一天最多一次', () => {
     ['', '2026-10-19', true, '脏值当成没跑过'],
     ['2026-10-18', '2026-10-19', true, '昨天跑过 → 今天要跑'],
     ['2026-10-19', '2026-10-19', false, '今天跑过 → 跳过'],
-  ] as const)('%#: lastDay=%j today=%s → %s（%s）', (lastDay, today, expected) => {
+  ] as const)('%#: lastDay=%j today=%s → %s（%s）', (lastDay, today, expected, _why) => {
     expect(shouldRunOrphanRecovery(lastDay, today)).toBe(expected)
   })
 

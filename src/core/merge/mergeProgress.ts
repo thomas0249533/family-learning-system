@@ -62,9 +62,14 @@ export function progressKey(row: Pick<ProgressRecord, 'packageId' | 'knowledgePo
  * 而 `lastStudiedAt` 在老数据里可能是 `''`。用 `||` 会把 `''` 也当假值吃掉，
  * 于是"从没学过"（`''`）和"学过但没复习"被算成同一个值，
  * 两台设备的空进度行会互相覆盖 —— 覆盖的结果是 `correctCount` 归零。
+ *
+ * 形参是 `Partial<Pick<…>>` 而不是 `Pick<…>`：`ProgressRecord.lastStudiedAt` 在**库里的
+ * 契约**是必填，但本函数是纯排序工具，实现里第三段 `?? ''` 明确支持"两个都没有"的形态
+ * （手搓的部分行 / 老备份映射出来的行）。类型比实现更严也是失真 —— 调用方会被迫写
+ * `as` 才能测这条分支，而 `as` 一旦用惯，真正该报错的地方也一起被盖住了。
  */
 export function progressRank(
-  row: Pick<ProgressRecord, 'lastReviewAt' | 'lastStudiedAt'>,
+  row: Partial<Pick<ProgressRecord, 'lastReviewAt' | 'lastStudiedAt'>>,
 ): string {
   return row.lastReviewAt ?? row.lastStudiedAt ?? ''
 }

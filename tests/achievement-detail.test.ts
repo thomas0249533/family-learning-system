@@ -36,6 +36,9 @@ function pendingCounter(over: Partial<AchievementItem> = {}): AchievementItem {
     percent: 30,
     hint: '已完成 3/10 · 还差 7个知识点',
     chainLabel: '',
+    // V1.4 · B6 起 `repeatCount` 必填（1 = 只达成过一次）。夹具取 1 表示"没重复达成"，
+    // 卡面「第 N 次」分支不进入 —— 与真实单次解锁记录一致。
+    repeatCount: 1,
     ...over,
   }
 }

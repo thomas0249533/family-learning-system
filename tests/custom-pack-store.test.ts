@@ -123,7 +123,9 @@ function packV2() {
 }
 
 function rowValue(key: string): any {
-  return fake.settings.rows.find((r) => r.key === key)?.value
+  // `fake.settings` 在夹具里显式声明成 `any`（只需 settings 表），在 any 上调
+  // `.find()` 回调形参会被推成隐式 any → 必须自己标注（B1 打开 tests 类型检查时暴露）
+  return fake.settings.rows.find((r: { key: string; value?: unknown }) => r.key === key)?.value
 }
 
 function stored(packId = 'pack-alpha') {

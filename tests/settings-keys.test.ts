@@ -88,8 +88,6 @@ interface ScanInput {
   /** 要扫描的文件：路径 → 源码 */
   files: Map<string, string>
   lists: KeyLists
-  /** 解析 import 说明符；默认先查 files，再落磁盘 */
-  loadModule?: (spec: string, fromFile: string) => string | null
 }
 
 /** `db.settings.get(` / 局部变量 `settings.put(` / `.settings.delete(` */
@@ -497,8 +495,14 @@ function unquote(lit: string): string {
 function scan(input: ScanInput): ScanResult {
   const { lists } = input
   const files = input.files
-  const loadModule =
-    input.loadModule ?? ((spec: string, fromFile: string) => resolveModulePath(spec, fromFile, files))
+
+  /*
+   * 这里原本有一个 `loadModule` 可选注入（"解析 import 说明符"），但从来没被接进
+   * `findIdentifier` / `findFunction` / `findExported` —— 三处都直接调
+   * `resolveModulePath(spec, file, files)`。也就是说它是个**静默失效的开关**：
+   * 谁传进去都毫无作用，比没有更糟（B1 打开 tests 类型检查时以 TS6133 暴露）。
+   * 需要注入时再加，加的时候要把参数一路传到那三个递归函数里。
+   */
 
   const points: Point[] = []
   const problems: Problem[] = []

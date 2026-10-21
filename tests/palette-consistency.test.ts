@@ -222,9 +222,18 @@ describe('palette ⇄ theme.scss 一致性（6 组）', () => {
     for (const mode of MODES) {
       describe(`${preset}.${mode}`, () => {
         const vars = EFFECTIVE[preset][mode]
-        for (const [field, varName] of Object.entries(FIELD_TO_VAR)) {
+        /*
+         * `Object.entries` 的键类型是 `string`，直接用它索引 `palette.presets[preset][mode]`
+         * 就必须把这里断言成 `Record<string, string>` —— 那等于把字段名校验关掉了。
+         * 断言回 `keyof typeof FIELD_TO_VAR`（= 真实字段联合）后，索引自然合法，
+         * 字段名写错时这里就会报红。
+         */
+        for (const [field, varName] of Object.entries(FIELD_TO_VAR) as [
+          keyof typeof FIELD_TO_VAR,
+          string,
+        ][]) {
           it(`${field} 与 ${varName} 一致`, () => {
-            const paletteValue = (palette.presets[preset][mode] as Record<string, string>)[field]
+            const paletteValue = palette.presets[preset][mode][field]
             const scssValue = vars[varName]
             expect(scssValue, `theme.scss ${preset}.${mode} 段未找到 ${varName}`).toBeDefined()
             expect(
@@ -248,9 +257,13 @@ describe('palette ⇄ theme.scss 一致性（6 组）', () => {
 // 断言 B · 数值源齐全
 // =====================================================================
 describe('palette.subjects ⇄ variables.scss 学科常量', () => {
-  for (const [field, constName] of Object.entries(SUBJECT_TO_CONST)) {
+  // 同上：断言回 `keyof typeof SUBJECT_TO_CONST`，不把字段名擦成 `string`
+  for (const [field, constName] of Object.entries(SUBJECT_TO_CONST) as [
+    keyof typeof SUBJECT_TO_CONST,
+    string,
+  ][]) {
     it(`${field} 与 $${constName} 一致`, () => {
-      const paletteValue = (palette.subjects as Record<string, string>)[field]
+      const paletteValue = palette.subjects[field]
       const scssValue = variablesScssConstants[constName]
       expect(scssValue, `variables.scss 未找到 $${constName}`).toBeDefined()
       expect(

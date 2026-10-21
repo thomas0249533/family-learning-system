@@ -3,7 +3,6 @@ import {
   buildAchievementViewFromItems,
   filterAchievementItems,
   type AchievementItem,
-  type AchievementSource,
 } from '@core/motivation/achievementMeta'
 
 /**
@@ -33,6 +32,8 @@ const mk = (i: number, over: Partial<AchievementItem> = {}): AchievementItem => 
   percent: 0,
   hint: `还差 10 个`,
   chainLabel: '',
+  // V1.4 · B6 起必填；1 = 只达成过一次（卡面不显示「第 N 次」）
+  repeatCount: 1,
   ...over,
 })
 

@@ -403,7 +403,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
      *   `transaction('rw', db.a, db.b, cb)`
      *   `transaction('rw', [db.a, db.b], cb)`
      */
-    async transaction(mode: any, ...args: any[]) {
+    async transaction(_mode: any, ...args: any[]) {
       const fn = args[args.length - 1] as (...a: any[]) => Promise<any>
       const rest = args.slice(0, -1)
       const involved: FakeTable[] = (Array.isArray(rest[0]) ? (rest[0] as FakeTable[]) : (rest as FakeTable[]))

@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# pre-commit 门禁的垫片（V1.6 · Stage B · B1）
+#
+# 本文件是版本库里的**源**，由 `node scripts/git-hooks/install.mjs` 复制到
+# `.git/hooks/pre-commit`（那个目录不进版本库，所以源码放这里）。
+#
+# 为什么垫一层 sh 而不是直接 `#!/usr/bin/env node`：
+# git 在所有平台上都（几乎）是通过 sh 来执行钩子的，而 node 是否在 PATH 上取决于
+# 谁发起的 git —— 终端里提交时在，某些 GUI 客户端里可能不在。这一层负责把
+# "找不到 node" 变成**看得懂的一句话**，而不是一句 `env: node: No such file`。
+# 真正的门禁逻辑在 `pre-commit.mjs`（纯 Node），这里只做定位与转发。
+
+set -e
+
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+NODE_BIN="${NODE:-}"
+if [ -z "$NODE_BIN" ]; then
+  NODE_BIN=$(command -v node 2>/dev/null || true)
+fi
+if [ -z "$NODE_BIN" ] && [ -x "./node_modules/.bin/node" ]; then
+  NODE_BIN="./node_modules/.bin/node"
+fi
+
+if [ -z "$NODE_BIN" ]; then
+  echo "" >&2
+  echo "⚠️  pre-commit: 没找到 node，门禁没有执行。" >&2
+  echo "   这不是「通过」，只是没法检查。请在终端里手动补跑：npm run verify" >&2
+  echo "" >&2
+  # 故意放行：GUI 客户端里 PATH 常常拿不到 node，硬拦会让人连改都提交不了。
+  # 门禁的价值在 CI/本地日常，不在把人锁死。
+  exit 0
+fi
+
+exec "$NODE_BIN" scripts/git-hooks/pre-commit.mjs

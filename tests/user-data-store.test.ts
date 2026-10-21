@@ -91,9 +91,16 @@ describe('recordProgress — 新建进度记录', () => {
     await s.recordProgress(PKG, 'kp-judge', true, { questionType: 'judge' })
     const judge = fake.progress.rows.find(r => r.knowledgePointId === 'kp-judge')
 
-    expect(blank.status).toBe('已掌握')
-    expect(judge.status).not.toBe('已掌握')
-    expect(blank.masteryProbability).toBeGreaterThan(judge.masteryProbability)
+    // `.find()` 的结果可能是 undefined（表里没有该行）；先钉"行确实写进去了"，
+    // 再往下断言具体字段 —— 否则断言失败时只会看到 "cannot read property of undefined"
+    expect(blank).toBeTruthy()
+    expect(judge).toBeTruthy()
+    expect(blank!.status).toBe('已掌握')
+    expect(judge!.status).not.toBe('已掌握')
+    // BKT 概率是 `masteryProbability?`（可选，老数据没有）—— 本用例刚写过两行，必须都在
+    expect(typeof blank!.masteryProbability).toBe('number')
+    expect(typeof judge!.masteryProbability).toBe('number')
+    expect(blank!.masteryProbability!).toBeGreaterThan(judge!.masteryProbability!)
   })
 
   it('答错会立刻把状态打回「需复习」并重置连对', async () => {

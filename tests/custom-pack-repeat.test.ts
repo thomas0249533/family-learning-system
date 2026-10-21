@@ -44,11 +44,10 @@ vi.mock('@/db', () => ({ db: fake }))
 const {
   achievementsKey,
   dedupeUnlocked,
-  loadUnlocked,
   normalizeUnlocked,
   syncAchievements,
 } = await import('@core/motivation/achievements')
-const { parseCustomPack, previewCustomPack } = await import('@core/motivation/customPack')
+const { parseCustomPack } = await import('@core/motivation/customPack')
 const { packToDefs } = await import('@core/motivation/customPackDefs')
 const { CUSTOM_PACK_SCHEMA_VERSION, CUSTOM_REPEAT_PERIODS } = await import(
   '@core/motivation/customPackTypes'
@@ -61,7 +60,6 @@ type AchievementDef = import('@core/motivation/achievements').AchievementDef
 type Ctx = import('@core/motivation/achievements').AchievementContext
 type Rec = import('@core/motivation/achievements').UnlockedRecord
 type CustomAchievement = import('@core/motivation/customPackTypes').CustomAchievement
-type CustomRule = import('@core/motivation/customPackTypes').CustomRule
 
 /** 本地日期（**不要用 `new Date('2026-10-20')`**：那按 UTC 解析，东八区会差一天） */
 const at = (y: number, m: number, d: number, h = 12): Date => new Date(y, m - 1, d, h)
@@ -103,6 +101,9 @@ function ca(over: Partial<CustomAchievement> = {}): CustomAchievement {
     category: 'B',
     source: 'habit',
     repeat: 'weekly',
+    // counter 卡可进度化：`metered: true` + `target`，卡面才显示进度条（V1.5 起必填）
+    metered: true,
+    target: 10,
     rule: { kind: 'counter', metric: 'masteredKp', target: 10 },
     ...over,
   }
@@ -146,10 +147,6 @@ function syntheticDef(repeat: AchievementDef['repeat']): AchievementDef {
 
 async function seed(records: Rec[]): Promise<void> {
   await fake.settings.put({ key: achievementsKey(), value: records })
-}
-
-async function record(id: string): Promise<Rec | undefined> {
-  return (await loadUnlocked()).find((r) => r.id === id)
 }
 
 beforeEach(() => {
@@ -282,6 +279,8 @@ describe('packToDefs · repeat → mode:"grow"', () => {
             desc: '',
             category: 'M',
             source: 'core',
+            // 手工打卡卡不是进度化的（不得出现 target；见 CustomAchievement 注释）
+            metered: false,
             rule: { kind: 'manual-check', prompt: '整理好了吗' },
           } satisfies CustomAchievement,
         ],

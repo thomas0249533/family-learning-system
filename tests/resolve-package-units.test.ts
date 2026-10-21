@@ -1,4 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { LearningPackageRecord } from '@/db'
+import type { LearningPackageManifest, PackageType } from '@/schemas/manifest'
 
 /**
  * `resolvePackageUnits` 三段式回归（V1.3 · E-01 · D2 / D4）。
@@ -39,24 +41,37 @@ function unit(id: string, kpIds: string[]) {
   return { id, title: id, topics: [{ id: `${id}::t1`, knowledgePointIds: kpIds }] }
 }
 
+/**
+ * 造一个最小可读的包。
+ *
+ * **必须标返回类型**：不标的话 `manifest` 会被推成"只含写出来的那几个键"的字面量类型，
+ * 于是 `p.manifest = { ...p.manifest, packageType: 'unit' }` 与 `delete p.manifest.type`
+ * 都过不了类型检查（B1 打开 `tests/` 类型检查时这里一次爆了 11 个错）。
+ * `manifest` 的必填项只有 `schemaVersion/packageId/subject/grade/term/title`，补齐即可，
+ * 不需要动 src（`LearningPackageManifest` 本来就声明了 `packageType?` 别名）。
+ */
 function pkg(opts: {
   packageId: string
-  type?: string
+  type?: PackageType
   deps?: string[]
   sourceUnitIds?: string[]
   units?: any[]
-  subject?: string
-}) {
+  subject?: LearningPackageManifest['subject']
+}): LearningPackageRecord {
+  const manifest: LearningPackageManifest = {
+    schemaVersion: '1.0',
+    packageId: opts.packageId,
+    type: opts.type ?? 'unit',
+    subject: opts.subject ?? 'english',
+    grade: 4,
+    term: 'up',
+    title: opts.packageId,
+    dependencies: opts.deps ?? [],
+    ...(opts.sourceUnitIds ? { sourceUnitIds: opts.sourceUnitIds } : {}),
+  }
   return {
     packageId: opts.packageId,
-    manifest: {
-      packageId: opts.packageId,
-      type: opts.type ?? 'unit',
-      subject: opts.subject ?? 'english',
-      title: opts.packageId,
-      dependencies: opts.deps ?? [],
-      ...(opts.sourceUnitIds ? { sourceUnitIds: opts.sourceUnitIds } : {}),
-    },
+    manifest,
     knowledgePoints: [],
     exercises: [],
     units: opts.units ?? [],
@@ -102,7 +117,7 @@ describe('unit 包 / base 包：只看自己', () => {
     const p = pkg({ packageId: 'p2', type: 'unit', deps: ['p1'], units: [unit('p2::u2', [])] })
     // 真实 JSON 只写 type；这里额外验证别名分支
     p.manifest = { ...p.manifest, packageType: 'unit' }
-    delete (p.manifest as any).type
+    delete p.manifest.type
     fake.put(pkg({ packageId: 'p1', units: [unit('p1::u1', [])] }))
 
     const r = await resolvePackageUnits(p)

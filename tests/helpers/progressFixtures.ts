@@ -37,6 +37,8 @@ export function makePkg(packageId: string, subject: string, kps: KpSpec[]): Lear
 
 export interface ProgressSpec {
   id: number
+  /** v4 起进度行按档案隔离；不传即单档案场景（'default'），与生产 `DEFAULT_PROFILE_ID` 一致 */
+  profileId?: string
   packageId: string
   knowledgePointId: string
   status?: MasteryStatus
@@ -61,6 +63,7 @@ export interface ProgressSpec {
 export function makeProgress(spec: ProgressSpec): ProgressRecord {
   return {
     id: spec.id,
+    profileId: spec.profileId ?? 'default',
     packageId: spec.packageId,
     knowledgePointId: spec.knowledgePointId,
     status: spec.status ?? '学习中',

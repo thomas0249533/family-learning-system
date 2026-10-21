@@ -233,16 +233,22 @@ describe('migrateProgressV3 — upgrade() 钩子永不抛', () => {
 // ---------- 启动补偿 ----------
 
 describe('shouldRunRecovery — 什么时候放弃补偿', () => {
+  // 夹具一律补齐 `at`：真实的 `MigrationMarker` 恒带时间戳，缺字段的"半个标记"不是
+  // 这个函数要覆盖的形态（它只看 status/attempts）。补齐后不再需要 `as any`。
   it.each([
     [null, false, '没有标记'],
-    [{ status: 'ok' }, false, '迁移已成功'],
-    [{ status: 'ok-recovered' }, false, '补偿已成功过'],
-    [{ status: 'failed' }, true, '首次失败'],
-    [{ status: 'failed', attempts: MAX_ATTEMPTS - 1 }, true, '还没到上限'],
-    [{ status: 'failed', attempts: MAX_ATTEMPTS }, false, '已达上限'],
-    [{ status: 'failed', attempts: MAX_ATTEMPTS + 5 }, false, '超过上限'],
-  ] as const)('%#: %j → %s（%s）', (marker, expected) => {
-    expect(shouldRunRecovery(marker as any)).toBe(expected)
+    [{ status: 'ok', at: '2026-10-21T00:00:00.000Z' }, false, '迁移已成功'],
+    [{ status: 'ok-recovered', at: '2026-10-21T00:00:00.000Z' }, false, '补偿已成功过'],
+    [{ status: 'failed', at: '2026-10-21T00:00:00.000Z' }, true, '首次失败'],
+    [{ status: 'failed', attempts: MAX_ATTEMPTS - 1, at: '2026-10-21T00:00:00.000Z' }, true, '还没到上限'],
+    [{ status: 'failed', attempts: MAX_ATTEMPTS, at: '2026-10-21T00:00:00.000Z' }, false, '已达上限'],
+    [
+      { status: 'failed', attempts: MAX_ATTEMPTS + 5, at: '2026-10-21T00:00:00.000Z' },
+      false,
+      '超过上限',
+    ],
+  ] as const)('%#: %j → %s（%s）', (marker, expected, _why) => {
+    expect(shouldRunRecovery(marker)).toBe(expected)
   })
 })
 
@@ -389,7 +395,9 @@ describe('串行队列 — 两个入口同时触发时不许互相串味', () =>
      */
     expect(marker?.status).toBe('ok-recovered') // MigrationMarker
     expect(typeof stats?.rewritten).toBe('number') // MergeStats（不是 marker 冒名顶替）
-    expect(stats?.status).toBeUndefined()
+    // 刻意绕过类型：`MergeStats` 上根本不存在 `status`，这条负向断言就是要证明运行期也没有。
+    // 直接写 `stats?.status` 会被 TS 判为"属性不存在"，断言本身反而被编译期挡掉了。
+    expect((stats as unknown as Record<string, unknown>)?.status).toBeUndefined()
 
     // 数据层结果：孤儿行确实被改写到归属包，且**迁移标记没被重归因改写**
     expect(fake.progress.rows[0].packageId).toBe('unit-p1')

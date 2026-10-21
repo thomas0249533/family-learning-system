@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Bundle, LocalSnapshot } from '@core/backup/types'
+import type { MistakeRecord, ProgressRecord } from '@/db'
 import { createFakeDexie } from './helpers/fakeDexie'
 
 /**
@@ -35,7 +36,14 @@ const { emptyPlan } = await import('@core/backup/types')
 // 夹具
 // ---------------------------------------------------------------------------
 
-function progressRow(over: Record<string, unknown> = {}) {
+/**
+ * 造本机进度行。
+ *
+ * `over` 用 `Partial<ProgressRecord>` 而不是 `Record<string, unknown>`：后者会把
+ * `status` / `masteryLevel` 这类字面量联合退化成 `string`，工厂的返回值就不能赋给
+ * `Bundle.progress` 了 —— 这正是 B1 打开 `tests/` 类型检查时暴露的第一批错误。
+ */
+function progressRow(over: Partial<ProgressRecord> = {}): ProgressRecord {
   return {
     profileId: PID,
     packageId: 'pkg-a',
@@ -51,7 +59,7 @@ function progressRow(over: Record<string, unknown> = {}) {
   }
 }
 
-function mistakeRow(over: Record<string, unknown> = {}) {
+function mistakeRow(over: Partial<MistakeRecord> = {}): MistakeRecord {
   return {
     profileId: PID,
     packageId: 'pkg-a',
@@ -110,8 +118,10 @@ async function snapshotFromDb(profiles: string[] = [PID]): Promise<LocalSnapshot
         profileId: id,
         name: `名字-${id}`,
         createdAt: '2025-01-01T00:00:00.000Z',
-        progress: (await fake.progress.toArray()).filter((r) => r.profileId === id),
-        mistakes: (await fake.mistakes.toArray()).filter((r) => r.profileId === id),
+        // 假库的读接口返回 `Row[]`（`Record<string, any>`，刻意不含领域类型）；
+        // 这里断言回真实类型，正是"读完库当成 ProgressRecord 用"的生产语义。
+        progress: (await fake.progress.toArray()).filter((r) => r.profileId === id) as ProgressRecord[],
+        mistakes: (await fake.mistakes.toArray()).filter((r) => r.profileId === id) as MistakeRecord[],
         examSessions: [],
         settings: {},
       })),
@@ -281,13 +291,16 @@ describe('A6 · L2 — 没有本地改动时正常放行', () => {
     const local = await snapshotFromDb()
     const plan = planMerge(local, [remoteBundle()], NOW, {})
     const k = progressKey(plan.progressUpserts[0])
-    const base = plan.stalenessGuard.progress[PID][k] as Record<string, unknown>
+    const base = plan.stalenessGuard.progress[PID][k]
+    expect(base).toBeTruthy()
 
-    // 换个键序 + 塞一个 executeImport 的 JSON 往返会整个丢掉的键
+    // 基线值的类型是 `ProgressRecord | null`，而本用例要故意造一个"键序不同 + 带 undefined"
+    // 的对象来钉住 `stableStringify` 的排序与丢键行为 —— 形状本来就不合规，只能经 unknown 绕类型。
+    const baseObj = base as unknown as Record<string, unknown>
     const reordered: Record<string, unknown> = {}
-    for (const key of Object.keys(base).reverse()) reordered[key] = base[key]
+    for (const key of Object.keys(baseObj).reverse()) reordered[key] = baseObj[key]
     reordered.nextReviewAt = undefined
-    plan.stalenessGuard.progress[PID][k] = reordered
+    plan.stalenessGuard.progress[PID][k] = reordered as unknown as ProgressRecord
 
     await expect(applyMergePlan(plan)).resolves.toBeTruthy()
     expect(fake.progress.rows[0].correctCount).toBe(9)
