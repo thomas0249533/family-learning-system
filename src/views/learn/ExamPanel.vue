@@ -178,7 +178,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { NInputNumber, NSpace, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import QuestionText from '@/components/QuestionText.vue'
@@ -187,7 +187,7 @@ import QuizEngine, { type AnswerPayload, type ExamDetailItem, type ExamDetailPay
 import { useUserDataStore } from '@core/stores/userData'
 import { useExamStore } from '@core/stores/exam'
 import { db } from '@/db'
-import { currentProfileId } from '@core/profile/currentProfile'
+import { currentProfileId, onProfileChange, type ProfilesState } from '@core/profile/currentProfile'
 import type { LearningPackageRecord, ExamSessionRecord } from '@/db'
 import { resolveOwnerPackageId } from '@core/progress/ownerIndex'
 import { ensureOwnerIndex } from '@core/progress/ownerIndexCache'
@@ -300,8 +300,35 @@ function formatDuration(sec: number): string {
 
 // 题干渲染已抽到 <QuestionText>（见 @core/quiz/questionText）
 
+/**
+ * 档案切换后重读会话（V1.6 · A5）。
+ *
+ * `examStore.sessions` 是 store 级缓存，原本只在 `onMounted` 读一次。
+ * 档案切换走的是 AppShell 顶栏，**不换路由** → 本页面不重挂载 →
+ * "停在模考页切到妹妹"之后，历史列表还挂着老大的卷子和分数。
+ * 而成绩正是最该被档案隔开的东西（见 `exam.ts` 里那段注释）。
+ *
+ * 为什么在这里补而不是在 store 里：`sessions` 的生命周期跟这个页面绑定
+ * （换包要重新 load、答完要刷新），store 只负责"按档案读对"。
+ */
+let offProfileChange: (() => void) | null = null
+
 onMounted(async () => {
+  offProfileChange = onProfileChange(async (next: ProfilesState, prev: ProfilesState) => {
+    if (next.activeId === prev.activeId) return
+    // 正在答题中途被切走（家长在别处操作）→ 会话已属于另一个孩子，直接丢弃
+    if (phase.value === 'running') {
+      phase.value = 'intro'
+      currentSession.value = null
+    }
+    await examStore.loadSessions(props.pkg.packageId)
+  })
   await examStore.loadSessions(props.pkg.packageId)
+})
+
+onUnmounted(() => {
+  offProfileChange?.()
+  offProfileChange = null
 })
 
 async function startNewSession() {

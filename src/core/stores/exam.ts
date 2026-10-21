@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { db, type ExamSessionRecord } from '@/db'
-import { currentProfileId } from '@core/profile/currentProfile'
+import { currentProfileId, onProfileChange } from '@core/profile/currentProfile'
 
 function toPlain<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
@@ -9,6 +9,19 @@ function toPlain<T>(obj: T): T {
 
 export const useExamStore = defineStore('exam', () => {
   const sessions = ref<ExamSessionRecord[]>([])
+
+  /**
+   * 档案切换 → 清空会话缓存（V1.6 · A5）。
+   *
+   * `sessions` 是 store 级缓存，原本只在页面 `onMounted` 时读一次。
+   * 档案切换不换路由、页面不重挂载，于是"停在模考页 → 切档案"之后
+   * 旧档案的卷子和分数还挂在屏幕上。ExamPanel 自己会重读（见那里的注释），
+   * 这里是第二层：任何将来直接读 `sessions` 的地方，最坏看到**空列表**，
+   * 而不是**另一个孩子的成绩** —— 两种错法里，前者只是难看。
+   */
+  onProfileChange(() => {
+    sessions.value = []
+  })
 
   /**
    * 加载当前档案在某学习包下的所有会话。
