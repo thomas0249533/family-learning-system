@@ -133,6 +133,47 @@
         </template>
       </PageHeader>
     </section>
+
+    <!-- ============ 交互演示（只给 e2e 用）============ -->
+    <!-- 为什么单独一块而不是往上面 8 块里加：`primitives.spec.ts` 的截图基线按
+         `.ds-block[data-ds=...]` 逐块出图，往已有块里塞节点会让那 22 张图全部漂移。
+         这一块用独立的 `data-ds="interaction-demo"`，不在截图矩阵的 BLOCKS 里。
+         里面的示例都带**可见副作用**（计数 / 列表变短），
+         供 `tests/e2e/primitives-interaction.spec.ts` 断言"事件真的被消费了"。 -->
+    <section class="ds-block" data-ds="interaction-demo">
+      <SectionTitle title="交互演示（e2e 专用）" count="DEV only" accent />
+
+      <div class="ds-row">
+        <AppButton type="primary" data-t="btn-count" @click="bumpClick">点击计数（启用）</AppButton>
+        <AppButton type="primary" disabled data-t="btn-count-disabled" @click="bumpClick">
+          点击计数（禁用）
+        </AppButton>
+        <span class="ds-counter" data-t="click-count">{{ clickCount }}</span>
+      </div>
+
+      <div class="ds-row">
+        <span class="ds-counter" data-t="badge-count">{{ badges.length }}</span>
+        <AppBadge
+          v-for="(b, i) in badges"
+          :key="b"
+          tone="danger"
+          closable
+          data-t="badge"
+          @close="removeBadge(i)"
+        >
+          {{ b }}
+        </AppBadge>
+        <span v-if="badges.length === 0" class="ds-counter" data-t="badge-empty">已清空</span>
+      </div>
+
+      <!-- 边界值：0 / 常规 / 超过 max（150 应被裁剪成 100） -->
+      <div class="ds-stack">
+        <ProgressBar data-t="pb-0" :value="0" show-label />
+        <ProgressBar data-t="pb-45" :value="45" show-label />
+        <ProgressBar data-t="pb-72" :value="72" show-label />
+        <ProgressBar data-t="pb-150" :value="150" show-label />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -143,6 +184,7 @@
 // 不参与生产路由（router 用 `import.meta.env.DEV` 条件注册 → 生产 DCE）。
 // 页面零硬编码色；纯 layout。截图目标为 `.ds-block[data-ds=...]`。
 // =====================================================================
+import { ref } from 'vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import AppButton from '@/components/ui/AppButton.vue'
@@ -151,6 +193,17 @@ import AppBadge from '@/components/ui/AppBadge.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+
+// ---- 交互演示状态（见模板 data-ds="interaction-demo"）----
+const clickCount = ref(0)
+function bumpClick(): void {
+  clickCount.value += 1
+}
+
+const badges = ref<string[]>(['可关闭 A', '可关闭 B'])
+function removeBadge(index: number): void {
+  badges.value = badges.value.filter((_, i) => i !== index)
+}
 </script>
 
 <style scoped lang="scss">
@@ -204,5 +257,19 @@ import EmptyState from '@/components/ui/EmptyState.vue'
   padding: var(--space-4);
   font-size: var(--font-sm);
   color: var(--text-sub);
+}
+
+/* 交互演示里的可见读数（数字变了 = 事件被消费了） */
+.ds-counter {
+  display: inline-flex;
+  align-items: center;
+  min-width: 2ch;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--badge-neutral-bg);
+  font-size: var(--font-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-main);
 }
 </style>
