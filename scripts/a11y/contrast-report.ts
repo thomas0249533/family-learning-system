@@ -9,12 +9,33 @@
 //       (2) 例外表：真实但接受低于 AA 的组合，逐行带「不得变差」下限断言；
 //       (3) 无未分类失败项：每个 ❌ 必须是 例外 / 已由「语义色分工」判定为
 //           不适用（图形色 / 非真实渲染），否则视为未登记 → 失败。
+//   · **第四类门禁（D1 补）**：MUST_PASS 死键 —— 登记了但 `buildPairs` 从未生成
+//     配对的键（详见门禁段的 `mustKeysByGroup`）。不守它，登记就是假的。
 //   理由：只做「小型白名单」会让门禁沦为装饰（见批 6a 复盘）。
+//
+// ## 两种运行模式（`--check` 仿 `scripts/tokens/check.ts` 的漂移校验范式）
+//   · 默认（无参数）：判定 + **写盘**（生成 `docs/design-system/a11y.md`），供人看。
+//   · `--check`（或 `CI=true`，显式参数优先）：判定 + **不写盘**，
+//     改为把内存生成的文档与磁盘逐字节比对（比对前 `\r\n → \n` 归一），
+//     不一致即「文档已漂移」→ exit 1。用于 `npm run verify` 的只读门禁链：
+//     把「校验」与「写文件」解耦，否则 verify 会变成"每次提交都在改一个被 git
+//     跟踪的文件"——一旦生成逻辑哪天引入非确定性，那是最难查的一类脏工作区，
+//     而且在只读环境（CI / 容器）里还会直接失败。
 // =====================================================================
 
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { buildSemantic, FONT, PRESETS, MODES, type ThemePreset, type ThemeMode } from '../../src/core/styles/tokens'
+
+/**
+ * `--check` / `CI=true` → 只校验不写盘（见文件头「两种运行模式」）。
+ * 显式参数优先：`--check` 永远赢过环境变量，避免本地跑 CI 变量时行为突变。
+ */
+const CHECK_MODE = process.argv.includes('--check') || process.env.CI === 'true'
+/** 日志前缀（写盘模式与既有日志完全一致，check 模式多一段后缀便于在 verify 日志里认出） */
+const TAG = CHECK_MODE ? '[a11y:contrast:check]' : '[a11y:contrast]'
+/** 换行归一：本仓统一 `\n`，但 git 在 Windows 上可能把工作区改成 CRLF（同 tokens/check.ts） */
+const normalizeEol = (s: string): string => s.replace(/\r\n/g, '\n')
 
 /* ---------------------- 颜色工具 ---------------------- */
 
@@ -269,6 +290,7 @@ const md: string[] = []
 md.push('# 对比度审计（WCAG AA）')
 md.push('')
 md.push('> 自动生成：`npm run a11y:contrast`（`scripts/a11y/contrast-report.ts`，vite-node，零依赖）')
+md.push('> 只校验不写盘：`npm run a11y:contrast:check`（`--check`；已接进 `npm run verify`，文档漂移即红）')
 md.push('> 数据源：`src/core/styles/tokens.ts` 的 `buildSemantic`（6 组 = 3 学段 × 浅/深）')
 md.push('> 阈值：正文 **4.5** / 大号 **3.0**')
 md.push('')
@@ -340,7 +362,8 @@ md.push('1. `buildPairs` 里 `add(fg, bg)` 生成配对 —— 注意 `add()` �
 md.push('   造成「半死键」（只在前几组有配对）；守卫按组比对，能抓到这种。')
 md.push('2. `MUST_PASS` 里加法同样的键字符串，格式 `` `${fg} ↔ ${bg}` ``（分隔符是**全角 `↔` 两侧各一个空格**，照抄）。')
 md.push('')
-md.push('> 守卫只在 `npm run a11y:contrast` 时生效；`npm run verify` 的门禁链里**不含**该脚本（现状如此）。')
+md.push('> 该守卫在 `npm run a11y:contrast`（写盘）与 `npm run a11y:contrast:check`（只校验、不写盘）两种模式下都生效；'
+  + '后者已接进 `npm run verify` 链（紧跟 `check:text-color`），所以「登记了却不校验」在提交前就会被拦下。')
 md.push('')
 md.push('## §例外表（真实但接受低于 AA；含「不得变差」下限）')
 md.push('')
@@ -425,8 +448,36 @@ md.push('类别：(a) 用户已授权 / (b) 本批新授权 / (c) 修 bug')
 md.push('')
 
 const outPath = resolve(process.cwd(), 'docs/design-system/a11y.md')
-mkdirSync(dirname(outPath), { recursive: true })
-writeFileSync(outPath, md.join('\n'), 'utf8')
+const rendered = md.join('\n')
+
+/**
+ * 文档落地：写盘模式写文件；`--check` 模式**只比对、绝不写**。
+ * 漂移不在这里 exit —— 交给下面的门禁段与其它失败项一起汇总退出码，
+ * 这样一次运行能把「对比度红了」和「文档漂移了」一起报出来，不用跑两遍。
+ */
+let docDrift = false
+if (CHECK_MODE) {
+  if (!existsSync(outPath)) {
+    docDrift = true
+    console.error(`${TAG} ✗ 缺失文档：docs/design-system/a11y.md（跑 npm run a11y:contrast 生成）`)
+  } else {
+    const actual = normalizeEol(readFileSync(outPath, 'utf8'))
+    const want = normalizeEol(rendered)
+    if (actual !== want) {
+      docDrift = true
+      let i = 0
+      const n = Math.min(actual.length, want.length)
+      while (i < n && actual[i] === want[i]) i += 1
+      const ctx = (s: string): string => s.slice(Math.max(0, i - 40), i + 40).replace(/\n/g, '⏎')
+      console.error(`${TAG} ✗ 文档已漂移：docs/design-system/a11y.md（首个不等 offset=${i}）`)
+      console.error(`   磁盘 : …${ctx(actual)}…`)
+      console.error(`   生成 : …${ctx(want)}…`)
+    }
+  }
+} else {
+  mkdirSync(dirname(outPath), { recursive: true })
+  writeFileSync(outPath, rendered, 'utf8')
+}
 
 /* ---------------------- 门禁 ---------------------- */
 
@@ -441,7 +492,8 @@ writeFileSync(outPath, md.join('\n'), 'utf8')
  * 逐组判定（不是「全局命中即算活」）：`add()` 在某个 token 于某预设下取不到值时会静默
  * `return`，配对就只在部分组里生成 —— 这种「半死键」同样是漏检，一并红。
  *
- * ⚠️ 本守卫只在 `npm run a11y:contrast` 时生效，`npm run verify` 不含该脚本（现状）。
+ * ⚠️ 本守卫在 `npm run a11y:contrast`（写盘）与 `npm run a11y:contrast:check`
+ * （只校验，已接进 `npm run verify` 链）两种模式下都生效。
  */
 const mustKeysByGroup = new Map<string, Set<string>>()
 for (const r of allRows) {
@@ -468,31 +520,39 @@ for (const ex of EXCEPTIONS) {
 const unclassified = allRows.filter((r) => !r.pass && r.class === '未分类')
 const totalFails = allRows.filter((r) => !r.pass).length
 
-console.log(`[a11y:contrast] 报告已写入 ${outPath}`)
-console.log(`[a11y:contrast] 配对总数 ${allRows.length}；非通过 ${totalFails}（例外 ${EXCEPTIONS.length}；其余均已判不适用）`)
-console.log(`[a11y:contrast] MUST_PASS 失败 ${mustFails.length}；例外「不得变差」失败 ${exceptionFails.length}；未分类失败 ${unclassified.length}；死键 ${deadKeys.length}`)
+if (CHECK_MODE) {
+  console.log(`${TAG} 只校验模式：未写盘，逐字节比对 ${outPath} → ${docDrift ? '漂移' : '一致'}`)
+} else {
+  console.log(`${TAG} 报告已写入 ${outPath}`)
+}
+console.log(`${TAG} 配对总数 ${allRows.length}；非通过 ${totalFails}（例外 ${EXCEPTIONS.length}；其余均已判不适用）`)
+console.log(`${TAG} MUST_PASS 失败 ${mustFails.length}；例外「不得变差」失败 ${exceptionFails.length}；未分类失败 ${unclassified.length}；死键 ${deadKeys.length}`)
 
 let bad = false
+if (docDrift) {
+  bad = true
+  console.error(`${TAG} ✗ 文档已漂移，跑 \`npm run a11y:contrast\` 重新生成 docs/design-system/a11y.md`)
+}
 if (deadKeys.length > 0) {
   bad = true
-  console.error('[a11y:contrast] ✗ MUST_PASS 存在死键（登记了但配对从未生成 → 该登记静默失效）：')
+  console.error(`${TAG} ✗ MUST_PASS 存在死键（登记了但配对从未生成 → 该登记静默失效）：`)
   for (const s of deadKeys) console.error(`  - ${s}`)
   console.error('  修法：在 buildPairs 里 add(fg, bg) 生成配对（键格式 `${fg} ↔ ${bg}`，全角 ↔ 两侧带空格）')
 }
 if (mustFails.length > 0) {
   bad = true
-  console.error('[a11y:contrast] ✗ MUST_PASS 出现不达标：')
+  console.error(`${TAG} ✗ MUST_PASS 出现不达标：`)
   for (const r of mustFails) console.error(`  - [${r.group}] ${r.label} = ${r.value?.toFixed(2)} (< ${r.threshold})`)
 }
 if (exceptionFails.length > 0) {
   bad = true
-  console.error('[a11y:contrast] ✗ 例外表「不得变差」断言失败：')
+  console.error(`${TAG} ✗ 例外表「不得变差」断言失败：`)
   for (const s of exceptionFails) console.error(`  - ${s}`)
 }
 if (unclassified.length > 0) {
   bad = true
-  console.error('[a11y:contrast] ✗ 存在未分类的失败项（须登记例外或判定不适用）：')
+  console.error(`${TAG} ✗ 存在未分类的失败项（须登记例外或判定不适用）：`)
   for (const r of unclassified) console.error(`  - [${r.group}] ${r.key} = ${r.value?.toFixed(2)}`)
 }
 if (bad) process.exit(1)
-console.log('[a11y:contrast] ✓ MUST_PASS 全达标 + 例外表未变差 + 无未分类失败项')
+console.log(`${TAG} ✓ MUST_PASS 全达标 + 例外表未变差 + 无未分类失败项 + 无死键` + (CHECK_MODE ? ' + 文档无漂移' : ''))
