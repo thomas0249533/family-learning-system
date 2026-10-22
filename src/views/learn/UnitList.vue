@@ -215,14 +215,21 @@ function selectUnit(ru: ResolvedUnit) {
     }
   }
 
+  /* 序号条：**中性底，不随状态染色**。
+     序号是序数、不承载状态语义；一旦按状态上色，卡片上就出现第二种色调
+     （旧实现是 `$primary-light` #e7f3ed，与 `--success-light` #e9f8ef 几乎同色，
+     于是在「需复习」的粉红卡上是一条淡绿竖条 = 绿/红两种状态信号互相打架）。
+     底色用 `--badge-neutral-bg`（= `bg-color-hover`），字用 `text-main`；
+     这一对已登记进 `scripts/a11y/contrast-report.ts` 的 MUST_PASS，对比度真的被算。
+     hover 时变实心主色块仍保留（那是原有交互语言，见上方 `&:hover`）。 */
   .unit-card-index {
     flex-shrink: 0;
     width: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $primary-light;
-    color: $primary-text;
+    background: var(--badge-neutral-bg);
+    color: $text-main;
     font-size: 18px;
     font-weight: 800;
     transition: all 0.2s;

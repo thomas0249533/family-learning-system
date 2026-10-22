@@ -5,7 +5,7 @@
 // 读屏隐藏」，各写一遍必然漂移。这里只定义 **mixin**（零 CSS 输出），
 // 由各 SFC 在自己的 scoped 样式里 `@import '@/core/styles/card-status';`。
 //
-// ⚠️ 五条硬约束，改这个文件前先看：
+// ⚠️ 六条硬约束，改这个文件前先看：
 //   1. **不进生成链**：`theme.scss` / `palette.ts` 是
 //      `scripts/tokens/generate.ts` 的产物，严禁手改；本文件是它的邻居，
 //      不受 `tokens:check` 与 `tests/tokens-generation.test.ts` 管辖。
@@ -31,6 +31,17 @@
 //      仅 **+0.01**。**动 `--primary-text` 或 `--danger-light` / `--info-light` 之前
 //      先跑 `npm run a11y:contrast`** —— 这不是"该放宽容忍度"的地方（CTA 是 12px/700，
 //      不是大号文本，不能按 3.0 判），而是"改 token 会立刻红"的预警。
+//
+//   6. **状态底色卡片上的「非状态语义色块」不得染 tone**（序号条 / 图标底 / 分类型标签）：
+//      它们不承载掌握状态，任何一种 tone 压在状态底色上都会变成**第二种状态信号**，
+//      把刚建立的四态语言搅浑。具体翻车案例（D1 收尾由视觉基线照出）：
+//      `.unit-card-index` 原用 `$primary-light` = `#e7f3ed`，而 `--success-light` =
+//      `#e9f8ef` —— 两个几乎同色，于是在「需复习」的粉红卡（`#fdeded`）左侧出现一条
+//      **淡绿**竖条，读作「绿=已掌握」压在「红=需复习」上；未学白卡上也挂一条绿条，
+//      在「已掌握=绿」这套语言里本身就是误导信号。正解是中性：
+//      `background: var(--badge-neutral-bg)` + `color: $text-main`（该对已进 MUST_PASS）。
+//      **不要**写成 `&.is-review .unit-card-index { background: var(--badge-danger-bg) }`
+//      ——按状态染色只是把"第二种色调"换成"同色系的另一种"，序号依旧在冒充状态。
 //
 // 语义与 `TopicDetail.vue` 的 `.mastery-status` 完全一致（未学=中性 /
 // 学习中=warning / 需复习=danger / 已掌握=success），不另造第二套配色语言。

@@ -132,6 +132,18 @@ const MUST_PASS = new Set<string>([
     ['bg-color', 'card-bg', 'surface-2'].map((b) => `${t} ↔ ${b}`),
   ),
   'text-sub ↔ bg-color-hover',
+  /**
+   * V1.6 · D1 收尾 —— 单元卡右侧序号条（`.unit-card-index`）退回中性底后的文字对。
+   *
+   * 序号条底色改成 `--badge-neutral-bg`（= `bg-color-hover`），上面压的是序号数字
+   * `text-main`（此前是 `primary-text` 压在 `primary-light` 上）。这条此前进过 §① 的配对
+   * 生成、但从未登记进 MUST_PASS —— 属于"真实会渲染却没被约束"，按 D1 那批的口径补登记。
+   *
+   * 为什么不让它跟 `text-muted` 一样留在外面：`text-main ↔ bg-color-hover` 是**正文级**
+   * 组合（18px/800 的序号），必须 ≥4.5；而 `text-muted ↔ bg-color-hover` 那三组是
+   * 唯一的登记例外（见 §例外表），两者性质不同。
+   */
+  'text-main ↔ bg-color-hover',
   // 语义文字色 × 表面 / 自身浅底
   ...TONES.flatMap((t) => ['bg-color', 'card-bg', 'surface-2', `${t}-light`].map((b) => `${t}-text ↔ ${b}`)),
   /**

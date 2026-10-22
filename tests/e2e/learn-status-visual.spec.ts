@@ -487,6 +487,13 @@ interface CardShot {
   count: number
   /** 角标选择器（`null` = 本页没有状态角标，如 D4 阅读页） */
   mark: string | null
+  /**
+   * 卡片内「非状态语义色块」选择器（如单元卡左侧序号条 `.unit-card-index`）。
+   * 给了它就会额外断言：**四态下这块底色完全一致** + **不等于任何 `--badge-{tone}-bg`**
+   * —— 见断言 ④⑤ 的说明（D1 收尾：序号条曾用 `$primary-light`，与 `success-light` 几乎同色，
+   * 在「需复习」的粉红卡上读作"绿=已掌握"）。
+   */
+  index?: string
   /** 期望同屏出现的四个状态类（`null` = 不要求四态） */
   statuses: string[] | null
 }
@@ -508,6 +515,8 @@ const CARD_SHOTS: CardShot[] = [
     // u1 已掌握 / u2 学习中 / u3 需复习 / u4 未开始 / u5 四态混合（= 学习中）
     count: 5,
     mark: '.unit-status-mark',
+    // 序号条：非状态语义色块，必须中性（断言 ④⑤）
+    index: '.unit-card-index',
     statuses: ['is-none', 'is-learning', 'is-review', 'is-mastered'],
   },
   {
@@ -518,6 +527,9 @@ const CARD_SHOTS: CardShot[] = [
     card: '.topic-card',
     count: 4,
     mark: '.topic-status-mark',
+    // 序号块：与单元卡 `.unit-card-index` 是同一处缺陷（旧的 `$primary-light` 在
+    // 粉红/米黄的专题卡上是一块淡绿小色块），必须一起退回中性（断言 ④⑤）
+    index: '.topic-card-index',
     statuses: ['is-none', 'is-learning', 'is-review', 'is-mastered'],
   },
   {
@@ -562,6 +574,66 @@ async function measureCards(page: Page, card: string, mark: string | null): Prom
     },
     { card, mark }
   )
+}
+
+/**
+ * 「非状态语义色块」实测（当前只有单元卡左侧序号条）。
+ *
+ * 为什么单独量：卡片底色随状态变是**设计**，而卡片里那块序号条**不该**变。
+ * 两者一混，「需复习」的卡上出现一条淡绿竖条就没人发现（D1 收尾的真事）。
+ */
+interface StripMeasure {
+  index: number
+  cardClass: string
+  present: boolean
+  background: string
+  color: string
+}
+
+async function measureIndexStrips(
+  page: Page,
+  card: string,
+  index: string
+): Promise<StripMeasure[]> {
+  return page.evaluate(
+    async ({ card, index }) => {
+      const nodes = Array.from(document.querySelectorAll(card))
+      return nodes.map((el, i) => {
+        const strip = el.querySelector(index)
+        return {
+          index: i + 1,
+          cardClass: (el as HTMLElement).className.replace(/\s+/g, ' ').trim(),
+          present: strip !== null,
+          background: strip ? getComputedStyle(strip).backgroundColor : '(缺失)',
+          color: strip ? getComputedStyle(strip).color : '(缺失)',
+        }
+      })
+    },
+    { card, index }
+  )
+}
+
+/**
+ * 五个 `--badge-{tone}-bg` 的**真实 computed 色值**。
+ *
+ * 为什么不硬编码 hex：① `npm run check:hex` 会拦字面量色；② 换主题 / 换预设后 hex 就错。
+ * 做法是造一个游离 `div`、把 `background` 设成 `var(--badge-<tone>-bg)`、**挂到 body**
+ * 再读 `getComputedStyle`（游离节点不参与 var() 解析），读完移除 —— 与真实渲染
+ * 走同一条自定义属性解析路径。
+ */
+async function readToneBadgeBg(page: Page): Promise<Record<string, string>> {
+  return page.evaluate(() => {
+    const tones = ['primary', 'success', 'warning', 'danger', 'info']
+    const out: Record<string, string> = {}
+    for (const tone of tones) {
+      const probe = document.createElement('div')
+      probe.style.background = `var(--badge-${tone}-bg)`
+      document.body.appendChild(probe)
+      out[tone] = getComputedStyle(probe).backgroundColor
+      probe.remove()
+    }
+    return out
+  })
 }
 
 for (const shot of CARD_SHOTS) {
@@ -641,6 +713,37 @@ for (const shot of CARD_SHOTS) {
         expect(ink.toolbarBox!.height).toBeGreaterThan(16)
         expect(ink.buttons.length).toBeGreaterThanOrEqual(4)
         expect(ink.statusText).not.toBe('')
+      }
+
+      // ---------- 断言 ④⑤：序号条必须中性（D1 收尾） ----------
+      // 为什么必须是两条、而不是"和卡片底色不同"：
+      //   把旧的 `$primary-light` 还原回去时，「四态一致」仍然成立（都是绿）、
+      //   「不等于四种卡片底色」也成立（`#e7f3ed` 不等于任何一个 `-light` 卡底）。
+      //   所以只有 ⑤（不等于任何 `--badge-{tone}-bg`）是判决性的 ——
+      //   旧代码下 `stripBg === primary-light` 直接红。
+      if (shot.index) {
+        const strips = await measureIndexStrips(page, shot.card, shot.index)
+        console.log(`\n[${shot.key}-${mode}] 实测序号条：\n` + JSON.stringify(strips, null, 2))
+
+        // 序号条必须真存在（否则下面两条会在空集合上恒真）
+        expect(strips.every((s) => s.present)).toBe(true)
+
+        // ④ 四个状态下底色完全一致 → 守住「不能按状态染色」
+        expect(
+          new Set(strips.map((s) => s.background)).size,
+          `序号条底色随状态变化了（实测：${strips
+            .map((s) => `${s.cardClass}=${s.background}`)
+            .join(' | ')}）`
+        ).toBe(1)
+
+        // ⑤ 底色不得等于任何 tone 软底 → 守住「不能是 tone 色」
+        const toneBgs = await readToneBadgeBg(page)
+        const stripBg = strips[0].background
+        const hitTone = Object.entries(toneBgs).find(([, v]) => v === stripBg)
+        expect(
+          hitTone,
+          `序号条底色 ${stripBg} 命中 --badge-${hitTone?.[0] ?? '?'}-bg —— 非状态语义色块不得染 tone`
+        ).toBeUndefined()
       }
 
       await freezeSmil(page)
