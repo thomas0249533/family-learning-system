@@ -136,6 +136,27 @@ describe('storyOf · M 精熟类默认两行', () => {
     })
   })
 
+  it('★ 日期取本地日：清晨学的不能被算成前一天（UTC 日串的坑）', () => {
+    // 构造「本地 10-19 00:30」的瞬时再 toISOString：东八区下它是
+    // '2026-10-18T16:30:00.000Z' —— UTC 日期部分属于**前一天**。
+    // 旧实现 dayOf 直接 slice(0,10)，孩子 19 号清晨学的会被印成 18 号。
+    // TZ 安全性：UTC 时区下这个瞬时本来就不跨 UTC 日，用例依旧为绿
+    // （不会假红），但只有在正偏移时区才真正锻炼到边界——本机是东八区。
+    const earlyMorning = new Date(2026, 9, 19, 0, 30)
+    const c = ctx({
+      packages: [pkg('unit-math', 'math', 100)],
+      progress: [
+        prog('unit-math', {
+          knowledgePointId: 'unit-math::kp7',
+          status: '已掌握',
+          lastStudiedAt: earlyMorning.toISOString(),
+        }),
+      ],
+    })
+    const s = storyOf(item(), c, opts())
+    expect(s.related[0]).toEqual({ label: '最近掌握', value: '知识点7 · 2026-10-19' })
+  })
+
   it('未掌握的不算进掌握概况', () => {
     const c = ctx({
       packages: [pkg('unit-math', 'math', 100)],

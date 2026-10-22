@@ -74,7 +74,17 @@ export function progressRank(
   return row.lastReviewAt ?? row.lastStudiedAt ?? ''
 }
 
-/** 三态比较：`'>' | '<' | '='`，只用于 ISO 字符串 */
+/**
+ * 三态比较：`'>' | '<' | '='`，只用于 ISO 字符串。
+ *
+ * ⚠️ 字典序 = 时间序**只在同格式下成立**：比较值来自 `progressRank`
+ * （`lastReviewAt ?? lastStudiedAt`），当前所有写入口都发 UTC 全时刻
+ * （`...Z`，见 tests/review-time-contract.test.ts 钉住的格式契约）。
+ * 一旦混入带偏移格式（`+08:00`）或日精度串，字典序就会与时间序脱钩——
+ * 更早的瞬时可能胜出，直接违反「单调不减」。要改写入口格式，必须先来这里
+ * 改成 `new Date(a).getTime()` 时刻比较（注意日精度串 '2026-02-01' 解析为
+ * UTC 零点，与同时刻瞬时的相等语义需要一并裁定）。
+ */
 function cmp(a: string, b: string): -1 | 0 | 1 {
   if (a > b) return 1
   if (a < b) return -1

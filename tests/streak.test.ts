@@ -34,6 +34,13 @@ describe('localDayKey — 用本地日期，不用 UTC', () => {
     expect(localDayKey(new Date(2026, 0, 3))).toBe('2026-01-03')
     expect(localDayKey(new Date(2026, 11, 31))).toBe('2026-12-31')
   })
+
+  it('E1-a 指定三边界：20:00 / 23:59 / 00:01', () => {
+    // 用本地构造（new Date(y,m,d,h)），任何时区下断言语义一致
+    expect(localDayKey(new Date(2026, 9, 15, 20, 0))).toBe('2026-10-15')
+    expect(localDayKey(new Date(2026, 9, 15, 23, 59))).toBe('2026-10-15')
+    expect(localDayKey(new Date(2026, 9, 16, 0, 1))).toBe('2026-10-16')
+  })
 })
 
 describe('studiedToday', () => {

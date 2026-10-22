@@ -41,6 +41,7 @@ import type { AchievementContext } from './achievements'
 import type { AchievementItem } from './achievementMeta'
 import type { DailyStat } from './dailyStats'
 import { SUBJECT_LABEL } from './achievementProgress'
+import { localDayKey } from './streak'
 
 /** 一条"标签 : 值"的关联记录 */
 export interface RelatedRecord {
@@ -94,10 +95,15 @@ export interface AchievementStory {
 const MASTERED = '已掌握'
 const TERM_LABEL: Record<string, string> = { up: '上册', down: '下册' }
 
-/** ISO 时间戳 → 日期部分。空值/脏值一律空串，让调用方"少一行"而不是显示 `undefined` */
+/** ISO 时间戳 → 本地日期。空值/脏值一律空串，让调用方"少一行"而不是显示 `undefined` */
 function dayOf(iso: string | null | undefined): string {
   if (typeof iso !== 'string' || iso.length < 10) return ''
-  return iso.slice(0, 10)
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return ''
+  // 本地日键，不是 UTC 日期部分：入参是 `toISOString()` 写的 UTC 全时刻，
+  // 清晨（本地 00:00–08:00）学习的记录 UTC 日期属于前一天，直接切片会把
+  // "19 号清晨学的"印成 18 号。回归见 tests/achievement-story.test.ts。
+  return localDayKey(d)
 }
 
 /** epoch ms → `HH:mm`（本地时区；故事卡给孩子看，不出现时区缩写） */
