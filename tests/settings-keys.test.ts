@@ -632,8 +632,10 @@ describe('A3 · settings 键分片静态扫描', () => {
 
   it('访问点数量是已知值（新增 settings 访问必须回来改这个数字 → 强迫审视）', () => {
     const r = scanSrc(LISTS)
-    // 42 个可解析 + 2 个带豁免 = 44。改这个数字等于承认"我看过每一个新访问点"。
-    expect(r.points.length).toBe(44)
+    // 42 个可解析 + 2 个带豁免 = 44；V1.11 · F1 新增 `ai:config` 的 2 个访问点
+    // （`aiConfig.ts` 的 get / put，设备级键，不按 profileId 分片）= 46。
+    // 改这个数字等于承认"我看过每一个新访问点"。
+    expect(r.points.length).toBe(46)
     expect(r.exempts.length).toBe(2)
   })
 

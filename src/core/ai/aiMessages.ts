@@ -109,13 +109,38 @@ export function describeAiFailure(reason: AiFailReason): string {
 }
 
 /**
+ * 降级链里"最值得修"的那一级 → 优先级从高到低。
+ *
+ * **为什么不是简单取最后一级**：最后一级通常是 `ollama-offline`，而"家里根本没装
+ * Ollama"是**常态**（多数家庭永远不会装）。把常态当成"这次失败的原因"报给家长，
+ * 等于什么都没说——真正可修的是"没填 Key"或"Key 不对"。
+ *
+ * 所以按"家长改一下就能好"的程度排序：配置类（no-key / http）> 环境类
+ * （timeout / network）> 本地没装（ollama-offline）。
+ */
+const FAILURE_PRIORITY: readonly AiFailReason[] = [
+  'no-key',
+  'http',
+  'bad-body',
+  'empty',
+  'timeout',
+  'network',
+  'no-webcrypto',
+  'bad-passphrase',
+  'ollama-offline',
+  'aborted',
+]
+
+/**
  * 降级链 → 给家长看的一句话。
  *
- * 只说**最后一级**的原因：三级都失败时把三条全堆上去，家长看到的是三句互相矛盾的
- * 指引。而最后一级（通常是 ollama-offline）正是"当前实际生效"的那条。
+ * 只说**一条**：三条堆在一起，家长看到的是三句互相矛盾的指引（"去填 Key"
+ * 与"去开本地模型"同时出现时，他不知道先做哪个）。
  */
 export function describeDegradation(failures: readonly { reason: AiFailReason }[]): string {
   if (failures.length === 0) return ''
-  const last = failures[failures.length - 1]
-  return describeAiFailure(last.reason)
+  for (const reason of FAILURE_PRIORITY) {
+    if (failures.some((f) => f.reason === reason)) return describeAiFailure(reason)
+  }
+  return ''
 }

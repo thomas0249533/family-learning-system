@@ -61,6 +61,18 @@ export const GLOBAL_KEYS = [
   'progress:lastStartupRecovery',
   'fls:theme',
   'owner:indexCache',
+  /**
+   * V1.11 · F1 · AI 助手配置（模型名 + 加密后的 API Key）。
+   *
+   * **设备级，不是 per-profile**：API Key 是家长花钱买的、全家共用的一份资产，
+   * 按档案分片会变成"每个孩子各填一次 Key"，且切到老二时会被误判成"没配置 AI"。
+   * 判断标准见本文件顶部："这个值换了孩子还成立吗？" —— 成立，所以是 global。
+   *
+   * ⚠️ 这里**只落密文 + salt + iv**（WebCrypto AES-GCM + PBKDF2，见
+   * `src/core/ai/secretCipher.ts`），**不落明文 Key**：本仓 Tauri 侧没有
+   * keychain 插件，真 Keychain 需新增 Rust 插件 + 重新打包，已单开任务，不在 F1。
+   */
+  'ai:config',
 ] as const
 
 export type ProfileScopedBase = (typeof PROFILE_SCOPED_KEYS)[number]
