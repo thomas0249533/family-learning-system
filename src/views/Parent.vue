@@ -233,6 +233,19 @@
           本周共学习 <b>{{ weekTotal }}</b> 个知识点
         </div>
       </div>
+
+      <!--
+        E3 · 周报卡片。放在「近 7 天」section 内：它就是这一段的**可带走版本**
+        （摘要版式、行数封顶、能导成一张 PNG 发给家人）。
+        「生成」是快照动作 —— 点下去那一刻的数据冻结成卡，之后孩子再答题
+        也不改这张卡（家长导出时看到的与生成时一致）。
+      -->
+      <div class="weekly-actions">
+        <AppButton size="small" @click="handleGenerateCard">
+          📸 生成周报卡片
+        </AppButton>
+      </div>
+      <WeeklyReportCard v-if="weeklyCard" class="weekly-card-mount" :data="weeklyCard" />
     </section>
 
     <!--
@@ -286,6 +299,7 @@ import ProgressBar from '@/components/ui/ProgressBar.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import CustomPackPanel from '@/components/CustomPackPanel.vue'
+import WeeklyReportCard from '@/components/WeeklyReportCard.vue'
 import {
   MAX_PROFILES,
   ProfileLimitError,
@@ -319,6 +333,7 @@ import {
   saveDiscoveryEnabled,
 } from '@core/motivation/achievementDiscovery'
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
+import { buildWeeklyCardData, type WeeklyCardData } from '@core/report/weeklyCard'
 import {
   EMPTY_STREAK,
   effectiveCurrent,
@@ -750,6 +765,39 @@ function barHeight(count: number): number {
 
 function goToImport() {
   router.push('/settings/import')
+}
+
+/* ===========================================================================
+ * E3 · 周报卡片（生成 = 快照）
+ * ---------------------------------------------------------------------------
+ * 数字全部由 `weeklyCard.ts` 装配（口径与 Report / 总览同源，禁止第二套公式），
+ * 本页只做两件事：取数 → 生成快照。
+ * ======================================================================== */
+
+/** 周报卡片快照；null = 尚未生成（按钮点了才出现） */
+const weeklyCard = ref<WeeklyCardData | null>(null)
+
+/** 当前档案名（卡头展示；取不到回落「我」，不显示裸 id） */
+const activeProfileName = computed(
+  () =>
+    profileState.value.list.find((p) => p.id === profileState.value.activeId)?.name ?? '我',
+)
+
+/**
+ * 生成周报卡片（快照）。
+ *
+ * 入参全部从 store 现取：装配是纯函数，本页持有"什么时候冻结"的决定权 ——
+ * 家长点「生成」之后孩子又答了题，这张卡不该变（否则导出的图与生成时对不上）。
+ */
+function handleGenerateCard(): void {
+  weeklyCard.value = buildWeeklyCardData({
+    packages: packageStore.packages,
+    progress: userDataStore.progress,
+    mistakes: userDataStore.mistakes,
+    streak: streakState.value,
+    unlockedAchievementIds: unlockedRecords.value.map((r) => r.id),
+    profileName: activeProfileName.value,
+  })
 }
 </script>
 
@@ -1317,5 +1365,17 @@ function goToImport() {
     color: var(--danger-text);
     border-color: var(--danger-text);
   }
+}
+
+/* ========== E3 · 周报卡片操作区 + 导出遮罩 ========== */
+.weekly-actions {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+/* 卡片由组件自带容器样式；这里只兜一个底部间距 */
+.weekly-card-mount {
+  display: block;
 }
 </style>
