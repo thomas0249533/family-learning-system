@@ -241,11 +241,20 @@
         也不改这张卡（家长导出时看到的与生成时一致）。
       -->
       <div class="weekly-actions">
-        <AppButton size="small" @click="handleGenerateCard">
+        <AppButton size="small" :disabled="exporting" @click="handleGenerateCard">
           📸 生成周报卡片
         </AppButton>
+        <AppButton
+          v-if="weeklyCard"
+          size="small"
+          type="primary"
+          :loading="exporting"
+          @click="handleExportCard"
+        >
+          ⬇️ 导出图片
+        </AppButton>
       </div>
-      <WeeklyReportCard v-if="weeklyCard" class="weekly-card-mount" :data="weeklyCard" />
+      <WeeklyReportCard v-if="weeklyCard" ref="cardEl" class="weekly-card-mount" :data="weeklyCard" />
     </section>
 
     <!--
@@ -285,13 +294,27 @@
         <AppButton type="primary" @click="goToImport">📥 管理学习包</AppButton>
       </div>
     </section>
+
+    <!--
+      E3 · 导出周报图片的全屏遮罩。
+      为什么 teleport 到 body：遮罩必须压住**整个视口**（含 AppShell 顶栏），
+      而 fixed 定位一碰到有 transform 的祖先就会失去视口基准 —— 挂在页面
+      容器里迟早被某个 hover 变换“收买”，直接挂 body 没有这个风险。
+      纯本地、无上传；分享由家长显式点下载完成。
+    -->
+    <teleport to="body">
+      <div v-if="exporting" class="export-overlay">
+        <n-spin size="large" />
+        <div class="export-overlay__text">正在生成图片，请稍候…</div>
+      </div>
+    </teleport>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useDialog, useMessage } from 'naive-ui'
+import { NSpin, useDialog, useMessage } from 'naive-ui'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import StatCard from '@/components/ui/StatCard.vue'
@@ -334,6 +357,7 @@ import {
 } from '@core/motivation/achievementDiscovery'
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 import { buildWeeklyCardData, type WeeklyCardData } from '@core/report/weeklyCard'
+import { exportWeeklyCardPng } from '@core/report/weeklyCardExporter'
 import {
   EMPTY_STREAK,
   effectiveCurrent,
@@ -768,14 +792,18 @@ function goToImport() {
 }
 
 /* ===========================================================================
- * E3 · 周报卡片（生成 = 快照）
+ * E3 · 周报卡片（生成 = 快照；导出 = 只截卡片 DOM 的 PNG）
  * ---------------------------------------------------------------------------
  * 数字全部由 `weeklyCard.ts` 装配（口径与 Report / 总览同源，禁止第二套公式），
- * 本页只做两件事：取数 → 生成快照。
+ * 本页只做三件事：取数 → 生成快照 → 把 DOM 交给导出器。
  * ======================================================================== */
 
 /** 周报卡片快照；null = 尚未生成（按钮点了才出现） */
 const weeklyCard = ref<WeeklyCardData | null>(null)
+/** 卡片 DOM（导出用；组件 ref 的 $el 就是 `.weekly-card` 根节点） */
+const cardEl = ref<InstanceType<typeof WeeklyReportCard> | null>(null)
+/** 导出中（遮罩 + 按钮 loading + 防连点，finally 一定收起） */
+const exporting = ref(false)
 
 /** 当前档案名（卡头展示；取不到回落「我」，不显示裸 id） */
 const activeProfileName = computed(
@@ -798,6 +826,29 @@ function handleGenerateCard(): void {
     unlockedAchievementIds: unlockedRecords.value.map((r) => r.id),
     profileName: activeProfileName.value,
   })
+}
+
+/**
+ * 导出周报卡片 PNG。
+ *
+ * 遮罩生命周期：`exporting = true` 在调用**前**置位，`finally` 里收起 ——
+ * 必须包住"点导出 → 截图 → 浏览器下载弹窗"整个用户操作周期，
+ * 中途收起会让家长以为卡死了而反复点击。
+ * 失败不能静默（截图失败 / 行数超上限都是一句明确的 message.error，
+ * 照 `storyImage.ts` 的纪律：什么都没有发生比露出一句错误更糟）。
+ */
+async function handleExportCard(): Promise<void> {
+  const el = cardEl.value?.$el as HTMLElement | undefined
+  if (!el || exporting.value) return
+  exporting.value = true
+  try {
+    const filename = await exportWeeklyCardPng(el)
+    message.success(`已导出周报图片：${filename}`)
+  } catch (e) {
+    message.error('导出失败：' + (e as Error).message)
+  } finally {
+    exporting.value = false
+  }
 }
 </script>
 
@@ -1377,5 +1428,25 @@ function handleGenerateCard(): void {
 /* 卡片由组件自带容器样式；这里只兜一个底部间距 */
 .weekly-card-mount {
   display: block;
+}
+
+/* 全屏遮罩：teleport 到 body（理由见模板注释），压住整个视口 */
+.export-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  /* 纯黑半透明是 check-hex 唯一豁免的字面色值形态（阴影/遮罩用途） */
+  background: rgba(0, 0, 0, 0.45);
+
+  &__text {
+    font-size: $font-sm;
+    font-weight: 700;
+    color: $on-strong;
+  }
 }
 </style>
