@@ -68,6 +68,69 @@
       </n-space>
     </AppCard>
 
+    <!-- AI 助手设置（V1.11 · F1）
+         Key 的存储策略（详见 src/core/ai/aiConfig.ts 顶部）：
+         **默认只在本次使用中有效、不落盘**；勾了「记住」才用家长口令
+         （PBKDF2 → AES-GCM）加密后落本机，**口令本身绝不保存**。
+         不是系统 Keychain 的原因：本仓 Tauri 侧没有 keychain 插件，需要新增
+         Rust 插件 + 重新打包，已单开任务。这里不做"假加密"。 -->
+    <AppCard title="🤖 AI 助手设置" class="card">
+      <n-space vertical size="large">
+        <div>
+          <h4 class="setting-label">API Key</h4>
+          <n-input
+            v-model:value="aiApiKey"
+            type="password"
+            show-password-on="click"
+            placeholder="粘贴 DeepSeek 的 API Key（sk-…）"
+            @blur="applyApiKey"
+          />
+          <div class="hint">
+            默认只在本次使用中有效，关闭页面后自动失效，不会明文保存在本机。
+          </div>
+        </div>
+
+        <div>
+          <h4 class="setting-label">模型名</h4>
+          <n-input v-model:value="aiModel" placeholder="deepseek-chat" @blur="saveAiModel" />
+        </div>
+
+        <div>
+          <h4 class="setting-label">本地模型（Ollama）</h4>
+          <n-input v-model:value="aiOllamaModel" placeholder="qwen2.5:7b-instruct" @blur="saveAiModel" />
+          <div class="hint">
+            云端不可用时会自动改用本机的 Ollama（需要它已在本机 11434 端口启动）。
+          </div>
+        </div>
+
+        <div>
+          <n-checkbox v-model:checked="aiRemember">
+            记住我的 Key（用家长口令加密后保存在本机）
+          </n-checkbox>
+          <template v-if="aiRemember">
+            <div class="ai-pass-row">
+              <n-input
+                v-model:value="aiPassphrase"
+                type="password"
+                show-password-on="click"
+                placeholder="家长口令（只用来加密，不会被保存）"
+              />
+              <AppButton size="small" type="primary" :disabled="!aiApiKey || !aiPassphrase" @click="doRemember">
+                加密保存
+              </AppButton>
+            </div>
+            <div class="hint">换设备、清缓存或忘了口令，就只能重新填一次 Key。</div>
+          </template>
+        </div>
+
+        <div v-if="aiHasSaved" class="ai-pass-row">
+          <span class="hint">本机已保存过一个加密的 Key。</span>
+          <AppButton size="small" :disabled="!aiPassphrase" @click="doUnlock">用口令解锁</AppButton>
+          <AppButton size="small" type="error" ghost @click="doForget">忘记它</AppButton>
+        </div>
+      </n-space>
+    </AppCard>
+
     <!-- 学习包管理 -->
     <AppCard title="📦 学习包管理" class="card">
       <n-space vertical>
@@ -114,6 +177,9 @@
       <div class="hint">来自另一台设备的备份可以合并进来；本机已有的较新记录不会被覆盖</div>
     </AppCard>
 
+    <!-- 同步（WebDAV · V1.11 · F2-UI）：独立组件，避免与上面的 AI 卡片改动纠缠 -->
+    <SyncSettings />
+
     <!-- 搜索历史 -->
     <AppCard title="🔍 搜索历史" class="card">
       <EmptyState v-if="searchHistory.length === 0" size="small" description="暂无搜索历史" />
@@ -142,7 +208,7 @@
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import {
-  NSpace, NRadioGroup, NRadioButton, NTag,
+  NSpace, NRadioGroup, NRadioButton, NTag, NInput, NCheckbox,
   useMessage, useDialog
 } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
@@ -150,6 +216,7 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import ImportPreview from '@/views/settings/ImportPreview.vue'
+import SyncSettings from '@/views/settings/SyncSettings.vue'
 import { useThemeStore } from '@core/stores/theme'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { usePackageStore } from '@core/stores/package'
@@ -161,6 +228,17 @@ import type { ThemePreset } from '@core/styles/palette'
 import type { GradeSource } from '@core/theme/presetInference'
 import { inferPreset } from '@core/theme/presetInference'
 import { PRESET_META, presetPreview } from '@core/theme/presetPreview'
+import {
+  DEFAULT_DEEPSEEK_MODEL,
+  DEFAULT_OLLAMA_MODEL,
+  forgetRememberedKey,
+  hasRememberedKey,
+  loadAiConfig,
+  rememberApiKey,
+  saveAiConfig,
+  setSessionApiKey,
+  unlockRememberedKey,
+} from '@core/ai/aiConfig'
 
 const themeStore = useThemeStore()
 const packageStore = usePackageStore()
@@ -187,6 +265,79 @@ async function scrollToHash(): Promise<void> {
 }
 
 const searchHistory = ref<string[]>([])
+
+/* ===========================================================================
+ * F1 · AI 助手设置
+ * ---------------------------------------------------------------------------
+ * 三个按钮各自的语义必须清楚，混在一起会让家长不知道自己按了什么：
+ *   - 填 Key（失焦即生效）→ **只进内存**，本次会话可用，关页即失效；
+ *   - 加密保存          → 家长口令派生密钥，只落密文 + salt + iv；
+ *   - 用口令解锁        → 解出来后**同样只进内存**（不因为"存过"就常驻明文）。
+ *
+ * 为什么口令框只在这张卡里出现、且从不写库：`secretCipher.ts` 顶部写得很清楚——
+ * 密文和钥匙放在同一个抽屉里就是假加密，宁可不落盘，也不做假加密。
+ * ======================================================================== */
+
+const aiApiKey = ref('')
+const aiModel = ref(DEFAULT_DEEPSEEK_MODEL)
+const aiOllamaModel = ref(DEFAULT_OLLAMA_MODEL)
+const aiRemember = ref(false)
+const aiPassphrase = ref('')
+const aiHasSaved = ref(false)
+
+async function refreshAiState(): Promise<void> {
+  const cfg = await loadAiConfig()
+  aiModel.value = cfg.model
+  aiOllamaModel.value = cfg.ollamaModel
+  aiRemember.value = cfg.remember
+  aiHasSaved.value = hasRememberedKey(cfg)
+}
+
+/** 填了 Key 就立刻在本次会话生效（**不落盘**） */
+function applyApiKey(): void {
+  const key = aiApiKey.value.trim()
+  if (!key) return
+  setSessionApiKey(key)
+  message.success('Key 已在本机本次使用中生效（关闭页面后失效）')
+}
+
+async function saveAiModel(): Promise<void> {
+  const cfg = await saveAiConfig({
+    model: aiModel.value.trim() || DEFAULT_DEEPSEEK_MODEL,
+    ollamaModel: aiOllamaModel.value.trim() || DEFAULT_OLLAMA_MODEL,
+  })
+  aiModel.value = cfg.model
+  aiOllamaModel.value = cfg.ollamaModel
+}
+
+async function doRemember(): Promise<void> {
+  try {
+    await rememberApiKey(aiApiKey.value.trim(), aiPassphrase.value)
+    aiPassphrase.value = ''
+    await refreshAiState()
+    message.success('已用家长口令加密保存，本次也已生效')
+  } catch (e) {
+    message.error('保存失败：' + (e instanceof Error ? e.message : String(e)))
+  }
+}
+
+async function doUnlock(): Promise<void> {
+  try {
+    await unlockRememberedKey(aiPassphrase.value)
+    aiPassphrase.value = ''
+    message.success('已解锁，AI 讲评可以在本次使用中运行了')
+  } catch {
+    // 口令错 / 密文损坏在 WebCrypto 层是同一个表现（认证标签校验失败），
+    // 不细分——细分等于告诉攻击者"口令对了但密文坏了"。
+    message.error('口令不对，或者保存的 Key 已损坏')
+  }
+}
+
+async function doForget(): Promise<void> {
+  await forgetRememberedKey()
+  await refreshAiState()
+  message.success('已忘记保存的 Key')
+}
 
 /** 学习包 → 年级来源（供自动推荐） */
 function gradeSources(): GradeSource[] {
@@ -228,6 +379,8 @@ onMounted(async () => {
 
   // 带 anchor 进来时（「导出并删除旧档案」）滚到对应区块
   await scrollToHash()
+
+  await refreshAiState()
 })
 
 function removeHistory(i: number) {
@@ -416,4 +569,13 @@ function clearAllData() {
 
 .hint { font-size: 12px; color: $text-sub; margin-top: 8px; }
 .history-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* F1 · AI 助手设置：口令输入 + 动作按钮一行（窄屏自动换行） */
+.ai-pass-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
 </style>
