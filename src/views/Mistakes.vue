@@ -632,7 +632,7 @@ async function handleHint(m: any): Promise<void> {
     if (out.engine === 'static') {
       // 三级全失败：云端 / 本地模型都没用上，落到题库自带解析。
       // 给一句人话而不是干巴巴的"解析"，家长才知道"AI 这一档为什么没生效"。
-      hintNotice.value = 'AI 助手正在休息，我们来看看这道题原本的解析：'
+      hintNotice.value = 'AI 助手正在休息，我们来看看这道题原本的解析思路吧……'
     } else {
       hintNotice.value = describeDegradation(out.failures)
       // 没填 Key 但本机存过：给一条"去哪儿解锁"的指引（比干说没配 Key 有用）
