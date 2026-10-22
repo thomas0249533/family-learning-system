@@ -29,7 +29,8 @@
     "lint:styles": "stylelint \"src/views/**/*.{vue,scss}\" \"src/modules/**/*.{vue,scss}\" \"src/components/**/*.{vue,scss}\"",
     "validate:set": "vite-node scripts/validate-lpkgset.ts --",
     "build:lpkgset": "vite-node scripts/build-lpkgset.ts --",
-    "build:set": "vite-node scripts/build-lpkgset-auto.ts --"
+    "build:set": "vite-node scripts/build-lpkgset-auto.ts --",
+    "build:csv": "vite-node scripts/build-from-csv.ts --"
   },
   "dependencies": {
     "dexie": "^4.0.10",
