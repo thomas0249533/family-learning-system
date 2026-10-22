@@ -558,6 +558,13 @@ async function doRepair(): Promise<void> {
   // ★ 同周期结算（顺序不能后移：先去结算，再报"补上了"，家长看到的数字与徽章才一致）
   const newly = await achievementStore.settle()
 
+  // ★ settle 之后再重读一次已解锁记录。本页的成就概览 / 分类计数 / 最近解锁
+  // 全部派生自 `unlockedRecords`（一个普通 ref，不是 store 的响应式数据），
+  // 只在 onMounted 与档案切换时赋值。少了这一步就会出现「提示说解锁了、
+  // 同一屏的 N/27 和最近解锁纹丝不动，刷新后才变」——即 §11.1 要防的
+  // 「补签了、天数恢复了、徽章没亮」。放在 message 之前，保证文案与数字同一帧。
+  unlockedRecords.value = await loadUnlocked()
+
   message.success(`已补记昨天，连续天数恢复为 ${res.streak.current} 天`)
   if (newly.length > 0) {
     message.success(`新解锁：${newly.map((d) => d.title).join('、')}`)
