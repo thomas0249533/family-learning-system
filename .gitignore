@@ -39,3 +39,6 @@ test-results/
 playwright-report/
 # vite/vitest 解析配置时落在仓库根的临时 mjs（不是源码）
 *.config.ts.timestamp-*.mjs
+
+# V1.11 · F1 e2e 临时产物目录（默认 test-results/ 会被 safe-delete 拦 bulk 删除，改用自定义 output）
+.pw-ai-out/
