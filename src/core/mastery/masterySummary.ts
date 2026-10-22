@@ -307,3 +307,98 @@ export function domainKeySet(packages: LearningPackageRecord[]): Set<string> {
   }
   return keys
 }
+
+// =====================================================================
+// 掌握度联合估计（Mastery Score）—— 逐知识点的"多熟"，供算法消费
+// ---------------------------------------------------------------------
+// `computeMasterySummary` 一族回答"**几个**知识点已掌握"（状态计数：整数个数）；
+// 本节回答单个知识点"**多熟**"（0–100 的连续分数）。两者服务不同问题：
+//   - 状态计数驱动首页/报告的定性展示（已掌握 N 个、学习中 N 个）；
+//   - 本分数驱动 C3 弱项推荐的筛选与排序（未掌握/需复习/熟练度<60，
+//     错误次数 > 熟练度 > 到期时间）。
+// **按 PRD §11.5：熟练度 / pKnown / BKT 概率值不进任何 UI**（孩子端与家长端
+// 都不进）——"平均熟练度 82 分"会被读成分数。本函数只作算法输入，
+// 不要在视图层展示，也不要再往上包"平均分"之类的聚合。
+// 单知识点分数把两套本来割裂的估计合成一个可比的数：
+//   - BKT 的 `pKnown`（0~1 概率）：这道题**会不会**；
+//   - FSRS 的 `stability`（天）：这个"会"**能扛多久不忘**；
+//   - FSRS 的 `difficulty`（1~10）：这道题**对孩子多难**。
+// 只有一个概率、没有任何记忆保持证据时，分数退化为纯 BKT（见下降级原则）。
+// =====================================================================
+
+/**
+ * FSRS 稳定性系数的时间常数（天）。
+ *
+ * 为什么是 30：与 FSRS 遗忘曲线的量级同阶 —— stability ≈ 30 天时
+ * `kS = 1 - e^{-30/30} ≈ 0.63`，即"一个月后还记得"算六成熟，
+ * 而不是 0（全忘）或 1（永久记住）。取 30 让"一月"这个天然的复习周期
+ * 落在分数中段：短期死记（S≈3 天，kS≈0.10）与长期保持（S≈90 天，kS≈0.95）
+ * 能拉开档次，而不是一律顶格。
+ */
+const STABILITY_TAU_DAYS = 30
+
+/**
+ * 难度系数的最大折扣（25%）。
+ *
+ * 为什么是 0.25：难度是"这道题对**这个孩子**多难"，是局部调节量，
+ * 不该压过能力本身（p）与记忆保持（kS）—— difficulty 从 1 到 10
+ * 最多把分数打到七五折：再难的题，也不至于把"会"打压成"不会"。
+ */
+const DIFFICULTY_MAX_PENALTY = 0.25
+
+/** 收敛到 [0,1]；调用方保证入参有限（NaN 会被 finiteOrNull 先行挡掉） */
+function clamp01(x: number): number {
+  return Math.min(1, Math.max(0, x))
+}
+
+/** 取有限数；NaN / Infinity / 非数字（脏数据）一律视为"没有这个值" */
+function finiteOrNull(x: unknown): number | null {
+  return typeof x === 'number' && Number.isFinite(x) ? x : null
+}
+
+/**
+ * BKT 概率来源：`masteryProbability ?? bkt.pKnown`。
+ * 某个字段存在但是 NaN/Infinity（脏数据）时跳过它试下一个；
+ * 两个来源都不可用 → null（**无法估计，不编一个数**）。
+ */
+function bktProbabilityOf(row: ProgressRecord): number | null {
+  const direct = finiteOrNull(row.masteryProbability)
+  if (direct !== null) return direct
+  return finiteOrNull(row.bkt?.pKnown)
+}
+
+/**
+ * 单知识点掌握度分数（0–100 的整数）。
+ *
+ * 公式（主理人定稿，勿改常量）：
+ *   1. `p = masteryProbability ?? bkt.pKnown`；两者都无 → **null**
+ *   2. 没有可用 FSRS 卡 → `round(100 * clamp01(p))`（纯 BKT 降级）
+ *   3. 有可用 FSRS 卡 → `round(100 * clamp01(p * kS * kD))`
+ *        `kS = 1 - e^{-S/30}`，`kD = 1 - 0.25 * (D-1)/9`
+ *
+ * "FSRS 卡可用"的判定（任一不满足即视作没有卡，退回纯 BKT）：
+ *   - `stability` 是有限数且 > 0（S=0/负数/NaN 都是没进入复习节奏的卡）；
+ *   - `difficulty` 是非 NaN 的数（缺字段/NaN 时无法乘，降级而不是猜一个难度）。
+ *
+ * 降级原则（用户原话：旧数据缺 FSRS 时必须优雅降级，绝不能白屏）：
+ * 任何畸形输入只被 clamp 收敛或返回 null，**绝不抛异常**。
+ */
+export function computeMasteryScore(row: ProgressRecord): number | null {
+  if (!row) return null
+  const p = bktProbabilityOf(row)
+  if (p === null) return null
+
+  const s = finiteOrNull(row.fsrs?.stability)
+  const dRaw = row.fsrs?.difficulty
+  // NaN 显式排除；±Infinity 交给下面的 clamp 自然收敛到 1/10
+  const d = typeof dRaw === 'number' && !Number.isNaN(dRaw) ? dRaw : null
+  if (s === null || s <= 0 || d === null) {
+    return Math.round(100 * clamp01(p))
+  }
+
+  const kS = 1 - Math.exp(-s / STABILITY_TAU_DAYS)
+  // difficulty 越界（0 / 99 / 负数）收敛到 [1,10]
+  const D = Math.min(10, Math.max(1, d))
+  const kD = 1 - DIFFICULTY_MAX_PENALTY * (D - 1) / 9
+  return Math.round(100 * clamp01(p * kS * kD))
+}
