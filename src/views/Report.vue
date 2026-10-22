@@ -112,6 +112,7 @@ import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import { generateReportData, type ReportData } from '@core/report/reportGenerator'
 import { exportReportAsPDF } from '@core/report/pdfExporter'
+import { localDayKey } from '@core/motivation/streak'
 
 const message = useMessage()
 const loading = ref(true)
@@ -133,7 +134,7 @@ async function exportPDF() {
   if (!reportRef.value) return
   try {
     await nextTick()
-    await exportReportAsPDF(reportRef.value, `学习报告-${new Date().toISOString().slice(0, 10)}`)
+    await exportReportAsPDF(reportRef.value, `学习报告-${localDayKey(new Date())}`)
     message.success('PDF 已导出')
   } catch (e: any) {
     message.error('导出失败：' + e.message)

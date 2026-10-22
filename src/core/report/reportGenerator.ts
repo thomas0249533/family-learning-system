@@ -2,7 +2,7 @@ import { db } from '@/db'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 import type { ProgressRecord } from '@/db'
-import { effectiveCurrent, loadStreak } from '@core/motivation/streak'
+import { effectiveCurrent, loadStreak, localDayKey } from '@core/motivation/streak'
 import { mistakeLevel } from '@core/mistake/mistakeRules'
 export interface ReportData {
   generatedAt: string
@@ -173,7 +173,9 @@ function computeContinuousDays(progress: ProgressRecord[]): number {
   const days = new Set<string>()
   for (const p of progress) {
     if (!p.lastStudiedAt) continue
-    days.add(p.lastStudiedAt.slice(0, 10))
+    // `lastStudiedAt` 存的是 UTC ISO 串，直接 slice 得到的是 **UTC 日期**；
+    // 而下面要比的是本地日历日，两边口径必须一致，否则东八区下差一天。
+    days.add(localDayKey(new Date(p.lastStudiedAt)))
   }
   const sorted = Array.from(days).sort().reverse()
   if (sorted.length === 0) return 0
@@ -184,7 +186,10 @@ function computeContinuousDays(progress: ProgressRecord[]): number {
 
   for (let i = 0; i < sorted.length; i++) {
     const expect = new Date(today.getTime() - i * 86400000)
-    const expectStr = expect.toISOString().slice(0, 10)
+    // 关键：用本地日键。旧实现把 UTC 串截十位当日键，东八区下本地零点转 UTC 会
+    // 退到前一天，于是"今天学过"永远对不上"今天的键"，连续天数恒为 0。
+    // 规范见 tests/date-discipline.test.ts（那条扫描禁止在源码里写 UTC 日键）。
+    const expectStr = localDayKey(expect)
     if (sorted[i] === expectStr) streak++
     else break
   }
@@ -197,8 +202,11 @@ function computeRecent7Days(progress: ProgressRecord[]): Array<{ date: string; c
   const result: Array<{ date: string; count: number }> = []
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today.getTime() - i * 86400000)
-    const dateStr = d.toISOString().slice(0, 10)
-    const count = progress.filter(p => p.lastStudiedAt?.slice(0, 10) === dateStr).length
+    // 同上：柱状图的日期键必须是本地日，否则整张图会整体错位一天。
+    const dateStr = localDayKey(d)
+    const count = progress.filter(
+      p => p.lastStudiedAt && localDayKey(new Date(p.lastStudiedAt)) === dateStr
+    ).length
     result.push({ date: dateStr, count })
   }
   return result

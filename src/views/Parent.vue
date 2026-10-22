@@ -321,8 +321,10 @@ import {
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 import {
   EMPTY_STREAK,
+  effectiveCurrent,
   loadRepair,
   loadStreak,
+  localDayKey,
   missedYesterday,
   repairLeft,
   repairYesterday,
@@ -665,20 +667,13 @@ const stats = computed(() => {
   const studySeconds = progress.reduce((sum, p) => sum + (p.studySeconds ?? 0), 0)
   const studyMinutes = Math.round(studySeconds / 60)
 
-  // 连续天数
-  const days = new Set<string>()
-  for (const p of progress) {
-    if (p.lastStudiedAt) days.add(p.lastStudiedAt.slice(0, 10))
-  }
-  const sorted = Array.from(days).sort().reverse()
-  let continuousDays = 0
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  for (let i = 0; i < sorted.length; i++) {
-    const expect = new Date(today.getTime() - i * 86400000)
-    if (sorted[i] === expect.toISOString().slice(0, 10)) continuousDays++
-    else break
-  }
+  // 连续天数：与首页/成就共用同一个真相（`streak` 打卡状态），不再从 progress 的日期集合
+  // 二次推导。旧实现两个问题叠在一起：
+  //   ① 口径错：`lastStudiedAt` 是 UTC ISO，`slice(0,10)` 得到 UTC 日；而期望值又是
+  //      「本地零点 → toISOString」= 前一天。东八区下两边差一天，连续天数几乎恒为 0。
+  //   ② 双份真相：补签改的是 streak，这里读的是 progress 日期集合，于是补签后首页说
+  //      "恢复为 N 天"、这张卡纹丝不动。连续天数只该有一个来源。
+  const continuousDays = effectiveCurrent(streakState.value)
 
   return { totalKp, mastered, learning, needReview, studyMinutes, continuousDays }
 })
@@ -728,9 +723,11 @@ const weekDays = computed(() => {
   const result: Array<{ date: string; label: string; count: number }> = []
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today.getTime() - i * 86400000)
-    const dateStr = d.toISOString().slice(0, 10)
+    // 本地日键：这一栏的 x 轴标签取的是本地星期（`labels[d.getDay()]`），日期键必须
+    // 同为本地日，否则柱子会整体错位一天、标签与计数对不上（旧实现用 toISOString）。
+    const dateStr = localDayKey(d)
     const count = userDataStore.progress.filter(
-      p => p.lastStudiedAt?.slice(0, 10) === dateStr
+      p => p.lastStudiedAt && localDayKey(new Date(p.lastStudiedAt)) === dateStr
     ).length
     result.push({ date: dateStr, label: labels[d.getDay()], count })
   }

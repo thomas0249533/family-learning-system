@@ -75,6 +75,7 @@ import { useUserDataStore } from '@core/stores/userData'
 import { isDueForReview, humanizeNextReview, memoryStrengthLabel, retrievabilityPercent, stageLabel } from '@core/review/reviewScheduler'
 import { findUnitByKnowledgePoint } from '@core/importer/resolvePackageUnits'
 import { stripPrefix } from '@core/progress/ownerIndex'
+import { localDayKey } from '@core/motivation/streak'
 
 interface ReviewItem extends ProgressRecord {
   kpTitle: string
@@ -106,7 +107,9 @@ const upcomingDays = computed(() => {
     const diff = Math.floor((d.getTime() - today.getTime()) / 86400000)
     if (diff < 0 || diff > 7) continue
 
-    const key = d.toISOString().slice(0, 10)
+    // 分组键用本地日：分组本身按 `diff`（本地时间差）算标签，键必须同口径，
+    // 否则 UTC 日键会让 key 与 label 差一天（旧实现用 toISOString）。
+    const key = localDayKey(d)
     if (!map.has(key)) {
       const label = diff === 0 ? '今天' : diff === 1 ? '明天' : `${diff} 天后`
       map.set(key, { date: key, label, items: [] })
