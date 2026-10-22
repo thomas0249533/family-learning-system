@@ -131,8 +131,12 @@
 //
 // ## 持久化
 // `sessionStorage`（按档案隔离，键见 `inkStorageKey`）。只在 `docKey` 变化时重读，
-// 每次落笔后防抖 300ms 写入；`getItem`/`setItem` 全部 try/catch —— 隐私模式与配额满
-// 都会抛，抛了也不能白屏，最多是"这次不保存"。
+// **每次落笔同步写入**：`sessionStorage.setItem` 本身就是同步 API，一页纸几十笔的
+// 序列化开销在微秒级，而落笔是"用户完成了一次离散动作"、没有需要合并的连续事件流。
+// 早先这里做过 300ms 防抖，唯一效果是把"已落库"推迟 300ms —— 换来的是一扇"在窗口内
+// 刷新/关标签页就丢最后一笔"的丢数据窗口，属于纯粹的复杂度，已取消。
+// `getItem`/`setItem` 仍然全部 try/catch —— 隐私模式与配额满都会抛，抛了也不能白屏，
+// 最多是"这次不保存"。
 // =====================================================================
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { currentProfileId } from '@core/profile/currentProfile'
@@ -172,8 +176,6 @@ const props = withDefaults(defineProps<InkOverlayProps>(), {
   eraserSize: 14,
 })
 
-/** 落笔后写 sessionStorage 的防抖窗口 */
-const SAVE_DEBOUNCE_MS = 300
 /** 清除的二次确认窗口：超过这个时间自动退回"清除"（避免一直停在危险态） */
 const CLEAR_CONFIRM_MS = 4000
 /** 相邻采样点的最小间距（归一化）：太密的点没有信息量，还会让 `d` 变长 */
@@ -251,8 +253,11 @@ const storageKey = computed<string>(() =>
   props.docKey ? inkStorageKey(resolvedProfileId.value, props.docKey) : ''
 )
 
-let saveTimer = 0
-/** 本次待写目标键（防抖期间固定，避免 docKey 中途变化把旧痕迹写到新文档里） */
+/**
+ * 待写目标键。**不是防抖用的缓冲**：`saveImmediately()` 现写现清，它存在只是为了给
+ * "写入"统一一个入口，让 `watch(storageKey)` 在换文档前还能 `flushSave()` 一次
+ * （切换文档时把旧键兜一下；现在写入是同步的，那里正常情况下已无事可做）。
+ */
 let pendingSaveKey = ''
 
 function writeStrokes(key: string, list: readonly InkStroke[]): void {
@@ -273,25 +278,19 @@ function readStrokes(key: string): InkStroke[] {
   }
 }
 
+/** 有目标键就写、写完清空（同步；没有计时器、没有待合并队列） */
 function flushSave(): void {
-  if (saveTimer) {
-    clearTimeout(saveTimer)
-    saveTimer = 0
-  }
   if (!pendingSaveKey) return
   writeStrokes(pendingSaveKey, strokes.value)
   pendingSaveKey = ''
 }
 
-function scheduleSave(): void {
-  const key = storageKey.value
-  if (!key) return
-  pendingSaveKey = key
-  if (saveTimer) clearTimeout(saveTimer)
-  saveTimer = window.setTimeout(flushSave, SAVE_DEBOUNCE_MS)
-}
-
-/** 立即落盘（清除笔迹、docKey 切换、组件卸载时用） */
+/**
+ * 立即落盘 —— 落笔、擦除、清除、docKey 切换、组件卸载**都走这里**。
+ *
+ * 刻意**不做防抖**：见文件头 §持久化。防抖会把"笔迹已落库"推迟 300ms，
+ * 那 300ms 内 reload / 关标签页就丢最后一笔，而这个功能对用户的承诺是"刷新还在"。
+ */
 function saveImmediately(): void {
   if (storageKey.value) pendingSaveKey = storageKey.value
   flushSave()
@@ -304,7 +303,7 @@ watch(
     draft.value = []
     confirmingClear.value = false
     activePointerId = null
-    // 先把上一份文档没写完的防抖尾部落盘（写的是**旧键**），再换数据
+    // 换文档前把旧键兜一次（同步写入下通常已无事可做，保留是为了守住这个不变量）
     if (prev) flushSave()
     strokes.value = readStrokes(next)
   },
@@ -363,7 +362,7 @@ function eraseAt(point: InkPoint): void {
   const next = strokes.value.filter((stroke) => !hitTestStroke(stroke, point, radius))
   if (next.length === strokes.value.length) return
   strokes.value = next
-  scheduleSave()
+  saveImmediately()
 }
 
 /** 把 pending 的那一个点落进草稿/橡皮（每帧最多一个点） */
@@ -412,7 +411,7 @@ function commitDraft(): void {
   // 单点（点一下没动）不落库：看不见的笔画存着只会让"清除"按钮莫名其妙亮着
   if (points.length < 2) return
   strokes.value.push({ color: color.value, width: strokeWidthPx.value, points: points.slice() })
-  scheduleSave()
+  saveImmediately()
 }
 
 function onPointerDown(event: PointerEvent): void {
@@ -537,15 +536,11 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   cancelPendingFrame()
-  if (saveTimer) {
-    clearTimeout(saveTimer)
-    saveTimer = 0
-  }
   if (clearTimer) {
     clearTimeout(clearTimer)
     clearTimer = 0
   }
-  // 卸载时把没写完的痕迹落盘（切换页面不该丢笔迹）
+  // 卸载时兜一次落盘（正常路径下每次落笔都已同步写过，这里是幂等的保险）
   saveImmediately()
   setHostSelecting(false)
   if (observer) {

@@ -240,25 +240,17 @@ test.describe('D4 · 划线辅助（浏览器级）', () => {
     await expect(page.locator('.ink-path')).toHaveCount(1)
     const before = await page.locator('.ink-path').first().getAttribute('d')
 
-    // 落笔后是**防抖 300ms** 才写盘的，所以先等写盘真的发生再 reload ——
-    // 直接 reload 会落在防抖窗口里，丢掉最后一笔（这是刻意的取舍：不留 beforeunload 钩子）。
+    // 落笔即**同步**落盘：抬笔之后**立刻**读一次就必须有。
+    //
+    // 这里刻意不用 `expect.poll` 等一段时间：早先写入做过 300ms 防抖，那时只能 poll；
+    // 防抖取消后，`poll` 反而会让"有人把防抖加回来"这个回归照样变绿 ——
+    // 而"刷新还在"的承诺恰恰是"抬笔那一刻就已经在 storage 里"。一次直接读才是它的守卫。
     const STORAGE_KEY = 'fls:ink:default:read-d4:rt1#0'
-    await expect
-      .poll(
-        async () =>
-          page.evaluate((key) => {
-            const raw = sessionStorage.getItem(key)
-            if (!raw) return 0
-            try {
-              const parsed = JSON.parse(raw)
-              return Array.isArray(parsed) ? parsed.length : -1
-            } catch {
-              return -1
-            }
-          }, STORAGE_KEY),
-        { timeout: 8_000, message: '划线没有写进 sessionStorage（键或防抖逻辑坏了）' }
-      )
-      .toBe(1)
+    const saved = await page.evaluate((key) => sessionStorage.getItem(key), STORAGE_KEY)
+    expect(saved, '落笔后应已同步落盘，不该存在防抖窗口').not.toBeNull()
+    const parsed: unknown = JSON.parse(saved as string)
+    expect(Array.isArray(parsed)).toBe(true)
+    expect(parsed).toHaveLength(1)
 
     await page.reload()
     await expect(page.locator('.text-body')).toBeVisible()
