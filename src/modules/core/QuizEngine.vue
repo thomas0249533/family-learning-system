@@ -335,7 +335,9 @@ function gradeWith(q: QuizQuestion, ua: any): boolean {
     case 'spelling':
       return String(ua ?? '').trim().toLowerCase() === String(q.answer).trim().toLowerCase()
     case 'blank':
-      return gradeBlank(String(ua ?? ''), String(q.answer ?? ''))
+      // 传原始值（不做 String 归一）：数组答案要靠 Array.isArray 按元素边界切段，
+      // 斜杠备选（`aren't / are not`）要在空格被删前按 `\s+\/\s+` 切分。
+      return gradeBlank(ua, q.answer)
     case 'multiple': {
       const correctRaw = Array.isArray(q.answer) ? q.answer : String(q.answer).split('')
       const correct = correctRaw.map(x => String(x).trim().toUpperCase()).sort()

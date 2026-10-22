@@ -270,9 +270,143 @@ describe('gradeBlank · 第二通道（空格当分隔符）', () => {
     expect(gradeBlank('10000', '10000')).toBe(true)
     // 千分位逗号 → 用户侧 2 段 vs 答案 1 段 → 段数不等 → false
     expect(gradeBlank('10,000', '10000')).toBe(false)
-    // ⚠️ 现状语义（非本次引入）：严格路径会删掉所有空格，故 "10 000" 判等。
-    // 这与 "Whenis" ≡ "When is" 是同一条机制；要收紧只能改严格路径，属行为变更，
-    // 本次刻意未改，已在交付报告中单独列出待裁决。
+    // ⚠️ 已知且**有意**的宽松点：normalizeBlank 删除所有空格，故 "10 000" 判等。
+    // 这与 "Whenis" ≡ "When is" 是同一条机制；38 条「每空一词」的短语答案依赖它。
+    // 要收紧必须同时改题库，单改判分做不到 —— 详见 blank.ts 中 normalizeBlank 的注释。
     expect(gradeBlank('10 000', '10000')).toBe(true)
+  })
+})
+
+/**
+ * 斜杠备选答案（`aren't / are not`）。
+ *
+ * 修的缺陷：`/` 既不是分隔符也没被处理，归一化后成 `aren't/arenot`，
+ * 学生写**任何一个正确写法**都判错，只有原样全写才对 —— 正确答案被判错。
+ */
+describe('gradeBlank · 斜杠备选答案', () => {
+  const ALT = "aren't / are not"
+  // content/english-7-up-rjb/unit-english-7-up-rjb-p1.json :: u1-ex-029
+  // content/english-7-up-rjb/unit-english-7-up-rjb-p3.json :: u3-ex-021
+
+  it('只写第一个备选也判对（旧实现判错）', () => {
+    expect(gradeBlank("aren't", ALT)).toBe(true)
+  })
+
+  it('只写第二个备选也判对（旧实现判错）', () => {
+    expect(gradeBlank('are not', ALT)).toBe(true)
+  })
+
+  it('原样全写仍然判对（回归）', () => {
+    expect(gradeBlank("aren't / are not", ALT)).toBe(true)
+  })
+
+  it('大小写 / 斜杠两侧空格数不影响', () => {
+    expect(gradeBlank('ARE NOT', ALT)).toBe(true)
+    expect(gradeBlank("aren't   /   are not", ALT)).toBe(true)
+  })
+
+  it('半截词不算对 —— 备选匹配是精确匹配，不走子串容错', () => {
+    // `"aren't".includes("aren")` 为真，若沿用 partsMatch 的子串阶梯这里会误判
+    expect(gradeBlank('aren', ALT)).toBe(false)
+    expect(gradeBlank('are', ALT)).toBe(false)
+    expect(gradeBlank('not', ALT)).toBe(false)
+    expect(gradeBlank('', ALT)).toBe(false)
+  })
+
+  it('斜杠两侧没有空白就不是备选 —— 单位 `千米/时` 绝不能被拆开', () => {
+    // 题库真实写法：`85 千米/时` 里「千米/时」是一个单位答案
+    const unit = '85 千米/时，8'
+    expect(gradeBlank('85千米/时,8', unit)).toBe(true)
+    expect(gradeBlank('85 千米/时，8', unit)).toBe(true)
+    // 若把无空白的 `/` 也当备选分隔符，这个输入会被放宽成对 —— 必须仍然 false
+    expect(gradeBlank('85千米,时,8', unit)).toBe(false)
+    // 最有判别力的一条：`千米` 精确等于备选切分后的第一段。
+    // 只要 `/` 被无条件当备选分隔符，这里就会变 true；有空白约束则保持 false。
+    expect(gradeBlank('千米', '千米/时')).toBe(false)
+    expect(gradeBlank('时', '千米/时')).toBe(false)
+    expect(gradeBlank('千米/时', '千米/时')).toBe(true)
+    // 注：`85千米,8` 判 true 是**既有**行为（严格路径 `c.includes(u)` 子串容错允许
+    // 「85千米」是「85千米/时」的子串），与斜杠备选无关，本次未改动。
+    expect(gradeBlank('85千米,8', unit)).toBe(true)
+  })
+
+  it('备选答案仍然遵守多空段数与顺序', () => {
+    const twoBlanks = "aren't / are not,are not"
+    // 段数不等 → false
+    expect(gradeBlank("aren't", twoBlanks)).toBe(false)
+    expect(gradeBlank("aren't,arenot,多余", twoBlanks)).toBe(false)
+    // 段数相等 → 按位置逐段命中备选
+    expect(gradeBlank("aren't, are not", twoBlanks)).toBe(true)
+    expect(gradeBlank('are not; are not', twoBlanks)).toBe(true)
+    // 第 2 段写了别的 → false（全或无）
+    expect(gradeBlank("aren't, is not", twoBlanks)).toBe(false)
+  })
+
+  it('没有斜杠的普通答案不受影响（该 false 的仍然 false）', () => {
+    expect(gradeBlank('Chinese', 'Chinese')).toBe(true)
+    expect(gradeBlank('Chines', 'Chinese')).toBe(false)
+    expect(gradeBlank('Japanese', 'Chinese')).toBe(false)
+  })
+})
+
+/**
+ * 数组答案：元素内的标点不该被当成空位分隔符。
+ *
+ * 修的缺陷：`["全面、客观","全貌"]` 被 `String()` join 成 `"全面、客观,全貌"`，
+ * 归一化把顿号也变逗号 → 3 段，而题干只有 2 个空 → 学生写对也判错。
+ *
+ * 路径 A（元素边界切段）是新增的正确路径，路径 B（join 后按分隔符切）是现状兼容
+ * 路径，两条都保留、任一命中即 true —— 删掉 B 会让习惯逗号对齐的学生变错。
+ */
+describe('gradeBlank · 数组答案按元素边界切段', () => {
+  // content/chinese-4-up-rjb/unit-chinese-4-up-rjb-u3.json :: u3-ex-002
+  const U3 = ['全面、客观', '全貌']
+
+  it('路径 A：用户写元素内顿号 + 元素间逗号 → true', () => {
+    expect(gradeBlank('全面、客观,全貌', U3)).toBe(true)
+  })
+
+  it('路径 B：用户写膨胀后的 3 段 → 仍然 true（不回归）', () => {
+    expect(gradeBlank('全面,客观,全貌', U3)).toBe(true)
+  })
+
+  it('原样答案 → true', () => {
+    expect(gradeBlank('全面、客观，全貌', U3)).toBe(true)
+  })
+
+  it('元素互换顺序 → false', () => {
+    expect(gradeBlank('全貌,全面、客观', U3)).toBe(false)
+    expect(gradeBlank('全貌 全面、客观', U3)).toBe(false)
+  })
+
+  it('只答一个元素 → false（全或无）', () => {
+    expect(gradeBlank('全面、客观', U3)).toBe(false)
+    expect(gradeBlank('全貌', U3)).toBe(false)
+  })
+
+  it('两元素数组：`["顺序","特点"]`（u1-ex-005）', () => {
+    // content/chinese-4-up-rjb/unit-chinese-4-up-rjb-u1.json :: u1-ex-005
+    expect(gradeBlank('顺序,特点', ['顺序', '特点'])).toBe(true)
+    expect(gradeBlank('顺序 特点', ['顺序', '特点'])).toBe(true)
+    expect(gradeBlank('特点,顺序', ['顺序', '特点'])).toBe(false)
+    expect(gradeBlank('顺序', ['顺序', '特点'])).toBe(false)
+  })
+
+  it('单元素数组 → 等价于单空比对', () => {
+    expect(gradeBlank('排比', ['排比'])).toBe(true)
+    expect(gradeBlank('比喻', ['排比'])).toBe(false)
+    expect(gradeBlank('排比,比喻', ['排比'])).toBe(false)
+  })
+
+  it('数组答案不会再被 `String()` 的逗号 join 弄坏段数', () => {
+    // 旧路径下 ca 为 3 段，数组只有 2 个元素 —— 路径 A 用元素数做段数基准
+    expect(gradeBlank('全面、客观，全貌', U3)).toBe(true)
+    // 但段数仍必须对上：3 个元素分成 4 段不给过
+    expect(gradeBlank('全面、客观，全貌，多余', U3)).toBe(false)
+  })
+
+  it('空数组 / 空输入一律 false', () => {
+    expect(gradeBlank('甲', [])).toBe(false)
+    expect(gradeBlank('', ['甲'])).toBe(false)
   })
 })
