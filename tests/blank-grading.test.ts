@@ -185,3 +185,94 @@ describe('gradeBlank · 真实题库答案（现状语义锁死）', () => {
     expect(gradeBlank('特点,顺序', ['顺序', '特点'])).toBe(false)
   })
 })
+
+/**
+ * 第二通道：空格/标点都当分隔符。
+ *
+ * 安全边界全部落在「三个前置条件」上，因此这一批用例除了验证放宽的部分，
+ * 更要验证**没被放宽的部分**（顺序、段数、短语单答案）。
+ */
+describe('gradeBlank · 第二通道（空格当分隔符）', () => {
+  it('空格分隔的多空答案判对', () => {
+    expect(gradeBlank('排比 比喻', '排比,比喻')).toBe(true)
+  })
+
+  it('顿号 / 全角逗号 / 半角逗号仍然判对（严格路径已覆盖，回归）', () => {
+    expect(gradeBlank('排比、比喻', '排比,比喻')).toBe(true)
+    expect(gradeBlank('排比，比喻', '排比,比喻')).toBe(true)
+    expect(gradeBlank('排比,比喻', '排比,比喻')).toBe(true)
+  })
+
+  it('顺序颠倒仍然 false —— 第二通道不放宽顺序', () => {
+    expect(gradeBlank('比喻 排比', '排比,比喻')).toBe(false)
+  })
+
+  it('只答对一段仍然 false —— 第二通道不放宽全或无', () => {
+    expect(gradeBlank('排比', '排比,比喻')).toBe(false)
+    // 单段无分隔符 → 前置 b 不满足，第二通道根本不启用
+    expect(gradeBlank('排比比喻', '排比,比喻')).toBe(false)
+  })
+
+  it('多空格 / 首尾空格切出的空段被丢弃，不导致段数不等', () => {
+    expect(gradeBlank('排比  比喻', '排比,比喻')).toBe(true)
+    expect(gradeBlank('  排比 比喻  ', '排比,比喻')).toBe(true)
+    expect(gradeBlank('排比 , 比喻', '排比,比喻')).toBe(true)
+  })
+
+  it('混合分隔符（逗号 + 空格 + 全角分号）', () => {
+    expect(gradeBlank('甲, 乙；丙', '甲,乙,丙')).toBe(true)
+    expect(gradeBlank('甲 乙 丙', '甲,乙,丙')).toBe(true)
+    expect(gradeBlank('甲；乙；丙', '甲,乙,丙')).toBe(true)
+  })
+
+  it('段数不等仍然 false', () => {
+    expect(gradeBlank('甲 乙 丙 丁', '甲,乙,丙')).toBe(false)
+    expect(gradeBlank('甲 乙', '甲,乙,丙')).toBe(false)
+  })
+
+  it('6 段题空格写法判对，但顺序错 / 缺段判错', () => {
+    // content/chinese-4-up-rjb/special-chinese-4-up-reading.json :: read-ex-003
+    const correct = '排比,比喻,裙幅,鸡蛋清,碧玉,碧绿之色'
+    expect(gradeBlank('排比 比喻 裙幅 鸡蛋清 碧玉 碧绿之色', correct)).toBe(true)
+    expect(gradeBlank('比喻 排比 裙幅 鸡蛋清 碧玉 碧绿之色', correct)).toBe(false)
+    expect(gradeBlank('排比 比喻 裙幅 鸡蛋清 碧玉', correct)).toBe(false)
+    // 全或无：第 3 段换成互不为子串的「裙子」
+    expect(gradeBlank('排比 比喻 裙子 鸡蛋清 碧玉 碧绿之色', correct)).toBe(false)
+  })
+
+  it('数组答案 + 空格写法同样判对', () => {
+    // content/chinese-4-up-rjb/unit-chinese-4-up-rjb-u1.json :: u1-ex-005
+    expect(gradeBlank('顺序 特点', ['顺序', '特点'])).toBe(true)
+    expect(gradeBlank('特点 顺序', ['顺序', '特点'])).toBe(false)
+  })
+
+  it('前置 a：正确答案自带空格 → 第二通道永久禁用', () => {
+    // content/english-7-up-rjb/special-english-7-up-birthday.json :: special-ex-095
+    // 题干「每空一词」→ 空格是空位提示。「When is 其他」必须 false，
+    // 若第二通道被误启用，这里会被切成 3 段而答案只 1 段…… 但仍可能误判，
+    // 所以真正钉死前置 a 的是下面这条：逗号写到空格短语里必须判错。
+    expect(gradeBlank('When is', 'When is')).toBe(true)
+    expect(gradeBlank('Whenis', 'When is')).toBe(true) // 现状语义：空格被删除
+    expect(gradeBlank('When  is', 'When is')).toBe(true)
+    expect(gradeBlank('When is 其他', 'When is')).toBe(false)
+    // 正确答案含空格 → 不允许把用户输入的标点当分隔符切开比对
+    expect(gradeBlank('When,is', 'When is')).toBe(false)
+  })
+
+  it('前置 a：`on weekends` 这类短语单答案行为不变', () => {
+    expect(gradeBlank('on weekends', 'on weekends')).toBe(true)
+    expect(gradeBlank('onweekends', 'on weekends')).toBe(true) // 现状语义
+    expect(gradeBlank('on,weekends', 'on weekends')).toBe(false)
+  })
+
+  it('纯数字题不受影响：`d45-23-x01` answer `10000`', () => {
+    // content/math-4-up-rjb/daily-math-4-up-rjb-45d.json :: d45-23-x01
+    expect(gradeBlank('10000', '10000')).toBe(true)
+    // 千分位逗号 → 用户侧 2 段 vs 答案 1 段 → 段数不等 → false
+    expect(gradeBlank('10,000', '10000')).toBe(false)
+    // ⚠️ 现状语义（非本次引入）：严格路径会删掉所有空格，故 "10 000" 判等。
+    // 这与 "Whenis" ≡ "When is" 是同一条机制；要收紧只能改严格路径，属行为变更，
+    // 本次刻意未改，已在交付报告中单独列出待裁决。
+    expect(gradeBlank('10 000', '10000')).toBe(true)
+  })
+})
