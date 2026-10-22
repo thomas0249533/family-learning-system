@@ -203,6 +203,13 @@ describe('F1 · 注入防御（题干是外部内容）', () => {
     const p = buildHintPrompt(baseInput({ question: '题干\r\n\r\n\r\n\r\n后面' }))
     expect(p.user).not.toContain('\n\n\n')
   })
+
+  it('题目内容用 <题目内容>…</题目内容> 包裹，把外部文本与指令进一步隔开', () => {
+    const p = buildHintPrompt(baseInput({ question: '小明有 12 个苹果' }))
+    expect(p.user).toContain('<题目内容>')
+    expect(p.user).toContain('</题目内容>')
+    expect(p.user).toMatch(/<题目内容>[\s\S]*小明有 12 个苹果[\s\S]*<\/题目内容>/)
+  })
 })
 
 describe('F1 · 隐私字段屏蔽', () => {

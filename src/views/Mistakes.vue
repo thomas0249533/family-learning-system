@@ -165,9 +165,19 @@
               <span v-if="levelOf(m) === 'partial'" class="partial-hint">
                 再答对 {{ remainingToMaster(m) }} 次就彻底掌握了
               </span>
-              <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
-                ✅ 我已掌握
-              </AppButton>
+              <div class="card-actions-btns">
+                <AppButton
+                  size="small"
+                  :loading="hintingId === m.id"
+                  :disabled="hintLoading && hintingId !== m.id"
+                  @click="handleHint(m)"
+                >
+                  💡 启发一下
+                </AppButton>
+                <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
+                  ✅ 我已掌握
+                </AppButton>
+              </div>
             </div>
           </div>
         </div>
@@ -235,19 +245,62 @@
           <span v-if="levelOf(m) === 'partial'" class="partial-hint">
             再答对 {{ remainingToMaster(m) }} 次就彻底掌握了
           </span>
-          <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
-            ✅ 我已掌握
-          </AppButton>
+          <div class="card-actions-btns">
+            <AppButton
+              size="small"
+              :loading="hintingId === m.id"
+              :disabled="hintLoading && hintingId !== m.id"
+              @click="handleHint(m)"
+            >
+              💡 启发一下
+            </AppButton>
+            <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
+              ✅ 我已掌握
+            </AppButton>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- F1 · AI 启发式讲评抽屉。
+         `n-drawer` + `n-drawer-content`（naive-ui 自带，仓库此前没有抽屉用法可抄，
+         故按 naive 官方范式写：v-model:show 控制开关，closable 交给组件）。
+         关闭即中断（见 watch(hintOpen)）—— 抽屉被关掉后还在往里吐字是明显的 bug。 -->
+    <n-drawer v-model:show="hintOpen" :width="440" placement="right">
+      <n-drawer-content title="💡 启发一下" closable>
+        <div class="ai-hint">
+          <div class="ai-hint-question">{{ hintQuestion || '题目数据已过期' }}</div>
+
+          <div v-if="hintEngine" class="ai-hint-engine">
+            来自：{{ AI_ENGINE_LABEL[hintEngine] }}
+          </div>
+
+          <!-- 降级提示：三级失败各有一句不同的人话（不是统一的"出错了"） -->
+          <div v-if="hintNotice" class="ai-hint-notice">{{ hintNotice }}</div>
+
+          <div class="ai-hint-text">
+            <span v-if="!hintText && hintLoading" class="ai-hint-placeholder">正在想怎么提示你…</span>
+            <span v-else>{{ hintText }}</span>
+            <span v-if="hintLoading" class="ai-hint-caret" aria-hidden="true"></span>
+          </div>
+
+          <div class="ai-hint-foot">
+            <span class="ai-hint-tip">启发只给思路，不给答案——看懂了就回卡片上再做一遍。</span>
+            <AppButton v-if="hintLoading" size="small" type="error" ghost @click="stopHint">
+              ⏹ 停止
+            </AppButton>
+            <AppButton v-else size="small" @click="hintOpen = false">关闭</AppButton>
+          </div>
+        </div>
+      </n-drawer-content>
+    </n-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { NInput, useDialog, useMessage } from 'naive-ui'
+import { NInput, NDrawer, NDrawerContent, useDialog, useMessage } from 'naive-ui'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuestionText from '@/components/QuestionText.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
@@ -268,8 +321,12 @@ import {
   MISTAKE_CAUSE_LABELS,
   MISTAKE_CAUSE_ORDER,
   mistakeCauseLabelOf,
+  mistakeCauseOf,
   type MistakeCause,
 } from '@core/mistake/mistakeCause'
+import { AI_ENGINE_LABEL, describeAiFailure, describeDegradation, type AiEngine } from '@core/ai/aiMessages'
+import { AiHintError, requestAiHint } from '@core/ai/aiClient'
+import { currentApiKey, hasRememberedKey, loadAiConfig } from '@core/ai/aiConfig'
 import type { MistakeMasteryLevel } from '@/db'
 
 const message = useMessage()
@@ -318,10 +375,15 @@ const LEVEL_ORDER: Record<MistakeMasteryLevel, number> = { none: 0, partial: 1, 
  * 由 `pkgLabel` 按"唯一才用"裁决 —— 与写入端的零 tie-break 是同一条纪律。
  */
 const pkgMeta = computed(() => {
-  const byId = new Map<string, { title: string; subject?: string }>()
+  // F1：顺带带出 grade —— AI 讲评要知道"这是几年级的题"才能说对口的话
+  const byId = new Map<string, { title: string; subject?: string; grade?: number }>()
   const kpOwners = new Map<string, string[]>()
   for (const pkg of packageStore.packages) {
-    byId.set(pkg.packageId, { title: pkg.manifest?.title ?? '', subject: pkg.manifest?.subject })
+    byId.set(pkg.packageId, {
+      title: pkg.manifest?.title ?? '',
+      subject: pkg.manifest?.subject,
+      grade: pkg.manifest?.grade,
+    })
     for (const kp of pkg.knowledgePoints ?? []) {
       const list = kpOwners.get(kp.id) ?? []
       if (!list.includes(pkg.packageId)) list.push(pkg.packageId)
@@ -464,6 +526,141 @@ onMounted(async () => {
 async function markMastered(id: number) {
   await userDataStore.markAsMastered(id)
 }
+
+/* ===========================================================================
+ * F1 · 错题 AI 启发式讲评（「💡 启发一下」→ 抽屉 + 打字机流式）
+ * ---------------------------------------------------------------------------
+ * 三条纪律：
+ *   1. **只发当前这一道题**（`buildHintPrompt` 的入参就是这个边界：没有档案、
+ *      没有姓名、没有其它题目），题干是外部内容，进 Prompt 前先消毒。
+ *   2. **三级降级必须有不同的人话**：`describeDegradation` 只报最后一级的原因，
+ *      但三级（云端 / 本地 / 静态）在 UI 上要显示"这条提示是谁给的"。
+ *   3. **可中断**：抽屉关掉或点「停止」→ `AbortController.abort()`；
+ *      中断**不降级**（用户自己按的停止，给他一段静态解析属于答非所问）。
+ *
+ * 打字机为什么是"队列 + 定时吐字"而不是直接拼：流式 chunk 常常一口气来十几个字，
+ * 直接拼出来观感是"卡一下然后蹦一段"。把增量压进队列、按固定节奏吐字，
+ * 才像有人在写字 —— 这也是 e2e 能断言"文字在增长"的前提。
+ * ======================================================================== */
+
+/** 打字机：每 tick 吐出的字数与间隔 */
+const TYPEWRITER_CHARS_PER_TICK = 2
+const TYPEWRITER_INTERVAL_MS = 24
+
+const hintOpen = ref(false)
+const hintLoading = ref(false)
+/** 正在请求的那张卡（同一时刻只允许一个讲评在跑） */
+const hintingId = ref<number | null>(null)
+const hintText = ref('')
+const hintQuestion = ref('')
+const hintEngine = ref<AiEngine | null>(null)
+const hintNotice = ref('')
+
+let hintAbort: AbortController | null = null
+let hintQueue = ''
+let hintTimer: ReturnType<typeof setInterval> | null = null
+
+function startTypewriter(): void {
+  if (hintTimer !== null) return
+  hintTimer = setInterval(() => {
+    if (!hintQueue) return
+    hintText.value += hintQueue.slice(0, TYPEWRITER_CHARS_PER_TICK)
+    hintQueue = hintQueue.slice(TYPEWRITER_CHARS_PER_TICK)
+  }, TYPEWRITER_INTERVAL_MS)
+}
+
+/** flush=true 时把队列里剩下的字一次补完（正常结束要补齐，被中断则不必） */
+function stopTypewriter(flush: boolean): void {
+  if (hintTimer !== null) {
+    clearInterval(hintTimer)
+    hintTimer = null
+  }
+  if (flush && hintQueue) {
+    hintText.value += hintQueue
+    hintQueue = ''
+  }
+}
+
+/** 学科 / 年级：只从归属包上取，取不到就不传（不猜） */
+function aiSubjectOf(m: any): string | undefined {
+  return pkgMeta.value.byId.get(m.packageId)?.subject
+}
+function aiGradeOf(m: any): number | undefined {
+  return pkgMeta.value.byId.get(m.packageId)?.grade
+}
+
+async function handleHint(m: any): Promise<void> {
+  if (hintLoading.value) return
+  hintingId.value = typeof m.id === 'number' ? m.id : null
+  hintText.value = ''
+  hintQueue = ''
+  hintNotice.value = ''
+  hintEngine.value = null
+  hintQuestion.value = String(m.questionData?.question ?? '')
+  hintOpen.value = true
+  hintLoading.value = true
+  hintAbort = new AbortController()
+  startTypewriter()
+
+  let aborted = false
+  try {
+    const cfg = await loadAiConfig()
+    const out = await requestAiHint(
+      {
+        prompt: {
+          question: hintQuestion.value,
+          correctAnswer: String(m.questionData?.answer ?? ''),
+          userAnswer: String(m.lastUserAnswer ?? ''),
+          // 未打标按 knowledge 兜底（逻辑层口径，见 mistakeCause.ts）
+          cause: mistakeCauseOf(m),
+          subject: aiSubjectOf(m),
+          grade: aiGradeOf(m),
+          explanation: String(m.questionData?.explanation ?? ''),
+        },
+        apiKey: currentApiKey(),
+        model: cfg.model,
+        ollamaModel: cfg.ollamaModel,
+      },
+      {
+        signal: hintAbort.signal,
+        onDelta: (delta) => {
+          hintQueue += delta
+        },
+      },
+    )
+    hintEngine.value = out.engine
+    if (out.engine === 'static') {
+      // 三级全失败：云端 / 本地模型都没用上，落到题库自带解析。
+      // 给一句人话而不是干巴巴的"解析"，家长才知道"AI 这一档为什么没生效"。
+      hintNotice.value = 'AI 助手正在休息，我们来看看这道题原本的解析：'
+    } else {
+      hintNotice.value = describeDegradation(out.failures)
+      // 没填 Key 但本机存过：给一条"去哪儿解锁"的指引（比干说没配 Key 有用）
+      if (out.failures.some((f) => f.reason === 'no-key') && hasRememberedKey(cfg)) {
+        hintNotice.value += '（本机保存过一个 Key，到「设置 → 🤖 AI 助手设置」用家长口令解锁后就能用）'
+      }
+    }
+  } catch (e) {
+    aborted = e instanceof AiHintError && e.code === 'aborted'
+    hintNotice.value = describeAiFailure(e instanceof AiHintError ? e.code : 'network')
+  } finally {
+    hintLoading.value = false
+    hintingId.value = null
+    // 被中断时不补齐队列：用户按的是"停止"，把剩下的字补完等于没停
+    stopTypewriter(!aborted)
+    hintAbort = null
+  }
+}
+
+/** 手动停止：中断不降级，UI 只提示"已停止" */
+function stopHint(): void {
+  hintAbort?.abort()
+}
+
+// 抽屉关掉 = 放弃这次讲评：中断请求、停掉打字机
+watch(hintOpen, (open) => {
+  if (!open) stopHint()
+})
 
 /**
  * C1 · 错因归因。只需要这两个字段 —— 两处卡片布局的 `m` 分别是 any（分组视图）
@@ -940,6 +1137,94 @@ function formatDate(iso: string): string {
       font-weight: 700;
       line-height: 1.4;
     }
+
+    /* F1 · 「💡 启发一下」+「我已掌握」并排。窄卡片里按钮组自己换行，
+       不让两个按钮把提示文字挤掉。 */
+    .card-actions-btns {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: $space-2;
+      margin-left: auto;
+    }
   }
+}
+
+/* F1 · AI 启发抽屉。全部走 token，不写死颜色（stylelint color-no-hex）。 */
+.ai-hint {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+
+  .ai-hint-question {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-main;
+    line-height: 1.6;
+    padding-bottom: $space-2;
+    border-bottom: 1px dashed $border-color;
+  }
+
+  .ai-hint-engine {
+    align-self: flex-start;
+    font-size: $font-2xs;
+    font-weight: 700;
+    color: $primary-text;
+    background: $primary-light;
+    padding: 3px 10px;
+    border-radius: $radius-full;
+  }
+
+  .ai-hint-notice {
+    font-size: $font-xs;
+    line-height: 1.6;
+    color: $warning-text;
+    background: var(--badge-warning-bg);
+    border-radius: $radius-sm;
+    padding: $space-2 $space-3;
+  }
+
+  .ai-hint-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: $text-main;
+    white-space: pre-wrap;
+    min-height: 120px;
+
+    .ai-hint-placeholder {
+      color: $text-muted;
+    }
+
+    /* 打字机光标。动画只做透明度：不引发动画抖动，也不影响文字测量
+       （e2e 断言的是 textContent 增长，光标是空 span）。 */
+    .ai-hint-caret {
+      display: inline-block;
+      width: 6px;
+      height: 1em;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      background: $primary-color;
+      animation: ai-caret-blink 1s steps(2, start) infinite;
+    }
+  }
+
+  .ai-hint-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-2;
+
+    .ai-hint-tip {
+      flex: 1;
+      min-width: 160px;
+      font-size: $font-2xs;
+      color: $text-sub;
+      line-height: 1.5;
+    }
+  }
+}
+
+@keyframes ai-caret-blink {
+  to { visibility: hidden; }
 }
 </style>
