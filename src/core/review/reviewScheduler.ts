@@ -10,6 +10,11 @@
  *   - rateFromOutcome() 把二元对错自动推断成 FSRS 四档评分
  *   - scheduleReview()  用一张持久化卡片推进排期（新主路径）
  *   - retrievabilityOf() 取"此刻想得起来的概率"，用于展示记忆强度
+ *
+ * 时间口径见 `fsrs.ts` 文件头（V1.10 · E1-a 审计裁定）：`nextReviewAt` /
+ * `lastReviewAt` 是 UTC 全时刻，消费一律 `new Date()` 解析后比较；
+ * 要日粒度走 `localDayKey`。`mergeProgress` 的字典序比较依赖本格式，
+ * 改格式前先看 `tests/review-time-contract.test.ts`。
  */
 import {
   advance,

@@ -12,6 +12,25 @@
  *   1. 包住 ts-fsrs 官方参考实现，固定一份适合小学日常节奏的参数；
  *   2. 把 ts-fsrs 的 Card（含 Date 对象）转成能写进 IndexedDB 的纯 JSON。
  * 业务代码一律只依赖 reviewScheduler.ts 的门面函数，不直接 import 本文件。
+ *
+ * ## 时间口径（V1.10 · E1-a 审计裁定，勿再当"UTC 债务"迁走）
+ *
+ * `due` / `last_review` 序列化成 **UTC 全时刻**（`toISOString()`，`...Z`）是
+ * **既定设计，不是待修的数据债**。理由与边界：
+ *
+ * 1. 本仓日期纪律（`tests/date-discipline.test.ts` 文件头）明文裁定：
+ *    "序列化时间戳是 `toISOString()` 的正当用途，只要不截成'日键'就与本地口径
+ *    无关"。UTC 是**瞬时**的无歧义表示，与"本地日键"是两个层级，各管各的。
+ * 2. 全部消费端都必须走 `new Date(...)` 解析成时刻再比较——
+ *    `toCard` / `daysUntilDue` / `isSameDay` / `isDueForReview` /
+ *    `humanizeNextReview` / `weakPoints` 的 due / `applyDecay` 皆是。
+ *    **禁止**对 `due` 字符串切片当日键（`slice(0,10)` 拿到的是 UTC 日，
+ *    东八区清晨学会差一天——`achievementStory.dayOf` 刚踩过，已修）。
+ * 3. 要"日"粒度就用 `localDayKey(new Date(x))`（`@core/motivation/streak`）。
+ * 4. **换格式前必读**：`mergeProgress.cmp` 的"更晚者胜"是字典序比较，
+ *    只在同格式下等于时间序。改成本文件的写格式（如 `+08:00`）会先被
+ *    `tests/review-time-contract.test.ts` 的格式契约拦下，然后必须连
+ *    `cmp` 一起改成时刻比较（含日精度串相等语义的裁定）。
  */
 import {
   createEmptyCard,

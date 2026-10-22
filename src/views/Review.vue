@@ -202,6 +202,8 @@ async function loadReviewItems() {
   }
 
   // 逾期最久的排前面
+  // 同格式（UTC 全时刻）下字典序 = 时间序，逾期最久的排前面。
+  // 依赖写入口格式契约：见 tests/review-time-contract.test.ts。
   due.sort((a, b) => (a.nextReviewAt ?? '').localeCompare(b.nextReviewAt ?? ''))
   dueItems.value = due
   upcomingItems.value = upcoming
