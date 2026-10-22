@@ -42,6 +42,15 @@ const C = {
   bold: '\x1b[1m',
 }
 
+/** 内容质量提示按码累计（用于「content/ 实测命中条数」可复现） */
+const qualityTally = new Map<string, number>()
+
+function tallyQuality(issues: NormalizeIssue[]): void {
+  for (const i of issues) {
+    qualityTally.set(i.code, (qualityTally.get(i.code) ?? 0) + 1)
+  }
+}
+
 function fmt(issue: NormalizeIssue, indent = '    '): string {
   const color = issue.level === 'error' ? C.red : C.yellow
   const tag = issue.level === 'error' ? '❌' : '⚠️ '
@@ -83,7 +92,7 @@ function main() {
   console.log(`${C.gray}📋 检查 ${config.packages.length} 个包...${C.reset}\n`)
 
   // 第一遍：读取全部原始 JSON，构建外部 ID 池
-  const rawList: { entry: PackageEntry; raw: any }[] = []
+  const rawList: { entry: PackageEntry; raw: any; quality: NormalizeIssue[] }[] = []
   const externalKpIds = new Set<string>()
   const externalPackageIds = new Set<string>()
 
@@ -175,9 +184,10 @@ function main() {
       warnings.forEach(w => console.log(fmt(w)))
     }
 
-    // ✅ 质量检查（W030~W033）
+    // ✅ 质量检查（W021~W033）
     if (quality.length > 0) {
       totalQuality += quality.length
+      tallyQuality(quality)
       quality.forEach(w => console.log(fmt(w)))
     }
   }
@@ -199,6 +209,11 @@ function main() {
   }
   if (totalQuality > 0) {
     console.log(`   ${C.yellow}质量提示: ${totalQuality}（不阻塞，建议优化）${C.reset}`)
+    const lines = [...qualityTally.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([code, n]) => `${code}×${n}`)
+      .join('  ')
+    console.log(`   ${C.gray}按码: ${lines}${C.reset}`)
   }
   console.log()
 }
