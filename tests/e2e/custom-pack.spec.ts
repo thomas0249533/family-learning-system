@@ -139,8 +139,8 @@ test.describe('自定义成就包（V1.4 · B3）', () => {
   test('导入手工成就包 → 图鉴多 2 张 → 勾选后解锁记录落库（AC-P2-1/2）', async ({ page }) => {
     await page.goto('/achievements')
     await waitDbReady(page)
-    // 基线：没有任何自定义包时就是内置 28 枚
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    // 基线：没有任何自定义包时是内置可收集的 27 枚（night-owl 不参与收集，V1.6 · C6）
+    await expect(page.locator('.ach-card')).toHaveCount(27)
 
     await page.goto('/parent')
     await page.locator('.custom-pack-panel').waitFor({ state: 'visible', timeout: 20_000 })
@@ -157,10 +157,10 @@ test.describe('自定义成就包（V1.4 · B3）', () => {
     await expect(page.locator('.cp-row')).toContainText('已启用')
     await expect(page.locator('.cp-check-item')).toHaveCount(2)
 
-    // 卡真的进了图鉴：28 + 2
+    // 卡真的进了图鉴：27 + 2
     await page.goto('/achievements')
     await waitDbReady(page)
-    await expect(page.locator('.ach-card')).toHaveCount(30)
+    await expect(page.locator('.ach-card')).toHaveCount(29)
 
     // 勾选 → settle 重建 defs → 解锁记录落库
     await page.goto('/parent')
@@ -246,7 +246,7 @@ test.describe('自定义成就包（V1.4 · B3）', () => {
     // 图鉴里这 2 张卡消失（停用的包既不显示也不参与结算）
     await page.goto('/achievements')
     await waitDbReady(page)
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
   })
 })
 
@@ -313,10 +313,10 @@ test.describe('自定义包 · 可重复达成（V1.5）', () => {
     await expect(page.locator('.cp-row')).toHaveCount(1)
     await expect(page.locator('.cp-row-repeat')).toHaveText('1 枚每周可重复')
 
-    // 卡真的进了图鉴：28 + 2
+    // 卡真的进了图鉴：27 + 2
     await page.goto('/achievements')
     await waitDbReady(page)
-    await expect(page.locator('.ach-card')).toHaveCount(30)
+    await expect(page.locator('.ach-card')).toHaveCount(29)
   })
 
   test('repeat 写了不支持的周期 → 预览前就报错，导入按钮根本不出现', async ({ page }) => {

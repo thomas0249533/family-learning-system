@@ -21,6 +21,7 @@ import {
   type AchievementCategory,
   type AchievementItem,
 } from '@core/motivation/achievementMeta'
+import { isCollectible } from '@core/motivation/achievements'
 
 /** 一页放 3 列 × 4 行。改这个数只需改这里，打印与图片共用同一套分页。 */
 export const PRINT_PER_PAGE = 12
@@ -41,11 +42,19 @@ export interface PrintPage {
 /**
  * 按小组分页。
  *
+ * ## 可收集过滤（V1.6 · C6）
+ * 打印件与"导出图片"都是**收集类界面**：家长会把这张纸贴到墙上、把图片发到家庭群。
+ * 所以 `night-owl`（不参与收集的彩蛋）在这里也必须隐身 —— 否则孩子会在一张纸上
+ * 看到图鉴里怎么翻都翻不到的第 28 枚，那比"多展示一枚"更糟（它等于泄底 + 造出
+ * "我有一枚看不见的徽章"的怪状态）。
+ * 过滤放在**本函数**而不是两个调用点（`AchievementsPrint.vue` / `exportImages.ts`）：
+ * 这里是二者共用的唯一分页入口，放在这里就不存在"新增一个导出目标忘了滤"。
+ *
  * @param items 已排好序的视图模型（`buildAchievementItems` 的输出）
  * @param perPage 单页容量，默认 12（3×4）
  *
  * 规则：
- * 1. 按 `CATEGORY_ORDER`（M → G → B → E）遍历，组内保持传入顺序；
+ * 1. 只取**参与收集**的卡；按 `CATEGORY_ORDER`（M → G → B → E）遍历，组内保持传入顺序；
  * 2. 空组**不产页**；
  * 3. 组内超过容量 → 续页，后续页 `continued: true`；
  * 4. 不足一页的组也只占一页（不做"合并两个小组省纸"——那会破坏"每页一件事"）。
@@ -58,9 +67,12 @@ export function paginateByCategory(
   // 这条不是洁癖 —— 调用方可能从设置里读容量，读到 0 就是一张也打不出来。
   const capacity = Number.isFinite(perPage) && perPage >= 1 ? Math.floor(perPage) : 1
 
+  // ★ 收集面口径：彩蛋（night-owl）不出现在任何一页，也不计入 groupTotal / groupEarned
+  const collectible = items.filter((i) => isCollectible(i.id))
+
   const pages: PrintPage[] = []
   for (const category of CATEGORY_ORDER) {
-    const group = items.filter((i) => i.category === category)
+    const group = collectible.filter((i) => i.category === category)
     if (group.length === 0) continue
 
     const groupTotal = group.length

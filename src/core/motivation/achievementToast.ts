@@ -11,7 +11,7 @@
  * 抽成纯函数的原因：这条规则既不能挂组件测，也不该埋在 `.vue` 的 `enqueue` 里 ——
  * 边界（3 枚不合并 / 4 枚合并 / 层级相同取谁 / 空数组）都能在 node 里穷举。
  */
-import { ACHIEVEMENTS, type AchievementDef } from './achievements'
+import { ACHIEVEMENTS, isCollectible, type AchievementDef } from './achievements'
 import { tierOf } from './achievementTaxonomy'
 
 /** 达到这个枚数就合并（PRD §6.3：超过 3 枚） */
@@ -26,13 +26,18 @@ export const MERGED_ID = '__merged__'
 /**
  * 一次解锁事件 → 实际要播放的提示列表。
  *
+ * - **先滤掉不参与收集的彩蛋**（V1.6 · C6：`night-owl` 不弹 toast）——
+ *   这一步必须在下面的枚数判断**之前**，否则"3 枚真实 + 1 枚彩蛋"会被误判成
+ *   ≥4 枚而合并成一条，孩子会看到"解锁 4 枚新成就"却只认得 3 枚。
+ *   本条链路是 toast 的**唯一出口**：`AppShell` 只把 `drainPending()` 交给
+ *   `AchievementToast.enqueue()`，后者直接调本函数，没有第二处 push toast。
  * - < 4 枚：原样返回（逐条播放）；
  * - ≥ 4 枚：返回**一条**合并提示，`title` 带枚数，`desc` 列出前 3 个标题。
  *
  * 返回的元素仍是 `AchievementDef`，这样 toast 组件不需要分情况处理。
  */
 export function mergeUnlocksForToast(defs: AchievementDef[] | null | undefined): AchievementDef[] {
-  const list = (defs ?? []).filter(Boolean)
+  const list = (defs ?? []).filter(Boolean).filter((d) => isCollectible(d.id))
   if (list.length === 0) return []
   if (list.length < MERGE_THRESHOLD) return [...list]
 
@@ -61,9 +66,12 @@ export function mergeUnlocksForToast(defs: AchievementDef[] | null | undefined):
 /**
  * 合并提示里"代表图标"对应的成就（供 e2e / 家长端回溯"这批里最亮的是哪枚"）。
  * 找不到合成项时返回 `null`。
+ *
+ * 与 `mergeUnlocksForToast` 同一道过滤：`night-owl` 是 `hidden` 层级（权重最高），
+ * 不过滤的话它会**抢走代表位**——那等于用图标把彩蛋的存在泄出来（V1.6 · C6）。
  */
 export function mergedRepresentative(defs: AchievementDef[]): AchievementDef | null {
-  const list = (defs ?? []).filter(Boolean)
+  const list = (defs ?? []).filter(Boolean).filter((d) => isCollectible(d.id))
   if (list.length === 0) return null
   return [...list].sort(
     (a, b) => (TIER_RANK[tierOf(b.id)] ?? 0) - (TIER_RANK[tierOf(a.id)] ?? 0),

@@ -114,7 +114,7 @@ test.describe('家庭成就墙（V1.4 · B4）', () => {
     })
 
     await page.goto('/family-wall')
-    // 墙的加载是顺序 await（4 列各 28 枚），等列真的出来
+    // 墙的加载是顺序 await（每列各几十枚定义），等列真的出来
     await expect(page.locator('.wall-col')).toHaveCount(2, { timeout: 20_000 })
 
     const first = page.locator('.wall-col').nth(0)
@@ -141,8 +141,9 @@ test.describe('家庭成就墙（V1.4 · B4）', () => {
     // 按需展开：数字只在本列内出现（各点各的，不排成跨孩子的一行）
     await first.locator('.wall-col-summary').click()
     await second.locator('.wall-col-summary').click()
-    await expect(first.locator('.wall-col-count')).toContainText('已获得 2 / 28')
-    await expect(second.locator('.wall-col-count')).toContainText('已获得 0 / 28')
+    // 分母是**可收集** 27 枚（night-owl 不参与收集，V1.6 · C6）
+    await expect(first.locator('.wall-col-count')).toContainText('已获得 2 / 27')
+    await expect(second.locator('.wall-col-count')).toContainText('已获得 0 / 27')
     // 展开后是三项：已解锁数 / 连续天数 / 掌握数
     await expect(first.locator('.wall-col-num')).toHaveCount(2)
     await expect(first.locator('.wall-col-numbers')).toContainText('已掌握')

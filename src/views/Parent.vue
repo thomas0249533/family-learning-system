@@ -108,7 +108,9 @@
       <div class="ach-overview-card">
         <div class="ach-total">
           <div class="ach-total-value">{{ achUnlockedCount }} / {{ achTotal }}</div>
-          <div class="ach-total-label">已解锁成就</div>
+          <!-- ★ 口径必须写明是「可收集」：分母不含不参与收集的彩蛋（night-owl，PRD §11.2）。
+               也**不得**加一句"另有 1 枚彩蛋"——那会把它存在的事泄出来（主理人终审：彻底隐身）。 -->
+          <div class="ach-total-label">已解锁 / 可收集</div>
         </div>
         <div class="ach-row-label">按小组</div>
         <div class="ach-cats">
@@ -279,7 +281,9 @@ import { switchProfileAndReload } from '@core/profile/switchProfileService'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import {
+  ACHIEVEMENT_TOTAL_COLLECTIBLE,
   ACHIEVEMENTS,
+  isCollectible,
   loadUnlocked,
   type UnlockedRecord,
 } from '@core/motivation/achievements'
@@ -449,17 +453,31 @@ onUnmounted(() => {
   offProfileChange?.()
 })
 
-/** ===== 成就概览（A2-5，只读）===== */
+/** ===== 成就概览（A2-5，只读 + V1.6 · C6 可收集口径）===== */
 // 分类元数据与 Home 的成就图鉴共用同一份定义（避免标签/图标漂移）
 const CAT_ORDER = CATEGORY_ORDER
 const CAT_META = CATEGORY_META
 
-const achTotal = ACHIEVEMENTS.length
-const achUnlockedCount = computed(() => unlockedRecords.value.length)
+/*
+ * ## 为什么这一整块都要换成「可收集」口径（V1.6 · Stage C · C6）
+ * 家长端是唯一会"对账"的界面：家长会拿 27 这个数和孩子图鉴里的枚数对。
+ * 如果这里仍按定义总数 28 算，家长会一直差一枚 —— 而差的那一枚（night-owl）
+ * 在图鉴里是**彻底隐身**的（主理人终审），于是"少一枚"变成无法解释的悬案。
+ *
+ * 所以：分母走 `ACHIEVEMENT_TOTAL_COLLECTIBLE`（单一来源常量，不写字面量），
+ * 分子与分桶一律先 `isCollectible` 过滤。**不新增"彩蛋"桶** —— 那等于泄底。
+ */
+
+/** 可收集总数（27；不是定义总数 28） */
+const achTotal = ACHIEVEMENT_TOTAL_COLLECTIBLE
+/** 已解锁枚数（只数参与收集的） */
+const achUnlockedCount = computed(
+  () => unlockedRecords.value.filter((r) => isCollectible(r.id)).length,
+)
 
 const achByCategory = computed(() =>
   CAT_ORDER.map((cat) => {
-    const items = ACHIEVEMENTS.filter((a) => a.category === cat)
+    const items = ACHIEVEMENTS.filter((a) => a.category === cat && isCollectible(a.id))
     const unlocked = items.filter((a) => unlockedRecords.value.some((r) => r.id === a.id)).length
     return { cat, ...CAT_META[cat], unlocked, total: items.length }
   }),
@@ -468,7 +486,8 @@ const achByCategory = computed(() =>
 /** 家长端只拿得到「静态定义 + 库里的记录」，先拼成概览输入（与图鉴页同一套字段语义） */
 const overviewItems = computed<OverviewItem[]>(() => {
   const byId = new Map(unlockedRecords.value.map((r) => [r.id, r]))
-  return ACHIEVEMENTS.map((a) => {
+  // 只枚举参与收集的定义：`distributionBySource` / `evidenceLines` 因此天然不含彩蛋
+  return ACHIEVEMENTS.filter((a) => isCollectible(a.id)).map((a) => {
     const rec = byId.get(a.id)
     return {
       id: a.id,
@@ -482,7 +501,7 @@ const overviewItems = computed<OverviewItem[]>(() => {
   })
 })
 
-/** 四类来源分布（恒 4 桶，顺序固定） */
+/** 四类来源分布（恒 4 桶，顺序固定；`hidden` 桶的分母已不含 night-owl） */
 const achBySource = computed(() => distributionBySource(overviewItems.value))
 
 /** 解锁证据（只取已解锁且证据非空的，按日期倒序，最多 3 条） */
@@ -490,6 +509,9 @@ const recentEvidence = computed(() => evidenceLines(overviewItems.value, 3))
 
 const recentUnlocked = computed(() => {
   const rows = unlockedRecords.value
+    // 已解锁但**不参与收集**的记录（night-owl）在这里被滤掉：老记录照旧留档，
+    // 只是不出现在家长端的"最近解锁"里（否则家长会问"这枚我孩子在哪儿看到的"）。
+    .filter((r) => isCollectible(r.id))
     .map((r) => ({ ...r, def: ACHIEVEMENTS.find((a) => a.id === r.id) }))
     .filter((r) => !!r.def)
   // unlockedAt 倒序；空日期排最后

@@ -34,7 +34,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import {
-  ACHIEVEMENTS,
+  ACHIEVEMENT_TOTAL_COLLECTIBLE,
+  isCollectible,
   loadUnlocked,
   syncAchievements,
   type AchievementContext,
@@ -80,15 +81,23 @@ export const useAchievementStore = defineStore('achievement', () => {
   const settling = ref(false)
   const loaded = ref(false)
 
-  const earnedCount = computed(() => records.value.length)
+  /**
+   * 已解锁枚数（**可收集**口径）。
+   *
+   * 必须滤掉不参与收集的彩蛋（V1.6 · C6）：`night-owl` 的老记录按"不可撤销"
+   * 留档，但它不该出现在任何分子里 —— 否则会出现"已获得 3 / 27"里藏着
+   * 一枚家长在图鉴里怎么数也数不到的徽章。
+   */
+  const earnedCount = computed(() => records.value.filter((r) => isCollectible(r.id)).length)
   /**
    * 已启用的自定义卡枚数（**每次重建视图时刷新**）。
    *
    * 为什么要单独记一个数字：`totalCount` 过去是常量 `ACHIEVEMENTS.length`，
    * 装了自定义包之后会出现"已解锁 30 / 28"这种自相矛盾的进度。
+   * C6 起分母改走可收集口径（27），自定义卡默认参与收集。
    */
   const customCount = ref(0)
-  const totalCount = computed(() => ACHIEVEMENTS.length + customCount.value)
+  const totalCount = computed(() => ACHIEVEMENT_TOTAL_COLLECTIBLE + customCount.value)
 
   let inflight: Promise<AchievementDef[]> | null = null
   let rerun = false
@@ -146,7 +155,7 @@ export const useAchievementStore = defineStore('achievement', () => {
     const ctx = await buildContext()
     const extra = await loadExtraDefs()
     items.value = buildAchievementItems(ctx, records.value, extra)
-    customCount.value = extra.length
+    customCount.value = extra.filter((d) => isCollectible(d.id)).length
     noPackages.value = (ctx.packages ?? []).length === 0
     view.value = buildAchievementViewFromItems(items.value, { noPackages: noPackages.value })
     return view.value
@@ -181,7 +190,7 @@ export const useAchievementStore = defineStore('achievement', () => {
         const result = await syncAchievements(ctx, new Date(), extra)
         records.value = result.unlockedRecords
         items.value = buildAchievementItems(ctx, result.unlockedRecords, extra)
-        customCount.value = extra.length
+        customCount.value = extra.filter((d) => isCollectible(d.id)).length
         noPackages.value = (ctx.packages ?? []).length === 0
         view.value = buildAchievementViewFromItems(items.value, { noPackages: noPackages.value })
 

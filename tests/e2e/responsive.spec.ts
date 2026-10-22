@@ -42,14 +42,14 @@ test.describe('375px 窄屏', () => {
     await resetDb(page)
     await expect(page.getByRole('heading', { name: '成就图鉴' })).toBeVisible()
 
-    // 0 枚解锁 → 待解锁区默认展开，28 张卡都在
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    // 0 枚解锁 → 待解锁区默认展开，27 张卡都在（可收集口径，V1.6 · C6）
+    await expect(page.locator('.ach-card')).toHaveCount(27)
     expect(await hasHorizontalScroll(page)).toBe(false)
 
     // 全部展开（含组）后仍然不横向溢出
     const toggle = page.getByRole('button', { name: /全部展开|全部收起/ })
     if ((await toggle.textContent())?.includes('全部展开')) await toggle.click()
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
 
     await expect(page.locator('.ach-card').first()).toBeVisible()
     expect(await hasHorizontalScroll(page)).toBe(false)

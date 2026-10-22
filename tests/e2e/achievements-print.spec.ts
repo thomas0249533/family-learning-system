@@ -86,12 +86,12 @@ test.describe('成就打印件（V1.4 · B5）', () => {
       '探索发现',
     ])
 
-    // 每页卡数 = 该组枚数（内置分布 M8 / G7 / B8 / E5）
+    // 每页卡数 = 该组枚数（内置**可收集**分布 M8 / G7 / B7 / E5；B 组少的那枚是 night-owl）
     const counts: number[] = []
     for (let i = 0; i < 4; i += 1) {
       counts.push(await pages.nth(i).locator('.print-card').count())
     }
-    expect(counts).toEqual([8, 7, 8, 5])
+    expect(counts).toEqual([8, 7, 7, 5])
 
     // 页脚：页码连续、不重编
     await expect(page.locator('.print-page-no')).toHaveText([
@@ -101,7 +101,7 @@ test.describe('成就打印件（V1.4 · B5）', () => {
       '第 4 / 4 页',
     ])
 
-    // 页眉：档案名 + 该组已获得数（28 枚内置里前两枚都在精熟组）
+    // 页眉：档案名 + 该组已获得数（种子里那两枚都在精熟组）
     await expect(pages.nth(0).locator('.print-head-meta')).toHaveText('已获得 2 / 8')
     await expect(pages.nth(1).locator('.print-head-meta')).toHaveText('已获得 0 / 7')
   })
@@ -134,7 +134,7 @@ test.describe('成就打印件（V1.4 · B5）', () => {
   })
 
   test('没有成就时不打空页，而是一句引导', async ({ page }) => {
-    // 换一个空档案：achievements:<pid> 为空 → items 仍是 28 枚（都未解锁），页数不变。
+    // 换一个空档案：achievements:<pid> 为空 → items 仍按定义枚举（都未解锁），页数不变。
     // 所以"空"只可能发生在 store 完全没加载/无内置定义时 —— 这里断言按钮路径不会白屏：
     await page.goto('/achievements')
     await expect(page.getByText('打印与导出')).toBeVisible({ timeout: 20_000 })

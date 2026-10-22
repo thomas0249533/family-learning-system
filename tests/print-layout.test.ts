@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { paginateByCategory, pageLabel, PRINT_PER_PAGE } from '@core/report/printLayout'
 import { buildAchievementItems, type AchievementItem } from '@core/motivation/achievementMeta'
-import type { AchievementDef } from '@core/motivation/achievements'
+import { isCollectible, type AchievementDef } from '@core/motivation/achievements'
 
 /**
  * V1.4 · B5 · 打印分页（AC-P2-16）
@@ -45,37 +45,42 @@ describe('paginateByCategory — 内置 28 枚的基线', () => {
     }
   })
 
-  it('内置分布是 M8 / G7 / B8 / E5，一页装得下 → 没有续页', () => {
-    expect(pages.map((p) => p.items.length)).toEqual([8, 7, 8, 5])
+  // V1.6 · C6：B 组少的那一枚是 night-owl（不参与收集的彩蛋），所以是 7 而不是 8。
+  it('内置分布是 M8 / G7 / B7 / E5，一页装得下 → 没有续页', () => {
+    expect(pages.map((p) => p.items.length)).toEqual([8, 7, 7, 5])
     expect(pages.every((p) => !p.continued)).toBe(true)
     expect(PRINT_PER_PAGE).toBe(12)
   })
 
   it('groupTotal / groupEarned 与实物一致（页眉数字的唯一来源）', () => {
-    expect(pages.map((p) => p.groupTotal)).toEqual([8, 7, 8, 5])
+    expect(pages.map((p) => p.groupTotal)).toEqual([8, 7, 7, 5])
     expect(pages.every((p) => p.groupEarned === 0)).toBe(true)
   })
 
   it('页内顺序 = 传入顺序（家长习惯稳定：ACHIEVEMENTS 声明顺序）', () => {
     const all = itemsOf()
     const flat = pages.flatMap((p) => p.items.map((i) => i.id))
-    const expected = all.filter((i) => ['M', 'G', 'B', 'E'].includes(i.category)).map((i) => i.id)
+    // 期望值也按可收集口径取（不参与收集的彩蛋不会出现在任何一页上）
+    const expected = all
+      .filter((i) => ['M', 'G', 'B', 'E'].includes(i.category) && isCollectible(i.id))
+      .map((i) => i.id)
     expect(flat).toEqual(expected)
   })
 })
 
 describe('paginateByCategory — 自定义包进来之后（AC-P2-16 的核心场景）', () => {
-  it('某组加 3 枚自定义 → 仍 4 页，该组变成 11 枚', () => {
+  it('某组加 3 枚自定义 → 仍 4 页，该组变成 10 枚', () => {
+    // B 组内置 7 枚（night-owl 不参与收集）+ 3 枚自定义 = 10
     const pages = paginateByCategory(itemsOf(defs('B', 3)))
     expect(pages).toHaveLength(4)
     const b = pages.find((p) => p.category === 'B')
-    expect(b?.items).toHaveLength(11)
-    expect(b?.groupTotal).toBe(11)
+    expect(b?.items).toHaveLength(10)
+    expect(b?.groupTotal).toBe(10)
     expect(b?.continued).toBe(false)
   })
 
   it('★ 某组 13 枚 → 该组续页，第二页 continued=true 且只含该组', () => {
-    const pages = paginateByCategory(itemsOf(defs('B', 5))) // 8 + 5 = 13
+    const pages = paginateByCategory(itemsOf(defs('B', 6))) // 7 + 6 = 13（满页 12 → 续 1 枚）
     expect(pages.map((p) => p.category)).toEqual(['M', 'G', 'B', 'B', 'E'])
     const second = pages[3]
     expect(second.category).toBe('B')
@@ -88,7 +93,7 @@ describe('paginateByCategory — 自定义包进来之后（AC-P2-16 的核心�
   })
 
   it('续页页码连续、不重编（pageLabel 是渲染层唯一来源）', () => {
-    const pages = paginateByCategory(itemsOf(defs('B', 5)))
+    const pages = paginateByCategory(itemsOf(defs('B', 6))) // 7 + 6 = 13 → 5 页
     const labels = pages.map((_, i) => pageLabel(i, pages.length))
     expect(labels).toEqual(['第 1 / 5 页', '第 2 / 5 页', '第 3 / 5 页', '第 4 / 5 页', '第 5 / 5 页'])
     // 反例：若两页各自算总数，会出现"第 4 / 5 页"与"第 4 / 4 页"并存

@@ -3,7 +3,9 @@
     <PageHeader icon="🏅" title="我的成就" :subtitle="subtitle" />
 
     <template v-if="view">
-      <!-- 整体进度：图鉴完成度 + 枚数（28 从 view.total 取，不写死） -->
+      <!-- 整体进度：图鉴完成度 + 枚数。
+           ★ 分母一律取 `view.total` = **可收集口径**（27 + 自定义），
+           绝不是定义总数 28（`night-owl` 不参与收集，见 PRD §11.2 / C6）。 -->
       <div class="overview">
         <StatCard tone="primary" icon="🏅" :value="`${view.percent}%`" label="图鉴完成度" />
         <StatCard icon="✅" :value="`${view.earned} / ${view.total}`" label="已获得" />
@@ -28,12 +30,14 @@
       </AppCard>
 
       <!-- 全收集总结卡：**只弹一次**（db.settings 里的 achievement:collectionSeen）。
-           规则来源是 view.complete（buildAchievementView 算的），这里不另算一遍口径。 -->
+           规则来源是 view.complete（buildAchievementView 算的），这里不另算一遍口径。
+           ★ 措辞必须落在「可收集」口径上：PRD §11.2 明确禁止写"共 27 枚成就"
+           （因为还有一枚不参与收集的定义存在，说"共 27 枚"是既不准也泄底的）。 -->
       <AppCard v-if="showCollection" class="collection-card">
         <div class="collection-body">
           <div class="collection-emoji" aria-hidden="true">🏆</div>
           <div class="collection-text">
-            <h2 class="collection-title">全部 {{ view.total }} 枚成就已收集</h2>
+            <h2 class="collection-title">可收集的 {{ view.total }} 枚成就已全部收集</h2>
             <p class="collection-desc">
               这一张不是奖励你"运气好"，是你把该练的都练了。往下翻可以看到每一枚的证据。
             </p>
@@ -42,7 +46,8 @@
         </div>
       </AppCard>
 
-      <!-- 筛选：搜索 + 状态 + 来源。筛选只影响"看哪些"，不影响总览的 28 口径 -->
+      <!-- 筛选：搜索 + 状态 + 来源。筛选只影响"看哪些"，不影响总览的分母口径
+           （分母 = view.total 的可收集枚数，见 achievementMeta 的口径分层注释） -->
       <div class="filters">
         <input
           v-model="filter.query"
@@ -139,6 +144,7 @@ import {
 import { SOURCE_LABEL, SOURCE_ORDER } from '@core/motivation/achievementOverview'
 import {
   CLUE_TEXT,
+  HIDDEN_POOL,
   canDraw,
   drawDiscovery,
   emptyDiscoveryState,
@@ -149,6 +155,7 @@ import {
   saveDiscoveryState,
   type DiscoveryState,
 } from '@core/motivation/achievementDiscovery'
+import { isCollectible } from '@core/motivation/achievements'
 import { localDayKey } from '@core/motivation/streak'
 import { PRINT_PER_PAGE } from '@core/report/printLayout'
 import { exportAchievementImages } from '@core/report/exportImages'
@@ -209,8 +216,8 @@ async function exportJson(): Promise<void> {
 }
 
 /**
- * 筛选条件。**只影响可见集合，不影响 28 的总口径** ——
- * 总览卡上的"已获得 x / 28"不该因为搜了个词就变成"x / 3"。
+ * 筛选条件。**只影响可见集合，不影响分母口径** ——
+ * 总览卡上的"已获得 x / 27"不该因为搜了个词就变成"x / 3"。
  */
 const filter = reactive<AchievementFilter>({ query: '', state: 'all', source: 'all' })
 
@@ -241,8 +248,10 @@ const view = computed(() => {
 const subtitle = computed(() => {
   const v = view.value
   if (!v) return '正在加载成就…'
-  if (v.filterActive) return `已获得 ${v.earned} / ${v.total} 枚 · 当前筛出 ${v.filteredTotal} 枚`
-  return `已获得 ${v.earned} / ${v.total} 枚 · 点开任意一枚查看细节`
+  // ★ 措辞走「可收集」口径：`view.total` 已是不含 night-owl 的枚数（27 + 自定义）。
+  //   不要写"共 N 枚成就"（PRD §11.2 禁止），也不要把分母写成定义总数。
+  if (v.filterActive) return `可收集 ${v.total} 枚 · 已获得 ${v.earned} 枚 · 当前筛出 ${v.filteredTotal} 枚`
+  return `可收集 ${v.total} 枚 · 已获得 ${v.earned} 枚 · 点开任意一枚查看细节`
 })
 
 /**
@@ -265,8 +274,25 @@ const discovery = ref<DiscoveryState>(emptyDiscoveryState())
 /** 本次会话刚抽到的线索（刷新后清空：线索本身存在 revealed 里，不用再回放） */
 const lastClue = ref<{ id: string; wasNew: boolean } | null>(null)
 
-const canDiscover = computed(() => discoveryEnabled.value && canDraw(discovery.value))
-const allRevealed = computed(() => remainingUnrevealed(discovery.value).length === 0)
+/**
+ * 抽签池 = 隐藏成就池里**参与收集**的那些（V1.6 · C6）。
+ *
+ * 为什么不在 `achievementDiscovery.ts` 里改 `HIDDEN_POOL` 本身：
+ * 那个常量是"定义真相"的一部分（`tests/achievement-progress.test.ts` 断言它有 3 枚），
+ * 而"参不参与收集"是**收集体系的口径**，属于视图层。在调用处过滤，
+ * 两个职责各自独立 —— 将来再加一枚彩蛋只需改 `NON_COLLECTIBLE_IDS`。
+ *
+ * 不滤的后果不是"多抽到一次"，而是**把彩蛋的存在泄出来**：
+ * 池里留着 3 枚，`allRevealed` 就要求集齐 3 条线索，孩子会一直在找第 3 条；
+ * 而现在池里只有 comeback / early-bird 两枚 —— 线索文案《它只属于某个很晚的夜晚》
+ * 也再不会出现（那句本身就是"熬夜有惊喜"的暗示）。
+ */
+const discoveryPool = computed<string[]>(() => HIDDEN_POOL.filter((id) => isCollectible(id)))
+
+const canDiscover = computed(() => discoveryEnabled.value && canDraw(discovery.value, discoveryPool.value))
+const allRevealed = computed(
+  () => remainingUnrevealed(discovery.value, discoveryPool.value).length === 0,
+)
 
 const discoveryTitle = computed(() => {
   if (allRevealed.value) return '线索都找到了'
@@ -275,13 +301,17 @@ const discoveryTitle = computed(() => {
 })
 
 const discoveryDesc = computed(() => {
-  if (allRevealed.value) return '三枚隐藏成就的线索已经全部揭开，剩下的靠你自己做到。'
+  // ★ "几枚"必须由池子长度算出来，不能写死「三枚」：池子已经只剩 2 枚，
+  //   写死会让孩子去找一条永远不存在的线索（也等于暗示还有一枚藏着）。
+  if (allRevealed.value) {
+    return `${discoveryPool.value.length} 枚隐藏成就的线索已经全部揭开，剩下的靠你自己做到。`
+  }
   if (canDiscover.value) return '抽到的是一句提示，不是成就本身 —— 成就还得真的做到才会解锁。'
   return '明天学习时会再给你一次。机会不累积，也不会因为没用来催你。'
 })
 
 async function useDiscovery(): Promise<void> {
-  const result = drawDiscovery(discovery.value)
+  const result = drawDiscovery(discovery.value, discoveryPool.value)
   if (!result.clueId) return
   discovery.value = result.state
   lastClue.value = { id: result.clueId, wasNew: result.wasNew }

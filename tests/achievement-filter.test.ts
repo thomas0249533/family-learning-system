@@ -59,11 +59,15 @@ function sample(): AchievementItem[] {
 }
 
 describe('filterAchievementItems', () => {
-  it('空筛选 → 原样返回（同一个数组引用，不做无谓拷贝）', () => {
+  it('空筛选 → 内容不变（V1.6 · C6 起不再返回同一引用：必须过一次可收集过滤）', () => {
     const items = sample()
-    expect(filterAchievementItems(items, {})).toBe(items)
-    expect(filterAchievementItems(items)).toBe(items)
-    expect(filterAchievementItems(items, { query: '   ', state: 'all', source: 'all' })).toBe(items)
+    // 旧契约是"同一个数组引用、不做无谓拷贝"。C6 起这条契约让位于
+    // 「不参与收集的彩蛋必须隐身」—— `filterAchievementItems` 无论如何都要产出新数组，
+    // 所以这里改成断言**内容**不变（sample() 里的 id 都参与收集）。
+    // 引用不变量与其回归保护搬到了 `tests/achievement-collectible.test.ts`。
+    expect(filterAchievementItems(items, {})).toEqual(items)
+    expect(filterAchievementItems(items)).toEqual(items)
+    expect(filterAchievementItems(items, { query: '   ', state: 'all', source: 'all' })).toEqual(items)
   })
 
   it('按状态筛：earned / pending', () => {

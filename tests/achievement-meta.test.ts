@@ -46,7 +46,8 @@ describe('分区与默认态（PRD §5.1 / §5.2）', () => {
     const v = buildAchievementView(ctx(), [])
     expect(v.sections.map((s) => s.key)).toEqual(['pending'])
     expect(v.sections[0].defaultOpen).toBe(true)
-    expect(v.sections[0].count).toBe(28)
+    // 27 = 可收集口径（`NON_COLLECTIBLE_IDS` 里的 night-owl 不参与收集，V1.6 · C6）
+    expect(v.sections[0].count).toBe(27)
   })
 
   it('有几枚已获得：两个区都在，已获得区默认**收起**', () => {
@@ -56,13 +57,15 @@ describe('分区与默认态（PRD §5.1 / §5.2）', () => {
     expect(earned.count).toBe(2)
     expect(earned.defaultOpen).toBe(false)
     expect(pending.defaultOpen).toBe(true)
-    expect(pending.count).toBe(26)
+    // 27 可收集 − 2 已获得 = 25（旧口径 28 − 2 = 26）
+    expect(pending.count).toBe(25)
   })
 
-  it('28 枚全解锁：隐藏「待解锁」区，「已获得」区强制展开（AC-15）', () => {
+  it('可收集枚全解锁：隐藏「待解锁」区，「已获得」区强制展开（AC-15）', () => {
     const v = buildAchievementView(scenarios()['全达标'], allUnlocked())
     expect(v.complete).toBe(true)
-    expect(v.earned).toBe(28)
+    // 记录里其实有 28 条（含 night-owl 的留档记录），但 earned 按可收集口径只数 27 枚
+    expect(v.earned).toBe(27)
     expect(v.sections.map((s) => s.key)).toEqual(['earned'])
     expect(v.sections[0].defaultOpen).toBe(true)
   })
@@ -92,10 +95,13 @@ describe('排序（PRD §5.1）', () => {
       const sorted = [...pcts].sort((a, b) => b - a)
       expect(pcts).toEqual(sorted)
     }
-    // B 类里 streak-3 已达标（3/3 → 99%）应当排第一，两个隐藏成就垫底
+    // B 类里 streak-3 已达标（3/3 → 99%）应当排第一，剪影垫底。
+    // C6 起 B 组只剩 early-bird 一枚剪影（night-owl 不参与收集，压根不在 items 的收集面里），
+    // 所以这里断言"最后一个一定是剪影"而不是"最后两个都是"。
     const gB = pending.groups.find((g) => g.category === 'B')!
     expect(gB.items[0].id).toBe('streak-3')
-    expect(gB.items.slice(-2).every((i) => i.silhouetted)).toBe(true)
+    expect(gB.items.at(-1)!.silhouetted).toBe(true)
+    expect(gB.items.filter((i) => i.silhouetted)).toHaveLength(1)
   })
 
   it('已获得组内按解锁日期倒序（最近拿到的在前）', () => {
@@ -166,7 +172,10 @@ describe('三类卡片（PRD §5.3）', () => {
   it('★ 隐藏成就未解锁 → 剪影：视图对象里根本没有真实 title / desc（AC-14）', () => {
     const v = buildAchievementView(scenarios()['全达标'], [])
     const silhouette = flat(v).filter((i) => i.silhouetted)
-    expect(silhouette).toHaveLength(3)
+    // 3 枚 hidden 定义里只有 2 枚参与收集（night-owl 在收集面彻底隐身，V1.6 · C6），
+    // 所以剪影是 2 个。它的「挑灯夜读」连剪影都不出现 —— 下一行的 JSON 断言仍然守着
+    // "真实文案不得残留"，只是这条路径现在由另外两枚覆盖。
+    expect(silhouette).toHaveLength(2)
     for (const s of silhouette) {
       expect(s.title).toBe('？？？')
       expect(s.desc).toBe('达成后揭晓')
@@ -245,7 +254,7 @@ describe('空态与边界（PRD §5.4）', () => {
   it('脏记录（id 不存在）被忽略，不影响总数', () => {
     const v = buildAchievementView(ctx(), [rec('gone-forever')])
     expect(v.earned).toBe(0)
-    expect(v.total).toBe(28)
+    expect(v.total).toBe(27)
     expect(v.empty).toBe(true)
   })
 })

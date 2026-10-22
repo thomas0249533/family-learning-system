@@ -33,8 +33,8 @@ test.describe('独立成就页', () => {
     await expect(page).toHaveURL(/\/achievements$/)
     await expect(page.getByRole('heading', { name: '我的成就' })).toBeVisible()
 
-    // 图鉴本体照旧 28 张卡（剪影也在）
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    // 图鉴本体 27 张卡（可收集口径；night-owl 不参与收集，不再渲染，V1.6 · C6）
+    await expect(page.locator('.ach-card')).toHaveCount(27)
 
     // 独立页上不再重复显示「查看全部 ->」（standalone）
     await expect(page.getByRole('link', { name: /查看全部/ })).toHaveCount(0)
@@ -76,12 +76,13 @@ test.describe('独立成就页', () => {
     await page.goto('/achievements')
     await resetDb(page)
 
-    // 3 枚隐藏成就都是剪影
+    // 参与收集的隐藏成就只有 2 枚剪影（comeback / early-bird）——
+    // night-owl 在收集图鉴里彻底隐身，连剪影都没有（V1.6 · C6，主理人终审）
     const silhouettes = page.locator('.ach-card.silhouette')
-    await expect(silhouettes).toHaveCount(3)
+    await expect(silhouettes).toHaveCount(2)
 
     // 关键：每一枚都必须是 div —— 是 button 就会进 Tab 序列，等于给了键盘一条泄底路径
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       const tag = await silhouettes.nth(i).evaluate((el) => el.tagName)
       expect(tag).toBe('DIV')
     }
@@ -105,7 +106,8 @@ test.describe('独立成就页', () => {
 
 /**
  * 全收集总结卡是"一次性里程碑"：必须 ①集齐后出现 ②点掉后消失 ③刷新不再出现。
- * 真凑齐 28 枚要跑满整本教材，所以这里直接把 28 条解锁记录写进 settings
+ * 真凑齐可收集的 27 枚要跑满整本教材，所以这里直接把 28 条内置解锁记录写进 settings
+ * （含 night-owl：它的老记录按"不可撤销"留档、不展示，正好一并验证它不会挡住"集齐"）
  * （应用自己的存储是 `db.settings['achievements:<profileId>'] = UnlockedRecord[]`，
  * V1.4 起按档案分片；测试里当前档案恒为 `default`）。
  */
@@ -138,25 +140,25 @@ async function seedAllUnlocked(page: Page): Promise<void> {
 }
 
 test.describe('全收集总结卡（一次性里程碑）', () => {
-  test('集齐 28 枚 → 出现总结卡；点「知道了」后消失，刷新也不再出现', async ({ page }) => {
+  test('集齐可收集枚 → 出现总结卡；点「知道了」后消失，刷新也不再出现', async ({ page }) => {
     await page.goto('/achievements')
     await resetDb(page)
     // 必须等应用把库建完再裸开连接，否则会抢在 Dexie 升级之前（本机踩过的坑）
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
     await seedAllUnlocked(page)
 
     const card = page.locator('.collection-card')
     await expect(card).toBeVisible()
-    await expect(card).toContainText('全部 28 枚成就已收集')
+    await expect(card).toContainText('可收集的 27 枚成就已全部收集')
 
     await card.getByRole('button', { name: '知道了' }).click()
     await expect(card).toHaveCount(0)
 
     // 「只弹一次」= 写进 settings，刷新后不该再出现
-    // 注意：集齐后 28 张卡都在「已获得」区、该区默认收起 → 这里**不能**断言 `.ach-card` 有 28 个，
-    //       改看总览卡的「28 / 28」（那是视图算出来的，不受折叠影响）
+    // 注意：集齐后 27 张卡都在「已获得」区、该区默认收起 → 这里**不能**断言 `.ach-card` 有 27 个，
+    //       改看总览卡的「27 / 27」（那是视图算出来的，不受折叠影响）
     await page.reload()
-    await expect(page.locator('.stat-card__value').filter({ hasText: '28 / 28' })).toBeVisible()
+    await expect(page.locator('.stat-card__value').filter({ hasText: '27 / 27' })).toBeVisible()
     await expect(page.locator('.ach-head-count')).toContainText('全部收集完成')
     await expect(page.locator('.collection-card')).toHaveCount(0)
   })
@@ -164,42 +166,42 @@ test.describe('全收集总结卡（一次性里程碑）', () => {
   test('没集齐时不出总结卡（避免"空加载也算集齐"）', async ({ page }) => {
     await page.goto('/achievements')
     await resetDb(page)
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
     await expect(page.locator('.collection-card')).toHaveCount(0)
   })
 })
 
 test.describe('筛选与搜索', () => {
-  test('关键词缩小可见范围，且总览的 28 口径不变', async ({ page }) => {
+  test('关键词缩小可见范围，且总览的分母口径不变', async ({ page }) => {
     await page.goto('/achievements')
     await resetDb(page)
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
 
     await page.getByRole('searchbox', { name: '搜索成就' }).fill('连续')
     // 不写死命中数量（文案会改）：只要求"确实缩小了"且"每一张都真的含关键词"
     const cards = page.locator('.ach-card')
     await expect(cards.first()).toBeVisible()
-    expect(await cards.count()).toBeLessThan(28)
+    expect(await cards.count()).toBeLessThan(27)
     for (const text of await cards.allInnerTexts()) {
       expect(text).toContain('连续')
     }
-    // 分母仍是 28：总览卡不受筛选影响
-    await expect(page.locator('.stat-card__value').filter({ hasText: '0 / 28' })).toBeVisible()
+    // 分母仍是 27（可收集口径）：总览卡不受筛选影响
+    await expect(page.locator('.stat-card__value').filter({ hasText: '0 / 27' })).toBeVisible()
   })
 
   test('★ 搜不到剪影：用"达成后揭晓"这类遮罩文案搜不出任何隐藏成就', async ({ page }) => {
     await page.goto('/achievements')
     await resetDb(page)
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
 
-    // 剪影卡本来就在页面上（3 枚），但关键词匹配必须把它们排除掉
-    await expect(page.locator('.ach-card.silhouette')).toHaveCount(3)
+    // 剪影卡本来就在页面上（2 枚），但关键词匹配必须把它们排除掉
+    await expect(page.locator('.ach-card.silhouette')).toHaveCount(2)
     await page.getByRole('searchbox', { name: '搜索成就' }).fill('达成后揭晓')
     await expect(page.locator('.ach-card')).toHaveCount(0)
     await expect(page.locator('.ach-card.silhouette')).toHaveCount(0)
   })
 
-  test('状态筛选：已获得为空时给"筛空了"的提示，切回待解锁恢复 28 枚', async ({ page }) => {
+  test('状态筛选：已获得为空时给"筛空了"的提示，切回待解锁恢复 27 枚', async ({ page }) => {
     await page.goto('/achievements')
     await resetDb(page)
 
@@ -208,15 +210,15 @@ test.describe('筛选与搜索', () => {
     await expect(page.getByText(/没有匹配的成就/)).toBeVisible()
 
     await page.getByRole('button', { name: '待解锁', exact: true }).click()
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
   })
 
-  test('来源筛选：切成「隐藏」只剩 3 枚剪影', async ({ page }) => {
+  test('来源筛选：切成「隐藏」只剩 2 枚剪影', async ({ page }) => {
     await page.goto('/achievements')
     await resetDb(page)
     await page.getByRole('button', { name: '隐藏', exact: true }).click()
-    await expect(page.locator('.ach-card')).toHaveCount(3)
-    await expect(page.locator('.ach-card.silhouette')).toHaveCount(3)
+    await expect(page.locator('.ach-card')).toHaveCount(2)
+    await expect(page.locator('.ach-card.silhouette')).toHaveCount(2)
   })
 })
 
@@ -250,7 +252,7 @@ test.describe('隐藏成就的发现机制', () => {
     await page.getByRole('checkbox').first().uncheck()
 
     await page.goto('/achievements')
-    await expect(page.locator('.ach-card')).toHaveCount(28)
+    await expect(page.locator('.ach-card')).toHaveCount(27)
     await expect(page.locator('.discovery-card')).toHaveCount(0)
   })
 })

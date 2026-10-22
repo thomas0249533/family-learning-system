@@ -11,6 +11,17 @@
  * 隐藏 3 枚（comeback / early-bird / night-owl）：解锁前不给任何暗示。
  * 连环 4 链（见 chains.ts）。
  *
+ * ## 双口径：定义 28 枚 / 可收集 27 枚（V1.6 · Stage C · C6）
+ * `night-owl`（挑灯夜读：21:00 后完成一次学习）**保留定义、保留判定、保留已解锁记录**，
+ * 但**移出收集体系**：不计入分母、不进待解锁列表、不弹 toast、不进成就墙。
+ * 理由是产品伦理而非技术：21:00 后学习对小学段孩子是有健康风险的事，
+ * 给徽章等于奖励它（PRD `docs/prd-v1.3-achievement.md` §11.2）；
+ * 而直接摘掉定义又会造出"已解锁却不展示"的怪状态、并让 AC-01 的
+ * "28 枚 check 逐条不变"快照失去意义 —— 所以定义留、收集面隐身。
+ *
+ * 两个数字都只在本文件出现一次（`ACHIEVEMENT_TOTAL_DEFINED` /
+ * `ACHIEVEMENT_TOTAL_COLLECTIBLE`），各视图一律引用常量，**禁止再写字面量**。
+ *
  * 已解锁记录存 settings 的 achievements 键，本轮从 `string[]` 升级为
  * `{ id, unlockedAt }[]`（读时兼容旧格式）；一旦解锁就不再撤销。
  */
@@ -434,6 +445,19 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     desc: '在 21:00 后完成一次学习',
     category: 'B',
     hidden: true,
+    /*
+     * ★★ V1.6 · Stage C · C6：这枚**不参与收集**（见 `NON_COLLECTIBLE_IDS`）。
+     *
+     * 判定（`check`）与定义**刻意保持原样**，一个字都不改：
+     *   - AC-01 的快照验的是"28 枚 check 逐条不变"，删掉或改判据会让快照失去意义；
+     *   - 已解锁的老记录按"不可撤销"原则**留档、不撤销**（只是不再展示）。
+     *
+     * 产品裁决（PRD §11.2 + 主理人终审）：「记得在成就体系的 `filter` 逻辑中屏蔽
+     * `night-owl`，确保它在**收集图鉴中彻底隐身**。」
+     * 所以 §11.2 原写的"仅在已解锁时以一处极轻的彩蛋形式呈现"**本轮不做，留 P1** ——
+     * 终审要求彻底隐身优先。别把这里的"零呈现"当成漏实现。
+     * 标题「挑灯夜读」也无需改名：它永不渲染到任何界面，不构成鼓励熬夜的表述。
+     */
     check: (ctx) => anyLastHourAtLeast(ctx.dailyStats, 21),
   },
   {
@@ -491,6 +515,52 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     check: (ctx) => [...studiedSubjects(ctx)].some((s) => s !== 'math'),
   },
 ]
+
+// ==================== 双口径：定义总数 / 可收集总数 ====================
+
+/**
+ * 内置成就**定义**总数（= `ACHIEVEMENTS.length`）。
+ *
+ * 手写字面量而不是 `ACHIEVEMENTS.length`，是为了让"定义总数变了"必须改到这
+ * 一行、并让 `tests/achievement-collectible.test.ts` 立刻变红 —— 加一枚定义是
+ * 产品决策，不该被一次无意的追加悄悄带过去。
+ *
+ * 口径用途（**不要混用**）：
+ *   - **这个 28** 用于"定义完整性"类断言（AC-01 的 28 枚 check 快照、taxonomy 28/28 覆盖）；
+ *   - 给用户看的数字一律用下面的 `ACHIEVEMENT_TOTAL_COLLECTIBLE`（27）。
+ */
+export const ACHIEVEMENT_TOTAL_DEFINED = 28
+
+/**
+ * **不参与收集**的彩蛋成就（PRD §11.2 + 主理人终审）。
+ *
+ * 加入新成员时：分母常量自动跟随，各视图一律引用常量 ——
+ * 不许在首页 / 家长端 / 报告 / 家庭墙里再写一遍数字。
+ */
+export const NON_COLLECTIBLE_IDS = ['night-owl'] as const
+
+/**
+ * 可收集总数（**所有 UI 文案的唯一口径**）。
+ *
+ * 为什么不让视图直接写 27：一旦名单增删，散落的字面量会静默失配 ——
+ * 表现是"分母 27 但图鉴里有 26 枚"，不报错、只是数字对不上。
+ */
+export const ACHIEVEMENT_TOTAL_COLLECTIBLE =
+  ACHIEVEMENT_TOTAL_DEFINED - NON_COLLECTIBLE_IDS.length
+
+/** `NON_COLLECTIBLE_IDS` 的 O(1) 判定表（模块级算一次，不在渲染期反复 includes） */
+const NON_COLLECTIBLE_SET: ReadonlySet<string> = new Set<string>(NON_COLLECTIBLE_IDS)
+
+/**
+ * 某 id 是否**参与收集**。
+ *
+ * 语义是"不在排除名单里即参与" —— 所以**自定义成就包默认参与**
+ * （家长自建的卡 id 不可能出现在 `NON_COLLECTIBLE_IDS` 里）。
+ * 这条默认方向很重要：反过来写（白名单）会让新装的自定义卡默认隐身。
+ */
+export function isCollectible(id: string): boolean {
+  return !NON_COLLECTIBLE_SET.has(id)
+}
 
 // ==================== 存储（只增不减 · 兼容旧 string[]） ====================
 

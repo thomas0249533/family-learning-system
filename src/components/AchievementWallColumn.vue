@@ -83,6 +83,7 @@
 import { computed } from 'vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import type { AchievementItem } from '@core/motivation/achievementMeta'
+import { isCollectible } from '@core/motivation/achievements'
 import { encouragementLine, recentUnlocked } from '@core/motivation/familyWall'
 import { EMPTY_STREAK, streakText, type StreakState } from '@core/motivation/streak'
 
@@ -107,8 +108,16 @@ const recent = computed(() => recentUnlocked(props.items))
 
 const encouragement = computed(() => encouragementLine(props.items))
 
-const earnedCount = computed(() => props.items.filter((i) => i.earned).length)
-const total = computed(() => props.items.length)
+/*
+ * 数字汇总走**可收集**口径（V1.6 · C6）：`night-owl` 不参与收集，
+ * 不该出现在"已获得 N / M"的任何一边 —— 否则家长点开"查看数字"会看到一个
+ * 自己怎么也对不上的分母（定义总数 28）。
+ * `recent` 那一路不用另滤：`familyWall.recentUnlocked` 复用图鉴视图的 `recent`，
+ * 而后者已在 `buildAchievementViewFromItems` 里按可收集口径算过。
+ */
+const collectibleItems = computed(() => props.items.filter((i) => isCollectible(i.id)))
+const earnedCount = computed(() => collectibleItems.value.filter((i) => i.earned).length)
+const total = computed(() => collectibleItems.value.length)
 
 const streakLine = computed(() => streakText(props.streak ?? EMPTY_STREAK))
 

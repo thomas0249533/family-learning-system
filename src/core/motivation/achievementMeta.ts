@@ -19,6 +19,7 @@
  */
 import {
   ACHIEVEMENTS,
+  isCollectible,
   normalizeRepeatCount,
   type AchievementCategory,
   type AchievementContext,
@@ -136,13 +137,16 @@ export interface AchievementFilter {
 }
 
 export interface AchievementView {
-  /** 已获得枚数 */
+  /** 已获得枚数（**可收集**口径） */
   earned: number
-  /** 总数（28） */
+  /**
+   * **可收集**总数（27 + 自定义；不含 `night-owl`）。
+   * 定义总数（28）见 `achievements.ts` 的 `ACHIEVEMENT_TOTAL_DEFINED`。
+   */
   total: number
   /** 整体进度 0~100（按枚数） */
   percent: number
-  /** 28 枚全部解锁 */
+  /** 可收集的全部解锁 */
   complete: boolean
   /** 一枚都没有（→ 不渲染「已获得」区） */
   empty: boolean
@@ -333,7 +337,12 @@ export function buildAchievementView(
 }
 
 /**
- * 只组装全部卡片（内置 28 枚 + 额外定义），供页面在**已缓存 items** 上反复筛选而不重读库。
+ * 只组装全部卡片（内置定义 + 额外定义），供页面在**已缓存 items** 上反复筛选而不重读库。
+ *
+ * ⚠️ 这里**必须**产出完整的内置定义（含不参与收集的 `night-owl`）：
+ * 它是"定义真相"的投影，AC-01 / taxonomy 的断言与导出图片/打印都按定义枚举。
+ * 隐藏它在**视图层**做（`filterAchievementItems` / `buildAchievementViewFromItems`），
+ * 数据层保持完整 —— 否则"定义总数 28"与"已解锁但看不到"的矛盾就无处落脚。
  *
  * @param extraDefs 额外定义（V1.4 · B3 自定义包）。追加在内置之后 → 同 category 分组内
  *   保持"内置在前、自定义在后"，与家长"后来装的"直觉一致。
@@ -356,21 +365,28 @@ function normalizeQuery(q?: string): string {
 /**
  * 筛选（纯函数，顺序不变）。
  *
- * 两条硬约束：
+ * 三条硬约束：
+ *   0. **不参与收集的彩蛋（`night-owl`）在筛选里彻底隐身**（V1.6 · C6）——
+ *      放在最前面、无可绕过：`night-owl` 连"筛选出来的空"都不算。
+ *      主理人终审原话：「确保它在收集图鉴中彻底隐身」，所以这里**没有开关**，
+ *      不要为了"调试方便"给它加一个 includeEggs 参数（那等于给泄底留后门）。
  *   1. **剪影卡不参与关键词匹配** —— 未解锁的隐藏成就连"被搜到"都不该发生，
- *      否则搜一个词命中 3 枚剪影就等于确认了隐藏成就的存在与数量；
+ *      否则搜一个词命中剪影就等于确认了隐藏成就的存在与数量；
  *   2. 只按状态/来源筛时，剪影卡**照常保留**（它们也是"待解锁"的一部分）。
  */
 export function filterAchievementItems(
   items: AchievementItem[],
   filter?: AchievementFilter,
 ): AchievementItem[] {
+  // ★ 第一道闸：可收集过滤（含"无筛选条件"的早退分支，见下）
+  const collectible = items.filter((it) => isCollectible(it.id))
   const q = normalizeQuery(filter?.query)
   const state = filter?.state ?? 'all'
   const source = filter?.source ?? 'all'
-  if (!q && state === 'all' && source === 'all') return items
+  // 早退也返回**过滤后**的集合：否则"不筛选"时 night-owl 会原样漏出去
+  if (!q && state === 'all' && source === 'all') return collectible
 
-  return items.filter((it) => {
+  return collectible.filter((it) => {
     if (state === 'earned' && !it.earned) return false
     if (state === 'pending' && it.earned) return false
     if (source !== 'all' && it.source !== source) return false
@@ -383,13 +399,21 @@ export function filterAchievementItems(
 }
 
 /**
- * 从**已有的 items** 组装视图（页面筛选走这里，避免每次输入都重算 28 枚的进度）。
+ * 从**已有的 items** 组装视图（页面筛选走这里，避免每次输入都重算内置定义的进度）。
  *
- * 口径分层（容易搞混，写清楚）：
- *   - `total` / `earned` / `percent` / `complete` / `empty` / `recent` / `closest` → **全量**口径，
- *     筛选不改变"28 枚里已得几枚"，否则总览卡会随筛选跳数字；
+ * ## 口径分层（容易搞混，写清楚）
+ *   - **可收集过滤**：所有统计都只基于 `items.filter(isCollectible)` ——
+ *     `night-owl` 不计入分母、不进 `sections`、不进 `recent` / `closest`
+ *     （PRD §11.2 + 主理人终审"收集图鉴中彻底隐身"）。数据层
+ *     （`buildAchievementItems`）仍然产出含 `night-owl` 的完整 items：
+ *     那是定义真相，AC-01 / taxonomy 的断言依赖它；
+ *   - `total` / `earned` / `percent` / `complete` / `empty` / `recent` / `closest` → **全量可收集**口径，
+ *     筛选不改变"可收集的 27 枚里已得几枚"，否则总览卡会随筛选跳数字；
  *   - `sections` → **筛选后**的可见集合（这才是筛选该影响的）；
- *   - 新增 `filterActive` / `filteredTotal` 让页面知道"当前是筛过的空"还是"真的一枚都没有"。
+ *   - `filterActive` / `filteredTotal` 让页面知道"当前是筛过的空"还是"真的一枚都没有"。
+ *
+ * ⚠️ 刻意**不**新增 `eggs` / `hidden-egg` 之类的字段来承载 `night-owl`：
+ * 终审要求彻底隐身，任何"单独一块彩蛋区"都等于把它重新摆回图鉴。
  */
 export function buildAchievementViewFromItems(
   items: AchievementItem[],
@@ -402,9 +426,11 @@ export function buildAchievementViewFromItems(
     || (filter?.state ?? 'all') !== 'all'
     || (filter?.source ?? 'all') !== 'all'
 
-  const earnedAll = items.filter((i) => i.earned)
-  const pendingAll = items.filter((i) => !i.earned)
-  const total = items.length
+  // ★ 分母口径唯一出口：可收集集合。所有统计都从这里派生，别各算一遍。
+  const collectible = items.filter((i) => isCollectible(i.id))
+  const earnedAll = collectible.filter((i) => i.earned)
+  const pendingAll = collectible.filter((i) => !i.earned)
+  const total = collectible.length
   const earned = earnedAll.length
   const complete = total > 0 && earned === total
   const empty = earned === 0
