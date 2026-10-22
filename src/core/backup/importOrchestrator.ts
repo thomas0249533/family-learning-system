@@ -20,9 +20,22 @@
  *   - `userData` store 的 ref 还是旧数组 → `loadUserData()` 重读。
  * 这三步都**不是**"切档案"语义，所以不调 `resetForProfileSwitch`（那会重置成就 toast 队列
  * 与档案级缓存的状态机，把用户正在看的东西清掉）。
+ *
+ * ## E1 · "备份引用了本机没装的包"只是**提示**（V1.6）
+ * v2 备份按设计不含 `packages`（包是设备级资产）。于是导入之后，行全在库里，
+ * 挂它的包却不在 —— 家长看到的就是"专项练习进度丢了"。
+ * 这里**只把它算出来告诉家长**（`missingPackages`），不动任何一行数据，
+ * 也不让 `outcome` 变成 `reject`：缺包是"下一步去做的事"，不是"这份备份不能导"。
+ * 详见 `missingPackages.ts` 文件头。
  */
 
 import { getActivePinia } from 'pinia'
+import { db } from '@/db'
+import {
+  collectMissingPackageIds,
+  countRowsForPackages,
+  type PackageRefRow,
+} from './missingPackages'
 import { ensureOwnerIndex, invalidateOwnerIndex } from '@core/progress/ownerIndexCache'
 import { ensureE1Migrated } from '@core/storage/migrateV3Recovery'
 import { useUserDataStore } from '@core/stores/userData'
@@ -50,6 +63,15 @@ export interface ImportApplied {
   sessions: number
   settings: number
   profiles: number
+  /**
+   * 实际写进库的那些行里，属于"本机没装的包"的包 id（升序去重）。
+   *
+   * 与预览态的区别：预览按**备份里**的行算（含"本机更新、保持本机"的行），
+   * 这里按**真正写下去**的行算 —— 完成提示要说的是"刚才发生了什么"。
+   */
+  missingPackages: string[]
+  /** `missingPackages` 牵连的行数（完成提示要报"几条记录"） */
+  missingPackageRows: number
 }
 
 /**
@@ -72,6 +94,18 @@ export interface ImportPreview {
   local: LocalSnapshot | null
   /** 判序收死：`reject`（含 `plan.reject` 档案超限）→ `noop` → `ready`，见 `resolveOutcome` */
   outcome: ImportOutcome
+  /**
+   * 备份数据引用了、但本机 `db.packages` 里没有的学习包 id（升序去重）。
+   *
+   * 这些行会**照常入库**（合并引擎单调不减，绝不因为包不存在而丢行），
+   * 但在对应的包被导入之前，`/learn` 的列表里看不到它们 —— 家长报的
+   * "专项练习进度丢了"就是这个（详见 `missingPackages.ts` 文件头）。
+   *
+   * 读库失败时为 `[]`：缺包是**警告**，不是拒绝。
+   */
+  missingPackages: string[]
+  /** 备份里属于 `missingPackages` 的行数（给家长的文案要报"几条记录"） */
+  missingPackageRows: number
 }
 
 /**
@@ -94,7 +128,52 @@ function resolveOutcome(route: BackupRoute, plan: MergePlan | null): ImportOutco
 
 /** 全零结果（noop / 拒绝时用，避免各处自己拼字面量） */
 function zeroApplied(): ImportApplied {
-  return { progress: 0, mistakes: 0, sessions: 0, settings: 0, profiles: 0 }
+  return {
+    progress: 0,
+    mistakes: 0,
+    sessions: 0,
+    settings: 0,
+    profiles: 0,
+    missingPackages: [],
+    missingPackageRows: 0,
+  }
+}
+
+/**
+ * 本机装了哪些包 —— 只要 id。
+ *
+ * 用 `toArray()` 而不是更省的 `toCollection().primaryKeys()`：后者在单测替身里
+ * 没有实现（`tests/helpers/fakeDexie.ts` 只做到表级方法），而 E1 这条链路
+ * 必须能被单测直接覆盖。代价是把包体（含题目）整包读进内存 ——
+ * 导入是一次性路径，且 `ensureOwnerIndex()` / `packageStore.loadPackages()` 早就在
+ * 做同样的事，这里没有引入新的内存量级。
+ *
+ * @throws 读库失败照抛，由调用方决定降级成"没有缺失"还是别的。
+ */
+async function readLocalPackageIds(): Promise<ReadonlySet<string>> {
+  const rows = await db.packages.toArray()
+  const ids = new Set<string>()
+  for (const row of rows) {
+    const id = row?.packageId
+    if (typeof id === 'string' && id !== '') ids.add(id)
+  }
+  return ids
+}
+
+/**
+ * 备份里所有带 `packageId` 的行。
+ *
+ * 只取 `progress` 与 `mistakes`：这两张表是"学习记录"，也是家长会看的
+ * （进度卡 / 错题卡都按包渲染）。`examSessions` 的模考记录不进学习列表，
+ * 它的包缺失另有语义，本轮不碰。
+ */
+function packageRefRowsOf(bundles: readonly Bundle[]): PackageRefRow[] {
+  const rows: PackageRefRow[] = []
+  for (const bundle of bundles) {
+    for (const row of bundle.progress) rows.push(row)
+    for (const row of bundle.mistakes) rows.push(row)
+  }
+  return rows
 }
 
 /**
@@ -178,6 +257,8 @@ export async function previewImport(json: unknown, now?: string): Promise<Import
       bundles: [],
       local: null,
       outcome: resolveOutcome(route, null),
+      missingPackages: [],
+      missingPackageRows: 0,
     }
   }
 
@@ -189,7 +270,26 @@ export async function previewImport(json: unknown, now?: string): Promise<Import
   const local = await readLocalSnapshot()
   const plan = planMerge(local, bundles, now ?? new Date().toISOString(), globals)
 
-  return { route, plan, bundles, local, outcome: resolveOutcome(route, plan) }
+  // E1：备份引用了但本机没装的包。**只提示、不参与判序**（见文件头末段）：
+  // 读库失败 → `[]`，警告宁可不出现，也不能把 outcome 变成 reject ——
+  // "这份备份不能导"与"导完之后还得去装个包"是两件完全不同的事。
+  const localPackageIds = await readLocalPackageIds().catch(() => null)
+  const refRows = packageRefRowsOf(bundles)
+  const missingPackages = localPackageIds
+    ? collectMissingPackageIds(refRows, localPackageIds)
+    : []
+  const missingPackageRows =
+    missingPackages.length > 0 ? countRowsForPackages(refRows, missingPackages) : 0
+
+  return {
+    route,
+    plan,
+    bundles,
+    local,
+    outcome: resolveOutcome(route, plan),
+    missingPackages,
+    missingPackageRows,
+  }
 }
 
 /**
@@ -271,12 +371,26 @@ export async function executeImport(plan: MergePlan): Promise<ImportApplied> {
     }
   }
 
+  // E1：完成提示要说"刚才写进去的行里，有几条挂在没装的包上"。
+  // 按**实际写入的行**算（`plan` 的 upserts），而不是备份里的全部行 ——
+  // "本机更新、保持本机"的那部分没被写进来，不该出现在完成提示里。
+  // 读库失败同样降级为"没有缺失"：它只是提示，失败不该让导入看起来有问题。
+  const localPackageIds = await readLocalPackageIds().catch(() => null)
+  const writtenRows: PackageRefRow[] = [...plan.progressUpserts, ...plan.mistakeUpserts]
+  const missingPackages = localPackageIds
+    ? collectMissingPackageIds(writtenRows, localPackageIds)
+    : []
+  const missingPackageRows =
+    missingPackages.length > 0 ? countRowsForPackages(writtenRows, missingPackages) : 0
+
   return {
     progress: applied.progress,
     mistakes: applied.mistakes,
     sessions: applied.sessions,
     settings: applied.settings,
     profiles: applied.profiles,
+    missingPackages,
+    missingPackageRows,
   }
 }
 

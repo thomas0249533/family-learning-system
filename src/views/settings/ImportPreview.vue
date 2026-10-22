@@ -111,6 +111,22 @@
 
           <div v-if="applied" class="import-done-note">已导入，数据已刷新。</div>
 
+          <!-- E1 · 备份引用了本机没装的学习包（"专项练习进度丢了"的真相）。
+               放在统计之后、导入期警告之前：统计是"会导入什么"，这一条是
+               "导完之后还得做什么"，两句并列才读得通。
+               类名刻意不叫 `.import-warning` —— 那条是 A6-L1 的导入期拦截提示
+               （`v-if="!applied"`），已有 e2e 用 `.import-warning` 做**单元素**
+               断言；复用类名会让那里变成 strict mode violation 的假红。 -->
+          <div
+            v-if="missingPackages.length > 0"
+            class="import-missing"
+            :title="missingTitle"
+          >
+            ⚠️ 备份里有 {{ missingPackageRows }} 条学习记录属于本机还没有的学习包（{{
+              missingShownText
+            }}）。导入后这些记录会保存在本机，但要先到「学习 → 导入学习包」导入对应的包，才能在列表里看到它们。
+          </div>
+
           <!-- 执行失败：必须说清"一行都没写进去"（AC-P2-15） -->
           <div v-if="applyError" class="import-error" role="alert">
             <div class="import-error-title">{{ applyFriendly.title }}</div>
@@ -363,6 +379,59 @@ const statRows = computed<StatRow[]>(() => {
 const canConfirm = computed<boolean>(() => outcome.value === 'ready' && applied.value === null)
 
 // ---------------------------------------------------------------------
+// E1 · 备份引用了本机没装的学习包（V1.6）
+// ---------------------------------------------------------------------
+
+/**
+ * 缺失的包 id（升序去重）。
+ *
+ * 已导入后改读 `applied` 的版本：预览按"备份里有什么"算，完成提示要说
+ * "刚才写进去的里头有哪些"（core 侧两条口径见 `ImportApplied.missingPackages`）。
+ */
+const missingPackages = computed<string[]>(() => {
+  if (applied.value) return applied.value.missingPackages
+  return preview.value?.missingPackages ?? []
+})
+
+/** 牵连的行数（预览："备份里有几条"；已导入："其中有几条"） */
+const missingPackageRows = computed<number>(() => {
+  if (applied.value) return applied.value.missingPackageRows
+  return preview.value?.missingPackageRows ?? 0
+})
+
+/**
+ * 正文最多列 3 个 id。
+ *
+ * 一个孩子身上同时缺十几个包并不罕见（每个专项包一份），全列出来会把这条
+ * 提示撑成一面墙，反而没人看。剩下的合成"等 M 个"，完整清单挂 `title`
+ * —— 排障/对照时要看全的人能拿到，扫一眼的人不被打断。
+ */
+const MISSING_SHOWN_LIMIT = 3
+
+const missingShown = computed<string[]>(() => missingPackages.value.slice(0, MISSING_SHOWN_LIMIT))
+
+/** 折叠掉的 id 数（0 表示没折叠） */
+const missingHiddenCount = computed<number>(() =>
+  Math.max(0, missingPackages.value.length - MISSING_SHOWN_LIMIT)
+)
+
+/** 正文里那段"包清单"（含折叠后缀） */
+const missingShownText = computed<string>(() => {
+  const shown = missingShown.value.join('、')
+  if (missingHiddenCount.value === 0) return shown
+  return `${shown} 等 ${missingPackages.value.length} 个`
+})
+
+/** 完整清单（悬停可见） */
+const missingTitle = computed<string>(() => missingPackages.value.join('、'))
+
+/** 完成提示里那句"属于哪个包"（同一套折叠规则，取前 3 个） */
+function missingIdsText(ids: readonly string[]): string {
+  if (ids.length <= MISSING_SHOWN_LIMIT) return ids.join('、')
+  return `${ids.slice(0, MISSING_SHOWN_LIMIT).join('、')} 等 ${ids.length} 个`
+}
+
+// ---------------------------------------------------------------------
 // 流程
 // ---------------------------------------------------------------------
 
@@ -450,7 +519,19 @@ async function confirmImport(): Promise<void> {
   applyErrorCode.value = ''
   try {
     applied.value = await executeImport(plan)
-    message.success('已导入，数据已刷新')
+    // E1：缺包时把"下一步该做什么"直接说进完成提示 —— 否则家长只看到
+    // "导入成功"，转头去学习页找不到那些记录，就会以为导入丢了数据。
+    // 用 warning 而不是拼在 success 后面：拼出来的长句会被整条略读掉，
+    // 而这是**要他去做一件事**，不是背景信息。
+    if (applied.value.missingPackages.length > 0) {
+      message.warning(
+        `已导入。其中 ${applied.value.missingPackageRows} 条记录属于本机还没有的学习包（${missingIdsText(
+          applied.value.missingPackages
+        )}），先在「学习 → 导入学习包」里导入对应的包，就能在列表里看到它们。`
+      )
+    } else {
+      message.success('已导入，数据已刷新')
+    }
   } catch (e) {
     // AC-P2-15：失败时必须明确告诉用户"一行都没写进去"
     applyError.value = describeError(e)
@@ -679,6 +760,19 @@ function reset(): void {
   font-size: var(--font-xs);
   font-weight: 600;
   color: var(--success-text);
+}
+
+/* ---- 缺包提示（E1）----
+   与 A6-L1 的导入期警告同一套语义 token（warning-soft / warning-color / warning-text），
+   但独立类名：两条提示的生命周期不同（这条导入后仍在，那条 `v-if="!applied"`）。 */
+.import-missing {
+  padding: var(--space-3);
+  background: var(--warning-soft);
+  border-left: 3px solid var(--warning-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  line-height: 1.7;
+  color: var(--warning-text);
 }
 
 /* ---- 导入期警告（A6-L1）---- */

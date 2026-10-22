@@ -165,6 +165,32 @@ async function readSetting(page: Page, key: string): Promise<unknown> {
   )
 }
 
+/** 读库里全部 progress 行（断言"两种行都在"要直接看库，不看 UI —— UI 本来就看不见孤儿行） */
+async function readProgressRows(page: Page): Promise<
+  Array<{ profileId: string; packageId: string; knowledgePointId: string }>
+> {
+  return page.evaluate(async (dbName) => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const req = indexedDB.open(dbName)
+      req.onsuccess = () => resolve(req.result)
+      req.onerror = () => reject(req.error)
+      req.onblocked = () => reject(new Error('IDB 被阻塞'))
+    })
+    const rows = await new Promise<Array<Record<string, any>>>((resolve, reject) => {
+      const tx = db.transaction(['progress'], 'readonly')
+      const req = tx.objectStore('progress').getAll()
+      req.onsuccess = () => resolve((req.result as Array<Record<string, any>>) ?? [])
+      req.onerror = () => reject(req.error)
+    })
+    db.close()
+    return rows.map((r) => ({
+      profileId: String(r.profileId ?? ''),
+      packageId: String(r.packageId ?? ''),
+      knowledgePointId: String(r.knowledgePointId ?? ''),
+    }))
+  }, DB_NAME)
+}
+
 /** 上传一份 JSON 到导入卡片的第一屏 */
 async function pickBackup(
   page: Page,
@@ -307,6 +333,109 @@ test.describe('跨设备备份往返（V1.4 · B2）', () => {
     // 数字不翻倍
     await pageB.goto('/parent')
     await expect.poll(() => statValue(pageB, 1), { timeout: 10_000 }).toBe('1')
+    await ctxB.close()
+  })
+
+  // V1.6 · E1：家长报的「专项练习进度丢了」—— 真相是**包不在备份里**，数据一行没丢。
+  // 这个用例同时守两条：
+  //   ① 预览要点名那些"本机没装的包"（把真相告诉家长）；
+  //   ② 导入后**两种行都必须在库里**（单调不减不许被"顺手清理孤儿行"破坏）。
+  test('备份引用了本机没装的专项包：预览点名它，导入后两种行都在（V1.6 · E1）', async ({
+    browser,
+  }) => {
+    // ---- A 机：装了单元包，进度里既有单元包的行、也有一个**没装包**的专项包行 ----
+    // 专项包不必真装：导出侧按档案全量导出 progress，行自然进备份 ——
+    // 这正是"专项包只存在于当初导它的那台设备"的真实形态。
+    const ctxA = await browser.newContext()
+    const pageA = await ctxA.newPage()
+    await pageA.goto('/home')
+    await resetDb(pageA)
+    await waitDbReady(pageA)
+    await seed(pageA, {
+      packages: [{ packageId: 'unit-installed', kpIds: ['unit-installed::kp-unit-1'] }],
+      rows: [
+        {
+          profileId: 'default',
+          packageId: 'unit-installed',
+          knowledgePointId: 'unit-installed::kp-unit-1',
+          status: '已掌握',
+        },
+        {
+          profileId: 'default',
+          packageId: 'special-orphan',
+          knowledgePointId: 'special-orphan::kp-special-1',
+          status: '学习中',
+        },
+      ],
+    })
+
+    await pageA.goto('/settings')
+    const [download] = await Promise.all([
+      pageA.waitForEvent('download'),
+      pageA
+        .locator('.export-row')
+        .filter({ hasText: '家庭备份' })
+        .getByRole('button', { name: '导出' })
+        .click(),
+    ])
+    const backupPath = await download.path()
+    expect(backupPath, '导出没有产生文件').toBeTruthy()
+    const backupFile = {
+      name: download.suggestedFilename() || 'fls-backup.json',
+      mimeType: 'application/json',
+      buffer: await readFile(backupPath!),
+    }
+    await ctxA.close()
+
+    // ---- B 机：只装了那个单元包，没装专项包 ----
+    const ctxB = await browser.newContext()
+    const pageB = await ctxB.newPage()
+    await pageB.goto('/home')
+    await resetDb(pageB)
+    await waitDbReady(pageB)
+    // 刻意给 B 留一条**更旧**的单元包行：
+    // ① 正向：证明备份里那条更新的单元行确实写进来了（不是"本来就有"）；
+    // ② 反向验证时（有人把"本机没装包的行"丢掉）这条还在，于是红色只指向孤儿行，
+    //    而不是整份导入变成 noop —— 红色的位置本身就是证据。
+    await seed(pageB, {
+      packages: [{ packageId: 'unit-installed', kpIds: ['unit-installed::kp-unit-1'] }],
+      rows: [
+        {
+          profileId: 'default',
+          packageId: 'unit-installed',
+          knowledgePointId: 'unit-installed::kp-unit-1',
+          status: '学习中',
+          lastStudiedAt: '2020-01-01T00:00:00.000Z',
+        },
+      ],
+    })
+
+    await pageB.goto('/settings')
+    await pickBackup(pageB, backupFile)
+    await expect(pageB.locator('.import-ready')).toBeVisible({ timeout: 15_000 })
+
+    // ① 预览点名缺失的专项包，且不把本机已装的包算进去
+    const missing = pageB.locator('.import-missing')
+    await expect(missing).toBeVisible()
+    await expect(missing).toContainText('special-orphan')
+    await expect(missing).toContainText('本机还没有的学习包')
+    await expect(missing).not.toContainText('unit-installed')
+
+    // ② 导入：两种行都在库里（★ 单调不减的直接证据）
+    await pageB.locator('.import-confirm').click()
+    await expect(pageB.locator('.import-preview')).toContainText('已导入')
+
+    const rows = await readProgressRows(pageB)
+    expect(rows.map((r) => r.packageId).sort()).toEqual(['special-orphan', 'unit-installed'])
+    // 孤儿行是**导入写进来**的（本机没装它的包，合并引擎也没把它丢掉）
+    const orphan = rows.find((r) => r.packageId === 'special-orphan')
+    expect(orphan?.knowledgePointId).toBe('special-orphan::kp-special-1')
+    // 单元包那条：备份更晚 → 备份胜（顺手证明"谁新谁胜"这条也没坏）
+    const unit = rows.find((r) => r.packageId === 'unit-installed')
+    expect(unit?.knowledgePointId).toBe('unit-installed::kp-unit-1')
+
+    // 完成提示同样要告诉家长"还差一步"（不然他只会看到"导入成功"，然后以为数据丢了）
+    await expect(pageB.locator('.n-message--warning-type')).toContainText('special-orphan')
     await ctxB.close()
   })
 
