@@ -170,6 +170,8 @@ import {
   gradeJudge, isMultiJudge, judgeLabels, normalizeJudgeList,
   formatJudgeTokens, splitJudgeStatements,
 } from '@core/quiz/judge'
+// 填空判分已抽到纯函数 @core/quiz/blank（SFC 内部不可测，见该文件头）
+import { gradeBlank } from '@core/quiz/blank'
 
 export type QuizQuestionType = 'single' | 'blank' | 'multiple' | 'judge' | 'matching' | 'spelling' | 'essay'
 
@@ -322,56 +324,9 @@ function setJudgeAt(i: number, v: string) {
 // 题干渲染已抽到 <QuestionText>（纯函数 @core/quiz/questionText）：
 // 真实换行 → <br>、GFM 表格 → <table>，其余按纯文本转义。
 
-/** ✅ 归一化：分号统一转成逗号，中英文标点统一 */
-function normalizeBlank(text: string): string {
-  return String(text ?? '')
-    .trim().toLowerCase()
-    .replace(/，/g, ',').replace(/；/g, ',').replace(/;/g, ',')  // ✅ 分号统一成逗号
-    .replace(/：/g, ':')
-    .replace(/（/g, '(').replace(/）/g, ')')
-    .replace(/、/g, ',')
-    .replace(/\u3000/g, ' ').replace(/\s+/g, '')
-}
-
-function stripParentheses(text: string): string {
-  return String(text ?? '')
-    .replace(/\([^)]*\)/g, '').replace(/（[^）]*）/g, '')
-}
-
-/** ✅ 填空题判分：支持标点容错 + 括号省略 + 多空比对 */
-function gradeBlank(userAnswer: string, correctAnswer: string): boolean {
-  const ua = normalizeBlank(userAnswer)
-  const ca = normalizeBlank(correctAnswer)
-  if (!ua) return false
-
-  // 1. 完全一致
-  if (ua === ca) return true
-
-  // 2. 去括号后一致
-  const uaNoP = stripParentheses(ua)
-  const caNoP = stripParentheses(ca)
-  if (uaNoP === caNoP) return true
-
-  // 3. 多空比对（分号已统一成逗号）
-  const uaParts = ua.split(',').map(s => s.trim()).filter(Boolean)
-  const caParts = ca.split(',').map(s => s.trim()).filter(Boolean)
-
-  if (uaParts.length > 1 && uaParts.length === caParts.length) {
-    return uaParts.every((u, i) => {
-      const c = caParts[i]
-      if (u === c) return true
-      const cNoP = stripParentheses(c)
-      if (u === cNoP) return true
-      // 用户答案是完全答案的子串（如 "省" vs "省(直辖市)"）
-      if (c.includes(u) && u.length >= 1) return true
-      // ✅ 反向：完全答案是用户答案的子串（如 "does" vs "does not"）
-      if (u.includes(c) && c.length >= 2) return true
-      return false
-    })
-  }
-
-  return false
-}
+// 填空判分（normalizeBlank / stripParentheses / gradeBlank）已抽到
+// @core/quiz/blank —— 原实现埋在本 SFC 内，因 vitest 是 node 环境、
+// 无 jsdom / @vue/test-utils，导致 1340 道填空题长期 0 条单测。
 
 function gradeWith(q: QuizQuestion, ua: any): boolean {
   if (!q) return false
