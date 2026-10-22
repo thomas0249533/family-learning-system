@@ -146,8 +146,12 @@ async function openReadingPage(page: Page): Promise<void> {
   await openCleanDb(page)
   await seedReadingPackage(page)
   await page.goto(TOPIC_URL)
-  await expect(page.locator('.text-body')).toBeVisible()
-  // 正文渲染 ≥5 段：下面几条用例要在"多行正文"上画，段落太少会让坐标假设变脆
+  // 20s 而不是默认 10s：本机 e2e 与多个并行任务共享一个 dev server，
+  // 别人改 src 会触发 Vite 重编译，首帧偶尔要十几秒。断言逻辑不变，只放宽等待。
+  await expect(page.locator('.text-body')).toBeVisible({ timeout: 20_000 })
+  // 等**第 5 段**可见（而不是立刻数个数）：正文真的渲染出来了才继续
+  await expect(page.locator('.text-body p').nth(4)).toBeVisible({ timeout: 20_000 })
+  // 段落太少会让下面几条用例的"相对坐标"假设变脆，显式守住
   expect(await page.locator('.text-body p').count()).toBeGreaterThanOrEqual(5)
   await expect(page.locator('.ink-layer')).toHaveCount(1)
   await expect(page.locator('.ink-toolbar')).toHaveCount(1)
