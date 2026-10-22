@@ -98,8 +98,11 @@
               <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
             </div>
             <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
-            <!-- C1 · 错因归因（手动打标）。4 个原生 radio，name 按 mistake 区分，
-                 两处布局不会互相串选；点已选中项 = 取消打标（见 onCauseClick）。 -->
+            <!-- C1 · 错因归因（手动打标）。4 个原生 radio。
+                 name 必须按**渲染实例**唯一（group.kpId + m.id）：同一道错题会按
+                 knowledgePointIds 被 push 进多个分组，而 radio 的 name 在整份文档内
+                 唯一即同组 —— 只按 mistake 命名会让多个分组的实例共用一个 radio 组，
+                 键盘方向键会跨分组跳焦点。点已选中项 = 取消打标（见 onCauseClick）。 -->
             <div class="mistake-cause" role="radiogroup" aria-label="错题原因">
               <span class="cause-title">错因</span>
               <label
@@ -110,7 +113,7 @@
               >
                 <input
                   type="radio"
-                  :name="'cause-' + m.id"
+                  :name="'cause-' + group.kpId + '-' + m.id"
                   :checked="m.mistakeCause === c"
                   @change="onCauseChange(m, c)"
                   @click="onCauseClick(m, c)"
@@ -168,7 +171,8 @@
           <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
         </div>
         <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
-        <!-- C1 · 错因归因（手动打标）。与知识点视图同源，name 同样按 mistake 区分。 -->
+        <!-- C1 · 错因归因（手动打标）。与知识点视图同源；本视图每道题只渲染一次，
+             name 按 mistake 即可（且与分组视图的 name 生成式不同，不会互串）。 -->
         <div class="mistake-cause" role="radiogroup" aria-label="错题原因">
           <span class="cause-title">错因</span>
           <label
@@ -251,7 +255,7 @@ import {
   MISTAKE_CAUSE_ORDER,
   mistakeCauseLabelOf,
   type MistakeCause,
-} from '@core/mistakes/mistakeCause'
+} from '@core/mistake/mistakeCause'
 import type { MistakeMasteryLevel } from '@/db'
 
 const message = useMessage()

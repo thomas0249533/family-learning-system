@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
+import { readFileSync } from 'node:fs'
+import { resolve as pathResolve } from 'node:path'
 import { createFakeDexie } from './helpers/fakeDexie'
 import {
   MISTAKE_CAUSE_LABELS,
@@ -7,7 +9,7 @@ import {
   MISTAKE_CAUSE_UNLABELED,
   mistakeCauseLabelOf,
   mistakeCauseOf,
-} from '@core/mistakes/mistakeCause'
+} from '@core/mistake/mistakeCause'
 
 /**
  * C1 · 错题归因模型（`mistakeCause`）回归测试。
@@ -17,6 +19,7 @@ import {
  *   2. store 的 `setMistakeCause` —— 打标 / 覆盖 / 取消 / 档案隔离 / 静默路径；
  *   3. 写入纪律 —— 旧错题走一轮 `addMistake` 不会获得凭空的原因字段
  *      （防"顺手机器写入"：那等于给历史数据编原因）。
+ *   4. 模板静态锁 —— radio `name` 必须按渲染实例唯一（见文件末尾 describe）。
  *
  * 假 db 来自 `tests/helpers/fakeDexie.ts`（V1.6 · A2 抽取的单一真相），
  * 索引清单与 `src/db/index.ts` 的 `version(4)` 逐字对应。
@@ -176,5 +179,48 @@ describe('setMistakeCause · store', () => {
     // addMistake 的既有语义没被破坏
     expect(row.wrongCount).toBe(2)
     expect(row.lastUserAnswer).toBe('C')
+  })
+})
+
+/**
+ * Mistakes.vue · radio `name` 唯一性（静态 SFC 断言）
+ *
+ * ## 为什么只能做静态断言
+ * 本仓单测环境是 node，没有挂载组件的设施（@vue/test-utils / jsdom 都没装，
+ * 也不打算为一个断言装），所以锁"模板里 name 怎么生成"的唯一手段是读 SFC
+ * 源文件匹配。先例：`tests/settings-keys.test.ts`（A3）同样读源码做静态扫描。
+ *
+ * ## 为什么值得锁（这个缺陷单测跑不出来，但用户一按方向键就会遇到）
+ * radio 的 `name` 在整份文档内唯一即同组。分组视图（`groupedMistakes`）会把
+ * **同一道错题**按 `knowledgePointIds` push 进多个分组 —— 一道题挂在 3 个
+ * 知识点下就渲染 3 张卡片。若 name 只按 mistake 生成（`'cause-' + m.id`），
+ * 这 3 张卡片的 radio 共用一个组：
+ *   - 键盘 ↓/↑ 会在分组之间跳焦点（按一次方向键，焦点跑到页面另一段）；
+ *   - 打标后到 `loadUserData()` 完成前，其他分组的实例短暂显示"什么都没选"。
+ * 所以分组视图的 name 必须带 `group.kpId`（按渲染实例唯一）；平铺视图每道题
+ * 只渲染一次，保持按 mistake 即可。两套生成式不同，将来若改成同时渲染也不串。
+ */
+describe('Mistakes.vue · 归因 radio 的 name 唯一性（静态断言）', () => {
+  // 压平空白后再匹配：模板将来被重新换行折断也不该把这个锁误伤
+  const sfc = readFileSync(
+    pathResolve(process.cwd(), 'src/views/Mistakes.vue'),
+    'utf8'
+  ).replace(/\s+/g, ' ')
+  const PER_MISTAKE = "'cause-' + m.id"
+  const PER_INSTANCE = "'cause-' + group.kpId + '-' + m.id"
+
+  it('分组视图的 name 含 group.kpId（同一道题进多个分组也不会共用一个 radio 组）', () => {
+    expect(sfc).toContain(PER_INSTANCE)
+  })
+
+  it('平铺视图的 name 按 mistake（该视图每道题只渲染一次）', () => {
+    expect(sfc).toContain(PER_MISTAKE)
+  })
+
+  it('两种视图的 name 生成式不同、各只出现一次（防回退成按 mistake 命名）', () => {
+    // 回退症状：分组视图改回 'cause-' + m.id → PER_INSTANCE 计数变 0、
+    // PER_MISTAKE 计数变 2。两条都钉住，只改一处另一处会红。
+    expect(sfc.split(PER_INSTANCE).length - 1).toBe(1)
+    expect(sfc.split(PER_MISTAKE).length - 1).toBe(1)
   })
 })

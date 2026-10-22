@@ -1,7 +1,7 @@
 import Dexie, { type Table } from 'dexie';
 import type { LearningPackageManifest } from '../schemas/manifest';
 import type { KnowledgePoint } from '../schemas/knowledge-point';
-import type { MistakeCause } from '../core/mistakes/mistakeCause';
+import type { MistakeCause } from '../core/mistake/mistakeCause';
 import type { FsrsCardState } from '../core/review/fsrs';
 import type { BktState } from '../core/mastery/bkt';
 import { migrateProgressV3 } from '../core/storage/migrateV3';
