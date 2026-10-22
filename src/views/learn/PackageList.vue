@@ -190,6 +190,11 @@ onMounted(async () => {
  * D1 · 学习包 → 卡片状态（每日一练的「打卡」落到这里：仓库没有日历格子，
  * 每日包本来就是卡片列表）。状态由该包的进度行反演：没有进度行 = 今天还没练 = none。
  * 一次算完一屏，模板只查表。
+ *
+ * 聚合走 **`progress` 模式**（`packageCardStatusOf` 内部固定传）：这一格问的是
+ * 「这天做了没做完」，所以「练了一部分」必须留在 `learning`（黄），不能因为有一个
+ * 知识点到期就整格挂红。45 天的包有几百个知识点，「全部同时已掌握」不可达 ——
+ * 用 `attention` 口径会让包卡几乎永不变绿（详见 `cardStatus.ts` 文件头）。
  */
 const statusByPackageId = computed<Map<string, CardStatus>>(() => {
   const map = new Map<string, CardStatus>()

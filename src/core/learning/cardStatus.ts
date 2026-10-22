@@ -10,6 +10,29 @@
  * 任何 `ref()` / `db.*` 都会把断言拖进浏览器语境。所以状态计算与渲染彻底切开：
  * 计算层只吃 `progress` 数组，测试可以直接喂假数据。
  *
+ * ## 为什么分两种聚合模式（`attention` / `progress`）
+ * 同一套「知识点状态」被问的问题不同，正确答案就不同：
+ *
+ * - **知识点级（`attention`）**：问的是「**此刻该不该回头**」。一个知识点到期了就该提醒，
+ *   哪怕同组里其它都刚学完——这是 `topicCardStatusOf` 用的口径，也是引入 `progress`
+ *   之前的唯一口径。
+ * - **天 / 单元 / 包级（`progress`）**：问的是「**这摊内容我推进到哪了**」。用户对每日一练的
+ *   原话是「40 天的打卡表，不知道**哪天做了、哪天没做**」——他要看的是**做没做**，而不是
+ *   若干天之后这些天的内容整体的复习衰减情况。
+ *
+ * 全用 `attention` 会在真数据上立刻出两个错（team-lead 用 4 单元真包实测复现）：
+ *   1. **学完的一天会长期挂红**：某天认真学完（当天 kp 全「已掌握」），过几天只要**一个**
+ *      kp 被 `applyDecay` 判「需复习」，这天的卡就变红——用户读到的是「这天有问题」，
+ *      而事实是「这天做完了」。
+ *   2. **包卡几乎永不变绿**：45 天的每日包有几百个 kp，「所有 kp 同时都处于已掌握」这个
+ *      条件同时成立的概率约等于零（`applyDecay` 每天都在把旧 kp 往「需复习」推），
+ *      于是包卡只能长期红着，红失去信息量。
+ *
+ * 所以 `progress` 把「需复习」降级为**只在「该学的都学过了」时才允许红**：
+ * 「掺着未学 / 学习中」= 还在推进（`learning`），「全学完且有人到期」= 整体到期（`review`）。
+ * 状态集合没变（仍是四种），只是为了不改视图层的颜色协议，两种模式共用同一套
+ * `CardStatus` 与 `CARD_STATUS_MARK/LABEL`。
+ *
  * ## 语义映射（照抄 `TopicDetail.vue` 的 `.mastery-status`，不造第二套配色语言）
  * ```
  * 未学   → none      中性底（卡片保持 $card-bg，不改背景）
@@ -46,6 +69,16 @@ import { canonicalizeProgressRows, progressKeyOf } from '@core/mastery/masterySu
 /** 卡片的四种视觉状态。`none` = 未学（保持中性底，不做视觉强调） */
 export type CardStatus = 'none' | 'learning' | 'review' | 'mastered'
 
+/**
+ * 聚合模式 —— **卡片问的问题不一样，答案就该不一样**（见文件头「为什么分两种模式」）。
+ *   - `attention`（默认）：知识点级。「这组知识点里有没有该复习的？」——有一个就红。
+ *   - `progress`：天 / 单元 / 包级。「这摊内容我推进到哪了？」——只有全都学完才红。
+ *
+ * 默认值刻意是 `attention`：`topicCardStatusOf`（知识点密集、语义最接近「此刻该学什么」）
+ * 走默认分支，行为零变化；没显式传模式的调用方也保持既有语义。
+ */
+export type CardStatusMode = 'attention' | 'progress'
+
 /** 卡片可能呈现的「主题 / 单元」最小形状（只用 `knowledgePointIds`） */
 export interface TopicLike {
   knowledgePointIds?: string[]
@@ -71,9 +104,46 @@ function normalizeStatus(raw: unknown): MasteryStatus {
 }
 
 /**
- * 聚合一组知识点状态为卡片状态。
+ * `progress` 模式的聚合：**「推进到哪了」优先于「有没有一个到期」**。
  *
  * 顺序即优先级（**勿调**）：
+ *   1. 全是「未学」（含空数组被 `aggregateCardStatus` 提前挡掉）→ `none`
+ *   2. 全部「已掌握」                                        → `mastered`
+ *   3. **没有「未学」也没有「学习中」，且至少一个「需复习」** → `review`（学完了、整体到期）
+ *   4. 其余（掺着「未学」或「学习中」）                      → `learning`
+ *
+ * 与 `attention` 的唯一区别就是第 3 条：`attention` 只要见到一个「需复习」就红，
+ * 而这里要求**「该学的都学过了」才允许红**。理由见文件头「为什么分两种模式」——
+ * 一句话：一天/一包是「任务」，一个知识点是「内容」；任务的红应表示「这件事该回头看了」，
+ * 不该表示「这件事里有一项到期了」。
+ */
+function aggregateProgress(list: readonly MasteryStatus[]): CardStatus {
+  let allUnlearned = true
+  let allMastered = true
+  let hasReview = false
+  // 「还有没碰/没学完的」——它的存在说明这张卡还处在推进期，不该用红去催
+  let hasPending = false
+
+  for (const raw of list) {
+    const status = normalizeStatus(raw)
+    if (status === '需复习') hasReview = true
+    if (status === '未学' || status === '学习中') hasPending = true
+    if (status !== '未学') allUnlearned = false
+    if (status !== '已掌握') allMastered = false
+  }
+
+  if (allUnlearned) return 'none'
+  if (allMastered) return 'mastered'
+  if (hasReview && !hasPending) return 'review'
+  return 'learning'
+}
+
+/**
+ * 聚合一组知识点状态为卡片状态。
+ *
+ * `mode` 决定**优先级**（默认 `attention`，与引入 `progress` 之前完全一致）：
+ *
+ * `attention`（知识点级，`topicCardStatusOf` 用）—— 顺序即优先级（**勿调**）：
  *   1. 空数组 / 全是「未学」        → `none`
  *   2. 任一「需复习」                → `review`（最需要注意力，优先暴露）
  *   3. 全部「已掌握」                → `mastered`
@@ -83,11 +153,19 @@ function normalizeStatus(raw: unknown): MasteryStatus {
  * 整张卡就该把孩子拽回来；反过来「一个已掌握就整卡绿」会把「还有 5 个没学过」
  * 藏起来，是更严重的误导。
  *
+ * `progress`（天 / 单元 / 包级，`unitCardStatusOf` 与 `packageCardStatusOf` 用）：
+ * 见 `aggregateProgress` —— 只有「该学的都学过了」才允许红。
+ *
  * 未知状态先归一为「未学」再参与判定（见 `normalizeStatus`）。
  */
-export function aggregateCardStatus(statuses: readonly MasteryStatus[]): CardStatus {
+export function aggregateCardStatus(
+  statuses: readonly MasteryStatus[],
+  mode: CardStatusMode = 'attention'
+): CardStatus {
   const list = Array.isArray(statuses) ? statuses : []
   if (list.length === 0) return 'none'
+  // 进度模式下「全未学」也要 none，这里提前返回不影响它（两边都以 none 收尾）
+  if (mode === 'progress') return aggregateProgress(list)
 
   let allUnlearned = true
   let allMastered = true
@@ -227,7 +305,11 @@ export function unitCardStatusOf(
   if (kpIds.length === 0) return 'none'
 
   const index = buildStatusIndex(progress)
-  return aggregateCardStatus(kpIds.map((kpId) => statusOf(index, packageId, kpId)))
+  // 单元级 → `progress` 模式：单元是「任务」，问的是推进到哪了，不是「里面有没有一个到期」
+  return aggregateCardStatus(
+    kpIds.map((kpId) => statusOf(index, packageId, kpId)),
+    'progress'
+  )
 }
 
 /**
@@ -244,6 +326,7 @@ export function topicCardStatusOf(
   if (kpIds.length === 0) return 'none'
 
   const index = buildStatusIndex(progress)
+  // 主题级 → 默认 `attention` 模式（知识点密集，语义最接近「此刻该学什么」，见文件头）
   return aggregateCardStatus(kpIds.map((kpId) => statusOf(index, packageId, kpId)))
 }
 
@@ -276,5 +359,8 @@ export function packageCardStatusOf(
     seen.add(row.knowledgePointId)
     statuses.push(statusOf(index, packageId, row.knowledgePointId))
   }
-  return aggregateCardStatus(statuses)
+  // 包级（每日一练一天 / 整包）→ `progress` 模式：
+  // 一个 45 天的包有几百个 kp，「全部已掌握」同时成立几乎不可能，用 `attention`
+  // 会让它「有进度就变红、几乎永不变绿」，见文件头「为什么分两种模式」。
+  return aggregateCardStatus(statuses, 'progress')
 }

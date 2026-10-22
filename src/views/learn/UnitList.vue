@@ -86,6 +86,9 @@ const isExamMode = computed(() => (currentPackage.value?.manifest as any)?.examM
  *      单元聚合进来，进度行落在**归属包**上，拿入口包去查会一律「未学」。
  *   2. `userDataStore.progress` 在 computed 里被读到 → 学习记录变化会自动重算，
  *      不需要手动刷新（从单元里学完返回本页即可见状态变化）。
+ *   3. 聚合走 **`progress` 模式**（`unitCardStatusOf` 内部固定传）：单元是「任务」，
+ *      用户问的是「这个单元我推进到哪了」，不是「里面有没有一个知识点到期了」。
+ *      混着未学时不会因为一个到期项就整卡变红 —— 理由见 `cardStatus.ts` 文件头。
  */
 const statusByUnitId = computed<Map<string, CardStatus>>(() => {
   const map = new Map<string, CardStatus>()
