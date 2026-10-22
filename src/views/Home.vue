@@ -180,7 +180,7 @@ import { useAchievementStore } from '@core/stores/achievement'
 import { computeMasterySummary } from '@core/mastery/masterySummary'
 import { computeWeakPoints, type WeakPoint } from '@core/recommendation/weakPoints'
 import AchievementSection from '@/components/AchievementSection.vue'
-import { EMPTY_STREAK, loadStreak, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
+import { EMPTY_STREAK, loadRepair, loadStreak, repairLeft, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
 import { useChartTheme } from '@core/theme/useChartTheme'
 
 interface AggregatedRec extends Recommendation {
@@ -199,8 +199,15 @@ const chartRef = ref<HTMLElement | null>(null)
 
 /** 体验激励：连续打卡 */
 const streak = ref<StreakState>({ ...EMPTY_STREAK })
+/**
+ * 本月剩余补签次数（V1.6 · C5）。首页**只用来改文案**，不放补签按钮 ——
+ * 补签需要家长作证，入口只在家长端（详见 Parent.vue 的补签卡）。
+ */
+const repairLeftCount = ref(0)
 
-const streakLabel = computed(() => streakText(streak.value))
+const streakLabel = computed(() =>
+  streakText(streak.value, new Date(), repairLeftCount.value),
+)
 const studiedTodayFlag = computed(() => studiedToday(streak.value))
 
 /**
@@ -396,6 +403,8 @@ onMounted(async () => {
 
   // 体验激励：读取连续打卡；结算成就，新解锁的当场播放徽章动效
   streak.value = await loadStreak()
+  // 补签额度：只影响 pill 上的文案（"可请家长补签 1 次"），本页不提供补签入口
+  repairLeftCount.value = repairLeft(await loadRepair())
 
   // 成就图鉴：只刷新只读视图（结算与持久化由 AppShell 的触发器统一负责）
   await achievementStore.refreshView()

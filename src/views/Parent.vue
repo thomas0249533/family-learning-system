@@ -102,6 +102,26 @@
       </div>
     </section>
 
+    <!--
+      补签（V1.6 · Stage C · C5 / PRD §11.1 + §11.6）。
+      入口只在家长端 —— 补签的前提是"昨天真的练过、家长能作证"，孩子端不能自己点
+      （那等于给一个把天数刷回来的按钮）。`v-if` 只在真的满足前置时渲染，
+      不常驻占位：家长看不到这张卡，就说明没有需要补的事。
+    -->
+    <section class="section" v-if="repairVisible">
+      <SectionTitle title="🩹 补签" />
+      <div class="repair-card">
+        <div class="repair-text">
+          <div class="repair-title">孩子昨天没有在学习记录里留下痕迹</div>
+          <p class="repair-desc">
+            如果昨天确实做了线下练习或纸质作业，可以补记一次（本月还剩
+            {{ repairLeftCount }} 次）。补签只补「昨天学过」这件事，不补做题量。
+          </p>
+        </div>
+        <AppButton type="primary" size="small" @click="onRepairClick">确认补签</AppButton>
+      </div>
+    </section>
+
     <!-- 成就概览（只读） -->
     <section class="section">
       <SectionTitle title="🏅 成就概览" />
@@ -299,6 +319,18 @@ import {
   saveDiscoveryEnabled,
 } from '@core/motivation/achievementDiscovery'
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
+import {
+  EMPTY_STREAK,
+  loadRepair,
+  loadStreak,
+  missedYesterday,
+  repairLeft,
+  repairYesterday,
+  type RepairResult,
+  type RepairRejectReason,
+  type StreakState,
+} from '@core/motivation/streak'
+import { useAchievementStore } from '@core/stores/achievement'
 
 const router = useRouter()
 const userDataStore = useUserDataStore()
@@ -319,6 +351,8 @@ async function reloadProfileScopedData(): Promise<void> {
   await userDataStore.loadUserData()
   unlockedRecords.value = await loadUnlocked()
   discoveryEnabled.value = await loadDiscoveryEnabled()
+  // 打卡 / 补签额度也是分档案的：不重读会让老二的页面显示老大的天数
+  await refreshStreakState()
 }
 
 /**
@@ -434,6 +468,100 @@ const unlockedRecords = ref<UnlockedRecord[]>([])
 /** 发现机制开关（家长可关；默认开，见 achievementDiscovery 的注释） */
 const discoveryEnabled = ref(true)
 
+/* ===========================================================================
+ * 补签（V1.6 · Stage C · C5）
+ * ---------------------------------------------------------------------------
+ * 三条产品约束决定了这一块的形状（PRD §11.1 / §11.6）：
+ *  1. 只补「昨天」这一天，断 ≥2 天不补 —— 由 `missedYesterday()`（精确 diff===2）兜住；
+ *  2. 每月 1 次、按**本地自然月**计数、不累积不跨月 —— 由 `repairLeft()` 兜住；
+ *  3. 必须家长作证：这是"补记事实"，不是"补一张免签单"。
+ *
+ * ★ 家长端**不得**说"这样徽章就亮了"：补签的动机必须是补记事实，不是刷奖励。
+ *   徽章只是副产品（而且成就按 `bestStreak` 判定，本来就不会因断签丢失）。
+ * ======================================================================== */
+const achievementStore = useAchievementStore()
+const streakState = ref<StreakState>({ ...EMPTY_STREAK })
+const repairLeftCount = ref(0)
+
+/** 只有"昨天真的漏了"且"本月还有额度"时才出现补签卡 */
+const repairVisible = computed(
+  () => missedYesterday(streakState.value) && repairLeftCount.value > 0,
+)
+
+/** 重读打卡与额度（补签后、切档案后都要调） */
+async function refreshStreakState(): Promise<void> {
+  streakState.value = await loadStreak()
+  repairLeftCount.value = repairLeft(await loadRepair())
+}
+
+/** 被拒原因 → 一句人话。不弹错误弹窗：这不是故障，是规则 */
+const REPAIR_REJECT_TEXT: Record<RepairRejectReason, string> = {
+  'no-parent-consent': '需要家长确认才能补签',
+  'no-record': '还没有学习记录',
+  'not-missed-yesterday': '现在不需要补签',
+  'quota-used': '本月补签次数已用完',
+}
+
+/**
+ * 点「确认补签」→ 二次确认 → 执行。
+ *
+ * 二次确认的文案刻意写得具体（"确认孩子昨天真的练过吗"），因为这一下的
+ * 语义是**家长签字**，不是"点一下试试"。
+ */
+function onRepairClick(): void {
+  dialog.warning({
+    title: '确认补签',
+    content: '确认孩子昨天真的练过吗？补签只补「昨天学过」，不会改变昨天的答题记录。',
+    positiveText: '确认，昨天练过',
+    negativeText: '再想想',
+    onPositiveClick: async () => {
+      await doRepair()
+    },
+  })
+}
+
+/**
+ * 执行补签。
+ *
+ * ## ★ 必须在同一个用户操作周期内立刻结算成就
+ * 否则会出现"家长补签了、连续天数恢复了，但徽章没亮，直到孩子明天再答一次题才亮"
+ * 的诡异 Bug：`AppShell` 的结算触发器只监听 `progress / mistakes / packages`，
+ * 而补签写的是 settings，**不会触发它**。
+ *
+ * ## 新解锁的提示留给 `pending` 队列，不在这里 drain
+ * 孩子才是该看庆祝的人。这里的 `newly` 只用来给家长一句"顺带解锁了什么"，
+ * 队列里的条目等孩子下次有学习行为时由 AppShell 的 `flushToasts()` 播放。
+ */
+async function doRepair(): Promise<void> {
+  let res: RepairResult
+  try {
+    res = await repairYesterday({ confirmedByParent: true })
+  } catch (e) {
+    // 写库失败（磁盘满 / 隐私模式）：必须说出来。"报成功但没落库"更糟
+    message.error('补签没能保存：' + (e as Error).message)
+    await refreshStreakState()
+    return
+  }
+
+  if (!res.repaired) {
+    message.warning(REPAIR_REJECT_TEXT[res.reason ?? 'not-missed-yesterday'])
+    // 被拒也要刷新：页面上的卡片可能已经过时（比如昨天刚好补过）
+    await refreshStreakState()
+    return
+  }
+
+  streakState.value = res.streak
+  await refreshStreakState()
+
+  // ★ 同周期结算（顺序不能后移：先去结算，再报"补上了"，家长看到的数字与徽章才一致）
+  const newly = await achievementStore.settle()
+
+  message.success(`已补记昨天，连续天数恢复为 ${res.streak.current} 天`)
+  if (newly.length > 0) {
+    message.success(`新解锁：${newly.map((d) => d.title).join('、')}`)
+  }
+}
+
 async function toggleDiscovery(enabled: boolean): Promise<void> {
   discoveryEnabled.value = enabled
   await saveDiscoveryEnabled(enabled)
@@ -447,6 +575,7 @@ onMounted(async () => {
   await packageStore.loadPackages()
   unlockedRecords.value = await loadUnlocked()
   discoveryEnabled.value = await loadDiscoveryEnabled()
+  await refreshStreakState()
 })
 
 onUnmounted(() => {
@@ -647,6 +776,42 @@ function goToImport() {
 }
 
 /* `.ov-card` 已由 StatCard 基元承载（card-bg + border-color + radius-md + shadow-sm + tone 值色）。 */
+
+/* ========== 补签（V1.6 · C5） ========== */
+.repair-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  padding: 16px 18px;
+  box-shadow: $shadow-sm;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.repair-text {
+  min-width: 0;
+}
+
+.repair-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: $text-main;
+  margin-bottom: 4px;
+}
+
+.repair-desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: $text-sub;
+}
 
 /* ========== 成就概览 ========== */
 .ach-discovery-toggle {
