@@ -271,9 +271,10 @@ test.describe('成就图鉴 · 隐藏成就与文案（AC-13 / AC-14）', () => 
     await page.getByRole('button', { name: '全部收起' }).click()
     await page.getByRole('button', { name: '全部展开' }).click()
 
-    // 三枚剪影卡都在，但真实文案一个都不在剪影卡里
+    // 可收集的隐藏成就剪影都在（comeback / early-bird 两枚；night-owl 已移出收集体系，
+    // 连剪影都不出现），但真实文案一个都不在剪影卡里
     const silhouettes = page.locator('.ach-card.silhouette')
-    await expect(silhouettes).toHaveCount(3)
+    await expect(silhouettes).toHaveCount(2)
     await expect(silhouettes.first()).toContainText('？？？')
 
     // 用每枚隐藏成就**独一无二**的描述来断言：标题里"越挫越勇"恰好也出现在
