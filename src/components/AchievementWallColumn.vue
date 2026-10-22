@@ -2,11 +2,9 @@
   <section class="wall-col" :aria-labelledby="headingId">
     <header class="wall-col-head">
       <h2 :id="headingId" class="wall-col-name">{{ name }}</h2>
-      <!-- 只报"已获得几枚"。**不出现百分比、不出现名次、不出现"最"字** ——
-           家庭墙是给家长看"每个孩子走到哪了"，不是记分牌（AC-P2-8）。 -->
-      <p class="wall-col-count">
-        已获得 <b>{{ earnedCount }}</b> / {{ total }}
-      </p>
+      <!-- 中性鼓励语：叙事性、无数字、确定性（同数据同文案，推导见 core/motivation/familyWall.ts）。
+           它先于徽章出现 —— 这一列的"语气"是"最近在怎样"，不是"拿到几个"。 -->
+      <p class="wall-col-encourage">{{ encouragement }}</p>
     </header>
 
     <!-- 加载中：不给"0 / 28"这种像成绩单的中间态，家长会以为孩子的记录没了 -->
@@ -16,39 +14,50 @@
       <span class="wall-col-sr">正在读取 {{ name }} 的成就…</span>
     </div>
 
-    <!-- 一枚都没解锁：给引导，不给零分成绩单 -->
-    <EmptyState
-      v-else-if="earnedCount === 0"
-      icon="🌱"
-      :description="`${name}还没有解锁成就，做几道题就会亮起来。`"
-    />
+    <template v-else>
+      <!-- 一枚都没解锁：给引导，不给零分成绩单 -->
+      <EmptyState
+        v-if="recent.length === 0"
+        icon="🌱"
+        :description="`${name}还没有解锁成就，做几道题就会亮起来。`"
+      />
 
-    <div v-else class="wall-col-groups">
-      <div v-for="group in groups" :key="group.category" class="wall-group">
-        <h3 class="wall-group-title">
-          <span class="wall-group-icon" aria-hidden="true">{{ group.icon }}</span>
-          {{ group.label }}
-          <span class="wall-group-count">{{ group.earned }} / {{ group.items.length }}</span>
-        </h3>
-        <ul class="wall-chips">
-          <li
-            v-for="item in group.items"
-            :key="item.id"
-            class="wall-chip"
-            :class="[{ 'is-earned': item.earned, 'is-silhouette': item.silhouetted }, `tier-${item.tier}`]"
-            :aria-label="chipLabel(item)"
-          >
-            <span class="wall-chip-icon" aria-hidden="true">{{ item.icon }}</span>
-            <span class="wall-chip-title">{{ item.title }}</span>
-            <!-- 重复印记（B6）：紧凑形态不铺"第 N 次"整句，只给 ×N 角标，
-                 读屏文本里仍是完整的"第 N 次达成"（见 chipLabel） -->
-            <span v-if="item.earned && item.repeatCount >= 2" class="wall-chip-repeat" aria-hidden="true">
-              ×{{ item.repeatCount }}
-            </span>
-          </li>
-        </ul>
-      </div>
-    </div>
+      <!-- 默认视野只有"最近解锁的几枚"（C7）。28 枚格子矩阵收进各自图鉴页：
+           并排的完整矩阵 + 每组"x / y"计数是最强的比较诱饵。 -->
+      <ul v-else class="wall-chips">
+        <li
+          v-for="item in recent"
+          :key="item.id"
+          class="wall-chip is-earned"
+          :class="`tier-${item.tier}`"
+          :aria-label="chipLabel(item)"
+        >
+          <span class="wall-chip-icon" aria-hidden="true">{{ item.icon }}</span>
+          <span class="wall-chip-title">{{ item.title }}</span>
+          <!-- 重复印记（B6）：紧凑形态不铺"第 N 次"整句，只给 ×N 角标，
+               读屏文本里仍是完整的"第 N 次达成"（见 chipLabel） -->
+          <span v-if="item.repeatCount >= 2" class="wall-chip-repeat" aria-hidden="true">
+            ×{{ item.repeatCount }}
+          </span>
+        </li>
+      </ul>
+
+      <!-- 数字汇总默认折叠（C7）：标量并排 = 比较诱饵，家长一眼就会比出
+           "老大 12 枚、老二才 5 枚"。想看数字可以点开，但只在本列内展开，
+           不排成跨孩子的一行让大家比。连续天数也只住在这里 —— 默认视野里
+           没有它；它在首页/孩子端继续活着，墙只是让家长按需核对。
+           原生 <details>：无需 JS、键盘可达、读屏器能播报展开状态。 -->
+      <details class="wall-col-details">
+        <summary class="wall-col-summary">查看数字</summary>
+        <div class="wall-col-numbers">
+          <p class="wall-col-count">
+            已获得 <b>{{ earnedCount }}</b> / {{ total }}
+          </p>
+          <p class="wall-col-num">{{ streakLine }}</p>
+          <p class="wall-col-num">已掌握 {{ mastered ?? 0 }} 个知识点</p>
+        </div>
+      </details>
+    </template>
   </section>
 </template>
 
@@ -62,14 +71,20 @@
  * 所以墙用紧凑格子，**但数据一律来自 `buildAchievementItems`**：
  * 进度算法只有一份，墙上和图鉴里同一枚卡的数字永远一致。
  *
- * ## 语言约束（AC-P2-8）
+ * ## 语言约束（AC-P2-8 → V1.6 · C7 收窄）
  * 这一列是并列展示，任何"谁多谁少"的暗示都会把家庭墙变成攀比工具。
- * 所以：**只报自己的已获得数与总数**，不显示百分比、不显示名次、不显示"最高/领先"。
- * 连"平均"也不显示 —— 有平均就有高于平均。
+ * C7 起默认视野进一步收窄，只保留**非标量**内容：
+ *   - 最近解锁的几枚徽章 + 一句中性鼓励语（叙事、无数字、确定性）；
+ *   - 已解锁数 / 连续天数 / 掌握数全部默认折叠（原生 `<details>`），
+ *     家长点开才出现，且只在本列内 —— 不排成跨孩子的一行让大家比。
+ * 旧红线一条不减：不排序、不显示名次、不显示"最高/领先/落后"、
+ * 不显示百分比、不显示"平均"（有平均就有高于平均）。
  */
 import { computed } from 'vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
-import { CATEGORY_META, CATEGORY_ORDER, type AchievementItem } from '@core/motivation/achievementMeta'
+import type { AchievementItem } from '@core/motivation/achievementMeta'
+import { encouragementLine, recentUnlocked } from '@core/motivation/familyWall'
+import { EMPTY_STREAK, streakText, type StreakState } from '@core/motivation/streak'
 
 const props = defineProps<{
   /** 档案显示名（家长可改，不用真名） */
@@ -77,26 +92,25 @@ const props = defineProps<{
   /** 该档案的视图模型（由 `buildAchievementItems` 产出） */
   items: AchievementItem[]
   loading?: boolean
+  /** 连续学习状态。展示口径与首页同源（`streakText`：断档归零）。
+   *  只出现在"查看数字"折叠区内 —— 默认视野里没有它（C7）。 */
+  streak?: StreakState
+  /** 已掌握知识点数（去重口径，同家长页/报告）。同样只进折叠区。 */
+  mastered?: number
 }>()
 
 /** 标题的唯一 id：同一页多列，aria-labelledby 不能指向重复 id */
 const headingId = computed(() => `wall-col-${props.name}`)
 
+/** 默认视野：最近解锁的几枚（纯函数在 core，测试在 tests/family-wall.test.ts） */
+const recent = computed(() => recentUnlocked(props.items))
+
+const encouragement = computed(() => encouragementLine(props.items))
+
 const earnedCount = computed(() => props.items.filter((i) => i.earned).length)
 const total = computed(() => props.items.length)
 
-const groups = computed(() =>
-  CATEGORY_ORDER.map((category) => {
-    const items = props.items.filter((i) => i.category === category)
-    return {
-      category,
-      items,
-      earned: items.filter((i) => i.earned).length,
-      label: CATEGORY_META[category].label,
-      icon: CATEGORY_META[category].icon,
-    }
-  }).filter((g) => g.items.length > 0),
-)
+const streakLine = computed(() => streakText(props.streak ?? EMPTY_STREAK))
 
 /**
  * 格子的读屏文本。
@@ -139,15 +153,12 @@ function chipLabel(item: AchievementItem): string {
   white-space: nowrap;
 }
 
-.wall-col-count {
+/* 中性鼓励语：副标字号、弱化色 —— 它是"语气"，不是指标 */
+.wall-col-encourage {
   margin: $space-1 0 0;
   font-size: $font-xs;
-  color: $text-muted;
-
-  b {
-    font-size: $font-sm;
-    color: $primary-text;
-  }
+  color: $text-sub;
+  line-height: $leading-relaxed;
 }
 
 .wall-col-sr {
@@ -186,28 +197,6 @@ function chipLabel(item: AchievementItem): string {
   50% {
     opacity: 0.45;
   }
-}
-
-.wall-col-groups {
-  display: flex;
-  flex-direction: column;
-  gap: $space-3;
-}
-
-.wall-group-title {
-  display: flex;
-  align-items: center;
-  gap: $space-1;
-  margin: 0 0 $space-2;
-  font-size: $font-xs;
-  font-weight: 600;
-  color: $text-muted;
-}
-
-.wall-group-count {
-  margin-left: auto;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
 }
 
 .wall-chips {
@@ -277,5 +266,47 @@ function chipLabel(item: AchievementItem): string {
   font-size: $font-2xs;
   font-weight: 700;
   color: $warning-text;
+}
+
+/* ---- 数字汇总折叠区（C7）----
+   默认收起：标量并排是最强的比较诱饵。原生 <details> 自带键盘可达与
+   展开态播报；`margin-top: auto` 让各列的摘要行贴在列底，视觉成排的是
+   "查看数字"这个动作，不是任何数字。 */
+.wall-col-details {
+  margin-top: auto;
+  padding-top: $space-3;
+  border-top: 1px solid $border-color;
+}
+
+.wall-col-summary {
+  font-size: $font-xs;
+  font-weight: 600;
+  color: $text-sub;
+  cursor: pointer;
+  /* 焦点环不必在这里再写一遍：components.scss 已有全局 :focus-visible */
+}
+
+.wall-col-numbers {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  margin-top: $space-2;
+}
+
+.wall-col-count {
+  margin: 0;
+  font-size: $font-xs;
+  color: $text-muted;
+
+  b {
+    font-size: $font-sm;
+    color: $primary-text;
+  }
+}
+
+.wall-col-num {
+  margin: 0;
+  font-size: $font-xs;
+  color: $text-muted;
 }
 </style>

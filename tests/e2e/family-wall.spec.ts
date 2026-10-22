@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test'
 
 /**
- * V1.4 · B4 · 家庭成就墙（真机验证）
+ * V1.4 · B4 · 家庭成就墙（真机验证）→ V1.6 · C7「去比较化」
  * ------------------------------------------------------------------
  * 单测守住了禁词与"按 pid 取值"的纯函数行为。这里验 **UI 上真的并排、且不串**：
  *   1. 两个档案各一列，列头是各自的名字（AC-P2-8 的可见面）；
@@ -10,6 +10,10 @@ import { test, expect, type Page } from '@playwright/test'
  *      两列就会长得一模一样，而单测里 mock 的 db 无法证明"真实 IndexedDB 里也是分开的"。
  *   3. 页面文本里不出现比较级（禁词单测扫源码，这里扫**渲染结果** ——
  *      源码里的词可能来自另一个组件的插槽，静态扫描看不见）。
+ * C7 起新增/调整的断言：
+ *   4. 默认视野**不渲染数字**（`.wall-col-numbers` 隐藏），只有最近徽章 + 鼓励语；
+ *   5. 点开各自列里的"查看数字"后才出现已解锁数 / 连续天数 / 掌握数 ——
+ *      数字只在本列内，不排成跨孩子的一行。
  */
 
 const DB_NAME = 'FamilyLearningDB'
@@ -119,17 +123,29 @@ test.describe('家庭成就墙（V1.4 · B4）', () => {
     await expect(first.locator('.wall-col-name')).toHaveText('老大')
     await expect(second.locator('.wall-col-name')).toHaveText('老二')
 
-    // 老大：已获得 2 / 28，且列表里有真实格子
-    await expect(first.locator('.wall-col-count')).toContainText('已获得 2 / 28')
+    // C7：默认视野只有"最近解锁的徽章 + 中性鼓励语"，数字汇总是折叠的
+    await expect(first.locator('.wall-col-encourage')).toBeVisible()
+    await expect(first.locator('.wall-col-numbers')).toBeHidden()
+
+    // 老大：2 枚已解锁 → 默认视图就是这 2 枚（且不超过 3 枚的最近集）
+    await expect(first.locator('.wall-chip')).toHaveCount(2)
     await expect(first.locator('.wall-chip').first()).toBeVisible()
 
     // 老二：0 枚 → 引导态，不是"零分成绩单"
-    await expect(second.locator('.wall-col-count')).toContainText('已获得 0 / 28')
     await expect(second).toContainText('还没有解锁成就')
     await expect(second.locator('.wall-chip')).toHaveCount(0)
 
     // 反过来：老大那列不能出现"还没有解锁成就"（串数据的另一面）
     await expect(first).not.toContainText('还没有解锁成就')
+
+    // 按需展开：数字只在本列内出现（各点各的，不排成跨孩子的一行）
+    await first.locator('.wall-col-summary').click()
+    await second.locator('.wall-col-summary').click()
+    await expect(first.locator('.wall-col-count')).toContainText('已获得 2 / 28')
+    await expect(second.locator('.wall-col-count')).toContainText('已获得 0 / 28')
+    // 展开后是三项：已解锁数 / 连续天数 / 掌握数
+    await expect(first.locator('.wall-col-num')).toHaveCount(2)
+    await expect(first.locator('.wall-col-numbers')).toContainText('已掌握')
   })
 
   test('渲染结果里没有比较级用词（AC-P2-8 的可见面）', async ({ page }) => {
@@ -151,6 +167,13 @@ test.describe('家庭成就墙（V1.4 · B4）', () => {
     const text = (await page.locator('.family-wall').innerText()) ?? ''
     for (const word of ['排名', '第 1 名', '第一名', '领先', '落后', '最高分', '完成率', '总分', '%']) {
       expect(text, `渲染结果里出现了「${word}」`).not.toContain(word)
+    }
+
+    // C7：默认视野里的鼓励语是叙事，不含任何数字（"又解锁 2 枚"这种不行）
+    for (const col of await page.locator('.wall-col').all()) {
+      const line = (await col.locator('.wall-col-encourage').innerText()) ?? ''
+      expect(line.trim().length, '鼓励语为空').toBeGreaterThan(0)
+      expect(line, `鼓励语里出现了数字：「${line}」`).not.toMatch(/\d/)
     }
   })
 })

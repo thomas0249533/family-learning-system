@@ -5,10 +5,12 @@
     <!-- 一句话说明"这里不是排行榜"。它同时是 AC-P2-8 的产品承诺：
          页面上不出现任何比较级，说明里也不出现 —— 用"各自看自己的"这种中性表述。
          措辞刻意避开"总分/完成率"这类词（禁词测试会扫全文，含注释）：
-         一个否定句里出现"总分"，下一个人复制这句去当标题时就会把词带出去。 -->
+         一个否定句里出现"总分"，下一个人复制这句去当标题时就会把词带出去。
+         C7 补上第二条承诺：**数字默认收起**。并排的标量是最强比较诱饵，
+         想看数字的家长可以点开，但默认视野里只有"最近在怎样"。 -->
     <p class="wall-note">
       这一页只是把几个孩子的成就并排放在一起看。没有名次，也没有合计算分 ——
-      每个孩子只需要和昨天的自己比。
+      每个孩子只需要和昨天的自己比。数字汇总默认收起，想看再点开。
     </p>
 
     <div v-if="loading" class="wall-scroll" aria-busy="true">
@@ -37,6 +39,8 @@
         :key="col.profileId"
         :name="col.name"
         :items="col.items"
+        :streak="col.streak"
+        :mastered="col.mastered"
       />
     </div>
   </div>
@@ -44,18 +48,24 @@
 
 <script setup lang="ts">
 /**
- * FamilyWall · 家庭成就墙（V1.4 · B4）
+ * FamilyWall · 家庭成就墙（V1.4 · B4 → V1.6 · Stage C · C7「去比较化」）
  *
  * ## 这一页要解决的是一件事：别让家长为了看老二去切档案
  * 之前看"两个孩子各自拿到多少"，得切档案 → 看图鉴 → 切回来，来回四次。
  * 一屏并排之后，家长能立刻看到"老二最近在习惯类上很稳，老大在精熟类上卡住了"。
  *
- * ## 三条产品红线（写进代码而不是只写在 PRD 里）
+ * ## 四条产品红线（写进代码而不是只写在 PRD 里）
  * 1. **不做排行**：不排序、不显示名次、不显示"最高/领先/落后/超过"，也不显示百分比。
  *    有百分比就有 43% 与 57% 的比较，家庭墙会立刻变成记分牌。
  * 2. **不做总分**：总分是排行榜的另一种形态。指标只有"这个孩子自己已获得几枚"。
  * 3. **不泄露隐藏成就**：剪影对每个孩子独立成立（复用 `buildAchievementItems` 的剪影逻辑），
  *    否则"老大的剪影比老二少两个"本身就是信息。
+ * 4. **C7：标量默认折叠**。并排的标量数字（已解锁 N/28、连续天数、掌握数）是最强的
+ *    比较诱饵 —— 家长一眼就会比出"老大 12 枚、老二才 5 枚"。所以默认每列只展示
+ *    **最近解锁的几枚徽章 + 一句中性鼓励语**（叙事、无数字、确定性，见
+ *    `core/motivation/familyWall.ts`）；数字汇总收进各列自己的 `<details>`，
+ *    家长点开才出现，且**只在本列内**，不排成跨孩子的一行让大家比。
+ *    连续天数默认视野里根本没有 —— 它继续只活在各自首页/孩子端。
  *
  * ## 数据怎么来（B4 的真正难点）
  * 每列都要按 `profileId` 单独取：进度/错题按行过滤，打卡/每日统计/题型走
@@ -68,6 +78,8 @@ import EmptyState from '@/components/ui/EmptyState.vue'
 import AchievementWallColumn from '@/components/AchievementWallColumn.vue'
 import { buildAchievementItems, type AchievementItem } from '@core/motivation/achievementMeta'
 import { loadProfileWall } from '@core/motivation/profileContext'
+import type { StreakState } from '@core/motivation/streak'
+import { countMasteredKps } from '@core/mastery/masterySummary'
 import { enabledPackDefs } from '@core/motivation/customPackDefs'
 import { loadChecks, loadPackState } from '@core/motivation/customPackStore'
 import { currentProfile, listProfilesSync } from '@core/profile/currentProfile'
@@ -80,6 +92,10 @@ interface WallColumn {
   profileId: string
   name: string
   items: AchievementItem[]
+  /** 连续学习状态（C7：只进"查看数字"折叠区，默认视野里没有它） */
+  streak: StreakState
+  /** 已掌握知识点数（去重口径同家长页；只进折叠区） */
+  mastered: number
 }
 
 const userDataStore = useUserDataStore()
@@ -138,6 +154,12 @@ async function load(): Promise<void> {
         name: profile.name,
         // 复用图鉴的同一套构建：墙上的枚数与图鉴里的必须永远一致
         items: buildAchievementItems(wall.ctx, wall.records, wall.extraDefs),
+        // 连续天数原样带出（ctx.streak 已是该档案的），展示口径由列组件
+        // 走 streakText 收敛（与首页同源）。C7：它只出现在折叠区里。
+        streak: wall.ctx.streak,
+        // 已掌握数：ctx.progress 已按 pid 过滤；countMasteredKps 是成就/家长页/报告
+        // 共用的去重口径（(packageId, kpId) 去重、status === '已掌握'）。
+        mastered: countMasteredKps(wall.ctx.progress),
       })
     }
     columns.value = out

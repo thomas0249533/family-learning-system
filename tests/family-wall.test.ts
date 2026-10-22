@@ -3,13 +3,17 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 /**
- * V1.4 · B4 家庭成就墙
+ * V1.4 · B4 家庭成就墙 → V1.6 · C7「去比较化」
  *
- * 两件事必须在这里守住：
+ * 三件事必须在这里守住：
  *   1. **AC-P2-8 禁词**：页面文本里不出现任何比较级。这条不能靠人工复核兜 ——
  *      下次改文案的人不会记得 PRD，但会看到这条测试红。
  *   2. **按档案取值不串**：墙要一屏读 4 个孩子，而 `dailyStats` / `attemptedTypes`
  *      都是**单档案缓存**。取错的表现是"老二的数字长在老大身上"，且不报错。
+ *   3. **C7 展示派生**：默认视野的"最近几枚 / 中性鼓励语"是 core 纯函数
+ *      （`core/motivation/familyWall.ts`）。无数字、确定性、任何输入不崩 ——
+ *      这些约束只有单测能守：文案是渲染出来的，肉眼复核必漏，而一句
+ *      "又解锁 2 枚"就能把这一页变回记分牌。
  */
 const fake = vi.hoisted(() => {
   type Row = { key: string; value: unknown }
@@ -36,6 +40,9 @@ const fake = vi.hoisted(() => {
 vi.mock('@/db', () => ({ db: fake }))
 
 const { buildContextForProfile, loadProfileWall } = await import('@core/motivation/profileContext')
+const { encouragementLine, recentUnlocked } = await import('@core/motivation/familyWall')
+const { buildAchievementItems } = await import('@core/motivation/achievementMeta')
+const { ctx } = await import('./achievement-fixtures')
 const { loadDailyStats, readDailyStatsFor, resetDailyStatsCache } = await import(
   '@core/motivation/dailyStats'
 )
@@ -202,5 +209,101 @@ describe('loadProfileWall — 三份数据必然同源', () => {
     seed('achievements:p2', [])
     expect(await loadUnlocked('p2')).toEqual([])
     expect((await loadUnlocked('default')).map((r) => r.id)).toEqual(['first-step'])
+  })
+})
+
+// ==================== C7 · 展示派生（纯函数） ====================
+
+/** 由解锁记录造一份真实视图模型（走 buildAchievementItems，不手搓 item） */
+function itemsOf(records: Array<[string, string]>): ReturnType<typeof buildAchievementItems> {
+  return buildAchievementItems(
+    ctx(),
+    records.map(([id, unlockedAt]) => ({ id, unlockedAt })),
+  )
+}
+
+describe('recentUnlocked — 默认视野只放"最近解锁的几枚"', () => {
+  it('按解锁日期倒序，最多 3 枚', () => {
+    const items = itemsOf([
+      ['first-step', '2026-10-01'],
+      ['ten-kp', '2026-10-10'],
+      ['fifty-kp', '2026-10-05'],
+      ['hundred-kp', '2026-10-20'],
+      ['perfect-kp', '2026-10-15'],
+    ])
+    expect(recentUnlocked(items).map((i) => i.id)).toEqual(['hundred-kp', 'perfect-kp', 'ten-kp'])
+  })
+
+  it('一枚都没解锁 → 空数组（不是 28 枚"未获得"）', () => {
+    expect(recentUnlocked(itemsOf([]))).toEqual([])
+  })
+
+  it('limit <= 0 → 空数组', () => {
+    const items = itemsOf([['first-step', '2026-10-01']])
+    expect(recentUnlocked(items, 0)).toEqual([])
+    expect(recentUnlocked(items, -1)).toEqual([])
+  })
+
+  it('不改进参（排序在副本上做，调用方数组顺序不变）', () => {
+    const items = itemsOf([
+      ['first-step', '2026-10-01'],
+      ['ten-kp', '2026-10-10'],
+    ])
+    const before = items.map((i) => i.id)
+    recentUnlocked(items)
+    expect(items.map((i) => i.id)).toEqual(before)
+  })
+})
+
+describe('encouragementLine — 中性鼓励语（无数字 / 确定性 / 不崩）', () => {
+  /** 与 AC-P2-8 同源的禁词：墙上一句话都不能有"谁多谁少"的暗示 */
+  const FORBIDDEN = ['排名', '第一', '领先', '落后', '超过', '最高分', '完成率', '总分', '%']
+  const NO_DIGIT = /\d/
+
+  const lineOf = (records: Array<[string, string]>): string => encouragementLine(itemsOf(records))
+
+  it('无成就：中性起步文案 —— 不抛、不是空串、无数字', () => {
+    const line = encouragementLine(itemsOf([]))
+    expect(line.length).toBeGreaterThan(0)
+    expect(line).not.toMatch(NO_DIGIT)
+    for (const w of FORBIDDEN) expect(line).not.toContain(w)
+  })
+
+  it('按"最近解锁那一枚"的类别给一句叙事；四个类别均无数字、无禁词', () => {
+    const cases: Array<{ id: string; pattern: RegExp }> = [
+      { id: 'first-step', pattern: /精熟/ },
+      { id: 'mistake-first', pattern: /成长/ },
+      { id: 'early-bird', pattern: /习惯/ },
+      { id: 'type-collector', pattern: /探索/ },
+    ]
+    for (const c of cases) {
+      const line = lineOf([[c.id, '2026-10-19']])
+      expect(line, `${c.id} → 「${line}」`).toMatch(c.pattern)
+      expect(line, `${c.id} → 「${line}」`).not.toMatch(NO_DIGIT)
+      for (const w of FORBIDDEN) expect(line, `${c.id} → 「${line}」`).not.toContain(w)
+    }
+  })
+
+  it('确定性：同一份数据两次调用同一句；重排传入顺序也不变（无 Math.random）', () => {
+    const items = itemsOf([
+      ['first-step', '2026-10-01'],
+      ['ten-kp', '2026-10-02'],
+    ])
+    expect(encouragementLine(items)).toBe(encouragementLine(items))
+    expect(encouragementLine([...items].reverse())).toBe(encouragementLine(items))
+  })
+
+  it('脏类别不崩：兜底回中性文案（视图模型是渲染数据，不该搞崩整列）', () => {
+    const dirty = [
+      { earned: true, unlockedAt: '2026-10-01', category: 'X' },
+    ] as unknown as ReturnType<typeof buildAchievementItems>
+    const line = encouragementLine(dirty)
+    expect(line.length).toBeGreaterThan(0)
+    expect(line).not.toMatch(NO_DIGIT)
+  })
+
+  it('非数组入参不崩（Props 意外时的兜底）', () => {
+    expect(encouragementLine(undefined as never)).toContain('旅程')
+    expect(recentUnlocked(undefined as never)).toEqual([])
   })
 })
