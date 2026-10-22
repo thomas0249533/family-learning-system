@@ -1,7 +1,25 @@
 <template>
-  <div class="quiz-engine">
+  <!--
+    V1.6 · Stage D · D3 —— 键盘交互挂在**根容器**上，不再挂 window（capture）。
+
+    为什么必须换挂载点：`TopicDetail.vue` 会同时挂两个 QuizEngine（前置热身
+    `v-if="warmupOpen"` + 常驻的同步练习）。window 级监听无法区分实例，一次按键
+    两个引擎的处理器都会跑（`stopPropagation` 拦不住同一节点上的其它监听）→
+    「按一次空格推进两题」。容器级监听天生按实例隔离：事件只有从本实例的子树里
+    冒泡上来才会被处理。
+
+    `tabindex="-1"`：让根容器可以被**编程**聚焦（submit / 切题后把焦点收回来，
+    否则交卷瞬间"提交"按钮被销毁、"下一题"按钮新建，焦点掉到 body，后续按键
+    根本冒泡不到这里），但**不进入 Tab 序列**，不影响键盘导航顺序。
+  -->
+  <div
+    ref="rootRef"
+    class="quiz-engine"
+    tabindex="-1"
+    @keydown="onKeydown"
+  >
     <template v-if="currentQuestion">
-      <div class="quiz-scroll">
+      <div ref="scrollRef" class="quiz-scroll">
         <div class="quiz-header">
           <span class="progress-text">第 {{ currentIndex + 1 }} / {{ questions.length }} 题</span>
           <div class="header-right">
@@ -14,7 +32,7 @@
             <span class="level-tag" :class="'level-' + (currentQuestion.metadata?.difficulty || '基础')">
               {{ currentQuestion.metadata?.difficulty || '基础' }}
             </span>
-            <button v-if="examMode" class="exit-btn" @click="handleExit">✕</button>
+            <button v-if="examMode" class="exit-btn" aria-label="退出练习" @click="handleExit">✕</button>
           </div>
         </div>
 
@@ -62,7 +80,13 @@
         </div>
 
         <div v-else-if="currentQuestion.type === 'blank'" class="fill-blank">
-          <n-input v-model:value="userAnswer" placeholder="请输入你的答案..." size="large" @keyup.enter="onInputEnter" />
+          <n-input
+            ref="answerInputRef"
+            v-model:value="userAnswer"
+            placeholder="请输入你的答案..."
+            size="large"
+            @keyup.enter="onInputEnter"
+          />
         </div>
 
         <div v-else-if="currentQuestion.type === 'judge'" :class="['judge-group', judgeParts ? 'judge-group--multi' : '']">
@@ -101,12 +125,23 @@
 
         <div v-else-if="currentQuestion.type === 'spelling'" class="spelling-group">
           <div v-if="currentQuestion.hint" class="spelling-hint">提示：{{ currentQuestion.hint }}</div>
-          <n-input v-model:value="userAnswer" placeholder="请输入完整单词..." size="large" @keyup.enter="onInputEnter" />
+          <n-input
+            ref="answerInputRef"
+            v-model:value="userAnswer"
+            placeholder="请输入完整单词..."
+            size="large"
+            @keyup.enter="onInputEnter"
+          />
         </div>
 
         <div v-else-if="currentQuestion.type === 'essay'" class="essay-group">
-          <div class="essay-hint">✍️ 主观题：请先写下你的答案，提交后对照参考答案自评</div>
+          <div class="essay-hint">
+            ✍️ 主观题：请先写下你的答案，提交后对照参考答案自评
+            <!-- 主观题用 Ctrl/Cmd + Enter 提交：普通 Enter 必须留给换行 -->
+            <span class="essay-kbd-hint">（写完按 Ctrl / ⌘ + Enter 提交）</span>
+          </div>
           <n-input
+            ref="essayInputRef"
             v-model:value="userAnswer"
             type="textarea"
             :autosize="{ minRows: 4, maxRows: 9 }"
@@ -114,22 +149,31 @@
           />
         </div>
 
-        <div v-if="!examMode && showFeedback" class="feedback-box" :class="feedbackClass">
-          <p class="feedback-title">{{ feedbackTitle }}</p>
-          <p v-if="!isCorrect || isEssay" class="user-answer">你的答案：{{ userAnswerDisplay || '（未作答）' }}</p>
-          <p class="correct-answer">{{ isEssay ? '参考答案' : '正确答案' }}：{{ correctAnswerDisplay }}</p>
-          <p v-if="currentQuestion.explanation" class="explanation">💡 解析：{{ currentQuestion.explanation }}</p>
+        <!--
+          V1.6 · D3 · 解析播报：live region 必须**常驻**在 DOM 里，`v-if` 只加在内层
+          `.feedback-box` 上。若把 `aria-live` 加在会被 `v-if` 新建的节点上，
+          节点"新生"时读屏器往往不朗读（本仓范式见 ImportPreview.vue 的 `.import-live`）。
+          首行 `.sr-only` 是给读屏器的确定结论（鼓励语文案本身不含"对/错"字样）。
+        -->
+        <div class="quiz-live" aria-live="polite" aria-atomic="true">
+          <div v-if="!examMode && showFeedback" class="feedback-box" :class="feedbackClass">
+            <p class="sr-only">{{ announceHead }}</p>
+            <p class="feedback-title">{{ feedbackTitle }}</p>
+            <p v-if="!isCorrect || isEssay" class="user-answer">你的答案：{{ userAnswerDisplay || '（未作答）' }}</p>
+            <p class="correct-answer">{{ isEssay ? '参考答案' : '正确答案' }}：{{ correctAnswerDisplay }}</p>
+            <p v-if="currentQuestion.explanation" class="explanation">💡 解析：{{ currentQuestion.explanation }}</p>
 
-          <div v-if="isEssay && selfRating === null" class="self-rate">
-            <span class="self-rate-tip">对照参考答案，你觉得自己答得怎么样？</span>
-            <div class="self-rate-btns">
-              <n-button size="small" type="success" @click="rateSelf(true)">✅ 我答对了</n-button>
-              <n-button size="small" @click="rateSelf(false)">📖 需要复习</n-button>
+            <div v-if="isEssay && selfRating === null" class="self-rate">
+              <span class="self-rate-tip">对照参考答案，你觉得自己答得怎么样？</span>
+              <div class="self-rate-btns">
+                <n-button size="small" type="success" @click="rateSelf(true)">✅ 我答对了</n-button>
+                <n-button size="small" @click="rateSelf(false)">📖 需要复习</n-button>
+              </div>
             </div>
+            <p v-else-if="isEssay" class="self-rate-result">
+              你的自评：{{ selfRating ? '✅ 答对了' : '📖 需要复习' }}
+            </p>
           </div>
-          <p v-else-if="isEssay" class="self-rate-result">
-            你的自评：{{ selfRating ? '✅ 答对了' : '📖 需要复习' }}
-          </p>
         </div>
 
         <div v-if="examMode" class="exam-progress-hint">
@@ -158,7 +202,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import {
   NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NSpace,
   NButton, NButtonGroup, NInput, NSelect,
@@ -247,6 +291,19 @@ const isCorrect = ref(false)
 const correctCount = ref(0)
 const answeredSet = ref<Set<number>>(new Set())
 const examAnswers = ref<Record<string, any>>({})
+
+/* ---------------------------------------------------------------------
+ * V1.6 · D3 焦点管理（此前全仓 `src/` 零 `.focus()`，键盘用户交卷后焦点掉 body）
+ * ------------------------------------------------------------------- */
+
+/** 根容器（`tabindex="-1"`）：非输入型题目的焦点落点 + 键盘监听的挂载点 */
+const rootRef = ref<HTMLElement | null>(null)
+/** 题干滚动容器：切题后滚回题首 */
+const scrollRef = ref<HTMLElement | null>(null)
+/** 填空 / 拼写的输入框（两种题型只会渲染其一，共用一个 ref） */
+const answerInputRef = ref<InstanceType<typeof NInput> | null>(null)
+/** 主观题 textarea */
+const essayInputRef = ref<InstanceType<typeof NInput> | null>(null)
 
 /** P0 · 当前这一题开始作答的时刻，用于算作答耗时 */
 const questionStartedAt = ref<number>(Date.now())
@@ -392,6 +449,16 @@ const feedbackTitle = computed(() => {
   return isCorrect.value ? correctFeedback(currentIndex.value) : wrongFeedback(currentIndex.value)
 })
 
+/**
+ * 读屏播报的**结论行**（视觉隐藏，见模板 `.sr-only`）。
+ * 鼓励语文案是"太棒了 / 差一点点"这类口语，不含"对 / 错"字样，
+ * 读屏用户需要先听到一句确定的判定，再听正确答案与解析。
+ */
+const announceHead = computed(() => {
+  if (isEssay.value) return '参考答案，请对照自评。'
+  return isCorrect.value ? '回答正确。' : '回答错误。'
+})
+
 const rightOptions = computed(() => {
   const right = currentQuestion.value?.right ?? []
   return right.map((text, idx) => ({ label: text, value: idx }))
@@ -457,32 +524,181 @@ function isAnswered(qid: string): boolean {
   return String(ua).trim() !== ''
 }
 
-function onKeydown(e: KeyboardEvent) {
-  if (e.code !== 'Space' && e.key !== ' ') return
+/**
+ * 「让路」白名单（V1.6 · D3）。
+ *
+ * 这是本文件最容易被改坏的一条：**先判断该不该让路，再决定接不接管**。
+ * 旧实现把 `e.preventDefault()` 无条件写在分支之前，结果是焦点在「退出 ✕」、
+ * 题号导航 `.nav-dot`、判断题 T/F 按钮、主观题自评按钮、以及 naive `Radio`
+ * （渲染成 `<input type="radio">`，type 不在旧白名单里）上时，空格无法激活它们，
+ * 全被当成"提交 / 下一题"。
+ */
+const NATIVE_SPACE_TARGETS = [
+  'input',
+  'textarea',
+  'select',
+  'button',
+  'a[href]',
+  'summary',
+  '[contenteditable=""]',
+  '[contenteditable="true"]',
+  '[role="button"]',
+  '[role="radio"]',
+  '[role="checkbox"]',
+  '[role="switch"]',
+  '[role="menuitem"]',
+  '[role="tab"]',
+  '[role="option"]',
+  '[role="link"]',
+].join(',')
+
+/**
+ * Enter 的让路面比 Space **窄一格**：`<input type="radio|checkbox">` 上 Enter
+ * 本来就没有原生语义（Space 才是它们的激活键），所以这里让它们落到引擎手里。
+ *
+ * 为什么必须这么做（实测依据）：点一下选项，焦点会落到 naive 那个 0×0 的隐藏
+ * radio input 上（`document.activeElement` = `INPUT.n-radio-input`）。若 Enter
+ * 也对这些元素让路，"点选项 → 回车提交"这条最常用的键盘捷径在单选 / 多选 /
+ * 判断上就彻底失效 —— 而 Space 在这些元素上必须让路（那是原生激活），
+ * 两条键位加起来才算完整。
+ *
+ * 文本框（`input:not([type=radio]):not([type=checkbox])`）继续让路：它们的 Enter
+ * 由模板上的 `@keyup.enter="onInputEnter"` 负责，这里再接一手会变成"提交后立刻
+ * 跳下一题"（keydown 提交 + keyup 进下一题）。
+ */
+const NATIVE_ENTER_TARGETS = [
+  'input:not([type="radio"]):not([type="checkbox"])',
+  'textarea',
+  'select',
+  'button',
+  'a[href]',
+  'summary',
+  '[contenteditable=""]',
+  '[contenteditable="true"]',
+  '[role="button"]',
+  '[role="switch"]',
+  '[role="menuitem"]',
+  '[role="tab"]',
+  '[role="option"]',
+  '[role="link"]',
+].join(',')
+
+/** 焦点是否落在交互控件上（命中则本次按键完全属于该控件） */
+function isNativeTarget(target: HTMLElement | null, selector: string): boolean {
+  if (!target || typeof target.closest !== 'function') return false
+  return target.closest(selector) !== null
+}
+
+/**
+ * 当前这一题的主操作（提交 / 下一题 / 考试下一题）。
+ * 键盘两条路径（Space、Enter）与容器级处理共用同一份分支，避免两处判定漂移。
+ */
+function runPrimaryAction(): void {
+  if (props.examMode) {
+    if (canSubmit.value) examNext()
+    return
+  }
+  if (showFeedback.value) nextQuestion()
+  else if (canSubmit.value) submitAnswer()
+}
+
+/**
+ * 根容器上的键盘处理（取代原来的 `window.addEventListener('keydown', …, true)`）。
+ *
+ * 顺序不可调换：① Ctrl/⌘+Enter（主观题显式提交）→ ② 让路 → ③ 接管。
+ * 用 keydown 而不是 keyup 处理 Space：原生按钮的 Space 激活发生在 **keyup**
+ * 派发 click 那一刻，只有 keydown 上的 `preventDefault` 能压住它 —— 所以
+ * 「Space 交给引擎」与「Space 留给按钮」这件事，必须在同一点判断完。
+ */
+function onKeydown(e: KeyboardEvent): void {
+  const isSpace = e.key === ' ' || e.code === 'Space'
+  const isEnter = e.key === 'Enter'
+  if (!isSpace && !isEnter) return
+  if (!currentQuestion.value) return
+
+  const target = e.target instanceof HTMLElement ? e.target : null
+
+  // ① Ctrl / ⌘ + Enter：主观题（textarea 里普通 Enter 必须只换行）
+  if (isEnter && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault()
+    runPrimaryAction()
+    return
+  }
+
+  // ② 让路：焦点在交互控件上时，不 preventDefault、不接管
+  if (isNativeTarget(target, isSpace ? NATIVE_SPACE_TARGETS : NATIVE_ENTER_TARGETS)) return
+
+  // ③ 接管。两条键都必须 preventDefault：
+  //    Space —— 原生按钮的激活在 keyup 派发 click，只有 keydown 上压住才有效；
+  //    Enter —— 浏览器在**事件派发结束、微任务跑完之后**才执行默认动作。本处理器
+  //      交卷后会（nextTick 里）把焦点挪到新出现的"下一题"按钮上，若不压住，
+  //      这一次回车会顺带"激活"那个刚拿到焦点的按钮 → 一次按键提交 + 跳题
+  //      （e2e 用例 ① 实测踩中过）。
+  e.preventDefault()
+  runPrimaryAction()
+}
+
+/* ---------------------------------------------------------------------
+ * V1.6 · D3 焦点转移 / 滚动
+ * ------------------------------------------------------------------- */
+
+/**
+ * 把焦点送到"这一题该操作的地方"。
+ *
+ * 为什么必须有：`.quiz-actions` 是两个 `v-if / v-else` 互斥节点 —— 交卷瞬间
+ * "提交答案"按钮被销毁、"下一题"按钮新建，焦点必然掉到 `document.body`；
+ * 而键盘监听挂在根容器上（冒泡），焦点一旦离开子树，后续按键就再也收不到。
+ *
+ * @param options `preventScroll` 用于挂载时聚焦：不能因为自动聚焦把页面滚走
+ *                （专题页练习区在知识卡片下面，一进来就跳下去会显得页面乱动）。
+ */
+function focusPrimary(options: FocusOptions = {}): void {
   const q = currentQuestion.value
   if (!q) return
+  const preventScroll = options.preventScroll === true
 
-  if (q.type === 'blank' || q.type === 'spelling' || q.type === 'essay') {
-    const target = e.target as HTMLElement | null
-    if (target) {
-      const tag = target.tagName
-      if (tag === 'TEXTAREA' || target.isContentEditable) return
-      if (tag === 'INPUT') {
-        const t = (target as HTMLInputElement).type
-        if (t === 'text' || t === 'number' || t === 'search' || t === 'password') return
-      }
-    }
+  if (q.type === 'blank' || q.type === 'spelling') {
+    answerInputRef.value?.focus()
+    return
   }
-
-  e.preventDefault()
-  e.stopPropagation()
-
-  if (!props.examMode) {
-    if (showFeedback.value) nextQuestion()
-    else if (canSubmit.value) submitAnswer()
-  } else {
-    if (canSubmit.value) examNext()
+  if (q.type === 'essay') {
+    essayInputRef.value?.focus()
+    return
   }
+  rootRef.value?.focus({ preventScroll })
+}
+
+/**
+ * 交卷后的焦点落点：**新出现的操作按钮**（"下一题 ➡️" / "🏁 完成练习"）。
+ *
+ * 选它而不是"聚焦题干"的原因：交卷后用户唯一该做的就是继续，焦点直接落在主操作上，
+ * 回车 / 空格一次就到下一题；若聚焦题干（根容器），用户还得再 Tab 一跳到按钮，
+ * 反而多一次按键。主观题自评未完成时，主操作是自评按钮，同样聚焦它。
+ */
+function focusAfterSubmit(): void {
+  void nextTick(() => {
+    const root = rootRef.value
+    if (!root) return
+    const selfRateBtn =
+      isEssay.value && selfRating.value === null
+        ? root.querySelector<HTMLElement>('.self-rate button')
+        : null
+    const actionBtn = root.querySelector<HTMLElement>('.quiz-actions button')
+    const el = selfRateBtn ?? actionBtn
+    el?.focus({ preventScroll: true })
+  })
+}
+
+/**
+ * 切题（下一题 / 跳题 / 考试下一题）后的收尾：聚焦 + 滚回题首。
+ * 只在这三处显式调用，不放进 `watch(currentQuestion)` —— 那个 watcher 带
+ * `immediate: true`，挂载时也会跑，会把"挂载"和"切题"两种语义搅在一起。
+ */
+function afterQuestionMoved(): void {
+  void nextTick(() => {
+    focusPrimary()
+    scrollRef.value?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+  })
 }
 
 onMounted(() => {
@@ -498,12 +714,17 @@ onMounted(() => {
     }
   }
   startTimer()
-  window.addEventListener('keydown', onKeydown, true)
+
+  // 键盘用户一进页面就能直接操作：把焦点放到根容器（不滚动、不抢 Tab 顺序）。
+  // 注意这里**只聚焦容器、不聚焦输入框**：专题页的练习区在知识卡片下面，
+  // 挂载即聚焦 input 会把页面自动滚下去。
+  void nextTick(() => {
+    rootRef.value?.focus({ preventScroll: true })
+  })
 })
 
 onUnmounted(() => {
   stopTimer()
-  window.removeEventListener('keydown', onKeydown, true)
   emit('save-progress', {
     currentIndex: currentIndex.value,
     elapsedSeconds: elapsedSeconds.value,
@@ -552,6 +773,7 @@ function submitAnswer() {
   // 主观题：不自动判分，先展示参考答案，由学生自评
   if (q.type === 'essay') {
     isCorrect.value = true
+    focusAfterSubmit()
     return
   }
 
@@ -569,6 +791,9 @@ function submitAnswer() {
       elapsedMs: currentElapsedMs(),
     })
   }
+
+  // 交卷后立即把焦点送到"下一题"（那个按钮刚被 v-else 新建出来）
+  focusAfterSubmit()
 }
 
 /** ✅ 主观题自评：记录对错（自评「需要复习」进错题本，答对则计分） */
@@ -592,17 +817,28 @@ function rateSelf(ok: boolean) {
 function nextQuestion() {
   if (currentIndex.value < props.questions.length - 1) {
     currentIndex.value++
+    afterQuestionMoved()
   } else {
     emit('finish', correctCount.value)
   }
 }
 
+/**
+ * 输入框里的 Enter（由模板 `@keyup.enter` 触发）。
+ *
+ * 旧实现 `canSubmit && !showFeedback` 在已交卷时是**死分支**：此时焦点还留在
+ * 已判分的输入框里，再按空格会被白名单 return、直接输入进答案框。现在补上
+ * "已交卷 → 下一题"，让"输入 → 回车提交 → 再回车进下一题"连成一条链路。
+ *
+ * 主观题不挂这个处理器（textarea 的 Enter 必须只换行），提交走 Ctrl/⌘ + Enter。
+ */
 function onInputEnter() {
   if (props.examMode) {
     if (canSubmit.value) examNext()
-  } else {
-    if (canSubmit.value && !showFeedback.value) submitAnswer()
+    return
   }
+  if (showFeedback.value) nextQuestion()
+  else if (canSubmit.value) submitAnswer()
 }
 
 function jumpTo(index: number) {
@@ -611,13 +847,18 @@ function jumpTo(index: number) {
   if (q && canSubmit.value) examAnswers.value[q.id] = userAnswer.value
   else if (q) delete examAnswers.value[q.id]
   currentIndex.value = index
+  afterQuestionMoved()
 }
 
 function examNext() {
   if (!currentQuestion.value || !canSubmit.value) return
   examAnswers.value[currentQuestion.value.id] = userAnswer.value
-  if (currentIndex.value < props.questions.length - 1) currentIndex.value++
-  else finalizeExam()
+  if (currentIndex.value < props.questions.length - 1) {
+    currentIndex.value++
+    afterQuestionMoved()
+  } else {
+    finalizeExam()
+  }
 }
 
 /** ✅ 统一提交：判分 + 逐题 emit + exam-detail 事件 */
@@ -676,12 +917,25 @@ function handleExit() {
 </script>
 
 <style scoped lang="scss">
+/* `.sr-only` mixin 来自 D1 的卡片状态 partial（零 CSS 输出，只有 mixin） */
+@import '@/core/styles/card-status';
+
 .quiz-engine {
   display: flex;
   flex-direction: column;
   min-height: 320px;
   padding-bottom: 80px;
+
+  /* 根容器是 tabindex="-1" 的编程聚焦目标：只在"键盘触发的聚焦"时显示焦点环，
+     鼠标点击后聚焦（Chrome 的 :focus-visible 启发式）不会留下多余描边 */
+  &:focus-visible {
+    outline: var(--focus-ring-w) solid var(--btn-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: $radius-md;
+  }
 }
+
+.sr-only { @include sr-only; }
 
 .quiz-header {
   display: flex;
@@ -892,6 +1146,11 @@ function handleExit() {
   .essay-hint {
     font-size: 13px; color: $primary-text; background: $primary-light;
     padding: 8px 14px; border-radius: 6px; margin-bottom: 10px;
+  }
+  .essay-kbd-hint {
+    font-size: 12px;
+    color: $text-sub;
+    margin-left: 4px;
   }
   :deep(.n-input) { font-size: 15px; line-height: 1.8; }
 }
