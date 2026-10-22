@@ -22,6 +22,17 @@
         <div class="stat-label">已掌握</div>
       </div>
       <div class="stats-actions">
+        <!-- E3 · 一键生成练习卷（E2 引擎入口）。已有临时包时先确认覆盖；
+             错题本为空时禁用（与导出同一道判空闸）。 -->
+        <AppButton
+          size="small"
+          type="primary"
+          :loading="generating"
+          :disabled="generating || totalCount === 0"
+          @click="handleGenerate"
+        >
+          🎯 一键生成练习卷
+        </AppButton>
         <AppButton size="small" :disabled="totalCount === 0" @click="handleExport">
           📤 导出
         </AppButton>
@@ -235,13 +246,16 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { NInput, useMessage } from 'naive-ui'
+import { useRouter } from 'vue-router'
+import { NInput, useDialog, useMessage } from 'naive-ui'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuestionText from '@/components/QuestionText.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import { exportMistakes } from '@core/export/exportService'
+import { WEAKPOINTS_PACKAGE_ID } from '@core/weakpoints/weakpointsEngine'
+import { generateWeakpointsPackage, weakpointsPackageExists } from '@core/weakpoints/generateWeakpoints'
 import {
   MISTAKE_LEVEL_ICON,
   MISTAKE_LEVEL_LABEL,
@@ -259,6 +273,8 @@ import {
 import type { MistakeMasteryLevel } from '@/db'
 
 const message = useMessage()
+const dialog = useDialog()
+const router = useRouter()
 const userDataStore = useUserDataStore()
 const packageStore = usePackageStore()
 
@@ -480,6 +496,89 @@ async function handleExport() {
   else message.success(`已导出 ${count} 条错题`)
 }
 
+/* ===========================================================================
+ * E3 · 一键生成练习卷（E2 智能错题重组引擎的 UI 入口）
+ * ---------------------------------------------------------------------------
+ * 顺序即安全边界（调换顺序会出事故）：
+ *   1. `generating` 闸 + 按钮 loading/disabled 双保险防连点；
+ *   2. 已有临时包 → **先确认再覆盖**（包 id 稳定，再次生成 = 覆盖同一个
+ *      `special-weakpoints-auto`；孩子/家长要明确知道旧卷被换掉了）；
+ *   3. 引擎不成卷（`generated: false`）→ 只说原因，**旧包不被覆盖**
+ *      （不拿空卷覆盖旧卷，旧卷的题目仍然是有效练习材料）；
+ *   4. 成卷 → 刷新包列表与错题本 → 跳进试卷。
+ *
+ * 入参纪律：**不下传错题筛选**。本页的时间/关键词过滤只是查看视角，
+ * 传给引擎会让它按过滤后的子集算配额与主导学科（题量、学科分布全错）；
+ * 引擎自读全量 pool 才是对的。真要限学科只能传 `opts.subject`（引擎口径）。
+ *
+ * 为什么必须 `loadPackages()`：引擎绕过 store 直接 `db.packages.put`，
+ * store 内存里的 `packages` 不会自己更新。为什么必须 `loadUserData()`：
+ * 归属回流会改 mistakes 行的归属包信息，卡片上的「学科 · 归属包标题」要刷新。
+ * ======================================================================== */
+
+/** 生成中（防连点 + 按钮 loading） */
+const generating = ref(false)
+
+/** 引擎"没成卷"的两句人话（`generated: false` 时旧包不动） */
+const WEAKPOINTS_REASON_TEXT: Record<'no-mistakes' | 'no-weakness', string> = {
+  'no-mistakes': '错题本是空的，先去练习吧',
+  'no-weakness': '暂无可重组的弱项（已掌握的错题不会进卷）',
+}
+
+async function handleGenerate() {
+  if (generating.value) return
+  generating.value = true
+  try {
+    // 覆盖确认：临时包 id 稳定，再次生成就是覆盖同一个 special-weakpoints-auto
+    if (await weakpointsPackageExists()) {
+      const ok = await confirmRegenerate()
+      if (!ok) return
+    }
+
+    const result = await generateWeakpointsPackage()
+    if (!result.generated) {
+      message.warning(WEAKPOINTS_REASON_TEXT[result.reason ?? 'no-weakness'])
+      return
+    }
+
+    message.success(`已生成练习卷：${result.questionCount} 题`)
+    if (result.skippedCount > 0) {
+      // 归属解析失败（KP 无唯一 owner / 源包已删）的行永不入卷 —— 宁少一题，
+      // 不要一张会把进度写错地方的卷。跳过几条要说出来，不能静默。
+      message.warning(`有 ${result.skippedCount} 道错题因缺少归属信息未卷入`)
+    }
+
+    await packageStore.loadPackages()
+    await userDataStore.loadUserData()
+    // examMode 包进 UnitList 直接渲染 ExamPanel，无需单元导航
+    router.push(`/learn/${WEAKPOINTS_PACKAGE_ID}`)
+  } catch (e) {
+    message.error('生成失败：' + (e as Error).message)
+  } finally {
+    generating.value = false
+  }
+}
+
+/**
+ * 覆盖确认（照 Parent.vue 档案删除的 naive-ui dialog 范式，不自创）。
+ *
+ * 取消 / Esc / 点遮罩关闭全部按"不生成"处理 —— 覆盖是不可逆的 UI 动作，
+ * 任何关闭路径都必须是保守的那一个。
+ */
+function confirmRegenerate(): Promise<boolean> {
+  return new Promise((resolve) => {
+    dialog.warning({
+      title: '重新生成练习卷？',
+      content: '将重新生成练习卷（覆盖旧卷），按错题本的最新状态重新选题。已获得的掌握进度不受影响。',
+      positiveText: '重新生成',
+      negativeText: '取消',
+      onPositiveClick: () => resolve(true),
+      onNegativeClick: () => resolve(false),
+      onClose: () => resolve(false),
+    })
+  })
+}
+
 function formatDate(iso: string): string {
   const d = new Date(iso)
   return `${d.getMonth() + 1}月${d.getDate()}日`
@@ -532,7 +631,13 @@ function formatDate(iso: string): string {
     background: $border-light;
     @media (max-width: 640px) { display: none; }
   }
-  .stats-actions { margin-left: auto; }
+  .stats-actions {
+    margin-left: auto;
+    display: flex;
+    gap: $space-2;
+    /* 窄屏与统计数字一起换行时，按钮组不再贴着右边缘 */
+    @media (max-width: 640px) { margin-left: 0; }
+  }
 }
 
 /* ✅ 筛选栏 */
