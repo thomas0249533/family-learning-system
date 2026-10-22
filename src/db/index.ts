@@ -1,6 +1,7 @@
 import Dexie, { type Table } from 'dexie';
 import type { LearningPackageManifest } from '../schemas/manifest';
 import type { KnowledgePoint } from '../schemas/knowledge-point';
+import type { MistakeCause } from '../core/mistakes/mistakeCause';
 import type { FsrsCardState } from '../core/review/fsrs';
 import type { BktState } from '../core/mastery/bkt';
 import { migrateProgressV3 } from '../core/storage/migrateV3';
@@ -70,6 +71,8 @@ export interface MistakeRecord {
   masteryLevel?: MistakeMasteryLevel;
   /** P3 · 收进错题本之后，复习答对的次数 */
   reviewCorrectCount?: number;
+  /** C1 · 归因标签；旧数据为 undefined（UI 显示「未分类」，逻辑按 knowledge 兜底） */
+  mistakeCause?: MistakeCause;
 }
 
 export interface SettingRecord {

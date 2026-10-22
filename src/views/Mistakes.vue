@@ -98,6 +98,27 @@
               <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
             </div>
             <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
+            <!-- C1 · 错因归因（手动打标）。4 个原生 radio，name 按 mistake 区分，
+                 两处布局不会互相串选；点已选中项 = 取消打标（见 onCauseClick）。 -->
+            <div class="mistake-cause" role="radiogroup" aria-label="错题原因">
+              <span class="cause-title">错因</span>
+              <label
+                v-for="c in MISTAKE_CAUSE_ORDER"
+                :key="c"
+                class="cause-opt"
+                :class="{ on: m.mistakeCause === c }"
+              >
+                <input
+                  type="radio"
+                  :name="'cause-' + m.id"
+                  :checked="m.mistakeCause === c"
+                  @change="onCauseChange(m, c)"
+                  @click="onCauseClick(m, c)"
+                />
+                <span>{{ MISTAKE_CAUSE_LABELS[c] }}</span>
+              </label>
+              <span v-if="!m.mistakeCause" class="cause-unset">{{ mistakeCauseLabelOf(m) }}</span>
+            </div>
             <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
             <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
@@ -147,6 +168,26 @@
           <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
         </div>
         <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
+        <!-- C1 · 错因归因（手动打标）。与知识点视图同源，name 同样按 mistake 区分。 -->
+        <div class="mistake-cause" role="radiogroup" aria-label="错题原因">
+          <span class="cause-title">错因</span>
+          <label
+            v-for="c in MISTAKE_CAUSE_ORDER"
+            :key="c"
+            class="cause-opt"
+            :class="{ on: m.mistakeCause === c }"
+          >
+            <input
+              type="radio"
+              :name="'cause-' + m.id"
+              :checked="m.mistakeCause === c"
+              @change="onCauseChange(m, c)"
+              @click="onCauseClick(m, c)"
+            />
+            <span>{{ MISTAKE_CAUSE_LABELS[c] }}</span>
+          </label>
+          <span v-if="!m.mistakeCause" class="cause-unset">{{ mistakeCauseLabelOf(m) }}</span>
+        </div>
         <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
 
         <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
@@ -205,6 +246,12 @@ import {
   mistakeReviewCount,
   needsReview,
 } from '@core/mistake/mistakeRules'
+import {
+  MISTAKE_CAUSE_LABELS,
+  MISTAKE_CAUSE_ORDER,
+  mistakeCauseLabelOf,
+  type MistakeCause,
+} from '@core/mistakes/mistakeCause'
 import type { MistakeMasteryLevel } from '@/db'
 
 const message = useMessage()
@@ -396,6 +443,31 @@ onMounted(async () => {
 
 async function markMastered(id: number) {
   await userDataStore.markAsMastered(id)
+}
+
+/**
+ * C1 · 错因归因。只需要这两个字段 —— 两处卡片布局的 `m` 分别是 any（分组视图）
+ * 与 MistakeRecord（平铺视图），结构化参数对两者都成立。
+ */
+type CauseRow = { exerciseId: string; mistakeCause?: MistakeCause }
+
+/**
+ * 选中（或键盘方向键切到）某个归因 → 打标。
+ * 鼠标点击与键盘选择都会触发原生 `change`，所以"改成新的"走这里。
+ */
+function onCauseChange(m: CauseRow, cause: MistakeCause) {
+  void userDataStore.setMistakeCause(m.exerciseId, cause)
+}
+
+/**
+ * 点**已选中**的项 = 取消打标（给误点的人一条退路）。
+ * 原生 radio 重复点击不会触发 `change`，取消语义只能挂在 `click` 上；
+ * 未选中项的点击会先走 `onCauseChange` 打标，那时 `mistakeCause` 还是旧值，
+ * 这里 `!==` 直接返回，不会把刚打的标又擦掉。
+ */
+function onCauseClick(m: CauseRow, cause: MistakeCause) {
+  if (m.mistakeCause !== cause) return
+  void userDataStore.setMistakeCause(m.exerciseId, null)
 }
 
 async function handleExport() {
@@ -643,6 +715,43 @@ function formatDate(iso: string): string {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  /* C1 · 错因归因（手动打标）。窄列里 4 个选项必须能换行不溢出。
+     焦点环走 components.scss 的全局 :focus-visible，不在这里重复写 outline。 */
+  .mistake-cause {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-1 $space-2;
+    margin: 0 0 $space-2;
+
+    .cause-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-sub;
+    }
+    .cause-opt {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-1;
+      font-size: 12px;
+      color: $text-sub;
+      cursor: pointer;
+      padding: 2px $space-2;
+      border-radius: $radius-xs;
+      background: $bg-color-hover;
+
+      /* 选中态要可见：文字转主色 + 加粗（radio 自身的勾选态之外的第二重提示） */
+      &.on {
+        color: $primary-text;
+        font-weight: 700;
+      }
+    }
+    .cause-unset {
+      font-size: $font-2xs;
+      color: $text-muted;
+    }
   }
 
   .question-text {

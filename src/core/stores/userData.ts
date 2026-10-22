@@ -14,6 +14,7 @@ import { touchStudyDay } from '@core/motivation/streak'
 import { bumpDailyStats } from '@core/motivation/dailyStats'
 import { addAttemptedType } from '@core/motivation/attemptedTypes'
 import { applyMistakeReview, mistakeLevel, mistakeReviewCount } from '@core/mistake/mistakeRules'
+import type { MistakeCause } from '@core/mistakes/mistakeCause'
 import { canonicalKpId, resolveMistakeTarget, resolveOwnerPackageId } from '@core/progress/ownerIndex'
 import { ensureOwnerIndex } from '@core/progress/ownerIndexCache'
 import { ensureFields } from '@core/progress/progressRecord'
@@ -169,6 +170,37 @@ export const useUserDataStore = defineStore('userData', () => {
   }
 
   /**
+   * C1 · 给错题打 / 改 / 取消归因标签（家长手动操作）。
+   *
+   * 定位必须带**档案作用域**：错题 id 是自增主键，跨档案时 id 不可信
+   * （两个档案可以各有一行 id=1），而 exerciseId 在当前档案内唯一。
+   *
+   * `cause = null` 表示**取消打标**。这里不走 `update(id, { mistakeCause: undefined })`：
+   * 实测 Dexie 4 的 update 对 undefined 值确实是 `delete obj[key]`（删键，见
+   * `node_modules/dexie/dist/modern/dexie.mjs` 的 `setByKeyPath`），但本仓所有 update
+   * 载荷都要过 `toPlain()`（JSON 往返）—— `JSON.stringify` 会先把 undefined 键整个
+   * 丢掉，patch 变成 `{}`，删键语义根本到不了 Dexie。所以改成读出行 → 删掉键 →
+   * `put` 整行回去：put 是整行替换，键不在就是不在了。
+   *
+   * 找不到该行 → **静默返回**（不抛错）：这是"取消打标"的良性路径（行可能已被
+   * 合并 / 删除），弹错会打断家长。
+   */
+  async function setMistakeCause(exerciseId: string, cause: MistakeCause | null): Promise<void> {
+    const existing = await db.mistakes
+      .where('[profileId+exerciseId]').equals([currentProfileId(), exerciseId]).first()
+    if (!existing) return
+
+    if (cause === null) {
+      const cleared: MistakeRecord = { ...existing }
+      delete cleared.mistakeCause
+      await db.mistakes.put(toPlain(cleared))
+    } else {
+      await db.mistakes.update(existing.id!, toPlain({ mistakeCause: cause }))
+    }
+    await loadUserData()
+  }
+
+  /**
    * 记录一次知识点的作答：同时推进掌握状态机、BKT 概率、FSRS 排期。
    * 兼容旧签名（第 4 个参数可选，不传时退化为"只有对错信息"）。
    *
@@ -320,6 +352,7 @@ export const useUserDataStore = defineStore('userData', () => {
     addMistake,
     resolveMistake,
     markAsMastered,
+    setMistakeCause,
     recordProgress,
     recordAnswerEvent,
   }
