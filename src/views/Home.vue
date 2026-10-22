@@ -15,79 +15,108 @@
       </div>
     </div>
 
-    <!-- ========== 今日复习 ========== -->
+    <!-- ========== 今日计划（今日复习 + 最需要复习 + 今日推荐，统一分区，§11.4） ========== -->
     <section class="section">
-      <SectionTitle title="今日复习" icon="🔄" />
+      <SectionTitle title="今日计划" icon="📋" />
 
-      <div
-        class="review-card"
-        :class="{ 'has-due': dueCount > 0 }"
-        @click="goToReview"
-      >
-        <div class="review-icon-wrap">
-          <span class="review-icon">{{ dueCount > 0 ? '🔥' : '✅' }}</span>
-        </div>
-        <div class="review-body">
-          <div class="review-main">
-            <template v-if="dueCount > 0">
-              今天有 <strong>{{ dueCount }}</strong> 个知识点待复习
-            </template>
-            <template v-else>
-              今天没有待复习的知识点
-            </template>
+      <!-- 今日复习 -->
+      <div class="plan-block">
+        <SectionTitle level="h3" title="今日复习" />
+
+        <div
+          class="review-card"
+          :class="{ 'has-due': dueCount > 0 }"
+          @click="goToReview"
+        >
+          <div class="review-icon-wrap">
+            <span class="review-icon">{{ dueCount > 0 ? '🔥' : '✅' }}</span>
           </div>
-          <div class="review-sub">
-            <span v-if="nextUpText">{{ nextUpText }}</span>
-            <span v-else>继续保持，稳扎稳打 ✨</span>
+          <div class="review-body">
+            <div class="review-main">
+              <template v-if="dueCount > 0">
+                今天有 <strong>{{ dueCount }}</strong> 个知识点待复习
+              </template>
+              <template v-else>
+                今天没有待复习的知识点
+              </template>
+            </div>
+            <div class="review-sub">
+              <span v-if="nextUpText">{{ nextUpText }}</span>
+              <span v-else>继续保持，稳扎稳打 ✨</span>
+            </div>
           </div>
-        </div>
-        <div class="review-action">
-          <span class="action-pill" :class="{ primary: dueCount > 0 }">
-            {{ dueCount > 0 ? '开始复习' : '查看' }}
-            <span class="action-arrow">→</span>
-          </span>
+          <div class="review-action">
+            <span class="action-pill" :class="{ primary: dueCount > 0 }">
+              {{ dueCount > 0 ? '开始复习' : '查看' }}
+              <span class="action-arrow">→</span>
+            </span>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- ========== 今日推荐 ========== -->
-    <section class="section">
-      <SectionTitle title="今日推荐" icon="✨">
-        <AppBadge v-if="recommendations.length > 0" size="md">
-          {{ recommendations.length }} 项
-        </AppBadge>
-      </SectionTitle>
-
-      <EmptyState
-        v-if="recommendations.length === 0"
-        description="暂无推荐，去导入学习包并开始学习吧！"
-        class="empty-card"
-      />
-
-      <div v-else class="rec-grid">
-        <div
-          v-for="rec in recommendations"
-          :key="rec.knowledgePointId"
-          class="rec-card"
-          :class="'rec-' + rec.type"
-          @click="goToRecommendation(rec)"
-        >
-          <div class="rec-accent"></div>
-          <div class="rec-content">
-            <div class="rec-badge-row">
-              <span class="rec-badge">{{ recBadge(rec.type) }}</span>
+      <!-- 最需要复习（弱项推荐，§11.4：只展事实不露分数） -->
+      <div v-if="weakPoints.length > 0" class="plan-block">
+        <SectionTitle level="h3" title="最需要复习">
+          <AppBadge size="md">{{ weakPoints.length }} 个</AppBadge>
+        </SectionTitle>
+        <div class="weak-list">
+          <div
+            v-for="wp in weakPoints"
+            :key="wp.knowledgePointId"
+            class="weak-row"
+            @click="goToWeakPoint(wp)"
+          >
+            <div class="weak-body">
+              <div class="weak-title">{{ wp.title }}</div>
+              <div class="weak-reason">{{ wp.reason }}</div>
             </div>
-            <h3 class="rec-title">{{ rec.title }}</h3>
-            <p class="rec-reason">{{ rec.reason }}</p>
-            <div class="rec-footer">
-              <span class="rec-source">
-                <span class="source-icon">📖</span>
-                <span class="source-text">{{ rec.sourcePkgTitle }}</span>
-              </span>
-              <span class="rec-cta">
-                去学习
-                <span class="cta-arrow">→</span>
-              </span>
+            <div class="weak-cta">
+              去练习
+              <span class="weak-arrow">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今日推荐 -->
+      <div class="plan-block">
+        <SectionTitle level="h3" title="今日推荐">
+          <AppBadge v-if="recommendations.length > 0" size="md">
+            {{ recommendations.length }} 项
+          </AppBadge>
+        </SectionTitle>
+
+        <EmptyState
+          v-if="recommendations.length === 0"
+          description="暂无推荐，去导入学习包并开始学习吧！"
+          class="empty-card"
+        />
+
+        <div v-else class="rec-grid">
+          <div
+            v-for="rec in recommendations"
+            :key="rec.knowledgePointId"
+            class="rec-card"
+            :class="'rec-' + rec.type"
+            @click="goToRecommendation(rec)"
+          >
+            <div class="rec-accent"></div>
+            <div class="rec-content">
+              <div class="rec-badge-row">
+                <span class="rec-badge">{{ recBadge(rec.type) }}</span>
+              </div>
+              <h3 class="rec-title">{{ rec.title }}</h3>
+              <p class="rec-reason">{{ rec.reason }}</p>
+              <div class="rec-footer">
+                <span class="rec-source">
+                  <span class="source-icon">📖</span>
+                  <span class="source-text">{{ rec.sourcePkgTitle }}</span>
+                </span>
+                <span class="rec-cta">
+                  去学习
+                  <span class="cta-arrow">→</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -149,6 +178,7 @@ import { findUnitByKnowledgePoint } from '@core/importer/resolvePackageUnits'
 import { isDueForReview, humanizeNextReview } from '@core/review/reviewScheduler'
 import { useAchievementStore } from '@core/stores/achievement'
 import { computeMasterySummary } from '@core/mastery/masterySummary'
+import { computeWeakPoints, type WeakPoint } from '@core/recommendation/weakPoints'
 import AchievementSection from '@/components/AchievementSection.vue'
 import { EMPTY_STREAK, loadStreak, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
 import { useChartTheme } from '@core/theme/useChartTheme'
@@ -164,6 +194,7 @@ const themeStore = useThemeStore()
 const router = useRouter()
 
 const recommendations = ref<AggregatedRec[]>([])
+const weakPoints = ref<WeakPoint[]>([])
 const chartRef = ref<HTMLElement | null>(null)
 
 /** 体验激励：连续打卡 */
@@ -290,6 +321,24 @@ async function goToRecommendation(rec: AggregatedRec) {
   router.push('/learn')
 }
 
+/** C3 · 弱项行点击：跳 TopicDetail 并拉起复习模式（?mode=review），直接进入练习区 */
+async function goToWeakPoint(wp: WeakPoint) {
+  const pkg = packageStore.packages.find(p => p.packageId === wp.sourcePackageId)
+  if (!pkg) {
+    router.push('/learn')
+    return
+  }
+  const found = await findUnitByKnowledgePoint(pkg, wp.knowledgePointId)
+  if (found) {
+    router.push({
+      path: `/learn/${found.sourcePackageId}/unit/${found.unitId}/topic/${found.topicId}`,
+      query: { mode: 'review' },
+    })
+    return
+  }
+  router.push('/learn')
+}
+
 // ---------- 图表（随主题即时重绘，B2/B3）----------
 const chartTheme = useChartTheme()
 let chart: echarts.ECharts | null = null
@@ -352,6 +401,17 @@ onMounted(async () => {
   await achievementStore.refreshView()
 
   recommendations.value = generateAllRecommendations()
+
+  // C3 · 弱项推荐：与今日推荐的 mistake/review 类去重后，取最需要练的知识点（§11.4）。
+  // 同一屏不得重复出现同一知识点；弱项只作首页行动入口，不进报告页（落报告 = 推迟行动）。
+  const takenByRecs = new Set(
+    recommendations.value
+      .filter(r => r.type === 'mistake' || r.type === 'review')
+      .map(r => r.knowledgePointId)
+  )
+  weakPoints.value = computeWeakPoints(packageStore.packages, userDataStore.progress, {
+    excludeKpIds: takenByRecs,
+  })
 
   if (chartRef.value) {
     chart = echarts.init(chartRef.value)
@@ -473,6 +533,96 @@ onUnmounted(() => {
 }
 
 /* 分区标题 / 计数徽章 已由 SectionTitle + AppBadge 基元承载。 */
+
+/* ========== 今日计划：子块容器（复习 / 弱项 / 推荐收在同一分区下） ========== */
+.plan-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ========== 最需要复习（弱项推荐）紧凑行 ==========
+   刻意不用 .rec-card 的 170px 大卡——弱项是"今天先练这几个"的紧凑清单，
+   与推荐大卡并列会造成视觉打架。整行可点、hover 有反馈，样式全走既有 token。 */
+.weak-list {
+  display: flex;
+  flex-direction: column;
+  background: $card-bg;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid $border-color;
+  overflow: hidden;
+}
+
+.weak-row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  cursor: pointer;
+  transition: background $duration-fast $ease-standard;
+
+  /* 行间分隔线（最后一行不加） */
+  & + .weak-row {
+    border-top: 1px solid $border-light;
+  }
+
+  &:hover {
+    background: $bg-color-hover;
+  }
+
+  .weak-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .weak-title {
+    font-size: $font-sm;
+    font-weight: 700;
+    color: $text-main;
+    line-height: $leading-snug;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .weak-reason {
+    font-size: $font-xs;
+    color: $text-sub;
+    line-height: $leading-normal;
+    margin-top: 2px;
+  }
+
+  .weak-cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: $font-xs;
+    font-weight: 700;
+    color: $primary-text;
+
+    .weak-arrow {
+      font-size: $font-sm;
+      transition: transform $duration-fast $ease-standard;
+    }
+  }
+
+  &:hover .weak-cta .weak-arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* 尊重 prefers-reduced-motion（§6.6） */
+@media (prefers-reduced-motion: reduce) {
+  .weak-row,
+  .weak-row .weak-cta .weak-arrow {
+    transition: none;
+  }
+  .weak-row:hover .weak-cta .weak-arrow {
+    transform: none;
+  }
+}
 
 /* ========== 今日复习卡片 ========== */
 .review-card {

@@ -112,9 +112,13 @@
         style="padding: 40px 0;"
       />
 
+      <!-- V1.6 · C3：复习模式提示条（仅 ?mode=review 时出现，渐进增强） -->
+      <div v-if="reviewMode" class="review-mode-banner">复习模式 · 这个知识点需要加强，直接做下面的练习</div>
+
       <!-- 练习区 -->
       <AppCard
         v-if="topicExercises.length > 0"
+        ref="practiceRef"
         title="🎮 同步练习"
         style="margin-top: 24px; border-radius: 14px;"
       >
@@ -135,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { NSpin, NAlert, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
@@ -155,6 +159,15 @@ const router = useRouter()
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
 const message = useMessage()
+
+/**
+ * V1.6 · C3：复习模式。从首页「最需要复习」弱项行带 `?mode=review` 跳进来时为 true。
+ * 渐进增强——没有该 query 时页面与现在完全一样（提示条不出现、不滚动）。
+ */
+const reviewMode = computed(() => route.query.mode === 'review')
+
+/** 练习区 AppCard 引用。AppCard 根元素是 `n-card`（真实 DOM），`$el` 即卡片本身。 */
+const practiceRef = ref<InstanceType<typeof AppCard> | null>(null)
 
 /** ✅ 纯词汇主题：不显示"暂无练习"提示 */
 const isVocabTopic = computed(() => {
@@ -193,6 +206,18 @@ onMounted(async () => {
   await packageStore.loadPackageById(currentPackageId.value)
   await packageStore.loadPackages()
   await userDataStore.loadUserData()
+
+  // V1.6 · C3：复习模式下把练习区滚进视野（渐进增强）。
+  // 用元素自身的 scrollIntoView 而非 window.scrollTo：滚动容器可能是 AppShell 里
+  // 那个可滚动的 div，scrollIntoView 会自己找最近的可滚动祖先一并滚动。
+  // AppCard 根是 n-card（真实 DOM），$el 即卡片；拿不到（未挂载 / 非元素）就静默跳过，绝不抛异常。
+  if (reviewMode.value) {
+    await nextTick()
+    const el = practiceRef.value?.$el
+    if (el instanceof HTMLElement) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 })
 
 /** 全局知识点池 */
@@ -546,6 +571,19 @@ function handleQuizFinish(correctCount: number) {
 </script>
 
 <style scoped lang="scss">
+/* V1.6 · C3：复习模式提示条（全 token，禁硬编码色 / 文字色走 -text） */
+.review-mode-banner {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: $space-3 $space-4;
+  background: $warning-light;
+  border-radius: $radius-md;
+  font-size: $font-sm;
+  font-weight: 600;
+  color: $warning-text;
+  line-height: $leading-normal;
+}
+
 .prereq-item {
   display: flex;
   justify-content: space-between;
