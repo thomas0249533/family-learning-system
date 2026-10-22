@@ -1,0 +1,80 @@
+// =====================================================================
+// 卡片状态视觉（V1.6 · Stage D · D1）—— **手写 partial**，不进 tokens 生成链
+// ---------------------------------------------------------------------
+// 为什么单独成文件：单元卡 / 主题卡 / 每日包卡三处要同一套「状态底 + 角标 +
+// 读屏隐藏」，各写一遍必然漂移。这里只定义 **mixin**（零 CSS 输出），
+// 由各 SFC 在自己的 scoped 样式里 `@import '@/core/styles/card-status';`。
+//
+// ⚠️ 三条硬约束，改这个文件前先看：
+//   1. **不进生成链**：`theme.scss` / `palette.ts` 是
+//      `scripts/tokens/generate.ts` 的产物，严禁手改；本文件是它的邻居，
+//      不受 `tokens:check` 与 `tests/tokens-generation.test.ts` 管辖。
+//   2. **只用 `--badge-{tone}-bg`，绝不用 `-soft`**：`scripts/a11y/contrast-report.ts`
+//      把 `/-soft$/` 结尾的底色显式排除在对比度门禁之外（第 153 行「软底已统一为
+//      `--badge-{tone}-bg`」），拿 `-soft` 当卡片底 = 静默绕过 AA。
+//      `--badge-{tone}-bg`（= `-light`）+ `--{tone}-text` 这一对是 `MUST_PASS`
+//      成员，比例真的被算。
+//   3. **禁止字面量色**：只用 `var(--*)` 与 `$*-text` 变量别名（沿用
+//      `variables.scss` 的既有命名），主题切换才跟着走。
+//
+// 语义与 `TopicDetail.vue` 的 `.mastery-status` 完全一致（未学=中性 /
+// 学习中=warning / 需复习=danger / 已掌握=success），不另造第二套配色语言。
+// =====================================================================
+
+/// 卡片底色。`none` 刻意**不改底色**：整页多数卡片未学，全染成中性灰会让
+/// 页面发灰、且和 `$card-bg` 的层次拉不开；「未学」靠角标 `○` 表达即可。
+@mixin card-status-surface($status) {
+  @if $status == learning {
+    background: var(--badge-warning-bg);
+  } @else if $status == review {
+    background: var(--badge-danger-bg);
+  } @else if $status == mastered {
+    background: var(--badge-success-bg);
+  }
+}
+
+/// 角标墨色（形状由 `CARD_STATUS_MARK` 给，颜色只是第二线索）。
+/// 对比度：`{tone}-text` 压在 `{tone}-light` 上是门禁 `MUST_PASS` 成员。
+@mixin card-status-ink($status) {
+  @if $status == learning {
+    color: $warning-text;
+  } @else if $status == review {
+    color: $danger-text;
+  } @else if $status == mastered {
+    color: $success-text;
+  } @else {
+    color: $text-muted;
+  }
+}
+
+/// 角标槽位：**固定尺寸**，保证「角标出现/消失」不改变卡片高度、不挤压标题。
+@mixin card-status-mark-slot {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/// 右上角绝对定位（用于单元卡 / 包卡：卡片本体 `position: relative` 后贴着右上角，
+/// 与标题、序号、箭头都不重叠 —— 箭头是垂直居中的，右上角是空的）。
+@mixin card-status-mark-corner {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+}
+
+/// 读屏专用（视觉上不可见、但被辅助技术读出）。本仓没有 `.sr-only` 工具类，
+/// 且不允许为此加依赖，所以就地给一个 mixin。
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

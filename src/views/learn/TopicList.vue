@@ -13,7 +13,7 @@
           v-for="(topic, idx) in currentUnit.topics"
           :key="topic.id"
           class="topic-card"
-          :class="topic.board ? 'board-' + boardKey(topic.board) : ''"
+          :class="[topic.board ? 'board-' + boardKey(topic.board) : '', cardStatusClass(topicStatus(topic))]"
           @click="selectTopic(topic)"
         >
           <div class="topic-card-head">
@@ -21,6 +21,9 @@
             <h3 class="topic-card-title">
               <span v-if="boardIcon(topic.board)" class="topic-card-emoji">{{ boardIcon(topic.board) }}</span>{{ topic.title }}
             </h3>
+            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
+            <span class="topic-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[topicStatus(topic)] }}</span>
+            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[topicStatus(topic)] }}</span>
           </div>
           <p v-if="topic.desc" class="topic-card-desc">{{ topic.desc }}</p>
           <div class="topic-card-foot">
@@ -48,8 +51,17 @@ import { useRouter, useRoute } from 'vue-router'
 import { NSpin } from 'naive-ui'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { usePackageStore } from '@core/stores/package'
+import { useUserDataStore } from '@core/stores/userData'
+import {
+  CARD_STATUS_LABEL,
+  CARD_STATUS_MARK,
+  cardStatusClass,
+  topicCardStatusOf,
+  type CardStatus,
+} from '@core/learning/cardStatus'
 
 const packageStore = usePackageStore()
+const userDataStore = useUserDataStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -85,7 +97,10 @@ function stripPrefix(id: string): string {
 }
 
 onMounted(async () => {
-  await packageStore.loadPackageById(route.params.packageId as string)
+  await Promise.all([
+    packageStore.loadPackageById(route.params.packageId as string),
+    userDataStore.loadUserData(),
+  ])
   loading.value = false
 })
 
@@ -99,6 +114,25 @@ const currentUnit = computed(() => {
   )
 })
 
+/** 本页主题的归属包：`currentUnit` 是从当前包里找的，故包 ID 就是当前包 */
+const packageId = computed(() => packageStore.currentPackage?.packageId ?? (route.params.packageId as string))
+
+/**
+ * D1 · 主题 → 卡片状态。一次算完一屏，模板只查表（避免每个角标各建一次状态表）。
+ * 读 `userDataStore.progress` 即建立响应式依赖：学完返回本页状态自动更新。
+ */
+const statusByTopicId = computed<Map<string, CardStatus>>(() => {
+  const map = new Map<string, CardStatus>()
+  for (const topic of currentUnit.value?.topics ?? []) {
+    map.set(topic.id, topicCardStatusOf(topic, packageId.value, userDataStore.progress))
+  }
+  return map
+})
+
+function topicStatus(topic: { id: string }): CardStatus {
+  return statusByTopicId.value.get(topic.id) ?? 'none'
+}
+
 function selectTopic(topic: any) {
   // ✅ URL 里只带短 ID
   router.push(`/learn/${route.params.packageId}/unit/${route.params.unitId}/topic/${stripPrefix(topic.id)}`)
@@ -106,6 +140,8 @@ function selectTopic(topic: any) {
 </script>
 
 <style scoped lang="scss">
+@import '@/core/styles/card-status';
+
 .topic-list-page {
   display: flex;
   flex-direction: column;
@@ -180,6 +216,36 @@ function selectTopic(topic: any) {
   &.board-tuo { border-left: 3px solid $warning-color; }
   &.board-si  { border-left: 3px solid $primary-color; }
   &.board-other { border-left: 3px solid $border-color; }
+
+  /* ===== D1 · 掌握状态 =====
+     底色只用 --badge-{tone}-bg（= -light），配合 --{tone}-text 角标；
+     这一对是 contrast-report.ts 的 MUST_PASS 成员。
+     板块色只占 border-left，所以「背景」是空的、可以安全承载状态色，两者不打架。
+     未学（none）不改底色：本页多数主题未学，全染中性色会让整页发灰。 */
+  &.is-learning { @include card-status-surface(learning); }
+  &.is-review   { @include card-status-surface(review); }
+  &.is-mastered { @include card-status-surface(mastered); }
+
+  /* 有状态底色时把脚注 metadata 提一档（text-muted 在 tone-light 上 junior 预设仅 4.20～4.33） */
+  &.is-learning .topic-card-meta,
+  &.is-review .topic-card-meta,
+  &.is-mastered .topic-card-meta {
+    color: $text-sub;
+  }
+
+  /* 角标排在标题行末尾的固定槽位：不覆盖标题、不加高卡片 */
+  .topic-status-mark {
+    @include card-status-mark-slot;
+    @include card-status-ink(none);
+    margin-top: 2px;
+  }
+
+  &.is-learning .topic-status-mark { @include card-status-ink(learning); }
+  &.is-review .topic-status-mark { @include card-status-ink(review); }
+  &.is-mastered .topic-status-mark { @include card-status-ink(mastered); }
+
+  /* 读屏专用文本：视觉不可见，但「掌握状态：需复习」会被读出来 */
+  .sr-only { @include sr-only; }
 
   .topic-card-emoji {
     margin-right: 6px;

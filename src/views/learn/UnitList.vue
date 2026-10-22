@@ -19,6 +19,7 @@
             v-for="(ru, idx) in resolvedUnits"
             :key="ru.unit.id"
             class="unit-card"
+            :class="cardStatusClass(unitStatus(ru))"
             @click="selectUnit(ru)"
           >
             <div class="unit-card-index">{{ idx + 1 }}</div>
@@ -35,6 +36,9 @@
               </div>
             </div>
             <div class="unit-card-arrow">→</div>
+            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
+            <span class="unit-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[unitStatus(ru)] }}</span>
+            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[unitStatus(ru)] }}</span>
           </div>
         </div>
 
@@ -50,10 +54,19 @@ import { useRouter, useRoute } from 'vue-router'
 import { NSpin, NAlert } from 'naive-ui'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { usePackageStore } from '@core/stores/package'
+import { useUserDataStore } from '@core/stores/userData'
 import { resolvePackageUnits, type ResolvedUnit } from '@core/importer/resolvePackageUnits'
+import {
+  CARD_STATUS_LABEL,
+  CARD_STATUS_MARK,
+  cardStatusClass,
+  unitCardStatusOf,
+  type CardStatus,
+} from '@core/learning/cardStatus'
 import ExamPanel from './ExamPanel.vue'
 
 const packageStore = usePackageStore()
+const userDataStore = useUserDataStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -65,8 +78,33 @@ const isAggregate = ref(false)
 const currentPackage = computed(() => packageStore.currentPackage)
 const isExamMode = computed(() => (currentPackage.value?.manifest as any)?.examMode === true)
 
+/**
+ * D1 · 单元 → 卡片状态。**一次算完一整屏**，模板只查表。
+ *
+ * 两个细节：
+ *   1. 归属包用 `ru.sourcePackageId` 而非路由上的入口包 —— 学期/专项包会把依赖包的
+ *      单元聚合进来，进度行落在**归属包**上，拿入口包去查会一律「未学」。
+ *   2. `userDataStore.progress` 在 computed 里被读到 → 学习记录变化会自动重算，
+ *      不需要手动刷新（从单元里学完返回本页即可见状态变化）。
+ */
+const statusByUnitId = computed<Map<string, CardStatus>>(() => {
+  const map = new Map<string, CardStatus>()
+  for (const ru of resolvedUnits.value) {
+    map.set(ru.unit.id, unitCardStatusOf(ru.unit, ru.sourcePackageId, userDataStore.progress))
+  }
+  return map
+})
+
+function unitStatus(ru: ResolvedUnit): CardStatus {
+  return statusByUnitId.value.get(ru.unit.id) ?? 'none'
+}
+
 onMounted(async () => {
-  await packageStore.loadPackageById(route.params.packageId as string)
+  // 进度与包并行读，少一次串行等待；loadUserData 只读当前档案（profileId 过滤在 store 内）
+  await Promise.all([
+    packageStore.loadPackageById(route.params.packageId as string),
+    userDataStore.loadUserData(),
+  ])
   const pkg = currentPackage.value
   if (pkg && (pkg.manifest as any).examMode !== true) {
     const result = await resolvePackageUnits(pkg)
@@ -92,6 +130,8 @@ function selectUnit(ru: ResolvedUnit) {
 </script>
 
 <style scoped lang="scss">
+@import '@/core/styles/card-status';
+
 .unit-list-page {
   display: flex;
   flex-direction: column;
@@ -115,6 +155,7 @@ function selectUnit(ru: ResolvedUnit) {
 }
 
 .unit-card {
+  position: relative; /* D1 · 状态角标的定位基准 */
   display: flex;
   align-items: stretch;
   background: $card-bg;
@@ -125,6 +166,35 @@ function selectUnit(ru: ResolvedUnit) {
   overflow: hidden;
   transition: all 0.2s ease;
   min-height: 96px;
+
+  /* ===== D1 · 掌握状态：底色只用 --badge-{tone}-bg（= -light），
+     与 --{tone}-text 同属对比度门禁 MUST_PASS 的白名单组合；
+     未学（none）刻意不改底色，保持 $card-bg ===== */
+  &.is-learning { @include card-status-surface(learning); }
+  &.is-review   { @include card-status-surface(review); }
+  &.is-mastered { @include card-status-surface(mastered); }
+
+  /* 有状态底色时把弱化的脚注文字提一档：text-muted 压在 tone-light 上
+     junior 预设只有 4.20～4.33（低于它自己 4.30 的例外下限），
+     提到 text-sub 后是 6.9～7.6，稳过 AA。 */
+  &.is-learning .unit-card-foot,
+  &.is-review .unit-card-foot,
+  &.is-mastered .unit-card-foot {
+    color: $text-sub;
+  }
+
+  .unit-status-mark {
+    @include card-status-mark-slot;
+    @include card-status-mark-corner;
+    @include card-status-ink(none);
+  }
+
+  &.is-learning .unit-status-mark { @include card-status-ink(learning); }
+  &.is-review .unit-status-mark { @include card-status-ink(review); }
+  &.is-mastered .unit-status-mark { @include card-status-ink(mastered); }
+
+  /* 读屏专用文本：视觉不可见，但「掌握状态：需复习」会被读出来 */
+  .sr-only { @include sr-only; }
 
   &:hover {
     transform: translateY(-2px);

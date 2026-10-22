@@ -17,6 +17,7 @@
             v-for="pkg in groups.daily"
             :key="pkg.packageId"
             class="pkg-card"
+            :class="cardStatusClass(pkgStatus(pkg))"
             @click="selectPackage(pkg)"
           >
             <div class="pkg-card-accent accent-green"></div>
@@ -34,6 +35,9 @@
               </div>
             </div>
             <div class="pkg-card-arrow">→</div>
+            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
+            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
+            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
           </div>
         </div>
       </section>
@@ -52,6 +56,7 @@
             v-for="pkg in groups.textbook"
             :key="pkg.packageId"
             class="pkg-card"
+            :class="cardStatusClass(pkgStatus(pkg))"
             @click="selectPackage(pkg)"
           >
             <div class="pkg-card-accent accent-blue"></div>
@@ -66,6 +71,9 @@
               </div>
             </div>
             <div class="pkg-card-arrow">→</div>
+            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
+            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
+            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
           </div>
         </div>
       </section>
@@ -84,6 +92,7 @@
             v-for="pkg in groups.special"
             :key="pkg.packageId"
             class="pkg-card exam"
+            :class="cardStatusClass(pkgStatus(pkg))"
             @click="selectPackage(pkg)"
           >
             <div class="pkg-card-accent accent-orange"></div>
@@ -100,6 +109,9 @@
               </div>
             </div>
             <div class="pkg-card-arrow">→</div>
+            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
+            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
+            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
           </div>
         </div>
       </section>
@@ -118,6 +130,7 @@
             v-for="pkg in groups.sprint"
             :key="pkg.packageId"
             class="pkg-card exam"
+            :class="cardStatusClass(pkgStatus(pkg))"
             @click="selectPackage(pkg)"
           >
             <div class="pkg-card-accent accent-red"></div>
@@ -131,6 +144,9 @@
               </div>
             </div>
             <div class="pkg-card-arrow">→</div>
+            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
+            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
+            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
           </div>
         </div>
       </section>
@@ -150,16 +166,42 @@ import { useRouter } from 'vue-router'
 import { NSpin } from 'naive-ui'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { usePackageStore } from '@core/stores/package'
+import { useUserDataStore } from '@core/stores/userData'
+import {
+  CARD_STATUS_LABEL,
+  CARD_STATUS_MARK,
+  cardStatusClass,
+  packageCardStatusOf,
+  type CardStatus,
+} from '@core/learning/cardStatus'
 import type { LearningPackageRecord } from '@/db'
 
 const packageStore = usePackageStore()
+const userDataStore = useUserDataStore()
 const router = useRouter()
 const loading = ref(true)
 
 onMounted(async () => {
-  await packageStore.loadPackages()
+  await Promise.all([packageStore.loadPackages(), userDataStore.loadUserData()])
   loading.value = false
 })
+
+/**
+ * D1 · 学习包 → 卡片状态（每日一练的「打卡」落到这里：仓库没有日历格子，
+ * 每日包本来就是卡片列表）。状态由该包的进度行反演：没有进度行 = 今天还没练 = none。
+ * 一次算完一屏，模板只查表。
+ */
+const statusByPackageId = computed<Map<string, CardStatus>>(() => {
+  const map = new Map<string, CardStatus>()
+  for (const pkg of packageStore.packages) {
+    map.set(pkg.packageId, packageCardStatusOf(pkg.packageId, userDataStore.progress))
+  }
+  return map
+})
+
+function pkgStatus(pkg: LearningPackageRecord): CardStatus {
+  return statusByPackageId.value.get(pkg.packageId) ?? 'none'
+}
 
 function getPackageType(pkg: LearningPackageRecord): string {
   const m = pkg.manifest as any
@@ -225,6 +267,8 @@ function subjectLabel(subject?: string): string {
 </script>
 
 <style scoped lang="scss">
+@import '@/core/styles/card-status';
+
 .package-list-page {
   display: flex;
   flex-direction: column;
@@ -313,6 +357,27 @@ function subjectLabel(subject?: string): string {
     border-color: $warning-color;
     .pkg-card-arrow { color: $warning-text; }
   }
+
+  /* ===== D1 · 掌握状态（每日一练的「打卡」状态）=====
+     底色只用 --badge-{tone}-bg（= -light），与 --{tone}-text 角标同属
+     contrast-report.ts 的 MUST_PASS 白名单；未学（none）不改底色。
+     左侧 4px 板块色条（.pkg-card-accent）与背景色正交，不冲突。 */
+  &.is-learning { @include card-status-surface(learning); }
+  &.is-review   { @include card-status-surface(review); }
+  &.is-mastered { @include card-status-surface(mastered); }
+
+  .pkg-status-mark {
+    @include card-status-mark-slot;
+    @include card-status-mark-corner;
+    @include card-status-ink(none);
+  }
+
+  &.is-learning .pkg-status-mark { @include card-status-ink(learning); }
+  &.is-review .pkg-status-mark { @include card-status-ink(review); }
+  &.is-mastered .pkg-status-mark { @include card-status-ink(mastered); }
+
+  /* 读屏专用文本：视觉不可见，但「掌握状态：需复习」会被读出来 */
+  .sr-only { @include sr-only; }
 
   .pkg-card-accent {
     width: 4px;

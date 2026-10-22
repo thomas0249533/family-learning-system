@@ -1,0 +1,280 @@
+/**
+ * 学习卡片状态（V1.6 · Stage D · D1）—— 「一眼看出哪个单元学过」的唯一口径
+ * ---------------------------------------------------------------------
+ * 三张列表卡片（单元卡 / 主题卡 / 每日包卡）都要在**不读文字**的前提下区分
+ * 「未学 / 学习中 / 需复习 / 已掌握」。本文件是那个判定的**唯一实现**：
+ * 视图只负责把 `CardStatus` 翻成颜色与角标，不再各自算一遍。
+ *
+ * ## 为什么是纯函数、零 Vue 零 db
+ * 本仓单测跑在 `environment: 'node'`（本机无 jsdom，见 `vitest.config.ts`），
+ * 任何 `ref()` / `db.*` 都会把断言拖进浏览器语境。所以状态计算与渲染彻底切开：
+ * 计算层只吃 `progress` 数组，测试可以直接喂假数据。
+ *
+ * ## 语义映射（照抄 `TopicDetail.vue` 的 `.mastery-status`，不造第二套配色语言）
+ * ```
+ * 未学   → none      中性底（卡片保持 $card-bg，不改背景）
+ * 学习中 → learning  warning
+ * 需复习 → review    danger
+ * 已掌握 → mastered  success
+ * ```
+ * 底色一律用 `--badge-{tone}-bg`（= `-light`），文字色用 `--{tone}-text`：
+ * 这一对是 `scripts/a11y/contrast-report.ts` 的 `MUST_PASS` 成员，对比度真的被
+ * 门禁守住。**绝对不能用 `-soft` 系列**——`-soft` 底被该脚本第 153 行显式排除在
+ * 门禁之外（`/-soft$/` → 「不适用」），拿它当卡片底等于静默绕过 AA。
+ *
+ * ## 为什么必须复用 `canonicalizeProgressRows`
+ * `progress` 表的历史包袱是「同一 `(packageId, kpId)` 可能有多条行」（复合索引非
+ * 唯一）。裸 `.find()` 取到哪条全看数组顺序，表现为卡片状态在两次刷新之间跳变。
+ * `canonicalizeProgressRows` 的 `rowByKey` 恰好就是「同键多条 → 取 `lastStudiedAt`
+ * 最新那条」，复用它 = 与掌握率（`computeMasterySummary`）、成就、弱项推荐
+ * **同一口径**，不产生第三套去重逻辑。
+ *
+ * ### 只借第 1 层，不借第 2 层（重要）
+ * `canonicalizeProgressRows` 有两层收敛：
+ *   - 层 1：`(packageId, kpId)` 建 domain，同键多条取最新 —— 这里要的；
+ *   - 层 2：**不同包**下「同一 kpId 且 title 全同」收敛为一个代表键（代表 =
+ *     `packageId` 字典序最小），并把所有进度行改挂到代表键上。
+ * 层 2 是**统计分母**的规则（重复登记不能让分母翻倍），但卡片问的是「**这个包的
+ * 这个知识点**」，跟着收敛的后果是：`(packageId, kpId)` 查不到自己那条行（键被换
+ * 成了别的包的代表键）→ 卡片静默显示「未学」。所以本文件传入的 domain 是**由进度
+ * 行自身反演的伪 packages**，且**故意不带 `title`**：`sameTitle()` 见到空 title 一律
+ * 判「不可比较」→ 永不收敛 → 只剩层 1。这正是卡片需要的粒度。
+ */
+import type { LearningPackageRecord, MasteryStatus, ProgressRecord } from '@/db'
+import { canonicalizeProgressRows, progressKeyOf } from '@core/mastery/masterySummary'
+
+/** 卡片的四种视觉状态。`none` = 未学（保持中性底，不做视觉强调） */
+export type CardStatus = 'none' | 'learning' | 'review' | 'mastered'
+
+/** 卡片可能呈现的「主题 / 单元」最小形状（只用 `knowledgePointIds`） */
+export interface TopicLike {
+  knowledgePointIds?: string[]
+}
+
+/** 卡片的「单元」最小形状：知识点 ID 挂在 `topics[].knowledgePointIds` 上 */
+export interface UnitLike {
+  topics?: TopicLike[]
+}
+
+/** 全部合法掌握状态。用于把脏数据归一（`null` / 未知字符串一律当「未学」） */
+const VALID_MASTERY_STATUS: readonly MasteryStatus[] = ['未学', '学习中', '已掌握', '需复习']
+
+/**
+ * 归一掌握状态：未知/缺失一律降级为「未学」。
+ *
+ * 为什么要防御：`progress.status` 是历史字段，旧备份或迁移中间态里出现过空串；
+ * 一旦让它流进聚合，`状态 === undefined` 的卡片会落进「learning」分支，
+ * 把没学过的单元标成「学习中」——错得比不显示更糟。
+ */
+function normalizeStatus(raw: unknown): MasteryStatus {
+  return VALID_MASTERY_STATUS.includes(raw as MasteryStatus) ? (raw as MasteryStatus) : '未学'
+}
+
+/**
+ * 聚合一组知识点状态为卡片状态。
+ *
+ * 顺序即优先级（**勿调**）：
+ *   1. 空数组 / 全是「未学」        → `none`
+ *   2. 任一「需复习」                → `review`（最需要注意力，优先暴露）
+ *   3. 全部「已掌握」                → `mastered`
+ *   4. 其余（含「已掌握 + 未学」混合）→ `learning`
+ *
+ * 为什么「需复习」压过「已掌握」：一张卡代表一组知识点，只要有一个该复习了，
+ * 整张卡就该把孩子拽回来；反过来「一个已掌握就整卡绿」会把「还有 5 个没学过」
+ * 藏起来，是更严重的误导。
+ *
+ * 未知状态先归一为「未学」再参与判定（见 `normalizeStatus`）。
+ */
+export function aggregateCardStatus(statuses: readonly MasteryStatus[]): CardStatus {
+  const list = Array.isArray(statuses) ? statuses : []
+  if (list.length === 0) return 'none'
+
+  let allUnlearned = true
+  let allMastered = true
+
+  for (const raw of list) {
+    const status = normalizeStatus(raw)
+    // 优先级最高的一条：见到「需复习」立刻返回，不必看完后面的
+    if (status === '需复习') return 'review'
+    if (status !== '未学') allUnlearned = false
+    if (status !== '已掌握') allMastered = false
+  }
+
+  if (allUnlearned) return 'none'
+  if (allMastered) return 'mastered'
+  return 'learning'
+}
+
+/** 读屏 / 图例用的中文标签（与 `MasteryStatus` 用词一致，不再造新词） */
+export const CARD_STATUS_LABEL: Record<CardStatus, string> = {
+  none: '未学',
+  learning: '学习中',
+  review: '需复习',
+  mastered: '已掌握',
+}
+
+/**
+ * 角标字形 —— **颜色之外的第二信号**，色弱/灰度打印下靠形状也能分辨。
+ *
+ * 四个字形刻意两两不同（○ 空心圆 / ◐ 半圆 / ↻ 回转箭头 / ✓ 对勾）：
+ * 「学习中」与「需复习」若都用实心点（`●`），色弱用户就只剩颜色一条线索，
+ * 而这两态恰恰是最需要区分的（一个在推进、一个在倒退）。
+ *
+ * `none` 用 `○`：卡片列表里未学占多数，给它一个中性空心圆既是「未开始」的
+ * 自然隐喻，也让每张卡的右侧槽位尺寸一致（角标出现/消失不改变布局）。
+ */
+export const CARD_STATUS_MARK: Record<CardStatus, string> = {
+  none: '○',
+  learning: '◐',
+  review: '↻',
+  mastered: '✓',
+}
+
+/** `CardStatus` → 卡片上的状态类名（`is-none` / `is-learning` / …） */
+export function cardStatusClass(status: CardStatus): string {
+  return `is-${status}`
+}
+
+/** `(packageId, kpId)` → 该知识点的当前状态 */
+type StatusIndex = ReadonlyMap<string, MasteryStatus>
+
+/**
+ * 建 `(packageId, kpId) → 状态` 查表。
+ *
+ * 收敛口径见文件头「只借第 1 层，不借第 2 层」：传入的伪 packages 不带 `title`，
+ * 于是 `canonicalizeProgressRows` 的层 2（同 kpId + 同 title 跨包合并）永不触发，
+ * `rowByKey` 的键就是原始的 `(packageId, kpId)` 二元组，值是同键最新那条行。
+ *
+ * 代价：每次调用都会重算一次表。调用方是 `computed`/渲染函数，输入（卡片数 ×
+ * 进度行数）在本仓量级（≤ 数百行）下是一次线性遍历，不做缓存——缓存键只能是数组
+ * 引用，而 pinia 把数组换成新引用时 WeakMap 会漏判，得不偿失。
+ */
+function buildStatusIndex(progress: readonly ProgressRecord[]): StatusIndex {
+  const index = new Map<string, MasteryStatus>()
+  const rows: ProgressRecord[] = []
+
+  for (const row of progress ?? []) {
+    if (!row) continue
+    // 脏行（缺 packageId / kpId）直接跳过：造不出二元组键，也不可能是任何卡片的进度
+    if (typeof row.packageId !== 'string' || row.packageId === '') continue
+    if (typeof row.knowledgePointId !== 'string' || row.knowledgePointId === '') continue
+    rows.push(row)
+  }
+  if (rows.length === 0) return index
+
+  // 伪 packages：domain 由进度行自身反演（见文件头），**不带 title** 以关掉层 2 收敛
+  const kpIdsByPkg = new Map<string, string[]>()
+  for (const row of rows) {
+    const list = kpIdsByPkg.get(row.packageId)
+    if (!list) {
+      kpIdsByPkg.set(row.packageId, [row.knowledgePointId])
+      continue
+    }
+    if (!list.includes(row.knowledgePointId)) list.push(row.knowledgePointId)
+  }
+  const pseudoPackages = [...kpIdsByPkg].map(([packageId, ids]) => ({
+    packageId,
+    manifest: {},
+    knowledgePoints: ids.map((id) => ({ id })),
+    exercises: [],
+    units: [],
+  })) as unknown as LearningPackageRecord[]
+
+  const { rowByKey } = canonicalizeProgressRows(pseudoPackages, rows)
+  for (const [key, row] of rowByKey) index.set(key, normalizeStatus(row.status))
+  return index
+}
+
+/** 查一个知识点的状态；找不到行 = 没学过 = 「未学」 */
+function statusOf(index: StatusIndex, packageId: string, kpId: string): MasteryStatus {
+  if (!packageId || !kpId) return '未学'
+  return index.get(progressKeyOf({ packageId, knowledgePointId: kpId })) ?? '未学'
+}
+
+/** 摊平并去重一组 `topic` 的 `knowledgePointIds`（顺序保留，供聚合遍历） */
+function collectKpIds(topics: readonly TopicLike[]): string[] {
+  const ids: string[] = []
+  const seen = new Set<string>()
+  for (const topic of topics ?? []) {
+    const list = topic?.knowledgePointIds
+    if (!Array.isArray(list)) continue
+    for (const id of list) {
+      if (typeof id !== 'string' || id === '') continue
+      if (seen.has(id)) continue
+      seen.add(id)
+      ids.push(id)
+    }
+  }
+  return ids
+}
+
+/**
+ * 单元卡片状态：把单元下**所有主题**的知识点摊平后聚合。
+ *
+ * `packageId` 必须是**该单元真正的归属包**（`ResolvedUnit.sourcePackageId`），
+ * 不是路由上的入口包：专项/学期包会把依赖包的单元聚合进来，进度行落在归属包上，
+ * 用入口包查会一律查不到 → 单元卡永远「未学」。
+ *
+ * 单元没有任何知识点（空单元 / 数据缺失）→ `none`（不编状态）。
+ */
+export function unitCardStatusOf(
+  unit: UnitLike | null | undefined,
+  packageId: string,
+  progress: readonly ProgressRecord[]
+): CardStatus {
+  const topics = Array.isArray(unit?.topics) ? (unit?.topics as TopicLike[]) : []
+  const kpIds = collectKpIds(topics)
+  if (kpIds.length === 0) return 'none'
+
+  const index = buildStatusIndex(progress)
+  return aggregateCardStatus(kpIds.map((kpId) => statusOf(index, packageId, kpId)))
+}
+
+/**
+ * 主题卡片状态：只看这个主题自己的知识点。
+ *
+ * 主题没有知识点 → `none`。
+ */
+export function topicCardStatusOf(
+  topic: TopicLike | null | undefined,
+  packageId: string,
+  progress: readonly ProgressRecord[]
+): CardStatus {
+  const kpIds = collectKpIds(topic ? [topic] : [])
+  if (kpIds.length === 0) return 'none'
+
+  const index = buildStatusIndex(progress)
+  return aggregateCardStatus(kpIds.map((kpId) => statusOf(index, packageId, kpId)))
+}
+
+/**
+ * 学习包卡片状态（每日一练打卡卡片的落点）。
+ *
+ * 与上面两个不同：这里拿不到包的完整知识点定义（调用处只有 `packageId`），
+ * 所以状态集合**只能由该包的进度行反演** —— 没有进度行 → `none`，
+ * 这正是「今天还没练」想要的「未学」表现。
+ *
+ * 同一 `kpId` 的多条行只算一次（走 `buildStatusIndex` 的最新行口径），
+ * 否则「练了 3 遍」会被当成 3 个知识点参与聚合。
+ */
+export function packageCardStatusOf(
+  packageId: string,
+  progress: readonly ProgressRecord[]
+): CardStatus {
+  if (!packageId) return 'none'
+
+  const rows = (progress ?? []).filter(
+    (row) => row && row.packageId === packageId && typeof row.knowledgePointId === 'string' && row.knowledgePointId !== ''
+  )
+  if (rows.length === 0) return 'none'
+
+  const index = buildStatusIndex(rows)
+  const statuses: MasteryStatus[] = []
+  const seen = new Set<string>()
+  for (const row of rows) {
+    if (seen.has(row.knowledgePointId)) continue
+    seen.add(row.knowledgePointId)
+    statuses.push(statusOf(index, packageId, row.knowledgePointId))
+  }
+  return aggregateCardStatus(statuses)
+}
