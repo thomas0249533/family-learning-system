@@ -260,8 +260,9 @@ function selectTopic(topic: any) {
 
   /* 序号块：**中性底，不随状态染色**。
      序号是序数、不承载状态语义；一旦按状态上色，卡片上就出现第二种色调
-     （旧实现是 `$primary-light` #e7f3ed，与 `--success-light` #e9f8ef 几乎同色，
-     于是在「需复习」的粉红卡左上角是一块淡绿小色块 = 绿/红两种状态信号互相打架）。
+     （旧实现用 `$primary-light`，它与 `--success-light` 几乎同色，于是在「需复习」的
+     粉红卡左上角是一块淡绿小色块 = 绿/红两种状态信号互相打架；具体色值见下面引用
+     的 `_card-status.scss` 硬约束第 6 条 —— 那里是唯一允许写字面量色的地方）。
      底色用 `--badge-neutral-bg`（= `bg-color-hover`），字用 `text-main`；
      这一对已登记进 `scripts/a11y/contrast-report.ts` 的 MUST_PASS，对比度真的被算。
      与 `.unit-card-index` 同一处缺陷，改一处必须两处一起改 —— 详见
