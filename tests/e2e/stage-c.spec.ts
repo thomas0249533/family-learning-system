@@ -496,12 +496,42 @@ test.describe('C5 · 家长端补签（额度 / 连续天数 / 同周期结算�
     await expect(page.locator('.repair-card')).toBeVisible({ timeout: 20_000 })
     await expect(statValue(page, '连续天数')).toHaveText('0')
 
+    // 补签前先记下「成就概览」的分子（`已解锁 N / 27`）与最近解锁区。
+    // 等 `.repair-card` 可见 = `onMounted` 全跑完（`loadUnlocked` 在 `refreshStreakState`
+    // 之前），所以此刻读到的 N 是"加载完成后"的真实值，不是挂载前的默认 0。
+    const achTotalValue = page.locator('.ach-total-value')
+    await expect(achTotalValue).toBeVisible()
+    const unlockedBefore = Number((await achTotalValue.innerText()).split('/')[0].trim())
+    expect(Number.isFinite(unlockedBefore), `.ach-total-value 的分子应是数字，实际：${await achTotalValue.innerText()}`).toBe(true)
+    await expect(page.locator('.ach-recent-empty')).toBeVisible()
+    await expect(page.locator('.ach-recent-item')).toHaveCount(0)
+
     await confirmRepair(page)
 
     // ★ 这句 `新解锁：…` 只可能来自 `doRepair()` 里 `achievementStore.settle()` 的返回值。
     //   补签写的是 settings，**不会**触发 AppShell 那几个 progress/mistakes/packages 触发器，
     //   所以它一旦出现，就说明"同一用户操作周期内结算"这条真的做到了（Parent.vue:557）。
     await expect(page.locator('.n-message', { hasText: '新解锁：三日之约' })).toBeVisible()
+
+    /*
+     * ★★ 同一屏（**不 reload、不 goto**）的成就概览必须跟着变。
+     *
+     * 这是 §11.1 那句"补签了、天数恢复了、徽章没亮"的**字面**验收面：家长端
+     * 「已解锁 N / 27」「按小组」「最近解锁」全部派生自 `unlockedRecords`
+     * （一个普通 ref，不是 store 的响应式数据），只在 onMounted / 切档案时赋值。
+     * `settle()` 只更新 store 的 `records`，所以少了"settle 之后重读 `loadUnlocked()`"
+     * 这一步，就会出现"提示说解锁了、同一屏数字纹丝不动、刷新后才变"。
+     *
+     * 断言刻意**不借助任何 navigation**：一旦靠 goto('/achievements') 顺带满足，
+     * 这条守卫就什么也守不住（页面重挂载自然会重读）。所以这里要求：
+     *   ① 分子 +1；② 「最近解锁」真的出现刚解锁的那枚（含标题）。
+     */
+    await expect(achTotalValue).toHaveText(new RegExp(`^\\s*${unlockedBefore + 1}\\s*/`))
+    await expect(page.locator('.ach-recent-empty')).toHaveCount(0)
+    const recent = page.locator('.ach-recent-item')
+    await expect(recent).toHaveCount(1)
+    await expect(recent.first()).toContainText('三日之约')
+
     await expect(statValue(page, '连续天数')).toHaveText('3')
     await expect(page.locator('.repair-card')).toHaveCount(0)
 
