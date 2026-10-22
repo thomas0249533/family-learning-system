@@ -86,6 +86,7 @@
             :knowledge-point-ids="normalizeKpIds(mod)"
             :data="mod.data"
             :package-id="currentPackageId"
+            :doc-key="inkDocKeyFor(mod.type)"
           />
         </div>
       </template>
@@ -99,6 +100,7 @@
             :type="kp._moduleType"
             :knowledge-point-ids="[kp.id]"
             :package-id="currentPackageId"
+            :doc-key="inkDocKeyFor(kp._moduleType)"
           />
           <AppCard v-else :title="kp.title" class="fallback-kp-card">
             <div class="kp-content" v-html="renderMarkdown(kp.content)"></div>
@@ -201,6 +203,21 @@ function normalizeKpIds(mod: any): string[] {
 }
 
 const currentPackageId = computed(() => route.params.packageId as string)
+
+/**
+ * 划线辅助的「文档标识」（V1.6 · Stage D · D4）：`packageId:topicId`。
+ *
+ * 为什么只给 `chinese.text` 传：其余模块组件没有这个 prop，`<component :is>` 上的
+ * 未知属性会 fallthrough 到它们根节点上，DOM 里多一个 `doc-key="..."` 毫无意义
+ * 还可能干扰快照；所以按模块类型显式决定传不传。
+ */
+const inkDocKey = computed(
+  () => `${currentPackageId.value}:${String(route.params.topicId ?? '')}`
+)
+
+function inkDocKeyFor(moduleType: string): string | undefined {
+  return moduleType === 'chinese.text' ? inkDocKey.value : undefined
+}
 
 onMounted(async () => {
   await packageStore.loadPackageById(currentPackageId.value)
