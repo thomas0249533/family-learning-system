@@ -113,6 +113,22 @@ const MUST_PASS = new Set<string>([
   'text-sub ↔ bg-color-hover',
   // 语义文字色 × 表面 / 自身浅底
   ...TONES.flatMap((t) => ['bg-color', 'card-bg', 'surface-2', `${t}-light`].map((b) => `${t}-text ↔ ${b}`)),
+  /**
+   * V1.6 · Stage D · D1 —— 状态卡片上的「文字 × 状态底色」三类组合。
+   *
+   * 卡片底色统一取 `--badge-{tone}-bg`（= `-light`），压在它上面的文字只有三种：
+   * 标题 `text-main`、脚注/元信息 `text-sub`、CTA 与来源链接 `primary-text`。
+   * 这三类此前**从未被约束过**：`text-main/-sub × -light` 在 `buildPairs` ⑥ 里算得出
+   * 但没进 MUST_PASS（只有失败时才会红），`primary-text × -light` 则连配对都没生成。
+   * 不登记就等于这批新 UI 的对比度靠人肉保证 —— 而「人肉保证」正是本仓反复踩过的坑
+   * （见批 6a 复盘：小小白名单会让门禁沦为装饰）。故逐条纳入，并由 ⑥ 同步生成配对。
+   *
+   * ⚠️ `text-muted × {tone}-light` **刻意不登记，且禁止使用**：四个预设实测 4.20–4.56，
+   * junior 三个 tone 底全部低于 AA 4.5（比它自己在 `bg-color-hover` 上的 4.30 例外下限
+   * 还低）。卡片上有状态底色时，脚注一律用 `text-sub`（6.91–7.65）。
+   * 详见 `src/core/styles/_card-status.scss` 的「禁止 text-muted」注释。
+   */
+  ...['text-main', 'text-sub', 'primary-text'].flatMap((t) => TONES.map((g) => `${t} ↔ ${g}-light`)),
   // 实心块：text-on-primary 压在语义 -text 底 / neutral(text-sub) 底
   ...TONES.map((t) => `text-on-primary ↔ ${t}-text`),
   'text-on-primary ↔ text-sub',
@@ -194,9 +210,11 @@ function buildPairs(sem: Sem): Pair[] {
   // ⑤ code-color × card / bg
   for (const b of ['card-bg', 'bg-color']) add('code-color', b)
 
-  // ⑥ text-main / -sub × tone-light
+  // ⑥ text-main / -sub / primary-text × tone-light（D1 状态卡片：标题 / 脚注 / CTA）
+  //    `primary-text` 这一档是随 MUST_PASS 同批新增的：缺了它，MUST_PASS 里那几条
+  //    就成了"永远命中不到配对"的死键（本脚本没有死键守卫，静默即可通过）。
   for (const g of TONES) {
-    for (const f of ['text-main', 'text-sub']) add(f, `${g}-light`)
+    for (const f of ['text-main', 'text-sub', 'primary-text']) add(f, `${g}-light`)
   }
 
   return pairs

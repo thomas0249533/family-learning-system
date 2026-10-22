@@ -16,6 +16,14 @@
 //      成员，比例真的被算。
 //   3. **禁止字面量色**：只用 `var(--*)` 与 `$*-text` 变量别名（沿用
 //      `variables.scss` 的既有命名），主题切换才跟着走。
+//   4. **禁止在有状态底色的卡片上用 `$text-muted` 作正文/脚注**：把 `--text-muted`
+//      压在 `--badge-{tone}-bg`（= `-light`）上实测 —— 6 组 × 5 tone 里有一半以上
+//      **低于 AA 4.5**：`primary.light` 五个 tone 全低（4.20–4.33）、`senior.light`
+//      的 primary/danger/info 4.25–4.38、`junior.light` 4.35–4.37、`primary.dark`
+//      4.20–4.42（最低 4.20）。所以 status 底色上一律用 `$text-sub`（实测 6.88–8.94）。
+//      这条组合**刻意没有登记**进 `scripts/a11y/contrast-report.ts` 的 MUST_PASS
+//      ——登记了必红，而它是"用错色"而不是"待修 bug"；正确做法是别用（见各 SFC 的
+//      `&.is-learning .xxx-foot { color: $text-sub; }` 覆盖）。
 //
 // 语义与 `TopicDetail.vue` 的 `.mastery-status` 完全一致（未学=中性 /
 // 学习中=warning / 需复习=danger / 已掌握=success），不另造第二套配色语言。
