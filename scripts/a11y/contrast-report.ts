@@ -327,6 +327,21 @@ md.push('```')
 for (const k of [...MUST_PASS].sort()) md.push(k)
 md.push('```')
 md.push('')
+md.push('### §维护须知：登记一个 MUST_PASS 键 = 两步，缺一不可')
+md.push('')
+md.push('`mustFails` 是 `allRows.filter((r) => r.must && !r.pass)` —— **从不存在的配对里筛不出任何行**。')
+md.push('所以「只在 `MUST_PASS` 里写键、却不在 `buildPairs` 里 `add()` 出配对」等于**什么都没校验**，而且**永远绿**。')
+md.push('这不是假想：V1.6 · Stage D · D1 登记 `primary-text × {tone}-light` 时就踩了 —— 真值表加了 15 个键，')
+md.push('`buildPairs` ⑥ 却只生成 `text-main / text-sub`，其中 5 条登记是假的（后来补了 ⑥ 的 `primary-text` 才生效）。')
+md.push('')
+md.push('正确姿势（现在有**死键守卫**兜底，逐组判定，缺任何一组都会红）：')
+md.push('')
+md.push('1. `buildPairs` 里 `add(fg, bg)` 生成配对 —— 注意 `add()` 在 fg/bg 于某预设下取不到值时会**静默 return**，')
+md.push('   造成「半死键」（只在前几组有配对）；守卫按组比对，能抓到这种。')
+md.push('2. `MUST_PASS` 里加法同样的键字符串，格式 `` `${fg} ↔ ${bg}` ``（分隔符是**全角 `↔` 两侧各一个空格**，照抄）。')
+md.push('')
+md.push('> 守卫只在 `npm run a11y:contrast` 时生效；`npm run verify` 的门禁链里**不含**该脚本（现状如此）。')
+md.push('')
 md.push('## §例外表（真实但接受低于 AA；含「不得变差」下限）')
 md.push('')
 md.push('| 组合 | group | 实测 | 阈值 | 差 | 为什么接受 |')
@@ -415,6 +430,32 @@ writeFileSync(outPath, md.join('\n'), 'utf8')
 
 /* ---------------------- 门禁 ---------------------- */
 
+/**
+ * **死键守卫**：`MUST_PASS` 里登记了、但 `buildPairs` 从未生成的键 = 静默失效。
+ *
+ * 为什么必须守：`mustFails` 是 `allRows.filter((r) => r.must && !r.pass)` —— 从不存在的
+ * 配对里筛不出任何行，于是「键写了等于没写」，而且**永远绿**。这不是假想：
+ * V1.6 · D1 登记 `primary-text × {tone}-light` 时，真值表加了键、`buildPairs` ⑥ 却只生成
+ * `text-main / text-sub`，那 14 条登记一条都没被校验（是补了 ⑥ 之后才变成真校验的）。
+ *
+ * 逐组判定（不是「全局命中即算活」）：`add()` 在某个 token 于某预设下取不到值时会静默
+ * `return`，配对就只在部分组里生成 —— 这种「半死键」同样是漏检，一并红。
+ *
+ * ⚠️ 本守卫只在 `npm run a11y:contrast` 时生效，`npm run verify` 不含该脚本（现状）。
+ */
+const mustKeysByGroup = new Map<string, Set<string>>()
+for (const r of allRows) {
+  const seen = mustKeysByGroup.get(r.key) ?? new Set<string>()
+  seen.add(r.group)
+  mustKeysByGroup.set(r.key, seen)
+}
+const deadKeys: string[] = []
+for (const key of [...MUST_PASS].sort()) {
+  const seen = mustKeysByGroup.get(key)
+  const missing = GROUPS.filter(([, , label]) => !seen?.has(label)).map(([, , label]) => label)
+  if (missing.length > 0) deadKeys.push(`${key} 缺配对：${missing.join(', ')}`)
+}
+
 const mustFails = allRows.filter((r) => r.must && !r.pass)
 const exceptionFails: string[] = []
 for (const ex of EXCEPTIONS) {
@@ -429,9 +470,15 @@ const totalFails = allRows.filter((r) => !r.pass).length
 
 console.log(`[a11y:contrast] 报告已写入 ${outPath}`)
 console.log(`[a11y:contrast] 配对总数 ${allRows.length}；非通过 ${totalFails}（例外 ${EXCEPTIONS.length}；其余均已判不适用）`)
-console.log(`[a11y:contrast] MUST_PASS 失败 ${mustFails.length}；例外「不得变差」失败 ${exceptionFails.length}；未分类失败 ${unclassified.length}`)
+console.log(`[a11y:contrast] MUST_PASS 失败 ${mustFails.length}；例外「不得变差」失败 ${exceptionFails.length}；未分类失败 ${unclassified.length}；死键 ${deadKeys.length}`)
 
 let bad = false
+if (deadKeys.length > 0) {
+  bad = true
+  console.error('[a11y:contrast] ✗ MUST_PASS 存在死键（登记了但配对从未生成 → 该登记静默失效）：')
+  for (const s of deadKeys) console.error(`  - ${s}`)
+  console.error('  修法：在 buildPairs 里 add(fg, bg) 生成配对（键格式 `${fg} ↔ ${bg}`，全角 ↔ 两侧带空格）')
+}
 if (mustFails.length > 0) {
   bad = true
   console.error('[a11y:contrast] ✗ MUST_PASS 出现不达标：')

@@ -5,7 +5,7 @@
 // 读屏隐藏」，各写一遍必然漂移。这里只定义 **mixin**（零 CSS 输出），
 // 由各 SFC 在自己的 scoped 样式里 `@import '@/core/styles/card-status';`。
 //
-// ⚠️ 三条硬约束，改这个文件前先看：
+// ⚠️ 五条硬约束，改这个文件前先看：
 //   1. **不进生成链**：`theme.scss` / `palette.ts` 是
 //      `scripts/tokens/generate.ts` 的产物，严禁手改；本文件是它的邻居，
 //      不受 `tokens:check` 与 `tests/tokens-generation.test.ts` 管辖。
@@ -24,6 +24,13 @@
 //      这条组合**刻意没有登记**进 `scripts/a11y/contrast-report.ts` 的 MUST_PASS
 //      ——登记了必红，而它是"用错色"而不是"待修 bug"；正确做法是别用（见各 SFC 的
 //      `&.is-learning .xxx-foot { color: $text-sub; }` 覆盖）。
+//   5. **状态底上的三类文字已全部进 MUST_PASS**（`text-main` / `text-sub` /
+//      `primary-text` × `{tone}-light`，D1 补登记），所以改这里的底色或那三个文字
+//      token 都会被门禁挡住。**唯一贴线的一格**：`primary-text`（`primary.*` =
+//      `#ae5509` 橙）压在 `danger-light` / `info-light` 上只有 **4.51**，距 AA 4.5
+//      仅 **+0.01**。**动 `--primary-text` 或 `--danger-light` / `--info-light` 之前
+//      先跑 `npm run a11y:contrast`** —— 这不是"该放宽容忍度"的地方（CTA 是 12px/700，
+//      不是大号文本，不能按 3.0 判），而是"改 token 会立刻红"的预警。
 //
 // 语义与 `TopicDetail.vue` 的 `.mastery-status` 完全一致（未学=中性 /
 // 学习中=warning / 需复习=danger / 已掌握=success），不另造第二套配色语言。
