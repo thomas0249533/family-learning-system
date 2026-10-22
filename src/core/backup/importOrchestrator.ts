@@ -230,8 +230,12 @@ export function bundlesFromV2(doc: BackupV2): Bundle[] {
  * 直接改写本机的档案列表/成就包配置 —— 那是"换设备"的语义，不是"合并"的语义。
  * v1 里真正该恢复的东西（进度、错题、登记过的分片键）适配器已经全部接过来了；
  * 主题这类纯偏好不 restore 也不会丢数据。**有意为之，不是漏搬。**
+ *
+ * V1.11 · F2-core：`syncManager` 也用它取全局键。同步是"同一个家的两台设备"，
+ * 与导入同语义（偏好类键要带过去），所以共用这一个函数而不是再写一份 ——
+ * 全局键是哪一层结构只应该有这一个地方知道。
  */
-function globalsFromV2(doc: BackupV2): Record<string, unknown> {
+export function globalsFromV2(doc: BackupV2): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (const row of doc.globalSettings) {
     if (!row || typeof row.key !== 'string' || row.key === '') continue
