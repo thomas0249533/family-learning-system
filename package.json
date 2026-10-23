@@ -33,7 +33,7 @@
     "build:csv": "vite-node scripts/build-from-csv.ts --"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2",
+    "@tauri-apps/api": "2.11.1",
     "dexie": "^4.0.10",
     "echarts": "^5.5.1",
     "fflate": "^0.8.3",
