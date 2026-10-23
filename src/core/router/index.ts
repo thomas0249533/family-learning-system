@@ -30,6 +30,9 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/AchievementsPrint.vue')
   },
   { path: '/parent', name: 'Parent', component: () => import('@/views/Parent.vue') },
+  // 创作者中心（V2.2 · 轨道 I）。家长端页面：复用 /parent 约定（桌面侧栏入口，
+  // 不进孩子底部 tab），无独立角色守卫（项目无 isParent 概念，详见 settingsScope）。
+  { path: '/creator', name: 'Creator', component: () => import('@/views/creator/CreatorCenter.vue') },
   // 家庭成就墙（V1.4 · B4）。家长端页面：并排看几个孩子是家长的需求，
   // 孩子端只该看到自己那一墙（孩子之间不比较）。
   { path: '/family-wall', name: 'FamilyWall', component: () => import('@/views/FamilyWall.vue') }

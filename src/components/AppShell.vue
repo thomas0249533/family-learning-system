@@ -98,6 +98,9 @@
       aria-label="退出专注模式"
       @click="uiStore.exitFocus()"
     >✕ 退出专注</button>
+
+    <!-- V2.2 · 轨道 H：专注模式下挂载沉浸心流舱（白噪音 & 番茄钟）。仅改动此块。 -->
+    <FocusMode v-if="uiStore.isFocusMode" />
   </div>
 </template>
 
@@ -120,6 +123,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AchievementToast from './AchievementToast.vue'
+import FocusMode from './FocusMode.vue'
 import { NDropdown } from 'naive-ui'
 import { onProfileChange, profilesState, type ProfilesState } from '@core/profile/currentProfile'
 import { switchProfileAndReload } from '@core/profile/switchProfileService'
@@ -238,6 +242,7 @@ const navItems = [
   { path: '/search', icon: '🔍', label: '搜索', mobile: true },
   { path: '/report', icon: '📄', label: '报告', mobile: true },
   { path: '/parent', icon: '👨‍👩‍👧', label: '家长', mobile: false },
+  { path: '/creator', icon: '🛠️', label: '创作者', mobile: false },
   { path: '/settings', icon: '⚙️', label: '设置', mobile: true },
 ]
 
