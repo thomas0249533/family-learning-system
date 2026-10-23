@@ -27,6 +27,7 @@ import {
   type HintPromptInput,
 } from './prompt'
 import type { AiEngine, AiFailReason } from './aiMessages'
+import { CandleClientError, streamCandle, type CandleIpc } from './candle/candleClient'
 
 // ===========================================================================
 // 可注入的 fetch 替身（测试用 mock，生产用原生 fetch）
@@ -542,6 +543,15 @@ export interface AiHintOptions {
   ollamaProbeTimeoutMs?: number
 }
 
+/**
+ * V2.0 的 candle-first 链路选项 = 既有选项 + 一个可注入的本地引擎。
+ *
+ * `candleIpc` 只给测试用：生产环境走 `candleClient` 的默认实现（Tauri IPC）。
+ */
+export interface CandleFirstOptions extends AiHintOptions {
+  candleIpc?: CandleIpc
+}
+
 export interface AiFailure {
   engine: AiEngine
   reason: AiFailReason
@@ -639,6 +649,110 @@ export async function requestAiHint(
   // 3) 静态解析：永不失败
   const text = buildStaticHint(req.prompt)
   // 静态兜底也要走一次打字机，否则 UI 上是"卡一下然后整段蹦出来"
+  emit(text)
+  return { engine: 'static', text, failures, degraded: true }
+}
+
+// ===========================================================================
+// Router（V2.0）：Candle（离线） → Ollama → DeepSeek → 静态解析
+// ===========================================================================
+
+/**
+ * `requestAiHint` 的 ollama→deepseek 顺序**保持原样**（已有多条测试钉住），
+ * 新的优先级单独一个函数：离线优先是 V2.0 的产品主张，但它不该改坏
+ * "有 Key 的家长先走云端"这个既有行为 —— 两条链服务的场景不同。
+ *
+ * 顺序：candle（本地 GGUF） → ollama（本机 HTTP） → deepseek（云） → 静态解析。
+ *
+ * **aborted 仍然不降级**：用户按的是停止，任何一档都不能替他"换一个引擎继续讲"。
+ */
+export async function requestAiHintCandleFirst(
+  req: AiHintRequest,
+  opts: CandleFirstOptions = {},
+): Promise<AiHintOutcome> {
+  const built = buildHintPrompt(req.prompt)
+  const failures: AiFailure[] = []
+
+  const emit = (delta: string): void => {
+    opts.onDelta?.(delta)
+  }
+
+  // 1) Candle（本地离线）
+  try {
+    const text = await streamCandle({
+      system: built.system,
+      user: built.user,
+      signal: opts.signal,
+      onDelta: emit,
+      ipc: opts.candleIpc,
+    })
+    return { engine: 'candle', text, failures, degraded: false }
+  } catch (err) {
+    const reason = err instanceof CandleClientError ? err.reason : 'unavailable'
+    if (reason === 'aborted') throw new AiHintError('aborted', 'candle')
+    failures.push({ engine: 'candle', reason })
+  }
+
+  // 2) Ollama（先探测：没启动就别等 30 秒）
+  const alive = await probeOllama({
+    baseUrl: req.ollamaBaseUrl,
+    signal: opts.signal,
+    probeTimeoutMs: opts.ollamaProbeTimeoutMs,
+    fetchImpl: opts.fetchImpl,
+    user: '',
+  })
+  if (alive) {
+    try {
+      const text = await streamOllama(
+        {
+          model: req.ollamaModel,
+          baseUrl: req.ollamaBaseUrl,
+          system: built.system,
+          user: built.user,
+          signal: opts.signal,
+          timeoutMs: opts.ollamaTimeoutMs,
+          fetchImpl: opts.fetchImpl,
+        },
+        emit,
+      )
+      return { engine: 'ollama', text, failures, degraded: true }
+    } catch (err) {
+      const reason = err instanceof AiHintError ? err.code : 'ollama-offline'
+      if (reason === 'aborted') throw err
+      failures.push({ engine: 'ollama', reason })
+    }
+  } else {
+    failures.push({ engine: 'ollama', reason: 'ollama-offline' })
+  }
+
+  // 3) DeepSeek（云；没 Key 直接记 no-key，不浪费一次网络往返）
+  if (req.apiKey) {
+    try {
+      const text = await streamDeepSeek(
+        {
+          apiKey: req.apiKey,
+          model: req.model,
+          baseUrl: req.baseUrl,
+          system: built.system,
+          user: built.user,
+          signal: opts.signal,
+          timeoutMs: opts.deepseekTimeoutMs,
+          fetchImpl: opts.fetchImpl,
+        },
+        emit,
+      )
+      return { engine: 'deepseek', text, failures, degraded: true }
+    } catch (err) {
+      const reason = err instanceof AiHintError ? err.code : 'network'
+      if (reason === 'aborted') throw err
+      failures.push({ engine: 'deepseek', reason })
+    }
+  } else {
+    failures.push({ engine: 'deepseek', reason: 'no-key' })
+  }
+
+  // 4) 静态解析：永不失败
+  const text = buildStaticHint(req.prompt)
   emit(text)
   return { engine: 'static', text, failures, degraded: true }
 }

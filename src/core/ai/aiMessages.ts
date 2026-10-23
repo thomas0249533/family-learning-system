@@ -13,8 +13,13 @@
  * 不说"操作失败"——因为功能确实没失败，只是换了引擎。
  */
 
-/** 三个引擎。顺序即优先级 */
-export type AiEngine = 'deepseek' | 'ollama' | 'static'
+/**
+ * 四个引擎。顺序即 `requestAiHintCandleFirst` 的优先级。
+ *
+ * `candle` 是 V2.0 新加的第一档（本地 GGUF，完全离线）；既有的 `requestAiHint`
+ * 仍走 deepseek → ollama → static，两者不要混为一谈（见 aiClient.ts 顶部）。
+ */
+export type AiEngine = 'candle' | 'deepseek' | 'ollama' | 'static'
 
 /**
  * 可断言的失败原因。
@@ -44,6 +49,15 @@ export type AiFailReason =
   | 'no-webcrypto'
   /** 口令错误或密文损坏（AES-GCM 解密失败） */
   | 'bad-passphrase'
+  /**
+   * 本地离线引擎这一档用不了（非 Tauri / Web 端 / IPC 命令不存在）。
+   * **静默降级**：Web 与 PWA 用户本来就没有 Rust 侧，不该看到"引擎坏了"。
+   */
+  | 'unavailable'
+  /** 本地还没装模型（models 目录下没有合法 .gguf）→ 去设置页装一个 */
+  | 'no-model'
+  /** 本地推理时内存不够（含加载模型时的 OOM）→ 换更小的量化模型 */
+  | 'oom'
 
 export interface AiFailureCopy {
   /** 发生了什么 */
@@ -93,10 +107,23 @@ export const AI_FAILURE_TEXT: Record<AiFailReason, AiFailureCopy> = {
     title: '口令不对，或者保存的 Key 已损坏',
     hint: '请重新输入当时设置的家长口令；想不起来就重新填一次 API Key。',
   },
+  unavailable: {
+    title: '这台设备上没有本地离线 AI',
+    hint: '网页版没有本地模型能力，已经改用其他方式（本机 Ollama / 云端 / 题库解析）。桌面版可在设置页装一个模型。',
+  },
+  'no-model': {
+    title: '本地 AI 还没装模型',
+    hint: '到「设置 → 🧠 本地离线 AI」里下载或选一个 .gguf 模型文件，就能完全离线使用了。这一次先用其他方式。',
+  },
+  oom: {
+    title: '本地 AI 内存不够',
+    hint: '这个模型对当前电脑偏大。换一个更小的量化版本（例如 Q4_K_M 的 0.5B）再试；这一次先用其他方式。',
+  },
 }
 
 /** 引擎的人话名字（UI 上要告诉家长"这条提示是谁给的"） */
 export const AI_ENGINE_LABEL: Record<AiEngine, string> = {
+  candle: '本地离线 AI',
   deepseek: '云端 AI（DeepSeek）',
   ollama: '本地模型（Ollama）',
   static: '题库自带解析',
@@ -128,6 +155,9 @@ const FAILURE_PRIORITY: readonly AiFailReason[] = [
   'no-webcrypto',
   'bad-passphrase',
   'ollama-offline',
+  'no-model',
+  'unavailable',
+  'oom',
   'aborted',
 ]
 

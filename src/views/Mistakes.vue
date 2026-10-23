@@ -325,7 +325,7 @@ import {
   type MistakeCause,
 } from '@core/mistake/mistakeCause'
 import { AI_ENGINE_LABEL, describeAiFailure, describeDegradation, type AiEngine } from '@core/ai/aiMessages'
-import { AiHintError, requestAiHint } from '@core/ai/aiClient'
+import { AiHintError, requestAiHintCandleFirst } from '@core/ai/aiClient'
 import { currentApiKey, hasRememberedKey, loadAiConfig } from '@core/ai/aiConfig'
 import type { MistakeMasteryLevel } from '@/db'
 
@@ -605,7 +605,7 @@ async function handleHint(m: any): Promise<void> {
   let aborted = false
   try {
     const cfg = await loadAiConfig()
-    const out = await requestAiHint(
+    const out = await requestAiHintCandleFirst(
       {
         prompt: {
           question: hintQuestion.value,
@@ -630,9 +630,11 @@ async function handleHint(m: any): Promise<void> {
     )
     hintEngine.value = out.engine
     if (out.engine === 'static') {
-      // 三级全失败：云端 / 本地模型都没用上，落到题库自带解析。
-      // 给一句人话而不是干巴巴的"解析"，家长才知道"AI 这一档为什么没生效"。
-      hintNotice.value = 'AI 助手正在休息，我们来看看这道题原本的解析思路吧……'
+      // 四档全失败：本地离线 / Ollama / 云端都没用上，落到题库自带解析。
+      // 第一句是产品定稿的兜底话术（逐字对齐，见 v1.11 3e57418）；后面追加
+      // 降级原因的人话 —— 家长得知道"为什么这次没有 AI"（e2e ai-hint.spec 钉住
+      // '题库自带' / 'AI 助手设置' / '响应太慢' 必须出现）。
+      hintNotice.value = `AI 助手正在休息，我们来看看这道题原本的解析思路吧……${describeDegradation(out.failures)}`
     } else {
       hintNotice.value = describeDegradation(out.failures)
       // 没填 Key 但本机存过：给一条"去哪儿解锁"的指引（比干说没配 Key 有用）
