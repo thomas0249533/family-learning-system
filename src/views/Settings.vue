@@ -131,6 +131,9 @@
       </n-space>
     </AppCard>
 
+    <!-- 本地离线 AI（V2.0 · A2）：自包含卡片，Settings 只负责摆位置 -->
+    <LocalAiCard />
+
     <!-- 学习包管理 -->
     <AppCard title="📦 学习包管理" class="card">
       <n-space vertical>
@@ -217,6 +220,7 @@ import AppBadge from '@/components/ui/AppBadge.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import ImportPreview from '@/views/settings/ImportPreview.vue'
 import SyncSettings from '@/views/settings/SyncSettings.vue'
+import LocalAiCard from '@/views/settings/LocalAiCard.vue'
 import { useThemeStore } from '@core/stores/theme'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { usePackageStore } from '@core/stores/package'
