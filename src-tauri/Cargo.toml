@@ -25,3 +25,11 @@ tauri = { version = "2.11.6", features = [] }
 tauri-plugin-log = "2"
 candle-core = "0.11.0"
 candle-transformers = "0.11.0"
+# 与 candle-core 0.11 依赖的 tokenizers 同版本；直接依赖是为了用 `Tokenizer::from_gguf`
+tokenizers = "0.22"
+# tauri 2.11 自己就依赖 reqwest 0.13.5 —— 跟着用它能复已编译产物，
+# 另起 0.12 会让同一份 hyper/rustls 编两遍（A1a 已实测：一次 release build 就是 12 分钟）
+reqwest = { version = "0.13", default-features = false, features = ["stream", "native-tls"] }
+sha2 = "0.10"
+# 选文件在 Rust 侧做（rfd 无需 capability，也不引 tauri-plugin-dialog + 前端 plugin 包）
+rfd = { version = "0.15", default-features = false }

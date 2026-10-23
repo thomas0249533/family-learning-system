@@ -1,8 +1,19 @@
 //! 离线 AI（Candle）后端。
 //!
-//! V2.0 · A1a 冒烟闸门：本模块**不加载任何模型**，只证明 candle 能在本机编译/链接，
-//! 并给前端一个可调用的 command。真实推理（`ai_chat_stream`）在 A1b，模型管理在 A2。
-//! 在那之前 `available` 恒为 `false`、`reason` 为 `no-model`（或探测失败的原因）。
+//! - `inference`：GGUF 逐 token 流式推理 + 取消（A1b）；
+//! - `models`：模型状态 / 下载 / 选文件 / 删除（A2）。
+//!
+//! ## 权限口径（贯穿整个模块）
+//! 模型落盘、路径解析、文件读取**全部在 Rust 侧**完成，前端只拿"状态 + 进度 + 错误码"。
+//! `capabilities/default.json` 只有 `core:default`，没有 `fs:allow-*` —— 即便 WebView 里
+//! 跑进一段恶意脚本，它也没有读任意路径的能力。
+
+pub mod inference;
+pub mod models;
+
+// 只 re-export 非 command 项：`#[tauri::command]` 生成的宏必须留在模块内，
+// 在 lib.rs 里要用 `ai::inference::xxx` 的全路径注册（否则宏找不到）。
+pub use inference::StreamRegistry;
 
 /// 与 `src-tauri/Cargo.lock` 一致的 candle 版本，仅用于前端诊断展示。
 pub const CANDLE_VERSION: &str = "0.11.0";
@@ -16,17 +27,22 @@ pub fn backend_probe() -> Result<(), String> {
 }
 
 /// 前端查询本地 AI 后端能力。
+///
+/// `available` 的判据与 `ai_chat_stream` **同口径**（`models::first_model`）：
+/// 设置页说"已就绪"而讲评说"没模型"是最难查的那类 bug，两处必须一起改。
 #[tauri::command]
-pub fn ai_backend_info() -> serde_json::Value {
-  // A1a 阶段既没有模型也没有推理通道，所以对前端一律「不可用」；
-  // 探测失败时把原因透出去，便于设置页区分「引擎坏了」与「还没装模型」。
-  let reason = match backend_probe() {
-    Ok(()) => "no-model".to_string(),
-    Err(e) => e,
+pub fn ai_backend_info(app: tauri::AppHandle) -> serde_json::Value {
+  let probe = backend_probe();
+  let status = models::status_of(&app);
+  let reason = match &probe {
+    Err(e) => e.clone(),
+    Ok(()) => status.reason.clone(),
   };
   serde_json::json!({
-    "available": false,
+    "available": probe.is_ok() && status.available,
     "reason": reason,
     "candleVersion": CANDLE_VERSION,
+    "model": status.file_name,
+    "sizeBytes": status.size_bytes,
   })
 }
