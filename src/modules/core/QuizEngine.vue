@@ -32,6 +32,13 @@
             <span class="level-tag" :class="'level-' + (currentQuestion.metadata?.difficulty || '基础')">
               {{ currentQuestion.metadata?.difficulty || '基础' }}
             </span>
+            <!--
+              V2.0 · 答题卡入口。考试模式不显示：那里已经有常驻的 `.question-nav`
+              题号条（ExamPanel 的布局不能动），再放一个入口只会多一层弹窗。
+            -->
+            <button v-if="!examMode" class="sheet-btn" type="button" @click="sheetOpen = true">
+              📇 答题卡
+            </button>
             <button v-if="examMode" class="exit-btn" aria-label="退出练习" @click="handleExit">✕</button>
           </div>
         </div>
@@ -181,6 +188,35 @@
         </div>
       </div>
 
+      <!-- ============ V2.0 · 答题卡（仅练习模式） ============ -->
+      <n-modal
+        v-model:show="sheetOpen"
+        preset="card"
+        title="📇 答题卡"
+        class="sheet-modal"
+        style="max-width: 460px;"
+      >
+        <div class="sheet-legend">
+          <span class="legend-item legend-correct">✅ 正确 {{ sheetStats.correct }}</span>
+          <span class="legend-item legend-wrong">❌ 错误 {{ sheetStats.wrong }}</span>
+          <span class="legend-item legend-todo">⬜ 未做 {{ sheetStats.todo }}</span>
+        </div>
+        <div class="sheet-grid">
+          <button
+            v-for="(q, i) in questions"
+            :key="q.id"
+            type="button"
+            class="sheet-cell"
+            :class="sheetCellClass(i)"
+            :title="`第 ${i + 1} 题`"
+            @click="openFromSheet(i)"
+          >
+            {{ i + 1 }}
+          </button>
+        </div>
+        <p class="sheet-hint">点击已作答的题回看解析，点击未作答的题直接跳过去。</p>
+      </n-modal>
+
       <div class="quiz-actions">
         <template v-if="!examMode">
           <AppButton v-if="!showFeedback" type="primary" block size="large" @click="submitAnswer" :disabled="!canSubmit">
@@ -205,7 +241,7 @@
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import {
   NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NSpace,
-  NButton, NButtonGroup, NInput, NSelect,
+  NButton, NButtonGroup, NInput, NSelect, NModal,
 } from 'naive-ui'
 import { correctFeedback, wrongFeedback } from '@core/motivation/encouragement'
 import AppButton from '@/components/ui/AppButton.vue'
@@ -291,6 +327,22 @@ const isCorrect = ref(false)
 const correctCount = ref(0)
 const answeredSet = ref<Set<number>>(new Set())
 const examAnswers = ref<Record<string, any>>({})
+
+/**
+ * V2.0 · 练习模式的作答留档（`questionId → {userAnswer,isCorrect}`）。
+ *
+ * 为什么不能复用 `answeredSet`：那只是"第几题点过提交"的下标集合，没有对错，
+ * 而答题卡要按题显示 正确 / 错误 / 未做 三态。
+ * 为什么不复用 `examAnswers`：那张表只在考试模式维护，且**只有**原始答案
+ * （对错要等到 `finalizeExam` 才算）—— 练习模式是逐题即时判分的，
+ * 两者语义不同，混用会让考试判分与答题卡互相污染。
+ *
+ * 续传时由 `props.initialAnswers` 播种（与 `answeredSet` / `correctCount` 同源）。
+ */
+const practiceAnswers = ref<Record<string, { userAnswer: any; isCorrect: boolean }>>({})
+
+/** 答题卡弹窗 */
+const sheetOpen = ref(false)
 
 /* ---------------------------------------------------------------------
  * V1.6 · D3 焦点管理（此前全仓 `src/` 零 `.focus()`，键盘用户交卷后焦点掉 body）
@@ -524,6 +576,92 @@ function isAnswered(qid: string): boolean {
   return String(ua).trim() !== ''
 }
 
+/* ---------------------------------------------------------------------
+ * V2.0 · 答题卡（练习模式）
+ * ------------------------------------------------------------------- */
+
+/**
+ * 把"从库里恢复出来的答案"整成当前题型能吃的形状。
+ *
+ * 为什么需要：练习模式的断点里存的是**展示串**（`TopicDetail` 的
+ * `AnswerPayload.userAnswer` 就是 `formatUserAnswer()` 的结果），
+ * 而多选题 / 连线题 / 多陈述判断题的 `v-model` 必须是数组 —— 直接把
+ * `"AB"` 塞进 `n-checkbox-group` 会抛类型错误、整页白掉。
+ * 这里只做"能渲染"的降级，不试图还原顺序（还原不出来就留空，题目照看）。
+ */
+function coerceAnswer(q: QuizQuestion, v: any): any {
+  switch (q.type) {
+    case 'multiple':
+      if (Array.isArray(v)) return v
+      // 展示串形如 `AB`（`formatUserAnswer` 把选项字母排序后拼起来）
+      return typeof v === 'string' && /^[A-Za-z]+$/.test(v) ? v.split('') : []
+    case 'matching':
+      return Array.isArray(v) ? v : new Array(q.left?.length ?? 0).fill(null)
+    case 'judge':
+      if (isMultiJudge(q.answer)) {
+        return Array.isArray(v) ? v : new Array(normalizeJudgeList(q.answer).length).fill(null)
+      }
+      return typeof v === 'string' ? v : ''
+    default:
+      return v ?? ''
+  }
+}
+
+/** 答题卡三态计数（图例用） */
+const sheetStats = computed(() => {
+  let correct = 0
+  let wrong = 0
+  for (const q of props.questions) {
+    const rec = practiceAnswers.value[q.id]
+    if (!rec) continue
+    if (rec.isCorrect) correct++
+    else wrong++
+  }
+  return { correct, wrong, todo: props.questions.length - correct - wrong }
+})
+
+function sheetCellClass(i: number): Record<string, boolean> {
+  const q = props.questions[i]
+  const rec = q ? practiceAnswers.value[q.id] : undefined
+  return {
+    'is-correct': !!rec && rec.isCorrect,
+    'is-wrong': !!rec && !rec.isCorrect,
+    'is-todo': !rec,
+    'is-current': i === currentIndex.value,
+  }
+}
+
+/**
+ * 点答题卡里的一格：
+ *   - 已作答 → 跳过去并**直接展开解析**（回看，不重新判分、不重复 emit 'answer'）
+ *   - 未作答 → 跳过去，正常作答
+ *
+ * 为什么回看必须绕开 `submitAnswer()`：那条路会 `correctCount++` 并 emit
+ * `answer`（掌握度 / 错题本会记第二遍）。回看是只读行为。
+ */
+function openFromSheet(i: number): void {
+  const q = props.questions[i]
+  if (!q) return
+  sheetOpen.value = false
+
+  const rec = practiceAnswers.value[q.id]
+  if (i !== currentIndex.value) currentIndex.value = i
+
+  if (!rec) {
+    afterQuestionMoved()
+    return
+  }
+
+  // watch(currentQuestion) 在切题时会把 showFeedback 复位，等它跑完再铺解析
+  void nextTick(() => {
+    userAnswer.value = coerceAnswer(q, rec.userAnswer)
+    isCorrect.value = rec.isCorrect
+    selfRating.value = q.type === 'essay' ? rec.isCorrect : null
+    showFeedback.value = true
+    focusAfterSubmit()
+  })
+}
+
 /**
  * 「让路」白名单（V1.6 · D3）。
  *
@@ -711,6 +849,8 @@ onMounted(() => {
         if (props.initialAnswers![q.id]) answeredSet.value.add(idx)
       })
       correctCount.value = Object.values(props.initialAnswers).filter(a => a.isCorrect).length
+      // V2.0 · 答题卡的初始态：续传回来的答案也要算"已作答"
+      practiceAnswers.value = { ...props.initialAnswers }
     }
   }
   startTimer()
@@ -746,7 +886,8 @@ watch(currentQuestion, (q) => {
   } else {
     const saved = props.initialAnswers?.[q.id]
     if (saved) {
-      userAnswer.value = saved.userAnswer
+      // 断点里的 userAnswer 是展示串，按题型整成 v-model 能吃的形状（见 coerceAnswer）
+      userAnswer.value = coerceAnswer(q, saved.userAnswer)
       showFeedback.value = false
       return
     }
@@ -780,6 +921,11 @@ function submitAnswer() {
   isCorrect.value = gradeWith(q, userAnswer.value)
   if (isCorrect.value) correctCount.value++
 
+  // V2.0 · 答题卡留档（每次提交都更新，允许改了再提交覆盖旧值）
+  if (!props.examMode) {
+    practiceAnswers.value[q.id] = { userAnswer: userAnswer.value, isCorrect: isCorrect.value }
+  }
+
   if (!answeredSet.value.has(currentIndex.value)) {
     answeredSet.value.add(currentIndex.value)
     emit('answer', {
@@ -803,6 +949,11 @@ function rateSelf(ok: boolean) {
   selfRating.value = ok
   isCorrect.value = ok
   if (ok) correctCount.value++
+
+  // 主观题在"自评"这一刻才算做完（提交时还没有对错）
+  if (!props.examMode) {
+    practiceAnswers.value[q.id] = { userAnswer: userAnswer.value, isCorrect: ok }
+  }
 
   emit('answer', {
     exerciseId: q.id,
@@ -1035,6 +1186,86 @@ function handleExit() {
   &.level-基础 { background: $success-light; color: $success-text; }
   &.level-提高 { background: $warning-light; color: $warning-text; }
   &.level-挑战 { background: $danger-light; color: $danger-text; }
+}
+
+/* ===== V2.0 · 答题卡 ===== */
+
+.sheet-btn {
+  border: none;
+  background: $bg-color-hover;
+  color: $text-sub;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+
+  &:hover { background: $primary-light; color: $primary-text; }
+  &:focus-visible {
+    outline: var(--focus-ring-w) solid var(--btn-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+}
+
+.sheet-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: $space-3;
+  font-size: 13px;
+  font-weight: 700;
+
+  /* 三态文字色只走 -text（`--{tone}-color` 是图形色，check:text-color 会抓） */
+  .legend-correct { color: $success-text; }
+  .legend-wrong { color: $danger-text; }
+  /* 未做：本仓没有 `--text-tertiary`，三级文字语义统一由 `--text-muted` 承担 */
+  .legend-todo { color: $text-muted; }
+}
+
+.sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  gap: $space-2;
+}
+
+.sheet-cell {
+  height: 42px;
+  border-radius: 10px;
+  border: 1.5px solid $border-color;
+  background: $card-bg;
+  color: $text-muted;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { border-color: $primary-color; }
+  &:focus-visible {
+    outline: var(--focus-ring-w) solid var(--btn-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  &.is-correct {
+    background: var(--badge-success-bg);
+    border-color: $success-color;
+    color: $success-text;
+  }
+  &.is-wrong {
+    background: var(--badge-danger-bg);
+    border-color: $danger-color;
+    color: $danger-text;
+  }
+  /* 当前题：只加描边，不改变三态的底色语义 */
+  &.is-current { box-shadow: 0 0 0 2px $primary-color; }
+}
+
+.sheet-hint {
+  margin-top: $space-3;
+  font-size: 12px;
+  line-height: $leading-normal;
+  color: $text-sub;
 }
 
 .judge-hint { font-size: 14px; color: $text-sub; margin-bottom: 6px; }

@@ -124,26 +124,59 @@
         title="🎮 同步练习"
         style="margin-top: 24px; border-radius: 14px;"
       >
+        <!--
+          V2.0 · 断点续传：QuizEngine 只在"断点检查完成"后才挂载。
+          为什么必须等：它的 `initialIndex` / `initialAnswers` 只在 setup 里读一次
+          （`currentIndex = ref(props.initialIndex)`），先挂载再从库里补数据是补不进去的。
+        -->
         <QuizEngine
+          v-if="practiceReady"
+          :key="practiceKey"
           :questions="topicExercises"
           :package-id="currentPackageId"
+          :initial-answers="practiceInitial.answers"
+          :initial-index="practiceInitial.index"
           @answer="handleAnswer"
           @finish="handleQuizFinish"
+          @save-progress="handleSaveProgress"
         />
+        <div v-else class="practice-loading">正在检查上次的练习进度…</div>
       </AppCard>
       <EmptyState
         v-else-if="!isVocabTopic"
         description="本主题暂无配套练习"
         style="margin-top: 24px; padding: 20px 0;"
       />
+
+      <!-- ============ V2.0 · 断点续传弹窗 ============ -->
+      <n-modal
+        v-model:show="resumeOpen"
+        preset="card"
+        title="🔄 继续上次练习"
+        class="resume-modal"
+        style="max-width: 420px;"
+        :closable="false"
+        :mask-closable="false"
+      >
+        <div class="resume-body">
+          <p class="resume-tip">
+            检测到上次未完成的练习，当前进度
+            <strong class="resume-progress">{{ resumeProgress.answered }} / {{ resumeProgress.total }}</strong>，是否继续？
+          </p>
+          <div class="resume-actions">
+            <AppButton type="primary" block size="large" @click="continuePractice">继续</AppButton>
+            <AppButton block size="large" @click="restartPractice">从头开始</AppButton>
+          </div>
+        </div>
+      </n-modal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NSpin, NAlert, useMessage } from 'naive-ui'
+import { NSpin, NAlert, NModal, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
@@ -153,7 +186,15 @@ import { useUserDataStore } from '@core/stores/userData'
 import { getModuleComponent } from '@core/registry/moduleRegistry'
 import { humanizeNextReview } from '@core/review/reviewScheduler'
 import { finishFeedback } from '@core/motivation/encouragement'
-import type { MasteryStatus } from '@/db'
+import { currentProfileId } from '@core/profile/currentProfile'
+import {
+  accumulateAnswer,
+  buildSnapshot,
+  progressOf as topicProgressOf,
+  validateSnapshot,
+  type TopicAnswers,
+} from '@core/session/topicSession'
+import { db, type MasteryStatus, type TopicSessionRecord } from '@/db'
 import QuizEngine, { type AnswerPayload } from '@modules/core/QuizEngine.vue'
 
 const route = useRoute()
@@ -170,6 +211,198 @@ const reviewMode = computed(() => route.query.mode === 'review')
 
 /** 练习区 AppCard 引用。AppCard 根元素是 `n-card`（真实 DOM），`$el` 即卡片本身。 */
 const practiceRef = ref<InstanceType<typeof AppCard> | null>(null)
+
+/* =========================================================================
+ * V2.0 · 断点续传（topicSessions）
+ *
+ * 判定链：挂载 → 按 `[profileId+topicId]` 查 ongoing 行 → `validateSnapshot`
+ * 逐位比对当前题库 → 通过才弹「继续上次」。
+ *
+ * 三条不给商量的底线：
+ *   1. 任何 db 异常 / 腐坏行都**静默从头开始**（只 console.warn）—— 一个坏行
+ *      不能让专题页白屏，那会把"整页学习内容"一起拖垮；
+ *   2. 写入去抖 ≥800ms：`save-progress` 在每次切题都会发，逐次写库等于
+ *      每点一次"下一题"就一次事务；
+ *   3. **完成后不再写 ongoing**：QuizEngine 卸载时还会发一次 `save-progress`，
+ *      不挡住它，刚做完的练习会在下次进页面时弹"继续上次"。
+ * ====================================================================== */
+
+/** 断点按 `topicId` 归档；优先用题目本体的 id（与路由参数短名同源，跨刷新稳定） */
+const practiceTopicId = computed(() => currentTopic.value?.id ?? String(route.params.topicId ?? ''))
+
+/** 练习区是否已可以渲染（断点检查跑完 / 用户做完选择） */
+const practiceReady = ref(false)
+/** 强制重建 QuizEngine（切"继续 / 从头"时 props 变了，但只有重建才会重新读 initialIndex） */
+const practiceKey = ref(0)
+const practiceInitial = ref<{ answers: TopicAnswers; index: number }>({ answers: {}, index: 0 })
+
+const resumeOpen = ref(false)
+const resumeRow = ref<TopicSessionRecord | null>(null)
+const resumeProgress = computed(() => topicProgressOf(resumeRow.value))
+
+/** 本次练习在内存里的答案（`@answer` 累积；落库时整体写入） */
+const sessionAnswers = ref<TopicAnswers>({})
+/** 最近一次报告的题号（去抖写库时用它，而不是读组件内部状态） */
+const pendingIndex = ref(0)
+/** 本次练习的开始时间（"从头开始"要换新的，不能被上一次的行污染） */
+const practiceStartedAt = ref('')
+/** 已经点过"完成练习"——之后一律不再写 ongoing */
+const practiceFinished = ref(false)
+
+const SAVE_DEBOUNCE_MS = 800
+let saveTimer: number | null = null
+
+function currentQuestionIds(): string[] {
+  const ids: string[] = []
+  for (const q of topicExercises.value ?? []) {
+    const id = (q as any)?.id
+    if (typeof id === 'string' && id !== '' && !ids.includes(id)) ids.push(id)
+  }
+  return ids
+}
+
+async function dropSessionRow(id?: number): Promise<void> {
+  if (typeof id !== 'number') return
+  try {
+    await db.topicSessions.delete(id)
+  } catch (err) {
+    console.warn('[TopicDetail] 删除练习断点失败（忽略）', err)
+  }
+}
+
+/** 挂载时的断点检查。**永远不 throw**：读不到就当作没有断点。 */
+async function initPracticeProgress(): Promise<void> {
+  practiceReady.value = false
+  sessionAnswers.value = {}
+  practiceInitial.value = { answers: {}, index: 0 }
+  pendingIndex.value = 0
+  practiceFinished.value = false
+  practiceStartedAt.value = new Date().toISOString()
+
+  const pid = currentProfileId()
+  const tid = practiceTopicId.value
+  const qids = currentQuestionIds()
+  if (!pid || !tid || qids.length === 0) {
+    practiceReady.value = true
+    return
+  }
+
+  try {
+    // 复合索引必须传满 2 元数组：少传在真库是"静默查不到"，在本仓 fakeDexie 会炸
+    const row = await db.topicSessions
+      .where('[profileId+topicId]')
+      .equals([pid, tid])
+      .first()
+
+    if (row && row.status === 'ongoing') {
+      const snapshot = validateSnapshot(row, qids)
+      if (snapshot) {
+        resumeRow.value = snapshot
+        resumeOpen.value = true
+        return // 等用户选择，练习区先不渲染（避免"边答边被弹窗覆盖"）
+      }
+      // 腐坏：题库变了 / 行是半截写入的 → 丢掉，从头开始
+      console.warn('[TopicDetail] 练习断点与当前题库对不上，已丢弃并从头开始', { topicId: tid })
+      await dropSessionRow(row.id)
+    }
+  } catch (err) {
+    console.warn('[TopicDetail] 读取练习断点失败，从头开始', err)
+  }
+
+  practiceReady.value = true
+}
+
+function startFresh(): void {
+  sessionAnswers.value = {}
+  practiceInitial.value = { answers: {}, index: 0 }
+  pendingIndex.value = 0
+  practiceFinished.value = false
+  practiceStartedAt.value = new Date().toISOString()
+  practiceKey.value++
+  practiceReady.value = true
+}
+
+function continuePractice(): void {
+  const row = resumeRow.value
+  resumeOpen.value = false
+  if (!row) {
+    startFresh()
+    return
+  }
+  sessionAnswers.value = { ...row.answers }
+  practiceInitial.value = { answers: { ...row.answers }, index: row.currentIndex }
+  pendingIndex.value = row.currentIndex
+  practiceStartedAt.value = row.startedAt
+  practiceFinished.value = false
+  resumeRow.value = null
+  practiceKey.value++
+  practiceReady.value = true
+}
+
+async function restartPractice(): Promise<void> {
+  resumeOpen.value = false
+  const row = resumeRow.value
+  resumeRow.value = null
+  if (row?.id !== undefined) await dropSessionRow(row.id)
+  startFresh()
+}
+
+function scheduleSave(index: number): void {
+  pendingIndex.value = index
+  if (practiceFinished.value) return
+  if (saveTimer !== null) window.clearTimeout(saveTimer)
+  saveTimer = window.setTimeout(() => {
+    saveTimer = null
+    void flushProgress()
+  }, SAVE_DEBOUNCE_MS)
+}
+
+/** 把内存里的答案 + 题号写进 `topicSessions`（按复合索引 upsert，绝不出现第二行 ongoing） */
+async function flushProgress(status: TopicSessionRecord['status'] = 'ongoing'): Promise<void> {
+  const pid = currentProfileId()
+  const tid = practiceTopicId.value
+  const qids = currentQuestionIds()
+  if (!pid || !tid || qids.length === 0) return
+
+  try {
+    const existing = await db.topicSessions
+      .where('[profileId+topicId]')
+      .equals([pid, tid])
+      .first()
+
+    const snapshot = buildSnapshot({
+      id: existing?.id,
+      profileId: pid,
+      packageId: currentPackageId.value,
+      topicId: tid,
+      questionIds: qids,
+      answers: sessionAnswers.value,
+      currentIndex: pendingIndex.value,
+      startedAt: practiceStartedAt.value,
+      status,
+      now: new Date().toISOString(),
+    })
+
+    if (existing?.id !== undefined) await db.topicSessions.put(snapshot)
+    else await db.topicSessions.add(snapshot)
+  } catch (err) {
+    // 写失败不能让孩子的练习中断：页面上还有内存态，下一次 save-progress 会重试
+    console.warn('[TopicDetail] 保存练习断点失败（忽略）', err)
+  }
+}
+
+function handleSaveProgress(patch: { currentIndex: number }): void {
+  if (!practiceReady.value || practiceFinished.value) return
+  scheduleSave(patch.currentIndex)
+}
+
+onUnmounted(() => {
+  if (saveTimer !== null) {
+    window.clearTimeout(saveTimer)
+    saveTimer = null
+  }
+  if (practiceReady.value && !practiceFinished.value) void flushProgress()
+})
 
 /** ✅ 纯词汇主题：不显示"暂无练习"提示 */
 const isVocabTopic = computed(() => {
@@ -223,6 +456,9 @@ onMounted(async () => {
   await packageStore.loadPackageById(currentPackageId.value)
   await packageStore.loadPackages()
   await userDataStore.loadUserData()
+
+  // V2.0 · 断点检查必须在题库就绪之后（要逐位比对 questionIds）
+  await initPracticeProgress()
 
   // V1.6 · C3：复习模式下把练习区滚进视野（渐进增强）。
   // 用元素自身的 scrollIntoView 而非 window.scrollTo：滚动容器可能是 AppShell 里
@@ -541,6 +777,14 @@ function goToPrerequisite(kpId: string) {
 async function handleAnswer(payload: AnswerPayload) {
   const { exerciseId, knowledgePointIds, isCorrect, userAnswer, elapsedMs } = payload
 
+  // ① 断点先记：**必须在 KP 早退之前**。没有知识点的题（合法的自测题）
+  //    在掌握度链路里会被跳过，但它照样该出现在答题卡上、照样该能被续传。
+  sessionAnswers.value = accumulateAnswer(sessionAnswers.value, exerciseId, {
+    userAnswer,
+    isCorrect,
+  })
+  scheduleSave(pendingIndex.value)
+
   if (!knowledgePointIds || knowledgePointIds.length === 0) {
     console.warn('[handleAnswer] 题目无知识点，状态机跳过', exerciseId)
     return
@@ -584,10 +828,47 @@ function handleQuizFinish(correctCount: number) {
   const fb = finishFeedback(correctCount, total)
   message[fb.type](fb.text, { duration: 4000 })
   console.log(`🎉 练习结束，答对 ${correctCount} / ${total} 题`)
+
+  // V2.0 · 断点收尾：标记 finished 并停止后续写入。
+  // 不这样做的后果很具体：QuizEngine 卸载时还会发一次 `save-progress`，
+  // 那一次会把刚做完的练习重新写成 ongoing → 下次进来又弹"继续上次"。
+  practiceFinished.value = true
+  if (saveTimer !== null) {
+    window.clearTimeout(saveTimer)
+    saveTimer = null
+  }
+  void flushProgress('finished')
 }
 </script>
 
 <style scoped lang="scss">
+/* V2.0 · 断点检查期间的占位（练习区不能整块消失，否则页面高度会跳一下） */
+.practice-loading {
+  padding: 24px 0;
+  text-align: center;
+  font-size: $font-sm;
+  color: $text-sub;
+}
+
+/* V2.0 · 续传弹窗（全 token；文字色一律 -text） */
+.resume-tip {
+  margin: 0 0 $space-4;
+  font-size: 15px;
+  line-height: $leading-normal;
+  color: $text-main;
+
+  .resume-progress {
+    color: $primary-text;
+    font-weight: 800;
+  }
+}
+
+.resume-actions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
 /* V1.6 · C3：复习模式提示条（全 token，禁硬编码色 / 文字色走 -text） */
 .review-mode-banner {
   margin-top: 16px;
