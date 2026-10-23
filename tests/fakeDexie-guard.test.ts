@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { createFakeDexie, V3_INDICES, V4_INDICES } from './helpers/fakeDexie'
+import { createFakeDexie, V3_INDICES, V4_INDICES, V5_INDICES } from './helpers/fakeDexie'
 
 /**
  * 假 Dexie 自身的防线（V1.6 · Stage A · A6）。
@@ -72,6 +72,14 @@ describe('fakeDexie 索引清单与 src/db/index.ts 逐字一致', () => {
 
   it('V3_INDICES ≡ version(3)', () => {
     expect(storesOfVersion(3)).toEqual({ ...V3_INDICES })
+  })
+
+  // V2.0 · 断点续传：v5 在 v4 的 5 张表之上新增 topicSessions。
+  // 这条断言是"加表忘了同步替身"的唯一防线：漏了它，TopicDetail 里
+  // `where('[profileId+topicId]')` 在测试里会拿到空索引清单而炸得莫名其妙，
+  // 或者更糟 —— 有人为了不炸把它改成 `.toArray()` 过滤，于是索引契约静默消失。
+  it('V5_INDICES ≡ version(5)', () => {
+    expect(storesOfVersion(5)).toEqual({ ...V5_INDICES })
   })
 })
 
@@ -254,5 +262,53 @@ describe('读接口返回副本', () => {
     got!.value = 999
     const again = await fake.settings.get('k')
     expect(again?.value).toBe(1)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 7. v5 · topicSessions 的牙（新增表的行级断言 + 复合索引形参校验）
+// ---------------------------------------------------------------------------
+
+describe('v5 · topicSessions', () => {
+  const row = (over: Record<string, any> = {}) => ({
+    profileId: 'default',
+    packageId: 'p',
+    topicId: 't',
+    questionIds: ['q1'],
+    answers: {},
+    currentIndex: 0,
+    totalCount: 1,
+    startedAt: '2025-01-01T00:00:00.000Z',
+    updatedAt: '2025-01-01T00:00:00.000Z',
+    status: 'ongoing',
+    ...over,
+  })
+
+  it('缺 profileId → 拒绝（与 examSessions 同一条规则）', async () => {
+    const fake = createFakeDexie()
+    const { profileId: _drop, ...noPid } = row()
+    await expect(fake.topicSessions.add(noPid)).rejects.toThrow(/profileId/)
+  })
+
+  it('[profileId+topicId] 少传一元 → 抛错（真库静默空结果）', () => {
+    const fake = createFakeDexie()
+    expect(() => fake.topicSessions.where('[profileId+topicId]').equals(['default'])).toThrow(
+      /2 元复合索引/
+    )
+  })
+
+  it('正确 2 元数组正常选中', async () => {
+    const fake = createFakeDexie()
+    await fake.topicSessions.add(row())
+    const hit = await fake.topicSessions
+      .where('[profileId+topicId]')
+      .equals(['default', 't'])
+      .first()
+    expect(hit?.packageId).toBe('p')
+  })
+
+  it('v4 索引形态下这张表没有索引（老结构里本来就不存在）', () => {
+    const fake = createFakeDexie({ indices: 'v4' })
+    expect(() => fake.topicSessions.where('[profileId+topicId]')).toThrow(/未知索引/)
   })
 })

@@ -8,7 +8,8 @@
  * 改漏任何一份，那个文件里的查询就会静默 fallback 到"按字段比较"，
  * 看起来还在跑，实际上已经不代表真实索引行为了 —— 正是 A2 要堵的"假通过"。
  *
- * 抽出来之后：**索引清单只有一份**（`V4_INDICES`，与 `version(4)` 逐字对应），
+ * 抽出来之后：**索引清单只有一份**（`V5_INDICES`，与 `version(5)` 逐字对应；
+ * `V4_INDICES` / `V3_INDICES` 保留给"测某一版结构本身"的用例），
  * 未知索引抛错也只有一份实现；`fakeDexie-guard.test.ts` 还会把清单与
  * `src/db/index.ts` 原文逐字比对，schema 一改不同步就红。
  *
@@ -30,8 +31,8 @@
  *      undefined 的行"，纯静默 fallback）。
  * 5. **`add()` 撞主键抛错**（真库 ConstraintError）。旧替身静默插入第二行
  *    同 id 行 —— "upsert 被写成 add" 这类缺陷因此假通过。
- * 6. **v4 索引形态下，progress / mistakes / examSessions 每行必须带非空
- *    `profileId`**（真库不校验，但项目规则是必填：夹具漏了的测试在单档案下
+ * 6. **v4/v5 索引形态下，progress / mistakes / examSessions / topicSessions 每行
+ *    必须带非空 `profileId`**（真库不校验，但项目规则是必填：夹具漏了的测试在单档案下
  *    照样全绿，正是 A2 要堵的静默串数据）。测老数据夹具传
  *    `overrides.<table>.requireProfileId = false` 显式豁免。
  * 7. **读接口返回浅拷贝**（真库是结构化克隆）：`first()/get()/toArray()`
@@ -60,10 +61,31 @@
 export type Row = Record<string, any>
 
 /**
- * v4 schema 的**真实索引清单**（`src/db/index.ts` 的 `version(4)`）。
+ * v5 schema 的**真实索引清单**（`src/db/index.ts` 的 `version(5)`）——
+ * 当前默认形态。v5 = v4 的 5 张表 + `topicSessions`。
  *
  * 改 schema 时必须同步改这里 —— 这是本文件存在的全部意义。
  * 顺序无关，只要集合一致。
+ */
+export const V5_INDICES: Record<string, readonly string[]> = {
+  packages: ['packageId', 'manifest.subject', 'manifest.grade'],
+  progress: [
+    '[profileId+packageId+knowledgePointId]',
+    '[profileId+packageId]',
+    'profileId',
+    'status',
+  ],
+  mistakes: ['[profileId+exerciseId]', 'packageId', 'profileId', 'mastered'],
+  settings: ['key'],
+  examSessions: ['[profileId+packageId]', 'profileId', 'status', 'startedAt'],
+  topicSessions: ['[profileId+topicId]', 'profileId', 'packageId', 'updatedAt'],
+}
+
+/**
+ * v4 schema 的索引清单（`version(4)`）：5 张表，没有 `topicSessions`。
+ *
+ * 只有**测 v4 迁移/结构本身**的用例才用它（`tests/fakeDexie-guard.test.ts`
+ * 逐字比对 `version(4)` 原文）。生产代码现在跑的是 v5，默认清单已切到 `V5_INDICES`。
  */
 export const V4_INDICES: Record<string, readonly string[]> = {
   packages: ['packageId', 'manifest.subject', 'manifest.grade'],
@@ -94,7 +116,16 @@ export const V3_INDICES: Record<string, readonly string[]> = {
 }
 
 /** 默认建哪些表（顺序即 `db` 上的属性顺序，便于快照与 reset） */
-const TABLE_NAMES = ['packages', 'progress', 'mistakes', 'settings', 'examSessions'] as const
+const TABLE_NAMES = [
+  'packages',
+  'progress',
+  'mistakes',
+  'settings',
+  'examSessions',
+  // V2.0 · 专题练习断点（db v5）。传 `indices: 'v4' / 'v3'` 时本表索引清单为空，
+  // 那时 `.where(...)` 会抛「未知索引」—— 正是想要的：老结构里本来就没这张表。
+  'topicSessions',
+] as const
 export type TableName = (typeof TABLE_NAMES)[number]
 
 /** 每张表的默认主键（与 schema 的 `++id` / `key` 对应） */
@@ -104,6 +135,7 @@ const DEFAULT_KEY: Record<TableName, (r: Row) => any> = {
   mistakes: (r) => r.id,
   settings: (r) => r.key,
   examSessions: (r) => r.id,
+  topicSessions: (r) => r.id,
 }
 
 /** 哪些表是自增主键 */
@@ -113,6 +145,7 @@ const AUTO_ID: Record<TableName, boolean> = {
   mistakes: true,
   settings: false,
   examSessions: true,
+  topicSessions: true,
 }
 
 export interface TableOpts {
@@ -162,6 +195,7 @@ export interface FakeDexie {
   mistakes: FakeTable
   settings: FakeTable
   examSessions: FakeTable
+  topicSessions: FakeTable
   /** 喂给 `vi.mock('@/db', () => ({ db: fake.db }))` 的对象 */
   db: {
     packages: FakeTable
@@ -169,6 +203,7 @@ export interface FakeDexie {
     mistakes: FakeTable
     settings: FakeTable
     examSessions: FakeTable
+    topicSessions: FakeTable
     transaction(mode: any, ...args: any[]): Promise<any>
   }
   /**
@@ -187,15 +222,16 @@ export interface FakeDexie {
 }
 
 export interface FakeDexieOpts {
-  /** `'v4'`（默认）/ `'v3'` / 自定义 `Record<table, string[]>` */
-  indices?: 'v4' | 'v3' | Record<string, readonly string[]>
+  /** `'v5'`（默认，= v4 五张表 + topicSessions）/ `'v4'` / `'v3'` / 自定义 `Record<table, string[]>` */
+  indices?: 'v5' | 'v4' | 'v3' | Record<string, readonly string[]>
   /** 逐表覆盖 */
   overrides?: Record<string, TableOpts>
 }
 
 function indexMapOf(indices: FakeDexieOpts['indices']): Record<string, readonly string[]> {
   if (indices === 'v3') return V3_INDICES
-  if (indices === undefined || indices === 'v4') return V4_INDICES
+  if (indices === 'v4') return V4_INDICES
+  if (indices === undefined || indices === 'v5') return V5_INDICES
   return indices
 }
 
@@ -222,7 +258,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     const rows: Row[] = []
     let seq = 1
 
-    // ★ v4 索引形态（索引清单里出现 profileId）下，每一行都必须带非空
+    // ★ v4/v5 索引形态（索引清单里出现 profileId）下，每一行都必须带非空
     // profileId。真库不校验这条，但项目规则是必填（见 ProgressRecord 的
     // 注释："可空就意味着存在一条代码路径忘了判断"）—— 夹具漏了 profileId
     // 的测试在单档案数据下照样全绿，正是 A2 要堵的静默串数据。
@@ -234,7 +270,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
       const pid = r?.profileId
       if (typeof pid !== 'string' || pid === '') {
         throw new Error(
-          `fake db: ${name} 行缺少 profileId（v4 语义必填）—— ` +
+          `fake db: ${name} 行缺少 profileId（v4/v5 语义必填）—— ` +
             '单档案测试里漏了它照样全绿，正是 A2 要堵的静默串数据；' +
             `确需造老数据夹具请传 overrides.${name}.requireProfileId = false`
         )
@@ -395,6 +431,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     mistakes: tables.mistakes,
     settings: tables.settings,
     examSessions: tables.examSessions,
+    topicSessions: tables.topicSessions,
 
     /**
      * 手写事务：提交前快照涉及的表，抛错时整张还原。
@@ -427,6 +464,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     mistakes: tables.mistakes,
     settings: tables.settings,
     examSessions: tables.examSessions,
+    topicSessions: tables.topicSessions,
     db,
     failOn,
     writes,

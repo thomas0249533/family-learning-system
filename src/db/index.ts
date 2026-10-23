@@ -99,12 +99,41 @@ export interface ExamSessionRecord {
   finalRate?: number;
 }
 
+/**
+ * V2.0 · 专题练习的断点（与 `examSessions` **刻意分开**）。
+ *
+ * 为什么不复用 `examSessions`：那张表是 ExamPanel 的"历史卷子"列表数据源，
+ * 把每做几道的专题练习塞进去，会在模考页冒出一堆"未完成"的卷子。
+ * 为什么也不叫 `SessionRecord`：那是方案草稿里的平行概念，本仓已有 `ExamSessionRecord`
+ * 作为"会话"的唯一形状，多造一个只会让后来人不知道该看哪个 —— 直接叫
+ * `TopicSessionRecord`，按 `topicId` 归档，字段形状仿 `ExamSessionRecord`。
+ *
+ * **设备本地瞬态**：不进 `bundleIO` 备份、不进 `planMerge` 合并、不进 `routeBackup`。
+ * 把"做到一半的练习"搬到另一台机器没有意义 —— 那边会莫名其妙弹"继续上次"。
+ * 有测试钉住备份字段集合（tests/topic-session.test.ts「备份口径」）。
+ */
+export interface TopicSessionRecord {
+  id?: number;
+  /** 归属档案（V1.4 · B1 规则：**必填**，取值只有 `currentProfileId()` 一个来源） */
+  profileId: string;
+  packageId: string;
+  topicId: string;
+  questionIds: string[];
+  answers: Record<string, { userAnswer: any; isCorrect: boolean }>;
+  currentIndex: number;
+  totalCount: number;
+  startedAt: string;
+  updatedAt: string;
+  status: 'ongoing' | 'finished';
+}
+
 export class FamilyLearningDB extends Dexie {
   packages!: Table<LearningPackageRecord, string>;
   progress!: Table<ProgressRecord, number>;
   mistakes!: Table<MistakeRecord, number>;
   settings!: Table<SettingRecord, string>;
   examSessions!: Table<ExamSessionRecord, number>;
+  topicSessions!: Table<TopicSessionRecord, number>;
 
   constructor() {
     super('FamilyLearningDB');
@@ -150,6 +179,21 @@ export class FamilyLearningDB extends Dexie {
       })
       // 迁移实现见 core/storage/migrateV4.ts：加列 + 搬键，永不 rethrow
       .upgrade((tx) => migrateProfileV4(tx));
+    // V2.0 · 专题练习断点（纯新增表，**不写 upgrade 钩子**：没有存量数据要搬，
+    // 加钩子只会多一条"迁移失败"的失败路径）。
+    //
+    // 索引 `[profileId+topicId]`：一个档案的一个专题只该有**一行** ongoing，
+    // 恢复时按这个复合索引 `.first()` 取 —— 少传 profileId 在本仓 fakeDexie 里会炸，
+    // 在真库里会静默查不到（见 tests/helpers/fakeDexie.ts 文件头差异第 4 条）。
+    this.version(5).stores({
+      packages: 'packageId, manifest.subject, manifest.grade',
+      progress:
+        '++id, [profileId+packageId+knowledgePointId], [profileId+packageId], profileId, status',
+      mistakes: '++id, [profileId+exerciseId], packageId, profileId, mastered',
+      settings: 'key',
+      examSessions: '++id, [profileId+packageId], profileId, status, startedAt',
+      topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt'
+    });
   }
 }
 
