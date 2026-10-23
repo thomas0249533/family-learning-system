@@ -212,6 +212,53 @@
       </div>
     </section>
 
+    <!--
+      G2 · AI 学习诊断。把上面那屏统计升级成一份可带走的解读：
+      输入只有**统计摘要**（错因计数 + 卡壳知识点 + 时间范围），姓名 / 档案 id /
+      题目原文 / 掌握度历史在类型层面就发不出去（见 diagnosisPrompt.ts）。
+      三级降级：DeepSeek → Ollama → 本地规则引擎（断网也有一份报告）。
+    -->
+    <section class="section">
+      <AppCard title="🧠 AI 学习诊断">
+        <div class="diag-entry">
+          <div class="diag-entry-text">
+            <div class="diag-entry-title">让 AI 读一读近期的错题统计，给一份整体诊断</div>
+            <div class="diag-entry-desc">
+              只发送错因计数与卡壳知识点统计，<b>不含姓名、档案和题目原文</b>。
+            </div>
+          </div>
+          <AppButton
+            v-if="!diagnosing"
+            type="primary"
+            size="small"
+            :disabled="!diagnosisSummary"
+            @click="startDiagnosis"
+          >
+            生成诊断报告
+          </AppButton>
+          <AppButton v-else size="small" @click="stopDiagnosis">⏹ 停止</AppButton>
+        </div>
+
+        <template v-if="diagnosisStarted">
+          <div class="diag-meta">
+            <span class="diag-engine">{{ diagnosisEngineLabel }}</span>
+          </div>
+          <!-- 降级人话（复用 F1 的 describeDegradation）：说清"已经改用什么"与"下一步做什么" -->
+          <div v-if="diagnosisNotice" class="diag-notice">{{ diagnosisNotice }}</div>
+          <!--
+            markdown-it 渲染（html: false）：原始 HTML 一律转义后输出，
+            产出的 HTML 本身就是消毒结果 —— AI 的回复不进任何 raw-html 通道。
+          -->
+          <div ref="diagnosisEl" class="diag-report" v-html="diagnosisHtml"></div>
+          <div v-if="!diagnosing" class="diag-actions">
+            <AppButton size="small" :loading="diagExporting" @click="handleExportDiagnosis">
+              ⬇️ 导出 PDF
+            </AppButton>
+          </div>
+        </template>
+      </AppCard>
+    </section>
+
     <!-- 近 7 天学习 -->
     <section class="section">
       <SectionTitle title="📅 近 7 天学习" />
@@ -358,6 +405,16 @@ import {
 import { computeMasterySummary, masteryBySubject } from '@core/mastery/masterySummary'
 import { buildWeeklyCardData, type WeeklyCardData } from '@core/report/weeklyCard'
 import { exportWeeklyCardPng } from '@core/report/weeklyCardExporter'
+// G2 · AI 学习诊断（批量错题统计 → Markdown 报告）
+import MarkdownIt from 'markdown-it'
+import { AiHintError } from '@core/ai/aiClient'
+import { currentApiKey, hasRememberedKey, loadAiConfig } from '@core/ai/aiConfig'
+import { describeAiFailure, describeDegradation } from '@core/ai/aiMessages'
+import { DIAGNOSIS_ENGINE_LABEL, requestDiagnosis, type DiagnosisEngine } from '@core/ai/diagnosis'
+import type { DiagnosisSummaryInput } from '@core/ai/diagnosisPrompt'
+import { mistakeCauseOf, type MistakeCause } from '@core/mistake/mistakeCause'
+import { localDateKey } from '@core/report/canvasKit'
+import { exportReportAsPDF } from '@core/report/pdfExporter'
 import {
   EMPTY_STREAK,
   effectiveCurrent,
@@ -628,6 +685,9 @@ onMounted(async () => {
 
 onUnmounted(() => {
   offProfileChange?.()
+  // 离开页面 = 放弃进行中的诊断：中断请求、停掉打字机
+  diagAbort?.abort()
+  stopDiagTypewriter(false)
 })
 
 /** ===== 成就概览（A2-5，只读 + V1.6 · C6 可收集口径）===== */
@@ -848,6 +908,179 @@ async function handleExportCard(): Promise<void> {
     message.error('导出失败：' + (e as Error).message)
   } finally {
     exporting.value = false
+  }
+}
+
+/* ===========================================================================
+ * G2 · AI 学习诊断（批量错题统计 → Markdown 报告）
+ * ---------------------------------------------------------------------------
+ * 与周报卡片同一个分工：本页只做"取数 → 交给引擎 → 把流接到打字机上"，
+ * Prompt 的隐私边界在 diagnosisPrompt.ts 的输入类型里（TS 拦），不在本页自觉。
+ * ======================================================================== */
+
+/** 统计摘要（null = 没有未掌握的错题，按钮禁用）。聚合口径与"高频错题 Top 5"同源 */
+const diagnosisSummary = computed<DiagnosisSummaryInput | null>(() => {
+  const kpTitle = new Map<string, string>()
+  for (const pkg of packageStore.packages) {
+    for (const kp of pkg.knowledgePoints ?? []) {
+      kpTitle.set(kp.id, kp.title)
+    }
+  }
+
+  const rows = userDataStore.mistakes.filter((m) => !m.mastered)
+  if (rows.length === 0) return null
+
+  const causeCounts = new Map<MistakeCause, number>()
+  const kpCounts = new Map<string, number>()
+  let totalWrong = 0
+  let minDay = ''
+  let maxDay = ''
+  for (const m of rows) {
+    // 未打标按 knowledge 兜底（逻辑层口径，见 mistakeCause.ts）
+    const cause = mistakeCauseOf(m)
+    causeCounts.set(cause, (causeCounts.get(cause) ?? 0) + 1)
+    totalWrong += m.wrongCount
+    for (const kpId of m.knowledgePointIds ?? []) {
+      kpCounts.set(kpId, (kpCounts.get(kpId) ?? 0) + m.wrongCount)
+    }
+    // 时间范围用**本地日键**（日期纪律：禁 toISOString 的 UTC 口径）
+    if (m.wrongAt) {
+      const day = localDateKey(new Date(m.wrongAt))
+      if (!minDay || day < minDay) minDay = day
+      if (!maxDay || day > maxDay) maxDay = day
+    }
+  }
+
+  return {
+    timeFrom: minDay,
+    timeTo: maxDay,
+    mistakeCount: rows.length,
+    totalWrongCount: totalWrong,
+    causeCounts: Array.from(causeCounts.entries()).map(([cause, count]) => ({ cause, count })),
+    topKps: Array.from(kpCounts.entries())
+      .map(([kpId, count]) => ({ kpId, title: kpTitle.get(kpId) ?? kpId, wrongCount: count }))
+      .sort((a, b) => b.wrongCount - a.wrongCount),
+  }
+})
+
+/** 诊断状态 */
+const diagnosisStarted = ref(false)
+const diagnosing = ref(false)
+const diagnosisText = ref('')
+const diagnosisEngine = ref<DiagnosisEngine | null>(null)
+const diagnosisNotice = ref('')
+const diagExporting = ref(false)
+const diagnosisEl = ref<HTMLElement | null>(null)
+let diagAbort: AbortController | null = null
+
+/** 打字机（与 F1 的 Mistakes.vue 同一套节奏：onDelta 进队列，定时器 drip 出来） */
+const DIAG_TYPEWRITER_CHARS_PER_TICK = 2
+const DIAG_TYPEWRITER_INTERVAL_MS = 24
+let diagQueue = ''
+let diagTimer: ReturnType<typeof setInterval> | null = null
+
+function startDiagTypewriter(): void {
+  if (diagTimer !== null) return
+  diagTimer = setInterval(() => {
+    if (!diagQueue) return
+    diagnosisText.value += diagQueue.slice(0, DIAG_TYPEWRITER_CHARS_PER_TICK)
+    diagQueue = diagQueue.slice(DIAG_TYPEWRITER_CHARS_PER_TICK)
+  }, DIAG_TYPEWRITER_INTERVAL_MS)
+}
+
+/** flush=true 时把队列里剩下的字一次补完（被中断则不补：补完等于没停） */
+function stopDiagTypewriter(flush: boolean): void {
+  if (diagTimer !== null) {
+    clearInterval(diagTimer)
+    diagTimer = null
+  }
+  if (flush && diagQueue) {
+    diagnosisText.value += diagQueue
+    diagQueue = ''
+  }
+}
+
+/** markdown 渲染（html:false = 原始 HTML 转义，产出即消毒结果） */
+const diagMd = new MarkdownIt({ html: false, linkify: false, breaks: true })
+const diagnosisHtml = computed(() => diagMd.render(diagnosisText.value))
+
+const diagnosisEngineLabel = computed(() => {
+  if (diagnosing.value) return '正在生成…'
+  const engine = diagnosisEngine.value
+  return engine ? DIAGNOSIS_ENGINE_LABEL[engine] : '已停止'
+})
+
+async function startDiagnosis(): Promise<void> {
+  const summary = diagnosisSummary.value
+  if (!summary || diagnosing.value) return
+  const cfg = await loadAiConfig()
+  diagAbort = new AbortController()
+  diagnosisStarted.value = true
+  diagnosing.value = true
+  diagnosisText.value = ''
+  diagnosisEngine.value = null
+  diagnosisNotice.value = ''
+  diagQueue = ''
+  startDiagTypewriter()
+
+  let aborted = false
+  try {
+    const out = await requestDiagnosis(
+      {
+        summary,
+        apiKey: currentApiKey(),
+        model: cfg.model,
+        ollamaModel: cfg.ollamaModel,
+      },
+      {
+        signal: diagAbort.signal,
+        onDelta: (delta) => {
+          diagQueue += delta
+        },
+      },
+    )
+    diagnosisEngine.value = out.engine
+    diagnosisNotice.value = describeDegradation(out.failures)
+    // 没填 Key 但本机存过：给一条"去哪儿解锁"的指引（与 F1 同款）
+    if (out.failures.some((f) => f.reason === 'no-key') && hasRememberedKey(cfg)) {
+      diagnosisNotice.value +=
+        '（本机保存过一个 Key，到「设置 → 🤖 AI 助手设置」用家长口令解锁后就能用）'
+    }
+  } catch (e) {
+    aborted = e instanceof AiHintError && e.code === 'aborted'
+    // aborted 不降级：只告诉家长"已停止、可重来"，不给他一份自动生成的报告
+    diagnosisNotice.value = aborted
+      ? '已停止：这次诊断被手动停掉了。再点一次「生成诊断报告」可以重新开始。'
+      : describeAiFailure(e instanceof AiHintError ? e.code : 'network')
+  } finally {
+    diagnosing.value = false
+    stopDiagTypewriter(!aborted)
+    diagAbort = null
+  }
+}
+
+/** 手动停止：中断不降级 */
+function stopDiagnosis(): void {
+  diagAbort?.abort()
+}
+
+/**
+ * 导出诊断 PDF。
+ *
+ * 复用 E 线的既有管道（`pdfExporter.exportReportAsPDF`）：html2canvas + jspdf、
+ * 临时摘 dark-mode 出浅色版。只截 `.diag-report` 这个元素 —— 不截整页。
+ */
+async function handleExportDiagnosis(): Promise<void> {
+  const el = diagnosisEl.value
+  if (!el || diagExporting.value) return
+  diagExporting.value = true
+  try {
+    await exportReportAsPDF(el, `ai-diagnosis-${localDateKey()}`)
+    message.success('已导出诊断报告 PDF')
+  } catch (e) {
+    message.error('导出失败：' + (e as Error).message)
+  } finally {
+    diagExporting.value = false
   }
 }
 </script>
@@ -1416,6 +1649,103 @@ async function handleExportCard(): Promise<void> {
     color: var(--danger-text);
     border-color: var(--danger-text);
   }
+}
+
+/* ========== G2 · AI 学习诊断 ========== */
+.diag-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.diag-entry-text {
+  min-width: 0;
+}
+
+.diag-entry-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: $text-main;
+  margin-bottom: 4px;
+}
+
+.diag-entry-desc {
+  font-size: 12px;
+  color: $text-sub;
+
+  b { color: $text-main; }
+}
+
+.diag-meta {
+  padding-top: 4px;
+}
+
+.diag-engine {
+  font-size: $font-2xs;
+  font-weight: 700;
+  color: $text-muted;
+}
+
+.diag-notice {
+  font-size: 12px;
+  line-height: 1.7;
+  color: $text-sub;
+  background: $bg-color-hover;
+  border-radius: $radius-md;
+  padding: 8px 12px;
+}
+
+.diag-report {
+  font-size: 13px;
+  line-height: 1.8;
+  color: $text-main;
+
+  :deep(h2) {
+    font-size: 16px;
+    font-weight: 800;
+    color: $text-main;
+    margin: 4px 0 8px;
+  }
+
+  :deep(h3) {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-main;
+    margin: 12px 0 6px;
+  }
+
+  :deep(ul) {
+    margin: 4px 0;
+    padding-left: 18px;
+  }
+
+  :deep(p) {
+    margin: 6px 0;
+  }
+
+  :deep(strong) {
+    color: $text-main;
+    font-weight: 700;
+  }
+
+  :deep(code) {
+    font-size: 12px;
+    background: $bg-color-hover;
+    border-radius: $radius-sm;
+    padding: 1px 5px;
+  }
+}
+
+.diag-actions {
+  display: flex;
+  gap: $space-2;
+  padding-top: 4px;
 }
 
 /* ========== E3 · 周报卡片操作区 + 导出遮罩 ========== */
