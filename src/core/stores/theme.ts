@@ -14,6 +14,8 @@ interface PersistedTheme {
   mode: ThemeModePreference
   fontSize: FontSize
   presetManual: boolean
+  /** V2.1 · 自定义主题色：用户自选的强调色（6 位 hex），null = 关闭（用学段预设色） */
+  customAccent: string | null
 }
 
 const PRESET_VALUES: ThemePreset[] = ['primary', 'junior', 'senior']
@@ -25,6 +27,7 @@ const DEFAULTS: PersistedTheme = {
   mode: 'light',
   fontSize: 'medium',
   presetManual: false,
+  customAccent: null,
 }
 
 /** 依据明暗偏好解析是否深色（system 走 prefers-color-scheme）。 */
@@ -44,11 +47,15 @@ function loadPersisted(): PersistedTheme {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return { ...DEFAULTS }
     const obj = JSON.parse(raw) as Partial<PersistedTheme>
+    const rawAccent = obj?.customAccent
+    const customAccent =
+      typeof rawAccent === 'string' && /^#[0-9a-fA-F]{6}$/.test(rawAccent) ? rawAccent : null
     return {
       preset: PRESET_VALUES.includes(obj?.preset as ThemePreset) ? (obj!.preset as ThemePreset) : DEFAULTS.preset,
       mode: MODE_VALUES.includes(obj?.mode as ThemeModePreference) ? (obj!.mode as ThemeModePreference) : DEFAULTS.mode,
       fontSize: SIZE_VALUES.includes(obj?.fontSize as FontSize) ? (obj!.fontSize as FontSize) : DEFAULTS.fontSize,
       presetManual: typeof obj?.presetManual === 'boolean' ? obj.presetManual : DEFAULTS.presetManual,
+      customAccent,
     }
   } catch {
     return { ...DEFAULTS }
@@ -63,6 +70,8 @@ export const useThemeStore = defineStore('theme', () => {
   const preset = ref<ThemePreset>(initial.preset)
   /** 家长是否手动覆盖过学段预设（true 后永久停止自动推荐） */
   const presetManual = ref<boolean>(initial.presetManual)
+  /** V2.1 · 自定义主题色（null = 关闭，用学段预设色） */
+  const customAccent = ref<string | null>(initial.customAccent)
 
   // 计算实际生效的明暗（处理 system 模式）
   const actualTheme = computed<'light' | 'dark'>(() => {
@@ -86,7 +95,7 @@ export const useThemeStore = defineStore('theme', () => {
 
   // 持久化：任一字段变化同步回写（写「原始意图值」，mode 存 system 而非解析值）
   watch(
-    [themeMode, fontSize, preset, presetManual],
+    [themeMode, fontSize, preset, presetManual, customAccent],
     () => {
       if (typeof localStorage === 'undefined') return
       try {
@@ -95,6 +104,7 @@ export const useThemeStore = defineStore('theme', () => {
           mode: themeMode.value,
           fontSize: fontSize.value,
           presetManual: presetManual.value,
+          customAccent: customAccent.value,
         }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
       } catch {
@@ -128,6 +138,18 @@ export const useThemeStore = defineStore('theme', () => {
   }
 
   /**
+   * V2.1 · 设置自定义主题色。
+   * @param hex 6 位 hex（含 #）即启用；非法 / 空 / null 一律视作关闭（回退学段预设色）。
+   */
+  function setCustomAccent(hex: string | null): void {
+    customAccent.value =
+      hex && typeof hex === 'string' && /^#[0-9a-fA-F]{6}$/.test(hex) ? hex : null
+  }
+
+  /** 是否启用了自定义主题色 */
+  const accentActive = computed<boolean>(() => customAccent.value !== null)
+
+  /**
    * 编排：仅当 presetManual===false 时，用学习包年级推断结果应用预设。
    * 数据源：packageStore.packages[].manifest（grade / updatedAt / createdAt）。
    */
@@ -142,10 +164,13 @@ export const useThemeStore = defineStore('theme', () => {
     fontSize,
     preset,
     presetManual,
+    customAccent,
+    accentActive,
     actualTheme,
     setTheme,
     setFontSize,
     setPreset,
+    setCustomAccent,
     restoreAuto,
     reconcilePreset,
     resolveDark,

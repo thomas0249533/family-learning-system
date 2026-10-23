@@ -65,6 +65,38 @@
             <n-radio-button value="large">大</n-radio-button>
           </n-radio-group>
         </div>
+
+        <!-- 自定义主题色（V2.1 附加）：取代写死的"淡紫"预设，让用户自选强调色 -->
+        <div>
+          <h4 class="setting-label">自定义主题色</h4>
+          <div class="accent-row">
+            <button
+              v-for="a in ACCENT_PRESETS"
+              :key="a.hex"
+              type="button"
+              class="accent-swatch"
+              :class="{ selected: themeStore.customAccent?.toLowerCase() === a.hex.toLowerCase() }"
+              :style="{ background: a.hex }"
+              :aria-label="a.name"
+              :title="a.name"
+              @click="themeStore.setCustomAccent(a.hex)"
+            ></button>
+            <label class="accent-picker" title="自定义颜色">
+              <input type="color" :value="themeStore.customAccent ?? accentFallback" @input="onAccentPick" />
+              <span>自定义</span>
+            </label>
+          </div>
+          <div class="accent-actions">
+            <AppButton
+              v-if="themeStore.accentActive"
+              size="tiny"
+              quaternary
+              type="primary"
+              @click="themeStore.setCustomAccent(null)"
+            >恢复默认（关闭自定义色）</AppButton>
+            <span v-else class="hint">未启用自定义色，使用当前学段主题色</span>
+          </div>
+        </div>
       </n-space>
     </AppCard>
 
@@ -222,6 +254,7 @@ import ImportPreview from '@/views/settings/ImportPreview.vue'
 import SyncSettings from '@/views/settings/SyncSettings.vue'
 import LocalAiCard from '@/views/settings/LocalAiCard.vue'
 import { useThemeStore } from '@core/stores/theme'
+import { palette } from '@core/styles/palette'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { usePackageStore } from '@core/stores/package'
 import { db } from '@/db'
@@ -232,6 +265,7 @@ import type { ThemePreset } from '@core/styles/palette'
 import type { GradeSource } from '@core/theme/presetInference'
 import { inferPreset } from '@core/theme/presetInference'
 import { PRESET_META, presetPreview } from '@core/theme/presetPreview'
+import { ACCENT_PRESETS } from '@core/theme/accent'
 import {
   DEFAULT_DEEPSEEK_MODEL,
   DEFAULT_OLLAMA_MODEL,
@@ -249,6 +283,9 @@ const packageStore = usePackageStore()
 const message = useMessage()
 const dialog = useDialog()
 const route = useRoute()
+
+/** 取色器在「未启用自定义色」时的初始值：取当前学段预设的真实品牌色（避免硬编码 hex 被 check:hex 抓住） */
+const accentFallback = computed(() => palette.presets[themeStore.preset][themeStore.actualTheme].primary)
 
 /**
  * 把 `/settings#family-backup` 落到「家庭备份」那一行上（B4）。
@@ -371,6 +408,12 @@ function applyRecommended() {
 function handleRestoreAuto() {
   themeStore.restoreAuto(gradeSources())
   message.success('已恢复自动推荐')
+}
+
+/** V2.1 · 取色器实时套用自定义强调色（仅作品牌主色相覆盖，不碰学段/明暗/字号） */
+function onAccentPick(e: Event): void {
+  const v = (e.target as HTMLInputElement).value
+  themeStore.setCustomAccent(v)
 }
 
 onMounted(async () => {
@@ -581,5 +624,55 @@ function clearAllData() {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 8px;
+}
+
+/* ========== V2.1 · 自定义主题色 ========== */
+.accent-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.accent-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid $border-color;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+
+  &:hover { transform: scale(1.08); }
+  &.selected {
+    border-color: var(--primary-text);
+    box-shadow: 0 0 0 2px var(--primary-light);
+  }
+}
+
+.accent-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: $text-sub;
+  cursor: pointer;
+
+  input[type='color'] {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 2px solid $border-color;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+  }
+}
+
+.accent-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
 }
 </style>

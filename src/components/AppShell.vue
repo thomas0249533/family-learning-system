@@ -1,5 +1,5 @@
 <template>
-  <div class="app-shell">
+  <div class="app-shell" :class="{ 'is-focus': uiStore.isFocusMode }">
     <aside class="app-sidebar">
       <div class="sidebar-logo">
         <span class="logo-icon">📘</span>
@@ -89,6 +89,15 @@
 
     <!-- 成就解锁提示：挂在布局层而不是某个页面里，任何页面解锁都能弹（V1.3 · T03） -->
     <AchievementToast ref="toastRef" />
+
+    <!-- V2.1 · 沉浸式专注模式：右上角悬浮退出按钮（盖过一切布局，Esc / 退出全屏也会退出） -->
+    <button
+      v-if="uiStore.isFocusMode"
+      class="focus-exit-btn"
+      type="button"
+      aria-label="退出专注模式"
+      @click="uiStore.exitFocus()"
+    >✕ 退出专注</button>
   </div>
 </template>
 
@@ -117,9 +126,11 @@ import { switchProfileAndReload } from '@core/profile/switchProfileService'
 import { useAchievementStore } from '@core/stores/achievement'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
+import { useUiStore } from '@core/stores/ui'
 
 const route = useRoute()
 const router = useRouter()
+const uiStore = useUiStore()
 
 // ---------- 档案切换（V1.4 · B1）----------
 /**
@@ -186,12 +197,29 @@ onMounted(() => {
   offProfileChange = onProfileChange((next) => {
     profileState.value = next
   })
+
+  // V2.1 · 专注模式：Esc 退出 + 浏览器退出全屏时同步退出（避免"侧栏没了但不在全屏"卡死）
+  window.addEventListener('keydown', onFocusKey)
+  document.addEventListener('fullscreenchange', onFullscreenChange)
 })
 
 onUnmounted(() => {
   if (settleTimer !== null) clearTimeout(settleTimer)
   offProfileChange?.()
+
+  window.removeEventListener('keydown', onFocusKey)
+  document.removeEventListener('fullscreenchange', onFullscreenChange)
 })
+
+/** Esc 退出专注模式（全屏下的 Esc 由浏览器接管退出全屏，由 fullscreenchange 兜底） */
+function onFocusKey(e: KeyboardEvent): void {
+  if (e.key === 'Escape' && uiStore.isFocusMode) uiStore.exitFocus()
+}
+
+/** 用户按浏览器原生 Esc 退出全屏后，专注态一并退出 */
+function onFullscreenChange(): void {
+  if (!document.fullscreenElement && uiStore.isFocusMode) uiStore.exitFocus()
+}
 
 watch(
   () => [
@@ -575,7 +603,82 @@ const todayText = computed(() => {
   }
 }
 
-.fade-enter-active, .fade-leave-active {
+  /* ========== V2.1 · 沉浸式专注模式 ========== */
+  /* 平滑收起的过渡（尊重 prefers-reduced-motion：reduced 时不声明 transition → 瞬时切换） */
+  @media (prefers-reduced-motion: no-preference) {
+    .app-sidebar {
+      transition: width 0.28s var(--motion-ease, ease), opacity 0.28s ease, transform 0.28s ease;
+    }
+    .app-header {
+      transition: height 0.28s var(--motion-ease, ease), opacity 0.28s ease, transform 0.28s ease;
+    }
+    .app-nav {
+      transition: transform 0.28s var(--motion-ease, ease), opacity 0.28s ease, visibility 0s linear 0.28s;
+    }
+  }
+
+  /* 进入专注：侧栏 / 顶栏 / 底 tab 收起，练习区满宽并居中 */
+  .app-shell.is-focus {
+    .app-sidebar {
+      width: 0;
+      min-width: 0;
+      padding: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(-12px);
+      pointer-events: none;
+      border: none;
+    }
+    .app-header {
+      height: 0;
+      padding: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-12px);
+      pointer-events: none;
+      border: none;
+    }
+    .app-nav {
+      transform: translateY(100%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .app-main {
+      padding-bottom: 24px;
+    }
+    .app-main-inner {
+      max-width: 820px;
+    }
+  }
+
+  /* 退出专注悬浮按钮：固定右上角，盖过 header(z:50) / nav(z:100) */
+  .focus-exit-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 999px;
+    background: var(--primary-text);
+    color: var(--text-on-primary);
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.12));
+    transition: transform 0.15s ease, opacity 0.15s ease;
+
+    &:hover { transform: translateY(-1px); opacity: 0.94; }
+    &:active { transform: scale(0.97); }
+    &:focus-visible { outline: 2px solid var(--on-strong); outline-offset: 2px; }
+  }
+
+  .fade-enter-active, .fade-leave-active {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 .fade-enter-from {

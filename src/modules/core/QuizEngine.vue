@@ -33,6 +33,17 @@
               {{ currentQuestion.metadata?.difficulty || '基础' }}
             </span>
             <!--
+              V2.1 · 沉浸式专注模式入口：进入后隐藏布局外壳（AppShell 响应 isFocusMode），
+              并尝试浏览器全屏（被拒/不支持时静默降级，仅隐藏侧栏）。
+            -->
+            <button
+              class="focus-btn"
+              type="button"
+              data-testid="focus-toggle"
+              :aria-pressed="uiStore.isFocusMode"
+              @click="toggleFocusMode"
+            >{{ uiStore.isFocusMode ? '✕ 退出专注' : '⛶ 专注模式' }}</button>
+            <!--
               V2.0 · 答题卡入口。考试模式不显示：那里已经有常驻的 `.question-nav`
               题号条（ExamPanel 的布局不能动），再放一个入口只会多一层弹窗。
             -->
@@ -252,6 +263,7 @@ import {
 } from '@core/quiz/judge'
 // 填空判分已抽到纯函数 @core/quiz/blank（SFC 内部不可测，见该文件头）
 import { gradeBlank } from '@core/quiz/blank'
+import { useUiStore } from '@core/stores/ui'
 
 export type QuizQuestionType = 'single' | 'blank' | 'multiple' | 'judge' | 'matching' | 'spelling' | 'essay'
 
@@ -303,6 +315,8 @@ const props = withDefaults(defineProps<{
   startedAt?: number
   timeLimit?: number
   sessionId?: number
+  /** V2.1 · 专注模式：本实例完成后是否自动退出专注（热身练习传 false，避免提前退出主练习的专注态） */
+  exitFocusOnFinish?: boolean
 }>(), {
   examMode: false,
   initialAnswers: () => ({}),
@@ -310,6 +324,7 @@ const props = withDefaults(defineProps<{
   startedAt: 0,
   timeLimit: 0,
   sessionId: undefined,
+  exitFocusOnFinish: true,
 })
 
 const emit = defineEmits<{
@@ -319,6 +334,34 @@ const emit = defineEmits<{
   (e: 'save-progress', patch: { currentIndex: number; elapsedSeconds: number; examAnswers?: Record<string, any> }): void
   (e: 'exit'): void
 }>()
+
+const uiStore = useUiStore()
+
+/** V2.1 · 沉浸式专注模式：进入并尝试全屏（失败静默降级），退出时一并退出全屏 */
+function tryEnterFullscreen(): void {
+  try {
+    const el = document.documentElement
+    const fn = el.requestFullscreen?.bind(el)
+    if (fn) fn().catch(() => { /* 浏览器拒绝 / 不支持 → 仅隐藏侧栏 */ })
+  } catch {
+    /* 无 requestFullscreen（极旧环境）→ 静默降级 */
+  }
+}
+
+function toggleFocusMode(): void {
+  if (uiStore.isFocusMode) {
+    uiStore.exitFocus()
+    try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}) } catch {}
+  } else {
+    uiStore.enterFocus()
+    tryEnterFullscreen()
+  }
+}
+
+/** 练习完成（finish）时按 prop 决定是否自动退出专注 */
+function maybeExitFocusOnFinish(): void {
+  if (props.exitFocusOnFinish) uiStore.exitFocus()
+}
 
 const currentIndex = ref(props.initialIndex)
 const userAnswer = ref<any>('')
@@ -971,6 +1014,7 @@ function nextQuestion() {
     afterQuestionMoved()
   } else {
     emit('finish', correctCount.value)
+    maybeExitFocusOnFinish()
   }
 }
 
@@ -1059,6 +1103,7 @@ function finalizeExam() {
   // ✅ 先发详情，再发 finish
   emit('exam-detail', { items })
   emit('finish', correct)
+  maybeExitFocusOnFinish()
 }
 
 function handleExit() {
@@ -1203,6 +1248,31 @@ function handleExit() {
   white-space: nowrap;
 
   &:hover { background: $primary-light; color: $primary-text; }
+  &:focus-visible {
+    outline: var(--focus-ring-w) solid var(--btn-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+}
+
+/* V2.1 · 沉浸式专注模式入口按钮（与答题卡入口同款样式语言） */
+.focus-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid $border-color;
+  background: $card-bg;
+  color: $text-main;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+
+  &:hover { background: $bg-color-hover; border-color: $primary-color; }
+  &:active { transform: scale(0.97); }
   &:focus-visible {
     outline: var(--focus-ring-w) solid var(--btn-focus-ring);
     outline-offset: var(--focus-ring-offset);

@@ -40,6 +40,7 @@
         <QuizEngine
           :questions="warmupExercises"
           :package-id="currentPackageId"
+          :exit-focus-on-finish="false"
           @answer="handleWarmupAnswer"
           @finish="handleWarmupFinish"
         />
@@ -136,6 +137,7 @@
           :package-id="currentPackageId"
           :initial-answers="practiceInitial.answers"
           :initial-index="practiceInitial.index"
+          :exit-focus-on-finish="true"
           @answer="handleAnswer"
           @finish="handleQuizFinish"
           @save-progress="handleSaveProgress"
@@ -196,12 +198,20 @@ import {
 } from '@core/session/topicSession'
 import { db, type MasteryStatus, type TopicSessionRecord } from '@/db'
 import QuizEngine, { type AnswerPayload } from '@modules/core/QuizEngine.vue'
+import { useUiStore } from '@core/stores/ui'
 
 const route = useRoute()
 const router = useRouter()
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
 const message = useMessage()
+const uiStore = useUiStore()
+
+/**
+ * V2.1 · 沉浸式专注模式生命周期铁律：离开练习页（本组件卸载）必须重置专注态，
+ * 否则用户回首页会发现侧边栏没了、疑似"全局黑屏"。
+ */
+onUnmounted(() => uiStore.exitFocus())
 
 /**
  * V1.6 · C3：复习模式。从首页「最需要复习」弱项行带 `?mode=review` 跳进来时为 true。

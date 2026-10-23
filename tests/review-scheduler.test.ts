@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   computeNextReview,
   humanizeNextReview,
@@ -225,10 +225,18 @@ describe('展示用函数（Review.vue / Home.vue 依赖，行为不能变）', 
   })
 
   it('humanizeNextReview：未安排 / 现在 / N 天后 / N 小时后', () => {
-    expect(humanizeNextReview(undefined)).toBe('未安排')
-    expect(humanizeNextReview(new Date(Date.now() - DAY).toISOString())).toBe('现在该复习了')
-    expect(humanizeNextReview(new Date(Date.now() + 3 * DAY).toISOString())).toBe('3 天后')
-    expect(humanizeNextReview(new Date(Date.now() + 5 * 3600000).toISOString())).toBe('5 小时后')
+    // 冻结时钟：humanizeNextReview 内部用 Date.now()，若不冻结，构造入参与
+    // 函数内取到的 now 之间有毫秒差，会把"5 小时后"压到"4 小时后"导致偶发失败。
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2025-01-15T10:00:00'))
+    try {
+      expect(humanizeNextReview(undefined)).toBe('未安排')
+      expect(humanizeNextReview(new Date(Date.now() - DAY).toISOString())).toBe('现在该复习了')
+      expect(humanizeNextReview(new Date(Date.now() + 3 * DAY).toISOString())).toBe('3 天后')
+      expect(humanizeNextReview(new Date(Date.now() + 5 * 3600000).toISOString())).toBe('5 小时后')
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('stageLabel：越界不返回 undefined', () => {
