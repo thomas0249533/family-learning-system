@@ -9,6 +9,10 @@
           <span class="streak-flame">🔥</span>
           <span class="streak-text">{{ streakLabel }}</span>
         </div>
+        <!-- 技能树入口（V1.12 · G1）：跳 /graph 看学科 → 单元 → 知识点全景 -->
+        <div class="graph-entry">
+          <AppButton size="small" icon="🌳" @click="goToGraph">技能树</AppButton>
+        </div>
       </div>
       <div class="welcome-decor">
         <span class="decor-emoji">📚</span>
@@ -166,6 +170,7 @@
 import { ref, onMounted, onUnmounted, computed, watchEffect, nextTick } from 'vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import { useRouter } from 'vue-router'
@@ -312,6 +317,11 @@ function generateAllRecommendations(): AggregatedRec[] {
 
 function goToReview() {
   router.push('/review')
+}
+
+/** 技能树入口（V1.12 · G1） */
+function goToGraph() {
+  router.push('/graph')
 }
 
 async function goToRecommendation(rec: AggregatedRec) {
@@ -531,6 +541,13 @@ onUnmounted(() => {
       background: rgba(var(--on-strong-rgb), 0.28);
       box-shadow: $shadow;
     }
+  }
+
+  /* 技能树入口（V1.12 · G1）：白底小按钮压在渐变横幅上，对比由 n-button 主题保证 */
+  .graph-entry {
+    position: relative;
+    z-index: 1;
+    margin-top: 12px;
   }
 }
 

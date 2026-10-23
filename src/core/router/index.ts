@@ -3,6 +3,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/home' },
   { path: '/home', name: 'Home', component: () => import('@/views/Home.vue') },
+  // 技能树（V1.12 · G1）。echarts tree 渲染学科 → 单元 → 知识点，lazy import 同其余条目
+  { path: '/graph', name: 'KnowledgeGraph', component: () => import('@/views/KnowledgeGraph.vue') },
   {
     path: '/learn',
     component: () => import('@/views/Learn.vue'),
