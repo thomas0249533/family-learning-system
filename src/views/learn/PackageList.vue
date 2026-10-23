@@ -25,6 +25,14 @@
               <div class="pkg-card-head">
                 <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
                 <span class="pkg-card-tag tag-green">每日一练</span>
+                <!-- G3 · 跨设备分享：`.stop` 防止触发整卡的学习跳转 -->
+                <button
+                  class="pkg-share-btn"
+                  type="button"
+                  aria-label="分享此学习包"
+                  title="分享此学习包"
+                  @click.stop="openShare(pkg)"
+                >📤</button>
               </div>
               <div class="pkg-card-meta">
                 {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级 ·
@@ -64,6 +72,13 @@
               <div class="pkg-card-head">
                 <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
                 <span class="pkg-card-tag tag-blue">{{ typeLabel(getPackageType(pkg)) }}</span>
+                <button
+                  class="pkg-share-btn"
+                  type="button"
+                  aria-label="分享此学习包"
+                  title="分享此学习包"
+                  @click.stop="openShare(pkg)"
+                >📤</button>
               </div>
               <div class="pkg-card-meta">
                 {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级 ·
@@ -100,6 +115,13 @@
               <div class="pkg-card-head">
                 <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
                 <span class="pkg-card-tag tag-orange">专项测验</span>
+                <button
+                  class="pkg-share-btn"
+                  type="button"
+                  aria-label="分享此学习包"
+                  title="分享此学习包"
+                  @click.stop="openShare(pkg)"
+                >📤</button>
               </div>
               <div class="pkg-card-meta">
                 {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级
@@ -138,6 +160,13 @@
               <div class="pkg-card-head">
                 <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
                 <span class="pkg-card-tag tag-red">冲刺卷</span>
+                <button
+                  class="pkg-share-btn"
+                  type="button"
+                  aria-label="分享此学习包"
+                  title="分享此学习包"
+                  @click.stop="openShare(pkg)"
+                >📤</button>
               </div>
               <div class="pkg-card-meta">
                 {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级
@@ -157,14 +186,39 @@
         class="empty-card"
       />
     </template>
+
+    <!-- G3 · 分享弹窗：二维码 + 后缀码（手输兜底） -->
+    <n-modal v-model:show="showShareModal" preset="card" title="📤 分享学习包" style="max-width: 420px;">
+      <div class="share-body">
+        <p class="share-hint">
+          在另一台设备上打开「导入学习包 → 扫码导入」扫描此二维码；
+          摄像头不可用时，可把下方分享码手动输入到那台设备。
+        </p>
+        <canvas ref="shareCanvasRef" class="share-canvas" aria-label="学习包分享二维码"></canvas>
+        <p v-if="shareDrawError" class="share-error" role="alert">{{ shareDrawError }}</p>
+        <div class="share-code">
+          <div class="share-code-label">分享码（手输用）</div>
+          <code class="share-code-text">{{ shareString }}</code>
+        </div>
+        <p class="share-note">
+          二维码只包含包 id 与校验和，不含任何口令或密钥，可放心拍照传输。
+        </p>
+      </div>
+      <template #footer>
+        <n-space justify="end">
+          <AppButton @click="showShareModal = false">关闭</AppButton>
+        </n-space>
+      </template>
+    </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { NSpin } from 'naive-ui'
+import { NSpin, NModal, NSpace } from 'naive-ui'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
 import {
@@ -174,12 +228,49 @@ import {
   packageCardStatusOf,
   type CardStatus,
 } from '@core/learning/cardStatus'
+import { buildShareString, drawQrToCanvas } from '@core/share/qrcode'
 import type { LearningPackageRecord } from '@/db'
 
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
 const router = useRouter()
 const loading = ref(true)
+
+// ==================== G3 · 跨设备分享 ====================
+const showShareModal = ref(false)
+const shareCanvasRef = ref<HTMLCanvasElement | null>(null)
+const shareDrawError = ref('')
+const shareString = ref('')
+/** 分享码的展示行宽有限，太长的 url 会撑破弹窗 —— 生成时就不带 url 的场景不存在 */
+const SHARE_CANVAS_SIZE = 240
+
+function openShare(pkg: LearningPackageRecord): void {
+  try {
+    shareString.value = buildShareString({ packageId: pkg.packageId })
+    shareDrawError.value = ''
+    showShareModal.value = true
+  } catch (e) {
+    shareString.value = ''
+    showShareModal.value = false
+    console.error('[分享] 载荷组装失败', e)
+  }
+}
+
+// 弹窗内容是 teleport 渲染，开弹窗后下一帧 canvas 才挂载，必须 nextTick 后再画
+watch(showShareModal, (show) => {
+  if (!show) return
+  void nextTick(() => {
+    const canvas = shareCanvasRef.value
+    if (!canvas || !shareString.value) return
+    try {
+      drawQrToCanvas(canvas, shareString.value, SHARE_CANVAS_SIZE)
+      shareDrawError.value = ''
+    } catch (e) {
+      // 画布失败不阻断弹窗：后缀码手输仍然可用
+      shareDrawError.value = e instanceof Error ? e.message : '二维码渲染失败，请改用下方分享码手动输入'
+    }
+  })
+})
 
 onMounted(async () => {
   await Promise.all([packageStore.loadPackages(), userDataStore.loadUserData()])
@@ -460,5 +551,92 @@ function subjectLabel(subject?: string): string {
   padding: 60px 20px;
   box-shadow: $shadow-sm;
   border: 1px solid $border-color;
+}
+
+/* ===== G3 · 分享弹窗（样式全部走语义 token）===== */
+.share-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.share-hint {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--text-sub);
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* 白底黑块是扫码对比度要求，与主题无关（见 qrcode.ts 的说明） */
+.share-canvas {
+  display: block;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+}
+
+.share-error {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--danger-text);
+}
+
+.share-code {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background: var(--bg-color-hover);
+  border-radius: var(--radius-sm);
+}
+
+.share-code-label {
+  font-size: var(--font-2xs);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.share-code-text {
+  font-size: var(--font-2xs);
+  color: var(--text-main);
+  word-break: break-all;
+  line-height: 1.6;
+}
+
+.share-note {
+  margin: 0;
+  font-size: var(--font-2xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* 分享按钮：卡片头里的低存在感入口，悬停才浮出主色 */
+.pkg-share-btn {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--bg-color-hover);
+    color: var(--primary-text);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+  }
 }
 </style>

@@ -8,7 +8,60 @@
       <n-upload :custom-request="handleUploadZip" :show-file-list="false" accept=".zip,.lpkgset">
         <AppButton type="success" dashed>选择包集合 ZIP（批量导入）</AppButton>
       </n-upload>
+
+      <!-- G3 · 跨设备扫码导入入口 -->
+      <AppButton type="info" dashed @click="openScanModal">📷 扫码导入</AppButton>
     </n-space>
+
+    <!-- G3 · 扫码导入弹窗：摄像头扫码 / 后缀码手输（同一 parser） -->
+    <n-modal v-model:show="showScanModal" preset="card" title="📷 扫码导入" style="max-width: 480px;" @after-leave="stopCamera">
+      <div class="scan-body">
+        <template v-if="scanSupported">
+          <div class="scan-video-wrap">
+            <video ref="scanVideoRef" class="scan-video" muted playsinline aria-label="摄像头扫码画面"></video>
+            <div v-if="cameraError" class="scan-camera-error" role="alert">{{ cameraError }}</div>
+          </div>
+          <div class="scan-divider">或手动输入分享码</div>
+        </template>
+        <template v-else>
+          <p class="scan-hint">
+            本设备的浏览器不支持摄像头扫码，请把另一台设备二维码里的分享码
+            （以 FamilyLearning:// 开头，或 type=pkg 开头的后缀码）手动输入到下面。
+          </p>
+        </template>
+
+        <div class="scan-manual">
+          <n-input
+            v-model:value="manualCode"
+            type="textarea"
+            placeholder="粘贴或输入分享码，例如：FamilyLearning://import?type=pkg&pkgId=..."
+            :rows="3"
+          />
+          <AppButton type="primary" class="scan-submit" :disabled="manualCode.trim() === ''" @click="handleManualCode">
+            解析分享码
+          </AppButton>
+        </div>
+
+        <!-- 解析结果：只走文本插值，绝不 v-html -->
+        <div v-if="parseError" class="scan-result scan-result-error" role="alert">
+          <div class="scan-result-title">❌ 分享码无效</div>
+          <div class="scan-result-msg">{{ parseError.message }}</div>
+          <div class="scan-result-code">错误码：{{ parseError.code }}</div>
+        </div>
+        <div v-else-if="parsedPayload" class="scan-result scan-result-ok">
+          <div class="scan-result-title">✅ 分享码有效</div>
+          <div class="scan-result-msg">学习包：<code>{{ parsedPayload.packageId }}</code></div>
+          <div class="scan-result-msg">校验和已通过（{{ parsedPayload.checksum }}）</div>
+          <div v-if="parsedPayload.url" class="scan-result-msg">包文件地址：{{ parsedPayload.url }}</div>
+          <div class="scan-result-note">请确保该学习包的包文件（.lpkgset / .json）已通过上方按钮或 ZIP 方式导入本机。</div>
+        </div>
+      </div>
+      <template #footer>
+        <n-space justify="end">
+          <AppButton @click="showScanModal = false">关闭</AppButton>
+        </n-space>
+      </template>
+    </n-modal>
 
     <!-- 单包确认弹窗 -->
     <n-modal v-model:show="showConfirmModal" title="确认学习包信息" preset="card" style="max-width: 500px;">
@@ -76,12 +129,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import {
   NUpload, NModal, NForm, NFormItem,
   NSelect, NInputNumber, NInput, NSpace, NTag, useMessage
 } from 'naive-ui'
 import { PackageImporter, type ImportIssue } from '@core/importer/importService'
+import { parseShareString, type ParseError, type SharePayload } from '@core/share/parser'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 
@@ -116,6 +170,99 @@ const setPackageIds = ref<string[]>([])
 const setWarnings = ref<ImportIssue[]>([])
 const setErrors = ref<ImportIssue[]>([])
 const setFailedPackageId = ref<string>('')
+
+// ==================== G3 · 扫码导入 ====================
+// 'BarcodeDetector' 特性检测：可用则调起摄像头，不可用降级为后缀码手输。
+// 两条路都收敛到同一个 parseShareString（防御口径唯一）。
+const showScanModal = ref(false)
+const scanSupported = typeof window !== 'undefined' && 'BarcodeDetector' in window
+const scanVideoRef = ref<HTMLVideoElement | null>(null)
+const cameraError = ref('')
+const manualCode = ref('')
+const parseError = ref<ParseError | null>(null)
+const parsedPayload = ref<SharePayload | null>(null)
+
+let cameraStream: MediaStream | null = null
+let scanTimer: ReturnType<typeof setInterval> | null = null
+
+async function openScanModal(): Promise<void> {
+  parseError.value = null
+  parsedPayload.value = null
+  manualCode.value = ''
+  cameraError.value = ''
+  showScanModal.value = true
+  if (scanSupported) await startCamera()
+}
+
+async function startCamera(): Promise<void> {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' },
+    })
+    cameraStream = stream
+    // 等弹窗内容（video 元素）真正挂载后再喂流
+    requestAnimationFrame(() => {
+      if (scanVideoRef.value) {
+        scanVideoRef.value.srcObject = stream
+        void scanVideoRef.value.play()
+      }
+    })
+    await scanLoop()
+  } catch {
+    // 拒权 / 无摄像头：不阻断弹窗，手输仍然可用
+    cameraError.value = '摄像头不可用（未授权或无摄像头），请改用手动输入分享码。'
+  }
+}
+
+async function scanLoop(): Promise<void> {
+  try {
+    const detector = new (window as any).BarcodeDetector({ formats: ['qr_code'] })
+    scanTimer = setInterval(async () => {
+      if (!showScanModal.value || !scanVideoRef.value) return
+      try {
+        const codes = await detector.detect(scanVideoRef.value)
+        if (codes.length > 0) {
+          const text = codes[0].rawValue as string
+          stopCamera()
+          handleScannedCode(text)
+        }
+      } catch {
+        // 单帧识别失败（画面模糊等）静默重试；连续失败由用户手动放弃
+      }
+    }, 400)
+  } catch {
+    cameraError.value = '扫码组件初始化失败，请改用手动输入分享码。'
+  }
+}
+
+function stopCamera(): void {
+  if (scanTimer !== null) {
+    clearInterval(scanTimer)
+    scanTimer = null
+  }
+  if (cameraStream) {
+    cameraStream.getTracks().forEach((t) => t.stop())
+    cameraStream = null
+  }
+}
+
+function handleScannedCode(text: string): void {
+  const result = parseShareString(text)
+  if (result.ok) {
+    parsedPayload.value = result.payload
+    parseError.value = null
+    message.success('二维码解析成功，校验和通过')
+  } else {
+    parsedPayload.value = null
+    parseError.value = result.error
+  }
+}
+
+function handleManualCode(): void {
+  handleScannedCode(manualCode.value)
+}
+
+onUnmounted(stopCamera)
 
 // ==================== 单包导入 ====================
 async function handleUploadJson({ file, onFinish }: any) {
@@ -176,6 +323,110 @@ async function handleUploadZip({ file, onFinish }: any) {
 <style scoped lang="scss">
 /* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
 .wizard-card { margin-bottom: 16px; }
+
+/* ===== G3 · 扫码导入弹窗（样式全部走语义 token）===== */
+.scan-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.scan-video-wrap {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-color);
+}
+
+.scan-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.scan-camera-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  font-size: var(--font-xs);
+  color: var(--danger-text);
+  background: var(--bg-color);
+}
+
+.scan-divider {
+  font-size: var(--font-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.scan-hint {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--text-sub);
+  line-height: 1.7;
+}
+
+.scan-manual {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.scan-submit {
+  align-self: flex-end;
+}
+
+.scan-result {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--border-color);
+}
+
+.scan-result-error {
+  background: var(--danger-soft);
+  border-left-color: var(--danger-color);
+  .scan-result-title { color: var(--danger-text); }
+}
+
+.scan-result-ok {
+  background: var(--success-soft);
+  border-left-color: var(--success-color);
+  .scan-result-title { color: var(--success-text); }
+}
+
+.scan-result-title {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.scan-result-msg {
+  font-size: var(--font-xs);
+  color: var(--text-main);
+  line-height: 1.7;
+  code {
+    background: var(--bg-color-hover);
+    padding: 0 4px;
+    border-radius: var(--radius-xs);
+  }
+}
+
+.scan-result-code {
+  margin-top: var(--space-1);
+  font-size: var(--font-2xs);
+  color: var(--text-muted);
+}
+
+.scan-result-note {
+  margin-top: var(--space-1);
+  font-size: var(--font-2xs);
+  color: var(--text-sub);
+}
 
 .set-result .result-summary {
   font-size: 15px;
