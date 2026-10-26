@@ -11,8 +11,9 @@
  *   · 版本比较复用 `compareVersions`（真·semver，正确处理 1.10.0 > 1.9.0）。
  *   · version.json 约定：`{ "version": "x.y.z", "downloadUrl": "https://..." }`。
  *
- * ⚠️ `UPDATE_CHECK_URL` 是部署期常量：当前没有发布服务器，先放 GitHub Raw 占位
- * （raw.githubusercontent.com 带 `ACAO:*`，CORS 可过）。接入正式发布管线时改这一行即可。
+ * ⚠️ `UPDATE_CHECK_URL` 是部署期常量：V2.8.0 起接入 GitHub 发布管线 —— 仓库
+ * thomas0249533/family-learning-system 的 main 分支根目录放置 version.json
+ * （raw.githubusercontent.com 带 `ACAO:*`，CORS 可过）。每次发版随 main 更新此文件。
  */
 import { compareVersions } from '@core/importer/catalogService'
 
@@ -32,9 +33,9 @@ export interface UpdateCheckError {
 
 export type UpdateCheckResult = UpdateInfo | UpdateCheckError
 
-/** 部署期常量：version.json 地址（带 CORS 头）。接入正式发布服务器时改这一行。 */
+/** 部署期常量：version.json 地址（raw.githubusercontent.com 自带 CORS 头）。 */
 export const UPDATE_CHECK_URL =
-  'https://raw.githubusercontent.com/<owner>/<repo>/<branch>/version.json'
+  'https://raw.githubusercontent.com/thomas0249533/family-learning-system/main/version.json'
 
 /**
  * 检查是否有新版本。
