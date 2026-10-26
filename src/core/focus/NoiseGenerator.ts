@@ -14,7 +14,13 @@
 // =====================================================================
 
 /** 可播放的噪音种类（UI 里的「关」用 'off' 单独表示，不在此枚举内） */
-export type NoiseKind = 'white' | 'pink' | 'rain' | 'campfire'
+export type NoiseKind = 'white' | 'pink' | 'rain' | 'campfire' | 'ocean' | 'stream'
+
+/**
+ * 当前正在播放什么。`'custom'` 表示用户导入的本地音频（见 `startBuffer`）——
+ * 它不是"合成噪音"，所以不进 `NoiseKind`：UI 上仍要区分"系统音源 / 我的音频"。
+ */
+export type PlayingKind = NoiseKind | 'custom'
 
 export interface NoiseGeneratorConfig {
   /** 注入 AudioContext（单测传 mock），或传工厂函数延迟创建。真实使用留空即可。 */
@@ -39,6 +45,10 @@ export class NoiseGenerator {
   private masterGain: GainNode | null = null
   private currentKind: NoiseKind | null = null
   private crackleTimer: ReturnType<typeof setTimeout> | null = null
+  /** V2.7 起：慢速 LFO（海浪/水泡/雨声游移）。销毁时必须一起停，否则 CPU 空转 */
+  private lfos: { osc: OscillatorNode; gain: GainNode }[] = []
+  /** 当前播放的是不是用户导入的音频 */
+  private customPlaying = false
 
   constructor(config: NoiseGeneratorConfig = {}) {
     const ctxInput = config.context ?? (() => new AudioContext())
@@ -85,12 +95,59 @@ export class NoiseGenerator {
     this.source = source
     this.masterGain = gain
     this.currentKind = kind
+    this.customPlaying = false
+
+    // V2.7：叠加慢速调制，把"一片死噪声"变成"有呼吸的环境音"
+    this.applyModulation(kind, filters)
 
     // 铁律 #2：用户交互后恢复上下文（suspended 状态下无声）
     await this.ctx.resume()
     source.start()
 
     if (kind === 'campfire') this.scheduleCrackle()
+  }
+
+  /**
+   * 播放一段**外部解码好的音频**（用户导入的 MP3 / M4A …）。
+   *
+   * 与 `start` 共用同一条主增益与淡入逻辑，所以音量滑块、切源、销毁的行为完全一致。
+   * 刻意不接受 URL：`decodeAudioData` 之后就没有 objectURL 需要 revoke 了 ——
+   * 少一条"忘记释放"的路径。
+   */
+  async startBuffer(buffer: AudioBuffer, options: { volume?: number } = {}): Promise<void> {
+    if (options.volume !== undefined) this.targetVolume = clamp(options.volume, 0, 1)
+
+    this.teardownNodes()
+
+    const source = this.ctx.createBufferSource()
+    source.buffer = buffer
+    source.loop = true
+
+    const gain = this.ctx.createGain()
+    const now = this.ctx.currentTime
+    gain.gain.setValueAtTime(0, now)
+    gain.gain.linearRampToValueAtTime(this.targetVolume, now + this.fadeSeconds)
+
+    source.connect(gain)
+    gain.connect(this.ctx.destination)
+
+    this.source = source
+    this.masterGain = gain
+    this.currentKind = null
+    this.customPlaying = true
+
+    await this.ctx.resume()
+    source.start()
+  }
+
+  /**
+   * 解码一段音频数据。
+   *
+   * 调用方**不要缓存返回值**：一段 5 分钟的立体声 MP3 解码成 Float32 约 100MB，
+   * 缓存几个就足以让低配平板卡死。用完即弃（交给 source 持有），切源后自然可回收。
+   */
+  async decodeToBuffer(data: ArrayBuffer): Promise<AudioBuffer> {
+    return await this.ctx.decodeAudioData(data)
   }
 
   /** 即时停止（无淡出，用于切源/销毁） */
@@ -152,9 +209,9 @@ export class NoiseGenerator {
     g.linearRampToValueAtTime(this.targetVolume, now + this.fadeSeconds)
   }
 
-  /** 当前是否正在播放某音源 */
-  get current(): NoiseKind | null {
-    return this.currentKind
+  /** 当前是否正在播放某音源（自定义音频返回 'custom'） */
+  get current(): PlayingKind | null {
+    return this.customPlaying ? 'custom' : this.currentKind
   }
 
   /**
@@ -170,6 +227,28 @@ export class NoiseGenerator {
 
   private teardownNodes(): void {
     this.clearCrackle()
+
+    // LFO 先停：它们连着 filter 的 frequency，节点断开后再停会报 InvalidStateError
+    for (const { osc, gain } of this.lfos) {
+      try {
+        osc.stop()
+      } catch {
+        /* 已停止 */
+      }
+      try {
+        osc.disconnect()
+      } catch {
+        /* noop */
+      }
+      try {
+        gain.disconnect()
+      } catch {
+        /* noop */
+      }
+    }
+    this.lfos = []
+    this.customPlaying = false
+
     if (this.source) {
       try {
         this.source.stop()
@@ -242,6 +321,12 @@ export class NoiseGenerator {
       case 'campfire':
         // 篝火基于棕噪音（低频轰鸣），靠低通滤波塑造
         return this.createBrownBuffer()
+      case 'ocean':
+        // 海浪 = 棕噪音（浪体的低频能量）+ 低通缓慢游移（见 applyModulation）
+        return this.createBrownBuffer()
+      case 'stream':
+        // 溪流 = 粉红噪音（比白噪音柔）+ 带通，接近"水在石头上"的频谱
+        return this.createPinkBuffer()
     }
   }
 
@@ -319,6 +404,72 @@ export class NoiseGenerator {
         lp.frequency.value = 500
         return [lp]
       }
+      case 'ocean': {
+        // 低通压在 520Hz：浪体是"闷"的，留一点高频会变成风噪
+        const lp = this.ctx.createBiquadFilter()
+        lp.type = 'lowpass'
+        lp.frequency.value = 520
+        lp.Q.value = 0.9
+        return [lp]
+      }
+      case 'stream': {
+        // 高通去掉低频"轰"，带通用 1.1k 附近的水声中频
+        const hp = this.ctx.createBiquadFilter()
+        hp.type = 'highpass'
+        hp.frequency.value = 380
+        const bp = this.ctx.createBiquadFilter()
+        bp.type = 'bandpass'
+        bp.frequency.value = 1100
+        bp.Q.value = 0.7
+        return [hp, bp]
+      }
     }
+  }
+
+  // ---------- 内部：慢速调制（V2.7 · 轨道 B1） ----------
+
+  /**
+   * 给静态噪声加"呼吸"。
+   *
+   * 只动 filter 的 frequency（AudioParam），不动增益结构 ——
+   * 这样音量滑块的语义保持不变，任何调制的幅度都相对固定，不会与用户音量叠乘。
+   *
+   * 老 mock 没有 createOscillator 时直接跳过（本方法对引擎不是必需能力）。
+   */
+  private applyModulation(kind: NoiseKind, filters: AudioNode[]): void {
+    switch (kind) {
+      case 'rain':
+        // 雨势的轻微起伏：高通截止缓慢游移 ±260Hz
+        this.addLfo(filters[0] as BiquadFilterNode, 0.05, 260)
+        break
+      case 'ocean':
+        // 浪涌：0.07Hz ≈ 14 秒一个完整潮汐，接近真实海浪的周期
+        this.addLfo(filters[0] as BiquadFilterNode, 0.07, 300)
+        break
+      case 'stream':
+        // 水泡的颤动：带通中心快速小幅晃动
+        this.addLfo(filters[1] as BiquadFilterNode, 0.6, 260)
+        break
+      default:
+        break
+    }
+  }
+
+  /** 把 `freqHz` 的正弦 LFO 以 `depth` 幅度接到某个 AudioParam 上 */
+  private addLfo(filter: BiquadFilterNode | undefined, freqHz: number, depth: number): void {
+    const param = filter?.frequency
+    if (!param || typeof this.ctx.createOscillator !== 'function') return
+
+    const osc = this.ctx.createOscillator()
+    const gain = this.ctx.createGain()
+    osc.type = 'sine'
+    osc.frequency.value = freqHz
+    gain.gain.value = depth
+
+    osc.connect(gain)
+    gain.connect(param)
+    osc.start()
+
+    this.lfos.push({ osc, gain })
   }
 }

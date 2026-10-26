@@ -127,6 +127,33 @@ export interface TopicSessionRecord {
   status: 'ongoing' | 'finished';
 }
 
+/**
+ * V2.7 · 轨道 B2：用户导入的本地环境音（MP3 / M4A / OGG…）。
+ *
+ * 为什么把 Blob 直接放 IndexedDB 而不是 objectURL + 内存缓存：
+ *   · objectURL 必须手动 `revokeObjectURL`，刷新页面后旧 URL 一律失效 —— 存 URL 等于存垃圾；
+ *   · Blob 由 IndexedDB 持久化，跨会话可用，删除行即释放（无第二处引用）。
+ *
+ * **设备本地资产**：不进备份、不进合并（与 `topicSessions` 同一条边界 ——
+ * 几十 MB 的音频不该跟着"家庭备份"一起搬，也不该悄悄占满另一台设备的配额）。
+ */
+export interface CustomSoundRecord {
+  /** 自增主键（Dexie 生成） */
+  id?: number;
+  /** 归属档案（V1.4 · B1 规则：必填，取值只有 `currentProfileId()` 一个来源） */
+  profileId: string;
+  /** 稳定的业务 id（导出/删除都按它 + profileId 定位） */
+  soundId: string;
+  /** 用户看到的名字（默认取文件名去扩展名） */
+  name: string;
+  mime: string;
+  /** 字节数（列表里展示体积、并用于配额提示） */
+  size: number;
+  /** 音频二进制本体 */
+  blob: Blob;
+  createdAt: string;
+}
+
 export class FamilyLearningDB extends Dexie {
   packages!: Table<LearningPackageRecord, string>;
   progress!: Table<ProgressRecord, number>;
@@ -134,6 +161,7 @@ export class FamilyLearningDB extends Dexie {
   settings!: Table<SettingRecord, string>;
   examSessions!: Table<ExamSessionRecord, number>;
   topicSessions!: Table<TopicSessionRecord, number>;
+  customSounds!: Table<CustomSoundRecord, number>;
 
   constructor() {
     super('FamilyLearningDB');
@@ -193,6 +221,18 @@ export class FamilyLearningDB extends Dexie {
       settings: 'key',
       examSessions: '++id, [profileId+packageId], profileId, status, startedAt',
       topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt'
+    });
+    // V2.7 · 轨道 B2：本地环境音（纯新增表，无存量数据要搬 → **不写 upgrade 钩子**，
+    // 与 v5 加 topicSessions 的处理一致：加钩子只会多一条"迁移失败"的失败路径）。
+    this.version(6).stores({
+      packages: 'packageId, manifest.subject, manifest.grade',
+      progress:
+        '++id, [profileId+packageId+knowledgePointId], [profileId+packageId], profileId, status',
+      mistakes: '++id, [profileId+exerciseId], packageId, profileId, mastered',
+      settings: 'key',
+      examSessions: '++id, [profileId+packageId], profileId, status, startedAt',
+      topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt',
+      customSounds: '++id, [profileId+soundId], profileId, createdAt'
     });
   }
 }

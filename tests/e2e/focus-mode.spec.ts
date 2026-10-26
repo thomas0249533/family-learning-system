@@ -177,3 +177,81 @@ test('沉浸式专注模式：进入后隐藏布局外壳、退出后恢复', as
   await expect(page.locator('.app-sidebar')).toBeVisible()
   await expect(page.locator('.app-header')).toBeVisible()
 })
+
+// =====================================================================
+// V2.7 · 轨道 B2：本地音频（导入 → 播放 → 删除）
+// =====================================================================
+
+/** 造一段 0.2 秒的静音 WAV（16bit 单声道 8kHz）：足以让 decodeAudioData 成功 */
+function silentWav(): Buffer {
+  const rate = 8000
+  const samples = 1600
+  const dataSize = samples * 2
+  const buf = Buffer.alloc(44 + dataSize)
+  buf.write('RIFF', 0)
+  buf.writeUInt32LE(36 + dataSize, 4)
+  buf.write('WAVE', 8)
+  buf.write('fmt ', 12)
+  buf.writeUInt32LE(16, 16)
+  buf.writeUInt16LE(1, 20)
+  buf.writeUInt16LE(1, 22)
+  buf.writeUInt32LE(rate, 24)
+  buf.writeUInt32LE(rate * 2, 28)
+  buf.writeUInt16LE(2, 32)
+  buf.writeUInt16LE(16, 34)
+  buf.write('data', 36)
+  buf.writeUInt32LE(dataSize, 40)
+  return buf
+}
+
+test('本地音频：导入后自动播放、落进 IndexedDB、删除即消失', async ({ page }) => {
+  await installTheme(page)
+  await page.goto('/')
+  await resetDb(page)
+  await seedAll(page, buildSeed())
+  await page.goto(TOPIC_URL)
+
+  await page.locator('.quiz-header').first().waitFor({ state: 'visible', timeout: 30_000 })
+  await page.locator('[data-testid="focus-toggle"]').click()
+
+  const panel = page.locator('.focus-panel')
+  await expect(panel).toBeVisible()
+
+  // 导入（input 被视觉隐藏，setInputFiles 不需要它可见）
+  await panel.locator('input[type="file"]').setInputFiles({
+    name: '我的雨声.wav',
+    mimeType: 'audio/wav',
+    buffer: silentWav(),
+  })
+
+  const chip = panel.locator('.sound-chip__play', { hasText: '我的雨声' })
+  await expect(chip).toBeVisible()
+  // 导入成功即自动播放：chip 呈按下态，且音量条出现（= 有音源在响）
+  await expect(chip).toHaveAttribute('aria-pressed', 'true')
+  await expect(panel.locator('.vol-slider')).toBeVisible()
+
+  // 真的落库了（不是只活在内存里）
+  const rows = await page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const req = indexedDB.open('FamilyLearningDB')
+      req.onsuccess = () => resolve(req.result)
+      req.onerror = () => reject(req.error)
+    })
+    const all = await new Promise<any[]>((resolve, reject) => {
+      const tx = db.transaction('customSounds', 'readonly')
+      const req = tx.objectStore('customSounds').getAll()
+      req.onsuccess = () => resolve(req.result)
+      req.onerror = () => reject(req.error)
+    })
+    db.close()
+    return all.map((r) => ({ name: r.name, size: r.size, hasBlob: r.blob instanceof Blob }))
+  })
+  expect(rows).toHaveLength(1)
+  expect(rows[0].name).toBe('我的雨声')
+  expect(rows[0].hasBlob).toBe(true)
+
+  // 删除：chip 消失，且音源回到「关」
+  await panel.locator('.sound-chip__del').click()
+  await expect(chip).toHaveCount(0)
+  await expect(panel.locator('.local-sounds__hint')).toBeVisible()
+})
