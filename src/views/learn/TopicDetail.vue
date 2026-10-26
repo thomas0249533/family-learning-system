@@ -47,7 +47,39 @@
       </AppCard>
 
       <!-- ============ P1 · 掌握情况（保留 4 态，另加掌握度副标） ============ -->
-      <AppCard v-if="topicMastery.length > 0" title="📈 本主题掌握情况" class="mastery-card">
+      <!--
+        V2.6 · 任务1：词汇主题的掌握情况里是几十上百行词条，直接平铺会把下方
+        「开始背记」顶到屏幕外。故词汇主题改为**默认折叠**（details 原生折叠，
+        零 JS 状态、键盘可达）；非词汇主题保持原样，避免影响数学/英语等页面。
+      -->
+      <AppCard v-if="topicMastery.length > 0 && isVocabTopic" class="mastery-card">
+        <details class="mastery-details">
+          <summary class="mastery-summary">
+            <span class="mastery-summary__title">📈 本主题掌握情况</span>
+            <span class="mastery-summary__hint">共 {{ topicMastery.length }} 个词 · 点击展开</span>
+          </summary>
+          <div class="mastery-body">
+            <div v-for="row in topicMastery" :key="row.id" class="mastery-row">
+              <div class="mastery-head">
+                <span class="mastery-title">{{ row.title }}</span>
+                <span class="mastery-status" :class="'ms-' + row.key">{{ row.status }}</span>
+              </div>
+              <div class="mastery-bar">
+                <div class="mastery-fill" :class="'mf-' + row.key" :style="{ width: (row.percent ?? 0) + '%' }"></div>
+              </div>
+              <div class="mastery-meta">
+                <span class="mastery-percent">
+                  掌握度 <strong>{{ row.percent === null ? '—' : row.percent + '%' }}</strong>
+                </span>
+                <span v-if="row.nextReview" class="mastery-next">🔄 {{ row.nextReview }}</span>
+                <span class="mastery-count">对 {{ row.correctCount }} · 错 {{ row.wrongCount }}</span>
+              </div>
+            </div>
+          </div>
+        </details>
+      </AppCard>
+
+      <AppCard v-else-if="topicMastery.length > 0" title="📈 本主题掌握情况" class="mastery-card">
         <div v-for="row in topicMastery" :key="row.id" class="mastery-row">
           <div class="mastery-head">
             <span class="mastery-title">{{ row.title }}</span>
@@ -944,6 +976,43 @@ function handleQuizFinish(correctCount: number) {
   border-radius: $radius-lg;
   box-shadow: $shadow-sm;
   margin-bottom: 16px;
+}
+
+/* V2.6 · 任务1：词汇主题的掌握情况折叠面板（默认收起，零 JS 状态） */
+.mastery-details {
+  .mastery-summary {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 800;
+    color: $text-main;
+
+    &::-webkit-details-marker { display: none; }
+    &::before {
+      content: '▸';
+      display: inline-block;
+      color: $text-sub;
+      transition: transform 0.15s ease;
+    }
+    &:focus-visible {
+      outline: 2px solid var(--primary-text);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+  }
+
+  &[open] .mastery-summary::before { transform: rotate(90deg); }
+
+  .mastery-summary__title { flex-shrink: 0; }
+  .mastery-summary__hint {
+    font-size: 12px;
+    font-weight: 600;
+    color: $text-muted;
+  }
+  .mastery-body { margin-top: 6px; }
 }
 
 .mastery-row {

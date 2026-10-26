@@ -21,7 +21,7 @@
       </nav>
       <div class="sidebar-footer">
         <div class="version-badge">{{ appVersion }}</div>
-        <button class="check-update-btn" type="button" :disabled="checkingUpdate" @click="onCheckUpdate">
+        <button class="check-update-btn" data-testid="app-check-update-sidebar" type="button" :disabled="checkingUpdate" @click="onCheckUpdate">
           {{ checkingUpdate ? '检查中…' : '检查更新' }}
         </button>
       </div>
@@ -63,7 +63,7 @@
             </button>
           </n-dropdown>
           <div class="today-text">{{ todayText }}</div>
-          <button class="check-update-btn" type="button" :disabled="checkingUpdate" @click="onCheckUpdate">
+          <button class="check-update-btn" data-testid="app-check-update-header" type="button" :disabled="checkingUpdate" @click="onCheckUpdate">
             {{ checkingUpdate ? '检查中…' : '检查更新' }}
           </button>
           <div class="version-badge">{{ appVersion }}</div>

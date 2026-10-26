@@ -12,7 +12,7 @@
         </div>
 
         <n-space>
-          <n-button type="primary" :loading="checking" @click="checkUpdates">检查更新</n-button>
+          <n-button type="primary" :loading="checking" data-testid="catalog-check-update" @click="checkUpdates">检查更新</n-button>
           <n-button quaternary @click="catalogUrl = ''">清空</n-button>
         </n-space>
 

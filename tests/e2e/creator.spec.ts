@@ -145,7 +145,10 @@ test('创作者中心：不可达 catalog URL 优雅报错、不白屏', async (
   await expect(urlInput).toBeVisible()
   await urlInput.fill('https://invalid.invalid.example/nope/catalog.json')
 
-  await page.getByRole('button', { name: /检查更新/ }).click()
+  // V2.6 · 任务2：用 data-testid 精确定位库同步卡片里的按钮。
+  // 页面同时存在侧栏/顶栏的「检查更新」（V2.5 引入），按名字会命中多个元素触发
+  // strict mode violation，故不再用 getByRole(name)。
+  await page.getByTestId('catalog-check-update').click()
 
   // 失败路径：出现错误提示（network / cors 之一）
   // 精确匹配 alert 标题（正文为「网络请求失败：Failed to fetch」，避免严格模式匹配到两个元素）
