@@ -63,6 +63,7 @@ import {
   unitCardStatusOf,
   type CardStatus,
 } from '@core/learning/cardStatus'
+import { buildOwnerIndex, type OwnerIndex } from '@core/progress/ownerIndex'
 import ExamPanel from './ExamPanel.vue'
 
 const packageStore = usePackageStore()
@@ -79,6 +80,13 @@ const currentPackage = computed(() => packageStore.currentPackage)
 const isExamMode = computed(() => (currentPackage.value?.manifest as any)?.examMode === true)
 
 /**
+ * 归属包索引：状态查表时按 kpId 反查真实落库的包，与 `recordProgress` 写入端同源。
+ * 每日一练自包含包（knowledgePoints 为空、进度记到教材单元归属包）靠它才能点亮状态。
+ * 仅依赖已加载的包列表，进度变化不影响它；进度变化由下方 computed 重算触发。
+ */
+const ownerIndex = computed<OwnerIndex>(() => buildOwnerIndex(packageStore.packages))
+
+/**
  * D1 · 单元 → 卡片状态。**一次算完一整屏**，模板只查表。
  *
  * 两个细节：
@@ -93,7 +101,7 @@ const isExamMode = computed(() => (currentPackage.value?.manifest as any)?.examM
 const statusByUnitId = computed<Map<string, CardStatus>>(() => {
   const map = new Map<string, CardStatus>()
   for (const ru of resolvedUnits.value) {
-    map.set(ru.unit.id, unitCardStatusOf(ru.unit, ru.sourcePackageId, userDataStore.progress))
+    map.set(ru.unit.id, unitCardStatusOf(ru.unit, ru.sourcePackageId, userDataStore.progress, ownerIndex.value))
   }
   return map
 })

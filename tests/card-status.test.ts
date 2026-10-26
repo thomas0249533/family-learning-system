@@ -23,6 +23,7 @@ import {
   topicCardStatusOf,
   unitCardStatusOf,
 } from '@core/learning/cardStatus'
+import { buildOwnerIndex } from '@core/progress/ownerIndex'
 import { makeProgress } from './helpers/progressFixtures'
 
 /** 造一条「某包某知识点」的进度行，只关心状态与时间 */
@@ -209,6 +210,59 @@ describe('packageCardStatusOf —— 每日一练打卡卡片', () => {
       row(3, 'p1', 'kp-c', '未学'),
     ]
     expect(packageCardStatusOf('p1', progress)).toBe('learning')
+  })
+})
+
+describe('unitCardStatusOf / topicCardStatusOf · 归属包解析（每日一练场景）', () => {
+  // 每日一练：自包含包，knowledgePoints 为空；单元引用教材单元包的 kp。
+  // recordProgress 会把进度记到「声明该 kp 的教材单元包」上（owner 解析），
+  // 而列表查表拿到的是每日一练自己的 id → 不解析就永远查不到（复现旧 bug）。
+  const dailyPkg = { packageId: 'daily-45d', manifest: { subject: 'math' }, knowledgePoints: [] }
+  const textPkg = {
+    packageId: 'unit-p1',
+    manifest: { subject: 'math' },
+    knowledgePoints: [{ id: 'unit-p1::kp-1', title: '数的认识' }],
+  }
+  const ownerIndex = buildOwnerIndex([dailyPkg, textPkg] as any)
+
+  it('每日一练单元：进度落归属包，不传 ownerIndex 查不到（复现旧 bug）→ none', () => {
+    const unit = { topics: [{ knowledgePointIds: ['unit-p1::kp-1'] }] }
+    const progress = [row(1, 'unit-p1', 'unit-p1::kp-1', '已掌握')]
+    expect(unitCardStatusOf(unit, 'daily-45d', progress)).toBe('none')
+  })
+
+  it('每日一练单元：传 ownerIndex 后解析到归属包 → mastered', () => {
+    const unit = { topics: [{ knowledgePointIds: ['unit-p1::kp-1'] }] }
+    const progress = [row(1, 'unit-p1', 'unit-p1::kp-1', '已掌握')]
+    expect(unitCardStatusOf(unit, 'daily-45d', progress, ownerIndex)).toBe('mastered')
+  })
+
+  it('每日一练单元：做了一部分（学习中）→ learning（progress 模式不整卡挂红）', () => {
+    const unit = { topics: [{ knowledgePointIds: ['unit-p1::kp-1', 'unit-p1::kp-2'] }] }
+    // 进度落在归属包 unit-p1 上，kp-2 未学
+    const progress = [row(1, 'unit-p1', 'unit-p1::kp-1', '学习中')]
+    expect(unitCardStatusOf(unit, 'daily-45d', progress, ownerIndex)).toBe('learning')
+  })
+
+  it('每日一练主题：传 ownerIndex 后解析到归属包 → review（attention 模式）', () => {
+    const topic = { knowledgePointIds: ['unit-p1::kp-1'] }
+    const progress = [row(1, 'unit-p1', 'unit-p1::kp-1', '需复习')]
+    expect(topicCardStatusOf(topic, 'daily-45d', progress)).toBe('none') // 旧行为
+    expect(topicCardStatusOf(topic, 'daily-45d', progress, ownerIndex)).toBe('review') // 修复后
+  })
+
+  it('owner 解析失败（无候选声明者）时回落入口包，保持旧行为', () => {
+    const unit = { topics: [{ knowledgePointIds: ['kp-x'] }] }
+    // ownerIndex 里没有 kp-x 的声明者 → 解析为 null → 用入口包 daily-45d 查
+    const progress = [row(1, 'daily-45d', 'kp-x', '已掌握')]
+    expect(unitCardStatusOf(unit, 'daily-45d', progress, ownerIndex)).toBe('mastered')
+  })
+
+  it('textbook / 归属包即入口包时：传不传 ownerIndex 行为一致', () => {
+    const unit = { topics: [{ knowledgePointIds: ['unit-p1::kp-1'] }] }
+    const progress = [row(1, 'unit-p1', 'unit-p1::kp-1', '已掌握')]
+    expect(unitCardStatusOf(unit, 'unit-p1', progress)).toBe('mastered')
+    expect(unitCardStatusOf(unit, 'unit-p1', progress, ownerIndex)).toBe('mastered')
   })
 })
 

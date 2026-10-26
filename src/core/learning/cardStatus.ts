@@ -65,6 +65,7 @@
  */
 import type { LearningPackageRecord, MasteryStatus, ProgressRecord } from '@/db'
 import { canonicalizeProgressRows, progressKeyOf } from '@core/mastery/masterySummary'
+import { canonicalKpId, resolveOwnerPackageId, type OwnerIndex } from '@core/progress/ownerIndex'
 
 /** 卡片的四种视觉状态。`none` = 未学（保持中性底，不做视觉强调） */
 export type CardStatus = 'none' | 'learning' | 'review' | 'mastered'
@@ -269,6 +270,33 @@ function statusOf(index: StatusIndex, packageId: string, kpId: string): MasteryS
   return index.get(progressKeyOf({ packageId, knowledgePointId: kpId })) ?? '未学'
 }
 
+/**
+ * 带归属包解析的状态查表（与 `recordProgress` 写入端**同源**）。
+ *
+ * 为什么需要：进度行落库的 `packageId` 是**归属包**（见 `ownerIndex.ts`：声明该
+ * kpId 的包），但卡片列表拿到的 `packageId` 是「入口包 / sourcePackageId」——
+ * 例如每日一练是**自包含包**（`knowledgePoints` 为空），它的单元引用教材单元包的
+ * kpId，于是进度被记到教材单元包上，而列表查表若只用每日一练的 id 就**永远查不到**
+ * → 做过的单元显示「未学」（无颜色标记）。
+ *
+ * 解决：每个 kpId 先用 `resolveOwnerPackageId` 解析归属包；解析成功就用归属包查
+ * （kpId 一并规范化），失败则回落入口包（保持旧行为，兼容 textbook / term 等
+ * `sourcePackageId` 本就等于归属包的情况）。
+ *
+ * 不传 `ownerIndex` 时退化为 `statusOf`（旧行为，单测可无索引直接喂数据）。
+ */
+function statusOfOwner(
+  index: StatusIndex,
+  packageId: string,
+  kpId: string,
+  ownerIndex?: OwnerIndex | null
+): MasteryStatus {
+  const owner = ownerIndex ? resolveOwnerPackageId(kpId, packageId, ownerIndex) : null
+  const lookupPkg = owner ?? packageId
+  const lookupKp = owner ? canonicalKpId(owner, kpId, ownerIndex!) : kpId
+  return statusOf(index, lookupPkg, lookupKp)
+}
+
 /** 摊平并去重一组 `topic` 的 `knowledgePointIds`（顺序保留，供聚合遍历） */
 function collectKpIds(topics: readonly TopicLike[]): string[] {
   const ids: string[] = []
@@ -289,16 +317,21 @@ function collectKpIds(topics: readonly TopicLike[]): string[] {
 /**
  * 单元卡片状态：把单元下**所有主题**的知识点摊平后聚合。
  *
- * `packageId` 必须是**该单元真正的归属包**（`ResolvedUnit.sourcePackageId`），
- * 不是路由上的入口包：专项/学期包会把依赖包的单元聚合进来，进度行落在归属包上，
- * 用入口包查会一律查不到 → 单元卡永远「未学」。
+ * `packageId` 传「入口包 / sourcePackageId」即可；当传入 `ownerIndex` 时，
+ * 每个 kpId 会按 `recordProgress` 写入端的同一套**归属包解析**反查真实落库的包，
+ * 再用归属包查进度。这样：
+ *   - textbook / term 等「sourcePackageId 本就等于归属包」的包：行为与旧版完全一致；
+ *   - 每日一练这类**自包含包**（`knowledgePoints` 为空、单元引用教材单元包的 kpId，
+ *     进度被记到教材单元包上）：能正确解析到归属包 → 做过的单元不再显示「未学」。
  *
+ * 不传 `ownerIndex` 时退化为旧行为（只用 `packageId` 查），单测可无索引直接喂数据。
  * 单元没有任何知识点（空单元 / 数据缺失）→ `none`（不编状态）。
  */
 export function unitCardStatusOf(
   unit: UnitLike | null | undefined,
   packageId: string,
-  progress: readonly ProgressRecord[]
+  progress: readonly ProgressRecord[],
+  ownerIndex?: OwnerIndex | null
 ): CardStatus {
   const topics = Array.isArray(unit?.topics) ? (unit?.topics as TopicLike[]) : []
   const kpIds = collectKpIds(topics)
@@ -307,7 +340,7 @@ export function unitCardStatusOf(
   const index = buildStatusIndex(progress)
   // 单元级 → `progress` 模式：单元是「任务」，问的是推进到哪了，不是「里面有没有一个到期」
   return aggregateCardStatus(
-    kpIds.map((kpId) => statusOf(index, packageId, kpId)),
+    kpIds.map((kpId) => statusOfOwner(index, packageId, kpId, ownerIndex)),
     'progress'
   )
 }
@@ -315,19 +348,23 @@ export function unitCardStatusOf(
 /**
  * 主题卡片状态：只看这个主题自己的知识点。
  *
- * 主题没有知识点 → `none`。
+ * 与 `unitCardStatusOf` 同源：传 `ownerIndex` 时按归属包解析查进度，
+ * 不传则只用 `packageId` 查（旧行为）。主题没有知识点 → `none`。
  */
 export function topicCardStatusOf(
   topic: TopicLike | null | undefined,
   packageId: string,
-  progress: readonly ProgressRecord[]
+  progress: readonly ProgressRecord[],
+  ownerIndex?: OwnerIndex | null
 ): CardStatus {
   const kpIds = collectKpIds(topic ? [topic] : [])
   if (kpIds.length === 0) return 'none'
 
   const index = buildStatusIndex(progress)
   // 主题级 → 默认 `attention` 模式（知识点密集，语义最接近「此刻该学什么」，见文件头）
-  return aggregateCardStatus(kpIds.map((kpId) => statusOf(index, packageId, kpId)))
+  return aggregateCardStatus(
+    kpIds.map((kpId) => statusOfOwner(index, packageId, kpId, ownerIndex))
+  )
 }
 
 /**

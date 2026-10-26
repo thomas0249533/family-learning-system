@@ -1,5 +1,5 @@
 {
-  "version": "2.8.1",
+  "version": "2.8.2",
   "downloadUrl": "https://github.com/thomas0249533/family-learning-system/releases/latest",
-    "notes": "V2.8.1 · 成就体验收口：图鉴最近解锁条 + 分类进度条 + 解锁 Toast 可点击跳详情"
+    "notes": "V2.8.2 · 检查更新多镜像容错（raw / jsdelivr / gitmirror 任一可达即用）+ 每日一练单元列表已完成状态颜色标记"
 }

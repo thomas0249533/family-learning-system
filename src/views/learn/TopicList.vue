@@ -59,6 +59,7 @@ import {
   topicCardStatusOf,
   type CardStatus,
 } from '@core/learning/cardStatus'
+import { buildOwnerIndex, type OwnerIndex } from '@core/progress/ownerIndex'
 
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
@@ -118,13 +119,19 @@ const currentUnit = computed(() => {
 const packageId = computed(() => packageStore.currentPackage?.packageId ?? (route.params.packageId as string))
 
 /**
+ * 归属包索引：与 `recordProgress` 写入端同源，让状态查表能反查每日一练这类自包含包
+ * 里、实际落在教材单元归属包上的进度。仅依赖已加载的包列表。
+ */
+const ownerIndex = computed<OwnerIndex>(() => buildOwnerIndex(packageStore.packages))
+
+/**
  * D1 · 主题 → 卡片状态。一次算完一屏，模板只查表（避免每个角标各建一次状态表）。
  * 读 `userDataStore.progress` 即建立响应式依赖：学完返回本页状态自动更新。
  */
 const statusByTopicId = computed<Map<string, CardStatus>>(() => {
   const map = new Map<string, CardStatus>()
   for (const topic of currentUnit.value?.topics ?? []) {
-    map.set(topic.id, topicCardStatusOf(topic, packageId.value, userDataStore.progress))
+    map.set(topic.id, topicCardStatusOf(topic, packageId.value, userDataStore.progress, ownerIndex.value))
   }
   return map
 })

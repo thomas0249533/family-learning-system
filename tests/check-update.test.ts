@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { checkUpdate, UPDATE_CHECK_URL } from '@core/update/checkUpdate'
+import { checkUpdate, UPDATE_CHECK_URL, UPDATE_CHECK_CANDIDATES } from '@core/update/checkUpdate'
 
 // ============================================================================
 // V2.3 轨道 D（方案 D-1）· 纯前端「检查更新」守卫测试
@@ -137,5 +137,78 @@ describe('checkUpdate · 部署常量', () => {
   it('UPDATE_CHECK_URL 是 https 且以 version.json 结尾', () => {
     expect(UPDATE_CHECK_URL.startsWith('https://')).toBe(true)
     expect(UPDATE_CHECK_URL.endsWith('version.json')).toBe(true)
+  })
+
+  it('UPDATE_CHECK_CANDIDATES 至少含主源与两个镜像，且都是 https', () => {
+    expect(UPDATE_CHECK_CANDIDATES.length).toBeGreaterThanOrEqual(2)
+    expect(UPDATE_CHECK_CANDIDATES[0]).toBe(UPDATE_CHECK_URL)
+    for (const url of UPDATE_CHECK_CANDIDATES) {
+      expect(url.startsWith('https://')).toBe(true)
+      expect(url.endsWith('version.json')).toBe(true)
+    }
+  })
+})
+
+describe('checkUpdate · 多镜像容错（中国大陆访问 raw.githubusercontent 被墙场景）', () => {
+  it('主源失败会回退到下一个镜像并成功', async () => {
+    const seen: string[] = []
+    const fetchImpl = ((url: string) => {
+      seen.push(url)
+      if (url === UPDATE_CHECK_CANDIDATES[0]) {
+        return Promise.reject(new TypeError('Failed to fetch'))
+      }
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({ version: '9.9.9', downloadUrl: 'https://example.com/x' }),
+      })
+    }) as unknown as typeof fetch
+
+    const result = await checkUpdate('1.0.0', fetchImpl)
+    expect(result.ok).toBe(true)
+    if (result.ok) {
+      expect(result.remoteVersion).toBe('9.9.9')
+      expect(result.hasUpdate).toBe(true)
+    }
+    // 至少尝试了两个源（主源失败 → 回退镜像）
+    expect(seen.length).toBeGreaterThanOrEqual(2)
+    expect(seen[0]).toBe(UPDATE_CHECK_CANDIDATES[0])
+  })
+
+  it('主源非 2xx 也尝试下一个镜像', async () => {
+    const seen: string[] = []
+    const fetchImpl = ((url: string) => {
+      seen.push(url)
+      if (url === UPDATE_CHECK_CANDIDATES[0]) {
+        return Promise.resolve({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+          json: async () => ({}),
+        })
+      }
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({ version: '2.0.0' }),
+      })
+    }) as unknown as typeof fetch
+
+    const result = await checkUpdate('1.0.0', fetchImpl)
+    expect(result.ok).toBe(true)
+    if (result.ok) expect(result.remoteVersion).toBe('2.0.0')
+  })
+
+  it('所有镜像都失败 → 返回 network 错误（绝不抛异常），并提示已尝试多源', async () => {
+    const fetchImpl = ((_url: string) =>
+      Promise.reject(new TypeError('Failed to fetch'))) as unknown as typeof fetch
+    const result = await checkUpdate('1.0.0', fetchImpl)
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.kind).toBe('network')
+      expect(result.message).toContain('更新源')
+    }
   })
 })
