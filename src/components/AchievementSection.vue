@@ -173,6 +173,18 @@ function onSelect(item: AchievementItem): void {
   detailOpen.value = true
 }
 
+/**
+ * 供父级/跨页面打开详情（V2.8.1 · E1/E3）：
+ * 最近解锁条与 Toast 点击跳转都落到这一条路径上 —— 与卡片点击走同一套守卫，
+ * 不存在"从 Toast 进来能打开剪影"的第二通道。item 由调用方从**未筛选全集**
+ * （store.items）里解析，避免被图鉴页的筛选条件筛掉而打不开。
+ */
+defineExpose({
+  openDetail(item: AchievementItem): void {
+    onSelect(item)
+  },
+})
+
 // 先渲染默认态，读到持久化值后再应用 —— 绝不阻塞首屏
 onMounted(async () => {
   collapsed.value = await loadCollapsed()

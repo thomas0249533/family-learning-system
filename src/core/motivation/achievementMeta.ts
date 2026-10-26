@@ -472,3 +472,40 @@ export function buildAchievementViewFromItems(
     closest,
   }
 }
+
+// ==================== 分类进度（V2.8.1 · E2） ====================
+
+/** 单个来源维度的进度（**可收集**口径） */
+export interface SourceProgressEntry {
+  earned: number
+  total: number
+}
+
+/**
+ * 按「来源」（core / subject / habit / hidden）统计进度。
+ *
+ * V2.8.1 · E2：图鉴总览的分类进度条数据源。三条口径纪律：
+ *   1. **可收集口径**：`night-owl` 与自定义成就之外的过滤交给 `isCollectible` ——
+ *      四项 total 相加必须等于 `view.total`（37 + 自定义），不能出现第五个"幽灵分母"；
+ *   2. **只返回裸数字**：label / 顺序由 UI 层用现成的 `SOURCE_LABEL` / `SOURCE_ORDER`
+ *      拼（那两个常量在 `achievementOverview`，反向 import 会成环）；
+ *   3. **hidden 计入剪影**：未解锁的隐藏成就本来就以剪影形态可见（"有 2 枚"不泄底），
+ *      泄底的是标题与条件 —— 剪影守卫已单独管住。
+ */
+export function sourceProgressOf(
+  items: AchievementItem[],
+): Record<AchievementSource, SourceProgressEntry> {
+  const out: Record<AchievementSource, SourceProgressEntry> = {
+    core: { earned: 0, total: 0 },
+    subject: { earned: 0, total: 0 },
+    habit: { earned: 0, total: 0 },
+    hidden: { earned: 0, total: 0 },
+  }
+  for (const it of items) {
+    if (!isCollectible(it.id)) continue
+    const slot = out[it.source]
+    slot.total += 1
+    if (it.earned) slot.earned += 1
+  }
+  return out
+}

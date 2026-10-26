@@ -3,7 +3,9 @@ import { ACHIEVEMENTS, type UnlockedRecord } from '@core/motivation/achievements
 import {
   CATEGORY_META,
   CATEGORY_ORDER,
+  buildAchievementItems,
   buildAchievementView,
+  sourceProgressOf,
   type AchievementItem,
 } from '@core/motivation/achievementMeta'
 import { ctx, mastered, pkg, scenarios } from './achievement-fixtures'
@@ -308,5 +310,38 @@ describe('进度文案来自 progressOf，前端不另算', () => {
   it('已获得卡的 hint 固定为「已获得」', () => {
     const v = buildAchievementView(scenarios()['临界值'], [rec('ten-kp')])
     expect(itemById(flat(v), 'ten-kp').hint).toBe('已获得')
+  })
+})
+
+// ==================== 分类进度（V2.8.1 · E2） ====================
+
+describe('sourceProgressOf（图鉴分类进度条的数据源）', () => {
+  it('collectible 口径分布：core 7 / subject 13 / habit 15 / hidden 2，四项总和 = view.total(37)', () => {
+    const items = buildAchievementItems(ctx(), allUnlocked())
+    const p = sourceProgressOf(items)
+    expect(p.core).toEqual({ earned: 7, total: 7 })
+    expect(p.subject).toEqual({ earned: 13, total: 13 })
+    expect(p.habit).toEqual({ earned: 15, total: 15 })
+    expect(p.hidden).toEqual({ earned: 2, total: 2 })
+    const total = p.core.total + p.subject.total + p.habit.total + p.hidden.total
+    expect(total).toBe(37)
+  })
+
+  it('★ night-owl 永不计入：即使它被解锁，hidden 分母仍是 2（不泄彩蛋的存在）', () => {
+    const items = buildAchievementItems(ctx(), [rec('night-owl', '2026-10-20')])
+    const p = sourceProgressOf(items)
+    expect(p.hidden).toEqual({ earned: 0, total: 2 })
+    const total = p.core.total + p.subject.total + p.habit.total + p.hidden.total
+    expect(total).toBe(37)
+  })
+
+  it('部分解锁：分子只数已获得（first-step 属 core；ten-kp 不同源各归各组）', () => {
+    const items = buildAchievementItems(ctx(), [rec('first-step'), rec('ten-kp')])
+    const p = sourceProgressOf(items)
+    expect(p.core).toEqual({ earned: 1, total: 7 })
+    // 两枚已获得分散在各自来源里，分子总和必须 = 2
+    const earnedSum = p.core.earned + p.subject.earned + p.habit.earned + p.hidden.earned
+    expect(earnedSum).toBe(2)
+    expect(p.hidden.earned).toBe(0)
   })
 })

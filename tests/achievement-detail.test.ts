@@ -251,7 +251,7 @@ describe('静态接线（组件层）', () => {
   it('独立图鉴页存在，且以 standalone 复用同一个成就区', () => {
     expect(existsSync(join(ROOT, 'src/views/Achievements.vue'))).toBe(true)
     const page = read('src/views/Achievements.vue')
-    expect(page).toContain('<AchievementSection :view="view" standalone />')
+    expect(page).toContain('<AchievementSection ref="sectionRef" :view="view" standalone />')
     expect(page).toContain('refreshView()')
   })
 

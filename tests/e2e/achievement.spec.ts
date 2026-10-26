@@ -371,11 +371,21 @@ test.describe('成就链路 · 解锁', () => {
     await expect(toast).toContainText('解锁新成就')
     await expect(toast).toContainText('迈出第一步')
 
+    // V2.8.1 · E3：toast 现在可点击 —— 点击直接打开该成就的详情弹窗
+    // （跳转是 push /achievements?focus=first-step；query 会被图鉴页消费后清掉）
+    await toast.click()
+    const detailModal = page.locator('.ach-detail')
+    await expect(detailModal).toBeVisible()
+    await expect(detailModal).toContainText('迈出第一步')
+    // 点击语义是"去查看"，不是"跳过"：队列里没有下一张，toast 立即收场
+    await expect(page.locator('.ach-toast')).toHaveCount(0)
+    await page.keyboard.press('Escape')
+    await expect(detailModal).toBeHidden()
+    // 跳转发生过：最终 URL 落在图鉴页（focus 参数消费后被 replace 清掉）
+    await expect(page).toHaveURL(/\/achievements$/)
+
     // 计入已获得
     await expect(page.locator('.ach-head-count')).toHaveText('1 / 37')
-
-    // 等 toast 播完再点（它固定在顶部，会挡住区头）
-    await expect(page.locator('.ach-toast')).toHaveCount(0, { timeout: 20_000 })
 
     // 展开已获得区能看到这一枚
     await page.locator('.ach-part-head').first().click()

@@ -24,20 +24,23 @@ async function resetDb(page: Page): Promise<void> {
 }
 
 test.describe('独立成就页', () => {
-  test('Home 的「查看全部」进到 /achievements，页面有标题与整体进度', async ({ page }) => {
+  test('Home 的「全部勋章」进到 /achievements，页面有标题与整体进度', async ({ page }) => {
     await page.goto('/home')
     await resetDb(page)
 
-    // 0 枚解锁的初始态：入口一定在
-    await page.getByRole('link', { name: /查看全部/ }).click()
+    // 0 枚解锁的初始态：入口一定在。
+    // V2.7 · 轨道 A2 起 Home 成就区换成了荣誉勋章墙，入口文案是「全部勋章 →」——
+    // 本用例沿用的旧文案「查看全部」在 v2.8.0 收尾的存量里就已失配（该文件当时的
+    // 全量绿是历史口径），这里按现实修正，入口语义不变：Home → 独立图鉴页。
+    await page.getByRole('link', { name: '全部勋章 →' }).click()
     await expect(page).toHaveURL(/\/achievements$/)
     await expect(page.getByRole('heading', { name: '我的成就' })).toBeVisible()
 
     // 图鉴本体 37 张卡（可收集口径；night-owl 不参与收集，不再渲染，V2.8 · C1 起 38−1）
     await expect(page.locator('.ach-card')).toHaveCount(37)
 
-    // 独立页上不再重复显示「查看全部 ->」（standalone）
-    await expect(page.getByRole('link', { name: /查看全部/ })).toHaveCount(0)
+    // 独立页上不再重复显示勋章墙入口（standalone）
+    await expect(page.getByRole('link', { name: '全部勋章 →' })).toHaveCount(0)
   })
 
   test('点卡片开详情弹层，ESC 关闭（鼠标路径）', async ({ page }) => {
@@ -257,5 +260,83 @@ test.describe('隐藏成就的发现机制', () => {
     await page.goto('/achievements')
     await expect(page.locator('.ach-card')).toHaveCount(37)
     await expect(page.locator('.discovery-card')).toHaveCount(0)
+  })
+})
+
+// ==================== 分类进度与最近解锁（V2.8.1 · E1/E2） ====================
+
+test.describe('分类进度与最近解锁', () => {
+  /** 种两条解锁记录（不同日期：验证最近解锁条的倒序） */
+  async function seedTwoUnlocked(page: Page): Promise<void> {
+    await page.evaluate(async () => {
+      const records = [
+        { id: 'first-step', unlockedAt: '2026-10-01', evidence: '端到端种子' },
+        { id: 'ten-kp', unlockedAt: '2026-10-24', evidence: '端到端种子' },
+      ]
+      await new Promise<void>((resolve, reject) => {
+        const open = indexedDB.open('FamilyLearningDB')
+        open.onsuccess = () => {
+          const db = open.result
+          const tx = db.transaction('settings', 'readwrite')
+          tx.objectStore('settings').put({ key: 'achievements:default', value: records })
+          tx.oncomplete = () => {
+            db.close()
+            resolve()
+          }
+          tx.onerror = () => reject(tx.error)
+        }
+        open.onerror = () => reject(open.error)
+        open.onblocked = () => reject(new Error('IDB 被阻塞'))
+      })
+    })
+    await page.reload()
+  }
+
+  test('分类进度条：与总览同一套可收集口径（core 2/7 · hidden 0/2）', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    await expect(page.locator('.ach-card')).toHaveCount(37)
+    await seedTwoUnlocked(page)
+
+    const strip = page.locator('.cat-progress')
+    await expect(strip).toBeVisible()
+    // first-step 属 core，ten-kp 属 subject（taxonomy 钉死），习惯/隐藏只有分母
+    await expect(strip.locator('.cat-progress__item').filter({ hasText: '核心' }).locator('.cat-progress__count')).toHaveText('1/7')
+    await expect(strip.locator('.cat-progress__item').filter({ hasText: '学科' }).locator('.cat-progress__count')).toHaveText('1/13')
+    await expect(strip.locator('.cat-progress__item').filter({ hasText: '习惯' }).locator('.cat-progress__count')).toHaveText('0/15')
+    await expect(strip.locator('.cat-progress__item').filter({ hasText: '隐藏' }).locator('.cat-progress__count')).toHaveText('0/2')
+    // 总览分母不受影响：仍是 2 / 37
+    await expect(page.locator('.stat-card__value').filter({ hasText: '2 / 37' })).toBeVisible()
+  })
+
+  test('最近解锁条：unlockedAt 倒序（最近在前），点击行直开详情弹窗', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    await expect(page.locator('.ach-card')).toHaveCount(37)
+    await seedTwoUnlocked(page)
+
+    const rows = page.locator('.recent-row')
+    await expect(rows).toHaveCount(2)
+    // 10-24 的 ten-kp 在前，10-01 的 first-step 在后（与家长端同一套排序）
+    await expect(rows.nth(0)).toContainText('小试牛刀')
+    await expect(rows.nth(0)).toContainText('2026-10-24')
+    await expect(rows.nth(1)).toContainText('迈出第一步')
+    await expect(rows.nth(1)).toContainText('2026-10-01')
+
+    // 点击 → 详情弹窗（与卡片点击同一入口，不是第二套行为）
+    await rows.nth(1).click()
+    const modal = page.locator('.ach-detail')
+    await expect(modal).toBeVisible()
+    await expect(modal).toContainText('迈出第一步')
+    await page.keyboard.press('Escape')
+    await expect(modal).toBeHidden()
+  })
+
+  test('0 枚解锁时两个新区块都不渲染（空态不是"0/7 的空壳"）', async ({ page }) => {
+    await page.goto('/achievements')
+    await resetDb(page)
+    await expect(page.locator('.ach-card')).toHaveCount(37)
+    await expect(page.locator('.cat-progress')).toHaveCount(0)
+    await expect(page.locator('.recent-strip')).toHaveCount(0)
   })
 })

@@ -1,15 +1,24 @@
 <template>
   <teleport to="body">
     <transition name="ach-pop">
-      <div v-if="current" class="ach-toast" :class="{ 'reduce-motion': reduceMotion }">
+      <button
+        v-if="current"
+        type="button"
+        class="ach-toast"
+        :class="{ 'reduce-motion': reduceMotion }"
+        :title="clickHint"
+        :aria-label="`${current.hidden ? '隐藏成就已解锁！' : '解锁新成就'}：${current.title}，点击查看详情`"
+        @click="goDetail"
+      >
         <span class="toast-glow" aria-hidden="true"></span>
         <span class="toast-icon">{{ current.icon }}</span>
         <div class="toast-body">
           <div class="toast-tag">🎉 {{ current.hidden ? '隐藏成就已解锁！' : '解锁新成就' }}</div>
           <div class="toast-title">{{ current.title }}</div>
           <div class="toast-desc">{{ current.desc }}</div>
+          <div class="toast-hint">点击查看详情 →</div>
         </div>
-      </div>
+      </button>
     </transition>
   </teleport>
 </template>
@@ -24,12 +33,44 @@
 // 用法：模板挂 <AchievementToast ref="toastRef" />，调用 toastRef.enqueue(defs)。
 // =====================================================================
 import { ref, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import type { AchievementDef } from '@core/motivation/achievements'
-import { mergeUnlocksForToast } from '@core/motivation/achievementToast'
+import { MERGED_ID, mergeUnlocksForToast } from '@core/motivation/achievementToast'
+
+const router = useRouter()
 
 const current = ref<AchievementDef | null>(null)
 const queue: AchievementDef[] = []
 let timer: ReturnType<typeof setTimeout> | null = null
+
+/** 合并提示没有单一成就可指：只跳图鉴页；单枚带 `?focus=<id>` 直开详情弹窗 */
+const clickHint = ref('')
+
+function updateHint(): void {
+  clickHint.value =
+    current.value && current.value.id !== MERGED_ID
+      ? '点击查看这枚成就的详情'
+      : '点击打开成就图鉴'
+}
+
+/**
+ * 点击跳转（V2.8.1 · E3）。
+ * 计时器必须清掉：提前关掉当前卡后，原 timer 会把下一张顶上来 ——
+ * 点击语义是"我要去图鉴"，不是"跳过这条"。
+ */
+function goDetail(): void {
+  const def = current.value
+  if (!def) return
+  const merged = def.id === MERGED_ID
+  if (timer !== null) {
+    clearTimeout(timer)
+    timer = null
+  }
+  current.value = null
+  queue.length = 0
+  if (merged) void router.push('/achievements')
+  else void router.push({ path: '/achievements', query: { focus: def.id } })
+}
 
 /** 是否命中「减少动态效果」偏好 */
 const reduceMotion =
@@ -58,6 +99,7 @@ function playNext() {
     return
   }
   current.value = next
+  updateHint()
   if (timer !== null) clearTimeout(timer)
   timer = setTimeout(() => {
     current.value = null
@@ -73,6 +115,7 @@ defineExpose({ enqueue })
 </script>
 
 <style scoped lang="scss">
+/* ========== 可点击（V2.8.1 · E3）：从 div 换成原生 button ========== */
 .ach-toast {
   position: fixed;
   top: 24px;
@@ -85,11 +128,22 @@ defineExpose({ enqueue })
   padding: 16px 22px;
   min-width: 260px;
   max-width: 92vw;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   background: $card-bg;
   border: 2px solid $primary-color;
   border-radius: $radius-lg;
   box-shadow: $shadow-lg;
   overflow: hidden;
+
+  &:hover {
+    border-color: $primary-text;
+  }
+  &:focus-visible {
+    outline: 3px solid $primary-color;
+    outline-offset: 2px;
+  }
 
   .toast-glow {
     position: absolute;
@@ -126,6 +180,12 @@ defineExpose({ enqueue })
       font-size: 12px;
       color: $text-sub;
       margin-top: 2px;
+    }
+    .toast-hint {
+      font-size: 11px;
+      font-weight: 700;
+      color: $primary-text;
+      margin-top: 4px;
     }
   }
 

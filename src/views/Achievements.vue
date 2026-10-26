@@ -12,6 +12,52 @@
         <StatCard icon="🔒" :value="view.total - view.earned" label="待解锁" />
       </div>
 
+      <!-- 分类进度（V2.8.1 · E2）：来源维度（core/subject/habit/hidden）各一条。
+           ★ 与总览同一套可收集口径（sourceProgressOf 内部过滤 night-owl），
+           四项 total 相加 = view.total，不出现第二套分母。
+           hidden 只给"有 2 枚剪影"这一层信息 —— 剪影本来就可见，泄底的是标题，由剪影守卫管住。 -->
+      <div v-if="catProgress.length > 0" class="cat-progress">
+        <div
+          v-for="c in catProgress"
+          :key="c.source"
+          class="cat-progress__item"
+          :aria-label="`${c.label} ${c.earned} / ${c.total}`"
+        >
+          <span class="cat-progress__label">{{ c.label }}</span>
+          <div
+            class="cat-progress__bar"
+            role="progressbar"
+            :aria-valuenow="c.earned"
+            aria-valuemin="0"
+            :aria-valuemax="c.total"
+            :aria-label="`${c.label}进度 ${c.earned}/${c.total}`"
+          >
+            <div class="cat-progress__fill" :style="{ width: c.percent + '%' }"></div>
+          </div>
+          <span class="cat-progress__count">{{ c.earned }}/{{ c.total }}</span>
+        </div>
+      </div>
+
+      <!-- 最近解锁（V2.8.1 · E1）：数据来自视图模型现成的 view.recent
+           （全集口径、unlockedAt 倒序、最多 3 枚 —— 与家长端同一套排序）。
+           点击直接打开详情弹窗（复用 AchievementSection 暴露的同一入口）。 -->
+      <div v-if="view.recent.length > 0" class="recent-strip">
+        <h2 class="recent-strip__title">最近解锁</h2>
+        <div class="recent-strip__rows">
+          <button
+            v-for="r in view.recent"
+            :key="r.id"
+            type="button"
+            class="recent-row"
+            @click="openRecent(r)"
+          >
+            <span class="recent-row__icon" aria-hidden="true">{{ r.icon }}</span>
+            <span class="recent-row__name">{{ r.title }}</span>
+            <span class="recent-row__date">{{ r.unlockedAt || '较早解锁' }}</span>
+          </button>
+        </div>
+      </div>
+
       <!-- 发现机制：一天一次机会，抽到的是**线索**不是成就；家长可关 -->
       <AppCard v-if="discoveryEnabled" class="discovery-card">
         <div class="discovery-body">
@@ -91,7 +137,7 @@
       />
 
       <AppCard v-else>
-        <AchievementSection :view="view" standalone />
+        <AchievementSection ref="sectionRef" :view="view" standalone />
       </AppCard>
 
       <!-- 打印与导出（V1.4 · B5）。放在图鉴页而不是设置页：
@@ -125,8 +171,8 @@
 // （`refreshView()` 只重建视图、不写库，多次调用无副作用）。
 // 未加载完：给一句占位，而不是渲染空图鉴 —— 空图鉴会被误读成"一枚都没有"。
 // =====================================================================
-import { computed, onMounted, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import AppCard from '@/components/ui/AppCard.vue'
@@ -136,12 +182,14 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AchievementSection from '@/components/AchievementSection.vue'
 import { useAchievementStore } from '@core/stores/achievement'
 import { hasSeenCollection, markCollectionSeen } from '@core/motivation/achievementOverview'
+import { SOURCE_LABEL, SOURCE_ORDER } from '@core/motivation/achievementOverview'
 import {
   buildAchievementViewFromItems,
+  sourceProgressOf,
   type AchievementFilter,
+  type AchievementItem,
   type AchievementSource,
 } from '@core/motivation/achievementMeta'
-import { SOURCE_LABEL, SOURCE_ORDER } from '@core/motivation/achievementOverview'
 import {
   CLUE_TEXT,
   HIDDEN_POOL,
@@ -254,6 +302,60 @@ const subtitle = computed(() => {
   return `可收集 ${v.total} 枚 · 已获得 ${v.earned} 枚 · 点开任意一枚查看细节`
 })
 
+/* ---------------- 分类进度与最近解锁（V2.8.1 · E1/E2） ---------------- */
+
+/** 图鉴本体的 ref：最近解锁行与 Toast 跳转都要打开它内部的详情弹窗 */
+const sectionRef = ref<InstanceType<typeof AchievementSection> | null>(null)
+const route = useRoute()
+
+/** 分类进度：数据与总览同源（store.items 全集 + isCollectible 过滤），顺序/文案用现成常量。
+ *  0 枚解锁时不渲染 —— 此时 overview 三卡已完整表达"0/37"，四条 0/n 是空壳。 */
+const catProgress = computed(() => {
+  if (achievementStore.items.length === 0) return []
+  const p = sourceProgressOf(achievementStore.items)
+  const rows = SOURCE_ORDER.map((s) => ({
+    source: s as AchievementSource,
+    label: SOURCE_LABEL[s],
+    earned: p[s].earned,
+    total: p[s].total,
+    percent: p[s].total > 0 ? Math.round((p[s].earned / p[s].total) * 100) : 0,
+  }))
+  return rows.some((r) => r.earned > 0) ? rows : []
+})
+
+/** 最近解锁行点击 → 打开同一套详情弹窗（走剪影守卫，与卡片点击无差别） */
+function openRecent(item: AchievementItem): void {
+  sectionRef.value?.openDetail(item)
+}
+
+/** 按 id 打开详情：item 从**未筛选全集**解析（不能被筛选条件挡住） */
+async function openAchievementById(id: string): Promise<void> {
+  if (!id) return
+  if (achievementStore.items.length === 0) await achievementStore.refreshView()
+  const item = achievementStore.items.find((i) => i.id === id)
+  if (item && !item.silhouetted) {
+    // 等一拍：items 刚就绪时 AppCard/Section 可能还没挂出来，ref 还是 null
+    await new Promise<void>((r) => setTimeout(r, 0))
+    sectionRef.value?.openDetail(item)
+  }
+}
+
+/**
+ * Toast 点击跳转落点（V2.8.1 · E3）：`/achievements?focus=<id>` 直开详情。
+ * 处理完立刻 replace 清参 —— 刷新/后退不会重复弹窗。
+ * `focusHandled` 挡住 replace 本身触发的 watch 回环。
+ */
+let focusHandled = ''
+async function handleFocusQuery(): Promise<void> {
+  const v = route.query.focus
+  const id = typeof v === 'string' ? v : ''
+  if (!id || id === focusHandled) return
+  focusHandled = id
+  await openAchievementById(id)
+  void router.replace({ query: { ...route.query, focus: undefined } })
+}
+watch(() => route.query.focus, () => void handleFocusQuery())
+
 /**
  * 总结卡是否还要显示。
  * 默认 `true`（= 已看过 → 不显示）：先读库再决定会出现"渲染完闪一下才消失"，
@@ -339,6 +441,9 @@ onMounted(async () => {
     if (granted.granted) await saveDiscoveryState(granted.state)
   }
   await achievementStore.refreshView()
+
+  // Toast 跳转进入本页时 query 里已带 focus —— watch 建立之前就该处理这一次
+  await handleFocusQuery()
 })
 </script>
 
@@ -509,6 +614,135 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: $space-3;
+}
+
+/* ========== 分类进度（V2.8.1 · E2） ========== */
+.cat-progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-3;
+}
+
+.cat-progress__item {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding: $space-2 $space-3;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+}
+
+.cat-progress__label {
+  font-size: $font-2xs;
+  font-weight: 800;
+  color: $text-sub;
+}
+
+.cat-progress__bar {
+  height: 6px;
+  background: $bg-color-hover;
+  border-radius: $radius-full;
+  overflow: hidden;
+}
+
+.cat-progress__fill {
+  height: 100%;
+  background: $gradient-primary;
+  border-radius: $radius-full;
+  transition: width $duration-slow $ease-decelerate;
+}
+
+.cat-progress__count {
+  font-size: $font-2xs;
+  font-weight: 700;
+  color: $text-muted;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .cat-progress {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========== 最近解锁（V2.8.1 · E1） ========== */
+.recent-strip {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-3;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  animation: recent-in $duration-base $ease-decelerate;
+}
+
+.recent-strip__title {
+  margin: 0;
+  font-size: $font-xs;
+  font-weight: 800;
+  color: $text-sub;
+}
+
+.recent-strip__rows {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.recent-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  font: inherit;
+  text-align: left;
+  background: $bg-color-hover;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: border-color $duration-fast $ease-standard;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 1px;
+  }
+}
+
+.recent-row__icon {
+  flex-shrink: 0;
+  font-size: $font-base;
+  line-height: 1;
+}
+
+.recent-row__name {
+  flex: 1;
+  min-width: 0;
+  font-size: $font-2xs;
+  font-weight: 700;
+  color: $text-main;
+}
+
+.recent-row__date {
+  flex-shrink: 0;
+  font-size: $font-2xs;
+  font-weight: 600;
+  color: $text-muted;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes recent-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recent-strip { animation: none; }
+  .cat-progress__fill { transition: none; }
 }
 
 @media (max-width: 640px) {
