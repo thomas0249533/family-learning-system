@@ -2,6 +2,10 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import { resolve } from 'path'
+import { createRequire } from 'node:module'
+
+const require = createRequire(import.meta.url)
+const pkg = require('./package.json')
 
 export default defineConfig({
   plugins: [
@@ -97,6 +101,10 @@ export default defineConfig({
       },
     }),
   ],
+  // ✅ 注入应用版本号（与 package.json 同步，避免硬编码 V1.9 这类陈旧徽标）
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
 // ✅ 新增这段
   server: {
     watch: {

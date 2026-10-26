@@ -20,7 +20,10 @@
         </router-link>
       </nav>
       <div class="sidebar-footer">
-        <div class="version-badge">V1.9</div>
+        <div class="version-badge">{{ appVersion }}</div>
+        <button class="check-update-btn" type="button" :disabled="checkingUpdate" @click="onCheckUpdate">
+          {{ checkingUpdate ? '检查中…' : '检查更新' }}
+        </button>
       </div>
     </aside>
 
@@ -60,9 +63,39 @@
             </button>
           </n-dropdown>
           <div class="today-text">{{ todayText }}</div>
-          <div class="version-badge">V1.9</div>
+          <button class="check-update-btn" type="button" :disabled="checkingUpdate" @click="onCheckUpdate">
+            {{ checkingUpdate ? '检查中…' : '检查更新' }}
+          </button>
+          <div class="version-badge">{{ appVersion }}</div>
         </div>
       </header>
+
+      <!-- V2.3 轨道 D（方案 D-1）· 纯前端「检查更新」横幅：所有结果均类型化，绝不白屏 -->
+      <div
+        v-if="updateResult"
+        class="update-banner"
+        :class="updateResult.ok ? (updateResult.hasUpdate ? 'is-update' : 'is-latest') : 'is-error'"
+      >
+        <span class="update-banner__icon" aria-hidden="true">
+          {{ updateResult.ok ? (updateResult.hasUpdate ? '🎉' : '✓') : '⚠️' }}
+        </span>
+        <span class="update-banner__text">
+          <template v-if="updateResult.ok">
+            <template v-if="updateResult.hasUpdate">
+              发现新版本 v{{ updateResult.remoteVersion }}（当前 v{{ updateResult.currentVersion }}）。
+              <a v-if="updateResult.downloadUrl" :href="updateResult.downloadUrl" target="_blank" rel="noopener noreferrer">前往官网下载 →</a>
+              <span v-else>请前往官网下载最新版。</span>
+            </template>
+            <template v-else>
+              已是最新版本（v{{ updateResult.currentVersion }}）
+            </template>
+          </template>
+          <template v-else>
+            检查更新失败：{{ updateResult.message }}
+          </template>
+        </span>
+        <button class="update-banner__close" type="button" aria-label="关闭提示" @click="dismissUpdate">✕</button>
+      </div>
 
       <main class="app-main">
         <div class="app-main-inner">
@@ -131,6 +164,7 @@ import { useAchievementStore } from '@core/stores/achievement'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import { useUiStore } from '@core/stores/ui'
+import { checkUpdate, type UpdateCheckResult } from '@core/update/checkUpdate'
 
 const route = useRoute()
 const router = useRouter()
@@ -294,6 +328,28 @@ const todayText = computed(() => {
   const weekdays = ['日', '一', '二', '三', '四', '五', '六']
   return `${d.getMonth() + 1}月${d.getDate()}日 · 星期${weekdays[d.getDay()]}`
 })
+
+// ---------- V2.3 轨道 D（方案 D-1）· 纯前端「检查更新」占位 ----------
+// 版本号来自 vite define 注入的 __APP_VERSION__（与 package.json 自动同步，
+// 顺带修掉此前硬编码 V1.9 的陈旧徽标）。checkUpdate 内部已捕获全部网络 /
+// 跨域 / 解析异常并返回类型化结果，绝不向调用方抛异常（避免白屏）。
+const appVersion = __APP_VERSION__
+const checkingUpdate = ref(false)
+const updateResult = ref<UpdateCheckResult | null>(null)
+
+async function onCheckUpdate(): Promise<void> {
+  checkingUpdate.value = true
+  try {
+    updateResult.value = await checkUpdate(appVersion)
+  } finally {
+    checkingUpdate.value = false
+  }
+}
+
+function dismissUpdate(): void {
+  updateResult.value = null
+}
+
 </script>
 
 <style lang="scss">
@@ -408,6 +464,13 @@ const todayText = computed(() => {
       padding: 4px 10px;
       border-radius: 20px;
     }
+
+    /* V2.3 · D-1：桌面端（侧栏可见）在此检查更新 */
+    .check-update-btn {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
   }
 }
 
@@ -417,6 +480,101 @@ const todayText = computed(() => {
   flex-direction: column;
   min-width: 0;
   min-height: 100vh;
+}
+
+/* ========== V2.3 轨道 D（方案 D-1）· 检查更新 ========== */
+.check-update-btn {
+  padding: 5px 12px;
+  border: 1px solid $border-light;
+  border-radius: 20px;
+  background: $card-bg;
+  color: $text-sub;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $bg-color-hover;
+    color: $primary-text;
+    border-color: $primary-text;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 2px;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+/* 更新提示横幅：类型化结果驱动，三种态（有新版本 / 已最新 / 出错）绝不白屏 */
+.update-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid $border-light;
+  flex-shrink: 0;
+
+  &__icon {
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  &__text {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.5;
+    word-break: break-word;
+
+    a {
+      text-decoration: underline;
+      font-weight: 700;
+    }
+  }
+  &__close {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-size: 14px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover { background: $bg-color-hover; }
+  }
+
+  &.is-update {
+    background: $warning-light;
+    color: $warning-text;
+    border-bottom-color: $warning-color;
+
+    a { color: $warning-text; }
+  }
+  &.is-latest {
+    background: $success-light;
+    color: $success-text;
+    border-bottom-color: $success-color;
+  }
+  &.is-error {
+    background: $danger-light;
+    color: $danger-text;
+    border-bottom-color: $danger-color;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-header .header-right .check-update-btn { display: none; }
 }
 
 .app-header {
