@@ -23,7 +23,6 @@
             :key="item.knowledgePointId"
             class="review-item"
             :class="'stage-' + (item.reviewStage ?? 0)"
-            @click="goToTopic(item)"
           >
             <div class="item-head">
               <span class="kp-title">{{ item.kpTitle }}</span>
@@ -41,6 +40,25 @@
               <span v-if="memoryPercent(item) !== null" class="stat-memory">
                 {{ memoryStrengthLabel(memoryPercent(item)) }} {{ memoryPercent(item) }}%
               </span>
+            </div>
+            <!-- V2.4 · 任务1 · 双通道：有错题→去攻克；无错题→虚拟「已复习」 -->
+            <div class="item-actions">
+              <button
+                v-if="hasPendingMistakes(item.knowledgePointId)"
+                class="review-btn review-btn--attack"
+                type="button"
+                @click="attackMistakes(item)"
+              >
+                🎯 去攻克错题
+              </button>
+              <button
+                v-else
+                class="review-btn review-btn--done"
+                type="button"
+                @click="markReviewed(item)"
+              >
+                ✅ 标记已复习
+              </button>
             </div>
           </div>
         </div>
@@ -68,7 +86,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { NEmpty, NTag } from 'naive-ui'
+import { NEmpty, NTag, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import { db, type ProgressRecord, type LearningPackageRecord } from '@/db'
 import { useUserDataStore } from '@core/stores/userData'
@@ -76,6 +94,7 @@ import { isDueForReview, humanizeNextReview, memoryStrengthLabel, retrievability
 import { findUnitByKnowledgePoint } from '@core/importer/resolvePackageUnits'
 import { stripPrefix } from '@core/progress/ownerIndex'
 import { localDayKey } from '@core/motivation/streak'
+import { needsReview, mistakeLevel } from '@core/mistake/mistakeRules'
 
 interface ReviewItem extends ProgressRecord {
   kpTitle: string
@@ -88,6 +107,33 @@ interface ReviewItem extends ProgressRecord {
 
 const router = useRouter()
 const userDataStore = useUserDataStore()
+const message = useMessage()
+
+/** V2.4 · 任务1 · 每个 KP 是否有"待复习"的错题（未掌握/部分掌握）。用于双通道判定。 */
+const kpWithPendingMistakes = computed(() => {
+  const set = new Set<string>()
+  for (const m of userDataStore.mistakes) {
+    if (needsReview(mistakeLevel(m))) {
+      for (const kpId of m.knowledgePointIds ?? []) set.add(kpId)
+    }
+  }
+  return set
+})
+function hasPendingMistakes(kpId: string): boolean {
+  return kpWithPendingMistakes.value.has(kpId)
+}
+
+/** 通道 A：跳到错题本，按知识点深链过滤（Mistakes.vue 读 ?kp= 参数） */
+function attackMistakes(item: ReviewItem) {
+  router.push({ path: '/mistakes', query: { kp: item.knowledgePointId } })
+}
+
+/** 通道 B：虚拟「已复习」（无做题数据，只推进 FSRS）。见 userData.markReviewedVirtual。 */
+async function markReviewed(item: ReviewItem) {
+  await userDataStore.markReviewedVirtual(item.sourcePackageId, item.knowledgePointId)
+  message.success('已标记为复习！知识点的熟练度将在下次练习中更新。')
+  await loadReviewItems()
+}
 
 const loading = ref(true)
 const dueItems = ref<ReviewItem[]>([])
@@ -211,9 +257,6 @@ async function loadReviewItems() {
   loading.value = false
 }
 
-function goToTopic(item: ReviewItem) {
-  router.push(`/learn/${item.sourcePackageId}/unit/${item.unitId}/topic/${item.topicId}`)
-}
 
 /** P1 · 掌握度（BKT 概率），没采集到时返回 null 而不是 0 */
 function masteryPercent(item: ReviewItem): number | null {
@@ -313,6 +356,35 @@ onMounted(async () => {
 
     .stat-mastery { color: $primary-text; font-weight: 700; }
     .stat-memory { color: $text-muted; }
+  }
+
+  .item-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .review-btn {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+
+    &--attack {
+      background: $primary-light;
+      color: $primary-text;
+      border-color: $primary-color;
+      &:hover { background: $primary-color; color: var(--text-on-primary); }
+    }
+    &--done {
+      background: $bg-color-hover;
+      color: $text-sub;
+      border-color: $border-color;
+      &:hover { color: $text-main; border-color: $text-sub; }
+    }
   }
 }
 

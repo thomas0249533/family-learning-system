@@ -8,6 +8,7 @@ import {
   scheduleReview,
   shouldAdvanceSchedule,
 } from '@core/review/reviewScheduler'
+import { Rating } from '@core/review/fsrs'
 import { guessProbFor, initBkt, updateBkt, type BktState } from '@core/mastery/bkt'
 import { applyDecay, nextStatus } from '@core/mastery/masteryRules'
 import { touchStudyDay } from '@core/motivation/streak'
@@ -166,6 +167,52 @@ export const useUserDataStore = defineStore('userData', () => {
       mastered: true,
       masteryLevel: 'mastered',
     })
+    await loadUserData()
+  }
+
+  /**
+   * V2.4 · 任务1 · 虚拟「已复习」标记（方案 C 通道 B）。
+   *
+   * 用户点「✅ 标记已复习」时**没有产生新的做题数据**，但要把该知识点从今日
+   * 复习清单里摘掉。做法：构造一个 rating=Good 的虚拟成绩喂给 FSRS，只推进
+   * `fsrs / reviewStage / nextReviewAt / lastReviewAt` 四字段。
+   *
+   * ★ 红线（与兼容性评估 R1 一致）：
+   *   - **绝不**改 `status` / `bkt` / `correctCount` / `wrongCount` —— 保持"只有真
+   *     做题才涨掌握度"的口径不被污染（成就不读 fsrs，故无碍；但掌握度统计必须干净）。
+   *   - **绝不**调 `markAsMastered`（把错题直接判掌握与"复习完成"是两回事）。
+   *   - 必须套 `shouldAdvanceSchedule` 闸门：同一天只推进一次。否则重复点击会把
+   *     `due` 越推越远（反向验证：关掉闸门 due 会飞）。
+   *   - 没有进度行就不造（能进复习清单的 KP 必有行；防御性 early-return）。
+   */
+  async function markReviewedVirtual(packageId: string, knowledgePointId: string): Promise<void> {
+    await awaitE1Settled().catch(() => undefined)
+
+    const index = await ensureOwnerIndex()
+    const owner = resolveOwnerPackageId(knowledgePointId, packageId, index)
+    const targetPackageId = owner ?? packageId
+    const targetKpId = owner ? canonicalKpId(owner, knowledgePointId, index) : knowledgePointId
+
+    const pid = currentProfileId()
+    const key = [pid, targetPackageId, targetKpId]
+    const raw = await db.progress
+      .where('[profileId+packageId+knowledgePointId]').equals(key).first()
+    if (!raw) return
+
+    const existing = ensureFields(raw)
+    const now = new Date()
+
+    // 受控闸门：同一天只推进一次（与 recordProgress 同源纪律）
+    const lastReview = existing.fsrs?.last_review ?? existing.lastReviewAt ?? null
+    if (!shouldAdvanceSchedule(lastReview, true, now)) return
+
+    const result = scheduleReview({ card: existing.fsrs, rating: Rating.Good, now })
+    await db.progress.update(raw.id!, toPlain({
+      fsrs: result.card,
+      reviewStage: result.reviewStage,
+      nextReviewAt: result.nextReviewAt,
+      lastReviewAt: result.lastReviewAt,
+    }))
     await loadUserData()
   }
 
@@ -354,6 +401,7 @@ export const useUserDataStore = defineStore('userData', () => {
     markAsMastered,
     setMistakeCause,
     recordProgress,
+    markReviewedVirtual,
     recordAnswerEvent,
   }
 })

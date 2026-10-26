@@ -100,6 +100,8 @@
         <StatCard icon="⏱️" :value="stats.studyMinutes" label="累计分钟" />
         <StatCard icon="🔥" :value="stats.continuousDays" label="连续天数" />
       </div>
+      <!-- V2.4 · 任务3 · 家长端口径安抚常驻提示（R2：虚拟复习掌握态统计短暂滞后，已与主理人确认可接受） -->
+      <p class="stats-note">手动标记的复习，将在下次答题后正式计入掌握度统计。</p>
     </section>
 
     <!--
@@ -1109,6 +1111,17 @@ async function handleExportDiagnosis(): Promise<void> {
 
   @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 640px) { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* V2.4 · 任务3 · 家长端口径安抚常驻提示（零硬编码） */
+.stats-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: $text-sub;
+  background: $bg-color-hover;
+  border-left: 3px solid $primary-color;
+  border-radius: 6px;
+  padding: 8px 12px;
 }
 
 /* `.ov-card` 已由 StatCard 基元承载（card-bg + border-color + radius-md + shadow-sm + tone 值色）。 */

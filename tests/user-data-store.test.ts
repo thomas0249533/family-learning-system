@@ -24,6 +24,8 @@ vi.mock('@/db', () => ({ db: fake.db }))
 const { useUserDataStore } = await import('@core/stores/userData')
 const { invalidateOwnerIndex } = await import('@core/progress/ownerIndexCache')
 const { streakKey } = await import('@core/motivation/streak')
+const { scheduleReview } = await import('@core/review/reviewScheduler')
+const { Rating } = await import('@core/review/fsrs')
 
 const PKG = 'unit-math-4-up-rjb-p1'
 const KP = 'kp-num-001'
@@ -313,5 +315,98 @@ describe('recordProgress — 写入端归一化（归属包解析）', () => {
 
     expect(fake.progress.rows).toHaveLength(1)
     expect(fake.progress.rows[0].packageId).toBe('unknown-pkg')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// V2.4 · 任务1 · 方案C · 虚拟「已复习」标记（markReviewedVirtual）
+// ---------------------------------------------------------------------------
+
+describe('markReviewedVirtual — 虚拟「已复习」标记（V2.4 任务1 方案C）', () => {
+  function seedDueProgress(overrides: Partial<any> = {}) {
+    return fake.progress.add({
+      id: 1,
+      profileId: 'default',
+      packageId: PKG,
+      knowledgePointId: KP,
+      status: '学习中',
+      correctCount: 2,
+      wrongCount: 1,
+      correctStreak: 2,
+      wrongStreak: 0,
+      lastStudiedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
+      studySeconds: 60,
+      reviewStage: 1,
+      nextReviewAt: new Date(Date.now() - 3600000).toISOString(), // 1 小时前 → 已到期
+      lastReviewAt: new Date(Date.now() - 2 * 86400000).toISOString(), // 两天前
+      ...overrides,
+    })
+  }
+
+  it('首次标记：推进 FSRS 四字段（due 推后），但绝不改 status/correctCount/wrongCount', async () => {
+    seedPackage(PKG, 'math', [KP])
+    await seedDueProgress()
+    const before = fake.progress.rows[0]
+
+    const s = store()
+    await s.markReviewedVirtual(PKG, KP)
+
+    const rec = fake.progress.rows[0]
+    expect(rec.fsrs).toBeTruthy()
+    expect(new Date(rec.nextReviewAt).getTime()).toBeGreaterThan(new Date(before.nextReviewAt).getTime())
+    // ★ 红线：掌握度统计口径不被污染（成就不读 fsrs，但掌握度统计必须干净）
+    expect(rec.status).toBe('学习中')
+    expect(rec.correctCount).toBe(2)
+    expect(rec.wrongCount).toBe(1)
+    expect(rec.bkt).toBe(before.bkt) // 不新增 BKT 推断
+  })
+
+  it('★ 反向验证（闸门）：同一天重复点「标记已复习」不再推进，due 不飞', async () => {
+    seedPackage(PKG, 'math', [KP])
+    await seedDueProgress()
+    const s = store()
+    await s.markReviewedVirtual(PKG, KP)
+    const afterFirst = { ...fake.progress.rows[0] }
+
+    // 立刻再点一次（同一天）→ shouldAdvanceSchedule 闸门拦截
+    await s.markReviewedVirtual(PKG, KP)
+    const afterSecond = fake.progress.rows[0]
+
+    expect(afterSecond.nextReviewAt).toBe(afterFirst.nextReviewAt)
+    expect(afterSecond.fsrs!.reps).toBe(afterFirst.fsrs!.reps)
+  })
+
+  it('★ 反向验证（无闸门会怎样）：若去掉 shouldAdvanceSchedule，同一天狂点会把排期一路顶爆', async () => {
+    // 复刻"无闸门"路径：每次都直接 scheduleReview(Good)。reps 会累积、间隔被顶爆。
+    let card: any = null
+    let nr = new Date().toISOString()
+    for (let i = 0; i < 10; i++) {
+      const r = scheduleReview({ card, rating: Rating.Good, now: new Date() })
+      card = r.card
+      nr = r.nextReviewAt
+    }
+    // 无闸门：10 次后 reps=10，远超"有闸门"同场景下的 1 次 —— 证明闸门不可或缺
+    expect(card.reps).toBe(10)
+    // 对照：有闸门时一天最多只推进一次（= 单次 Good）。无闸门的排期必须明显更远
+    const single = scheduleReview({ card: null, rating: Rating.Good, now: new Date() })
+    const daysNoGate = (new Date(nr).getTime() - Date.now()) / 86400000
+    const daysSingle = (new Date(single.nextReviewAt).getTime() - Date.now()) / 86400000
+    expect(daysNoGate).toBeGreaterThan(daysSingle)
+  })
+
+  it('没有进度行时不造行、不抛错（防御性 early-return）', async () => {
+    seedPackage(PKG, 'math', [KP])
+    const s = store()
+    await s.markReviewedVirtual(PKG, KP)
+    expect(fake.progress.rows).toHaveLength(0)
+  })
+
+  it('★ 红线：绝不调用 markAsMastered（标记已复习 ≠ 把错题判掌握）', async () => {
+    seedPackage(PKG, 'math', [KP])
+    await seedDueProgress({ status: '需复习' })
+    const s = store()
+    await s.markReviewedVirtual(PKG, KP)
+    // 进度行的掌握态保持原值，不被偷偷改成已掌握
+    expect(fake.progress.rows[0].status).toBe('需复习')
   })
 })

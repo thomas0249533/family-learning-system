@@ -6,6 +6,16 @@
       <h2 class="intro-title">{{ topicTitle || '词汇背记' }}</h2>
       <div class="intro-count">共 {{ words.length }} 个词</div>
 
+      <!-- V2.4 · 任务2 · 当前单元掌握进度（派生，纯展示，降畏难） -->
+      <div class="unit-progress" v-if="totalCount > 0">
+        <div class="unit-progress-track">
+          <div class="unit-progress-fill" :style="{ width: masteredPercent + '%' }"></div>
+        </div>
+        <div class="unit-progress-text">
+          当前单元已掌握 <b>{{ masteredCount }}</b> / {{ totalCount }} 词
+        </div>
+      </div>
+
       <div class="config-block">
         <div class="config-label">背记模式</div>
         <div class="mode-grid">
@@ -145,6 +155,7 @@
         <span class="done-total">{{ sessionWords.length }}</span>
       </div>
       <div class="done-rate">正确率 {{ doneRate }}%</div>
+      <div class="done-unit" v-if="totalCount > 0">本单元已掌握 <b>{{ masteredCount }}</b> / {{ totalCount }} 词</div>
       <div class="done-time">用时 {{ formatDuration(elapsedSeconds) }}</div>
 
       <div class="done-actions">
@@ -201,6 +212,27 @@ const countOptions = computed(() => [
 ])
 
 const sessionSize = computed(() => Math.min(countPerSession.value, props.words.length))
+
+// V2.4 · 任务2 · 派生进度：当前单元「已掌握 / 总词数」。
+// 依据与写入端同源：进度行 packageId = props.packageId、knowledgePointId = word.id
+// （普通单元包 owner 解析到自身，canonicalKpId 原值返回，见 ownerIndex.ts）。
+// 不引入新字段、不改 DB；「已掌握」口径与掌握度模型一致（masteryProbability ≥ 0.6 或 status=已掌握）。
+const totalCount = computed(() => props.words.length)
+const masteredCount = computed(() => {
+  const masteredIds = new Set(
+    userDataStore.progress
+      .filter(
+        p =>
+          p.packageId === props.packageId &&
+          ((p.masteryProbability ?? 0) >= 0.6 || p.status === '已掌握')
+      )
+      .map(p => p.knowledgePointId)
+  )
+  return props.words.filter(w => w?.id && masteredIds.has(w.id)).length
+})
+const masteredPercent = computed(() =>
+  totalCount.value === 0 ? 0 : Math.round((masteredCount.value / totalCount.value) * 100)
+)
 
 const modeOptions = [
   { value: 'flip' as Mode, icon: '🎴', label: '翻面', desc: '提示→答案' },
@@ -765,5 +797,37 @@ body.dark-mode {
   // .choice-item.correct/.wrong、.drill-feedback.ok/.no 的背景已改由
   // var(--badge-{tone}-bg) 承载（随主题解析），故移除本地的深色 rgba 覆盖。
   .flip-card.flipped { background: rgba(var(--primary-rgb), 0.15); }
+}
+/* V2.4 · 任务2 · 当前单元掌握进度条（派生展示，零硬编码） */
+.unit-progress {
+  margin: 4px auto 20px;
+  max-width: 320px;
+
+  .unit-progress-track {
+    height: 8px;
+    border-radius: 999px;
+    background: $bg-color-hover;
+    overflow: hidden;
+  }
+  .unit-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: $gradient-primary;
+    transition: width 0.4s ease;
+  }
+  .unit-progress-text {
+    margin-top: 8px;
+    font-size: 12px;
+    color: $text-sub;
+    b { color: $primary-text; }
+  }
+}
+
+/* 完成页也给出本单元掌握口径，闭环反馈 */
+.done-unit {
+  font-size: 13px;
+  color: $text-sub;
+  margin-top: 4px;
+  b { color: $primary-text; }
 }
 </style>

@@ -39,6 +39,12 @@
       </div>
     </div>
 
+    <!-- V2.4 · 任务1 · 深链过滤横幅：从复习页「去攻克错题」跳来时只显示该知识点错题 -->
+    <div v-if="kpFilter" class="kp-filter-banner">
+      <span>🔍 正在查看单个知识点的错题</span>
+      <button class="kp-filter-clear" type="button" @click="clearKpFilter">查看全部错题</button>
+    </div>
+
     <!-- ✅ 筛选栏 -->
     <div class="filter-bar">
       <!-- 时间筛选 -->
@@ -85,7 +91,7 @@
     </div>
 
     <EmptyState
-      v-if="filteredMistakes.length === 0"
+      v-if="mistakesForView.length === 0"
       :description="emptyText"
       class="empty-card"
     />
@@ -299,7 +305,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { NInput, NDrawer, NDrawerContent, useDialog, useMessage } from 'naive-ui'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuestionText from '@/components/QuestionText.vue'
@@ -332,6 +338,7 @@ import type { MistakeMasteryLevel } from '@/db'
 const message = useMessage()
 const dialog = useDialog()
 const router = useRouter()
+const route = useRoute()
 const userDataStore = useUserDataStore()
 const packageStore = usePackageStore()
 
@@ -341,6 +348,8 @@ type ViewMode = 'knowledge' | 'time' | 'wrong'
 const timeFilter = ref<TimeFilter>('all')
 const viewMode = ref<ViewMode>('knowledge')
 const keyword = ref('')
+/** V2.4 · 任务1 · 深链过滤：复习页「去攻克错题」带 ?kp=<id> 跳来时只显示该知识点错题 */
+const kpFilter = ref<string | null>(null)
 
 const timeOptions = [
   { label: '全部', value: 'all' as TimeFilter },
@@ -476,6 +485,12 @@ const filteredMistakes = computed(() => {
   })
 })
 
+/** V2.4 · 任务1 · ?kp= 深链过滤：在 time/keyword 之上再按知识点收窄 */
+const mistakesForView = computed(() => {
+  if (!kpFilter.value) return filteredMistakes.value
+  return filteredMistakes.value.filter(m => (m.knowledgePointIds ?? []).includes(kpFilter.value!))
+})
+
 /** ✅ 按知识点分组视图 */
 const groupedMistakes = computed(() => {
   const kpMap = new Map<string, string>()
@@ -487,7 +502,7 @@ const groupedMistakes = computed(() => {
 
   const groups = new Map<string, { kpId: string; kpTitle: string; items: any[] }>()
 
-  const list = filteredMistakes.value // 已应用时间和关键词过滤
+  const list = mistakesForView.value // 已应用时间/关键词/深链(kp)过滤
   for (const m of list) {
     const kpIds: string[] = m.knowledgePointIds?.length
       ? m.knowledgePointIds
@@ -519,9 +534,17 @@ const emptyText = computed(() => {
 })
 
 onMounted(async () => {
+  // V2.4 · 任务1 · 复习页「去攻克错题」带 ?kp=<id> 跳来 → 只显示该知识点错题
+  kpFilter.value = (route.query.kp as string) || null
   await packageStore.loadPackages()
   await userDataStore.loadUserData()
 })
+
+/** V2.4 · 任务1 · 退出深链过滤，回到全部错题 */
+function clearKpFilter() {
+  kpFilter.value = null
+  router.replace({ path: '/mistakes' })
+}
 
 async function markMastered(id: number) {
   await userDataStore.markAsMastered(id)
@@ -836,6 +859,33 @@ function formatDate(iso: string): string {
     gap: $space-2;
     /* 窄屏与统计数字一起换行时，按钮组不再贴着右边缘 */
     @media (max-width: 640px) { margin-left: 0; }
+  }
+}
+
+/* V2.4 · 任务1 · 深链过滤横幅 */
+.kp-filter-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: $primary-light;
+  border: 1px solid $primary-color;
+  border-radius: $radius-lg;
+  padding: 10px 16px;
+
+  span { font-size: 13px; font-weight: 700; color: $primary-text; }
+
+  .kp-filter-clear {
+    padding: 4px 12px;
+    border-radius: 8px;
+    border: 1px solid $primary-color;
+    background: $card-bg;
+    color: $primary-text;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    &:hover { background: $primary-color; color: var(--text-on-primary); }
   }
 }
 
