@@ -194,7 +194,7 @@ const allCards = (page: Page) => page.locator('.ach-card')
 
 test.describe('成就图鉴 · 两级折叠', () => {
   test('默认态：已获得收起、待解锁展开；一键切换；刷新保持（AC-10 / AC-11）', async ({ page }) => {
-    await page.goto('/home')
+    await page.goto('/achievements')
     await resetAll(page)
     await expect(page.getByRole('heading', { name: '成就图鉴' })).toBeVisible()
 
@@ -221,7 +221,7 @@ test.describe('成就图鉴 · 两级折叠', () => {
   })
 
   test('有已获得时：已获得区默认收起，组头给「最接近」提示', async ({ page }) => {
-    await page.goto('/home')
+    await page.goto('/achievements')
     await resetAll(page)
     await seedMasteredOne(page)
     await page.reload()
@@ -248,7 +248,7 @@ test.describe('成就图鉴 · 两级折叠', () => {
   })
 
   test('折叠头是原生按钮，键盘可切换（AC-12）', async ({ page }) => {
-    await page.goto('/home')
+    await page.goto('/achievements')
     await resetAll(page)
     await expect(page.getByRole('heading', { name: '成就图鉴' })).toBeVisible()
 
@@ -266,7 +266,7 @@ test.describe('成就图鉴 · 两级折叠', () => {
 
 test.describe('成就图鉴 · 隐藏成就与文案（AC-13 / AC-14）', () => {
   test('隐藏成就未解锁时，页面源码里搜不到真实标题', async ({ page }) => {
-    await page.goto('/home')
+    await page.goto('/achievements')
     await resetAll(page)
     await page.getByRole('button', { name: '全部收起' }).click()
     await page.getByRole('button', { name: '全部展开' }).click()
@@ -300,7 +300,7 @@ test.describe('成就图鉴 · 隐藏成就与文案（AC-13 / AC-14）', () => 
   })
 
   test('未获得卡有进度提示与量词（AC-13）', async ({ page }) => {
-    await page.goto('/home')
+    await page.goto('/achievements')
     await resetAll(page)
     await page.getByRole('button', { name: '全部收起' }).click()
     await page.getByRole('button', { name: '全部展开' }).click()
@@ -323,7 +323,7 @@ test.describe('成就图鉴 · 隐藏成就与文案（AC-13 / AC-14）', () => 
 
 test.describe('成就链路 · 合并提示（AC-07）', () => {
   test('一次解锁 5 枚：只弹 1 条合并提示，5 枚全部进「已获得」', async ({ page }) => {
-    await page.goto('/home')
+    await page.goto('/achievements')
     await resetAll(page)
 
     await seedFiveUnlocks(page)
@@ -350,7 +350,7 @@ test.describe('成就链路 · 合并提示（AC-07）', () => {
 
 test.describe('成就链路 · 解锁', () => {
   test('满足条件 → 计入已获得 + 弹提示 + 刷新不重复弹', async ({ page }) => {
-    await page.goto('/home')
+    await page.goto('/achievements')
     await resetAll(page)
     await expect(page.getByRole('heading', { name: '成就图鉴' })).toBeVisible()
 

@@ -127,9 +127,11 @@
       </div>
     </section>
 
-    <!-- ========== 我的成就（V1.3 · 成就图鉴：分组折叠，默认收起） ========== -->
+    <!-- ========== 荣誉勋章墙（V2.7 · 轨道 A2：大图标 + 分类 Tab + 点击详情）
+         完整图鉴（两级折叠 + 证据）仍在独立页 /achievements —— 首页要陈列感，
+         独立页要"查得到每一枚的证据"，两者共用同一个 view 模型。 ========== -->
     <section v-if="achView" class="section">
-      <AchievementSection :view="achView" />
+      <AchievementHall :view="achView" />
     </section>
 
     <!-- ========== 学习进度 ========== -->
@@ -184,7 +186,7 @@ import { isDueForReview, humanizeNextReview } from '@core/review/reviewScheduler
 import { useAchievementStore } from '@core/stores/achievement'
 import { computeMasterySummary } from '@core/mastery/masterySummary'
 import { computeWeakPoints, type WeakPoint } from '@core/recommendation/weakPoints'
-import AchievementSection from '@/components/AchievementSection.vue'
+import AchievementHall from '@/components/AchievementHall.vue'
 import { EMPTY_STREAK, loadRepair, loadStreak, repairLeft, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
 import { useChartTheme } from '@core/theme/useChartTheme'
 

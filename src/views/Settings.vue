@@ -1,5 +1,31 @@
 <template>
+  <!-- V2.7 · 轨道 A1：左菜单 + 右内容
+       ------------------------------------------------------------------
+       刻意用「滚动定位 + 滚动高亮」而不是「Tab 切换只渲染一个面板」：
+         · 设置页有 8 个分区、且部分卡片是自治组件（LocalAiCard / SyncSettings /
+           ImportPreview），Tab 切换会把它们反复卸载重建（同步状态、预检结果全丢）；
+         · `#family-backup` 这类深链锚点是既有契约（B4「导出并删除旧档案」靠它），
+           只渲染一个面板时锚点经常指向 display:none 的元素，滚动必然失败；
+         · 所有内容始终在 DOM 里 → e2e 的可见性定位与浏览器 Ctrl+F 都照旧。
+       窄屏把左栏降级为顶部横向可滑的分区条（见样式层 @media）。 -->
   <div class="page-container">
+    <nav class="settings-nav" aria-label="设置分区">
+      <button
+        v-for="s in SECTIONS"
+        :key="s.key"
+        type="button"
+        class="nav-item"
+        :class="{ active: activeSection === s.key }"
+        :aria-current="activeSection === s.key ? 'true' : undefined"
+        @click="goSection(s.key)"
+      >
+        <span class="nav-icon" aria-hidden="true">{{ s.icon }}</span>
+        <span class="nav-label">{{ s.label }}</span>
+      </button>
+    </nav>
+
+    <div ref="contentRef" class="settings-content">
+    <section id="settings-appearance" class="settings-panel" data-section="appearance">
     <!-- 外观设置 -->
     <AppCard title="🎨 外观设置" class="card">
       <n-space vertical size="large">
@@ -99,7 +125,9 @@
         </div>
       </n-space>
     </AppCard>
+    </section>
 
+    <section id="settings-ai" class="settings-panel" data-section="ai">
     <!-- AI 助手设置（V1.11 · F1）
          Key 的存储策略（详见 src/core/ai/aiConfig.ts 顶部）：
          **默认只在本次使用中有效、不落盘**；勾了「记住」才用家长口令
@@ -165,7 +193,9 @@
 
     <!-- 本地离线 AI（V2.0 · A2）：自包含卡片，Settings 只负责摆位置 -->
     <LocalAiCard />
+    </section>
 
+    <section id="settings-packages" class="settings-panel" data-section="packages">
     <!-- 学习包管理 -->
     <AppCard title="📦 学习包管理" class="card">
       <n-space vertical>
@@ -175,6 +205,9 @@
       </n-space>
     </AppCard>
 
+    </section>
+
+    <section id="settings-export" class="settings-panel" data-section="export">
     <!-- 导出 -->
     <!-- id="family-backup" 是 B4 的落地锚点：「导出并删除旧档案」按钮会带着它跳过来，
          指向的正是家长唯一能"把数据先存下来"的那一行（见下方 scrollToHash） -->
@@ -206,15 +239,23 @@
       </n-space>
     </AppCard>
 
+    </section>
+
+    <section id="settings-backup" class="settings-panel" data-section="backup">
     <!-- 从备份导入（两步向导：先预览，确认后才写入） -->
     <AppCard title="📥 从备份导入" class="card">
       <ImportPreview />
       <div class="hint">来自另一台设备的备份可以合并进来；本机已有的较新记录不会被覆盖</div>
     </AppCard>
 
+    </section>
+
+    <section id="settings-sync" class="settings-panel" data-section="sync">
     <!-- 同步（WebDAV · V1.11 · F2-UI）：独立组件，避免与上面的 AI 卡片改动纠缠 -->
     <SyncSettings />
+    </section>
 
+    <section id="settings-search" class="settings-panel" data-section="search">
     <!-- 搜索历史 -->
     <AppCard title="🔍 搜索历史" class="card">
       <EmptyState v-if="searchHistory.length === 0" size="small" description="暂无搜索历史" />
@@ -228,6 +269,9 @@
       </template>
     </AppCard>
 
+    </section>
+
+    <section id="settings-danger" class="settings-panel" data-section="danger">
     <!-- 危险操作 -->
     <AppCard title="🗑️ 危险操作" class="card" variant="danger">
       <n-space vertical>
@@ -236,11 +280,13 @@
         <AppButton type="error" ghost @click="clearAllData">清空所有数据（含包）</AppButton>
       </n-space>
     </AppCard>
+    </section>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   NSpace, NRadioGroup, NRadioButton, NTag, NInput, NCheckbox,
@@ -284,6 +330,112 @@ const message = useMessage()
 const dialog = useDialog()
 const route = useRoute()
 
+/* ===========================================================================
+ * V2.7 · 轨道 A1 · 左侧分区菜单
+ * ---------------------------------------------------------------------------
+ * 只有"定位"与"高亮"两件事，**不做面板切换**：
+ * 每个 `<section class="settings-panel" data-section="…">` 始终在 DOM 里，
+ * 点菜单 = scrollIntoView，滚动 = 反算当前分区。理由写在模板顶部注释里。
+ * ======================================================================== */
+interface SettingsSection {
+  key: string
+  icon: string
+  label: string
+}
+
+/** 分区表：顺序必须与模板里的 section 顺序一致（滚动高亮依赖这个顺序） */
+const SECTIONS: SettingsSection[] = [
+  { key: 'appearance', icon: '🎨', label: '外观设置' },
+  { key: 'ai', icon: '🤖', label: 'AI 助手' },
+  { key: 'packages', icon: '📦', label: '学习包' },
+  { key: 'export', icon: '📤', label: '导出' },
+  { key: 'backup', icon: '📥', label: '备份导入' },
+  { key: 'sync', icon: '🔄', label: '同步' },
+  { key: 'search', icon: '🔍', label: '搜索历史' },
+  { key: 'danger', icon: '🗑️', label: '危险操作' },
+]
+
+const activeSection = ref<string>(SECTIONS[0].key)
+const contentRef = ref<HTMLElement | null>(null)
+
+/** 当前页面的全部分区面板（DOM 即真相，避免再维护一份 ref 数组） */
+function panelEls(): HTMLElement[] {
+  return Array.from(document.querySelectorAll<HTMLElement>('.settings-panel[data-section]'))
+}
+
+function goSection(key: string): void {
+  const el = panelEls().find((p) => p.dataset.section === key)
+  if (!el) return
+  activeSection.value = key
+  lockSpy()
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+/**
+ * 找最近的"可纵向滚动的祖先"。
+ *
+ * 本项目的页面滚动容器是 `AppShell` 里的 `.app-main`（不是 window），
+ * 所以既不能用 window 的 scroll 事件，也不能用 `window.scrollY`。
+ * 找不到时退化为 window（例如未来改成整页滚动）。
+ */
+function nearestScrollParent(el: HTMLElement | null): HTMLElement | Window {
+  let node = el?.parentElement ?? null
+  while (node) {
+    const cs = getComputedStyle(node)
+    if (/(auto|scroll)/.test(cs.overflowY) && node.scrollHeight > node.clientHeight + 8) return node
+    node = node.parentElement
+  }
+  return window
+}
+
+let scrollHost: HTMLElement | Window | null = null
+
+/** 阈值 = 粘性菜单的高度再多一点：标题刚好被菜单压住时就算"进入该分区" */
+const SECTION_PROBE_OFFSET = 96
+
+/**
+ * 程序化滚动的静默期。
+ *
+ * `scrollIntoView({behavior:'smooth'})` 会连续触发几十次 scroll 事件，
+ * 而滚动中"顶部那个分区"是**路径上经过的分区**——于是点「危险操作」会先高亮
+ * 「同步」「搜索历史」，最后停在半路。这里在点击后短暂停用反算，
+ * 让"点了哪个就亮哪个"，动画结束（700ms 足够覆盖 smooth 滚动）再交还给滚动高亮。
+ */
+let spyLockUntil = 0
+
+function lockSpy(): void {
+  spyLockUntil = Date.now() + 700
+}
+
+function onScroll(): void {
+  if (Date.now() < spyLockUntil) return
+  const panels = panelEls()
+  if (panels.length === 0) return
+
+  // 触底：最后一个分区可能永远到不了顶部（它下面没有内容了），
+  // 此时"顶部是谁"这个口径会长期停在倒数第二个，直接判定为最后一个。
+  const hostEl = scrollHost instanceof HTMLElement ? scrollHost : null
+  const atBottom = hostEl
+    ? hostEl.scrollTop + hostEl.clientHeight >= hostEl.scrollHeight - 2
+    : window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+
+  if (atBottom) {
+    const last = panels[panels.length - 1].dataset.section
+    if (last && last !== activeSection.value) activeSection.value = last
+    return
+  }
+
+  let current = panels[0].dataset.section ?? SECTIONS[0].key
+  for (const p of panels) {
+    if (p.getBoundingClientRect().top <= SECTION_PROBE_OFFSET) {
+      current = p.dataset.section ?? current
+    } else {
+      break
+    }
+  }
+  if (current !== activeSection.value) activeSection.value = current
+}
+
 /** 取色器在「未启用自定义色」时的初始值：取当前学段预设的真实品牌色（避免硬编码 hex 被 check:hex 抓住） */
 const accentFallback = computed(() => palette.presets[themeStore.preset][themeStore.actualTheme].primary)
 
@@ -302,7 +454,12 @@ async function scrollToHash(): Promise<void> {
   if (!hash) return
   await nextTick()
   const el = document.getElementById(hash.slice(1))
-  el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  if (!el) return
+  // 落点所在分区同步高亮，否则左侧菜单会停在「外观设置」上，看着像没跳成功
+  const panel = el.closest<HTMLElement>('.settings-panel[data-section]')
+  if (panel?.dataset.section) activeSection.value = panel.dataset.section
+  lockSpy()
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
 const searchHistory = ref<string[]>([])
@@ -428,6 +585,16 @@ onMounted(async () => {
   await scrollToHash()
 
   await refreshAiState()
+
+  // 左栏滚动高亮：监听见 AppShell 的滚动容器（找不到时退化为 window）
+  scrollHost = nearestScrollParent(contentRef.value)
+  scrollHost.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+})
+
+onUnmounted(() => {
+  scrollHost?.removeEventListener('scroll', onScroll)
+  scrollHost = null
 })
 
 function removeHistory(i: number) {
@@ -511,7 +678,111 @@ function clearAllData() {
 </script>
 
 <style scoped lang="scss">
-.page-container { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+/* V2.7 · 轨道 A1：左菜单（粘性）+ 右内容。
+   窄屏（≤900px）降级为顶部横向分区条，滚动容器不换 —— 只换排列方向。 */
+.page-container {
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+}
+
+.settings-nav {
+  position: sticky;
+  /* 顶到滚动容器上沿留 8px 呼吸（AppShell 的 main 自带 padding，这里只做兜底） */
+  top: 8px;
+  flex: 0 0 170px;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+
+  @media (max-width: 900px) {
+    flex: none;
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 6px;
+    z-index: 5;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: $radius-md;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-sub;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+    &:hover {
+      background: $bg-color-hover;
+      color: $text-main;
+    }
+
+    &.active {
+      background: $primary-light;
+      color: $primary-text;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+
+    .nav-icon {
+      font-size: 15px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 900px) {
+      padding: 7px 12px;
+      font-size: 12.5px;
+    }
+  }
+}
+
+.settings-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 每个分区：内部卡片仍是竖排 + 16px 间距（与改造前完全一致） */
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* 点菜单定位时给粘性条留出空间，避免标题被压住 */
+  scroll-margin-top: 76px;
+}
+
 /* `.card` 的圆角/阴影已由 AppCard 基元统一提供（radius-lg + shadow-sm）；危险卡走 variant="danger"。 */
 .setting-label { font-size: 14px; font-weight: 700; color: $text-main; margin-bottom: 10px; }
 

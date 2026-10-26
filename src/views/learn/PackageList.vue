@@ -3,49 +3,98 @@
     <n-spin v-if="loading" size="large" class="loading-spin" />
 
     <template v-else>
-      <!-- 每日一练 -->
+      <!-- V2.7 · 轨道 A3：顶部搜索（标题 / 学科 / 年级 / 版本 / 类型） -->
+      <div class="list-toolbar">
+        <label class="search-box">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            v-model="search"
+            class="search-input"
+            type="search"
+            placeholder="搜索学习包：标题、学科、年级、版本…"
+            aria-label="搜索学习包"
+          />
+        </label>
+        <button
+          v-if="searching"
+          class="search-clear"
+          type="button"
+          @click="search = ''"
+        >清除</button>
+        <span v-if="searching" class="search-count">找到 {{ totalVisible }} 个</span>
+      </div>
+
+      <!-- 每日一练：包内声明了周号就按周折叠（weekBucket 纯函数），否则整段一张网格 -->
       <section v-if="groups.daily.length > 0" class="group-section">
         <header class="group-header">
           <div class="group-title-wrap">
             <span class="group-icon">📅</span>
             <h2 class="group-title">每日一练</h2>
           </div>
-          <span class="group-count">{{ groups.daily.length }}</span>
+          <div class="group-actions">
+            <span class="group-count">{{ groups.daily.length }}</span>
+            <button
+              class="group-toggle"
+              type="button"
+              :aria-expanded="!isCollapsed('daily')"
+              aria-controls="pkg-panel-daily"
+              :aria-label="isCollapsed('daily') ? '展开每日一练' : '收起每日一练'"
+              @click="toggleGroup('daily')"
+            >▾</button>
+          </div>
         </header>
-        <div class="package-grid">
-          <div
-            v-for="pkg in groups.daily"
-            :key="pkg.packageId"
-            class="pkg-card"
-            :class="cardStatusClass(pkgStatus(pkg))"
-            @click="selectPackage(pkg)"
-          >
-            <div class="pkg-card-accent accent-green"></div>
-            <div class="pkg-card-body">
-              <div class="pkg-card-head">
-                <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
-                <span class="pkg-card-tag tag-green">每日一练</span>
-                <!-- G3 · 跨设备分享：`.stop` 防止触发整卡的学习跳转 -->
-                <button
-                  class="pkg-share-btn"
-                  type="button"
-                  aria-label="分享此学习包"
-                  title="分享此学习包"
-                  @click.stop="openShare(pkg)"
-                >📤</button>
-              </div>
-              <div class="pkg-card-meta">
-                {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级 ·
-                {{ pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ pkg.manifest.edition }}
-                <template v-if="dailyMeta(pkg)">
-                  · {{ dailyMeta(pkg) }}
-                </template>
+        <div v-show="!isCollapsed('daily')" id="pkg-panel-daily" class="group-body">
+          <div v-for="b in dailyBuckets" :key="b.label" class="week-block">
+            <button
+              v-if="b.showHead"
+              class="week-head"
+              type="button"
+              :aria-expanded="!isWeekCollapsed(b.label)"
+              @click="toggleWeek(b.label)"
+            >
+              <span class="week-label">{{ b.label }}</span>
+              <span class="week-count">{{ b.items.length }} 个</span>
+              <span class="week-chevron" aria-hidden="true">▾</span>
+            </button>
+            <div
+              v-show="!b.showHead || !isWeekCollapsed(b.label)"
+              class="package-grid"
+            >
+              <div
+                v-for="row in b.items"
+                :key="row.pkg.packageId"
+                class="pkg-card"
+                :class="cardStatusClass(pkgStatus(row.pkg))"
+                @click="selectPackage(row.pkg)"
+              >
+                <div class="pkg-card-accent accent-green"></div>
+                <div class="pkg-card-body">
+                  <div class="pkg-card-head">
+                    <h3 class="pkg-card-title">{{ row.pkg.manifest.title }}</h3>
+                    <span class="pkg-card-tag tag-green">每日一练</span>
+                    <!-- G3 · 跨设备分享：`.stop` 防止触发整卡的学习跳转 -->
+                    <button
+                      class="pkg-share-btn"
+                      type="button"
+                      aria-label="分享此学习包"
+                      title="分享此学习包"
+                      @click.stop="openShare(row.pkg)"
+                    >📤</button>
+                  </div>
+                  <div class="pkg-card-meta">
+                    {{ subjectLabel(row.pkg.manifest.subject) }} · {{ row.pkg.manifest.grade }}年级 ·
+                    {{ row.pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ row.pkg.manifest.edition }}
+                    <template v-if="dailyMeta(row.pkg)">
+                      · {{ dailyMeta(row.pkg) }}
+                    </template>
+                  </div>
+                </div>
+                <div class="pkg-card-arrow">→</div>
+                <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
+                <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(row.pkg)] }}</span>
+                <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(row.pkg)] }}</span>
               </div>
             </div>
-            <div class="pkg-card-arrow">→</div>
-            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
-            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
-            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
           </div>
         </div>
       </section>
@@ -57,9 +106,15 @@
             <span class="group-icon">📚</span>
             <h2 class="group-title">教材</h2>
           </div>
-          <span class="group-count">{{ groups.textbook.length }}</span>
+          <div class="group-actions">
+            <span class="group-count">{{ groups.textbook.length }}</span>
+            <button class="group-toggle" type="button"
+              :aria-expanded="!isCollapsed('textbook')" aria-controls="pkg-panel-textbook"
+              :aria-label="isCollapsed('textbook') ? '展开教材' : '收起教材'"
+              @click="toggleGroup('textbook')">▾</button>
+          </div>
         </header>
-        <div class="package-grid">
+        <div v-show="!isCollapsed('textbook')" id="pkg-panel-textbook" class="package-grid">
           <div
             v-for="pkg in groups.textbook"
             :key="pkg.packageId"
@@ -100,9 +155,15 @@
             <span class="group-icon">🎯</span>
             <h2 class="group-title">专项突破</h2>
           </div>
-          <span class="group-count">{{ groups.special.length }}</span>
+          <div class="group-actions">
+            <span class="group-count">{{ groups.special.length }}</span>
+            <button class="group-toggle" type="button"
+              :aria-expanded="!isCollapsed('special')" aria-controls="pkg-panel-special"
+              :aria-label="isCollapsed('special') ? '展开专项突破' : '收起专项突破'"
+              @click="toggleGroup('special')">▾</button>
+          </div>
         </header>
-        <div class="package-grid">
+        <div v-show="!isCollapsed('special')" id="pkg-panel-special" class="package-grid">
           <div
             v-for="pkg in groups.special"
             :key="pkg.packageId"
@@ -145,9 +206,15 @@
             <span class="group-icon">🏁</span>
             <h2 class="group-title">冲刺模拟</h2>
           </div>
-          <span class="group-count">{{ groups.sprint.length }}</span>
+          <div class="group-actions">
+            <span class="group-count">{{ groups.sprint.length }}</span>
+            <button class="group-toggle" type="button"
+              :aria-expanded="!isCollapsed('sprint')" aria-controls="pkg-panel-sprint"
+              :aria-label="isCollapsed('sprint') ? '展开冲刺模拟' : '收起冲刺模拟'"
+              @click="toggleGroup('sprint')">▾</button>
+          </div>
         </header>
-        <div class="package-grid">
+        <div v-show="!isCollapsed('sprint')" id="pkg-panel-sprint" class="package-grid">
           <div
             v-for="pkg in groups.sprint"
             :key="pkg.packageId"
@@ -181,8 +248,8 @@
       </section>
 
       <EmptyState
-        v-if="groups.textbook.length + groups.daily.length + groups.special.length + groups.sprint.length === 0"
-        description="暂无学习包，请先导入"
+        v-if="totalVisible === 0"
+        :description="searching ? `没有匹配「${search.trim()}」的学习包` : '暂无学习包，请先导入'"
         class="empty-card"
       />
     </template>
@@ -229,12 +296,67 @@ import {
   type CardStatus,
 } from '@core/learning/cardStatus'
 import { buildShareString, drawQrToCanvas } from '@core/share/qrcode'
+import { groupByWeek, resolveWeekOf } from '@core/learning/weekBucket'
 import type { LearningPackageRecord } from '@/db'
 
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
 const router = useRouter()
 const loading = ref(true)
+
+// ==================== V2.7 · 轨道 A3：搜索 + 折叠 ====================
+const search = ref('')
+/** 搜索态（去掉空白后非空）。搜索时强制展开：命中的内容藏在折叠里等于没搜到 */
+const searching = computed(() => search.value.trim().length > 0)
+
+const COLLAPSE_KEY = 'packageListCollapsed'
+const WEEK_COLLAPSE_KEY = 'packageListWeekCollapsed'
+
+/** localStorage 里的字符串数组（脏数据静默降级为空 = 全部展开） */
+function loadKeys(key: string): string[] {
+  try {
+    const raw = localStorage.getItem(key)
+    const arr = raw ? JSON.parse(raw) : []
+    return Array.isArray(arr) ? arr.filter((x): x is string => typeof x === 'string') : []
+  } catch {
+    return []
+  }
+}
+
+function saveKeys(key: string, value: string[]): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {
+    /* 隐私模式 / 配额满：折叠偏好存不下不影响功能，下次进来是默认展开 */
+  }
+}
+
+const collapsedKeys = ref<string[]>(loadKeys(COLLAPSE_KEY))
+const collapsedWeeks = ref<string[]>(loadKeys(WEEK_COLLAPSE_KEY))
+
+function isCollapsed(key: string): boolean {
+  return !searching.value && collapsedKeys.value.includes(key)
+}
+
+function toggleGroup(key: string): void {
+  const next = collapsedKeys.value.includes(key)
+    ? collapsedKeys.value.filter((k) => k !== key)
+    : [...collapsedKeys.value, key]
+  collapsedKeys.value = next
+  saveKeys(COLLAPSE_KEY, next)
+}
+
+function isWeekCollapsed(label: string): boolean {
+  return !searching.value && collapsedWeeks.value.includes(label)
+}
+
+function toggleWeek(label: string): void {
+  const next = collapsedWeeks.value.includes(label)
+    ? collapsedWeeks.value.filter((k) => k !== label)
+    : [...collapsedWeeks.value, label]
+  collapsedWeeks.value = next
+  saveKeys(WEEK_COLLAPSE_KEY, next)
+}
 
 // ==================== G3 · 跨设备分享 ====================
 const showShareModal = ref(false)
@@ -309,6 +431,29 @@ function isInternal(pkg: LearningPackageRecord): boolean {
   return m.isInternal === true
 }
 
+/**
+ * 搜索命中判定：标题 / 学科（中英文都认）/ 年级 / 上下册 / 版本 / 包类型。
+ * 刻意不做拼音首字母匹配 —— 需要一张拼音表，且"shuxue"这种输入命中率并不高。
+ */
+function matchesSearch(pkg: LearningPackageRecord): boolean {
+  const kw = search.value.trim().toLowerCase()
+  if (!kw) return true
+  const m = pkg.manifest as any
+  const hay = [
+    m.title,
+    subjectLabel(m.subject),
+    m.subject,
+    `${m.grade}年级`,
+    m.term === 'up' ? '上册' : '下册',
+    m.edition,
+    typeLabel(getPackageType(pkg)),
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+  return hay.includes(kw)
+}
+
 const groups = computed(() => {
   const textbook: LearningPackageRecord[] = []
   const daily: LearningPackageRecord[] = []
@@ -317,6 +462,7 @@ const groups = computed(() => {
 
   for (const pkg of packageStore.packages) {
     if (isInternal(pkg)) continue
+    if (!matchesSearch(pkg)) continue
     const type = getPackageType(pkg)
     if (type === 'daily') daily.push(pkg)
     else if (type === 'special') special.push(pkg)
@@ -325,6 +471,35 @@ const groups = computed(() => {
   }
 
   return { textbook, daily, special, sprint }
+})
+
+const totalVisible = computed(
+  () =>
+    groups.value.textbook.length +
+    groups.value.daily.length +
+    groups.value.special.length +
+    groups.value.sprint.length,
+)
+
+interface DailyRow {
+  pkg: LearningPackageRecord
+  week: number | null
+  title: string
+}
+
+/**
+ * 每日一练按周分桶（V2.7 · A3）。桶头只在**真的分出多周**时渲染 ——
+ * 一个包都没声明周号时，硬塞一个「未分周」标题只是多一层噪音。
+ */
+const dailyBuckets = computed(() => {
+  const rows: DailyRow[] = groups.value.daily.map((pkg) => ({
+    pkg,
+    week: resolveWeekOf(pkg.manifest as unknown as Record<string, unknown>),
+    title: pkg.manifest.title,
+  }))
+  const buckets = groupByWeek(rows)
+  const showHead = buckets.length > 1
+  return buckets.map((b) => ({ ...b, showHead }))
 })
 
 /** 每日一练：展示「N 天 · 每天 M 个板块」 */
@@ -376,6 +551,176 @@ function subjectLabel(subject?: string): string {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+}
+
+/* ===== V2.7 · 轨道 A3：顶部搜索 ===== */
+.list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 14px;
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-full;
+  transition: border-color $duration-fast $ease-standard, box-shadow $duration-fast $ease-standard;
+
+  &:focus-within {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px $primary-light;
+  }
+
+  .search-icon {
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: $text-main;
+
+    &::placeholder { color: $text-muted; }
+    /* 原生 search 的 ✕ 与右侧「清除」重复，统一收掉 */
+    &::-webkit-search-cancel-button { display: none; }
+  }
+}
+
+.search-clear {
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid $border-color;
+  border-radius: $radius-full;
+  background: $card-bg;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $text-sub;
+  cursor: pointer;
+  transition: background $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+  &:hover {
+    background: $bg-color-hover;
+    color: $text-main;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+.search-count {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: $text-sub;
+  white-space: nowrap;
+}
+
+/* ===== 分组折叠 ===== */
+.group-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-toggle {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid $border-color;
+  border-radius: $radius-full;
+  background: $card-bg;
+  color: $text-sub;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform $duration-fast $ease-standard,
+    background $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+  &[aria-expanded='false'] { transform: rotate(-90deg); }
+
+  &:hover {
+    background: $bg-color-hover;
+    color: $primary-text;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+.group-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ===== 每日一练：按周分桶 ===== */
+.week-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.week-head {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border: 1px dashed $border-color;
+  border-radius: $radius-full;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: $text-sub;
+  cursor: pointer;
+  transition: border-color $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-text;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  .week-count {
+    font-weight: 600;
+    color: $text-muted;
+  }
+
+  .week-chevron {
+    font-size: 10px;
+    transition: transform $duration-fast $ease-standard;
+  }
+
+  &[aria-expanded='false'] .week-chevron { transform: rotate(-90deg); }
 }
 
 .group-section {
