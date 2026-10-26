@@ -16,7 +16,7 @@
  * 如果直接手写 28 个 `tier`，规则就只活在文档里，改一次门槛要人工核对 28 条。
  * 这里拆成：`TIER_FACTS`（每枚的**事实**：目标值 / 连续门槛 / 掌握率门槛 /
  * 学科数 / 是否跨学期 / 是否隐藏 / 是否"首次发生"）+ `deriveTier(facts)`（规则）。
- * 好处是层级可以被穷举单测（28/28 与 PRD §4.5 的表逐条比对），
+ * 好处是层级可以被穷举单测（38/38 与 PRD §4.5 的表逐条比对），
  * 而且"为什么这枚是稀有"永远能答出一句人话（"因为要连续 30 天"）。
  *
  * ## 层级只做视觉，不做语义
@@ -85,7 +85,7 @@ export interface TierFacts {
 
 /**
  * 层级判定（PRD §4.2）：按优先级**自上而下命中即停**。
- * 穷举单测在 `tests/achievement-taxonomy.test.ts`（28/28 与 PRD 表比对）。
+ * 穷举单测在 `tests/achievement-taxonomy.test.ts`（38/38 与 PRD 表比对）。
  */
 export function deriveTier(f: TierFacts): AchievementTier {
   if (f.hidden === true) return 'hidden'
@@ -111,8 +111,8 @@ interface TaxonomyRow {
 }
 
 /**
- * 28 枚逐条事实表（`source` + 层级判定所需事实）。
- * `tests/achievement-taxonomy.test.ts` 断言：覆盖率 28/28、来源分布
+ * 38 枚逐条事实表（`source` + 层级判定所需事实）。
+ * `tests/achievement-taxonomy.test.ts` 断言：覆盖率 38/38、来源分布
  * 7/13/5/3、层级分布 5/11/9/3，且与 PRD §4.5 的表格逐条一致。
  */
 export const TAXONOMY: Record<string, TaxonomyRow> = {
@@ -144,6 +144,18 @@ export const TAXONOMY: Record<string, TaxonomyRow> = {
   'early-bird': { source: 'hidden', facts: { hidden: true } },
   'night-owl': { source: 'hidden', facts: { hidden: true } },
   'daily-20': { source: 'core', facts: { target: 20 } },
+
+  // ---------- V2.8 · C1：习惯养成 10 枚（全部 habit 来源；层级仍由 facts 算出） ----------
+  'focus-5': { source: 'habit', facts: { target: 5 } },
+  'focus-15': { source: 'habit', facts: { target: 15 } },
+  'focus-30': { source: 'habit', facts: { target: 30 } },
+  'focus-days-3': { source: 'habit', facts: { target: 3 } },
+  'morning-light': { source: 'habit', facts: { target: 3 } },
+  'one-go': { source: 'habit', facts: { target: 5 } },
+  'perfect-day': { source: 'habit', facts: { target: 20 } },
+  'streak-14': { source: 'habit', facts: { streak: 14 } },
+  'daily-50': { source: 'habit', facts: { target: 50 } },
+  'weekend-2': { source: 'habit', facts: { target: 2 } },
 
   // ---------- E 探索：探索对象是内容资产（包 / 题型 / 学期 / 学科）----------
   'explorer-3': { source: 'subject', facts: { target: 3 } },

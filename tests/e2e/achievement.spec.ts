@@ -79,6 +79,9 @@ async function seedMasteredOne(page: Page): Promise<void> {
  * 刻意凑到 ≥4 枚，用来验证「合并成一条提示」这条规则（AC-07）。
  * 其余成就都被压在门槛下面（掌握率 25%、没有 dailyStats、只有 1 个包…），
  * 所以枚数是确定的，不存在"环境不同数量不同"的抖动。
+ *
+ * ⚠️ V2.8 · C1 起新增了 `one-go`（拿下一个 ≥5 个知识点的整包）：包里放 12 个知识点、
+ * 只掌握 10 个 —— ten-kp 照常解锁，而 one-go（10/12）**不**解锁，5 枚的确定性保住。
  */
 async function seedFiveUnlocks(page: Page): Promise<void> {
   await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
@@ -96,7 +99,8 @@ async function seedFiveUnlocks(page: Page): Promise<void> {
         }
         const tx = db.transaction(['packages', 'progress', 'mistakes', 'settings'], 'readwrite')
 
-        const kps = Array.from({ length: 10 }, (_, i) => ({
+        // 12 个知识点，只掌握前 10 个：ten-kp 解锁；one-go（10/12）被刻意压住
+        const kps = Array.from({ length: 12 }, (_, i) => ({
           id: `unit-math-e2e::kp${i}`,
           title: `知识点 ${i + 1}`,
         }))
@@ -116,7 +120,7 @@ async function seedFiveUnlocks(page: Page): Promise<void> {
         })
 
         // 10 个已掌握 → first-step + ten-kp
-        for (const kp of kps) {
+        for (const kp of kps.slice(0, 10)) {
           tx.objectStore('progress').put({
             profileId: 'default',
             packageId: 'unit-math-e2e',
@@ -200,11 +204,11 @@ test.describe('成就图鉴 · 两级折叠', () => {
 
     const masterToggle = page.getByRole('button', { name: /全部展开|全部收起/ })
 
-    // 0 枚解锁：只有「待解锁」区（AC-15），它默认展开 → 27 张卡都在（可收集口径，V1.6 · C6）
+    // 0 枚解锁：只有「待解锁」区（AC-15），它默认展开 → 37 张卡都在（可收集口径，V2.8 · C1 起 38 − night-owl）
     await expect(page.locator('.ach-part')).toHaveCount(1)
     await expect(page.locator('.ach-part-head')).toContainText('待解锁')
     await expect(page.locator('.ach-empty-hint')).toContainText('还没有徽章')
-    await expect(allCards(page)).toHaveCount(27)
+    await expect(allCards(page)).toHaveCount(37)
 
     // 全展开 → 按钮变「全部收起」
     await expect(masterToggle).toHaveText('全部收起')
@@ -217,7 +221,7 @@ test.describe('成就图鉴 · 两级折叠', () => {
     await expect(masterToggle).toHaveText('全部收起')
     await page.reload()
     await expect(page.getByRole('button', { name: '全部收起' })).toBeVisible()
-    await expect(allCards(page)).toHaveCount(27)
+    await expect(allCards(page)).toHaveCount(37)
   })
 
   test('有已获得时：已获得区默认收起，组头给「最接近」提示', async ({ page }) => {
@@ -233,7 +237,7 @@ test.describe('成就图鉴 · 两级折叠', () => {
     await expect(page.locator('.ach-part')).toHaveCount(2)
     await expect(page.locator('.ach-part-head').first()).toContainText('已获得')
     await expect(earnedCards(page)).toHaveCount(0)
-    await expect(page.locator('.ach-head-count')).toHaveText('1 / 27')
+    await expect(page.locator('.ach-head-count')).toHaveText('1 / 37')
 
     // 展开已获得区 → 那一枚出现，且带证据快照 + 解锁日期
     await page.locator('.ach-part-head').first().click()
@@ -315,8 +319,8 @@ test.describe('成就图鉴 · 隐藏成就与文案（AC-13 / AC-14）', () => 
     await expect(seniorNew.locator('.ach-progress')).toHaveCount(0)
 
     // 未获得卡：小锁角标 + 灰化真实图标（两层信号，避免"以为已经有了"）
-    // 27 枚可收集 − 2 枚剪影（comeback / early-bird）= 25；night-owl 连剪影都不出现
-    await expect(page.locator('.ach-card .ach-lock')).toHaveCount(25)
+    // 37 枚可收集 − 2 枚剪影（comeback / early-bird）= 35；night-owl 连剪影都不出现
+    await expect(page.locator('.ach-card .ach-lock')).toHaveCount(35)
     await expect(page.locator('.ach-card .ach-seal')).toHaveCount(0)
   })
 })
@@ -339,7 +343,7 @@ test.describe('成就链路 · 合并提示（AC-07）', () => {
     await expect(toast).toHaveCount(0, { timeout: 20_000 })
 
     // 计数与「已获得」区一枚不少（合并只影响播放形式，不影响数据）
-    await expect(page.locator('.ach-head-count')).toHaveText('5 / 27')
+    await expect(page.locator('.ach-head-count')).toHaveText('5 / 37')
     await page.locator('.ach-part-head').first().click()
     await expect(earnedCards(page)).toHaveCount(5)
     for (const id of ['迈出第一步', '小试牛刀', '知错能改', '三日之约', '一周不断']) {
@@ -354,8 +358,8 @@ test.describe('成就链路 · 解锁', () => {
     await resetAll(page)
     await expect(page.getByRole('heading', { name: '成就图鉴' })).toBeVisible()
 
-    // 初始 0 / 27（分母是可收集枚数，不含不参与收集的彩蛋）
-    await expect(page.locator('.ach-head-count')).toHaveText('0 / 27')
+    // 初始 0 / 37（分母是可收集枚数，不含不参与收集的彩蛋）
+    await expect(page.locator('.ach-head-count')).toHaveText('0 / 37')
 
     // 种一条已掌握 → 刷新让真实结算链路跑一遍
     await seedMasteredOne(page)
@@ -368,7 +372,7 @@ test.describe('成就链路 · 解锁', () => {
     await expect(toast).toContainText('迈出第一步')
 
     // 计入已获得
-    await expect(page.locator('.ach-head-count')).toHaveText('1 / 27')
+    await expect(page.locator('.ach-head-count')).toHaveText('1 / 37')
 
     // 等 toast 播完再点（它固定在顶部，会挡住区头）
     await expect(page.locator('.ach-toast')).toHaveCount(0, { timeout: 20_000 })
@@ -380,7 +384,7 @@ test.describe('成就链路 · 解锁', () => {
 
     // 持久化 + 不重复提示：再刷新一次，没有 toast，计数仍是 1
     await page.reload()
-    await expect(page.locator('.ach-head-count')).toHaveText('1 / 27')
+    await expect(page.locator('.ach-head-count')).toHaveText('1 / 37')
     await page.waitForTimeout(1500)
     await expect(page.locator('.ach-toast')).toHaveCount(0)
   })

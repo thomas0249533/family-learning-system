@@ -179,10 +179,10 @@ function chainLabelOf(def: AchievementDef): string {
  * 单枚成就的度量（V1.4 · B3 起有两条来源）。
  *
  * - 自定义定义自带 `measure`（家长的 `counter` 规则 / `manual-check` 的 0/1）；
- * - 内置 28 枚没有 `measure` → 回落到 `progressOf`（唯一进度真相）。
+ * - 内置 38 枚没有 `measure` → 回落到 `progressOf`（唯一进度真相）。
  *
  * `def.measure` 是**外部数据驱动的闭包**（规则来自家长导入的 JSON），一次抛错不能把
- * 整页 28 枚一起搞崩 —— 吞掉异常并当作"不可进度化"，卡片仍能正常显示标题与描述。
+ * 整页 38 枚一起搞崩 —— 吞掉异常并当作"不可进度化"，卡片仍能正常显示标题与描述。
  */
 function measureOf(def: AchievementDef, ctx: AchievementContext): Measure | null {
   if (!def.measure) return progressOf(def.id, ctx)

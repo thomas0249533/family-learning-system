@@ -134,6 +134,11 @@
       <AchievementHall :view="achView" />
     </section>
 
+    <!-- ========== 盲盒入口（V2.8 · C3：触发条件满足时悬浮出现，含开箱动画）
+         组件自带触发判定与降级，Home 只负责挂载；挂在勋章墙之后 ——
+         它是激励层的延伸，位置语义上紧挨着成就。 ========== -->
+    <BlindBoxEntrance />
+
     <!-- ========== 学习进度 ========== -->
     <section class="section">
       <SectionTitle title="学习进度" icon="📊" />
@@ -187,6 +192,7 @@ import { useAchievementStore } from '@core/stores/achievement'
 import { computeMasterySummary } from '@core/mastery/masterySummary'
 import { computeWeakPoints, type WeakPoint } from '@core/recommendation/weakPoints'
 import AchievementHall from '@/components/AchievementHall.vue'
+import BlindBoxEntrance from '@/components/BlindBoxEntrance.vue'
 import { EMPTY_STREAK, loadRepair, loadStreak, repairLeft, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
 import { useChartTheme } from '@core/theme/useChartTheme'
 

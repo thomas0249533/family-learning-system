@@ -233,7 +233,7 @@ describe('enabledPackDefs — 只取启用包', () => {
   })
 })
 
-describe('接入视图：自定义卡与内置 28 枚无可区分', () => {
+describe('接入视图：自定义卡与内置 38 枚无可区分', () => {
   const defs = () => enabledPackDefs({ packs: [storedPack(true)] }, checks())
 
   it('★ 自定义卡出现在它的 category 分组里，「已获得」随解锁记录变化', () => {
@@ -257,8 +257,8 @@ describe('接入视图：自定义卡与内置 28 枚无可区分', () => {
     expect(item.earned).toBe(true)
     expect(item.unlockedAt).toBe('2026-10-20')
     expect(item.hint).toBe('已获得')
-    // 统计口径跟着变（total = 可收集 27 + 3 张自定义；night-owl 不参与收集，V1.6 · C6）
-    expect(earnedView.total).toBe(30)
+    // 统计口径跟着变（total = 可收集 37 + 3 张自定义；night-owl 不参与收集，V1.6 · C6）
+    expect(earnedView.total).toBe(40)
     expect(earnedView.earned).toBe(1)
   })
 
@@ -305,9 +305,9 @@ describe('接入视图：自定义卡与内置 28 枚无可区分', () => {
     expect(lockedTidy.hint).toBe('完成一次即可解锁')
   })
 
-  it('内置定义仍是 28 枚，但视图分母是可收集的 27（不传 extraDefs 时）', () => {
+  it('内置定义仍是 38 枚，但视图分母是可收集的 37（不传 extraDefs 时）', () => {
     // 数据层（items）是定义真相，视图层（total）走可收集口径 —— 两者刻意不同
-    expect(buildAchievementItems(ctx(), [])).toHaveLength(28)
-    expect(buildAchievementViewFromItems(buildAchievementItems(ctx(), [])).total).toBe(27)
+    expect(buildAchievementItems(ctx(), [])).toHaveLength(38)
+    expect(buildAchievementViewFromItems(buildAchievementItems(ctx(), [])).total).toBe(37)
   })
 })

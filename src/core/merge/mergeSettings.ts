@@ -43,6 +43,7 @@ import {
 } from '@core/motivation/achievementDiscovery'
 import { EMPTY_STREAK, type StreakState } from '@core/motivation/streak'
 import type { DailyStat } from '@core/motivation/dailyStats'
+import { normalizeBlindBoxState } from '@core/motivation/blindBox'
 
 export interface SettingsMergeOutcome {
   /** 键是**全名**（`dailyStats:p1`），可直接 `settings.put` */
@@ -189,6 +190,15 @@ function toStamp(v: unknown): number {
   return n > 0 ? n : 0
 }
 
+/**
+ * 专注时长（V2.8 · C1）：缺失 / 0 / 脏值 → `undefined`（**保留"没有"的语义**，
+ * 不补 0 —— 老 JSON 里没有这个字段，合并后也不该凭空长出 `focusMinutes: 0`）。
+ */
+function toFocusMinutes(v: unknown): number | undefined {
+  const n = toCount(v)
+  return n > 0 ? Math.round(n * 10) / 10 : undefined
+}
+
 function normalizeDailyStats(raw: unknown): DailyStat[] {
   if (!Array.isArray(raw)) return []
   const out: DailyStat[] = []
@@ -199,11 +209,13 @@ function normalizeDailyStats(raw: unknown): DailyStat[] {
     if (typeof rec.date !== 'string' || rec.date === '') continue
     if (seen.has(rec.date)) continue
     seen.add(rec.date)
+    const focus = toFocusMinutes(rec.focusMinutes)
     out.push({
       date: rec.date,
       questionCount: toCount(rec.questionCount),
       firstStudyAt: toStamp(rec.firstStudyAt),
       lastStudyAt: toStamp(rec.lastStudyAt),
+      ...(focus !== undefined ? { focusMinutes: focus } : {}),
     })
   }
   // 按日期升序：与 `flushDailyStats()` 的落盘顺序一致，保证 JSON 比较稳定
@@ -214,7 +226,8 @@ function normalizeDailyStats(raw: unknown): DailyStat[] {
 /**
  * 每日统计合并：`questionCount` 取 max（**少算就是抹掉孩子的今日成就**），
  * `firstStudyAt` 取 min、`lastStudyAt` 取 max（"最早"与"最晚"各取极端，才留得住
- * 「闻鸡起舞 / 挑灯夜读」这两枚徽章的判定依据）。
+ * 「闻鸡起舞 / 挑灯夜读」这两枚徽章的判定依据）；
+ * `focusMinutes` 取 max（V2.8 · C1：两侧都没有时不落字段，与归一化口径一致）。
  */
 function mergeDailyStats(localRaw: unknown, remoteRaw: unknown): DailyStat[] {
   const local = normalizeDailyStats(localRaw)
@@ -231,11 +244,13 @@ function mergeDailyStats(localRaw: unknown, remoteRaw: unknown): DailyStat[] {
     const first = prev.firstStudyAt > 0 && r.firstStudyAt > 0
       ? Math.min(prev.firstStudyAt, r.firstStudyAt)
       : Math.max(prev.firstStudyAt, r.firstStudyAt)
+    const focus = Math.max(prev.focusMinutes ?? 0, r.focusMinutes ?? 0)
     map.set(r.date, {
       date: r.date,
       questionCount: Math.max(prev.questionCount, r.questionCount),
       firstStudyAt: first,
       lastStudyAt: Math.max(prev.lastStudyAt, r.lastStudyAt),
+      ...(focus > 0 ? { focusMinutes: focus } : {}),
     })
   }
 
@@ -349,6 +364,19 @@ const RULES: Record<ProfileScopedBase, SettingRule | typeof SKIP> = {
   },
   achievementUi: LOCAL_FIRST,
   'achievement:discoveryEnabled': LOCAL_FIRST,
+  // 盲盒（V2.8 · C2）：owned 并集（本机序优先，两端各开出的都是"已拥有"的事实）、
+  // usedDays 并集后排序（防刷只查"今天在不在里面"，顺序只为 JSON 稳定）。
+  blindBox: {
+    merge: (localRaw, remoteRaw) => {
+      const local = normalizeBlindBoxState(localRaw)
+      const remote = normalizeBlindBoxState(remoteRaw)
+      const owned = [...local.owned]
+      for (const id of remote.owned) if (!owned.includes(id)) owned.push(id)
+      const usedDays = [...new Set([...local.usedDays, ...remote.usedDays])].sort()
+      return { owned, usedDays }
+    },
+    view: normalizeBlindBoxState,
+  },
   customChecks: SKIP,
 }
 

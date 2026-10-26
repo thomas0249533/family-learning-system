@@ -110,7 +110,7 @@ const streak = (o: Partial<StreakState>): StreakState => ({ ...EMPTY_STREAK, ...
 // ---------------------------------------------------------------------------
 
 describe('weeklyCard · 空数据（全 0 卡，不抛）', () => {
-  it('空库 → 全 0、空数组、成就 0/27、7 天全 0', () => {
+  it('空库 → 全 0、空数组、成就 0/37、7 天全 0', () => {
     const card = buildWeeklyCardData({
       packages: [],
       progress: [],
@@ -139,7 +139,7 @@ describe('weeklyCard · 空数据（全 0 卡，不抛）', () => {
     expect(card.weekTotal).toBe(0)
     expect(card.topMistakes).toEqual([])
     expect(card.mistakeStats).toEqual({ total: 0, unmastered: 0, partial: 0 })
-    expect(card.achievements).toEqual({ unlocked: 0, total: 27 })
+    expect(card.achievements).toEqual({ unlocked: 0, total: 37 })
   })
 })
 
@@ -272,7 +272,7 @@ describe('weeklyCard · 四状态覆盖 + 与 reportGenerator 口径一致', () 
   })
 
   it('★ 成就可收集口径：night-owl 不计入已解锁', () => {
-    expect(card.achievements).toEqual({ unlocked: 1, total: 27 })
+    expect(card.achievements).toEqual({ unlocked: 1, total: 37 })
   })
 
   it('累计分钟：studySeconds 求和取整', () => {

@@ -1,5 +1,5 @@
 /**
- * 体验激励 · 成就徽章（28 枚）
+ * 体验激励 · 成就徽章（38 枚；V2.8 · C1 起含习惯养成 10 枚）
  *
  * 原则（都来自教育心理学里对"外部激励"的共识）：
  *   1. 只奖"行为与坚持"，不奖"天赋与名次"——所以没有"考了 100 分"这种徽章；
@@ -11,13 +11,13 @@
  * 隐藏 3 枚（comeback / early-bird / night-owl）：解锁前不给任何暗示。
  * 连环 4 链（见 chains.ts）。
  *
- * ## 双口径：定义 28 枚 / 可收集 27 枚（V1.6 · Stage C · C6）
+ * ## 双口径：定义 38 枚 / 可收集 37 枚（V1.6 · Stage C · C6 起，V2.8 · C1 扩容）
  * `night-owl`（挑灯夜读：21:00 后完成一次学习）**保留定义、保留判定、保留已解锁记录**，
  * 但**移出收集体系**：不计入分母、不进待解锁列表、不弹 toast、不进成就墙。
  * 理由是产品伦理而非技术：21:00 后学习对小学段孩子是有健康风险的事，
  * 给徽章等于奖励它（PRD `docs/prd-v1.3-achievement.md` §11.2）；
  * 而直接摘掉定义又会造出"已解锁却不展示"的怪状态、并让 AC-01 的
- * "28 枚 check 逐条不变"快照失去意义 —— 所以定义留、收集面隐身。
+ * "38 枚 check 逐条不变"快照失去意义 —— 所以定义留、收集面隐身。
  *
  * 两个数字都只在本文件出现一次（`ACHIEVEMENT_TOTAL_DEFINED` /
  * `ACHIEVEMENT_TOTAL_COLLECTIBLE`），各视图一律引用常量，**禁止再写字面量**。
@@ -123,7 +123,7 @@ export interface AchievementDef {
   /** 链内顺序（从 1 开始） */
   order?: number
   /**
-   * 来源（V1.4 · B3）。内置 28 枚**不写**这个字段，由
+   * 来源（V1.4 · B3）。内置 38 枚**不写**这个字段，由
    * `achievementTaxonomy.sourceOf(id)` 派生；自定义包的定义自带（包作者声明的来源），
    * 且**不可能**靠 id 反查出来 —— `TAXONOMY` 里没有它。
    */
@@ -135,14 +135,14 @@ export interface AchievementDef {
   tier?: AchievementTier
   /**
    * 进度度量（V1.4 · B3）。自定义定义自带（`manual-check` 的 0/1、
-   * `counter` 的规则度量）；内置 28 枚不写，进度由 `progressOf(id, ctx)` 唯一提供。
+   * `counter` 的规则度量）；内置 38 枚不写，进度由 `progressOf(id, ctx)` 唯一提供。
    *
    * 为什么挂在定义上而不是另开一张 `id → measure` 的映射表：自定义 id 是运行时
    * 从库里读出来的，静态表装不下；挂在定义上则"定义在哪、度量在哪"，不会漏。
    */
   measure?: (ctx: AchievementContext) => Measure
   /**
-   * 可重复达成规则（V1.5）。**省略 = 永不重复**（内置 28 枚里只有 `streak-7` 声明了它）。
+   * 可重复达成规则（V1.5）。**省略 = 永不重复**（内置 38 枚里只有 `streak-7` 声明了它）。
    *
    * 判据见 `RepeatRule`：`holds` 必须非单调，否则会白涨。
    */
@@ -213,6 +213,75 @@ const anyLastHourAtLeast = (stats: DailyStat[] | undefined, hour: number) =>
   (stats ?? []).some((s) => Number.isFinite(s.lastStudyAt) && new Date(s.lastStudyAt).getHours() >= hour)
 const anyDayQuestionAtLeast = (stats: DailyStat[] | undefined, n: number) =>
   (stats ?? []).some((s) => s.questionCount >= n)
+
+// ---------- V2.8 · C1：习惯养成类统计基元 ----------
+// 与 `achievementProgress.ts` 的实现是**刻意的双份**（判定层与展示层互不 import），
+// 漂移由等价性测试兜住 —— 改任何一侧必须两边同步。
+
+/** 单日最大专注分钟数 */
+const maxDayFocusMinutes = (stats: DailyStat[] | undefined) =>
+  (stats ?? []).reduce((max, s) => Math.max(max, s.focusMinutes ?? 0), 0)
+
+/** 专注满 minMinutes 的**不同日子**数（同一天多条也只算一天） */
+const distinctFocusDays = (stats: DailyStat[] | undefined, minMinutes: number) =>
+  new Set(
+    (stats ?? []).filter((s) => (s.focusMinutes ?? 0) >= minMinutes).map((s) => s.date),
+  ).size
+
+/**
+ * 在 hour 点前**开始**学习的不同日子数。
+ *
+ * 与 `anyFirstHourBefore`（early-bird 用）的两点差异都是刻意的：
+ *   1. 加 `firstStudyAt > 0` 门槛 —— `0` 不是合法的 epoch ms（合并层同口径），
+ *      而 UTC+0 时区下 `new Date(0).getHours() === 0` 会被误判成"凌晨学习"；
+ *   2. 按 `s.date` 去重 —— 晨光学者要的是"3 个不同的早晨"，不是"一次凌晨"。
+ */
+const distinctMorningDays = (stats: DailyStat[] | undefined, hour: number) =>
+  new Set(
+    (stats ?? [])
+      .filter(
+        (s) =>
+          Number.isFinite(s.firstStudyAt) &&
+          s.firstStudyAt > 0 &&
+          new Date(s.firstStudyAt).getHours() < hour,
+      )
+      .map((s) => s.date),
+  ).size
+
+/**
+ * 有学习痕迹（答题或专注）的**周末日**数。
+ * 日期是本地键（YYYY-MM-DD），取当天正午解析 weekday，避开任何时区/DST 边缘。
+ * 脏日期（fixtures 里的 `day` 键 / 非法串）→ Invalid Date → NaN → 不算，绝不抛错。
+ */
+function distinctWeekendStudyDays(stats: DailyStat[] | undefined): number {
+  const days = new Set<string>()
+  for (const s of stats ?? []) {
+    if ((s.questionCount ?? 0) <= 0 && (s.focusMinutes ?? 0) <= 0) continue
+    if (typeof s.date === 'string' && s.date !== '') days.add(s.date)
+  }
+  let n = 0
+  for (const d of days) {
+    const wd = new Date(`${d}T12:00:00`).getDay()
+    if (wd === 0 || wd === 6) n += 1
+  }
+  return n
+}
+
+/** 已完全通关（ mastered ≥ kpCount 且 kpCount ≥ 5）的学习包个数 */
+function fullyMasteredPackageCount(ctx: AchievementContext): number {
+  const mastered = new Map<string, number>()
+  for (const p of ctx.progress) {
+    if (p.status !== '已掌握') continue
+    mastered.set(p.packageId, (mastered.get(p.packageId) ?? 0) + 1)
+  }
+  return (ctx.packages ?? []).filter(
+    (p) => (p.kpCount ?? 0) >= 5 && (mastered.get(p.packageId) ?? 0) >= (p.kpCount ?? 0),
+  ).length
+}
+
+/** 完美一天：同一天答题 ≥20 且专注 ≥30（**同一天**，两天的成绩拼不出完美） */
+const anyPerfectDay = (stats: DailyStat[] | undefined) =>
+  (stats ?? []).some((s) => (s.questionCount ?? 0) >= 20 && (s.focusMinutes ?? 0) >= 30)
 
 export const ACHIEVEMENTS: AchievementDef[] = [
   // ==================== M · 精熟目标（8） ====================
@@ -449,7 +518,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
      * ★★ V1.6 · Stage C · C6：这枚**不参与收集**（见 `NON_COLLECTIBLE_IDS`）。
      *
      * 判定（`check`）与定义**刻意保持原样**，一个字都不改：
-     *   - AC-01 的快照验的是"28 枚 check 逐条不变"，删掉或改判据会让快照失去意义；
+     *   - AC-01 的快照验的是"38 枚 check 逐条不变"，删掉或改判据会让快照失去意义；
      *   - 已解锁的老记录按"不可撤销"原则**留档、不撤销**（只是不再展示）。
      *
      * 产品裁决（PRD §11.2 + 主理人终审）：「记得在成就体系的 `filter` 逻辑中屏蔽
@@ -467,6 +536,91 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     desc: '单日完成 ≥20 题',
     category: 'B',
     check: (ctx) => anyDayQuestionAtLeast(ctx.dailyStats, 20),
+  },
+
+  // ---------- V2.8 · C1：习惯养成 10 枚（专注 / 晨型 / 通关 / 周末 / 加量） ----------
+  // 口径决策见各 check；全部走已有数据（dailyStats 新增 focusMinutes 埋点），
+  // 不新增任何持久化键。来源一律 habit（V2.8 分布：core 7 · subject 13 · habit 15 · hidden 3）。
+  {
+    id: 'focus-5',
+    icon: '💧',
+    title: '静下心来',
+    desc: '单日累计专注 ≥5 分钟',
+    category: 'B',
+    check: (ctx) => maxDayFocusMinutes(ctx.dailyStats) >= 5,
+  },
+  {
+    id: 'focus-15',
+    icon: '🧘',
+    title: '专注一刻钟',
+    desc: '单日累计专注 ≥15 分钟',
+    category: 'B',
+    check: (ctx) => maxDayFocusMinutes(ctx.dailyStats) >= 15,
+  },
+  {
+    id: 'focus-30',
+    icon: '🌊',
+    title: '心流半小时',
+    desc: '单日累计专注 ≥30 分钟',
+    category: 'B',
+    check: (ctx) => maxDayFocusMinutes(ctx.dailyStats) >= 30,
+  },
+  {
+    id: 'focus-days-3',
+    icon: '⏳',
+    title: '专注成习',
+    desc: '3 个不同的日子专注满 10 分钟',
+    category: 'B',
+    check: (ctx) => distinctFocusDays(ctx.dailyStats, 10) >= 3,
+  },
+  {
+    id: 'morning-light',
+    icon: '🌄',
+    title: '晨光学者',
+    desc: '3 天在 08:00 前开始学习',
+    category: 'B',
+    check: (ctx) => distinctMorningDays(ctx.dailyStats, 8) >= 3,
+  },
+  {
+    id: 'one-go',
+    icon: '🚀',
+    title: '一气呵成',
+    desc: '拿下一个学习包的全部知识点（≥5 个）',
+    category: 'B',
+    check: (ctx) => fullyMasteredPackageCount(ctx) >= 1,
+  },
+  {
+    id: 'perfect-day',
+    icon: '🌞',
+    title: '完美一天',
+    desc: '单日答题 ≥20 题且专注 ≥30 分钟',
+    category: 'B',
+    check: (ctx) => anyPerfectDay(ctx.dailyStats),
+  },
+  {
+    id: 'streak-14',
+    icon: '📅',
+    title: '半月之约',
+    desc: '连续学习 14 天',
+    category: 'B',
+    // 不进 streak 连环链：链内 order 已被 3/7/30/60/100 占用，插队会动老定义（AC-01 红线）
+    check: (ctx) => bestStreak(ctx.streak) >= 14,
+  },
+  {
+    id: 'daily-50',
+    icon: '🔢',
+    title: '题海扬帆',
+    desc: '单日完成 ≥50 题',
+    category: 'B',
+    check: (ctx) => anyDayQuestionAtLeast(ctx.dailyStats, 50),
+  },
+  {
+    id: 'weekend-2',
+    icon: '🎈',
+    title: '假日不歇',
+    desc: '2 个周末日坚持学习',
+    category: 'B',
+    check: (ctx) => distinctWeekendStudyDays(ctx.dailyStats) >= 2,
   },
 
   // ==================== E · 探索（5） ====================
@@ -525,11 +679,17 @@ export const ACHIEVEMENTS: AchievementDef[] = [
  * 一行、并让 `tests/achievement-collectible.test.ts` 立刻变红 —— 加一枚定义是
  * 产品决策，不该被一次无意的追加悄悄带过去。
  *
+ * ## V2.8 · C1 扩容记录（28 → 38）
+ * 新增 10 枚习惯养成成就（`focus-5/15/30`、`focus-days-3`、`morning-light`、
+ * `one-go`、`perfect-day`、`streak-14`、`daily-50`、`weekend-2`，全部 `category: 'B'`、
+ * `source: 'habit'`）。**原 28 枚的定义、判据、来源、层级一个字没动**（AC-01 快照
+ * 的"逐条不变"承诺继续成立）—— 38 = 28 + 10，老记录零迁移。
+ *
  * 口径用途（**不要混用**）：
- *   - **这个 28** 用于"定义完整性"类断言（AC-01 的 28 枚 check 快照、taxonomy 28/28 覆盖）；
- *   - 给用户看的数字一律用下面的 `ACHIEVEMENT_TOTAL_COLLECTIBLE`（27）。
+ *   - **这个 38** 用于"定义完整性"类断言（AC-01 的 38 枚 check 快照、taxonomy 38/38 覆盖）；
+ *   - 给用户看的数字一律用下面的 `ACHIEVEMENT_TOTAL_COLLECTIBLE`（37）。
  */
-export const ACHIEVEMENT_TOTAL_DEFINED = 28
+export const ACHIEVEMENT_TOTAL_DEFINED = 38
 
 /**
  * **不参与收集**的彩蛋成就（PRD §11.2 + 主理人终审）。
@@ -591,14 +751,14 @@ export interface UnlockedRecord {
    * ≥2 时卡面显示「第 N 次」。
    *
    * ## V1.4：只写不涨，为什么
-   * 内置 28 枚的判定几乎全是单调语义（`anyDayQuestionAtLeast` / `bestStreak` /
+   * 内置 38 枚的判定几乎全是单调语义（`anyDayQuestionAtLeast` / `bestStreak` /
    * `totalAttempts`：一旦为真永远为真），而 `syncAchievements` 每次结算都会把
    * 已解锁项重新判为"满足" —— 字面实现「再次达成 +1」会让计数随路由跳转涨到几十。
    *
    * ## V1.5：只有声明了 `repeat` 的成就才会涨
    * 判据从"条件满足"换成"**这一周期里 `repeat.holds` 为真，且本周期还没记过**"，
    * 锚点是 `lastRepeatPeriod`。内置只有 `streak-7`（一周不断）声明了 `repeat: weekly`，
-   * 其余 27 枚 `repeatCount` 恒为 1 —— 它们的"再做一次"没有可周期化的语义。
+   * 其余 37 枚 `repeatCount` 恒为 1 —— 它们的"再做一次"没有可周期化的语义。
    *
    * ## 合并方向（设计稿 R11 的 DoD）
    * 一旦字段存在，跨设备导入就必须知道怎么合它，所以规则在 B6 就写好了：
@@ -778,8 +938,8 @@ export async function saveUnlockedIds(ids: string[]): Promise<void> {
  * 当前数据下所有满足条件的徽章 id。
  *
  * @param extraDefs 额外定义（V1.4 · B3 的自定义包）。**默认空数组** = 老行为逐字节不变。
- *   刻意不把自定义定义合进 `ACHIEVEMENTS`：那是内置 28 枚的唯一真相，
- *   混进去会污染 `missingTaxonomy()` / `MEASURABLE_IDS` 之类按"内置 28 枚"成立的推导。
+ *   刻意不把自定义定义合进 `ACHIEVEMENTS`：那是内置 38 枚的唯一真相，
+ *   混进去会污染 `missingTaxonomy()` / `MEASURABLE_IDS` 之类按"内置 38 枚"成立的推导。
  */
 export function evaluateAchievements(
   ctx: AchievementContext,
@@ -844,7 +1004,7 @@ export async function syncAchievements(
     // ---------- 首次解锁 ----------
     if (!prev) {
       // 自定义 id 在 `EVIDENCE_TPL` 里没有模板 → 空串 → 卡片不显示证据行。
-      // 这是对的：证据文案是"内置 28 枚的口径"，不该给家长自建的卡临时编一句。
+      // 这是对的：证据文案是"内置 38 枚的口径"，不该给家长自建的卡临时编一句。
       const evidence = evidenceOf(def.id, ctx)
       const record: UnlockedRecord = {
         id: def.id,

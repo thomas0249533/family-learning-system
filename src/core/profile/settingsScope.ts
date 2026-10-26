@@ -48,6 +48,14 @@ export const PROFILE_SCOPED_KEYS = [
    * 停用包**不清空**它（PRD §8.2 裁决），所以不需要任何"清理"逻辑。
    */
   'customChecks',
+  /**
+   * 盲盒抽奖状态（V2.8 · C2）：已抽中的盲盒成就 + 已完成抽取的日期（每日防刷）。
+   *
+   * **per-profile**：盲盒是"这个孩子的惊喜"，老二不该替老大把盒子开掉。
+   * 登记即进入 v4 迁移搬键清单与跨设备合并键清单 —— 合并规则见
+   * `mergeSettings.ts` 的 `blindBox` 条目（owned 并集 + usedDays 并集）。
+   */
+  'blindBox',
 ] as const
 
 /** global 的键：不分片，原样保留 */

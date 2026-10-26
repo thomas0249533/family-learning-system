@@ -26,6 +26,14 @@ export interface DailyStat {
   firstStudyAt: number
   /** 当日最后一次学习时刻（epoch ms） */
   lastStudyAt: number
+  /**
+   * 当日累计专注时长（分钟，V2.8 · C1 埋点）。
+   *
+   * **可选**：老数据 / 老备份没有这个字段（读取归一化时不补 0，保留"没有"的语义）；
+   * 只有番茄钟专注阶段在跑才累加。成就侧（专注 5/15/30 分钟、完美一天）
+   * 与盲盒触发侧（单日专注 ≥60 分钟）都只认 `?? 0`。
+   */
+  focusMinutes?: number
 }
 
 export const DAILY_STATS_KEY = 'dailyStats'
@@ -43,6 +51,8 @@ export const FLUSH_DEBOUNCE_MS = 1500
 let stats: DailyStat[] = []
 let loaded = false
 const queue: Array<{ count: number; at: Date }> = []
+/** 专注时长的未落盘队列（与题量队列同构；档案未加载时先排队） */
+const focusQueue: Array<{ minutes: number; at: Date }> = []
 let flushTimer: ReturnType<typeof setTimeout> | null = null
 let hooksRegistered = false
 /** 是否已登记"档案切换"钩子（幂等；`__resetDailyStatsForTest` 会复位） */
@@ -86,6 +96,19 @@ function applyDelta(count: number, at: Date): void {
   row.lastStudyAt = Math.max(row.lastStudyAt, ts)
 }
 
+/** 专注时长累加：独立于题量的埋点（只动 focusMinutes，不碰题量与首/末时刻以外的语义）。 */
+function applyFocusDelta(minutes: number, at: Date): void {
+  const key = localDayKey(at)
+  const ts = at.getTime()
+  let row = stats.find((s) => s.date === key)
+  if (!row) {
+    row = { date: key, questionCount: 0, firstStudyAt: ts, lastStudyAt: ts }
+    stats.push(row)
+  }
+  // 0.1 分钟精度：既避免浮点尾巴进 JSON，也不至于把短会话直接抹成 0
+  row.focusMinutes = Math.round(((row.focusMinutes ?? 0) + minutes) * 10) / 10
+}
+
 /**
  * 档案切换的两个钩子（幂等登记）：
  *   - 切换**前**：把内存里待落盘的题量刷到**旧档案**的键上（否则会写进新档案）；
@@ -104,6 +127,7 @@ export function resetDailyStatsCache(): void {
   stats = []
   loaded = false
   queue.length = 0
+  focusQueue.length = 0
   if (flushTimer !== null) {
     clearTimeout(flushTimer)
     flushTimer = null
@@ -123,6 +147,10 @@ async function ensureLoaded(): Promise<void> {
   while (queue.length > 0) {
     const d = queue.shift()!
     applyDelta(d.count, d.at)
+  }
+  while (focusQueue.length > 0) {
+    const f = focusQueue.shift()!
+    applyFocusDelta(f.minutes, f.at)
   }
 }
 
@@ -161,6 +189,24 @@ export function bumpDailyStats(opts: { count?: number; at?: Date } = {}): void {
   const at = opts.at ?? new Date()
   if (loaded) applyDelta(count, at)
   else queue.push({ count, at })
+  scheduleFlush()
+}
+
+/**
+ * 累加一段专注时长（分钟，V2.8 · C1 埋点）。
+ *
+ * 专注时长是**低频大增量**（退出专注面板 / 阶段切换时一次性上报），
+ * 与题量的"高频小增量 + 防抖"不同：这里不做节流，直接走同一套
+ * 内存聚合 + 防抖落盘（`scheduleFlush` 会重置计时器，连续上报也只落一次盘）。
+ *
+ * 非法输入（负数 / NaN / 0）直接忽略——埋点错误不该弄脏统计行。
+ */
+export function bumpFocusMinutes(opts: { minutes: number; at?: Date }): void {
+  const minutes = opts.minutes
+  if (!Number.isFinite(minutes) || minutes <= 0) return
+  const at = opts.at ?? new Date()
+  if (loaded) applyFocusDelta(minutes, at)
+  else focusQueue.push({ minutes, at })
   scheduleFlush()
 }
 
@@ -211,6 +257,7 @@ export function __resetDailyStatsForTest(): void {
   stats = []
   loaded = false
   queue.length = 0
+  focusQueue.length = 0
   if (flushTimer !== null) {
     clearTimeout(flushTimer)
     flushTimer = null

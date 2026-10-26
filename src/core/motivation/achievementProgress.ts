@@ -21,7 +21,7 @@
  * `comeback` / `early-bird` / `night-owl` 是**元认知与时段彩蛋**：达成前不给任何提示
  * （否则就不叫隐藏了），达成后按 §5.4 也只显示"已解锁 + 日期"，**不补显示进度**。
  * 所以"无法进度化"对它们是恒定的，与是否已解锁无关 → 一律返回 `null`。
- * 于是可进度化 = 25 枚，不可进度化 = 3 枚，与 PRD §4.5 的统计口径完全一致。
+ * 于是可进度化 = 35 枚（V2.8 · C1 起含习惯养成 10 枚），不可进度化 = 3 枚，与 PRD §4.5 的统计口径完全一致。
  *
  * ## 与 `check()` 的重复实现是刻意的
  * 本文件重算了一遍统计基元（而不是复用 `achievements.ts` 的内部函数，那些没有导出）。
@@ -29,6 +29,7 @@
  * 改任何一侧的公式，必须两边一起改，并让测试变绿。
  */
 import type { AchievementContext } from './achievements'
+import type { DailyStat } from './dailyStats'
 
 export type ProgressKind = 'counter' | 'binary'
 
@@ -113,6 +114,68 @@ const nonMathSubjects = (ctx: AchievementContext) => {
 const maxDayQuestions = (ctx: AchievementContext) =>
   (ctx.dailyStats ?? []).reduce((max, s) => Math.max(max, s.questionCount ?? 0), 0)
 
+// ---------- V2.8 · C1：习惯养成类统计基元（与 achievements.ts 同口径的双份实现） ----------
+const maxDayFocusMinutes = (ctx: AchievementContext) =>
+  (ctx.dailyStats ?? []).reduce((max, s) => Math.max(max, s.focusMinutes ?? 0), 0)
+const distinctFocusDays = (ctx: AchievementContext, minMinutes: number) =>
+  new Set(
+    (ctx.dailyStats ?? []).filter((s) => (s.focusMinutes ?? 0) >= minMinutes).map((s) => s.date),
+  ).size
+const distinctMorningDays = (ctx: AchievementContext, hour: number) =>
+  new Set(
+    (ctx.dailyStats ?? [])
+      .filter(
+        (s) =>
+          Number.isFinite(s.firstStudyAt) &&
+          s.firstStudyAt > 0 &&
+          new Date(s.firstStudyAt).getHours() < hour,
+      )
+      .map((s) => s.date),
+  ).size
+function distinctWeekendStudyDays(ctx: AchievementContext): number {
+  const days = new Set<string>()
+  for (const s of ctx.dailyStats ?? []) {
+    if ((s.questionCount ?? 0) <= 0 && (s.focusMinutes ?? 0) <= 0) continue
+    if (typeof s.date === 'string' && s.date !== '') days.add(s.date)
+  }
+  let n = 0
+  for (const d of days) {
+    const wd = new Date(`${d}T12:00:00`).getDay()
+    if (wd === 0 || wd === 6) n += 1
+  }
+  return n
+}
+/** 「最接近通关」的合格包（kpCount ≥5）通关百分比；100 ⇔ check（floor 保证 99.x 不越线） */
+function bestPackageCompletionPercent(ctx: AchievementContext): number {
+  const mastered = new Map<string, number>()
+  for (const p of ctx.progress) {
+    if (p.status !== '已掌握') continue
+    mastered.set(p.packageId, (mastered.get(p.packageId) ?? 0) + 1)
+  }
+  let best = 0
+  for (const p of ctx.packages ?? []) {
+    if ((p.kpCount ?? 0) < 5) continue
+    const ratio = Math.min(1, (mastered.get(p.packageId) ?? 0) / (p.kpCount ?? 0))
+    best = Math.max(best, Math.floor(ratio * 100))
+  }
+  return best
+}
+/** 完美一天（同一天双达标）：50 ⇔ check，分项拆解见 `MEASURES['perfect-day']` */
+function bestPerfectDayScore(ctx: AchievementContext): { score: number; day?: DailyStat } {
+  let best = -1
+  let day: DailyStat | undefined
+  for (const s of ctx.dailyStats ?? []) {
+    const score =
+      Math.min(Math.floor(s.questionCount ?? 0), 20) +
+      Math.min(Math.floor(s.focusMinutes ?? 0), 30)
+    if (score > best) {
+      best = score
+      day = s
+    }
+  }
+  return { score: Math.max(0, best), day }
+}
+
 /** 历史最长连续天数（纯函数版 bestStreak，见下方 streak-* 处的说明） */
 const bestDayStreak = (ctx: AchievementContext) =>
   Math.max(ctx.streak?.longest ?? 0, ctx.streak?.current ?? 0)
@@ -136,7 +199,7 @@ function counter(
   return { current, target, unit, noun, kind: target === 1 ? 'binary' : 'counter' }
 }
 
-// ==================== 25 枚可进度化成就 ====================
+// ==================== 35 枚可进度化成就 ====================
 
 const MEASURES: Record<string, (ctx: AchievementContext) => Measure> = {
   // ---------- M · 精熟 ----------
@@ -209,6 +272,36 @@ const MEASURES: Record<string, (ctx: AchievementContext) => Measure> = {
   'streak-100': (c) => counter(bestDayStreak(c), 100, '天', ''),
   'daily-20': (c) => counter(maxDayQuestions(c), 20, '道', '题'),
 
+  // ---------- B · 行为（V2.8 · C1 习惯养成 10 枚） ----------
+  'focus-5': (c) => counter(maxDayFocusMinutes(c), 5, '分钟', ''),
+  'focus-15': (c) => counter(maxDayFocusMinutes(c), 15, '分钟', ''),
+  'focus-30': (c) => counter(maxDayFocusMinutes(c), 30, '分钟', ''),
+  'focus-days-3': (c) => counter(distinctFocusDays(c, 10), 3, '天', ''),
+  'morning-light': (c) => counter(distinctMorningDays(c, 8), 3, '天', ''),
+  // 通关百分比：只有 kpCount ≥5 的包参评，100 ⇔「整包全部掌握」
+  'one-go': (c) => counter(bestPackageCompletionPercent(c), 100, '%', ''),
+  // 双门槛（同一天）：分项封顶求和 = 50 ⇔ 答题 20 且专注 30（subject-master-3 同款手法）
+  'perfect-day': (c) => {
+    const { score, day } = bestPerfectDayScore(c)
+    const parts: ProgressPart[] = day
+      ? [
+          { label: '答题', current: Math.min(Math.floor(day.questionCount ?? 0), 20), target: 20 },
+          { label: '专注', current: Math.min(Math.floor(day.focusMinutes ?? 0), 30), target: 30 },
+        ]
+      : []
+    return {
+      current: Math.max(0, Math.min(50, score)),
+      target: 50,
+      unit: '分',
+      noun: '',
+      kind: 'counter',
+      ...(parts.length > 0 ? { parts } : {}),
+    }
+  },
+  'streak-14': (c) => counter(bestDayStreak(c), 14, '天', ''),
+  'daily-50': (c) => counter(maxDayQuestions(c), 50, '道', '题'),
+  'weekend-2': (c) => counter(distinctWeekendStudyDays(c), 2, '天', ''),
+
   // ---------- E · 探索 ----------
   'explorer-3': (c) => counter(studiedPackageIds(c).size, 3, '个', '学习包'),
   'explorer-10': (c) => counter(studiedPackageIds(c).size, 10, '个', '学习包'),
@@ -224,7 +317,7 @@ const MEASURES: Record<string, (ctx: AchievementContext) => Measure> = {
  */
 export const HIDDEN_NO_PROGRESS = ['comeback', 'early-bird', 'night-owl'] as const
 
-/** 可进度化的成就 id（25 枚） */
+/** 可进度化的成就 id（35 枚） */
 export const MEASURABLE_IDS = Object.keys(MEASURES)
 
 /**
@@ -305,6 +398,17 @@ const EVIDENCE_TPL: Record<string, string> = {
   'streak-60': '连续学习 {n} 天',
   'streak-100': '连续学习 {n} 天',
   'daily-20': '单日最多完成 {n} 题',
+  // V2.8 · C1 习惯养成 10 枚
+  'focus-5': '单日最多专注 {n} 分钟',
+  'focus-15': '单日最多专注 {n} 分钟',
+  'focus-30': '单日最多专注 {n} 分钟',
+  'focus-days-3': '有 {n} 天专注满 10 分钟',
+  'morning-light': '{n} 天在早上 8 点前开始学习',
+  'one-go': '完整拿下一个学习包的全部知识点',
+  'perfect-day': '单日答题 20 题且专注满 30 分钟',
+  'streak-14': '连续学习 {n} 天',
+  'daily-50': '单日最多完成 {n} 题',
+  'weekend-2': '{n} 个周末日坚持学习',
   'explorer-3': '学习过 {n} 个不同学习包',
   'explorer-10': '学习过 {n} 个不同学习包',
   'type-collector': '尝试过 {n} 种题型',

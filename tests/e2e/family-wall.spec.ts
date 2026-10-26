@@ -142,8 +142,8 @@ test.describe('家庭成就墙（V1.4 · B4）', () => {
     await first.locator('.wall-col-summary').click()
     await second.locator('.wall-col-summary').click()
     // 分母是**可收集** 27 枚（night-owl 不参与收集，V1.6 · C6）
-    await expect(first.locator('.wall-col-count')).toContainText('已获得 2 / 27')
-    await expect(second.locator('.wall-col-count')).toContainText('已获得 0 / 27')
+    await expect(first.locator('.wall-col-count')).toContainText('已获得 2 / 37')
+    await expect(second.locator('.wall-col-count')).toContainText('已获得 0 / 37')
     // 展开后是三项：已解锁数 / 连续天数 / 掌握数
     await expect(first.locator('.wall-col-num')).toHaveCount(2)
     await expect(first.locator('.wall-col-numbers')).toContainText('已掌握')

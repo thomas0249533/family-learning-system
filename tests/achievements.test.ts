@@ -2,11 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 /**
  * 成就单测：
- *   · 28 枚每一枚的判定条件都有正/负两向覆盖（含边界）；
+ *   · 38 枚每一枚的判定条件都有正/负两向覆盖（含边界）；
  *   · 存储迁移 normalizeUnlocked（旧 string[] → {id,unlockedAt}[]）；
  *   · syncAchievements 幂等 / 只增不减 / unlockedAt 本地日期。
  *
  * 用内存版 Dexie 替身替代 IndexedDB（settings 表即可）。
+ * V2.8 · C1：38 = 原 28（**判据一字未动**，AC-01）+ 习惯养成 10 枚。
  */
 const fake = vi.hoisted(() => {
   type Row = Record<string, any>
@@ -63,7 +64,7 @@ beforeEach(() => {
 // ---------------------------------------------------------------------
 // 每枚徽章：PASS 上下文 → 命中；FAIL 上下文 → 不命中
 // ---------------------------------------------------------------------
-describe('28 枚成就判定（每枚正/负覆盖）', () => {
+describe('38 枚成就判定（每枚正/负覆盖）', () => {
   const PASS: Record<string, Ctx> = {
     'first-step': { ...base, progress: mastered(1) },
     'ten-kp': { ...base, progress: mastered(10) },
@@ -113,6 +114,30 @@ describe('28 枚成就判定（每枚正/负覆盖）', () => {
       packages: [pkgMeta({ packageId: 'c', subject: 'chinese' })],
       progress: mastered(1, 'c'),
     },
+    // ---------- V2.8 · C1 习惯养成 10 枚 ----------
+    'focus-5': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 5 }] },
+    'focus-15': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 15 }] },
+    'focus-30': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 30 }] },
+    'focus-days-3': {
+      ...base,
+      dailyStats: [1, 2, 3].map((d) => ({ date: `2024-01-0${d}`, questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 10 })),
+    },
+    'morning-light': {
+      ...base,
+      dailyStats: [1, 2, 3].map((d) => ({ date: `2024-01-0${d}`, questionCount: 1, firstStudyAt: new Date(2024, 0, d, 7, 30).getTime(), lastStudyAt: 0 })),
+    },
+    'one-go': { ...base, packages: [pkgMeta({ kpCount: 5 })], progress: mastered(5) },
+    'perfect-day': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 20, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 30 }] },
+    'streak-14': { ...base, streak: { current: 14, longest: 14, lastDate: localDayKey() } },
+    'daily-50': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 50, firstStudyAt: 0, lastStudyAt: 0 }] },
+    'weekend-2': {
+      ...base,
+      // 2024-01-06 是周六、2024-01-07 是周日
+      dailyStats: [
+        { date: '2024-01-06', questionCount: 5, firstStudyAt: 0, lastStudyAt: 0 },
+        { date: '2024-01-07', questionCount: 5, firstStudyAt: 0, lastStudyAt: 0 },
+      ],
+    },
   }
 
   // 边界负例：恰好差一点
@@ -149,10 +174,36 @@ describe('28 枚成就判定（每枚正/负覆盖）', () => {
     'type-collector': { ...base, attemptedTypes: ['single', 'blank', 'multiple', 'judge'] },
     'term-cross': { ...base, packages: [pkgMeta({ packageId: 'a', term: 'up' }), pkgMeta({ packageId: 'b', term: 'up' })], progress: [...mastered(1, 'a'), ...mastered(1, 'b')] },
     'senior-new': { ...base, packages: [pkgMeta({ packageId: 'm', subject: 'math' })], progress: mastered(1, 'm') },
+    // ---------- V2.8 · C1 边界负例：恰好差一点 ----------
+    'focus-5': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 4.9 }] },
+    'focus-15': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 14.9 }] },
+    'focus-30': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 29.9 }] },
+    'focus-days-3': {
+      ...base,
+      dailyStats: [1, 2].map((d) => ({ date: `2024-01-0${d}`, questionCount: 1, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 10 })),
+    },
+    'morning-light': {
+      ...base,
+      // 两天在 7:30（差一天），第三天在 8:00 整（不算"8 点前"）
+      dailyStats: [
+        { date: '2024-01-01', questionCount: 1, firstStudyAt: new Date(2024, 0, 1, 7, 30).getTime(), lastStudyAt: 0 },
+        { date: '2024-01-02', questionCount: 1, firstStudyAt: new Date(2024, 0, 2, 7, 30).getTime(), lastStudyAt: 0 },
+        { date: '2024-01-03', questionCount: 1, firstStudyAt: new Date(2024, 0, 3, 8, 0).getTime(), lastStudyAt: 0 },
+      ],
+    },
+    'one-go': { ...base, packages: [pkgMeta({ kpCount: 5 })], progress: mastered(4) },
+    'perfect-day': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 20, firstStudyAt: 0, lastStudyAt: 0, focusMinutes: 29.9 }] },
+    'streak-14': { ...base, streak: { current: 13, longest: 13, lastDate: localDayKey() } },
+    'daily-50': { ...base, dailyStats: [{ date: '2024-01-01', questionCount: 49, firstStudyAt: 0, lastStudyAt: 0 }] },
+    'weekend-2': {
+      ...base,
+      // 只有周六；周日没学
+      dailyStats: [{ date: '2024-01-06', questionCount: 5, firstStudyAt: 0, lastStudyAt: 0 }],
+    },
   }
 
-  it('共 28 枚', () => {
-    expect(ACHIEVEMENTS).toHaveLength(28)
+  it('共 38 枚', () => {
+    expect(ACHIEVEMENTS).toHaveLength(38)
   })
 
   for (const a of ACHIEVEMENTS) {
@@ -168,11 +219,11 @@ describe('28 枚成就判定（每枚正/负覆盖）', () => {
     }
   })
 
-  it('四类数量 = M8 / G7 / B8 / E5', () => {
+  it('四类数量 = M8 / G7 / B18 / E5（V2.8 · C1：习惯 10 枚全部落在 B）', () => {
     const count = (c: string) => ACHIEVEMENTS.filter((a) => a.category === c).length
     expect(count('M')).toBe(8)
     expect(count('G')).toBe(7)
-    expect(count('B')).toBe(8)
+    expect(count('B')).toBe(18)
     expect(count('E')).toBe(5)
   })
 

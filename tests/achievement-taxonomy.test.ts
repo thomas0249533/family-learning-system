@@ -52,6 +52,17 @@ const EXPECTED_TIER: Record<string, AchievementTier> = {
   'type-collector': 'advanced',
   'term-cross': 'advanced',
   'senior-new': 'common',
+  // ---------- V2.8 · C1 习惯养成 10 枚（层级仍由 facts 按规则算出） ----------
+  'focus-5': 'advanced',
+  'focus-15': 'advanced',
+  'focus-30': 'advanced',
+  'focus-days-3': 'common',
+  'morning-light': 'common',
+  'one-go': 'advanced',
+  'perfect-day': 'advanced',
+  'streak-14': 'advanced',
+  'daily-50': 'rare',
+  'weekend-2': 'common',
 }
 
 /** PRD §4.1「映射表（28 枚逐条归属）」 */
@@ -88,12 +99,23 @@ const EXPECTED_SOURCE: Record<string, AchievementSource> = {
   'type-collector': 'subject',
   'term-cross': 'subject',
   'senior-new': 'subject',
+  // V2.8 · C1 习惯养成 10 枚（全部 habit）
+  'focus-5': 'habit',
+  'focus-15': 'habit',
+  'focus-30': 'habit',
+  'focus-days-3': 'habit',
+  'morning-light': 'habit',
+  'one-go': 'habit',
+  'perfect-day': 'habit',
+  'streak-14': 'habit',
+  'daily-50': 'habit',
+  'weekend-2': 'habit',
 }
 
 describe('覆盖率', () => {
-  it('28 枚全部登记了 source 与层级事实', () => {
+  it('38 枚全部登记了 source 与层级事实', () => {
     expect(missingTaxonomy()).toEqual([])
-    expect(Object.keys(TAXONOMY)).toHaveLength(28)
+    expect(Object.keys(TAXONOMY)).toHaveLength(38)
   })
 
   it('分类学表里没有多余条目（拼错 id 的孤儿）', () => {
@@ -109,10 +131,10 @@ describe('source 来源（PRD §4.1）', () => {
     }
   })
 
-  it('分布：core 7 · subject 13 · habit 5 · hidden 3 = 28', () => {
+  it('分布：core 7 · subject 13 · habit 15 · hidden 3 = 38（V2.8 · C1：habit 5 → 15）', () => {
     const count: Record<string, number> = {}
     for (const a of ACHIEVEMENTS) count[sourceOf(a.id)] = (count[sourceOf(a.id)] ?? 0) + 1
-    expect(count).toEqual({ core: 7, subject: 13, habit: 5, hidden: 3 })
+    expect(count).toEqual({ core: 7, subject: 13, habit: 15, hidden: 3 })
   })
 
   it('每个来源都有展示元数据（家长端筛选要用）', () => {
@@ -124,16 +146,16 @@ describe('source 来源（PRD §4.1）', () => {
 })
 
 describe('tier 稀有层级（PRD §4.2 / §4.5）', () => {
-  it('逐条与规则表一致（28/28）', () => {
+  it('逐条与规则表一致（38/38）', () => {
     for (const [id, expected] of Object.entries(EXPECTED_TIER)) {
       expect(tierOf(id), `${id} 的层级不对`).toBe(expected)
     }
   })
 
-  it('分布：常见 5 · 进阶 11 · 稀有 9 · 隐藏 3 = 28', () => {
+  it('分布：常见 8 · 进阶 17 · 稀有 10 · 隐藏 3 = 38（V2.8 · C1 后）', () => {
     const count: Record<string, number> = {}
     for (const a of ACHIEVEMENTS) count[tierOf(a.id)] = (count[tierOf(a.id)] ?? 0) + 1
-    expect(count).toEqual({ common: 5, advanced: 11, rare: 9, hidden: 3 })
+    expect(count).toEqual({ common: 8, advanced: 17, rare: 10, hidden: 3 })
   })
 
   it('hidden 字段与 hidden 层级完全对齐（双向）', () => {

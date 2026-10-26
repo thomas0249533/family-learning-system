@@ -47,7 +47,7 @@ describe('分区与默认态（PRD §5.1 / §5.2）', () => {
     expect(v.sections.map((s) => s.key)).toEqual(['pending'])
     expect(v.sections[0].defaultOpen).toBe(true)
     // 27 = 可收集口径（`NON_COLLECTIBLE_IDS` 里的 night-owl 不参与收集，V1.6 · C6）
-    expect(v.sections[0].count).toBe(27)
+    expect(v.sections[0].count).toBe(37)
   })
 
   it('有几枚已获得：两个区都在，已获得区默认**收起**', () => {
@@ -58,14 +58,14 @@ describe('分区与默认态（PRD §5.1 / §5.2）', () => {
     expect(earned.defaultOpen).toBe(false)
     expect(pending.defaultOpen).toBe(true)
     // 27 可收集 − 2 已获得 = 25（旧口径 28 − 2 = 26）
-    expect(pending.count).toBe(25)
+    expect(pending.count).toBe(35)
   })
 
   it('可收集枚全解锁：隐藏「待解锁」区，「已获得」区强制展开（AC-15）', () => {
     const v = buildAchievementView(scenarios()['全达标'], allUnlocked())
     expect(v.complete).toBe(true)
-    // 记录里其实有 28 条（含 night-owl 的留档记录），但 earned 按可收集口径只数 27 枚
-    expect(v.earned).toBe(27)
+    // 记录里其实有 38 条（含 night-owl 的留档记录），但 earned 按可收集口径只数 37 枚
+    expect(v.earned).toBe(37)
     expect(v.sections.map((s) => s.key)).toEqual(['earned'])
     expect(v.sections[0].defaultOpen).toBe(true)
   })
@@ -254,7 +254,7 @@ describe('空态与边界（PRD §5.4）', () => {
   it('脏记录（id 不存在）被忽略，不影响总数', () => {
     const v = buildAchievementView(ctx(), [rec('gone-forever')])
     expect(v.earned).toBe(0)
-    expect(v.total).toBe(27)
+    expect(v.total).toBe(37)
     expect(v.empty).toBe(true)
   })
 })

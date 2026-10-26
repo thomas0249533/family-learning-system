@@ -83,7 +83,7 @@ export function tierRankOf(id: string): number {
   return TIER_RANK[tierOf(id)] ?? 0
 }
 
-/** 全部 28 枚的层级权重表（测试用：保证权重映射没有漏项） */
+/** 全部 38 枚的层级权重表（测试用：保证权重映射没有漏项） */
 export function tierRankTable(): Record<string, number> {
   const out: Record<string, number> = {}
   for (const a of ACHIEVEMENTS) out[a.id] = tierRankOf(a.id)

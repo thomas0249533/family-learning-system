@@ -112,9 +112,9 @@ describe('层级权重表', () => {
     expect(tierRankOf('comeback')).toBe(4)
   })
 
-  it('28 枚都有权重，且没有 0', () => {
+  it('38 枚都有权重，且没有 0', () => {
     const table = tierRankTable()
-    expect(Object.keys(table)).toHaveLength(28)
+    expect(Object.keys(table)).toHaveLength(38)
     for (const [id, rank] of Object.entries(table)) expect(rank, id).toBeGreaterThan(0)
   })
 

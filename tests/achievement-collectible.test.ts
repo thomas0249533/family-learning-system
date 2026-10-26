@@ -28,8 +28,8 @@ import { ctx, scenarios } from './achievement-fixtures'
  * "28 枚 check 逐条不变"快照失去意义。**故保留触发与定义，拿掉激励**。
  *
  * 由此产生**双口径**，本文件就是这两个口径的合同：
- *   - 定义 28（`ACHIEVEMENT_TOTAL_DEFINED`）→ 只给"定义完整性"类断言用；
- *   - 可收集 27（`ACHIEVEMENT_TOTAL_COLLECTIBLE`）→ **所有 UI 文案的唯一口径**。
+ *   - 定义 38（`ACHIEVEMENT_TOTAL_DEFINED`）→ 只给"定义完整性"类断言用；
+ *   - 可收集 37（`ACHIEVEMENT_TOTAL_COLLECTIBLE`）→ **所有 UI 文案的唯一口径**。
  *
  * 以及主理人终审的硬要求：「确保它在**收集图鉴中彻底隐身**」——
  * 图鉴 / 待解锁 / 计数 / toast / 家庭墙 / 打印件 / 线索系统，一处都不能露。
@@ -51,12 +51,12 @@ function srcFiles(dir = 'src'): string[] {
 }
 
 describe('双口径常量与 isCollectible（单一真源）', () => {
-  it('定义总数 28 与可收集总数 27 必须同时存在且自洽', () => {
-    // 28：AC-01 的"28 枚 check 逐条不变"快照按这个口径验
-    expect(ACHIEVEMENT_TOTAL_DEFINED).toBe(28)
+  it('定义总数 38 与可收集总数 37 必须同时存在且自洽', () => {
+    // 38：AC-01 的"38 枚 check 逐条不变"快照按这个口径验（V2.8 · C1：28 → 38）
+    expect(ACHIEVEMENT_TOTAL_DEFINED).toBe(38)
     expect(ACHIEVEMENTS.length).toBe(ACHIEVEMENT_TOTAL_DEFINED)
-    // 27：所有 UI 分母
-    expect(ACHIEVEMENT_TOTAL_COLLECTIBLE).toBe(27)
+    // 37：所有 UI 分母
+    expect(ACHIEVEMENT_TOTAL_COLLECTIBLE).toBe(37)
     // 两个常量的关系必须由名单长度推导，不是各自写死的两个数
     expect(ACHIEVEMENT_TOTAL_DEFINED - NON_COLLECTIBLE_IDS.length).toBe(
       ACHIEVEMENT_TOTAL_COLLECTIBLE,
@@ -92,7 +92,7 @@ describe('双口径常量与 isCollectible（单一真源）', () => {
 })
 
 describe('视图分母走可收集口径（数据层完整 / 视图层隐身）', () => {
-  it('items 仍是 28 枚（定义真相），但视图 total 是 27', () => {
+  it('items 仍是 38 枚（定义真相），但视图 total 是 37', () => {
     const items = buildAchievementItems(ctx(), [])
     expect(items).toHaveLength(ACHIEVEMENT_TOTAL_DEFINED)
 
@@ -127,10 +127,10 @@ describe('视图分母走可收集口径（数据层完整 / 视图层隐身）'
 
     expect(v.earned).toBe(1)
     expect(v.recent.map((i) => i.id)).toEqual(['first-step'])
-    // 1/27 ≈ 3.7% → 4%（若分母还是 28 会算出 3.57 → 4，恰好同值；
+    // 1/37 ≈ 2.7% → 3%（分母 38 会算出 2.63 → 3，恰好同值；
     // 所以这里同时钉住 earned 与 total，避免"靠巧合通过"）
-    expect(v.total).toBe(27)
-    expect(v.percent).toBe(Math.round((1 / 27) * 100))
+    expect(v.total).toBe(37)
+    expect(v.percent).toBe(Math.round((1 / 37) * 100))
   })
 
   it('closest（最接近解锁）不含 night-owl', () => {
@@ -214,11 +214,13 @@ describe('toast：不弹（唯一出口就在 mergeUnlocksForToast）', () => {
 })
 
 describe('打印件与导出图片：同一套分页，同样不出现它', () => {
-  it('B 组从 8 枚变 7 枚，全表 27 枚', () => {
+  it('B 组 17 枚超过单页容量 12 → 分两页（12+5）；全表 37 枚（V2.8 · C1：B 类 8 → 18）', () => {
     const pages = paginateByCategory(buildAchievementItems(ctx(), []))
-    expect(pages.map((p) => p.category)).toEqual(['M', 'G', 'B', 'E'])
-    expect(pages.map((p) => p.items.length)).toEqual([8, 7, 7, 5])
-    expect(pages.map((p) => p.groupTotal)).toEqual([8, 7, 7, 5])
+    // B 组 17 枚 > PRINT_PER_PAGE(12)：打印件/导出图从 4 页变 5 页，B 续页 continued
+    expect(pages.map((p) => p.category)).toEqual(['M', 'G', 'B', 'B', 'E'])
+    expect(pages.map((p) => p.items.length)).toEqual([8, 7, 12, 5, 5])
+    expect(pages.map((p) => p.groupTotal)).toEqual([8, 7, 17, 17, 5])
+    expect(pages.map((p) => p.continued === true)).toEqual([false, false, false, true, false])
     const ids = pages.flatMap((p) => p.items.map((i) => i.id))
     expect(ids).toHaveLength(ACHIEVEMENT_TOTAL_COLLECTIBLE)
     expect(ids).not.toContain('night-owl')
@@ -236,9 +238,12 @@ describe('静态断言：收集面视图不许再写一遍数字', () => {
     }
   })
 
-  it('不得把 28 当成可收集数量（三种常见写法都拦）', () => {
-    // ① 「x / 28」 ② 「28 枚」 ③ 「共 28」
-    const forbidden = [/\/\s*28\b/, /\b28\s*枚/, /共\s*28/]
+  it('不得把 38/37 当成可收集数量（三种常见写法都拦；V2.8 · C1 随总数同步）', () => {
+    // ① 「x / 37」 ② 「37 枚」 ③ 「共 37」（38 同理 —— 定义口径也不许写进视图）
+    const forbidden = [
+      /\/\s*37\b/, /\b37\s*枚/, /共\s*37/,
+      /\/\s*38\b/, /\b38\s*枚/, /共\s*38/,
+    ]
     for (const file of surfaces) {
       const src = readFileSync(file, 'utf8')
       for (const re of forbidden) {

@@ -349,6 +349,7 @@ const SAMPLE: Record<ProfileScopedBase, unknown> = {
   studyStreak: { current: 1, longest: 1, lastDate: '2026-01-01' },
   attemptedTypes: ['blank'],
   customChecks: [{ packId: 'my-pack', itemId: 'i1', checked: true, at: '2026-01-01' }],
+  blindBox: { owned: ['bb-lucky-star'], usedDays: ['2026-01-01'] },
 }
 
 describe('逐键规则的登记完整性', () => {

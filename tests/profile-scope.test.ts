@@ -26,17 +26,19 @@ import {
  */
 
 describe('settingsScope — 键清单', () => {
-  it('9 个 per-profile 键、10 个 global 键一个都不能少（删键等于那个键不再被搬）', () => {
+  it('10 个 per-profile 键、10 个 global 键一个都不能少（删键等于那个键不再被搬）', () => {
     // V1.4 · B3 起 per-profile 是 9 个：新增 `customChecks`（家长手工勾选，per-profile）。
     // V1.11 · F1 起 global 是 10 个：新增 `ai:config`（AI 助手配置，设备级 ——
     // API Key 是家长买的、全家共用的一份资产，**不按 profileId 分片**）。
+    // V2.8 · C1 起 per-profile 是 10 个：新增 `blindBox`（盲盒拥有/已抽日，孩子各自的惊喜）。
     // 断言写**字面量**而不是 `PROFILE_SCOPED_KEYS.length`：这条测试要挡的正是
     // "清单被悄悄改动"，用清单自己的长度去断言等于把它关掉。
-    expect(PROFILE_SCOPED_KEYS).toHaveLength(9)
+    expect(PROFILE_SCOPED_KEYS).toHaveLength(10)
     expect(GLOBAL_KEYS).toHaveLength(10)
     // 抽查两组里最容易被人"顺手删掉"的成员：家长开关、勾选态与迁移标记
     expect(PROFILE_SCOPED_KEYS).toContain('achievement:discoveryEnabled')
     expect(PROFILE_SCOPED_KEYS).toContain('customChecks')
+    expect(PROFILE_SCOPED_KEYS).toContain('blindBox')
     expect(GLOBAL_KEYS).toContain('migration:v4')
     expect(GLOBAL_KEYS).toContain('ai:config')
   })

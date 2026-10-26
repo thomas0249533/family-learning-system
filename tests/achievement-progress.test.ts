@@ -22,15 +22,15 @@ import { localDayKey } from '@core/motivation/streak'
  *
  * 这套用例存在的唯一理由：`progressOf` 与 `check()` 是两份实现（一个算数值、一个判布尔），
  * 漂移了就会出现"进度满格但不亮"或"亮了但进度 8/10"。所以这里用
- * **场景表 × 28 枚** 逐条断言 `current >= target ⇔ check(ctx)`，
+ * **场景表 × 38 枚** 逐条断言 `current >= target ⇔ check(ctx)`，
  * 而不是抽几个样本看看。
  */
 
 const HIDDEN = new Set<string>(HIDDEN_NO_PROGRESS)
 
 describe('覆盖率与可进度化口径（AC-03）', () => {
-  it('可进度化正好 25 枚', () => {
-    expect(MEASURABLE_IDS).toHaveLength(25)
+  it('可进度化正好 35 枚', () => {
+    expect(MEASURABLE_IDS).toHaveLength(35)
   })
 
   it('3 枚隐藏成就永远不可进度化（progressOf → null）', () => {
@@ -42,7 +42,7 @@ describe('覆盖率与可进度化口径（AC-03）', () => {
     }
   })
 
-  it('25 + 3 = 28，没有既不在度量表也不在隐藏表里的孤儿', () => {
+  it('35 + 3 = 38，没有既不在度量表也不在隐藏表里的孤儿', () => {
     const union = new Set<string>([...MEASURABLE_IDS, ...HIDDEN])
     expect(union.size).toBe(ACHIEVEMENTS.length)
     for (const a of ACHIEVEMENTS) expect(union.has(a.id)).toBe(true)
@@ -57,7 +57,7 @@ describe('★ 进度与判定必须等价：current >= target ⇔ check(ctx)（A
   const table = scenarios()
 
   for (const [name, c] of Object.entries(table)) {
-    it(`${name}：25 枚逐条一致`, () => {
+    it(`${name}：35 枚逐条一致`, () => {
       for (const id of MEASURABLE_IDS) {
         const def = ACHIEVEMENTS.find((a) => a.id === id)!
         const m = progressOf(id, c)!
@@ -252,7 +252,7 @@ describe('progressText 文案规则（PRD §5.3 表）', () => {
 })
 
 describe('证据快照 evidenceOf（A-06）', () => {
-  it('28 枚都有模板，且长度不超过 40 字', () => {
+  it('38 枚都有模板，且长度不超过 40 字', () => {
     const c = scenarios()['全达标']
     for (const a of ACHIEVEMENTS) {
       const ev = evidenceOf(a.id, c)
@@ -290,7 +290,7 @@ describe('证据快照 evidenceOf（A-06）', () => {
 // ============================================================================
 // B3 追加（V1.6）：算法边界 + 「显示与达成必须同频」
 // ----------------------------------------------------------------------------
-// 上面已有的用例覆盖的是「典型场景 × 28 枚」的等价性；这一段补的是**边界穷举**与
+// 上面已有的用例覆盖的是「典型场景 × 38 枚」的等价性；这一段补的是**边界穷举**与
 // **属性测试**，守的仍然是同一条铁律（进度真相 ⇔ 判定真相）：
 //
 //     progressOf(id, ctx).current >= target   ⇔   def.check(ctx)
@@ -405,7 +405,7 @@ function defOf(id: string): AchievementDef {
   return def
 }
 
-/** 按 id 取度量；不可进度化直接炸（本段只碰可进度化的 25 枚） */
+/** 按 id 取度量；不可进度化直接炸（本段只碰可进度化的 35 枚） */
 function measureOf(id: string, c: AchievementContext): Measure {
   const m = progressOf(id, c)
   if (!m) throw new Error(`成就不可进度化：${id}`)
@@ -679,7 +679,7 @@ function randomCtx(rand: () => number): AchievementContext {
   })
 }
 
-describe('★ 属性测试：100 组随机上下文 × 25 枚逐条同频（确定性种子）', () => {
+describe('★ 属性测试：100 组随机上下文 × 35 枚逐条同频（确定性种子）', () => {
   /** 失败时靠这个种子复现；改种子等于换一批随机数据，别随手改 */
   const SEED = 0x5eed1234
 
@@ -725,7 +725,7 @@ describe('★ 属性测试：100 组随机上下文 × 25 枚逐条同频（确�
 // ============================================================================
 
 describe('其它边界（空上下文 / 事件型 / 复合分项 / 文案）', () => {
-  it('空上下文：25 枚全部可算、current 全 0、check 全 false、不抛错', () => {
+  it('空上下文：35 枚全部可算、current 全 0、check 全 false、不抛错', () => {
     const empty = makeCtx()
     for (const id of MEASURABLE_IDS) {
       const m = measureOf(id, empty)

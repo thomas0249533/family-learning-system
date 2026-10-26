@@ -146,6 +146,7 @@ import {
   tickTimer,
   type PomodoroState,
 } from '@core/focus/pomodoro'
+import { bumpFocusMinutes } from '@core/motivation/dailyStats'
 
 const uiStore = useUiStore()
 
@@ -334,15 +335,52 @@ function resetPomo(): void {
 let raf = 0
 function loop(): void {
   frameNow.value = Date.now()
+  accrueFocusTime(frameNow.value)
   if (pomo.value.status === 'running') {
     pomo.value = tickTimer(pomo.value, frameNow.value)
   }
   raf = requestAnimationFrame(loop)
 }
 
+// ---------- 专注时长埋点（V2.8 · C1）----------
+// 口径：只有 focus 阶段且 running 的时间算"专注"（休息 / 暂停都不算）。
+// 账本走「快照差」：每次帧用 now - lastSync 的墙钟差累计，
+// 与番茄钟同一条绝对时间戳铁律 —— 后台节流 / 休眠恢复后由时间差一次算清。
+let lastFocusSyncAt = Date.now()
+let pendingFocusMs = 0
+
+function accrueFocusTime(now: number): void {
+  const st = pomo.value
+  if (st.phase === 'focus' && st.status === 'running' && st.startAt !== null) {
+    // 单次差值封顶 1 小时：系统时钟跳变 / 长期挂起后恢复时，
+    // 不把一段无法核实的时间一次性灌进统计（少记无害，虚记伤害信任）
+    pendingFocusMs += Math.min(now - lastFocusSyncAt, 60 * 60 * 1000)
+  }
+  lastFocusSyncAt = now
+  // 攒够 1 分钟上报一次：rAF 约 16ms 一帧，逐帧调 db 层是浪费
+  if (pendingFocusMs >= 60_000) {
+    bumpFocusMinutes({ minutes: pendingFocusMs / 60_000 })
+    pendingFocusMs = 0
+  }
+}
+
+/** 强制结算（面板卸载 / 页面隐藏时）：rAF 停了，账不能丢 */
+function flushFocusTime(): void {
+  accrueFocusTime(Date.now())
+  if (pendingFocusMs > 0) {
+    bumpFocusMinutes({ minutes: pendingFocusMs / 60_000 })
+    pendingFocusMs = 0
+  }
+}
+
+function onVisChangeForFocus(): void {
+  if (document.visibilityState === 'hidden') flushFocusTime()
+}
+
 onMounted(() => {
   raf = requestAnimationFrame(loop)
   void refreshSounds()
+  document.addEventListener('visibilitychange', onVisChangeForFocus)
 })
 
 onUnmounted(() => {
@@ -350,6 +388,9 @@ onUnmounted(() => {
   cancelAnimationFrame(raf)
   gen?.destroy()
   gen = null
+  // 专注账本结算：退出前最后一段（可能不足 1 分钟）也要入账
+  flushFocusTime()
+  document.removeEventListener('visibilitychange', onVisChangeForFocus)
 })
 </script>
 
