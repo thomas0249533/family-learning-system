@@ -1,7 +1,7 @@
 {
   "name": "family-learning-system",
   "private": true,
-  "version": "2.9.0",
+  "version": "2.10.0",
   "type": "module",
   "scripts": {
     "pretest": "npm run tokens:build",
@@ -33,7 +33,9 @@
     "build:csv": "vite-node scripts/build-from-csv.ts --"
   },
   "dependencies": {
-    "@tauri-apps/api": "2.11.1",
+    "@tauri-apps/api": "2.12.4",
+    "@tauri-apps/plugin-process": "2.4.0",
+    "@tauri-apps/plugin-updater": "2.14.0",
     "dexie": "^4.0.10",
     "echarts": "^5.5.1",
     "fflate": "^0.8.3",
@@ -49,7 +51,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
-    "@tauri-apps/cli": "^2.11.5",
+    "@tauri-apps/cli": "2.12.4",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.20.4",
     "@vitejs/plugin-vue": "^5.2.1",

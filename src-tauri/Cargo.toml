@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "2.9.0"
+version = "2.10.0"
 description = "A Tauri App"
 authors = ["you"]
 license = ""
@@ -21,8 +21,12 @@ tauri-build = { version = "2.6.3", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
-tauri = { version = "2.11.6", features = [] }
+tauri = { version = "=2.12.5", features = [] }
 tauri-plugin-log = "2"
+# D-2 自动更新：Rust 插件（前端走 @tauri-apps/plugin-updater）
+tauri-plugin-updater = "2.14"
+# D-2 更新完成后 relaunch 需要 process 插件（前端 @tauri-apps/plugin-process）
+tauri-plugin-process = "2.4"
 candle-core = "0.11.0"
 candle-transformers = "0.11.0"
 # 与 candle-core 0.11 依赖的 tokenizers 同版本；直接依赖是为了用 `Tokenizer::from_gguf`

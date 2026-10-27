@@ -70,28 +70,34 @@
         </div>
       </header>
 
-      <!-- V2.3 轨道 D（方案 D-1）· 纯前端「检查更新」横幅：所有结果均类型化，绝不白屏 -->
+      <!-- D-2 自动更新横幅：真实插件进度 + D-1 兜底链接，所有结果类型化绝不白屏 -->
       <div
-        v-if="updateResult"
+        v-if="autoState"
         class="update-banner"
-        :class="updateResult.ok ? (updateResult.hasUpdate ? 'is-update' : 'is-latest') : 'is-error'"
+        :class="bannerClass"
       >
-        <span class="update-banner__icon" aria-hidden="true">
-          {{ updateResult.ok ? (updateResult.hasUpdate ? '🎉' : '✓') : '⚠️' }}
-        </span>
+        <span class="update-banner__icon" aria-hidden="true">{{ bannerIcon }}</span>
         <span class="update-banner__text">
-          <template v-if="updateResult.ok">
-            <template v-if="updateResult.hasUpdate">
-              发现新版本 v{{ updateResult.remoteVersion }}（当前 v{{ updateResult.currentVersion }}）。
-              <a v-if="updateResult.downloadUrl" :href="updateResult.downloadUrl" target="_blank" rel="noopener noreferrer">前往官网下载 →</a>
-              <span v-else>请前往官网下载最新版。</span>
-            </template>
-            <template v-else>
-              已是最新版本（v{{ updateResult.currentVersion }}）
-            </template>
+          <template v-if="autoState.phase === 'checking'">正在检查更新…</template>
+          <template v-else-if="autoState.phase === 'latest'">已是最新版本（v{{ autoState.version }}）</template>
+          <template v-else-if="autoState.phase === 'available'">发现新版本 v{{ autoState.version }}，准备下载…</template>
+          <template v-else-if="autoState.phase === 'downloading'">
+            正在下载 v{{ autoState.version }}：{{ progressText }}
+            <span class="update-progress">{{ progressPercent }}</span>
+            <span class="update-progress-bar"><i :style="{ width: progressPercent || '0%' }"></i></span>
           </template>
-          <template v-else>
-            检查更新失败：{{ updateResult.message }}
+          <template v-else-if="autoState.phase === 'installing'">正在安装 v{{ autoState.version }}…</template>
+          <template v-else-if="autoState.phase === 'done'">更新完成，即将重启…</template>
+          <template v-else-if="autoState.phase === 'error'">更新失败：{{ autoState.error }}</template>
+          <template v-else-if="autoState.phase === 'fallback' && autoState.fallback">
+            <template v-if="autoState.fallback.ok">
+              <template v-if="autoState.fallback.hasUpdate">
+                发现新版本 v{{ autoState.fallback.remoteVersion }}（当前 v{{ autoState.fallback.currentVersion }}）。
+                <a v-if="autoState.fallback.downloadUrl" :href="autoState.fallback.downloadUrl" target="_blank" rel="noopener noreferrer">前往官网下载 →</a>
+              </template>
+              <template v-else>已是最新版本（v{{ autoState.fallback.currentVersion }}）</template>
+            </template>
+            <template v-else>检查更新失败：{{ autoState.fallback.message }}</template>
           </template>
         </span>
         <button class="update-banner__close" type="button" aria-label="关闭提示" @click="dismissUpdate">✕</button>
@@ -164,7 +170,7 @@ import { useAchievementStore } from '@core/stores/achievement'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import { useUiStore } from '@core/stores/ui'
-import { checkUpdate, type UpdateCheckResult } from '@core/update/checkUpdate'
+import { runAutoUpdate, type AutoUpdateState } from '@core/update/autoUpdater'
 
 const route = useRoute()
 const router = useRouter()
@@ -329,26 +335,51 @@ const todayText = computed(() => {
   return `${d.getMonth() + 1}月${d.getDate()}日 · 星期${weekdays[d.getDay()]}`
 })
 
-// ---------- V2.3 轨道 D（方案 D-1）· 纯前端「检查更新」占位 ----------
-// 版本号来自 vite define 注入的 __APP_VERSION__（与 package.json 自动同步，
-// 顺带修掉此前硬编码 V1.9 的陈旧徽标）。checkUpdate 内部已捕获全部网络 /
-// 跨域 / 解析异常并返回类型化结果，绝不向调用方抛异常（避免白屏）。
+// ---------- D-2 自动更新 ----------
+// 版本号来自 vite define 注入的 __APP_VERSION__（与 package.json 自动同步）。
+// runAutoUpdate 优先走 Tauri 官方插件（check→下载→安装→重启），
+// 不在 Tauri 运行时时自动降级到 D-1 通知式（渲染「前往官网下载」链接）。
 const appVersion = __APP_VERSION__
 const checkingUpdate = ref(false)
-const updateResult = ref<UpdateCheckResult | null>(null)
+const autoState = ref<AutoUpdateState | null>(null)
 
 async function onCheckUpdate(): Promise<void> {
   checkingUpdate.value = true
-  try {
-    updateResult.value = await checkUpdate(appVersion)
-  } finally {
-    checkingUpdate.value = false
-  }
+  // runAutoUpdate 内部吞掉所有异常：成功/失败/降级都会通过 onState 回调回流
+  await runAutoUpdate(appVersion, (s) => {
+    autoState.value = s
+  })
+  checkingUpdate.value = false
 }
 
 function dismissUpdate(): void {
-  updateResult.value = null
+  autoState.value = null
 }
+
+// 横幅配色 / 图标
+const bannerClass = computed(() => {
+  const p = autoState.value?.phase
+  if (p === 'error' || p === 'fallback') return 'is-error'
+  if (p === 'latest' || p === 'done') return 'is-latest'
+  return 'is-update'
+})
+const bannerIcon = computed(() => {
+  const p = autoState.value?.phase
+  if (p === 'error') return '⚠️'
+  if (p === 'latest' || p === 'done') return '✓'
+  return '🎉'
+})
+const progressText = computed(() => {
+  const pr = autoState.value?.progress
+  if (!pr) return ''
+  const fmt = (n: number) => (n / 1024 / 1024).toFixed(1) + ' MB'
+  return pr.total ? `${fmt(pr.downloaded)} / ${fmt(pr.total)}` : fmt(pr.downloaded)
+})
+const progressPercent = computed(() => {
+  const pr = autoState.value?.progress
+  if (!pr || !pr.total) return ''
+  return Math.floor((pr.downloaded / pr.total) * 100) + '%'
+})
 
 </script>
 
@@ -552,6 +583,29 @@ function dismissUpdate(): void {
     transition: background-color 0.15s ease;
 
     &:hover { background: $bg-color-hover; }
+  }
+
+  .update-progress {
+    display: inline-block;
+    margin-left: 6px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .update-progress-bar {
+    display: block;
+    margin-top: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+
+    i {
+      display: block;
+      height: 100%;
+      border-radius: 3px;
+      background: currentColor;
+      transition: width 0.25s ease;
+    }
   }
 
   &.is-update {
