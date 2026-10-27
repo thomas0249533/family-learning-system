@@ -277,15 +277,26 @@ function selectUnit(ru: ResolvedUnit) {
   .unit-card-foot {
     display: flex;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
     font-size: 11px;
     color: $text-muted;
     margin-top: 2px;
 
+    /* V2.8 · 来源包软底胶囊（对标参考图3 标签系统）：
+       聚合页里「这单元来自哪本包」是扫视时的第一锚点，值得一个 chip */
     .unit-card-source {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      border-radius: 10px;
+      background: var(--badge-primary-bg);
       color: $primary-text;
-      font-weight: 600;
+      font-weight: 700;
+      line-height: 1.6;
     }
+
+    .unit-card-meta { white-space: nowrap; }
   }
 
   .unit-card-arrow {

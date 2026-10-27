@@ -23,16 +23,48 @@
           <div class="report-date">生成于 {{ formatDate(report.generatedAt) }}</div>
         </div>
 
-        <!-- 核心指标 -->
-        <div class="section">
-          <SectionTitle title="📊 核心指标" accent />
-          <div class="stat-grid">
-            <StatCard tone="primary" :value="report.stats.masteryRate + '%'" label="整体掌握率" />
-            <StatCard tone="success" :value="report.stats.mastered" label="已掌握" />
-            <StatCard tone="warning" :value="report.stats.learning" label="学习中" />
-            <StatCard tone="danger" :value="report.stats.needReview" label="需复习" />
-            <StatCard :value="report.stats.totalStudyMinutes" label="学习分钟" />
-            <StatCard :value="report.stats.continuousDays" label="连续天数" />
+        <!-- 核心指标 · 成绩英雄横幅（借鉴渐变大数字 + 信息胶囊层级） -->
+        <div class="report-hero">
+          <div class="report-hero__score">
+            <!-- V2.9 · 借鉴参考图3 的「80/100 圆环」：掌握率弧形进度，
+                 track/arc 都走 on-strong 半透明体系（横幅渐变底上的高对比白），不引第二色调 -->
+            <div class="report-hero__ring">
+              <svg class="ring-svg" viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="ring-track" cx="60" cy="60" r="52" />
+                <circle
+                  class="ring-arc"
+                  cx="60"
+                  cy="60"
+                  r="52"
+                  :stroke-dasharray="RING_CIRCUMFERENCE"
+                  :stroke-dashoffset="ringOffset"
+                />
+              </svg>
+              <div class="report-hero__value">
+                {{ report.stats.masteryRate }}<span class="report-hero__unit">%</span>
+              </div>
+            </div>
+            <div class="report-hero__grade">
+              {{ masteryGrade.emoji }} {{ masteryGrade.label }}
+            </div>
+            <div class="report-hero__total">
+              已掌握 {{ report.stats.mastered }} / {{ report.stats.totalKnowledgePoints }} 个知识点
+            </div>
+          </div>
+          <div class="report-hero__meta">
+            <div class="report-hero__pill"><span>📖</span>学习中 {{ report.stats.learning }}</div>
+            <div class="report-hero__pill"><span>🔁</span>需复习 {{ report.stats.needReview }}</div>
+            <div class="report-hero__pill"><span>⏱️</span>累计 {{ report.stats.totalStudyMinutes }} 分钟</div>
+            <div class="report-hero__pill"><span>🔥</span>连续 {{ report.stats.continuousDays }} 天</div>
+          </div>
+        </div>
+
+        <!-- V2.9 · 学习小贴士：模板化行动建议（借鉴参考图3「AI 智能点评」的零 AI 版） -->
+        <div v-if="report.studyTip" class="study-tip" role="note">
+          <span class="study-tip__icon" aria-hidden="true">💡</span>
+          <div class="study-tip__body">
+            <div class="study-tip__title">学习小贴士</div>
+            <p class="study-tip__text">{{ report.studyTip }}</p>
           </div>
         </div>
 
@@ -103,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
@@ -146,6 +178,24 @@ function formatDate(iso: string): string {
   return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
 }
 
+/** V2.9 · 掌握率圆环（借鉴参考图3）：弧长 = 周长 × 百分比，从 12 点方向顺时针填充。 */
+const RING_RADIUS = 52
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS
+const ringOffset = computed(() => {
+  const rate = Math.min(100, Math.max(0, report.value?.stats.masteryRate ?? 0))
+  return RING_CIRCUMFERENCE * (1 - rate / 100)
+})
+
+/** 掌握率 → 等级评语（英雄横幅展示）。 */
+const masteryGrade = computed(() => {
+  const r = report.value?.stats.masteryRate ?? 0
+  if (r >= 90) return { emoji: '🏆', label: '卓越' }
+  if (r >= 75) return { emoji: '🌟', label: '优秀' }
+  if (r >= 60) return { emoji: '💪', label: '良好' }
+  if (r >= 40) return { emoji: '🚀', label: '继续加油' }
+  return { emoji: '🌱', label: '稳步启程' }
+})
+
 function dayLabel(dateStr: string): string {
   const d = new Date(dateStr)
   const labels = ['日', '一', '二', '三', '四', '五', '六']
@@ -182,7 +232,7 @@ onMounted(loadData)
 .report-header {
   text-align: center;
   padding-bottom: 20px;
-  border-bottom: 2px solid $border-color;
+  border-bottom: 1px solid $border-light;
   margin-bottom: 24px;
 
   .report-title {
@@ -195,6 +245,172 @@ onMounted(loadData)
   .report-date { font-size: 12px; color: $text-sub; margin-top: 4px; }
 }
 
+/* ---- 成绩英雄横幅：渐变底 + 大数字 + 信息胶囊（对标参考报告首屏层级）---- */
+.report-hero {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $space-6;
+  background: $gradient-primary;
+  border-radius: $radius-lg;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(var(--primary-rgb), 0.25);
+
+  /* 右上大圆 + 左下小圆：克制的渐变装饰（与首页欢迎横幅同一语言） */
+  &::before {
+    content: '';
+    position: absolute;
+    right: -48px;
+    top: -48px;
+    width: 200px;
+    height: 200px;
+    background: rgba(var(--on-strong-rgb), 0.1);
+    border-radius: 50%;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    left: 32%;
+    bottom: -72px;
+    width: 150px;
+    height: 150px;
+    background: rgba(var(--on-strong-rgb), 0.08);
+    border-radius: 50%;
+  }
+
+  .report-hero__score { position: relative; z-index: 1; color: $on-strong; }
+
+  /* V2.9 · 掌握率圆环：数字嵌在环心，弧从 12 点方向顺时针填充。
+     track/arc 都走 on-strong 半透明白 —— 横幅渐变底上的单一高对比色，
+     不在状态色里再挑色（环本身已经是进度语义）。 */
+  .report-hero__ring {
+    position: relative;
+    width: 148px;
+    height: 148px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .ring-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+
+      circle {
+        fill: none;
+        stroke-width: 9;
+      }
+      .ring-track {
+        stroke: rgba(var(--on-strong-rgb), 0.2);
+      }
+      .ring-arc {
+        stroke: $on-strong;
+        stroke-linecap: round;
+        transition: stroke-dashoffset var(--duration-slower) var(--ease-standard);
+      }
+    }
+  }
+
+  .report-hero__value {
+    /* 48px：收进 148px 圆环内（§8.4 不变量 7 常量尺寸）。 */
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+
+    .report-hero__unit { font-size: 24px; font-weight: 700; margin-left: 2px; opacity: 0.9; }
+  }
+  .report-hero__grade {
+    display: inline-flex;
+    align-items: center;
+    margin-top: $space-3;
+    padding: 4px 14px;
+    border-radius: $radius-full;
+    background: rgba(var(--on-strong-rgb), 0.18);
+    font-size: $font-sm;
+    font-weight: 700;
+  }
+  .report-hero__total {
+    margin-top: $space-2;
+    font-size: $font-xs;
+    font-weight: 500;
+    color: rgba(var(--on-strong-rgb), 0.85);
+  }
+
+  .report-hero__meta {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(160px, auto));
+    gap: $space-3;
+  }
+  .report-hero__pill {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 10px 16px;
+    border-radius: $radius-md;
+    background: rgba(var(--on-strong-rgb), 0.14);
+    border: 1px solid rgba(var(--on-strong-rgb), 0.22);
+    color: $on-strong;
+    font-size: $font-sm;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 760px) {
+  .report-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+
+    .report-hero__meta { grid-template-columns: 1fr; width: 100%; }
+  }
+}
+
+/* V2.9 · 学习小贴士卡：主色软底、左侧图标圆块，与英雄横幅同一份呼吸感 */
+.study-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-4 $space-5;
+  margin-bottom: 24px;
+  background: $primary-light;
+  border-radius: $radius-lg;
+
+  .study-tip__icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: var(--card-bg);
+    border-radius: $radius-full;
+  }
+
+  .study-tip__title {
+    font-size: $font-sm;
+    font-weight: 800;
+    color: $primary-text;
+    margin-bottom: 2px;
+  }
+
+  .study-tip__text {
+    margin: 0;
+    font-size: $font-sm;
+    line-height: 1.7;
+    color: $text-main;
+  }
+}
+
 .section {
   margin-bottom: 24px;
 
@@ -202,12 +418,6 @@ onMounted(loadData)
   .section-title {
     margin-bottom: 12px;
   }
-}
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
 }
 
 .subject-list {
@@ -287,10 +497,15 @@ onMounted(loadData)
       .day-bar {
         width: 100%;
         background: $surface-2;
-        border-radius: 4px 4px 0 0;
+        border-radius: $radius-xs $radius-xs 2px 2px;
         transition: height 0.4s;
 
-        &.active { background: $gradient-warm; }
+        &.active {
+          background: $gradient-primary;
+          box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.28);
+
+          &:hover { filter: brightness(1.06); }
+        }
       }
     }
     .day-count {

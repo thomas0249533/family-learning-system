@@ -82,11 +82,14 @@
                     >📤</button>
                   </div>
                   <div class="pkg-card-meta">
-                    {{ subjectLabel(row.pkg.manifest.subject) }} · {{ row.pkg.manifest.grade }}年级 ·
-                    {{ row.pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ row.pkg.manifest.edition }}
-                    <template v-if="dailyMeta(row.pkg)">
-                      · {{ dailyMeta(row.pkg) }}
-                    </template>
+                    <span class="subject-chip" :class="subjectChipClass(row.pkg.manifest.subject)">
+                      {{ subjectLabel(row.pkg.manifest.subject) }}
+                    </span>
+                    <span class="meta-text">
+                      {{ row.pkg.manifest.grade }}年级 ·
+                      {{ row.pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ row.pkg.manifest.edition }}
+                    </span>
+                    <span v-if="dailyMeta(row.pkg)" class="meta-text">{{ dailyMeta(row.pkg) }}</span>
                   </div>
                 </div>
                 <div class="pkg-card-arrow">→</div>
@@ -136,8 +139,13 @@
                 >📤</button>
               </div>
               <div class="pkg-card-meta">
-                {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级 ·
-                {{ pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ pkg.manifest.edition }}
+                <span class="subject-chip" :class="subjectChipClass(pkg.manifest.subject)">
+                  {{ subjectLabel(pkg.manifest.subject) }}
+                </span>
+                <span class="meta-text">
+                  {{ pkg.manifest.grade }}年级 ·
+                  {{ pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ pkg.manifest.edition }}
+                </span>
               </div>
             </div>
             <div class="pkg-card-arrow">→</div>
@@ -185,10 +193,15 @@
                 >📤</button>
               </div>
               <div class="pkg-card-meta">
-                {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级
-                <template v-if="(pkg.manifest as any).sourceUnitIds?.length">
-                  · 基于 {{ (pkg.manifest as any).sourceUnitIds.length }} 个单元
-                </template>
+                <span class="subject-chip" :class="subjectChipClass(pkg.manifest.subject)">
+                  {{ subjectLabel(pkg.manifest.subject) }}
+                </span>
+                <span class="meta-text">
+                  {{ pkg.manifest.grade }}年级
+                  <template v-if="(pkg.manifest as any).sourceUnitIds?.length">
+                    · 基于 {{ (pkg.manifest as any).sourceUnitIds.length }} 个单元
+                  </template>
+                </span>
               </div>
             </div>
             <div class="pkg-card-arrow">→</div>
@@ -236,7 +249,10 @@
                 >📤</button>
               </div>
               <div class="pkg-card-meta">
-                {{ subjectLabel(pkg.manifest.subject) }} · {{ pkg.manifest.grade }}年级
+                <span class="subject-chip" :class="subjectChipClass(pkg.manifest.subject)">
+                  {{ subjectLabel(pkg.manifest.subject) }}
+                </span>
+                <span class="meta-text">{{ pkg.manifest.grade }}年级</span>
               </div>
             </div>
             <div class="pkg-card-arrow">→</div>
@@ -533,6 +549,21 @@ function subjectLabel(subject?: string): string {
     case 'chinese': return '语文'
     case 'english': return '英语'
     default: return subject ?? ''
+  }
+}
+
+/**
+ * V2.8 · 学科彩色 chip（对标参考图3 的标签系统）：
+ * 数学=主色（品牌松绿）、语文=暖橙、英语=绿，未知学科走中性。
+ * chip 组合沿用 pkg-card-tag 的软底胶囊配方（badge-*-bg + *-text），
+ * 均属 contrast-report.ts 的 MUST_PASS 白名单 —— 新增组合前先跑 a11y 门禁。
+ */
+function subjectChipClass(subject?: string): string {
+  switch (subject) {
+    case 'math': return 'chip-math'
+    case 'chinese': return 'chip-chinese'
+    case 'english': return 'chip-english'
+    default: return 'chip-neutral'
   }
 }
 </script>
@@ -875,9 +906,31 @@ function subjectLabel(subject?: string): string {
   }
 
   .pkg-card-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
     font-size: 12px;
     color: $text-sub;
     line-height: 1.5;
+
+    /* V2.8 · 学科彩色软底胶囊：扫视卡片列表时学科一眼可辨，
+       册别/版本降为普通文本，信息层级更清楚 */
+    .subject-chip {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 10px;
+      line-height: 1.6;
+
+      &.chip-math { background: var(--badge-primary-bg); color: $primary-text; }
+      &.chip-chinese { background: var(--badge-warning-bg); color: $warning-text; }
+      &.chip-english { background: var(--badge-success-bg); color: $success-text; }
+      &.chip-neutral { background: var(--badge-neutral-bg); color: $text-sub; }
+    }
+
+    .meta-text { white-space: nowrap; }
   }
 
   .pkg-card-arrow {

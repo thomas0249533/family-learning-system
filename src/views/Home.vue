@@ -21,7 +21,7 @@
 
     <!-- ========== 今日计划（今日复习 + 最需要复习 + 今日推荐，统一分区，§11.4） ========== -->
     <section class="section">
-      <SectionTitle title="今日计划" icon="📋" />
+      <SectionTitle title="今日计划" icon="📋" accent gradient />
 
       <!-- 今日复习 -->
       <div class="plan-block">
@@ -141,7 +141,7 @@
 
     <!-- ========== 学习进度 ========== -->
     <section class="section">
-      <SectionTitle title="学习进度" icon="📊" />
+      <SectionTitle title="学习进度" icon="📊" accent gradient />
 
       <div class="progress-card">
         <div class="chart-wrap">
@@ -505,22 +505,52 @@ onUnmounted(() => {
     font-weight: 800;
     margin: 0 0 6px;
     letter-spacing: 0.3px;
+    /* V2.9 · 欢迎语入场：低速淡入上浮（一次性，非循环；豆包方案「焦点柔显」轻量版） */
+    animation: welcome-rise 0.9s var(--ease-standard) both;
   }
   .welcome-sub {
     color: rgba(var(--on-strong-rgb), 0.92);
     font-size: 13px;
     margin: 0;
     font-weight: 500;
+    animation: welcome-rise 0.9s var(--ease-standard) 0.12s both;
   }
 
   .welcome-decor {
     position: relative;
     z-index: 1;
     .decor-emoji {
-      font-size: 52px;
+      /* 毛玻璃圆角徽章：装饰 emoji 不再裸排，与 streak-pill 同一玻璃质感 */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 88px;
+      height: 88px;
+      border-radius: $radius-lg;
+      background: rgba(var(--on-strong-rgb), 0.14);
+      border: 1px solid rgba(var(--on-strong-rgb), 0.22);
+      backdrop-filter: blur(4px);
+      font-size: 48px;
+      animation: decor-bob 4.5s $ease-standard infinite;
       /* check-hex-allow: 渐变横幅装饰 emoji 的纯黑投影，浅深同值、无主题价值 */
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-      display: inline-block;
+    }
+  }
+
+  @keyframes decor-bob {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-3deg);
+    }
+    50% {
+      transform: translateY(-6px) rotate(-3deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .decor-emoji {
+      animation: none;
+      transform: rotate(-3deg);
     }
   }
 
@@ -556,6 +586,46 @@ onUnmounted(() => {
     position: relative;
     z-index: 1;
     margin-top: 12px;
+
+    /* V2.9 · hover 流光扫过文字/按钮（豆包方案：hover 触发、离开重置，禁自动循环）。
+       一道柔和白色光泽从左滑过；reduced-motion 下整段禁用。 */
+    .n-button,
+    button {
+      position: relative;
+      overflow: hidden;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -80%;
+        width: 50%;
+        height: 100%;
+        pointer-events: none;
+        background: linear-gradient(
+          105deg,
+          transparent,
+          rgba(255, 255, 255, 0.45), /* check-hex-allow: 流光高光的纯白扫光，浅深同值、无主题价值 */
+          transparent
+        );
+        transform: skewX(-18deg);
+        transition: left 0.65s var(--ease-standard);
+      }
+
+      &:hover::after {
+        left: 130%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .n-button,
+      button {
+        &::after {
+          transition: none;
+          display: none;
+        }
+      }
+    }
   }
 }
 
@@ -655,6 +725,25 @@ onUnmounted(() => {
   }
   .weak-row:hover .weak-cta .weak-arrow {
     transform: none;
+  }
+}
+
+/* V2.9 · 欢迎语入场动画（低速淡入上浮，一次性非循环）+ reduced-motion 禁用 */
+@keyframes welcome-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-hi,
+  .welcome-sub {
+    animation: none;
   }
 }
 

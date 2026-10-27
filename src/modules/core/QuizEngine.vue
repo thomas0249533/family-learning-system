@@ -23,7 +23,7 @@
         <div class="quiz-header">
           <span class="progress-text">第 {{ currentIndex + 1 }} / {{ questions.length }} 题</span>
           <div class="header-right">
-            <span v-if="timeLimit > 0" class="timer" :class="{ 'timer-warning': remainingSeconds <= 60 }">
+            <span v-if="timeLimit > 0" class="timer" :class="timerTone">
               ⏱ {{ formatTime(remainingSeconds) }}
             </span>
             <span v-else class="timer">
@@ -55,19 +55,32 @@
         </div>
 
         <div v-if="examMode" class="question-nav">
-          <button
-            v-for="(q, i) in questions"
-            :key="q.id"
-            class="nav-dot"
-            :class="{
-              'active': i === currentIndex,
-              'answered': isAnswered(q.id),
-            }"
-            :title="`第 ${i + 1} 题`"
-            @click="jumpTo(i)"
-          >
-            {{ i + 1 }}
-          </button>
+          <!-- V2.8 · 对标参考图3 答题卡：图例 + 数字网格 + 已答进度微条 -->
+          <div class="nav-head">
+            <span class="nav-caption">答题卡</span>
+            <span class="nav-legend" aria-hidden="true">
+              <i class="legend-swatch swatch-done" />已答 {{ navAnsweredCount }}
+              <i class="legend-swatch swatch-todo" />未答 {{ questions.length - navAnsweredCount }}
+            </span>
+          </div>
+          <div class="nav-grid">
+            <button
+              v-for="(q, i) in questions"
+              :key="q.id"
+              class="nav-dot"
+              :class="{
+                'active': i === currentIndex,
+                'answered': isAnswered(q.id),
+              }"
+              :title="`第 ${i + 1} 题`"
+              @click="jumpTo(i)"
+            >
+              {{ i + 1 }}
+            </button>
+          </div>
+          <div class="nav-progress" role="presentation">
+            <div class="nav-progress-fill" :style="{ width: navProgressPercent + '%' }" />
+          </div>
         </div>
 
         <div v-if="currentQuestion.type === 'judge' && !judgeParts" class="judge-hint">请判断下列说法是否正确：</div>
@@ -612,6 +625,35 @@ const correctAnswerDisplay = computed(() => {
   }
 })
 
+/**
+ * V2.8 · 题号条「已答」计数：**与 .nav-dot 的 answered 态同口径**（`isAnswered`）。
+ * 不能用 `answeredSet` —— 那是练习模式逐题判分的下标集合，考试模式「下一题」
+ * 只暂存答案不判分，answeredSet 不更新，图例就会和绿色格子对不上（真踩过）。
+ */
+const navAnsweredCount = computed(() => {
+  let n = 0
+  for (const q of props.questions) if (isAnswered(q.id)) n++
+  return n
+})
+
+/** V2.8 · 答题卡已答进度（0–100），驱动题号条底部的微进度条 */
+const navProgressPercent = computed(() =>
+  props.questions.length === 0 ? 0 : Math.round((navAnsweredCount.value / props.questions.length) * 100)
+)
+
+/**
+ * V2.9 · 剩余时间紧迫色阶（借鉴参考图2 顶栏倒计时）：
+ * 按剩余**比例**分级而不是固定 60s —— 20 分钟卷剩 90 秒和 2 分钟卷剩 90 秒
+ * 的紧迫感完全不同。>20% 平静（主色），≤20% 预警（橙），≤10% 危急（红+脉冲）。
+ */
+const timerTone = computed(() => {
+  if (props.timeLimit <= 0) return ''
+  const remain = remainingSeconds.value / props.timeLimit
+  if (remain <= 0.1) return 'timer-critical'
+  if (remain <= 0.2) return 'timer-warning'
+  return ''
+})
+
 function isAnswered(qid: string): boolean {
   const ua = examAnswers.value[qid]
   if (ua === undefined || ua === null) return false
@@ -1154,6 +1196,10 @@ function handleExit() {
     background: $primary-light;
     border-radius: 6px;
     &.timer-warning {
+      color: $warning-text;
+      background: $warning-light;
+    }
+    &.timer-critical {
       color: $danger-text;
       background: $danger-light;
       animation: pulse 1s infinite;
@@ -1179,24 +1225,61 @@ function handleExit() {
 }
 
 .question-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 10px 0 12px;
+  padding: 12px 0 14px;
   margin-bottom: 8px;
   border-bottom: 1px dashed $border-light;
 
+  /* V2.8 · 对标参考图3：图例行 + 数字网格 + 进度微条 */
+  .nav-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .nav-caption {
+    font-size: 12px;
+    font-weight: 800;
+    color: $text-sub;
+    letter-spacing: 0.05em;
+  }
+  .nav-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: $text-muted;
+
+    .legend-swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      margin-left: 8px;
+      &.swatch-done { background: $primary-color; }
+      &.swatch-todo { background: $card-bg; border: 1.5px solid $border-color; }
+    }
+  }
+  .nav-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
   .nav-dot {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
     border: 1.5px solid $border-color;
     background: $card-bg;
     color: $text-sub;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
+    font-family: inherit;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: transform var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard),
+      background var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1204,21 +1287,45 @@ function handleExit() {
     &:hover {
       border-color: $primary-color;
       color: $primary-text;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.18);
     }
     &.answered {
       background: $primary-light;
       border-color: $primary-color;
       color: $primary-text;
     }
+    /* 当前题：渐变实底 + 外发光环（对标参考图3 的高亮格子） */
     &.active {
-      background: $primary-color;
-      border-color: $primary-color;
+      background: $gradient-primary;
+      border-color: transparent;
       color: var(--text-on-primary);
-      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.35);
-      transform: scale(1.08);
+      box-shadow:
+        0 0 0 3px rgba(var(--primary-rgb), 0.22),
+        0 4px 12px rgba(var(--primary-rgb), 0.35);
+      transform: scale(1.1);
     }
     &.active.answered {
-      background: $primary-hover;
+      background: $gradient-primary;
+    }
+    &:focus-visible {
+      outline: var(--focus-ring-w) solid var(--btn-focus-ring);
+      outline-offset: var(--focus-ring-offset);
+    }
+  }
+
+  .nav-progress {
+    height: 4px;
+    border-radius: 2px;
+    background: $border-light;
+    margin-top: 12px;
+    overflow: hidden;
+
+    .nav-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: $gradient-primary;
+      transition: width var(--duration-slow) var(--ease-standard);
     }
   }
 }
@@ -1565,8 +1672,12 @@ body.dark-mode {
       color: $primary-text;
     }
     &.active {
-      background: $primary-color;
+      background: $gradient-primary;
+      border-color: transparent;
       color: var(--text-on-primary);
+      box-shadow:
+        0 0 0 3px rgba(var(--primary-rgb), 0.3),
+        0 4px 12px rgba(var(--primary-rgb), 0.4);
     }
   }
 }

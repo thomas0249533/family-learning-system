@@ -318,22 +318,29 @@ function selectTopic(topic: any) {
   .topic-card-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
     font-size: 11px;
     color: $text-muted;
     flex: 1;
     min-width: 0;
 
+    /* V2.8 · 元信息统一软底胶囊语言（对标参考图3 的标签系统）：
+       知识点数 / 题数 / 难度都是同一层级的元数据，视觉上不该有三种长相。
+       底色 --badge-neutral-bg（= bg-color-hover）与 text-sub 同属 MUST_PASS。 */
     .meta-item {
       white-space: nowrap;
-    }
-
-    .meta-chip {
-      padding: 1px 8px;
+      padding: 2px 8px;
       border-radius: 10px;
       background: $bg-color-hover;
       color: $text-sub;
       font-weight: 600;
+    }
+
+    /* 难度 chip：与元信息同形，用主色软底示意「这是筛选要素」。
+       难度值可能是「基础 / 提高」混合串，不做按档着色（半色卡反而添噪音）。 */
+    .meta-chip {
+      background: $primary-light;
+      color: $primary-text;
     }
   }
 

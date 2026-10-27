@@ -73,13 +73,20 @@ function onKeyActivate(e: KeyboardEvent) {
 .stat-card {
   display: flex;
   gap: var(--space-3);
-  padding: var(--space-4);
-  border: 1px solid var(--border-color);
+  padding: var(--space-5);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   background: var(--card-bg);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--duration-base) var(--ease-standard),
-    transform var(--duration-base) var(--ease-standard);
+    transform var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard);
+}
+
+/* 非交互卡也给一层轻微的 hover 呼吸（无位移，不抢交互卡戏） */
+.stat-card:hover {
+  border-color: var(--border-color);
+  box-shadow: var(--shadow);
 }
 
 /* 竖向（默认）：居中排布 —— 复刻 Parent `.ov-card` / Report `.stat-box` 的既有观感 */
@@ -99,9 +106,19 @@ function onKeyActivate(e: KeyboardEvent) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-3xl);
+  /* 44px 软底圆角块：图标不再裸排，呼应参考稿的「图标 chip」质感 */
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--badge-neutral-bg);
+  font-size: var(--font-2xl);
   line-height: 1;
 }
+.stat-card--primary .stat-card__icon { background: var(--badge-primary-bg); }
+.stat-card--success .stat-card__icon { background: var(--badge-success-bg); }
+.stat-card--warning .stat-card__icon { background: var(--badge-warning-bg); }
+.stat-card--danger .stat-card__icon { background: var(--badge-danger-bg); }
 
 .stat-card__body {
   display: flex;
@@ -115,11 +132,11 @@ function onKeyActivate(e: KeyboardEvent) {
 }
 
 .stat-card__value {
-  /* 26px：复刻 Parent `.ov-value` / Report `.stat-value` 的既有字号。
-     字号阶梯无 26px 取值，故按 §8.4 不变量 7「常量尺寸」保留精确值。 */
-  font-size: 26px;
+  /* 30px：较既有 26px 提升一档数字层级（§8.4 不变量 7 常量尺寸）。 */
+  font-size: 30px;
   font-weight: 800;
   line-height: 1.15;
+  letter-spacing: -0.01em;
   color: var(--stat-value-fg);
 }
 

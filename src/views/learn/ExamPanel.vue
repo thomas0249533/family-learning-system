@@ -91,6 +91,30 @@
         <div class="result-time">用时 {{ formatDuration(sessionElapsed) }}</div>
       </div>
 
+      <!-- V2.9 · 答题卡回放（借鉴参考图3 左栏答题卡）：对错双色总览，点击跳解析 -->
+      <div v-if="examDetailItems.length > 0" class="replay-card">
+        <div class="replay-head">
+          <span class="replay-title">📇 本卷答题卡</span>
+          <span class="replay-legend" aria-hidden="true">
+            <i class="replay-swatch swatch-right" />答对 {{ examCorrectItems.length }}
+            <i class="replay-swatch swatch-wrong" />答错 {{ examWrongItems.length }}
+          </span>
+        </div>
+        <div class="replay-grid">
+          <button
+            v-for="(item, i) in examDetailItems"
+            :key="item.questionId"
+            class="replay-dot"
+            :class="item.isCorrect ? 'is-right' : 'is-wrong'"
+            :title="`第 ${i + 1} 题：${item.isCorrect ? '答对' : '答错'}`"
+            @click="scrollToDetail(item.questionId)"
+          >
+            {{ i + 1 }}
+          </button>
+        </div>
+        <p class="replay-hint">点击题号可跳到对应解析</p>
+      </div>
+
       <!-- ✅ 错题清单（默认展开） -->
       <div v-if="examWrongItems.length > 0" class="result-section">
         <div class="section-head">
@@ -100,7 +124,7 @@
           </AppButton>
         </div>
         <div v-show="showWrong" class="detail-list">
-          <div v-for="item in examWrongItems" :key="item.questionId" class="detail-card wrong">
+          <div v-for="item in examWrongItems" :key="item.questionId" :id="`detail-${item.questionId}`" class="detail-card wrong">
             <div class="detail-head">
               <span class="detail-badge wrong-badge">错</span>
               <QuestionText class="detail-question" :text="item.question" />
@@ -152,7 +176,7 @@
           </AppButton>
         </div>
         <div v-show="showCorrect" class="detail-list">
-          <div v-for="item in examCorrectItems" :key="item.questionId" class="detail-card correct">
+          <div v-for="item in examCorrectItems" :key="item.questionId" :id="`detail-${item.questionId}`" class="detail-card correct">
             <div class="detail-head">
               <span class="detail-badge correct-badge">对</span>
               <QuestionText class="detail-question" :text="item.question" />
@@ -284,6 +308,13 @@ async function ownerPackageOf(kpId: string): Promise<string> {
   if (!kpId) return props.pkg.packageId
   const index = await ensureOwnerIndex()
   return resolveOwnerPackageId(kpId, props.pkg.packageId, index) ?? props.pkg.packageId
+}
+
+/** V2.9 · 答题卡回放：跳到对应解析卡（getElementById 原生支持含 :: 的 id，无需转义） */
+function scrollToDetail(questionId: string): void {
+  document
+    .getElementById(`detail-${questionId}`)
+    ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
 function rateColor(rate: number): string {
@@ -595,6 +626,87 @@ function backToIntro() {
   }
   .result-rate { font-size: 13px; color: $text-sub; margin-top: 8px; }
   .result-time { font-size: 12px; color: $text-muted; margin-top: 4px; }
+}
+
+/* V2.9 · 答题卡回放：对错双色数字格（与 QuizEngine 题号条同一份造型语言） */
+.replay-card {
+  margin-top: 24px;
+  padding: $space-4;
+  background: $bg-color-hover;
+  border-radius: $radius-lg;
+  text-align: left;
+
+  .replay-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $space-3;
+
+    .replay-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: $text-main;
+    }
+
+    .replay-legend {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-sub;
+
+      .replay-swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        margin-left: 8px;
+        &.swatch-right { background: $success-color; }
+        &.swatch-wrong { background: $danger-color; }
+      }
+    }
+  }
+
+  .replay-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .replay-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: none;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard);
+
+    &.is-right { background: var(--badge-success-bg); color: $success-text; }
+    &.is-wrong { background: var(--badge-danger-bg); color: $danger-text; }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(var(--on-strong-rgb), 0.15);
+    }
+    &:focus-visible {
+      outline: var(--focus-ring-w) solid var(--btn-focus-ring);
+      outline-offset: var(--focus-ring-offset);
+    }
+  }
+
+  .replay-hint {
+    margin: $space-3 0 0;
+    font-size: 12px;
+    color: $text-muted;
+  }
 }
 
 /* ✅ 结果详情 */

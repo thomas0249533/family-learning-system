@@ -94,4 +94,13 @@ withDefaults(defineProps<PageHeaderProps>(), {
   font-size: var(--font-sm);
   color: var(--text-sub);
 }
+
+/* V2.9 · 深色模式标题柔浮雕（豆包「高级文字效果」场景表：深色所有标题→柔浮雕）。
+   多层浅影模拟纸张印刷浮起，不是厚重 3D；浅色模式不动。 */
+body.dark-mode .page-header__text {
+  /* check-hex-allow: 深色柔浮雕的纯黑下影，浅深同值、无主题价值 */
+  text-shadow:
+    0 -1px 0 rgba(var(--on-strong-rgb), 0.07),
+    0 2px 8px rgba(0, 0, 0, 0.38);
+}
 </style>

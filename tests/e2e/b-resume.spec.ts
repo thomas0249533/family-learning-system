@@ -116,7 +116,9 @@ async function installDeterminismHooks(page: Page, mode: 'light' | 'dark'): Prom
 
 /** `.ach-head-count` 可见 = Dexie 已把 schema 建好（照抄 g1 / g3） */
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  // 首页是 AchievementHall（.hall-head-count），/achievements 页是 AchievementSection
+  // （.ach-head-count）—— 二者其一可见即代表 app 挂载 + Dexie schema 就绪。
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {

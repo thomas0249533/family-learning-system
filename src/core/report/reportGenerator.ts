@@ -36,6 +36,8 @@ export interface ReportData {
     dueThisWeek: number
   }
   recent7Days: Array<{ date: string; count: number }>
+  /** V2.9 · 学习小贴士：模板化行动建议（见 buildStudyTip），零 AI 依赖 */
+  studyTip: string
 }
 
 /**
@@ -153,6 +155,16 @@ export async function generateReportData(): Promise<ReportData> {
     },
     reviewStats: { dueToday, dueThisWeek },
     recent7Days,
+    studyTip: buildStudyTip({
+      totalKnowledgePoints,
+      mastered,
+      learning,
+      needReview,
+      notStarted,
+      masteryRate,
+      continuousDays,
+      unmasteredMistakes: pendingMistakes.length,
+    }),
   }
 }
 
@@ -230,4 +242,59 @@ export function computeRecent7Days(
     result.push({ date: dateStr, count })
   }
   return result
+}
+
+/**
+ * V2.9 · 学习小贴士（借鉴参考图3「AI 智能点评」的零 AI 版）：
+ * 一条**模板化行动建议**，纯函数、无网络、无 LLM —— 报告页的「下一步做什么」。
+ *
+ * 优先级（一次只给一条最重要的建议，堆满建议等于没有建议）：
+ *   1. 还没有任何知识点 → 引导开始
+ *   2. 有到期复习 → 趁记忆冷却前巩固（FSRS 的核心价值主张）
+ *   3. 有未攻克错题 → 清错题
+ *   4. 掌握率 ≥ 90% → 保持性鼓励
+ *   5. 掌握率 ≥ 60% → 主攻「学习中」
+ *   6. 兜底 → 「学习中」或「未开始」的起步建议
+ */
+export function buildStudyTip(input: {
+  totalKnowledgePoints: number
+  mastered: number
+  learning: number
+  needReview: number
+  notStarted: number
+  masteryRate: number
+  continuousDays: number
+  unmasteredMistakes: number
+}): string {
+  const {
+    totalKnowledgePoints,
+    learning,
+    needReview,
+    masteryRate,
+    continuousDays,
+    unmasteredMistakes,
+  } = input
+
+  if (totalKnowledgePoints === 0) {
+    return '还没有学习记录，从学习中心挑一个包开始今天的第一步吧！'
+  }
+  if (needReview > 0) {
+    return `有 ${needReview} 个知识点到了复习时间，趁记忆冷却前巩固一遍最有效。`
+  }
+  if (unmasteredMistakes > 0) {
+    return `错题本里还有 ${unmasteredMistakes} 题待攻克，建议先从最早加入的错题清起。`
+  }
+  if (masteryRate >= 90) {
+    return `掌握率已达 ${masteryRate}%，节奏保持得很好——稳住每日复习，向满分冲刺！`
+  }
+  if (masteryRate >= 60) {
+    return `整体掌握率 ${masteryRate}%，稳扎稳打；优先攻克还在「学习中」的 ${learning} 个知识点。`
+  }
+  if (learning > 0) {
+    return `有 ${learning} 个知识点正在学习中，每天进步一点点，积少成多。`
+  }
+  if (continuousDays >= 3) {
+    return `已连续学习 ${continuousDays} 天，别停下——新知识点正在等你解锁。`
+  }
+  return '万事开头难，从今天的第一道题开始吧！'
 }

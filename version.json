@@ -1,5 +1,5 @@
 {
-  "version": "2.8.2",
+  "version": "2.9.0",
   "downloadUrl": "https://github.com/thomas0249533/family-learning-system/releases/latest",
-    "notes": "V2.8.2 · 检查更新多镜像容错（raw / jsdelivr / gitmirror 任一可达即用）+ 每日一练单元列表已完成状态颜色标记"
+  "notes": "V2.9.0 · UI 审美七轮迭代：①报告页渐变英雄横幅+大字号掌握率+等级胶囊+信息胶囊 ②首页毛玻璃徽章+低速入场 ③答题卡三层导航(图例/数字格/进度微条) ④学科彩色软底胶囊 ⑤掌握率渐变圆环+交卷答题卡回放跳转+色阶+学习小贴士 ⑥技能树多学科切换+自适应高度 ⑦高级文字效果(渐变标题/深色柔浮雕/按钮流光/低速入场，全程遵守 reduced-motion 与正文零动画禁区)"
 }
