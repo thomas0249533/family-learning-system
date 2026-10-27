@@ -53,7 +53,7 @@ async function resetDb(page: Page): Promise<void> {
 
 async function seedAll(page: Page, seed: ReturnType<typeof buildMultiSeed>): Promise<void> {
   await page.evaluate(
-    async ({ dbName, packages, progress, profileId, createdAt }) => {
+    async ({ dbName, packages, progress, createdAt }) => {
       const db = await new Promise<IDBDatabase>((resolve, reject) => {
         const req = indexedDB.open(dbName)
         req.onsuccess = () => resolve(req.result)
