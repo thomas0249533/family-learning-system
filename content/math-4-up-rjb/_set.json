@@ -75,8 +75,12 @@
       "type": "special",
       "visible": true,
       "examMode": true,
-      "sourceUnitIds": ["unit-math-4-up-rjb-p4::u5"],
-      "dependencies": ["unit-math-4-up-rjb-p4"]
+      "sourceUnitIds": [
+        "unit-math-4-up-rjb-p4::u5"
+      ],
+      "dependencies": [
+        "unit-math-4-up-rjb-p4"
+      ]
     },
     {
       "file": "special-math-4-up-u3.json",
@@ -84,8 +88,12 @@
       "type": "special",
       "visible": true,
       "examMode": true,
-      "sourceUnitIds": ["unit-math-4-up-rjb-p3::u3"],
-      "dependencies": ["unit-math-4-up-rjb-p3"]
+      "sourceUnitIds": [
+        "unit-math-4-up-rjb-p3::u3"
+      ],
+      "dependencies": [
+        "unit-math-4-up-rjb-p3"
+      ]
     },
     {
       "file": "special-math-4-up-jiajiancheng.json",
@@ -93,8 +101,12 @@
       "type": "special",
       "visible": true,
       "examMode": true,
-      "sourceUnitIds": ["unit-math-4-up-rjb-p5::u8"],
-      "dependencies": ["unit-math-4-up-rjb-p5"]
+      "sourceUnitIds": [
+        "unit-math-4-up-rjb-p5::u8"
+      ],
+      "dependencies": [
+        "unit-math-4-up-rjb-p5"
+      ]
     },
     {
       "file": "sprint-math-4-up-final.json",
@@ -114,6 +126,14 @@
         "unit-math-4-up-rjb-p4",
         "unit-math-4-up-rjb-p5"
       ]
+    },
+    {
+      "file": "special-math-4-up-kaodian.json",
+      "packageId": "special-math-4-up-kaodian",
+      "type": "special",
+      "visible": true,
+      "examMode": true,
+      "dependencies": []
     }
   ],
   "importOrder": [
@@ -128,16 +148,25 @@
     "special-math-4-up-yunsuanlv",
     "special-math-4-up-u3",
     "special-math-4-up-jiajiancheng",
-    "sprint-math-4-up-final"
+    "sprint-math-4-up-final",
+    "special-math-4-up-kaodian"
   ],
   "overrides": {
     "special-math-4-up-yunsuanlv": {
-      "sourceUnitIds": ["unit-math-4-up-rjb-p4::u5"],
-      "dependencies": ["unit-math-4-up-rjb-p4"]
+      "sourceUnitIds": [
+        "unit-math-4-up-rjb-p4::u5"
+      ],
+      "dependencies": [
+        "unit-math-4-up-rjb-p4"
+      ]
     },
     "special-math-4-up-jiajiancheng": {
-      "sourceUnitIds": ["unit-math-4-up-rjb-p5::u8"],
-      "dependencies": ["unit-math-4-up-rjb-p5"]
+      "sourceUnitIds": [
+        "unit-math-4-up-rjb-p5::u8"
+      ],
+      "dependencies": [
+        "unit-math-4-up-rjb-p5"
+      ]
     },
     "sprint-math-4-up-final": {
       "sourceUnitIds": [

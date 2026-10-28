@@ -1,0 +1,1476 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "special-math-4-up-kaodian",
+    "type": "special",
+    "packageType": "special",
+    "isInternal": false,
+    "examMode": true,
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "四上数学 · 43 个必背考点填空",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-kd1",
+      "type": "concept",
+      "title": "大数的认识（考点 1-7）",
+      "content": "自然数、计数单位与数位、十进制计数法、计算器与算盘。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-kd2",
+      "type": "concept",
+      "title": "公顷与平方千米（考点 8-10）",
+      "content": "土地面积单位、平方米/公顷/平方千米之间的进率。",
+      "prerequisites": [
+        "kp-kd1"
+      ]
+    },
+    {
+      "id": "kp-kd3",
+      "type": "concept",
+      "title": "角的度量（考点 11-18）",
+      "content": "线段射线直线的端点、角的组成、量角器、平角周角。",
+      "prerequisites": [
+        "kp-kd2"
+      ]
+    },
+    {
+      "id": "kp-kd4",
+      "type": "concept",
+      "title": "三位数乘两位数（考点 19-25）",
+      "content": "积的位数、因数末尾有 0、单价数量总价、速度时间路程、积的变化规律。",
+      "prerequisites": [
+        "kp-kd3"
+      ]
+    },
+    {
+      "id": "kp-kd5",
+      "type": "concept",
+      "title": "平行四边形和梯形（考点 26-36）",
+      "content": "平行与垂直、平行四边形与梯形的特征、四边形内角和、图形的拼组。",
+      "prerequisites": [
+        "kp-kd4"
+      ]
+    },
+    {
+      "id": "kp-kd6",
+      "type": "concept",
+      "title": "除数是两位数的除法（考点 37-41）",
+      "content": "商的位数、试商与调商、商不变的规律。",
+      "prerequisites": [
+        "kp-kd5"
+      ]
+    },
+    {
+      "id": "kp-kd7",
+      "type": "concept",
+      "title": "条形统计图与优化（考点 42-43）",
+      "content": "条形统计图的特点、烙饼问题的时间计算。",
+      "prerequisites": [
+        "kp-kd6"
+      ]
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "kd4-u1",
+      "name": "第 1 板块",
+      "title": "大数的认识",
+      "desc": "考点 1-7（13 题）",
+      "topics": [
+        {
+          "id": "kd4-t1",
+          "title": "大数的认识",
+          "desc": "13 题 · 填出括号里的内容",
+          "board": "必背考点",
+          "knowledgePointIds": [
+            "kp-kd1"
+          ],
+          "modules": [
+            {
+              "id": "kd4-m1",
+              "type": "math.concept",
+              "title": "大数的认识",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "kd4-01-1",
+              "type": "blank",
+              "question": "自然数用来表示（　），一个物体也没有，用0表示，0 也是自然数，所有自然数都是整数。",
+              "answer": "物体的个数",
+              "explanation": "考点 1：自然数用来表示（物体的个数），一个物体也没有，用( 0 ）表示，0 也是自然数，所有自然数都是整数。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 1
+              }
+            },
+            {
+              "id": "kd4-01-2",
+              "type": "blank",
+              "question": "自然数用来表示物体的个数，一个物体也没有，用（　）表示，0 也是自然数，所有自然数都是整数。",
+              "answer": "0",
+              "explanation": "考点 1：自然数用来表示（物体的个数），一个物体也没有，用( 0 ）表示，0 也是自然数，所有自然数都是整数。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 1
+              }
+            },
+            {
+              "id": "kd4-02-1",
+              "type": "blank",
+              "question": "最小的自然数是（　），没有最大的自然数。自然数的个数是无限的。",
+              "answer": "0",
+              "explanation": "考点 2：最小的自然数是( 0 )，（没有）最大的自然数。自然数的个数是（无限）的。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 2
+              }
+            },
+            {
+              "id": "kd4-02-2",
+              "type": "blank",
+              "question": "最小的自然数是0，（　）最大的自然数。自然数的个数是无限的。",
+              "answer": "没有",
+              "explanation": "考点 2：最小的自然数是( 0 )，（没有）最大的自然数。自然数的个数是（无限）的。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 2
+              }
+            },
+            {
+              "id": "kd4-02-3",
+              "type": "blank",
+              "question": "最小的自然数是0，没有最大的自然数。自然数的个数是（　）的。",
+              "answer": "无限",
+              "explanation": "考点 2：最小的自然数是( 0 )，（没有）最大的自然数。自然数的个数是（无限）的。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 2
+              }
+            },
+            {
+              "id": "kd4-03-1",
+              "type": "blank",
+              "question": "像 个、十、百、千、万……亿 等，都是（　）。",
+              "answer": "计数单位",
+              "explanation": "考点 3：像 个、十、百、千、万……亿 等，都是（计数单位）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 3
+              }
+            },
+            {
+              "id": "kd4-04-1",
+              "type": "blank",
+              "question": "像个位、十位、百位、千位、万位……亿位等，都是（　）。",
+              "answer": "数位",
+              "explanation": "考点 4：像个位、十位、百位、千位、万位……亿位等，都是(数位）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 4
+              }
+            },
+            {
+              "id": "kd4-05-1",
+              "type": "blank",
+              "question": "每（　）两个计数单位之间的进率都是十的计数方法，叫做十进制计数法。",
+              "answer": "相邻",
+              "explanation": "考点 5：每（相邻）两个计数单位之间的进率都是十的计数方法，叫做（十进制计数法）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 5
+              }
+            },
+            {
+              "id": "kd4-05-2",
+              "type": "blank",
+              "question": "每相邻两个计数单位之间的进率都是十的计数方法，叫做（　）。",
+              "answer": "十进制计数法",
+              "explanation": "考点 5：每（相邻）两个计数单位之间的进率都是十的计数方法，叫做（十进制计数法）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 5
+              }
+            },
+            {
+              "id": "kd4-06-1",
+              "type": "blank",
+              "question": "计算器上的ON/C 是（　），AC 是清除键。",
+              "answer": "开关及清除屏幕键",
+              "explanation": "考点 6：计算器上的ON/C 是（开关及清除屏幕键），AC 是（清除键）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 6
+              }
+            },
+            {
+              "id": "kd4-06-2",
+              "type": "blank",
+              "question": "计算器上的ON/C 是开关及清除屏幕键，AC 是（　）。",
+              "answer": "清除键",
+              "explanation": "考点 6：计算器上的ON/C 是（开关及清除屏幕键），AC 是（清除键）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 6
+              }
+            },
+            {
+              "id": "kd4-07-1",
+              "type": "blank",
+              "question": "算盘上一颗上珠表示（　），一颗下珠表示1。",
+              "answer": "5",
+              "explanation": "考点 7：算盘上一颗上珠表示（5 ），一颗下珠表示( 1 ）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 7
+              }
+            },
+            {
+              "id": "kd4-07-2",
+              "type": "blank",
+              "question": "算盘上一颗上珠表示5，一颗下珠表示（　）。",
+              "answer": "1",
+              "explanation": "考点 7：算盘上一颗上珠表示（5 ），一颗下珠表示( 1 ）。",
+              "knowledgePointIds": [
+                "kp-kd1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 7
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kd4-u2",
+      "name": "第 2 板块",
+      "title": "公顷与平方千米",
+      "desc": "考点 8-10（8 题）",
+      "topics": [
+        {
+          "id": "kd4-t2",
+          "title": "公顷与平方千米",
+          "desc": "8 题 · 填出括号里的内容",
+          "board": "必背考点",
+          "knowledgePointIds": [
+            "kp-kd2"
+          ],
+          "modules": [
+            {
+              "id": "kd4-m2",
+              "type": "math.concept",
+              "title": "公顷与平方千米",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "kd4-08-1",
+              "type": "blank",
+              "question": "测量土地的面积，通常用（　）或者平方千米作单位。",
+              "answer": "公顷",
+              "explanation": "考点 8：测量土地的面积，通常用（公顷）或者（平方千米）作单位。",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 8
+              }
+            },
+            {
+              "id": "kd4-08-2",
+              "type": "blank",
+              "question": "测量土地的面积，通常用公顷或者（　）作单位。",
+              "answer": "平方千米",
+              "explanation": "考点 8：测量土地的面积，通常用（公顷）或者（平方千米）作单位。",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 8
+              }
+            },
+            {
+              "id": "kd4-09-1",
+              "type": "blank",
+              "question": "边长是100 米的正方形面积是（　）。边长是1 千米的正方形面积是1 平方千米。",
+              "answer": "1 公顷",
+              "explanation": "考点 9：边长是100 米的正方形面积是（1 公顷）。边长是1 千米的正方形面积是（1 平方千米）。",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 9
+              }
+            },
+            {
+              "id": "kd4-09-2",
+              "type": "blank",
+              "question": "边长是100 米的正方形面积是1 公顷。边长是1 千米的正方形面积是（　）。",
+              "answer": "1 平方千米",
+              "explanation": "考点 9：边长是100 米的正方形面积是（1 公顷）。边长是1 千米的正方形面积是（1 平方千米）。",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 9
+              }
+            },
+            {
+              "id": "kd4-10-1",
+              "type": "blank",
+              "question": "1 平方千米=（　）；1 公顷= 10000 平方米；1 平方千米= 1000000 平方米；1 平方米=100平方分米",
+              "answer": "100 公顷",
+              "explanation": "考点 10：1 平方千米=（100 公顷）；1 公顷= （10000 平方米）；1 平方千米= （1000000 平方米）；1 平方米=（100）平方分米",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 10
+              }
+            },
+            {
+              "id": "kd4-10-2",
+              "type": "blank",
+              "question": "1 平方千米=100 公顷；1 公顷= （　）；1 平方千米= 1000000 平方米；1 平方米=100平方分米",
+              "answer": "10000 平方米",
+              "explanation": "考点 10：1 平方千米=（100 公顷）；1 公顷= （10000 平方米）；1 平方千米= （1000000 平方米）；1 平方米=（100）平方分米",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 10
+              }
+            },
+            {
+              "id": "kd4-10-3",
+              "type": "blank",
+              "question": "1 平方千米=100 公顷；1 公顷= 10000 平方米；1 平方千米= （　）；1 平方米=100平方分米",
+              "answer": "1000000 平方米",
+              "explanation": "考点 10：1 平方千米=（100 公顷）；1 公顷= （10000 平方米）；1 平方千米= （1000000 平方米）；1 平方米=（100）平方分米",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 10
+              }
+            },
+            {
+              "id": "kd4-10-4",
+              "type": "blank",
+              "question": "1 平方千米=100 公顷；1 公顷= 10000 平方米；1 平方千米= 1000000 平方米；1 平方米=（　）平方分米",
+              "answer": "100",
+              "explanation": "考点 10：1 平方千米=（100 公顷）；1 公顷= （10000 平方米）；1 平方千米= （1000000 平方米）；1 平方米=（100）平方分米",
+              "knowledgePointIds": [
+                "kp-kd2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 10
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kd4-u3",
+      "name": "第 3 板块",
+      "title": "角的度量",
+      "desc": "考点 11-18（22 题）",
+      "topics": [
+        {
+          "id": "kd4-t3",
+          "title": "角的度量",
+          "desc": "22 题 · 填出括号里的内容",
+          "board": "必背考点",
+          "knowledgePointIds": [
+            "kp-kd3"
+          ],
+          "modules": [
+            {
+              "id": "kd4-m3",
+              "type": "math.concept",
+              "title": "角的度量",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "kd4-11-1",
+              "type": "blank",
+              "question": "线段有（　）个端点，射线有1个端点，直线没有端点，线段可以量长度。",
+              "answer": "2",
+              "explanation": "考点 11：线段有（2 ）个端点，射线有（1 ）个端点，直线（没有）端点，（线段）可以量长度。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 11
+              }
+            },
+            {
+              "id": "kd4-11-2",
+              "type": "blank",
+              "question": "线段有2个端点，射线有（　）个端点，直线没有端点，线段可以量长度。",
+              "answer": "1",
+              "explanation": "考点 11：线段有（2 ）个端点，射线有（1 ）个端点，直线（没有）端点，（线段）可以量长度。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 11
+              }
+            },
+            {
+              "id": "kd4-11-3",
+              "type": "blank",
+              "question": "线段有2个端点，射线有1个端点，直线（　）端点，线段可以量长度。",
+              "answer": "没有",
+              "explanation": "考点 11：线段有（2 ）个端点，射线有（1 ）个端点，直线（没有）端点，（线段）可以量长度。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 11
+              }
+            },
+            {
+              "id": "kd4-11-4",
+              "type": "blank",
+              "question": "线段有2个端点，射线有1个端点，直线没有端点，（　）可以量长度。",
+              "answer": "线段",
+              "explanation": "考点 11：线段有（2 ）个端点，射线有（1 ）个端点，直线（没有）端点，（线段）可以量长度。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 11
+              }
+            },
+            {
+              "id": "kd4-12-1",
+              "type": "blank",
+              "question": "从一点引出两条（　）所组成的图形叫做角。这个点叫做角的顶点，这两条射线叫做角的边。",
+              "answer": "射线",
+              "explanation": "考点 12：从一点引出两条（射线）所组成的图形叫做角。这个点叫做角的（顶点），这两条（射线）叫做角的边。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 12
+              }
+            },
+            {
+              "id": "kd4-12-2",
+              "type": "blank",
+              "question": "从一点引出两条射线所组成的图形叫做角。这个点叫做角的（　），这两条射线叫做角的边。",
+              "answer": "顶点",
+              "explanation": "考点 12：从一点引出两条（射线）所组成的图形叫做角。这个点叫做角的（顶点），这两条（射线）叫做角的边。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 12
+              }
+            },
+            {
+              "id": "kd4-12-3",
+              "type": "blank",
+              "question": "从一点引出两条射线所组成的图形叫做角。这个点叫做角的顶点，这两条（　）叫做角的边。",
+              "answer": "射线",
+              "explanation": "考点 12：从一点引出两条（射线）所组成的图形叫做角。这个点叫做角的（顶点），这两条（射线）叫做角的边。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 12
+              }
+            },
+            {
+              "id": "kd4-13-1",
+              "type": "blank",
+              "question": "角的大小与角的两边画出的（　）没有关系，与角的两边叉开的大小有关。",
+              "answer": "长短",
+              "explanation": "考点 13：角的大小与角的两边画出的（长短）没有关系，与角的两边（叉开的大小）有关。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 13
+              }
+            },
+            {
+              "id": "kd4-13-2",
+              "type": "blank",
+              "question": "角的大小与角的两边画出的长短没有关系，与角的两边（　）有关。",
+              "answer": "叉开的大小",
+              "explanation": "考点 13：角的大小与角的两边画出的（长短）没有关系，与角的两边（叉开的大小）有关。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 13
+              }
+            },
+            {
+              "id": "kd4-14-1",
+              "type": "blank",
+              "question": "量角的大小，要用到（　），角的计量单位是度。把圆平均分成 360 份，每一份多对应的角的大小是1 度。",
+              "answer": "量角器",
+              "explanation": "考点 14：量角的大小，要用到（量角器），角的计量单位是(度）。把圆平均分成 360 份，每一份多对应的角的大小是（1 度）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 14
+              }
+            },
+            {
+              "id": "kd4-14-2",
+              "type": "blank",
+              "question": "量角的大小，要用到量角器，角的计量单位是（　）。把圆平均分成 360 份，每一份多对应的角的大小是1 度。",
+              "answer": "度",
+              "explanation": "考点 14：量角的大小，要用到（量角器），角的计量单位是(度）。把圆平均分成 360 份，每一份多对应的角的大小是（1 度）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 14
+              }
+            },
+            {
+              "id": "kd4-14-3",
+              "type": "blank",
+              "question": "量角的大小，要用到量角器，角的计量单位是度。把圆平均分成 360 份，每一份多对应的角的大小是（　）。",
+              "answer": "1 度",
+              "explanation": "考点 14：量角的大小，要用到（量角器），角的计量单位是(度）。把圆平均分成 360 份，每一份多对应的角的大小是（1 度）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 14
+              }
+            },
+            {
+              "id": "kd4-15-1",
+              "type": "blank",
+              "question": "从一点出发，可以画（　）条射线，可以画无数条直线，经过两点可以画一条直线。",
+              "answer": "无数",
+              "explanation": "考点 15：从一点出发，可以画（无数）条射线，可以画（无数）条直线，经过两点可以画（一条）直线。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 15
+              }
+            },
+            {
+              "id": "kd4-15-2",
+              "type": "blank",
+              "question": "从一点出发，可以画无数条射线，可以画（　）条直线，经过两点可以画一条直线。",
+              "answer": "无数",
+              "explanation": "考点 15：从一点出发，可以画（无数）条射线，可以画（无数）条直线，经过两点可以画（一条）直线。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 15
+              }
+            },
+            {
+              "id": "kd4-15-3",
+              "type": "blank",
+              "question": "从一点出发，可以画无数条射线，可以画无数条直线，经过两点可以画（　）直线。",
+              "answer": "一条",
+              "explanation": "考点 15：从一点出发，可以画（无数）条射线，可以画（无数）条直线，经过两点可以画（一条）直线。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 15
+              }
+            },
+            {
+              "id": "kd4-16-1",
+              "type": "blank",
+              "question": "角的两条边在一条直线上，这样的角叫做（　），条射线绕着它的端点旋转一周所成的角叫做周角。",
+              "answer": "平角",
+              "explanation": "考点 16：角的两条边在一条直线上，这样的角叫做（平角），条射线绕着它的端点旋转一周所成的角叫做（周角）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 16
+              }
+            },
+            {
+              "id": "kd4-16-2",
+              "type": "blank",
+              "question": "角的两条边在一条直线上，这样的角叫做平角，条射线绕着它的端点旋转一周所成的角叫做（　）。",
+              "answer": "周角",
+              "explanation": "考点 16：角的两条边在一条直线上，这样的角叫做（平角），条射线绕着它的端点旋转一周所成的角叫做（周角）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 16
+              }
+            },
+            {
+              "id": "kd4-17-1",
+              "type": "blank",
+              "question": "线段、射线都是（　）的一部分。",
+              "answer": "直线",
+              "explanation": "考点 17：线段、射线都是（直线）的一部分。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 17
+              }
+            },
+            {
+              "id": "kd4-18-1",
+              "type": "blank",
+              "question": "1 周角=（　），1 平角=180 度，1 周角=2 平角=4 直角。",
+              "answer": "360 度",
+              "explanation": "考点 18：1 周角=（360 度），1 平角=（180 度），1 周角=（2 平角）=（4 直角）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 18
+              }
+            },
+            {
+              "id": "kd4-18-2",
+              "type": "blank",
+              "question": "1 周角=360 度，1 平角=（　），1 周角=2 平角=4 直角。",
+              "answer": "180 度",
+              "explanation": "考点 18：1 周角=（360 度），1 平角=（180 度），1 周角=（2 平角）=（4 直角）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 18
+              }
+            },
+            {
+              "id": "kd4-18-3",
+              "type": "blank",
+              "question": "1 周角=360 度，1 平角=180 度，1 周角=（　）=4 直角。",
+              "answer": "2 平角",
+              "explanation": "考点 18：1 周角=（360 度），1 平角=（180 度），1 周角=（2 平角）=（4 直角）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 18
+              }
+            },
+            {
+              "id": "kd4-18-4",
+              "type": "blank",
+              "question": "1 周角=360 度，1 平角=180 度，1 周角=2 平角=（　）。",
+              "answer": "4 直角",
+              "explanation": "考点 18：1 周角=（360 度），1 平角=（180 度），1 周角=（2 平角）=（4 直角）。",
+              "knowledgePointIds": [
+                "kp-kd3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 18
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kd4-u4",
+      "name": "第 4 板块",
+      "title": "三位数乘两位数",
+      "desc": "考点 19-25（15 题）",
+      "topics": [
+        {
+          "id": "kd4-t4",
+          "title": "三位数乘两位数",
+          "desc": "15 题 · 填出括号里的内容",
+          "board": "必背考点",
+          "knowledgePointIds": [
+            "kp-kd4"
+          ],
+          "modules": [
+            {
+              "id": "kd4-m4",
+              "type": "math.concept",
+              "title": "三位数乘两位数",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "kd4-19-1",
+              "type": "blank",
+              "question": "三位数乘两位数积可能是（　），也可能是四位数。",
+              "answer": "五位数",
+              "explanation": "考点 19：三位数乘两位数积可能是（五位数），也可能是(四位数）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 19
+              }
+            },
+            {
+              "id": "kd4-19-2",
+              "type": "blank",
+              "question": "三位数乘两位数积可能是五位数，也可能是（　）。",
+              "answer": "四位数",
+              "explanation": "考点 19：三位数乘两位数积可能是（五位数），也可能是(四位数）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 19
+              }
+            },
+            {
+              "id": "kd4-20-1",
+              "type": "blank",
+              "question": "末尾有（　）的数相乘，可以把因数0 前面的数先相乘，再添上两个因数末尾的 0。",
+              "answer": "0",
+              "explanation": "考点 20：末尾有（0 ）的数相乘，可以把因数0 前面的数先相乘，（再添上两个因数末尾的 0）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 20
+              }
+            },
+            {
+              "id": "kd4-20-2",
+              "type": "blank",
+              "question": "末尾有0的数相乘，可以把因数0 前面的数先相乘，（　）。",
+              "answer": "再添上两个因数末尾的 0",
+              "explanation": "考点 20：末尾有（0 ）的数相乘，可以把因数0 前面的数先相乘，（再添上两个因数末尾的 0）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 20
+              }
+            },
+            {
+              "id": "kd4-21-1",
+              "type": "blank",
+              "question": "每件商品的价钱，叫（　）；买了多少，叫数量，一共用的钱，叫总价。",
+              "answer": "单价",
+              "explanation": "考点 21：每件商品的价钱，叫（单价）；买了多少，叫（数量），一共用的钱，叫（总价）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 21
+              }
+            },
+            {
+              "id": "kd4-21-2",
+              "type": "blank",
+              "question": "每件商品的价钱，叫单价；买了多少，叫（　），一共用的钱，叫总价。",
+              "answer": "数量",
+              "explanation": "考点 21：每件商品的价钱，叫（单价）；买了多少，叫（数量），一共用的钱，叫（总价）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 21
+              }
+            },
+            {
+              "id": "kd4-21-3",
+              "type": "blank",
+              "question": "每件商品的价钱，叫单价；买了多少，叫数量，一共用的钱，叫（　）。",
+              "answer": "总价",
+              "explanation": "考点 21：每件商品的价钱，叫（单价）；买了多少，叫（数量），一共用的钱，叫（总价）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 21
+              }
+            },
+            {
+              "id": "kd4-22-1",
+              "type": "blank",
+              "question": "一共行了多长的路，叫（　）。",
+              "answer": "路程",
+              "explanation": "考点 22：一共行了多长的路，叫（路程）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 22
+              }
+            },
+            {
+              "id": "kd4-23-1",
+              "type": "blank",
+              "question": "单价×数量=（　）；速度×时间=路程；路程÷时间=速度；路程÷速度=时间",
+              "answer": "总价",
+              "explanation": "考点 23：单价×数量=（总价）；速度×时间=（路程）；路程÷时间=（速度）；路程÷速度=（时间）",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 23
+              }
+            },
+            {
+              "id": "kd4-23-2",
+              "type": "blank",
+              "question": "单价×数量=总价；速度×时间=（　）；路程÷时间=速度；路程÷速度=时间",
+              "answer": "路程",
+              "explanation": "考点 23：单价×数量=（总价）；速度×时间=（路程）；路程÷时间=（速度）；路程÷速度=（时间）",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 23
+              }
+            },
+            {
+              "id": "kd4-23-3",
+              "type": "blank",
+              "question": "单价×数量=总价；速度×时间=路程；路程÷时间=（　）；路程÷速度=时间",
+              "answer": "速度",
+              "explanation": "考点 23：单价×数量=（总价）；速度×时间=（路程）；路程÷时间=（速度）；路程÷速度=（时间）",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 23
+              }
+            },
+            {
+              "id": "kd4-23-4",
+              "type": "blank",
+              "question": "单价×数量=总价；速度×时间=路程；路程÷时间=速度；路程÷速度=（　）",
+              "answer": "时间",
+              "explanation": "考点 23：单价×数量=（总价）；速度×时间=（路程）；路程÷时间=（速度）；路程÷速度=（时间）",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 23
+              }
+            },
+            {
+              "id": "kd4-24-1",
+              "type": "blank",
+              "question": "一个因数不变，另一个因数乘几，（　）。一个因数不变，另一个因数除以几，积也会除以相同的数。",
+              "answer": "积也会乘相同的数",
+              "explanation": "考点 24：一个因数不变，另一个因数乘几，（积也会乘相同的数）。一个因数不变，另一个因数除以几，（积也会除以相同的数）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 24
+              }
+            },
+            {
+              "id": "kd4-24-2",
+              "type": "blank",
+              "question": "一个因数不变，另一个因数乘几，积也会乘相同的数。一个因数不变，另一个因数除以几，（　）。",
+              "answer": "积也会除以相同的数",
+              "explanation": "考点 24：一个因数不变，另一个因数乘几，（积也会乘相同的数）。一个因数不变，另一个因数除以几，（积也会除以相同的数）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 24
+              }
+            },
+            {
+              "id": "kd4-25-1",
+              "type": "blank",
+              "question": "一个因数乘几，另一个因数除以相同的数，（　）。",
+              "answer": "积不变",
+              "explanation": "考点 25：一个因数乘几，另一个因数除以相同的数，（积不变）。",
+              "knowledgePointIds": [
+                "kp-kd4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 25
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kd4-u5",
+      "name": "第 5 板块",
+      "title": "平行四边形和梯形",
+      "desc": "考点 26-36（16 题）",
+      "topics": [
+        {
+          "id": "kd4-t5",
+          "title": "平行四边形和梯形",
+          "desc": "16 题 · 填出括号里的内容",
+          "board": "必背考点",
+          "knowledgePointIds": [
+            "kp-kd5"
+          ],
+          "modules": [
+            {
+              "id": "kd4-m5",
+              "type": "math.concept",
+              "title": "平行四边形和梯形",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "kd4-26-1",
+              "type": "blank",
+              "question": "在同一平面内，两条直线不是（　）就是相交。",
+              "answer": "平行",
+              "explanation": "考点 26：在同一平面内，两条直线不是（平行）就是（相交）。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 26
+              }
+            },
+            {
+              "id": "kd4-26-2",
+              "type": "blank",
+              "question": "在同一平面内，两条直线不是平行就是（　）。",
+              "answer": "相交",
+              "explanation": "考点 26：在同一平面内，两条直线不是（平行）就是（相交）。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 26
+              }
+            },
+            {
+              "id": "kd4-27-1",
+              "type": "blank",
+              "question": "从直线外一点到这条直线所画的（　）最短。",
+              "answer": "垂直线段",
+              "explanation": "考点 27：从直线外一点到这条直线所画的（垂直线段）最短。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 27
+              }
+            },
+            {
+              "id": "kd4-28-1",
+              "type": "blank",
+              "question": "同一组平行线之间的（　）处处相等。",
+              "answer": "距离",
+              "explanation": "考点 28：同一组平行线之间的（距离）处处相等。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 28
+              }
+            },
+            {
+              "id": "kd4-29-1",
+              "type": "blank",
+              "question": "两组对边分别平行的四边形，叫做（　），",
+              "answer": "平行四边形",
+              "explanation": "考点 29：两组对边分别平行的四边形，叫做（平行四边形)，",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 29
+              }
+            },
+            {
+              "id": "kd4-30-1",
+              "type": "blank",
+              "question": "平行四边形两组对边分别平行且相等，对角度数相等，具有容易变形的（　）性。",
+              "answer": "不稳定",
+              "explanation": "考点 30：平行四边形两组对边分别平行且相等，对角度数相等，具有容易变形的（不稳定）性。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 30
+              }
+            },
+            {
+              "id": "kd4-31-1",
+              "type": "blank",
+              "question": "把长方形框架拉成平行四边形，（　）不变，面积变了。",
+              "answer": "周长",
+              "explanation": "考点 31：把长方形框架拉成平行四边形，（周长）不变，（面积）变了。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 31
+              }
+            },
+            {
+              "id": "kd4-31-2",
+              "type": "blank",
+              "question": "把长方形框架拉成平行四边形，周长不变，（　）变了。",
+              "answer": "面积",
+              "explanation": "考点 31：把长方形框架拉成平行四边形，（周长）不变，（面积）变了。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 31
+              }
+            },
+            {
+              "id": "kd4-32-1",
+              "type": "blank",
+              "question": "只有一组对边平行的四边形，叫做（　）。",
+              "answer": "梯形",
+              "explanation": "考点 32：只有一组对边平行的四边形，叫做（梯形）。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 32
+              }
+            },
+            {
+              "id": "kd4-33-1",
+              "type": "blank",
+              "question": "长方形和正方形也是（　），特殊在四个角都是直角。",
+              "answer": "平行四边形",
+              "explanation": "考点 33：长方形和正方形也是（平行四边形），特殊在四个角都是（直角）。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 33
+              }
+            },
+            {
+              "id": "kd4-33-2",
+              "type": "blank",
+              "question": "长方形和正方形也是平行四边形，特殊在四个角都是（　）。",
+              "answer": "直角",
+              "explanation": "考点 33：长方形和正方形也是（平行四边形），特殊在四个角都是（直角）。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 33
+              }
+            },
+            {
+              "id": "kd4-34-1",
+              "type": "blank",
+              "question": "四边形的内角和是（　）。",
+              "answer": "360 度",
+              "explanation": "考点 34：四边形的内角和是（360 度）。",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 34
+              }
+            },
+            {
+              "id": "kd4-35-1",
+              "type": "blank",
+              "question": "两个完全一样的直角三角形可以组成（　）；两个完全一样的等腰直角三角形可以组成正方形",
+              "answer": "长方形",
+              "explanation": "考点 35：两个完全一样的直角三角形可以组成（长方形）；两个完全一样的等腰直角三角形可以组成（正方形）",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 35
+              }
+            },
+            {
+              "id": "kd4-35-2",
+              "type": "blank",
+              "question": "两个完全一样的直角三角形可以组成长方形；两个完全一样的等腰直角三角形可以组成（　）",
+              "answer": "正方形",
+              "explanation": "考点 35：两个完全一样的直角三角形可以组成（长方形）；两个完全一样的等腰直角三角形可以组成（正方形）",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 35
+              }
+            },
+            {
+              "id": "kd4-36-1",
+              "type": "blank",
+              "question": "两个完全一样的梯形可以组成（　）两个完全一样的直角梯形可以组成长方形",
+              "answer": "平行四边形",
+              "explanation": "考点 36：两个完全一样的梯形可以组成（平行四边形）两个完全一样的直角梯形可以组成（长方形）",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 36
+              }
+            },
+            {
+              "id": "kd4-36-2",
+              "type": "blank",
+              "question": "两个完全一样的梯形可以组成平行四边形两个完全一样的直角梯形可以组成（　）",
+              "answer": "长方形",
+              "explanation": "考点 36：两个完全一样的梯形可以组成（平行四边形）两个完全一样的直角梯形可以组成（长方形）",
+              "knowledgePointIds": [
+                "kp-kd5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 36
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kd4-u6",
+      "name": "第 6 板块",
+      "title": "除数是两位数的除法",
+      "desc": "考点 37-41（9 题）",
+      "topics": [
+        {
+          "id": "kd4-t6",
+          "title": "除数是两位数的除法",
+          "desc": "9 题 · 填出括号里的内容",
+          "board": "必背考点",
+          "knowledgePointIds": [
+            "kp-kd6"
+          ],
+          "modules": [
+            {
+              "id": "kd4-m6",
+              "type": "math.concept",
+              "title": "除数是两位数的除法",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "kd4-37-1",
+              "type": "blank",
+              "question": "三位数除以两位数，商可能是（　），也可能是一位数。",
+              "answer": "两位数",
+              "explanation": "考点 37：三位数除以两位数，商可能是（两位数），也可能是（一位数）。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 37
+              }
+            },
+            {
+              "id": "kd4-37-2",
+              "type": "blank",
+              "question": "三位数除以两位数，商可能是两位数，也可能是（　）。",
+              "answer": "一位数",
+              "explanation": "考点 37：三位数除以两位数，商可能是（两位数），也可能是（一位数）。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 37
+              }
+            },
+            {
+              "id": "kd4-38-1",
+              "type": "blank",
+              "question": "把除数估小，初商可能（　）。把除数估大，初商可能偏小。",
+              "answer": "偏大",
+              "explanation": "考点 38：把除数估小，初商可能（偏大）。把除数估大，初商可能（偏小）。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 38
+              }
+            },
+            {
+              "id": "kd4-38-2",
+              "type": "blank",
+              "question": "把除数估小，初商可能偏大。把除数估大，初商可能（　）。",
+              "answer": "偏小",
+              "explanation": "考点 38：把除数估小，初商可能（偏大）。把除数估大，初商可能（偏小）。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 38
+              }
+            },
+            {
+              "id": "kd4-39-1",
+              "type": "blank",
+              "question": "被除数和除数都乘以或者除以相同的数（　），商都不变。",
+              "answer": "0 除外",
+              "explanation": "考点 39：被除数和除数都乘以或者除以相同的数（0 除外），商都（不变）。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 39
+              }
+            },
+            {
+              "id": "kd4-39-2",
+              "type": "blank",
+              "question": "被除数和除数都乘以或者除以相同的数0 除外，商都（　）。",
+              "answer": "不变",
+              "explanation": "考点 39：被除数和除数都乘以或者除以相同的数（0 除外），商都（不变）。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 39
+              }
+            },
+            {
+              "id": "kd4-40-1",
+              "type": "blank",
+              "question": "除数不变，被除数乘或者除以几，商也会（　）",
+              "answer": "乘或者除以几",
+              "explanation": "考点 40：除数不变，被除数乘或者除以几，商也会（乘或者除以几）",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 40
+              }
+            },
+            {
+              "id": "kd4-41-1",
+              "type": "blank",
+              "question": "被除数不变，除数乘几，商会（　）几。被除数不变，除数除以几，商会乘几。",
+              "answer": "除以",
+              "explanation": "考点 41：被除数不变，除数乘几，商会（除以）几。被除数不变，除数除以几，商会（乘）几。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 41
+              }
+            },
+            {
+              "id": "kd4-41-2",
+              "type": "blank",
+              "question": "被除数不变，除数乘几，商会除以几。被除数不变，除数除以几，商会（　）几。",
+              "answer": "乘",
+              "explanation": "考点 41：被除数不变，除数乘几，商会（除以）几。被除数不变，除数除以几，商会（乘）几。",
+              "knowledgePointIds": [
+                "kp-kd6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 41
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kd4-u7",
+      "name": "第 7 板块",
+      "title": "条形统计图与优化",
+      "desc": "考点 42-43（2 题）",
+      "topics": [
+        {
+          "id": "kd4-t7",
+          "title": "条形统计图与优化",
+          "desc": "2 题 · 填出括号里的内容",
+          "board": "必背考点",
+          "knowledgePointIds": [
+            "kp-kd7"
+          ],
+          "modules": [
+            {
+              "id": "kd4-m7",
+              "type": "math.concept",
+              "title": "条形统计图与优化",
+              "knowledgePointIds": [
+                "kp-kd7"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "kd4-42-1",
+              "type": "blank",
+              "question": "条形统计能直观的反映出数量的多少，便于比较（　）。",
+              "answer": "大小",
+              "explanation": "考点 42：条形统计能直观的反映出数量的多少，便于比较（大小)。",
+              "knowledgePointIds": [
+                "kp-kd7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 42
+              }
+            },
+            {
+              "id": "kd4-43-1",
+              "type": "blank",
+              "question": "烙一面的时间×烙的数量=（　），数量大于等于 2 时用。",
+              "answer": "总时间",
+              "explanation": "考点 43：烙一面的时间×烙的数量=（总时间），数量大于等于 2 时用。",
+              "knowledgePointIds": [
+                "kp-kd7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "kaodian": 43
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
