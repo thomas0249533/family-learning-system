@@ -1,0 +1,824 @@
+{
+  "schemaVersion": "1.0",
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "special-english-movers-mock",
+    "packageType": "special",
+    "isInternal": false,
+    "examMode": false,
+    "subject": "english",
+    "templateId": "english.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "剑桥少儿英语",
+    "title": "剑桥 Movers · 全真模拟（阅读写作 33 题）",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-enmv-m-p1",
+      "type": "word",
+      "title": "Part 1 看释义选词：先认「这是什么东西」",
+      "content": "Part 1 给 8 个词、5 段释义，每段只描述一样东西。抓三类线索：\n· **类别词**：place / animal / people / thing —— 决定答案的大类；\n· **功能**：you go there to… / you need this to… —— 决定具体是哪一个；\n· **细节**：white、eight legs、in the country —— 排除同类里的其他选项。\n本组答案：a café（吃饭聊天的地方）、a bat（夜里飞的动物）、hospitals（生病的人去的地方）、a toothbrush（刷牙用的）、fields（乡下有动物的田地）。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-m-p2",
+      "type": "skill",
+      "title": "Part 2 情景问答：答语必须回答问题",
+      "content": "这类题（Movers R&W Part 2）不是考语法，是考「这句话问的是什么」。\n三步：① 看问句的疑问词（Where / Why / Which / How often / What kind / Can I…）；② 三个选项中只有一个是**直接回答**；③ 其余两个通常「答非所问」或「语法对但意思不搭」。\n例：问 Why didn't you go home? 只能答 Because…；问 How often…? 只能答频率（Every Tuesday）；问 Which aunt…? 要指出具体哪一位（The aunt who lives opposite the market）。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-m-p3",
+      "type": "skill",
+      "title": "Part 3 故事填空：跟着时间线走",
+      "content": "Part 3 是一段小故事挖 5 个空，考的是「这个故事这时候发生了什么」。\n· 先通读一遍抓时间线（first day at school → outside the classroom → lunch → outside → evening）；\n· 每个空看前后句的**情绪与动作**：did not want to go → sad；did not want to go + 妈妈安慰 → started to cry；\n· 第 6 题问「给故事选标题」，标题要能概括**整件事**（Fred starts school），不能只讲其中一幕。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-m-p4",
+      "type": "skill",
+      "title": "Part 4 短文选词：be 动词、介词、-ing、which、连词",
+      "content": "Part 4 的五种高频考点，几乎每套都这样配：\n· **There is/are**：There **is** often a lot of snow（a lot of snow 视为一个整体，用 is）；\n· **介词**：with snow **on** the ground（雪在地面上）；\n· **like + doing**：Children like **playing** outside；\n· **关系代词**：balls of snow, **which** they throw（which 指物，who 指人）；\n· **连词**：…scarves, **because** it is very cold（表原因）；but 表转折，then 表顺序。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-m-p5",
+      "type": "skill",
+      "title": "Part 5 故事细节填空：同义替换是唯一难点",
+      "content": "Part 5 的答案一定在原文里，难在**题目换了说法**：\n· 「Vicky's ___ didn't like going outside」↔ 原文 \"a fat, grey cat that never wanted to go outside\"；\n· 「could not ___」↔ 原文 \"It can't hop because its leg hurts\"；\n· 「put the rabbit in ___」↔ 原文 \"took the rabbit to the basement\"。\n做题顺序：读题目 → 找原文同义句 → 抄 1–3 个词（保留冠词更稳）。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-m-p6",
+      "type": "skill",
+      "title": "Part 6 看图回答：位置 + 动作 + 衣物",
+      "content": "Part 6 的四个空分两类：\n· **补全句子**（There is a parrot on the pirate's ___）：找「谁身上的哪个部位」，答案通常是身体部位或名词（shoulder）；\n· **回答 What is … doing?**：答案必须是**动作**（making a film / holding a camera），不能答人物身份；问 holding 就要答物品（a map）。\n看图顺序：先看整体场景（瀑布、船、宝箱），再按题目逐个定位人物。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-m-p3-passage",
+      "type": "skill",
+      "title": "Fred starts school",
+      "content": "Fred and his mother went out of their apartment and walked down the road. Fred was very (1) ____ . It was his first day at school and he did not want to go.\n\nOutside the classroom Fred started to (2) ____ . 'Look!' said his mother. 'Here's your teacher.'\n\nA young woman with black, (3) ____ hair smiled at Fred. 'Hello Fred,' she said, 'my name is Miss Hill. Let's go to your table.' On the table there were some pencils and lots of toys. He played with the toy cars and then he drew a picture. 'That's good!' said the teacher. 'Now we can have lunch.'\n\nFred had a (4) ____ and a bottle of juice for his lunch. After that, all of the children went outside and ran and shouted in the (5) ____ . In the evening, Fred said to his mother, 'I like school now.'",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 118,
+        "translation": "Fred 和妈妈走出公寓，沿路走着。Fred 心里很难过——这是他第一天上学，他不想去。\n在教室外面，Fred 开始哭了。「看！」妈妈说，「你的老师来了。」\n一位黑卷发的年轻女士对 Fred 微笑。「你好 Fred，」她说，「我叫 Hill 小姐，我们去你的桌子那儿吧。」桌上有铅笔和很多玩具。他玩了玩具车，然后画了一幅画。「画得好！」老师说，「现在我们可以吃午饭了。」\nFred 午餐吃了一个三明治和一瓶果汁。之后所有孩子都到外面，在操场上又跑又叫。晚上，Fred 对妈妈说：「我现在喜欢上学了。」"
+      }
+    },
+    {
+      "id": "kp-enmv-m-p4-passage",
+      "type": "skill",
+      "title": "Snow",
+      "content": "**Snow**\n\nYou can see snow in *some* places in cold weather. It is white and very beautiful.\n\nThere (1) ____ often a lot of snow in the mountains. It is difficult for birds and animals to find food with snow (2) ____ the ground. Children often like (3) ____ outside in the snow. They make balls of snow, (4) ____ they throw at their friends. They need to wear hats, coats and scarves, (5) ____ it is very cold. Sometimes it snows a lot and children can't go to school.",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 87,
+        "translation": "雪\n\n在寒冷天气里的一些地方你能看到雪。它是白色的，非常美。\n山上常常有很多雪。雪盖在地上时，鸟和动物很难找到食物。孩子们常常喜欢在雪地里玩。他们把雪团成球，然后朝朋友扔过去。他们需要戴帽子、穿外套、围围巾，因为天气很冷。有时雪下得很大，孩子们就不能去上学了。"
+      }
+    },
+    {
+      "id": "kp-enmv-m-p5-passage",
+      "type": "skill",
+      "title": "The Brown Rabbit",
+      "content": "**The Brown Rabbit**\n\nCharlie wanted a pet. Every child in Charlie's class had one. Jim had one big dog and one small dog. He liked playing with his dogs on the beach. Vicky had a fat, grey cat that never wanted to go outside. And Mary had an exciting pet. It was a beautiful lizard.\n\nOne Friday, Charlie looked out of his bedroom window and saw something on the grass. It was a small brown rabbit with a white tail. Charlie ran outside to look at it. The rabbit looked sad. Charlie said to his father, 'What's the matter with it?' 'It can't hop because its leg hurts,' said his father. He picked it up carefully and carried it inside the house.\n\nThey took the rabbit to the basement because it was quiet there. The rabbit was tired and slept all night. On Saturday morning, the rabbit's leg was fine. 'I've got a pet now,' Charlie said. 'No, this rabbit lives outside,' his father said. They went to the countryside, put the rabbit down and watched it run quickly to the trees.\n\n'Would you like to go to the pet shop now?' said Charlie's father. 'Yes please!' Charlie shouted.",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 205,
+        "translation": "棕色的兔子\n\nCharlie 想要一只宠物。他班上的每个孩子都有一只。Jim 有一只大狗和一只小狗，他喜欢带狗在海滩上玩。Vicky 有一只胖胖的灰猫，它从不想出门。Mary 有一只很刺激的宠物，是一只漂亮的蜥蜴。\n一个星期五，Charlie 从卧室窗户往外看，看到草地上有个东西。那是一只尾巴白色的小棕兔。Charlie 跑出去看它。兔子看起来很伤心。Charlie 问爸爸：「它怎么了？」「它的腿受伤了，所以跳不了，」爸爸说。他小心地把它抱起来，带进屋里。\n他们把兔子带到地下室，因为那里很安静。兔子累了，睡了一整夜。星期六早上，兔子的腿好了。「我现在有宠物了，」Charlie 说。「不行，这只兔子住在外面，」爸爸说。他们去了乡下，把兔子放下，看着它飞快地跑向树林。\n「你现在想去宠物店吗？」Charlie 的爸爸说。「想！」Charlie 喊道。"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "mv-mock",
+      "name": "Reading & Writing 全真模拟",
+      "title": "A1 Movers Practice Test · Reading & Writing",
+      "desc": "一套完整的 Movers 阅读写作（Part 1–6），共 33 题。听力与口语部分不在包内。",
+      "topics": [
+        {
+          "id": "mv-mock-t1",
+          "title": "Part 1 看释义选词",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-m-p1"
+          ],
+          "modules": [
+            {
+              "id": "mv-mock-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-m-p1"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-m-01",
+              "type": "single",
+              "question": "People go to this place to eat, drink and talk to their friends.",
+              "options": [
+                "A. a café",
+                "B. a towel",
+                "C. a blanket"
+              ],
+              "answer": "A",
+              "explanation": "吃饭、喝东西、和朋友聊天的地方 → 咖啡馆 a café。a towel 是毛巾，a blanket 是毯子。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-02",
+              "type": "single",
+              "question": "This animal flies at night and sleeps in the day.",
+              "options": [
+                "A. a bat",
+                "B. a snail",
+                "C. a blanket"
+              ],
+              "answer": "A",
+              "explanation": "夜里飞、白天睡 → 蝙蝠 a bat。a snail 是蜗牛（爬得很慢，不飞）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-03",
+              "type": "single",
+              "question": "People who are ill go to these places.",
+              "options": [
+                "A. hospitals",
+                "B. fields",
+                "C. cafés"
+              ],
+              "answer": "A",
+              "explanation": "生病的人去的地方 → 医院 hospitals（复数，因为 these places）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-04",
+              "type": "single",
+              "question": "You need this to clean your teeth after you eat.",
+              "options": [
+                "A. a toothbrush",
+                "B. a towel",
+                "C. a blanket"
+              ],
+              "answer": "A",
+              "explanation": "刷牙用的 → 牙刷 a toothbrush。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-05",
+              "type": "single",
+              "question": "You find these in the country and they often have animals in them.",
+              "options": [
+                "A. fields",
+                "B. hospitals",
+                "C. cafés"
+              ],
+              "answer": "A",
+              "explanation": "乡下、里面有动物 → 田地 fields。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mv-mock-t2",
+          "title": "Part 2 情景问答",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-m-p2"
+          ],
+          "modules": [
+            {
+              "id": "mv-mock-t2-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-m-p2"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-m-06",
+              "type": "single",
+              "question": "Paul: Why didn't you go home yesterday?\nDaisy: ____",
+              "options": [
+                "A. Because my mother was at work.",
+                "B. Because my mother can work.",
+                "C. Because my mother would like to work."
+              ],
+              "answer": "A",
+              "explanation": "Why 问原因，要用 Because + 一件过去发生的事（was at work）。B、C 语法没错，但都不是「昨天没回家」的理由。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-07",
+              "type": "single",
+              "question": "Paul: Which aunt did you see?\nDaisy: ____",
+              "options": [
+                "A. The aunt who lives opposite the market.",
+                "B. She is my aunt.",
+                "C. I know your aunt well."
+              ],
+              "answer": "A",
+              "explanation": "Which 问「哪一位」，要指出具体的人（住在市场对面的那位）。只说「她是我阿姨」并没有回答「哪一位」。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-08",
+              "type": "single",
+              "question": "Paul: How often do you go to see your aunt?\nDaisy: ____",
+              "options": [
+                "A. Every Tuesday.",
+                "B. I take a bus there.",
+                "C. She's never here."
+              ],
+              "answer": "A",
+              "explanation": "How often 问频率 → Every Tuesday（每周二）。I take a bus there 回答的是 How（怎么去）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-09",
+              "type": "single",
+              "question": "Paul: Do you enjoy going to see your aunt?\nDaisy: ____",
+              "options": [
+                "A. Yes, I do.",
+                "B. Yes, that's better.",
+                "C. Yes, I know."
+              ],
+              "answer": "A",
+              "explanation": "Do you…? 的答语用 Yes, I do. —— 助动词必须跟问句一致。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-10",
+              "type": "single",
+              "question": "Paul: What kind of games do you play at your aunt's house?\nDaisy: ____",
+              "options": [
+                "A. Soccer and tennis.",
+                "B. It's in the garden.",
+                "C. Three or four."
+              ],
+              "answer": "A",
+              "explanation": "What kind of games 问种类 → 具体说出运动名 Soccer and tennis。It's in the garden 回答 Where。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-11",
+              "type": "single",
+              "question": "Paul: Can I come with you this week?\nDaisy: ____",
+              "options": [
+                "A. All right.",
+                "B. I didn't know.",
+                "C. You're happy."
+              ],
+              "answer": "A",
+              "explanation": "Can I…? 是请求许可，答语要表态 → All right.（好啊）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mv-mock-t3",
+          "title": "Part 3 故事填空",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-m-p3",
+            "kp-enmv-m-p3-passage"
+          ],
+          "modules": [
+            {
+              "id": "mv-mock-t3-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3-passage"
+              ]
+            },
+            {
+              "id": "mv-mock-t3-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-m-12",
+              "type": "single",
+              "question": "Fred was very (1) ____ . It was his first day at school and he did not want to go.",
+              "options": [
+                "A. sad",
+                "B. happy",
+                "C. hungry"
+              ],
+              "answer": "A",
+              "explanation": "下文说\"他不想去上学\"，所以心里是难过的 sad。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-13",
+              "type": "single",
+              "question": "Outside the classroom Fred started to (2) ____ .",
+              "options": [
+                "A. cry",
+                "B. laugh",
+                "C. run"
+              ],
+              "answer": "A",
+              "explanation": "不想上学 + 站在教室外面 → 开始哭 cry。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-14",
+              "type": "single",
+              "question": "A young woman with black, (3) ____ hair smiled at Fred.",
+              "options": [
+                "A. curly",
+                "B. straight",
+                "C. short"
+              ],
+              "answer": "A",
+              "explanation": "形容头发形状的词；故事里老师是一头黑色卷发 → curly。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-15",
+              "type": "single",
+              "question": "Fred had a (4) ____ and a bottle of juice for his lunch.",
+              "options": [
+                "A. sandwich",
+                "B. candle",
+                "C. pillow"
+              ],
+              "answer": "A",
+              "explanation": "午餐吃的 + 一瓶果汁 → 三明治 sandwich。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-16",
+              "type": "single",
+              "question": "All of the children went outside and ran and shouted in the (5) ____ .",
+              "options": [
+                "A. playground",
+                "B. bedroom",
+                "C. kitchen"
+              ],
+              "answer": "A",
+              "explanation": "孩子跑着喊叫的地方（教室外面）→ 操场 playground。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-17",
+              "type": "single",
+              "question": "Now choose the best name for the story.",
+              "options": [
+                "A. Fred starts school",
+                "B. Fred's new bicycle",
+                "C. A day at the beach"
+              ],
+              "answer": "A",
+              "explanation": "整篇讲 Fred 第一天上学从难过到喜欢的过程，最能概括全篇的是 Fred starts school。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mv-mock-t4",
+          "title": "Part 4 短文选词",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-m-p4",
+            "kp-enmv-m-p4-passage"
+          ],
+          "modules": [
+            {
+              "id": "mv-mock-t4-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-m-p4-passage"
+              ]
+            },
+            {
+              "id": "mv-mock-t4-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-m-p4"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-m-18",
+              "type": "single",
+              "question": "There (1) ____ often a lot of snow in the mountains.",
+              "options": [
+                "A. is",
+                "B. are",
+                "C. be"
+              ],
+              "answer": "A",
+              "explanation": "there be 句型看后面的名词：a lot of snow 是不可数名词，用 is。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p4"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-19",
+              "type": "single",
+              "question": "It is difficult for birds and animals to find food with snow (2) ____ the ground.",
+              "options": [
+                "A. on",
+                "B. by",
+                "C. for"
+              ],
+              "answer": "A",
+              "explanation": "雪「在地面上」→ on the ground。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p4"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-20",
+              "type": "single",
+              "question": "Children often like (3) ____ outside in the snow.",
+              "options": [
+                "A. playing",
+                "B. played",
+                "C. play"
+              ],
+              "answer": "A",
+              "explanation": "like 后面接 -ing：like playing（喜欢在雪里玩）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p4"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-21",
+              "type": "single",
+              "question": "They make balls of snow, (4) ____ they throw at their friends.",
+              "options": [
+                "A. which",
+                "B. who",
+                "C. what"
+              ],
+              "answer": "A",
+              "explanation": "指物（雪球）用 which；who 只能指人。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p4"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-22",
+              "type": "single",
+              "question": "They need to wear hats, coats and scarves, (5) ____ it is very cold.",
+              "options": [
+                "A. because",
+                "B. then",
+                "C. but"
+              ],
+              "answer": "A",
+              "explanation": "前后是因果关系（因为很冷，所以要戴帽子围巾）→ because。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p4"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mv-mock-t5",
+          "title": "Part 5 故事细节填空",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-m-p5",
+            "kp-enmv-m-p5-passage"
+          ],
+          "modules": [
+            {
+              "id": "mv-mock-t5-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5-passage"
+              ]
+            },
+            {
+              "id": "mv-mock-t5-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-m-23",
+              "type": "blank",
+              "question": "Vicky's ____ didn't like going outside.（1–3 个词）",
+              "answer": "fat grey cat / grey cat / cat",
+              "explanation": "原文 \"Vicky had a fat, grey cat that never wanted to go outside\" —— never wanted to go outside 就是 didn't like going outside。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-24",
+              "type": "blank",
+              "question": "Mary's exciting pet was a ____ .",
+              "answer": "beautiful lizard / lizard",
+              "explanation": "原文 \"Mary had an exciting pet. It was a beautiful lizard.\"",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-25",
+              "type": "blank",
+              "question": "Charlie saw a rabbit on the ____ outside his house.",
+              "answer": "grass",
+              "explanation": "原文 \"saw something on the grass. It was a small brown rabbit\" —— 在草地上。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-26",
+              "type": "blank",
+              "question": "Charlie's dad took the rabbit inside because it could not ____ .",
+              "answer": "hop / walk",
+              "explanation": "原文 \"It can't hop because its leg hurts\" —— 腿疼所以跳不了。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-27",
+              "type": "blank",
+              "question": "In the house, they put the rabbit in ____ and it got better.",
+              "answer": "the basement / basement",
+              "explanation": "原文 \"They took the rabbit to the basement because it was quiet there\"，第二天腿就好了。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-28",
+              "type": "blank",
+              "question": "They took the rabbit to the countryside and it ran to some ____ .",
+              "answer": "trees / the trees",
+              "explanation": "原文 \"watched it run quickly to the trees\"。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-m-29",
+              "type": "blank",
+              "question": "Then Dad asked Charlie to go to the ____ with him.",
+              "answer": "pet shop / the pet shop / a pet shop",
+              "explanation": "原文 \"Would you like to go to the pet shop now?\" —— 宠物店。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mv-mock-t6",
+          "title": "Part 6 看图回答",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-m-p6"
+          ],
+          "modules": [
+            {
+              "id": "mv-mock-t6-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-m-p6"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-m-30",
+              "type": "single",
+              "question": "There is a parrot on the pirate's ____ .",
+              "options": [
+                "A. shoulder",
+                "B. head",
+                "C. hand"
+              ],
+              "answer": "A",
+              "explanation": "右后方那个海盗的肩膀上站着一只绿色鹦鹉 → shoulder（肩膀）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p6"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/pirate-scene.png",
+              "imageAlt": "丛林瀑布场景：左边一个戴黄帽子的女孩在用摄像机拍摄，两个猴子坐在救生圈上，中间的独眼海盗举着一张藏宝图，右边两个海盗在开宝箱，前方箱子里装着水果，天上一朵云"
+            },
+            {
+              "id": "mv-m-31",
+              "type": "single",
+              "question": "The only ____ in the sky is above the waterfall.",
+              "options": [
+                "A. cloud",
+                "B. bird",
+                "C. plane"
+              ],
+              "answer": "A",
+              "explanation": "天空里只有一个白色的东西，就在瀑布上方 → cloud（云）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p6"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/pirate-scene.png",
+              "imageAlt": "丛林瀑布场景：左边一个戴黄帽子的女孩在用摄像机拍摄，两个猴子坐在救生圈上，中间的独眼海盗举着一张藏宝图，右边两个海盗在开宝箱，前方箱子里装着水果，天上一朵云"
+            },
+            {
+              "id": "mv-m-32",
+              "type": "single",
+              "question": "What is the pirate with the hat holding?",
+              "options": [
+                "A. A map.",
+                "B. A camera.",
+                "C. A box."
+              ],
+              "answer": "A",
+              "explanation": "戴帽子的那个海盗高高举着的是一张藏宝图 → a map。摄像机在左边女孩手里。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p6"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/pirate-scene.png",
+              "imageAlt": "丛林瀑布场景：左边一个戴黄帽子的女孩在用摄像机拍摄，两个猴子坐在救生圈上，中间的独眼海盗举着一张藏宝图，右边两个海盗在开宝箱，前方箱子里装着水果，天上一朵云"
+            },
+            {
+              "id": "mv-m-33",
+              "type": "single",
+              "question": "What is the girl with the yellow hat doing?",
+              "options": [
+                "A. Making a film.",
+                "B. Reading a book.",
+                "C. Swimming."
+              ],
+              "answer": "A",
+              "explanation": "戴黄帽子的女孩正扛着摄像机对着瀑布拍摄 → making a film（也可说 holding a camera）。",
+              "knowledgePointIds": [
+                "kp-enmv-m-p6"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/pirate-scene.png",
+              "imageAlt": "丛林瀑布场景：左边一个戴黄帽子的女孩在用摄像机拍摄，两个猴子坐在救生圈上，中间的独眼海盗举着一张藏宝图，右边两个海盗在开宝箱，前方箱子里装着水果，天上一朵云"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

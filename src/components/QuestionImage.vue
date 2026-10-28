@@ -1,14 +1,29 @@
 <template>
   <figure v-if="path" class="qimage">
-    <img
-      v-if="state === 'ok'"
-      class="qimage__img"
-      :src="objectUrl"
-      :alt="alt || '题目配图'"
-      loading="lazy"
-      decoding="async"
-      @error="onImgError"
-    />
+    <template v-if="state === 'ok'">
+      <!--
+        点图放大（V2.12.3）。为什么需要：`max-height: 320px` 是给"一条线"这种
+        扁平图定的上限，而场景插图（看图回答、看图写话）近正方形，在 320px 高度里
+        只有 300px 宽 —— 一个"站在海盗肩上的鹦鹉"缩到 300px 就只剩几个像素，
+        孩子看不清、只能猜。放大不改版面，只在需要时盖一层全屏。
+      -->
+      <button
+        type="button"
+        class="qimage__zoom"
+        :aria-label="`放大查看配图：${alt || '题目配图'}`"
+        @click="zoomed = true"
+      >
+        <img
+          class="qimage__img"
+          :src="objectUrl"
+          :alt="alt || '题目配图'"
+          loading="lazy"
+          decoding="async"
+          @error="onImgError"
+        />
+      </button>
+      <span class="qimage__hint">点图放大</span>
+    </template>
     <!--
       缺失 / 损坏时不装作没事：显示一行淡字。
       图片是题干的一部分（"图中一共有几个三角形"离开图无法作答），
@@ -20,6 +35,23 @@
     <!-- 加载中：给一个固定高度的小占位，避免图片到达时把下面的选项顶一下 -->
     <div v-else class="qimage__placeholder qimage__placeholder--loading" aria-hidden="true" />
   </figure>
+
+  <!-- 全屏大图：Teleport 到 body，避免被卡片的 overflow / 变换上下文裁掉 -->
+  <Teleport to="body">
+    <div
+      v-if="zoomed && objectUrl"
+      class="qimage-lb"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="alt || '题目配图'"
+      @click="zoomed = false"
+    >
+      <img class="qimage-lb__img" :src="objectUrl" :alt="alt || '题目配图'" />
+      <button class="qimage-lb__close" type="button" aria-label="关闭大图" @click.stop="zoomed = false">
+        ✕
+      </button>
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -60,9 +92,22 @@ type LoadState = 'loading' | 'ok' | 'missing'
 
 const state = ref<LoadState>('loading')
 const objectUrl = ref<string>('')
+/** 全屏大图是否打开（V2.12.3 点图放大） */
+const zoomed = ref(false)
+
+/** Esc 关大图。只在打开期间挂监听，避免每道题都往 window 上留一个监听器 */
+function onKeydown(e: KeyboardEvent): void {
+  if (e.key === 'Escape') zoomed.value = false
+}
+watch(zoomed, (open) => {
+  if (open) window.addEventListener('keydown', onKeydown)
+  else window.removeEventListener('keydown', onKeydown)
+})
 
 /** 释放当前 URL。调用点只有两处：换图前、卸载时 —— 少一处都会泄漏 */
 function revoke(): void {
+  // 关大图必须早于 revoke：反过来的话大图层还挂着已失效的 blob URL，会显示成破图
+  zoomed.value = false
   if (objectUrl.value) {
     URL.revokeObjectURL(objectUrl.value)
     objectUrl.value = ''
@@ -104,7 +149,10 @@ function onImgError(): void {
   state.value = 'missing'
 }
 
-onBeforeUnmount(revoke)
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown)
+  revoke()
+})
 </script>
 
 <style scoped lang="scss">
@@ -128,6 +176,70 @@ onBeforeUnmount(revoke)
   object-fit: contain;
   border-radius: $radius-md;
   background: $bg-color;
+}
+
+/* 图片本体做成按钮：既能点开大图，键盘也能 Tab 到（<img> 本身不可聚焦） */
+.qimage__zoom {
+  display: block;
+  padding: 0;
+  border: none;
+  background: transparent;
+  line-height: 0;
+  cursor: zoom-in;
+  border-radius: $radius-md;
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+/* 一行淡字提示：只在图真的解码出来后出现，缺失时不提示（免得引导去点一块占位） */
+.qimage__hint {
+  font-size: $font-2xs;
+  color: $text-muted;
+  user-select: none;
+}
+
+/* 全屏大图。背景用半透明黑而不是主题色：图片本身才是主体，
+   深色模式下也不该让"看图的背景"跟着变色（白底的图在浅灰底上更清楚）。 */
+.qimage-lb {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3;
+  background: rgba(0, 0, 0, 0.78);
+  cursor: zoom-out;
+}
+
+.qimage-lb__img {
+  max-width: 94vw;
+  max-height: 92vh;
+  object-fit: contain;
+  border-radius: $radius-md;
+}
+
+.qimage-lb__close {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  /* 用主色 + text-on-primary 配对：主题切到深色时这对值会一起翻转，
+     对比度由设计系统保证，不在这里写死黑白 */
+  background: var(--primary-color);
+  color: var(--text-on-primary);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .qimage__placeholder {

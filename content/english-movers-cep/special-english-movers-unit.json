@@ -1,0 +1,646 @@
+{
+  "schemaVersion": "1.0",
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "special-english-movers-unit",
+    "packageType": "special",
+    "isInternal": false,
+    "examMode": false,
+    "subject": "english",
+    "templateId": "english.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "剑桥少儿英语",
+    "title": "剑桥 Movers · 单元阅读写作精练",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-enmv-u1-pic",
+      "type": "skill",
+      "title": "看图回答：先找位置，再找颜色",
+      "content": "这类题（Movers R&W Part 6）只考一件事：**把画面看准**。三个固定动作，按顺序做就不会错：\n① 先定位「谁/什么」——题目里的名词在图上哪个角落；\n② 再看「相对位置」——in / on / under / behind / next to / in front of。题目问 behind，就找谁挡在它前面；\n③ 最后看「颜色与衣物」——问 wearing 时只答衣物或颜色，不要答动作。\n常见坑：图上有两个女孩（一个在水里、一个站在浅水里），问 in the water 的那个，别答成另一个。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-u3-lion",
+      "type": "skill",
+      "title": "一般现在时 + every day + 宾格代词",
+      "content": "这篇短文全是一般现在时（讲狮子这类动物的事实），所以动词要跟主语一致：\n· lions（复数）→ eat / like / play，不加 s；it / he / she（单数第三人称）→ 加 s。\n· 情态动词 must 后面永远跟动词原形：must drink（不是 must drinks）。\n· 频度：every day / every week（每天/每周）；any 只用在否定句和疑问句里。\n· 宾格：see **them**（lions 是复数，不能用 it / him）。\n判断口诀：先看主语单复数，再看空前有没有 must / do / can。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-u4-story",
+      "type": "skill",
+      "title": "故事填空：时间、人物、地点三把钥匙",
+      "content": "Part 5 的填空答案全部能在原文里找到，只是换了说法。做题顺序：\n① 先读题目句子，圈出疑问词/关键词（when → 找时间；who → 找人物；where → 找地点）；\n② 回原文找同义句：题目 \"liked ___ best\" ↔ 原文 \"their favourite hobby was dancing\"；\n③ 抄词时**只写 1–3 个词**，不要整句照搬；动词注意原形/ing。\n本题四个高频考点：favourite hobby → dancing；On Saturdays → Saturdays；talked to her dad → dad；at the market on Wednesday → Wednesday。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-u7-def",
+      "type": "word",
+      "title": "看英文释义选词：抓住「类别词 + 特征」",
+      "content": "英文释义题的骨架永远是「类别词 + 特征」：\n· \"This is a **building** where …\" → 答案是建筑物（airport / hotel / castle / bank）；\n· \"These **insects** have …\" → 答案是昆虫（butterflies）；\n· \"This **animal** has eight legs …\" → 答案是动物（octopus / camel）。\n先认类别词，再对特征，最后才看拼写。本组 13 个词按类别分：\n建筑地点：an airport, hotels, banks, castles, a bus stop；食物：salt, jam, cereal, a pizza, biscuits；动物：butterflies, swans, an octopus, camels。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-u3-passage",
+      "type": "skill",
+      "title": "Lions",
+      "content": "Lions are a kind of big cat. They live in hot places. They are very strong animals and they can run very quickly. They have very big teeth because they only eat meat.\n\nLions like sitting on the ground or on rocks, and sleeping in the sun. But because lions must drink water every day, you can sometimes see them next to a river. Smaller cats do not like being in water, but lions often play or go swimming in it.",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 62,
+        "translation": "狮子是一种大型猫科动物。它们住在炎热的地方，很强壮，跑得很快。它们的牙齿很大，因为它们只吃肉。狮子喜欢坐在地上或岩石上，在太阳下睡觉。因为狮子必须每天喝水，所以有时你能在河边看到它们。小型猫科动物不喜欢待在水里，但狮子常常在水里玩耍或游泳。"
+      }
+    },
+    {
+      "id": "kp-enmv-u4-passage",
+      "type": "skill",
+      "title": "Sally and Lucy",
+      "content": "Sally had a best friend and her name was Lucy. The girls both liked playing tennis but their favourite hobby was dancing and they had lots of great CDs. On Saturdays, they often went to the shops in town with Sally's big sister. Sometimes they bought new jeans or T-shirts there.\n\nOne morning, Sally said to her dad, 'It's Lucy's birthday this week. Her party is on Sunday. Can I have a new dress to wear for it?'\n'Yes!' he said. 'But you never wear dresses, Sally!'\n'Well, it's easier to dance in jeans,' she answered. 'But I'd like a dress for the party.'\n'There's a market,' he said. 'We can go and find you a dress there.'\nAnd they did. Sally's dad bought her a beautiful white one.\n\nOn Sunday afternoon, she went to the party at Lucy's house in her new dress. Lucy saw Sally and Sally saw Lucy and they both started to laugh. 'We always wear jeans and T-shirts!' Sally said. 'But today we're both wearing dresses! Where did you buy yours?' 'At the market on Wednesday,' Lucy answered. 'And you?' 'At the market on Wednesday, like you!' laughed Sally. 'And I bought this for you there too.'\n'Oh great! A CD! Thanks!' said Lucy.",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 208,
+        "translation": "Sally 最好的朋友叫 Lucy。两个女孩都喜欢打网球，但她们最喜欢的爱好是跳舞，也有很多好听的 CD。周六她们常常和 Sally 的姐姐一起去城里的商店，有时会买新牛仔裤或 T 恤。\n\n一天早上，Sally 对爸爸说：「这周是 Lucy 的生日，她的派对在周日。我能买一条新连衣裙穿去吗？」「可以！」爸爸说，「可你从来不穿裙子呀，Sally！」「穿牛仔裤跳舞更方便，」她回答，「但派对那天我想穿裙子。」「有个集市，」爸爸说，「我们可以去那儿给你找一条。」他们真的去了，爸爸给她买了一条漂亮的白裙子。\n\n周日下午，她穿着新裙子去 Lucy 家参加派对。两人一见对方就都笑了。「我们平时总穿牛仔裤和 T 恤！」Sally 说，「可今天我们俩都穿了裙子！你的在哪里买的？」「周三在集市上，」Lucy 回答，「你呢？」「也是周三，在集市上，跟你一样！」Sally 笑着说，「我还在那儿给你买了这个。」「太好了！一张 CD！谢谢！」Lucy 说。"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "mv-u1",
+      "name": "Unit 1 看图回答",
+      "title": "看图回答：沙滩上的十件事",
+      "desc": "Movers Reading & Writing Part 6 真题：看图补全句子、回答关于画面的问题。",
+      "topics": [
+        {
+          "id": "mv-u1-t1",
+          "title": "看图回答问题",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-u1-pic"
+          ],
+          "modules": [
+            {
+              "id": "mv-u1-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-u1-pic"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-u1-01",
+              "type": "single",
+              "question": "The whale is in the sea behind ____.（图：鲸鱼在大海里，前面挡着什么？）",
+              "options": [
+                "A. a big rock",
+                "B. the island",
+                "C. a ship"
+              ],
+              "answer": "A",
+              "explanation": "鲸鱼在海水里，它前方挡着一块灰色的大石头（the big rock）。岛在鲸鱼左边远处，船在更左边，都不是「鲸鱼身后/前面的遮挡物」。",
+              "knowledgePointIds": [
+                "kp-enmv-u1-pic"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/beach-scene.jpeg",
+              "imageAlt": "海滩场景：一个女人躺在沙滩椅上看书，两个玻璃杯和一条毛巾在地上，左边有个彩球和玩具袋鼠，海里有鲸鱼、船、小岛，一个女孩在水里、一个女孩扶着游泳圈"
+            },
+            {
+              "id": "mv-u1-02",
+              "type": "single",
+              "question": "There are four trees on ____.（图：四棵树长在哪里？）",
+              "options": [
+                "A. the island",
+                "B. the beach",
+                "C. the rock"
+              ],
+              "answer": "A",
+              "explanation": "海里那个小岛上有四棵椰子树（four trees on the island）。沙滩上只有一棵大树，石头上什么都没有。",
+              "knowledgePointIds": [
+                "kp-enmv-u1-pic"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/beach-scene.jpeg",
+              "imageAlt": "海滩场景：一个女人躺在沙滩椅上看书，两个玻璃杯和一条毛巾在地上，左边有个彩球和玩具袋鼠，海里有鲸鱼、船、小岛，一个女孩在水里、一个女孩扶着游泳圈"
+            },
+            {
+              "id": "mv-u1-03",
+              "type": "single",
+              "question": "What is next to the ball?（图：球旁边是谁？）",
+              "options": [
+                "A. A toy kangaroo.",
+                "B. A toy rabbit.",
+                "C. A bag."
+              ],
+              "answer": "A",
+              "explanation": "球在沙滩左下角，紧挨着它的是一只玩具袋鼠（a toy kangaroo）。包（bag）在毛巾旁边，不挨着球。",
+              "knowledgePointIds": [
+                "kp-enmv-u1-pic"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/beach-scene.jpeg",
+              "imageAlt": "海滩场景：一个女人躺在沙滩椅上看书，两个玻璃杯和一条毛巾在地上，左边有个彩球和玩具袋鼠，海里有鲸鱼、船、小岛，一个女孩在水里、一个女孩扶着游泳圈"
+            },
+            {
+              "id": "mv-u1-04",
+              "type": "single",
+              "question": "What is the girl who is sitting in the water wearing?（图：坐在水里的女孩穿什么？）",
+              "options": [
+                "A. A purple swimsuit.",
+                "B. A pink swimsuit.",
+                "C. A blue T-shirt."
+              ],
+              "answer": "A",
+              "explanation": "水里有两个人：坐/蹲在水里的女孩穿**紫色**泳衣；站着扶游泳圈的女孩穿**粉色**泳衣。题目问 in the water 的那位 → purple。",
+              "knowledgePointIds": [
+                "kp-enmv-u1-pic"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              },
+              "image": "assets/beach-scene.jpeg",
+              "imageAlt": "海滩场景：一个女人躺在沙滩椅上看书，两个玻璃杯和一条毛巾在地上，左边有个彩球和玩具袋鼠，海里有鲸鱼、船、小岛，一个女孩在水里、一个女孩扶着游泳圈"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mv-u3",
+      "name": "Unit 3 狮子短文",
+      "title": "狮子短文选词（一般现在时）",
+      "desc": "Movers R&W Part 4：一空三选，考时态、频度与代词。",
+      "topics": [
+        {
+          "id": "mv-u3-t1",
+          "title": "Lions · 狮子",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-u3-lion",
+            "kp-enmv-u3-passage"
+          ],
+          "modules": [
+            {
+              "id": "mv-u3-t1-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-u3-passage"
+              ]
+            },
+            {
+              "id": "mv-u3-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-u3-lion"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-u3-01",
+              "type": "single",
+              "question": "They have very big teeth because they only (1) ____ meat.",
+              "options": [
+                "A. eat",
+                "B. eating",
+                "C. ate"
+              ],
+              "answer": "A",
+              "explanation": "主语 they（狮子）讲的是一般事实，用一般现在时；only 后面的动词用原形 eat。eating 需要 be 动词，ate 是过去时（这里没有过去的时间）。",
+              "knowledgePointIds": [
+                "kp-enmv-u3-lion"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u3-02",
+              "type": "single",
+              "question": "Lions like sitting on the ground or on rocks, and (2) ____ in the sun.",
+              "options": [
+                "A. sleeping",
+                "B. sleeps",
+                "C. slept"
+              ],
+              "answer": "A",
+              "explanation": "and 连接两个并列动作，前面是 like sitting，后面必须同样是 -ing：like sleeping。like 后面跟 doing 表示「喜欢做某事」。",
+              "knowledgePointIds": [
+                "kp-enmv-u3-lion"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u3-03",
+              "type": "single",
+              "question": "Because lions must drink water (3) ____ day, you can sometimes see them next to a river.",
+              "options": [
+                "A. every",
+                "B. any",
+                "C. another"
+              ],
+              "answer": "A",
+              "explanation": "「每一天」是 every day。any 只用于否定句和疑问句（not any / Do you have any…），another 后面接单数名词表示「另一个」，不能跟 day 表频率。",
+              "knowledgePointIds": [
+                "kp-enmv-u3-lion"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u3-04",
+              "type": "single",
+              "question": "You can sometimes see (4) ____ next to a river.",
+              "options": [
+                "A. them",
+                "B. it",
+                "C. him"
+              ],
+              "answer": "A",
+              "explanation": "前面说的是 lions（复数动物），代词要用宾格复数 them。it 指单数物，him 指单数男性。",
+              "knowledgePointIds": [
+                "kp-enmv-u3-lion"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u3-05",
+              "type": "single",
+              "question": "Smaller cats (5) ____ not like being in water.",
+              "options": [
+                "A. do",
+                "B. have",
+                "C. are"
+              ],
+              "answer": "A",
+              "explanation": "一般现在时的否定：主语是复数 cats，用 do not + 动词原形（do not like）。have not like / are not like 都不成立。",
+              "knowledgePointIds": [
+                "kp-enmv-u3-lion"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mv-u4",
+      "name": "Unit 4 故事填空",
+      "title": "两个好朋友的故事",
+      "desc": "Movers R&W Part 5：读故事，用 1–3 个词补全句子。",
+      "topics": [
+        {
+          "id": "mv-u4-t1",
+          "title": "Sally and Lucy",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-u4-story",
+            "kp-enmv-u4-passage"
+          ],
+          "modules": [
+            {
+              "id": "mv-u4-t1-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-u4-passage"
+              ]
+            },
+            {
+              "id": "mv-u4-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-u4-01",
+              "type": "blank",
+              "question": "Sally and Lucy liked ____ best.（填 1–3 个词）",
+              "answer": "dancing",
+              "explanation": "原文 \"their favourite hobby was dancing\" —— favourite hobby 就是 like … best，所以填 dancing（注意 -ing）。",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u4-02",
+              "type": "blank",
+              "question": "The girls often went shopping on ____ .",
+              "answer": "Saturdays / Saturday",
+              "explanation": "原文 \"On Saturdays, they often went to the shops in town\" —— 题目问的是星期几，答案是 Saturdays（每个周六）。",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u4-03",
+              "type": "blank",
+              "question": "Sally talked to ____ about the party at Lucy's.",
+              "answer": "her dad / dad / her father / father / daddy",
+              "explanation": "原文 \"One morning, Sally said to her dad\" —— 跟她说话的是爸爸。写 her dad 或 dad 都对。",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u4-04",
+              "type": "blank",
+              "question": "Sally wanted to wear a ____ to the party.",
+              "answer": "dress / a dress / new dress / a new dress",
+              "explanation": "原文 \"Can I have a new dress to wear for it?\" —— 她想穿连衣裙去派对。冠词写不写都对。",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u4-05",
+              "type": "blank",
+              "question": "It was Dad's idea to go shopping at the ____ that day.",
+              "answer": "market / a market / the market",
+              "explanation": "原文是爸爸提议 \"There is a market. We can go and find you a dress there.\" —— 去的是集市（market）。",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u4-06",
+              "type": "blank",
+              "question": "Both girls bought their party clothes on ____ from the market.",
+              "answer": "Wednesday / on Wednesday",
+              "explanation": "原文两个人异口同声 \"At the market on Wednesday\" —— 都是周三在集市买的。星期名首字母要大写。",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u4-07",
+              "type": "blank",
+              "question": "Sally gave Lucy ____ for her birthday.",
+              "answer": "a CD / CD / the CD",
+              "explanation": "礼物是 CD：Lucy 说 \"Oh great! A CD! Thanks!\" —— 答案写 a CD 或 CD 都行。",
+              "knowledgePointIds": [
+                "kp-enmv-u4-story"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mv-u7",
+      "name": "Unit 7 看释义写词",
+      "title": "看英文释义选词（13 个核心词）",
+      "desc": "Flyers R&W Part 1：先认类别词，再对特征，最后看拼写。",
+      "topics": [
+        {
+          "id": "mv-u7-t1",
+          "title": "看释义选词",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-u7-def"
+          ],
+          "modules": [
+            {
+              "id": "mv-u7-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-u7-01",
+              "type": "single",
+              "question": "This is a building where you can go if you want to catch a plane.",
+              "options": [
+                "A. an airport",
+                "B. a bus stop",
+                "C. a hotel"
+              ],
+              "answer": "A",
+              "explanation": "catch a plane（坐飞机）的地方是机场 an airport。a bus stop 是等公交的地方，a hotel 是住的地方。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-02",
+              "type": "single",
+              "question": "You find these in most towns, and people stay in them when they're away from home.",
+              "options": [
+                "A. hotels",
+                "B. banks",
+                "C. castles"
+              ],
+              "answer": "A",
+              "explanation": "「离家在外时住在那里」→ 旅馆 hotels。banks 是取钱的银行，castles 是城堡（不住客）。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-03",
+              "type": "single",
+              "question": "People often put this on their food. It is white and you get it from the sea.",
+              "options": [
+                "A. salt",
+                "B. jam",
+                "C. cereal"
+              ],
+              "answer": "A",
+              "explanation": "白白的、从海里来的、放在食物上的 → 盐 salt。jam 是果酱（甜、水果做），cereal 是麦片（早餐）。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-04",
+              "type": "single",
+              "question": "These insects have beautiful wings and fly from flower to flower.",
+              "options": [
+                "A. butterflies",
+                "B. swans",
+                "C. camels"
+              ],
+              "answer": "A",
+              "explanation": "insects（昆虫）+ 花间飞 → 蝴蝶 butterflies。swans 是天鹅（鸟），camels 是骆驼（哺乳动物）。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-05",
+              "type": "single",
+              "question": "This is made from sugar and different kinds of fruit. People often put it on bread.",
+              "options": [
+                "A. jam",
+                "B. a pizza",
+                "C. biscuits"
+              ],
+              "answer": "A",
+              "explanation": "糖 + 水果做的、涂在面包上 → 果酱 jam。a pizza 是烤的咸食，biscuits 是饼干。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-06",
+              "type": "single",
+              "question": "This animal has eight legs and lives near rocks in the sea.",
+              "options": [
+                "A. an octopus",
+                "B. a snail",
+                "C. a swan"
+              ],
+              "answer": "A",
+              "explanation": "八条腿 + 海里的石头旁 → 章鱼 an octopus。a snail 是蜗牛（陆生，壳），a swan 是水上的天鹅（两条腿）。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-07",
+              "type": "single",
+              "question": "Towns and cities usually have a lot of these and you go to them to get money.",
+              "options": [
+                "A. banks",
+                "B. castles",
+                "C. hotels"
+              ],
+              "answer": "A",
+              "explanation": "去那里取钱 → 银行 banks。castles 是古迹，hotels 是住宿。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-08",
+              "type": "single",
+              "question": "In story books for young children these are usually the homes of kings and queens.",
+              "options": [
+                "A. castles",
+                "B. banks",
+                "C. bus stops"
+              ],
+              "answer": "A",
+              "explanation": "国王和王后的家 → 城堡 castles（童话里的固定设定）。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-09",
+              "type": "single",
+              "question": "You cook this in an oven. It usually has cheese and tomatoes on the top.",
+              "options": [
+                "A. a pizza",
+                "B. jam",
+                "C. cereal"
+              ],
+              "answer": "A",
+              "explanation": "烤箱 + 上面有奶酪和番茄 → 披萨 a pizza。jam 不烤，cereal 是冷食冲牛奶。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-u7-10",
+              "type": "single",
+              "question": "Some people ride these animals when they need to travel across hot, dry places like deserts.",
+              "options": [
+                "A. camels",
+                "B. swans",
+                "C. butterflies"
+              ],
+              "answer": "A",
+              "explanation": "沙漠里骑的动物 → 骆驼 camels（驼峰储脂肪，能走很久不喝水）。",
+              "knowledgePointIds": [
+                "kp-enmv-u7-def"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

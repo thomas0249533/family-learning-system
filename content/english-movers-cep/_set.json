@@ -1,0 +1,39 @@
+{
+  "setId": "english-movers-cep-set",
+  "title": "剑桥少儿英语 Movers · 阅读写作（课外）",
+  "subject": "english",
+  "grade": 4,
+  "term": "up",
+  "edition": "剑桥少儿英语",
+  "importOrder": [
+    "special-english-movers-unit",
+    "special-english-movers-review",
+    "special-english-movers-mock"
+  ],
+  "packages": [
+    {
+      "file": "special-english-movers-unit.json",
+      "packageId": "special-english-movers-unit",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    },
+    {
+      "file": "special-english-movers-review.json",
+      "packageId": "special-english-movers-review",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    },
+    {
+      "file": "special-english-movers-mock.json",
+      "packageId": "special-english-movers-mock",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    }
+  ]
+}

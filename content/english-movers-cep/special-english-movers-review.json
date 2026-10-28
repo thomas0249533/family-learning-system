@@ -1,0 +1,695 @@
+{
+  "schemaVersion": "1.0",
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "special-english-movers-review",
+    "packageType": "special",
+    "isInternal": false,
+    "examMode": false,
+    "subject": "english",
+    "templateId": "english.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "剑桥少儿英语",
+    "title": "剑桥 Movers · 三套复习测试（阅读写作）",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-enmv-r1-cmp",
+      "type": "skill",
+      "title": "比较级与最高级：三句话定胜负",
+      "content": "① **两者相比** → 比较级 + than：taller than, funnier than, better than。\n② **三者以上比出第一名** → the + 最高级：the tallest, the funniest, the fastest。\n③ **一样高** → as + 原级 + as：as tall as（不能用 than）。\n特殊变化要背：good/well → better → best；bad → worse → worst；many/much → more → most。\n本题陷阱：`as tall ___ our teacher` 只能是 as（as…as 固定搭配）；`he is ___ than the teacher` 只能是 better（有 than 就不能用最高级）。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-r1-read",
+      "type": "skill",
+      "title": "读短文回答问题：答案在原文里",
+      "content": "这类题（Review Test Part 3）判分只认原文里的**词**，所以：\n① 先看问句的疑问词：What sport → 运动名；When → 时间；Who → 人；Where → 地点；What did he hurt → 身体部位；\n② 回原文找同一信息，抄 1–4 个词即可，不必写完整句；\n③ 注意时间：故事讲过去的事（went / fell / called / drove），回答时名词照抄就行，不必自己变时态。\n本题原文关键句：played basketball / the match the following Saturday / John fell / hurt his knee / Jane called their father / drove them to the hospital。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-r2-mat",
+      "type": "word",
+      "title": "材料词汇：paper / plastic / metal / wood / brick / glass",
+      "content": "这六个词是「这个东西用什么做的」这类谜语题的答案池：\n· paper 纸 → 书、报纸、本子（made of paper）\n· plastic 塑料 → 杯子、玩具、瓶子（轻、不碎）\n· metal 金属 → 滑梯、栏杆、钥匙（硬、凉、会生锈）\n· wood 木头 → 椅子、桌子（有木纹）\n· brick 砖 → 墙、花园围墙（一块块砌起来）\n· glass 玻璃 → 镜子、窗户、玻璃杯（透明、会碎）\n做题时先判断「东西是什么」，再想它一般用什么材料做 —— 题目常给出首字母（p / m / b / g）当提示。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-r2-modal",
+      "type": "skill",
+      "title": "must / Shall we / Let's：提议与必须",
+      "content": "· **must** 必须（规则、要求）：You must choose your avatar first.\n· **Shall we …?** 提建议并征求同意，句末是问号：Shall we play?\n· **Let's** = Let us，一起做某事：Let's start!（后面直接跟动词原形）\n· 副词位置：动词后面放方式副词 —— cross the river **carefully**（小心地过河）、shout **loudly**（大声喊）。\n判断口诀：句末有问号且是「我们一起…好吗」→ Shall；句首空且后面直接跟动词原形 → Let's；「必须」→ must。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-r3-adj",
+      "type": "word",
+      "title": "性格形容词：从行为反推品质",
+      "content": "这类题给的是「行为描述」，要反推人格词：\n· 爱交朋友、爱跟人说话 → **friendly** 友好的\n· 学习好、分数高 → **clever** 聪明的\n· 不容易害怕 → **brave** 勇敢的\n· 喜欢帮助别人 → **kind** 善良的\n· 起得晚、整天坐沙发 → **lazy** 懒的\n· 知道很多事、有很多故事 → **interesting** 有趣的\n记忆线索：behaviour → personality。看到 like doing / good at / not afraid 这类描述，先想「这是哪种性格的人」。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-enmv-r1-photo",
+      "type": "skill",
+      "title": "A photo of my class",
+      "content": "Look at this photo. These are the children who are in my class. Mia is the (1) ____ in the class. She's as tall (2) ____ our teacher, Mrs Green. Jake is the (3) ____ . He loves to make people laugh. He's standing next to Mia. Mary is the smallest but she's the (4) ____ runner. Melanie has got the longest hair and Kim has got the (5) ____ hair. Josh is the tallest boy and he's the best at maths. Sometimes I think he's (6) ____ than the teacher! Nathan is the quietest boy. He's standing between Kim and Melanie.",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 96,
+        "translation": "看看这张照片。这些是我班上的同学。Mia 是班上最高的，她跟我们老师 Green 太太一样高。Jake 是最滑稽的，他爱逗人笑，站在 Mia 旁边。Mary 最矮，但她是跑得最快的。Melanie 的头发最长，Kim 的头发最卷。Josh 是男生里最高的，数学最好。有时我觉得他比老师还厉害！Nathan 是最安静的男孩，他站在 Kim 和 Melanie 之间。"
+      }
+    },
+    {
+      "id": "kp-enmv-r1-story",
+      "type": "skill",
+      "title": "John and Jane",
+      "content": "Last Sunday, John and Jane went to the sports centre to play basketball with their friends. They all wanted to practise for the match the following Saturday. John ran and jumped to catch the ball but he fell and hurt his knee.\n\n'Ouch!' said John. 'What's the matter?' Jane asked. 'My knee hurts a lot,' said John. 'Let's call Dad.'\n\nJane called their father who drove them to the hospital. The doctor saw them immediately. He took John's temperature and examined his knee. Then he put a bandage on John's knee and said, 'You need to stay at home and rest.'\n\n'I want to play with my team on Saturday. Can I?' asked John.\n'No, I'm sorry,' said the doctor. 'You need to rest for a week.'",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 129,
+        "translation": "上周日，John 和 Jane 去体育中心和朋友们打篮球，他们都在为下周六的比赛练习。John 跑着跳起来接球，却摔倒了，伤到了膝盖。\n「哎哟！」John 说。「怎么了？」Jane 问。「我的膝盖很疼，」John 说，「我们给爸爸打电话吧。」\nJane 打给爸爸，爸爸开车送他们去医院。医生马上给他们看了，量了 John 的体温，检查了膝盖，然后给他缠上绷带，说：「你需要在家休息。」\n「我想周六和队里一起打球，可以吗？」John 问。「不行，对不起，」医生说，「你需要休息一周。」"
+      }
+    },
+    {
+      "id": "kp-enmv-r2-dialog",
+      "type": "skill",
+      "title": "Lost Island · 一个游戏",
+      "content": "Sam: What are you playing?\nKim: This is a new game called Lost Island. You (1) ____ go through the different places to find the treasure.\nSam: Sounds great. (2) ____ we play?\nKim: OK. So, this is the island. You (3) ____ first choose your avatar. Do you want to wear bright clothes or dark clothes?\nSam: Bright clothes with spots and stripes.\nKim: OK! (4) ____ start. You have to walk through the jungle slowly because there are snakes and insects. Then you must cross the river (5) ____ to get to the waterfall. The river is dangerous because the water moves very fast. Then you must climb the mountain quickly because there are bears.",
+      "prerequisites": [],
+      "metadata": {
+        "wordCount": 118,
+        "translation": "Sam：你在玩什么？\nKim：一个叫「迷失岛」的新游戏。你要穿过不同的地方去找宝藏。\nSam：听起来很棒。我们玩吧？\nKim：好。这就是那座岛。你要先选一个头像。你想穿亮色衣服还是深色衣服？\nSam：带圆点和条纹的亮色衣服。\nKim：好！开始吧。你要慢慢穿过丛林，因为那里有蛇和昆虫。然后你必须小心地过河，才能到瀑布。那条河很危险，水流得很快。然后你必须快速爬山，因为那里有熊。"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "mv-r1",
+      "name": "Review 1 比较级与短文",
+      "title": "Review Units 1–3",
+      "desc": "比较级/最高级 6 题 + 读故事回答 6 题。",
+      "topics": [
+        {
+          "id": "mv-r1-t1",
+          "title": "比较级与最高级",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-r1-cmp",
+            "kp-enmv-r1-photo"
+          ],
+          "modules": [
+            {
+              "id": "mv-r1-t1-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-r1-photo"
+              ]
+            },
+            {
+              "id": "mv-r1-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-r1-cmp"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-r1-01",
+              "type": "single",
+              "question": "Mia is the (1) ____ in the class.",
+              "options": [
+                "A. tallest",
+                "B. taller",
+                "C. tall"
+              ],
+              "answer": "A",
+              "explanation": "班上一群人里比出第一名 → the + 最高级 the tallest。taller 要跟 than 搭配，这里没有 than。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-cmp"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-02",
+              "type": "single",
+              "question": "She's as tall (2) ____ our teacher, Mrs Green.",
+              "options": [
+                "A. as",
+                "B. than",
+                "C. like"
+              ],
+              "answer": "A",
+              "explanation": "as + 原级 + as 是固定搭配：as tall as our teacher（和老师一样高）。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-cmp"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-03",
+              "type": "single",
+              "question": "Jake is the (3) ____ . He loves to make people laugh.",
+              "options": [
+                "A. funniest",
+                "B. funnier",
+                "C. funny"
+              ],
+              "answer": "A",
+              "explanation": "全班里最滑稽的那一个 → the funniest。funnier 后面必须跟 than。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-cmp"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-04",
+              "type": "single",
+              "question": "Mary is the smallest but she's the (4) ____ runner.",
+              "options": [
+                "A. fastest",
+                "B. faster",
+                "C. fast"
+              ],
+              "answer": "A",
+              "explanation": "「最矮但跑得最快」—— 全班范围比出第一名 → the fastest runner。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-cmp"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-05",
+              "type": "single",
+              "question": "Melanie has got the longest hair and Kim has got the (5) ____ hair.",
+              "options": [
+                "A. curliest",
+                "B. curlier",
+                "C. curly"
+              ],
+              "answer": "A",
+              "explanation": "前半句用的是 the longest（最高级），后半句并列，同样用 the curliest。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-cmp"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-06",
+              "type": "single",
+              "question": "Sometimes I think he's (6) ____ than the teacher!",
+              "options": [
+                "A. better",
+                "B. best",
+                "C. good"
+              ],
+              "answer": "A",
+              "explanation": "有 than 就一定是比较级；good 的比较级是 better（不规则变化）。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-cmp"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mv-r1-t2",
+          "title": "读故事回答问题",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-r1-read",
+            "kp-enmv-r1-story"
+          ],
+          "modules": [
+            {
+              "id": "mv-r1-t2-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-r1-story"
+              ]
+            },
+            {
+              "id": "mv-r1-t2-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-r1-read"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-r1-11",
+              "type": "blank",
+              "question": "What sport did they play with their friends?（They played ____ .）",
+              "answer": "basketball",
+              "explanation": "原文第一句 \"went to the sports centre to play basketball with their friends\"。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-read"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-12",
+              "type": "blank",
+              "question": "When was the match?",
+              "answer": "Saturday / the following Saturday / next Saturday / following Saturday",
+              "explanation": "原文 \"practise for the match the following Saturday\" —— 比赛在「接下来的那个周六」。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-read"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-13",
+              "type": "blank",
+              "question": "Who fell?",
+              "answer": "John",
+              "explanation": "原文 \"John ran and jumped to catch the ball but he fell\" —— 摔倒的是 John。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-read"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-14",
+              "type": "blank",
+              "question": "What did he hurt?",
+              "answer": "his knee / knee / the knee",
+              "explanation": "原文 \"he fell and hurt his knee\"；后面 John 自己也说 \"My knee hurts a lot\"。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-read"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-15",
+              "type": "blank",
+              "question": "Who did Jane call?",
+              "answer": "their dad / dad / their father / father / her father",
+              "explanation": "原文 \"Jane called their father who drove them to the hospital\"，也可以说 dad。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-read"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r1-16",
+              "type": "blank",
+              "question": "Where did they see the doctor?",
+              "answer": "at the hospital / the hospital / hospital",
+              "explanation": "原文 \"drove them to the hospital. The doctor saw them immediately\" —— 在医院看医生。",
+              "knowledgePointIds": [
+                "kp-enmv-r1-read"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mv-r2",
+      "name": "Review 2 材料与提议",
+      "title": "Review Units 4–6",
+      "desc": "材料谜语 6 题 + must / Shall / Let's 6 题。",
+      "topics": [
+        {
+          "id": "mv-r2-t1",
+          "title": "材料谜语",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-r2-mat"
+          ],
+          "modules": [
+            {
+              "id": "mv-r2-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-r2-mat"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-r2-01",
+              "type": "blank",
+              "question": "This is something you read. It's got a lot of pages and gives us information about what's happening in the world. It's made of ____ .",
+              "answer": "paper",
+              "explanation": "很多页、告诉我们世界上发生的事 → 报纸/书，材料是纸 paper。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-mat"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-02",
+              "type": "blank",
+              "question": "This is something you drink from. It's made of p____ and doesn't break.",
+              "answer": "plastic",
+              "explanation": "能喝东西、不会碎 → 塑料杯，材料是 plastic，题目已给首字母 p。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-mat"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-03",
+              "type": "blank",
+              "question": "This is something you find in the playground. It's fun to play on it. It's made of m____ .",
+              "answer": "metal",
+              "explanation": "操场上好玩的东西（滑梯、攀爬架）→ 金属 metal，首字母 m。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-mat"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-04",
+              "type": "blank",
+              "question": "This is something you sit on. It's got four legs and a back. It's often made of w____ .",
+              "answer": "wood",
+              "explanation": "四条腿、有靠背、坐着 → 椅子，常常是木头 wood，首字母 w。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-mat"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-05",
+              "type": "blank",
+              "question": "This is something you find at the end of a garden. It shows you where the garden finishes. It's made of b____ .",
+              "answer": "brick",
+              "explanation": "花园尽头、标示边界的墙 → 砖墙 brick，首字母 b。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-mat"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-06",
+              "type": "blank",
+              "question": "This is something you can look in to see your face. It's usually on the wall. It's made of g____ .",
+              "answer": "glass",
+              "explanation": "能照见自己、挂在墙上 → 镜子，材料是玻璃 glass，首字母 g。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-mat"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        },
+        {
+          "id": "mv-r2-t2",
+          "title": "Lost Island 对话填空",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-r2-modal",
+            "kp-enmv-r2-dialog"
+          ],
+          "modules": [
+            {
+              "id": "mv-r2-t2-m-read",
+              "type": "english.reading",
+              "title": "读一读",
+              "knowledgePointIds": [
+                "kp-enmv-r2-dialog"
+              ]
+            },
+            {
+              "id": "mv-r2-t2-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-r2-modal"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-r2-11",
+              "type": "single",
+              "question": "You (1) ____ go through the different places to find the treasure.",
+              "options": [
+                "A. must",
+                "B. Shall",
+                "C. Let's"
+              ],
+              "answer": "A",
+              "explanation": "游戏规则、必须做的事 → must。后半句 \"You have to walk…\" 也在提示这是「必须」。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-modal"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-12",
+              "type": "single",
+              "question": "Sounds great. (2) ____ we play?",
+              "options": [
+                "A. Shall",
+                "B. must",
+                "C. Let's"
+              ],
+              "answer": "A",
+              "explanation": "句末是问号、意思是「我们玩吧，好吗」→ Shall we play?",
+              "knowledgePointIds": [
+                "kp-enmv-r2-modal"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-13",
+              "type": "single",
+              "question": "You (3) ____ first choose your avatar.",
+              "options": [
+                "A. must",
+                "B. Shall",
+                "C. carefully"
+              ],
+              "answer": "A",
+              "explanation": "必须先做的事 → must choose（must 后面动词原形）。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-modal"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-14",
+              "type": "single",
+              "question": "OK! (4) ____ start.",
+              "options": [
+                "A. Let's",
+                "B. Shall",
+                "C. must"
+              ],
+              "answer": "A",
+              "explanation": "「我们一起开始吧」→ Let's start!（Let's = Let us，后跟动词原形）。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-modal"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-15",
+              "type": "single",
+              "question": "Then you must cross the river (5) ____ to get to the waterfall.",
+              "options": [
+                "A. carefully",
+                "B. loudly",
+                "C. must"
+              ],
+              "answer": "A",
+              "explanation": "过河要「小心地」，用方式副词 carefully；loudly 是大声地，跟过河不搭。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-modal"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r2-16",
+              "type": "single",
+              "question": "Shout (6) ____ at the bear and then run as fast as you can!",
+              "options": [
+                "A. loudly",
+                "B. carefully",
+                "C. Shall"
+              ],
+              "answer": "A",
+              "explanation": "对熊要「大声喊」→ shout loudly。",
+              "knowledgePointIds": [
+                "kp-enmv-r2-modal"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mv-r3",
+      "name": "Review 3 性格形容词",
+      "title": "Review Units 7–9",
+      "desc": "从行为描述反推性格词 6 题。",
+      "topics": [
+        {
+          "id": "mv-r3-t1",
+          "title": "性格形容词",
+          "desc": "",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-enmv-r3-adj"
+          ],
+          "modules": [
+            {
+              "id": "mv-r3-t1-m-note",
+              "type": "english.grammar",
+              "title": "做题要点",
+              "knowledgePointIds": [
+                "kp-enmv-r3-adj"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "mv-r3-01",
+              "type": "blank",
+              "question": "If you like talking to your friends and meeting new people, you are a ____ person.",
+              "answer": "friendly",
+              "explanation": "爱跟朋友说话、爱认识新朋友 → friendly 友好的。题目里已把这个词当例句给出，注意拼写。",
+              "knowledgePointIds": [
+                "kp-enmv-r3-adj"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r3-02",
+              "type": "blank",
+              "question": "If you are good at school and get good marks, you are a ____ person.",
+              "answer": "clever",
+              "explanation": "在学校表现好、分数高 → clever 聪明的。",
+              "knowledgePointIds": [
+                "kp-enmv-r3-adj"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r3-03",
+              "type": "blank",
+              "question": "If you don't get scared easily, you are a ____ person.",
+              "answer": "brave",
+              "explanation": "不容易被吓到 → brave 勇敢的。",
+              "knowledgePointIds": [
+                "kp-enmv-r3-adj"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r3-04",
+              "type": "blank",
+              "question": "If you like helping people, you are a ____ person.",
+              "answer": "kind",
+              "explanation": "喜欢帮助别人 → kind 善良的。",
+              "knowledgePointIds": [
+                "kp-enmv-r3-adj"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r3-05",
+              "type": "blank",
+              "question": "If you like getting up late and sitting on the sofa all day, you are a ____ person.",
+              "answer": "lazy",
+              "explanation": "起得晚、整天坐沙发 → lazy 懒的。",
+              "knowledgePointIds": [
+                "kp-enmv-r3-adj"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "mv-r3-06",
+              "type": "blank",
+              "question": "If you know a lot of things and have a lot of stories to tell, you are an ____ person.",
+              "answer": "interesting",
+              "explanation": "知道很多事、有很多故事 → interesting 有趣的（前面用 an，因为 interesting 以元音音素开头）。",
+              "knowledgePointIds": [
+                "kp-enmv-r3-adj"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
