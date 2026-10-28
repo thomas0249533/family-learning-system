@@ -1,6 +1,7 @@
 import { db } from '@/db'
 import { unzipSync } from 'fflate'
 import { normalizePackage, type NormalizeIssue } from './normalizePackage'
+import { countImageExercises } from './imageRefs'
 import { invalidateOwnerIndex } from '@core/progress/ownerIndexCache'
 import { ensureE1Migrated } from '@core/storage/migrateV3Recovery'
 import {
@@ -206,6 +207,20 @@ export const PackageImporter = {
     if (errors.length > 0) return { success: false, errors, warnings }
     if (!normalized) {
       return { success: false, errors: [{ level: 'error', code: 'E999', path: '$', message: '规范化失败' }] }
+    }
+
+    // 单包 JSON 结构上不带图片：含图的包必须走 .lpkgset.zip。
+    // 不提示的话，导入会"成功"、题目正常出现、每道带图的题下面一块「配图缺失」，
+    // 而用户完全无法从导入结果里看出问题出在文件形式上（V2.12.3 补的提示）。
+    const imgCount = countImageExercises(normalized)
+    if (imgCount > 0) {
+      warnings.push({
+        level: 'warning',
+        code: 'W037',
+        path: 'exercises',
+        message: `本包有 ${imgCount} 道题带配图，但单个 JSON 文件不携带图片文件，这些题会显示「配图缺失」`,
+        hint: '请改用 .lpkgset.zip 集合包导入 —— 图片在 ZIP 内的 packages/<包id>/assets/ 下',
+      })
     }
 
     // 依赖检查

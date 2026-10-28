@@ -91,6 +91,17 @@
     <n-modal v-model:show="showSetResultModal" preset="card" :title="setResultTitle" style="max-width: 680px;">
       <div v-if="setResultSuccess" class="set-result">
         <div class="result-summary">✅ 已成功导入 <b>{{ setImported }}</b> 个学习包</div>
+        <!--
+          配图入库数量（V2.12.3）。为什么必须显示：
+          「题在、图没了」是这条链路唯一的静默失败形态 —— ZIP 里的图没进
+          IndexedDB 时，题照样导入成功、练习照样能答，只有画面上多出一行
+          「配图缺失」淡字。没有这个数字，谁也判断不了到底是「包本来就无图」
+          还是「图没入库」，只能靠猜。
+        -->
+        <div class="result-assets" :class="{ 'result-assets--zero': setAssetsImported === 0 }">
+          <template v-if="setAssetsImported > 0">🖼️ 其中配图 <b>{{ setAssetsImported }}</b> 张已入库</template>
+          <template v-else>本批 ZIP 内没有配图文件（有插图的包这里会显示张数）</template>
+        </div>
         <div class="pkg-list">
           <n-tag v-for="id in setPackageIds" :key="id" size="small" type="success" style="margin: 4px 4px 0 0;">
             {{ id }}
@@ -166,6 +177,7 @@ const termOptions = [
 const setResultSuccess = ref(false)
 const setResultTitle = ref('导入结果')
 const setImported = ref(0)
+const setAssetsImported = ref(0)
 const setPackageIds = ref<string[]>([])
 const setWarnings = ref<ImportIssue[]>([])
 const setErrors = ref<ImportIssue[]>([])
@@ -310,6 +322,7 @@ async function handleUploadZip({ file, onFinish }: any) {
   setResultSuccess.value = result.success
   setResultTitle.value = result.success ? '✅ 批量导入成功' : '❌ 批量导入失败'
   setImported.value = result.imported ?? 0
+  setAssetsImported.value = result.assetsImported ?? 0
   setPackageIds.value = result.packageIds ?? []
   setWarnings.value = result.warnings ?? []
   setErrors.value = result.errors ?? []
@@ -433,6 +446,14 @@ async function handleUploadZip({ file, onFinish }: any) {
   margin-bottom: 12px;
   b { color: $primary-text; font-size: 20px; }
   &.error { color: $danger-text; }
+}
+/* 配图数量：有数字时是"确认图进来了"，0 时降成淡字说明，不制造焦虑 */
+.set-result .result-assets {
+  font-size: $font-xs;
+  color: $text-sub;
+  margin: -6px 0 12px;
+  b { color: $primary-text; }
+  &--zero { color: $text-muted; }
 }
 .pkg-list { margin-bottom: 12px; }
 .warn-list {

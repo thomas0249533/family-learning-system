@@ -20,6 +20,8 @@ import {
   MAX_ASSET_BYTES,
 } from '@core/package-manager/assetPath'
 import { planPackageAssets } from '@core/package-manager/packageAssetStore'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { normalizePackage } from '@core/importer/normalizePackage'
 import { buildLpkgsetZip } from '../scripts/lib/packSet'
 
@@ -364,5 +366,57 @@ describe('buildLpkgsetZip · 图片进 zip 的位置', () => {
     const names = entries(zip)
     expect(names).toContain('packages/pkg-a.json')
     expect(names.some((n) => n.endsWith('.png'))).toBe(false)
+  })
+})
+
+/**
+ * 导入结果的「配图数量」反馈（V2.12.3）
+ *
+ * 这条链路唯一的静默失败形态是「题在、图没了」：ZIP 里的图没进 IndexedDB 时，
+ * 包照样导入成功、题照样能答，只有答题页多出一行「配图缺失」淡字。而这个数字
+ * 恰好把两种情况区分开了 —— 显示 13 张 = 图确实入库了；不显示 = 这个 ZIP 本来就无图。
+ * 没有它，家里那台机器报「图不出来」时只能靠猜（V2.12 的四上看图写话/巧数图形就踩过）。
+ */
+describe('导入结果 · 配图数量反馈', () => {
+  const src = readFileSync(resolve(process.cwd(), 'src/views/settings/ImportWizard.vue'), 'utf-8')
+
+  it('结果弹窗渲染了资产数量，且数字来自真实返回值', () => {
+    expect(src).toContain('setAssetsImported')
+    expect(src).toContain('result.assetsImported')
+    // 0 张时要有一句中性说明，不能什么都不显示（否则分不清"无图"和"没入库"）
+    expect(src).toMatch(/setAssetsImported === 0/)
+  })
+
+  it('importService 仍然把 assetsImported 计入返回值（变量改名会让 UI 恒显示 0）', () => {
+    const svc = readFileSync(resolve(process.cwd(), 'src/core/importer/importService.ts'), 'utf-8')
+    expect(svc).toMatch(/assetsImported\s*\+=/)
+    expect(svc).toMatch(/return\s*\{[\s\S]*assetsImported/)
+  })
+})
+
+/**
+ * 单包 JSON 导入的「无图」警告（V2.12.3）
+ *
+ * `assetPath` 只负责"引用的路径合不合法"，`normalizePackage` 靠 `assetPaths` 判断
+ * "图在不在 ZIP 里" —— 但**单包 JSON 这条路根本没有 assetPaths**（.json 不携带字节），
+ * 于是校验直接跳过，含图的包会静默导入成一堆「配图缺失」。
+ * 数清题数、给出 W037，是这条路上唯一的提示机会。
+ */
+describe('单包 JSON 导入 · 含图必须提示', () => {
+  it('countImageExercises 只数 image 非空的题，形状不对返回 0', async () => {
+    const { countImageExercises } = await import('@core/importer/imageRefs')
+    expect(countImageExercises({ exercises: [{ image: 'assets/a.svg' }, {}, { image: '  ' }] })).toBe(1)
+    expect(countImageExercises({ exercises: [] })).toBe(0)
+    expect(countImageExercises({})).toBe(0)
+    expect(countImageExercises(null)).toBe(0)
+    expect(countImageExercises(undefined)).toBe(0)
+    expect(countImageExercises({ exercises: 'oops' as any })).toBe(0)
+  })
+
+  it('importService 在单包导入路径上产出 W037，并指向 .lpkgset.zip', () => {
+    const svc = readFileSync(resolve(process.cwd(), 'src/core/importer/importService.ts'), 'utf-8')
+    expect(svc).toContain("code: 'W037'")
+    expect(svc).toMatch(/countImageExercises\(normalized\)/)
+    expect(svc).toContain('.lpkgset.zip')
   })
 })
