@@ -26,14 +26,19 @@ const check = (ok, label, extra = '') => {
   if (!ok) fail++
 }
 
-// 1. tag 指向 main 的实际提交
+// 1. tag 必须挂在 main 的历史上（发版后 main 会继续前进，所以允许 tag 是祖先）
 const tagRef = await get(`/repos/${REPO}/git/ref/tags/${TAG}`)
 let targetSha = tagRef.object?.sha
 if (tagRef.object?.type === 'tag') {
   targetSha = (await get(`/repos/${REPO}/git/tags/${tagRef.object.sha}`)).object?.sha
 }
-const main = await get(`/repos/${REPO}/git/ref/heads/main`)
-check(targetSha === main.object.sha, `tag ${TAG} 与 main 指向同一提交`, String(targetSha).slice(0, 8))
+const cmp = await get(`/repos/${REPO}/compare/${TAG}...main`)
+// identical = 恰好同点；ahead = main 领先（发版后又提交了东西），都算正常
+check(
+  ['identical', 'ahead'].includes(cmp.status),
+  `tag ${TAG} 挂在 main 历史上`,
+  `${String(targetSha).slice(0, 8)} / main 领先 ${cmp.ahead_by ?? 0} 个提交`,
+)
 
 // 2. Release 与资产
 const rel = await get(`/repos/${REPO}/releases/tags/${TAG}`)
