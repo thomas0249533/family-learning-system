@@ -525,3 +525,47 @@ describe('gradeBlank · 括号里的并列补充（单空）', () => {
     expect(gradeBlank('庚', long)).toBe(false)
   })
 })
+
+describe('gradeBlank · 末尾句末标点容错', () => {
+  // 孩子在答案框里顺手带句号是极常见的书写习惯（`直角。` / `70。`），
+  // 与「答案带单位被判错」是同一类缺陷：孩子写的完全正确却被判错。
+  // 真实案例：content/math-4-up-rjb/special-math-4-up-kaodian.json :: kd4-33-2
+  //   Q: 长方形和正方形也是平行四边形，特殊在四个角都是（　）。
+  //   A: 直角
+
+  it('孩子带句号 → 判对', () => {
+    expect(gradeBlank('直角。', '直角')).toBe(true)
+    expect(gradeBlank('直角。', '直角')).toBe(true)
+    expect(gradeBlank('70。', '70')).toBe(true)
+  })
+
+  it('孩子带英文句号/感叹号/问号 → 判对', () => {
+    expect(gradeBlank('直角.', '直角')).toBe(true)
+    expect(gradeBlank('直角！', '直角')).toBe(true)
+    expect(gradeBlank('直角?', '直角')).toBe(true)
+  })
+
+  it('标准答案自带句号、孩子不带 → 判对（两侧对称剥除）', () => {
+    expect(gradeBlank('直角', '直角。')).toBe(true)
+  })
+
+  it('**只剥末尾**：答案中间的标点是语义，必须保留', () => {
+    // 顿号是「列举型」并列（淹没、淹死），中间的标点不能被剥
+    expect(gradeBlank('淹没、淹死', '淹没、淹死')).toBe(true)
+    // 分号分隔的多空
+    expect(gradeBlank('48亿；60', '48 亿；60')).toBe(true)
+    // 剥末尾不能影响中间：'淹没、淹死' 末尾没标点，仍是两个并列项
+    expect(gradeBlank('淹没、淹死。', '淹没、淹死')).toBe(true)
+  })
+
+  it('纯标点输入 → 剥完为空 → 判错（不放行空答案）', () => {
+    expect(gradeBlank('。', '直角')).toBe(false)
+    expect(gradeBlank('。。。', '直角')).toBe(false)
+  })
+
+  it('末尾标点不影响多空的段数与位置', () => {
+    expect(gradeBlank('70,锐角。', '70,锐角')).toBe(true)
+    expect(gradeBlank('锐角,70。', '70,锐角')).toBe(false)  // 顺序错仍判错
+    expect(gradeBlank('70。', '70,锐角')).toBe(false)      // 漏填一个空仍判错
+  })
+})
