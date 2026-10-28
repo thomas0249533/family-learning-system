@@ -8,12 +8,21 @@
   "term": "up",
   "edition": "人教版",
   "importOrder": [
-    "special-chinese-2-up-vocab"
+    "special-chinese-2-up-vocab",
+    "special-chinese-2-up-kantu"
   ],
   "packages": [
     {
       "file": "special-chinese-2-up-vocab.json",
       "packageId": "special-chinese-2-up-vocab",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    },
+    {
+      "file": "special-chinese-2-up-kantu.json",
+      "packageId": "special-chinese-2-up-kantu",
       "type": "special",
       "visible": true,
       "examMode": false,
