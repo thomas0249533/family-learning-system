@@ -1,0 +1,650 @@
+{
+ "manifest": {
+  "schemaVersion": "1.0",
+  "packageId": "special-math-4-up-shape",
+  "title": "四年级思维训练 · 巧数图形",
+  "subject": "math",
+  "grade": 4,
+  "term": "up",
+  "edition": "通用",
+  "packageType": "special",
+  "examMode": false,
+  "dependencies": []
+ },
+ "knowledgePoints": [
+  {
+   "id": "kp-seg",
+   "type": "concept",
+   "title": "数线段：任取两个点",
+   "content": "一条线上有 n 个点，线段总数 = n×(n−1)÷2。也可以按间隔分类：相邻两点 n−1 条，隔一个点 n−2 条……一直到首尾相连 1 条。两条不共线的线（比如直角折线）要分开算再相加。"
+  },
+  {
+   "id": "kp-angle",
+   "type": "concept",
+   "title": "数角：由射线决定",
+   "content": "从同一个点引出的角，完全由「取哪两条射线」决定：n 条射线 → n×(n−1)÷2 个角。注意平角、钝角也要算，只要两条射线不重合就是一个角。"
+  },
+  {
+   "id": "kp-tri",
+   "type": "concept",
+   "title": "数三角形：先小后大，按大小分类",
+   "content": "先把最小的三角形数清楚，再看几个小三角形能拼成一个大三角形。关键是「每一条底边线段对应一个三角形」——底边被分成几段，就从这些段里任取连续几段。"
+  },
+  {
+   "id": "kp-rect",
+   "type": "concept",
+   "title": "数长方形：横边 × 竖边",
+   "content": "长方形由「两条横线 + 两条竖线」确定。先数出所有横线之间的线段数，再数竖线之间的线段数，两者相乘就是长方形总数。数正方形要按边长分类：1 格、2 格、3 格……分别数完再相加。"
+  }
+ ],
+ "units": [
+  {
+   "id": "u1",
+   "name": "数线段",
+   "topics": [
+    {
+     "id": "u1-t1",
+     "title": "数线段（3 题）",
+     "knowledgePointIds": [
+      "kp-seg"
+     ],
+     "exercises": [
+      {
+       "id": "shape-q01",
+       "type": "single",
+       "question": "下图中一条直线上有 4 个点，图中一共有多少条线段？",
+       "options": [
+        "A. 6",
+        "B. 4",
+        "C. 5",
+        "D. 8"
+       ],
+       "answer": "A",
+       "explanation": "按间隔分类：相邻两点组成 3 条，隔一个点的 2 条，首尾相连的 1 条，3+2+1=6。也可以想成「4 个点任取 2 个」，4×3÷2=6。正确答案是 6。",
+       "knowledgePointIds": [
+        "kp-seg"
+       ],
+       "image": "assets/q01.svg",
+       "imageAlt": "一条水平直线上从左到右依次标出 4 个点",
+       "metadata": {
+        "difficulty": "基础"
+       }
+      },
+      {
+       "id": "shape-q02",
+       "type": "single",
+       "question": "下图中一条直线上有 5 个点，图中一共有多少条线段？",
+       "options": [
+        "A. 5",
+        "B. 10",
+        "C. 8",
+        "D. 12"
+       ],
+       "answer": "B",
+       "explanation": "4+3+2+1=10 条；或 5×4÷2=10。点越多越要靠「任取两点」，一条条数一定会漏。正确答案是 10。",
+       "knowledgePointIds": [
+        "kp-seg"
+       ],
+       "image": "assets/q02.svg",
+       "imageAlt": "一条水平直线上从左到右依次标出 5 个点",
+       "metadata": {
+        "difficulty": "基础"
+       }
+      },
+      {
+       "id": "shape-q03",
+       "type": "single",
+       "question": "下图是一个直角折线，横线上有 4 个点、竖线上有 3 个点（拐角那个点算在两条线上），图中一共有多少条线段？",
+       "options": [
+        "A. 6",
+        "B. 7",
+        "C. 9",
+        "D. 10"
+       ],
+       "answer": "C",
+       "explanation": "横线 4 个点：4×3÷2=6 条；竖线 3 个点：3×2÷2=3 条。跨过拐角的两个点不共线，连不成线段，所以是 6+3=9 条。正确答案是 9。",
+       "knowledgePointIds": [
+        "kp-seg"
+       ],
+       "image": "assets/q03.svg",
+       "imageAlt": "一条横线和一条竖线组成直角，横线上标 4 个点，竖线上标 3 个点，拐角处共用 1 个点",
+       "metadata": {
+        "difficulty": "进阶"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u2",
+   "name": "数角",
+   "topics": [
+    {
+     "id": "u2-t1",
+     "title": "数角（2 题）",
+     "knowledgePointIds": [
+      "kp-angle"
+     ],
+     "exercises": [
+      {
+       "id": "shape-q04",
+       "type": "single",
+       "question": "下图中从同一个点引出 4 条射线，图中一共有多少个角？",
+       "options": [
+        "A. 4",
+        "B. 5",
+        "C. 8",
+        "D. 6"
+       ],
+       "answer": "D",
+       "explanation": "每两条射线夹出一个角：4×3÷2=6 个。按「只隔 1 条射线的有几个、隔 2 条的…」数也是 3+2+1=6。正确答案是 6。",
+       "knowledgePointIds": [
+        "kp-angle"
+       ],
+       "image": "assets/q04.svg",
+       "imageAlt": "一个点向右上方引出 4 条等长射线，方向各不相同",
+       "metadata": {
+        "difficulty": "基础"
+       }
+      },
+      {
+       "id": "shape-q05",
+       "type": "single",
+       "question": "下图中从同一个点引出 5 条射线，图中一共有多少个角？",
+       "options": [
+        "A. 10",
+        "B. 5",
+        "C. 8",
+        "D. 12"
+       ],
+       "answer": "A",
+       "explanation": "5×4÷2=10 个。射线越多越要按「任取两条」算，不要逐个四边形去数。正确答案是 10。",
+       "knowledgePointIds": [
+        "kp-angle"
+       ],
+       "image": "assets/q05.svg",
+       "imageAlt": "一个点向右上方引出 5 条等长射线，方向由低到高依次排开",
+       "metadata": {
+        "difficulty": "进阶"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u3",
+   "name": "数三角形",
+   "topics": [
+    {
+     "id": "u3-t1",
+     "title": "数三角形（4 题）",
+     "knowledgePointIds": [
+      "kp-tri"
+     ],
+     "exercises": [
+      {
+       "id": "shape-q06",
+       "type": "single",
+       "question": "下图是一个三角形，从顶点向底边画了一条线。图中一共有多少个三角形？",
+       "options": [
+        "A. 2",
+        "B. 3",
+        "C. 4",
+        "D. 6"
+       ],
+       "answer": "B",
+       "explanation": "先数小的：左右各 1 个，共 2 个；再数两个小三角形合起来的大三角形 1 个。2+1=3 个。正确答案是 3。",
+       "knowledgePointIds": [
+        "kp-tri"
+       ],
+       "image": "assets/q06.svg",
+       "imageAlt": "一个三角形，从上方顶点向底边中点画了一条竖线",
+       "metadata": {
+        "difficulty": "基础"
+       }
+      },
+      {
+       "id": "shape-q07",
+       "type": "single",
+       "question": "下图是一个三角形，从顶点向底边画了两条线，把底边分成 3 段。图中一共有多少个三角形？",
+       "options": [
+        "A. 3",
+        "B. 5",
+        "C. 6",
+        "D. 8"
+       ],
+       "answer": "C",
+       "explanation": "底边被分成 3 段，每个「底边线段」都对应一个三角形：单段 3 个、两段合起来 2 个、三段合起来 1 个，3+2+1=6 个。正确答案是 6。",
+       "knowledgePointIds": [
+        "kp-tri"
+       ],
+       "image": "assets/q07.svg",
+       "imageAlt": "一个三角形，从上方顶点向底边画了两条线，底边被分成三段",
+       "metadata": {
+        "difficulty": "进阶"
+       }
+      },
+      {
+       "id": "shape-q08",
+       "type": "single",
+       "question": "下图三角形中，三条边的中点两两相连。图中一共有多少个三角形？",
+       "options": [
+        "A. 4",
+        "B. 6",
+        "C. 9",
+        "D. 5"
+       ],
+       "answer": "D",
+       "explanation": "三条中位线把大三角形分成 4 个同样的小三角形，再加上整个大三角形 1 个，4+1=5 个。注意：两个小三角形拼成的平行四边形不是三角形。正确答案是 5。",
+       "knowledgePointIds": [
+        "kp-tri"
+       ],
+       "image": "assets/q08.svg",
+       "imageAlt": "一个三角形，三条边的中点两两用线连接，中间形成一个小三角形",
+       "metadata": {
+        "difficulty": "进阶"
+       }
+      },
+      {
+       "id": "shape-q09",
+       "type": "single",
+       "question": "下图是一个正方形，画了两条对角线。图中一共有多少个三角形？",
+       "options": [
+        "A. 8",
+        "B. 4",
+        "C. 6",
+        "D. 10"
+       ],
+       "answer": "A",
+       "explanation": "两条对角线交出中心点。单个小三角形 4 个；由两个小三角形拼成的（以正方形一条边为底的）4 个。4+4=8 个。正确答案是 8。",
+       "knowledgePointIds": [
+        "kp-tri"
+       ],
+       "image": "assets/q09.svg",
+       "imageAlt": "一个正方形，两条对角线交叉，把正方形分成四个小三角形",
+       "metadata": {
+        "difficulty": "挑战"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "u4",
+   "name": "数长方形和正方形",
+   "topics": [
+    {
+     "id": "u4-t1",
+     "title": "数长方形和正方形（4 题）",
+     "knowledgePointIds": [
+      "kp-rect"
+     ],
+     "exercises": [
+      {
+       "id": "shape-q10",
+       "type": "single",
+       "question": "下图由 2 行 3 列的小方格组成，图中一共有多少个长方形？（正方形也算长方形）",
+       "options": [
+        "A. 6",
+        "B. 18",
+        "C. 12",
+        "D. 24"
+       ],
+       "answer": "B",
+       "explanation": "先数横边上的线段数：4 个点 → 4×3÷2=6 条；再数竖边：3 个点 → 3 条。每条横边配每条竖边都确定一个长方形，6×3=18 个。正确答案是 18。",
+       "knowledgePointIds": [
+        "kp-rect"
+       ],
+       "image": "assets/q10.svg",
+       "imageAlt": "两行三列共六个小方格组成的网格",
+       "metadata": {
+        "difficulty": "基础"
+       }
+      },
+      {
+       "id": "shape-q11",
+       "type": "single",
+       "question": "下图由 3 行 3 列的小方格组成，图中一共有多少个长方形？（正方形也算长方形）",
+       "options": [
+        "A. 9",
+        "B. 18",
+        "C. 36",
+        "D. 40"
+       ],
+       "answer": "C",
+       "explanation": "横边 4 个点 → 6 条线段，竖边同样 6 条，6×6=36 个。用「横边取两条、竖边取两条」来算，比一个一个数可靠得多。正确答案是 36。",
+       "knowledgePointIds": [
+        "kp-rect"
+       ],
+       "image": "assets/q11.svg",
+       "imageAlt": "三行三列共九个小方格组成的网格",
+       "metadata": {
+        "difficulty": "进阶"
+       }
+      },
+      {
+       "id": "shape-q12",
+       "type": "single",
+       "question": "下图由 2 行 3 列的小方格组成，图中一共有多少个正方形？",
+       "options": [
+        "A. 6",
+        "B. 9",
+        "C. 12",
+        "D. 8"
+       ],
+       "answer": "D",
+       "explanation": "按边长分类：边长 1 格的有 2×3=6 个；边长 2 格的有 1×2=2 个。6+2=8 个。边长超过 2 格就放不下了。正确答案是 8。",
+       "knowledgePointIds": [
+        "kp-rect"
+       ],
+       "image": "assets/q12.svg",
+       "imageAlt": "两行三列共六个小方格组成的网格",
+       "metadata": {
+        "difficulty": "基础"
+       }
+      },
+      {
+       "id": "shape-q13",
+       "type": "single",
+       "question": "下图由 3 行 3 列的小方格组成，图中一共有多少个正方形？",
+       "options": [
+        "A. 14",
+        "B. 9",
+        "C. 12",
+        "D. 18"
+       ],
+       "answer": "A",
+       "explanation": "按边长分类：1 格 3×3=9 个；2 格 2×2=4 个；3 格 1×1=1 个。9+4+1=14 个。正确答案是 14。",
+       "knowledgePointIds": [
+        "kp-rect"
+       ],
+       "image": "assets/q13.svg",
+       "imageAlt": "三行三列共九个小方格组成的网格",
+       "metadata": {
+        "difficulty": "挑战"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "exercises": [
+  {
+   "id": "shape-q01",
+   "type": "single",
+   "question": "下图中一条直线上有 4 个点，图中一共有多少条线段？",
+   "options": [
+    "A. 6",
+    "B. 4",
+    "C. 5",
+    "D. 8"
+   ],
+   "answer": "A",
+   "explanation": "按间隔分类：相邻两点组成 3 条，隔一个点的 2 条，首尾相连的 1 条，3+2+1=6。也可以想成「4 个点任取 2 个」，4×3÷2=6。正确答案是 6。",
+   "knowledgePointIds": [
+    "kp-seg"
+   ],
+   "image": "assets/q01.svg",
+   "imageAlt": "一条水平直线上从左到右依次标出 4 个点",
+   "metadata": {
+    "difficulty": "基础"
+   }
+  },
+  {
+   "id": "shape-q02",
+   "type": "single",
+   "question": "下图中一条直线上有 5 个点，图中一共有多少条线段？",
+   "options": [
+    "A. 5",
+    "B. 10",
+    "C. 8",
+    "D. 12"
+   ],
+   "answer": "B",
+   "explanation": "4+3+2+1=10 条；或 5×4÷2=10。点越多越要靠「任取两点」，一条条数一定会漏。正确答案是 10。",
+   "knowledgePointIds": [
+    "kp-seg"
+   ],
+   "image": "assets/q02.svg",
+   "imageAlt": "一条水平直线上从左到右依次标出 5 个点",
+   "metadata": {
+    "difficulty": "基础"
+   }
+  },
+  {
+   "id": "shape-q03",
+   "type": "single",
+   "question": "下图是一个直角折线，横线上有 4 个点、竖线上有 3 个点（拐角那个点算在两条线上），图中一共有多少条线段？",
+   "options": [
+    "A. 6",
+    "B. 7",
+    "C. 9",
+    "D. 10"
+   ],
+   "answer": "C",
+   "explanation": "横线 4 个点：4×3÷2=6 条；竖线 3 个点：3×2÷2=3 条。跨过拐角的两个点不共线，连不成线段，所以是 6+3=9 条。正确答案是 9。",
+   "knowledgePointIds": [
+    "kp-seg"
+   ],
+   "image": "assets/q03.svg",
+   "imageAlt": "一条横线和一条竖线组成直角，横线上标 4 个点，竖线上标 3 个点，拐角处共用 1 个点",
+   "metadata": {
+    "difficulty": "进阶"
+   }
+  },
+  {
+   "id": "shape-q04",
+   "type": "single",
+   "question": "下图中从同一个点引出 4 条射线，图中一共有多少个角？",
+   "options": [
+    "A. 4",
+    "B. 5",
+    "C. 8",
+    "D. 6"
+   ],
+   "answer": "D",
+   "explanation": "每两条射线夹出一个角：4×3÷2=6 个。按「只隔 1 条射线的有几个、隔 2 条的…」数也是 3+2+1=6。正确答案是 6。",
+   "knowledgePointIds": [
+    "kp-angle"
+   ],
+   "image": "assets/q04.svg",
+   "imageAlt": "一个点向右上方引出 4 条等长射线，方向各不相同",
+   "metadata": {
+    "difficulty": "基础"
+   }
+  },
+  {
+   "id": "shape-q05",
+   "type": "single",
+   "question": "下图中从同一个点引出 5 条射线，图中一共有多少个角？",
+   "options": [
+    "A. 10",
+    "B. 5",
+    "C. 8",
+    "D. 12"
+   ],
+   "answer": "A",
+   "explanation": "5×4÷2=10 个。射线越多越要按「任取两条」算，不要逐个四边形去数。正确答案是 10。",
+   "knowledgePointIds": [
+    "kp-angle"
+   ],
+   "image": "assets/q05.svg",
+   "imageAlt": "一个点向右上方引出 5 条等长射线，方向由低到高依次排开",
+   "metadata": {
+    "difficulty": "进阶"
+   }
+  },
+  {
+   "id": "shape-q06",
+   "type": "single",
+   "question": "下图是一个三角形，从顶点向底边画了一条线。图中一共有多少个三角形？",
+   "options": [
+    "A. 2",
+    "B. 3",
+    "C. 4",
+    "D. 6"
+   ],
+   "answer": "B",
+   "explanation": "先数小的：左右各 1 个，共 2 个；再数两个小三角形合起来的大三角形 1 个。2+1=3 个。正确答案是 3。",
+   "knowledgePointIds": [
+    "kp-tri"
+   ],
+   "image": "assets/q06.svg",
+   "imageAlt": "一个三角形，从上方顶点向底边中点画了一条竖线",
+   "metadata": {
+    "difficulty": "基础"
+   }
+  },
+  {
+   "id": "shape-q07",
+   "type": "single",
+   "question": "下图是一个三角形，从顶点向底边画了两条线，把底边分成 3 段。图中一共有多少个三角形？",
+   "options": [
+    "A. 3",
+    "B. 5",
+    "C. 6",
+    "D. 8"
+   ],
+   "answer": "C",
+   "explanation": "底边被分成 3 段，每个「底边线段」都对应一个三角形：单段 3 个、两段合起来 2 个、三段合起来 1 个，3+2+1=6 个。正确答案是 6。",
+   "knowledgePointIds": [
+    "kp-tri"
+   ],
+   "image": "assets/q07.svg",
+   "imageAlt": "一个三角形，从上方顶点向底边画了两条线，底边被分成三段",
+   "metadata": {
+    "difficulty": "进阶"
+   }
+  },
+  {
+   "id": "shape-q08",
+   "type": "single",
+   "question": "下图三角形中，三条边的中点两两相连。图中一共有多少个三角形？",
+   "options": [
+    "A. 4",
+    "B. 6",
+    "C. 9",
+    "D. 5"
+   ],
+   "answer": "D",
+   "explanation": "三条中位线把大三角形分成 4 个同样的小三角形，再加上整个大三角形 1 个，4+1=5 个。注意：两个小三角形拼成的平行四边形不是三角形。正确答案是 5。",
+   "knowledgePointIds": [
+    "kp-tri"
+   ],
+   "image": "assets/q08.svg",
+   "imageAlt": "一个三角形，三条边的中点两两用线连接，中间形成一个小三角形",
+   "metadata": {
+    "difficulty": "进阶"
+   }
+  },
+  {
+   "id": "shape-q09",
+   "type": "single",
+   "question": "下图是一个正方形，画了两条对角线。图中一共有多少个三角形？",
+   "options": [
+    "A. 8",
+    "B. 4",
+    "C. 6",
+    "D. 10"
+   ],
+   "answer": "A",
+   "explanation": "两条对角线交出中心点。单个小三角形 4 个；由两个小三角形拼成的（以正方形一条边为底的）4 个。4+4=8 个。正确答案是 8。",
+   "knowledgePointIds": [
+    "kp-tri"
+   ],
+   "image": "assets/q09.svg",
+   "imageAlt": "一个正方形，两条对角线交叉，把正方形分成四个小三角形",
+   "metadata": {
+    "difficulty": "挑战"
+   }
+  },
+  {
+   "id": "shape-q10",
+   "type": "single",
+   "question": "下图由 2 行 3 列的小方格组成，图中一共有多少个长方形？（正方形也算长方形）",
+   "options": [
+    "A. 6",
+    "B. 18",
+    "C. 12",
+    "D. 24"
+   ],
+   "answer": "B",
+   "explanation": "先数横边上的线段数：4 个点 → 4×3÷2=6 条；再数竖边：3 个点 → 3 条。每条横边配每条竖边都确定一个长方形，6×3=18 个。正确答案是 18。",
+   "knowledgePointIds": [
+    "kp-rect"
+   ],
+   "image": "assets/q10.svg",
+   "imageAlt": "两行三列共六个小方格组成的网格",
+   "metadata": {
+    "difficulty": "基础"
+   }
+  },
+  {
+   "id": "shape-q11",
+   "type": "single",
+   "question": "下图由 3 行 3 列的小方格组成，图中一共有多少个长方形？（正方形也算长方形）",
+   "options": [
+    "A. 9",
+    "B. 18",
+    "C. 36",
+    "D. 40"
+   ],
+   "answer": "C",
+   "explanation": "横边 4 个点 → 6 条线段，竖边同样 6 条，6×6=36 个。用「横边取两条、竖边取两条」来算，比一个一个数可靠得多。正确答案是 36。",
+   "knowledgePointIds": [
+    "kp-rect"
+   ],
+   "image": "assets/q11.svg",
+   "imageAlt": "三行三列共九个小方格组成的网格",
+   "metadata": {
+    "difficulty": "进阶"
+   }
+  },
+  {
+   "id": "shape-q12",
+   "type": "single",
+   "question": "下图由 2 行 3 列的小方格组成，图中一共有多少个正方形？",
+   "options": [
+    "A. 6",
+    "B. 9",
+    "C. 12",
+    "D. 8"
+   ],
+   "answer": "D",
+   "explanation": "按边长分类：边长 1 格的有 2×3=6 个；边长 2 格的有 1×2=2 个。6+2=8 个。边长超过 2 格就放不下了。正确答案是 8。",
+   "knowledgePointIds": [
+    "kp-rect"
+   ],
+   "image": "assets/q12.svg",
+   "imageAlt": "两行三列共六个小方格组成的网格",
+   "metadata": {
+    "difficulty": "基础"
+   }
+  },
+  {
+   "id": "shape-q13",
+   "type": "single",
+   "question": "下图由 3 行 3 列的小方格组成，图中一共有多少个正方形？",
+   "options": [
+    "A. 14",
+    "B. 9",
+    "C. 12",
+    "D. 18"
+   ],
+   "answer": "A",
+   "explanation": "按边长分类：1 格 3×3=9 个；2 格 2×2=4 个；3 格 1×1=1 个。9+4+1=14 个。正确答案是 14。",
+   "knowledgePointIds": [
+    "kp-rect"
+   ],
+   "image": "assets/q13.svg",
+   "imageAlt": "三行三列共九个小方格组成的网格",
+   "metadata": {
+    "difficulty": "挑战"
+   }
+  }
+ ]
+}

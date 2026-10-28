@@ -62,13 +62,26 @@ try {
 }
 
 // 3. 上传资产
+// 源文件名里带版本号，硬编码过一次 2.11.0 就会在下次发版时静默传错包 —— 一律由 VER 推出
+const NSIS = `src-tauri/target/release/bundle/nsis/FamilyLearningSystem_${VER}_x64-setup.exe`
+
+// 便携版命名 app<日期><字母>.exe。同一天发两版（2.11.0 与 2.12.0 都在 10-28）时，
+// 硬写 'a' 会撞上上一版已上传的资产名 —— 而下面的「已存在则跳过」会把新包静默丢掉，
+// 日志上还是一行 ✅。所以先看这一版已有哪些同名前缀，取下一个空位。
+const today = new Date().toISOString().slice(0, 10)
+const taken = (rel.assets || [])
+  .map((a) => new RegExp(`^app${today}([a-z])\\.exe$`).exec(a.name))
+  .filter(Boolean)
+  .map((m) => m[1])
+let letter = 'a'
+while (taken.includes(letter)) letter = String.fromCharCode(letter.charCodeAt(0) + 1)
+const PORTABLE = `app${today}${letter}.exe`
+
 const assets = [
-  ['src-tauri/target/release/bundle/nsis/FamilyLearningSystem_2.11.0_x64-setup.exe',
-    `FamilyLearningSystem_${VER}_x64-setup.exe`],
-  ['src-tauri/target/release/bundle/nsis/FamilyLearningSystem_2.11.0_x64-setup.exe.sig',
-    `FamilyLearningSystem_${VER}_x64-setup.exe.sig`],
+  [NSIS, `FamilyLearningSystem_${VER}_x64-setup.exe`],
+  [`${NSIS}.sig`, `FamilyLearningSystem_${VER}_x64-setup.exe.sig`],
   ['latest.json', 'latest.json'],
-  ['src-tauri/target/release/app.exe', `app${new Date().toISOString().slice(0, 10)}a.exe`],
+  ['src-tauri/target/release/app.exe', PORTABLE],
 ]
 
 const existing = new Set((rel.assets || []).map((a) => a.name))

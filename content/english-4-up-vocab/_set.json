@@ -1,10 +1,10 @@
 {
   "setId": "english-4-up-vocab-set",
-  "title": "四上英语词汇",
+  "title": "四年级英语上（人教 PEP）",
   "subject": "english",
   "grade": 4,
   "term": "up",
-  "edition": "沪教版",
+  "edition": "人教版",
   "importOrder": ["special-english-4-up-vocab"],
   "packages": [
     {

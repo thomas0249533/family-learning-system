@@ -87,6 +87,9 @@
         <QuestionText
           class="question-text"
           :text="judgeParts ? judgeParts.material : currentQuestion.question"
+          :package-id="currentQuestion.packageId || packageId"
+          :image="currentQuestion.image"
+          :image-alt="currentQuestion.imageAlt"
         />
 
         <div v-if="currentQuestion.type === 'single'" class="options">
@@ -150,7 +153,7 @@
           <div v-for="(leftItem, i) in currentQuestion.left" :key="i" class="matching-row">
             <span class="matching-left">{{ leftItem }}</span>
             <span class="matching-arrow">→</span>
-            <n-select v-model:value="userAnswer[i]" :options="rightOptions" size="medium" placeholder="请选择" style="width: 200px;" />
+            <n-select v-model:value="userAnswer[i]" :options="rightOptions" size="medium" placeholder="请选择" class="matching-select" />
           </div>
         </div>
 
@@ -321,6 +324,20 @@ export interface QuizQuestion {
    * `gradeEssay` 的得分点覆盖度判分，而非精确匹配。essay 类型恒为主观，无需标。
    */
   subjective?: boolean
+  /**
+   * 题干配图（V2.12）：包内相对路径，如 `assets/shape-01.png`。
+   * 图片本体存在 IndexedDB 的 packageAssets 表，由 <QuestionImage> 按
+   * `[packageId, image]` 取用；这里只留一个路径。
+   */
+  image?: string
+  /** 画面描述（无障碍 / 朗读）；导入校验会为缺它的配图题发 W034 */
+  imageAlt?: string
+  /**
+   * 本题**所属**包（V2.12，导入时由 normalizePackage 写入）。
+   * 与 `props.packageId`（路由里的入口包）可能不同：依赖包的单元被合并进当前视图时，
+   * 图片资产仍存在它自己的包里。缺省时回退到入口包，旧包没有这个字段也能跑。
+   */
+  packageId?: string
 }
 
 export interface AnswerPayload {
@@ -343,6 +360,11 @@ export interface ExamDetailItem {
   correctAnswer: string
   isCorrect: boolean
   explanation: string
+  /** 配图路径（V2.12）：交卷后的详情页也要显示图，否则"数图形"题在复盘时等于没题 */
+  image?: string
+  imageAlt?: string
+  /** 配图所属包（跨包时与入口包不同） */
+  packageId?: string
 }
 export interface ExamDetailPayload {
   items: ExamDetailItem[]
@@ -1243,6 +1265,9 @@ function finalizeExam() {
       correctAnswer: correctAnswerText,
       isCorrect: ok,
       explanation: question.explanation,
+      image: question.image,
+      imageAlt: question.imageAlt,
+      packageId: question.packageId || props.packageId,
     })
   }
 
@@ -1680,6 +1705,12 @@ function handleExit() {
       padding: 10px 14px; background: $bg-color-hover; border-radius: 6px;
     }
     .matching-arrow { color: $text-sub; font-size: 16px; }
+    /*
+     * 选择框宽度自适应，不再写死 200px。
+     * 语文「按顺序排步骤」这类连线题的右项是一整句话（如"沿画好的线剪出半边蝴蝶的形状"），
+     * 200px 只能露出一半，孩子看不见完整选项就没法判断对错。
+     */
+    .matching-select { flex: 1 1 200px; max-width: 380px; }
   }
 }
 

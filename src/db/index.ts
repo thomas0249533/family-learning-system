@@ -154,6 +154,41 @@ export interface CustomSoundRecord {
   createdAt: string;
 }
 
+/**
+ * V2.12 · 学习包图片资产（题干配图）。
+ *
+ * ## 为什么不用 base64 内嵌进包 JSON
+ * 一张 300dpi 的图形题配图约 40~120KB，base64 后膨胀 33%，而且**每道引用的题都各带一份**。
+ * 更要命的是 `db.packages` 是整包整行读写的（`put(normalized)` 写、`toArray()` 读），
+ * 图片内嵌意味着每次读包列表都要把几十 MB 字符串解析一遍。
+ *
+ * ## 为什么不存 objectURL
+ * 与 `CustomSoundRecord` 同一条理由：objectURL 刷新即失效，必须手动 revoke，
+ * 存 URL 等于存垃圾。这里只存 Blob，URL 由渲染组件**临时创建、卸载即释放**。
+ *
+ * ## 归属边界：**包级，不是档案级**
+ * 与 `packages` 表一致 —— 图片是学习包的内容资产，不是某个孩子的学习记录。
+ * 因此不进备份、不进合并（`buildBackupV2` 只搬进度/错题/会话/设置）。
+ * 兄弟档案共用同一份配图是正确行为，不需要按 profileId 分片。
+ *
+ * ## 主键选择：`[packageId+path]`
+ * 包内 JSON 用**相对路径**引用（`assets/shape-01.png`），而不是自增 id。
+ * 这样：① 包源文件可读、可 review；② 重复导入幂等（同路径覆盖）；
+ * ③ 不用在导入时改写题目内容（改写会让包 JSON 与源文件不一致）。
+ */
+export interface PackageAssetRecord {
+  /** 自增主键（Dexie 生成） */
+  id?: number;
+  packageId: string;
+  /** 包内相对路径，规范化后形如 `assets/shape-01.png`（无前导 `./`、无反斜杠） */
+  path: string;
+  mime: string;
+  size: number;
+  /** 图片二进制本体 */
+  blob: Blob;
+  createdAt: string;
+}
+
 export class FamilyLearningDB extends Dexie {
   packages!: Table<LearningPackageRecord, string>;
   progress!: Table<ProgressRecord, number>;
@@ -162,6 +197,7 @@ export class FamilyLearningDB extends Dexie {
   examSessions!: Table<ExamSessionRecord, number>;
   topicSessions!: Table<TopicSessionRecord, number>;
   customSounds!: Table<CustomSoundRecord, number>;
+  packageAssets!: Table<PackageAssetRecord, number>;
 
   constructor() {
     super('FamilyLearningDB');
@@ -233,6 +269,22 @@ export class FamilyLearningDB extends Dexie {
       examSessions: '++id, [profileId+packageId], profileId, status, startedAt',
       topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt',
       customSounds: '++id, [profileId+soundId], profileId, createdAt'
+    });
+    // V2.12 · 学习包图片资产（纯新增表，无存量数据要搬 → **不写 upgrade 钩子**，
+    // 与 v5 加 topicSessions、v6 加 customSounds 的处理一致）。
+    //
+    // 索引 `[packageId+path]`：一道题按 (包, 路径) 取一张图，且重复导入走覆盖写入。
+    // 单独的 `packageId` 索引用于"重导入时整包替换"与将来的配额清理。
+    this.version(7).stores({
+      packages: 'packageId, manifest.subject, manifest.grade',
+      progress:
+        '++id, [profileId+packageId+knowledgePointId], [profileId+packageId], profileId, status',
+      mistakes: '++id, [profileId+exerciseId], packageId, profileId, mastered',
+      settings: 'key',
+      examSessions: '++id, [profileId+packageId], profileId, status, startedAt',
+      topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt',
+      customSounds: '++id, [profileId+soundId], profileId, createdAt',
+      packageAssets: '++id, [packageId+path], packageId'
     });
   }
 }

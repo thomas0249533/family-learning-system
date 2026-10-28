@@ -5,11 +5,18 @@
  *   npm run validate:set -- content/math-4-up-rjb
  */
 
-import { readFileSync, existsSync } from 'fs'
-import { resolve, join } from 'path'
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs'
+import { resolve, join, relative } from 'path'
 import { normalizePackage, type NormalizeIssue } from '../src/core/importer/normalizePackage'
 import { rewriteIdsInPackage } from './lib/idRewrite'
 import { qualityChecks } from './lib/qualityChecks'
+import {
+  MAX_ASSET_BYTES,
+  MAX_ASSETS_TOTAL_BYTES,
+  formatBytes,
+  normalizeAssetPath,
+  validateAsset,
+} from '../src/core/package-manager/assetPath'
 
 interface PackageEntry {
   file: string
@@ -71,6 +78,64 @@ function parseArgs(): { inputDir: string } {
   return { inputDir: args[0] }
 }
 
+/** 递归列出目录下所有文件，返回相对 `base` 的 posix 路径 */
+function walkFiles(dir: string, base: string = dir): string[] {
+  const out: string[] = []
+  for (const name of readdirSync(dir)) {
+    const full = join(dir, name)
+    if (statSync(full).isDirectory()) {
+      out.push(...walkFiles(full, base))
+    } else {
+      out.push(relative(base, full).split('\\').join('/'))
+    }
+  }
+  return out
+}
+
+interface ScannedAsset {
+  /** 包内相对路径，如 `assets/shape-01.png` */
+  path: string
+  size: number
+}
+
+/**
+ * 扫 `assets/<packageId>/` 得到每个包**实际拥有**的图片（V2.12）。
+ *
+ * 与 `build-lpkgset` 用同一套目录约定；两边都读同一份磁盘，
+ * 所以"校验通过"意味着"打出来的 zip 里真有这张图"。
+ */
+function scanAssets(absDir: string): Map<string, ScannedAsset[]> {
+  const map = new Map<string, ScannedAsset[]>()
+  const root = join(absDir, 'assets')
+  if (!existsSync(root)) return map
+
+  for (const pkgDirName of readdirSync(root)) {
+    const pkgDir = join(root, pkgDirName)
+    if (!statSync(pkgDir).isDirectory()) continue
+    const list: ScannedAsset[] = []
+    for (const rel of walkFiles(pkgDir)) {
+      list.push({ path: `assets/${rel}`, size: statSync(join(pkgDir, rel)).size })
+    }
+    map.set(pkgDirName, list)
+  }
+  return map
+}
+
+/** 收集一个包里所有题目引用到的图片路径 */
+function collectReferencedImages(raw: any): string[] {
+  const out: string[] = []
+  const push = (ex: any) => {
+    if (typeof ex?.image === 'string' && ex.image) out.push(ex.image)
+  }
+  for (const ex of raw?.exercises ?? []) push(ex)
+  for (const unit of raw?.units ?? []) {
+    for (const topic of unit?.topics ?? []) {
+      for (const ex of topic?.exercises ?? []) push(ex)
+    }
+  }
+  return out
+}
+
 function main() {
   const { inputDir } = parseArgs()
   const absDir = resolve(process.cwd(), inputDir)
@@ -90,6 +155,25 @@ function main() {
   console.log(`\n${C.bold}📦 集合:${C.reset} ${config.title}`)
   console.log(`${C.gray}📁 目录: ${absDir}${C.reset}`)
   console.log(`${C.gray}📋 检查 ${config.packages.length} 个包...${C.reset}\n`)
+
+  // ---------- 图片资产清单（V2.12） ----------
+  const assetIndex = scanAssets(absDir)
+  const knownPackageIds = new Set(config.packages.map((p) => p.packageId))
+  const strayDirs = [...assetIndex.keys()].filter((id) => !knownPackageIds.has(id))
+  if (strayDirs.length > 0) {
+    console.log(
+      `${C.yellow}⚠️  assets/ 下存在 _set.json 里没有的包目录: ${strayDirs.join(', ')}${C.reset}\n` +
+        `   ${C.gray}这些图片不会进入任何包，请在 _set.json 里补上，或改名成正确的 packageId${C.reset}\n`,
+    )
+  }
+  const totalAssetBytes = [...assetIndex.values()]
+    .flat()
+    .reduce((s, a) => s + a.size, 0)
+  if (totalAssetBytes > 0) {
+    console.log(
+      `${C.gray}🖼  图片资产: ${[...assetIndex.values()].flat().length} 张，共 ${formatBytes(totalAssetBytes)}${C.reset}\n`,
+    )
+  }
 
   // 第一遍：读取全部原始 JSON，构建外部 ID 池
   const rawList: { entry: PackageEntry; raw: any; quality: NormalizeIssue[] }[] = []
@@ -161,7 +245,61 @@ function main() {
     const { errors, warnings, stats } = normalizePackage(raw, {
       externalKpIds,
       externalPackageIds,
+      assetPaths: new Set((assetIndex.get(entry.packageId) ?? []).map((a) => a.path)),
     })
+
+    // ---------- 图片资产体积 / 孤儿检查（V2.12） ----------
+    const ownedAssets = assetIndex.get(entry.packageId) ?? []
+    if (ownedAssets.length > 0) {
+      const bytes = ownedAssets.reduce((s, a) => s + a.size, 0)
+      if (bytes > MAX_ASSETS_TOTAL_BYTES) {
+        errors.push({
+          level: 'error',
+          code: 'E024',
+          path: `assets/${entry.packageId}`,
+          message: `图片总量 ${formatBytes(bytes)} 超过单包上限 ${formatBytes(MAX_ASSETS_TOTAL_BYTES)}`,
+          hint: '图形题建议用 SVG 或把人眼不可辨的细节去掉；确需更多图片时拆成两个包',
+        })
+      }
+      for (const a of ownedAssets) {
+        const reason = validateAsset({ path: a.path, size: a.size })
+        if (reason === 'too-large') {
+          errors.push({
+            level: 'error',
+            code: 'E024',
+            path: a.path,
+            message: `图片 ${a.path} 体积 ${formatBytes(a.size)} 超过单张上限 ${formatBytes(MAX_ASSET_BYTES)}`,
+            hint: '压到 2MB 以内，或改用 SVG / WebP',
+          })
+        } else if (reason === 'unsupported-ext') {
+          errors.push({
+            level: 'error',
+            code: 'E024',
+            path: a.path,
+            message: `图片 ${a.path} 格式不支持`,
+            hint: '只收 png / jpg / jpeg / webp / gif / svg',
+          })
+        }
+      }
+
+      // 孤儿图：打进包里却没有任何题引用 —— 白占体积，且通常意味着路径写错了
+      const referenced = new Set(
+        collectReferencedImages(raw)
+          .map((p) => normalizeAssetPath(p))
+          .filter((p): p is string => p !== null),
+      )
+      for (const a of ownedAssets) {
+        if (!referenced.has(a.path)) {
+          warnings.push({
+            level: 'warning',
+            code: 'W036',
+            path: a.path,
+            message: `图片 ${a.path} 没有被任何题目引用`,
+            hint: '多半是题目里的 image 路径写错了（或该图已废弃），确认后删除',
+          })
+        }
+      }
+    }
 
     if (errors.length > 0) {
       allPassed = false

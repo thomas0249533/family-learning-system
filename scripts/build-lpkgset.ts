@@ -1,7 +1,7 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs'
-import { resolve, join, dirname } from 'path'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'fs'
+import { resolve, join, dirname, relative } from 'path'
 import { rewriteIdsInPackage } from './lib/idRewrite'
-import { buildLpkgsetZip } from './lib/packSet'
+import { buildLpkgsetZip, type PackAsset } from './lib/packSet'
 
 interface PackageEntry {
   file: string
@@ -41,6 +41,71 @@ function loadSetConfig(dir: string): SetConfig {
   const cfgPath = join(dir, '_set.json')
   if (!existsSync(cfgPath)) throw new Error(`缺少 _set.json：${cfgPath}`)
   return JSON.parse(readFileSync(cfgPath, 'utf-8'))
+}
+
+/** 递归列出目录下所有文件，返回相对 `base` 的 posix 路径 */
+function walkFiles(dir: string, base: string = dir): string[] {
+  const out: string[] = []
+  for (const name of readdirSync(dir)) {
+    const full = join(dir, name)
+    if (statSync(full).isDirectory()) {
+      out.push(...walkFiles(full, base))
+    } else {
+      out.push(relative(base, full).split('\\').join('/'))
+    }
+  }
+  return out
+}
+
+/**
+ * 收集图片资产（V2.12）。
+ *
+ * 源目录约定：
+ * ```
+ * content/<集合>/
+ *   assets/
+ *     <packageId>/            ← 目录名必须等于 _set.json 里的 packageId
+ *       shape-01.png
+ * ```
+ * 打包后变成 `packages/<packageId>/assets/shape-01.png`，
+ * 与导入器 `parseAssetPath` 的识别规则一一对应，中间不做任何路径换算。
+ *
+ * **目录名写错（比如拼错 packageId）不会在这里报错** —— 那会让图片
+ * 悬空到一个不存在的包上，导入时静默丢弃。所以下面会和 `_set.json` 对一遍，
+ * 出现陌生目录名直接中止。
+ */
+function collectAssets(absDir: string, knownPackageIds: Set<string>): PackAsset[] {
+  const root = join(absDir, 'assets')
+  if (!existsSync(root)) return []
+
+  const result: PackAsset[] = []
+  const unknown: string[] = []
+
+  for (const pkgDirName of readdirSync(root)) {
+    const pkgDir = join(root, pkgDirName)
+    if (!statSync(pkgDir).isDirectory()) continue
+    if (!knownPackageIds.has(pkgDirName)) {
+      unknown.push(pkgDirName)
+      continue
+    }
+    for (const rel of walkFiles(pkgDir)) {
+      result.push({
+        packageId: pkgDirName,
+        path: `assets/${rel}`,
+        bytes: readFileSync(join(pkgDir, rel)),
+      })
+    }
+  }
+
+  if (unknown.length > 0) {
+    console.error(
+      `❌ assets/ 下出现 _set.json 里没有的包目录: ${unknown.join(', ')}\n` +
+        `   这些图片不会被打进任何包。请把目录名改成 packages[].packageId。`,
+    )
+    process.exit(1)
+  }
+
+  return result
 }
 
 function main() {
@@ -89,6 +154,12 @@ function main() {
     console.log(`  ✅ ${entry.file} → ${entry.packageId}${flags.length ? ' [' + flags.join('|') + ']' : ''}`)
   }
 
+  const assets = collectAssets(absDir, new Set(config.packages.map((p) => p.packageId)))
+  if (assets.length > 0) {
+    const totalBytes = assets.reduce((s, a) => s + a.bytes.byteLength, 0)
+    console.log(`🖼  图片资产: ${assets.length} 张，共 ${(totalBytes / 1024).toFixed(1)} KB`)
+  }
+
   const zipBytes = buildLpkgsetZip({
     manifest: {
       schemaVersion: '1.0',
@@ -101,6 +172,7 @@ function main() {
       importOrder: config.importOrder,
     },
     packages: builtPackages,
+    assets,
   })
 
   const outPath = outputZip

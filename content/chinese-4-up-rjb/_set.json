@@ -18,7 +18,8 @@
     "unit-chinese-4-up-rjb-u8",
     "term-chinese-4-up-rjb",
     "special-chinese-4-up-reading",
-    "special-chinese-4-up-vocab"
+    "special-chinese-4-up-vocab",
+    "special-chinese-4-up-oral"
   ],
   "packages": [
     {
@@ -104,6 +105,14 @@
     {
       "file": "special-chinese-4-up-reading.json",
       "packageId": "special-chinese-4-up-reading",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    },
+    {
+      "file": "special-chinese-4-up-oral.json",
+      "packageId": "special-chinese-4-up-oral",
       "type": "special",
       "visible": true,
       "examMode": false,

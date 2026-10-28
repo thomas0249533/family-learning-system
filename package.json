@@ -1,7 +1,7 @@
 {
   "name": "family-learning-system",
   "private": true,
-  "version": "2.11.0",
+  "version": "2.12.0",
   "type": "module",
   "scripts": {
     "pretest": "npm run tokens:build",
@@ -15,7 +15,7 @@
     "typecheck": "vue-tsc --noEmit",
     "typecheck:test": "vue-tsc --noEmit -p tsconfig.test.json",
     "hooks:install": "node scripts/git-hooks/install.mjs",
-    "verify": "npm run tokens:check && npm run typecheck && npm run typecheck:test && npm run lint:styles && npm run check:hex && npm run check:text-color && npm run a11y:contrast:check && npm run check:profile-scope && npm run check:settings-keys && npm run test",
+    "verify": "npm run check:version && npm run tokens:check && npm run typecheck && npm run typecheck:test && npm run lint:styles && npm run check:hex && npm run check:text-color && npm run a11y:contrast:check && npm run check:profile-scope && npm run check:settings-keys && npm run test",
     "validate": "vite-node scripts/validate.ts --",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -30,7 +30,8 @@
     "validate:set": "vite-node scripts/validate-lpkgset.ts --",
     "build:lpkgset": "vite-node scripts/build-lpkgset.ts --",
     "build:set": "vite-node scripts/build-lpkgset-auto.ts --",
-    "build:csv": "vite-node scripts/build-from-csv.ts --"
+    "build:csv": "vite-node scripts/build-from-csv.ts --",
+    "check:version": "node scripts/check-version.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "2.12.4",

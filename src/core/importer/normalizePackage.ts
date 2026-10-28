@@ -1,4 +1,5 @@
 import { normalizeJudgeList } from '@core/quiz/judge'
+import { isSupportedAssetPath, normalizeAssetPath } from '@core/package-manager/assetPath'
 
 export interface NormalizeIssue {
   level: 'error' | 'warning'
@@ -25,6 +26,14 @@ export interface NormalizeResult<T = any> {
 export interface NormalizeContext {
   externalKpIds?: Set<string>
   externalPackageIds?: Set<string>
+  /**
+   * 本包可用的图片资产路径集合（V2.12）。
+   *
+   * 由调用方提供：Node 校验脚本从磁盘 `packages/<pkgId>/assets/` 扫，
+   * 导入器从 ZIP 条目里取。**不提供时只校验路径格式、不校验图片是否真的存在** ——
+   * 单独导入一个 `.json` 包（没有配套图片）时，我们不能因此把它判成非法包。
+   */
+  assetPaths?: Set<string>
 }
 
 function toPlain<T>(obj: T): T {
@@ -39,7 +48,7 @@ export function normalizePackage(
 ): NormalizeResult {
   const errors: NormalizeIssue[] = []
   const warnings: NormalizeIssue[] = []
-  const { externalKpIds } = ctx
+  const { externalKpIds, assetPaths } = ctx
 
   if (!rawInput || typeof rawInput !== 'object') {
     errors.push({ level: 'error', code: 'E001', path: '$', message: '学习包不是有效 JSON 对象', hint: '请确认文件是 JSON 格式' })
@@ -238,6 +247,67 @@ export function normalizePackage(
             }
           }
 
+          /**
+           * ---------- 题干配图（V2.12） ----------
+           *
+           * 三道关卡，顺序有意：
+           *   1. 路径合法（不能 `..`、不能指向目录）—— 防的是外部输入把同一个文件
+           *      写成多种形态，导致存库与取图对不上；
+           *   2. 扩展名在白名单内 —— 防的是把 .exe 塞进 assets 冒充图片；
+           *   3. 图片**真的在包里** —— 只在调用方给了资产清单时才能判。
+           *      存档一份"引用不存在的图"的题，孩子看到的是空白，且永远查不出原因，
+           *      所以这一条必须是 error 而不是 warning。
+           *
+           * 规范化后的路径**写回题目**：渲染层拿 `exercise.image` 直接查库，
+           * 若保留 `./assets/x.png` 这种写法，就会出现"校验通过但取不到图"。
+           */
+          if (ex.image !== undefined && ex.image !== null && ex.image !== '') {
+            const imagePath = normalizeAssetPath(ex.image)
+            if (imagePath === null) {
+              errors.push({
+                level: 'error',
+                code: 'E022',
+                path: `${exPath}.image`,
+                message: `题目 ${ex.id} 的配图路径非法：${JSON.stringify(ex.image)}`,
+                hint: '写包内相对路径，如 assets/shape-01.png；不能含 .. 或指向目录',
+              })
+              return
+            }
+            if (!isSupportedAssetPath(imagePath)) {
+              errors.push({
+                level: 'error',
+                code: 'E022',
+                path: `${exPath}.image`,
+                message: `题目 ${ex.id} 的配图格式不支持：${imagePath}`,
+                hint: '只收 png / jpg / jpeg / webp / gif / svg',
+              })
+              return
+            }
+            if (assetPaths && !assetPaths.has(imagePath)) {
+              errors.push({
+                level: 'error',
+                code: 'E023',
+                path: `${exPath}.image`,
+                message: `题目 ${ex.id} 的配图在包里不存在：${imagePath}`,
+                hint: `图片应放在 packages/${pkg.manifest.packageId}/assets/ 下，且文件名大小写一致`,
+              })
+              return
+            }
+            ex.image = imagePath
+            if (typeof ex.imageAlt !== 'string' || ex.imageAlt.trim() === '') {
+              warnings.push({
+                level: 'warning',
+                code: 'W034',
+                path: `${exPath}.imageAlt`,
+                message: `题目 ${ex.id} 有配图但缺少 imageAlt`,
+                hint: '补一句画面描述（如「一个大三角形被分成 4 个小三角形」），朗读与无障碍会用到',
+              })
+            }
+          } else if (ex.image !== undefined) {
+            // 显式 null / '' → 删掉字段，免得渲染层拿到空串去查库
+            delete ex.image
+          }
+
           if (seenExerciseIds.has(ex.id)) {
             warnings.push({ level: 'warning', code: 'W002', path: exPath, message: `题目 id 重复: ${ex.id}（保留第一条）`, hint: '题目 id 应全局唯一' })
             return
@@ -266,6 +336,18 @@ export function normalizePackage(
           }
 
           ex.knowledgePointIds = finalKpIds
+
+          /**
+           * 给每道题标上**来源包**（V2.12）。
+           *
+           * 为什么题目需要知道自己的包：图片资产按 `[packageId, path]` 存。
+           * 而练习页拿到的 `packageId` 是**路由里的入口包** —— 一旦跨包（依赖包的
+           * 单元被合并进当前视图），用入口包去查图必然查不到，孩子看到的是"配图缺失"。
+           *
+           * 代价是每道题多一个字符串（1440 题的包约多 60KB），换来的是
+           * 任何取到一道题的地方都能自解析出图在哪 —— 不必再沿调用链猜。
+           */
+          ex.packageId = pkg.manifest.packageId
 
           for (const kpId of finalKpIds) {
             const kp = kpMap.get(kpId)

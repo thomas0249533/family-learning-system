@@ -139,7 +139,13 @@
               </label>
               <span v-if="!m.mistakeCause" class="cause-unset">{{ mistakeCauseLabelOf(m) }}</span>
             </div>
-            <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
+            <QuestionText
+              class="question-text"
+              :text="m.questionData?.question || '题目数据已过期'"
+              :package-id="m.questionData?.packageId || m.packageId"
+              :image="m.questionData?.image"
+              :image-alt="m.questionData?.imageAlt"
+            />
 
             <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
               <div
@@ -219,7 +225,13 @@
           </label>
           <span v-if="!m.mistakeCause" class="cause-unset">{{ mistakeCauseLabelOf(m) }}</span>
         </div>
-        <QuestionText class="question-text" :text="m.questionData?.question || '题目数据已过期'" />
+        <QuestionText
+          class="question-text"
+          :text="m.questionData?.question || '题目数据已过期'"
+          :package-id="m.questionData?.packageId || m.packageId"
+          :image="m.questionData?.image"
+          :image-alt="m.questionData?.imageAlt"
+        />
 
         <div v-if="m.questionData?.options && m.questionData.options.length > 0" class="options-preview">
           <div

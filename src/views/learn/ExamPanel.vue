@@ -127,7 +127,13 @@
           <div v-for="item in examWrongItems" :key="item.questionId" :id="`detail-${item.questionId}`" class="detail-card wrong">
             <div class="detail-head">
               <span class="detail-badge wrong-badge">错</span>
-              <QuestionText class="detail-question" :text="item.question" />
+              <QuestionText
+                class="detail-question"
+                :text="item.question"
+                :package-id="item.packageId || pkg.packageId"
+                :image="item.image"
+                :image-alt="item.imageAlt"
+              />
             </div>
 
             <!-- 选择题 -->
@@ -179,7 +185,13 @@
           <div v-for="item in examCorrectItems" :key="item.questionId" :id="`detail-${item.questionId}`" class="detail-card correct">
             <div class="detail-head">
               <span class="detail-badge correct-badge">对</span>
-              <QuestionText class="detail-question" :text="item.question" />
+              <QuestionText
+                class="detail-question"
+                :text="item.question"
+                :package-id="item.packageId || pkg.packageId"
+                :image="item.image"
+                :image-alt="item.imageAlt"
+              />
             </div>
             <div class="detail-answers">
               <div class="answer-row correct-row">

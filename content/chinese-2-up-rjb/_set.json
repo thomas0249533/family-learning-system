@@ -9,7 +9,8 @@
   "edition": "人教版",
   "importOrder": [
     "special-chinese-2-up-vocab",
-    "special-chinese-2-up-kantu"
+    "special-chinese-2-up-kantu",
+    "special-chinese-2-up-oral"
   ],
   "packages": [
     {
@@ -23,6 +24,14 @@
     {
       "file": "special-chinese-2-up-kantu.json",
       "packageId": "special-chinese-2-up-kantu",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    },
+    {
+      "file": "special-chinese-2-up-oral.json",
+      "packageId": "special-chinese-2-up-oral",
       "type": "special",
       "visible": true,
       "examMode": false,

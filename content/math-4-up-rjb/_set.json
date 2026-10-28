@@ -134,6 +134,14 @@
       "visible": true,
       "examMode": true,
       "dependencies": []
+    },
+    {
+      "file": "special-math-4-up-shape.json",
+      "packageId": "special-math-4-up-shape",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
     }
   ],
   "importOrder": [
@@ -149,7 +157,8 @@
     "special-math-4-up-u3",
     "special-math-4-up-jiajiancheng",
     "sprint-math-4-up-final",
-    "special-math-4-up-kaodian"
+    "special-math-4-up-kaodian",
+    "special-math-4-up-shape"
   ],
   "overrides": {
     "special-math-4-up-yunsuanlv": {

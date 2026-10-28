@@ -3,6 +3,14 @@ import { unzipSync } from 'fflate'
 import { normalizePackage, type NormalizeIssue } from './normalizePackage'
 import { invalidateOwnerIndex } from '@core/progress/ownerIndexCache'
 import { ensureE1Migrated } from '@core/storage/migrateV3Recovery'
+import {
+  ASSET_REJECT_TEXT,
+  parseAssetPath,
+  planPackageAssets,
+  type IncomingAsset,
+} from '@core/package-manager/packageAssetStore'
+// 重新导出：包解析逻辑本体在零依赖的 assetPath 里（node 单测可直接跑）
+export { parseAssetPath }
 
 export type ImportIssue = NormalizeIssue
 
@@ -40,6 +48,8 @@ export interface ImportSetResult {
   packageIds?: string[]
   /** 出错时指示哪个包失败 */
   failedPackageId?: string
+  /** 本次写入的图片资产张数 */
+  assetsImported?: number
   errors?: ImportIssue[]
   warnings?: ImportIssue[]
 }
@@ -50,10 +60,11 @@ export function isZipFile(file: File): boolean {
   return name.endsWith('.zip') || name.endsWith('.lpkgset')
 }
 
-/** 解压 ZIP 包集合 */
+/** 解压 ZIP 包集合（含图片资产） */
 async function unzipPackageSet(file: File): Promise<{
   manifest: any
   packages: any[]
+  assets: Map<string, IncomingAsset[]>
 }> {
   const buffer = await file.arrayBuffer()
   const files = unzipSync(new Uint8Array(buffer))
@@ -69,6 +80,7 @@ async function unzipPackageSet(file: File): Promise<{
   const packages: any[] = []
   for (const [path, bytes] of Object.entries(files)) {
     if (!path.startsWith('packages/')) continue
+    if (path.includes('/assets/')) continue // 图片不走这条
     if (!path.endsWith('.json')) continue
     try {
       const pkg = JSON.parse(decoder.decode(bytes))
@@ -80,7 +92,37 @@ async function unzipPackageSet(file: File): Promise<{
 
   if (packages.length === 0) throw new Error('ZIP 内没有 packages/*.json')
 
-  return { manifest, packages }
+  // 3. 收集图片资产
+  const assets = new Map<string, IncomingAsset[]>()
+  const rootAssets: IncomingAsset[] = []
+  for (const [path, bytes] of Object.entries(files)) {
+    // 目录条目在 fflate 里也会出现，长度为 0 的直接跳过
+    if (!bytes || bytes.byteLength === 0) continue
+    const parsed = parseAssetPath(path)
+    if (!parsed) continue
+    if (parsed.packageId === '') {
+      rootAssets.push({ path: parsed.path, bytes })
+      continue
+    }
+    const list = assets.get(parsed.packageId) ?? []
+    list.push({ path: parsed.path, bytes })
+    assets.set(parsed.packageId, list)
+  }
+
+  // 根级 assets/ 只在一个包时归属明确；多包时无法判断，宁可报错也不猜
+  if (rootAssets.length > 0) {
+    if (packages.length === 1) {
+      const only = packages[0]?.manifest?.packageId
+      if (only) assets.set(only, [...(assets.get(only) ?? []), ...rootAssets])
+    } else {
+      throw new Error(
+        `ZIP 根目录有 assets/ 但包含 ${packages.length} 个包，无法确定图片归属；` +
+          `请改为 packages/<packageId>/assets/ 结构`,
+      )
+    }
+  }
+
+  return { manifest, packages, assets }
 }
 
 /** 按 manifest.importOrder 排序；未列出的排在最后 */
@@ -207,10 +249,12 @@ export const PackageImporter = {
     // 1. 解压
     let manifest: any
     let rawPackages: any[]
+    let assetsByPackage: Map<string, IncomingAsset[]>
     try {
       const r = await unzipPackageSet(file)
       manifest = r.manifest
       rawPackages = r.packages
+      assetsByPackage = r.assets
     } catch (e: any) {
       return {
         success: false,
@@ -244,9 +288,16 @@ export const PackageImporter = {
       if (!merged.manifest.term && manifest.term) merged.manifest.term = manifest.term
       if (!merged.manifest.edition && manifest.edition) merged.manifest.edition = manifest.edition
 
+      // 本包可用的图片资产清单 → 用于校验题目引用的图是否真的在 zip 里。
+      // 没有资产的包传空 Set 也是安全的：只有题目**确实引用**图片时才会去查。
+      const pkgId = merged.manifest.packageId
+      const ownAssets = assetsByPackage.get(pkgId) ?? []
+      const assetPaths = new Set(ownAssets.map((a) => a.path))
+
       const { package: normalized, errors, warnings } = normalizePackage(merged, {
         externalKpIds,
         externalPackageIds,
+        assetPaths,
       })
 
       if (errors.length > 0) {
@@ -268,11 +319,38 @@ export const PackageImporter = {
       allWarnings.push(...warnings)
     }
 
-    // 5. 事务批量写入
+    // 5. 事务批量写入（学习包 + 图片资产）
+    //
+    // 资产写在**同一个事务**里：包入库成功但图片落空，会得到一堆"题干正常、图不见了"
+    // 的题 —— 这种半成功状态比整批回滚更难排查。
+    let assetsImported = 0
+    const assetRejects: ImportIssue[] = []
     try {
-      await db.transaction('rw', db.packages, async () => {
+      await db.transaction('rw', db.packages, db.packageAssets, async () => {
         for (const pkg of normalizedList) {
           await db.packages.put(pkg)
+
+          const packageId: string = pkg.packageId
+          const incoming = assetsByPackage.get(packageId) ?? []
+          // 先清空该包旧资产：重导入时以 zip 为准。即使这次没带图也要清 ——
+          // 否则题目已改指向新路径，旧图会变成永远没人引用、也永远删不掉的孤儿。
+          await db.packageAssets.where('packageId').equals(packageId).delete()
+          if (incoming.length === 0) continue
+
+          const plan = planPackageAssets(packageId, incoming)
+          for (const row of plan.rows) {
+            await db.packageAssets.put(row)
+          }
+          assetsImported += plan.rows.length
+          for (const r of plan.rejected) {
+            assetRejects.push({
+              level: 'warning',
+              code: 'W035',
+              path: r.path,
+              message: `图片未能导入：${r.path}（${ASSET_REJECT_TEXT[r.reason]}）`,
+              hint: '该题仍会正常出现在练习里，只是不显示配图',
+            })
+          }
         }
       })
     } catch (e: any) {
@@ -289,7 +367,8 @@ export const PackageImporter = {
       success: true,
       imported: normalizedList.length,
       packageIds: normalizedList.map(p => p.manifest.packageId),
-      warnings: allWarnings,
+      assetsImported,
+      warnings: [...allWarnings, ...assetRejects],
     }
   },
 }

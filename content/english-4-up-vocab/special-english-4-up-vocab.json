@@ -2,6 +2,7 @@
   "manifest": {
     "schemaVersion": "1.0",
     "packageId": "special-english-4-up-vocab",
+    "type": "special",
     "packageType": "special",
     "isInternal": false,
     "examMode": false,
@@ -9,275 +10,4543 @@
     "templateId": "english.primary.v1",
     "grade": 4,
     "term": "up",
-    "edition": "沪教版",
-    "title": "四上英语词汇专项",
+    "edition": "人教版",
+    "title": "四上英语 · 单词句型 + 语法（PEP 6 单元）",
     "dependencies": []
   },
   "knowledgePoints": [
-    { "id": "en-vocab-001", "type": "word", "title": "单词：city", "content": "城市", "metadata": { "word": "city", "phonetic": "/ˈsɪti/" } },
-    { "id": "en-vocab-002", "type": "word", "title": "单词：building", "content": "建筑物；楼房", "metadata": { "word": "building", "phonetic": "/ˈbɪldɪŋ/" } },
-    { "id": "en-vocab-003", "type": "word", "title": "单词：flat", "content": "公寓", "metadata": { "word": "flat", "phonetic": "/flæt/" } },
-    { "id": "en-vocab-004", "type": "word", "title": "单词：street", "content": "大街；街道", "metadata": { "word": "street", "phonetic": "/striːt/" } },
-    { "id": "en-vocab-005", "type": "word", "title": "单词：country", "content": "乡村", "metadata": { "word": "country", "phonetic": "/ˈkʌntri/" } },
-    { "id": "en-vocab-006", "type": "word", "title": "单词：farm", "content": "农场", "metadata": { "word": "farm", "phonetic": "/fɑːm/" } },
-    { "id": "en-vocab-007", "type": "word", "title": "单词：house", "content": "房屋；房子", "metadata": { "word": "house", "phonetic": "/haʊs/" } },
-    { "id": "en-vocab-008", "type": "word", "title": "单词：people", "content": "人；人们", "metadata": { "word": "people", "phonetic": "/ˈpiːpl/" } },
-    { "id": "en-vocab-009", "type": "word", "title": "单词：live", "content": "住；居住", "metadata": { "word": "live", "phonetic": "/lɪv/" } },
-    { "id": "en-vocab-010", "type": "word", "title": "单词：many", "content": "许多", "metadata": { "word": "many", "phonetic": "/ˈmeni/" } },
-    { "id": "en-vocab-011", "type": "word", "title": "单词：place", "content": "地方", "metadata": { "word": "place", "phonetic": "/pleɪs/" } },
-    { "id": "en-vocab-012", "type": "word", "title": "单词：quiet", "content": "安静的", "metadata": { "word": "quiet", "phonetic": "/ˈkwaɪət/" } },
-    { "id": "en-vocab-013", "type": "word", "title": "单词：all kinds of", "content": "各种各样的", "metadata": { "word": "all kinds of", "phonetic": "/ɔːl kaɪndz əv/" } },
-    { "id": "en-vocab-014", "type": "word", "title": "单词：a lot of", "content": "许多", "metadata": { "word": "a lot of", "phonetic": "/ə lɒt əv/" } },
-    { "id": "en-vocab-015", "type": "word", "title": "单词：eagle", "content": "老鹰", "metadata": { "word": "eagle", "phonetic": "/ˈiːɡl/" } },
-    { "id": "en-vocab-016", "type": "word", "title": "单词：owl", "content": "猫头鹰", "metadata": { "word": "owl", "phonetic": "/aʊl/" } },
-    { "id": "en-vocab-017", "type": "word", "title": "单词：honeybee", "content": "蜜蜂", "metadata": { "word": "honeybee", "phonetic": "/ˈhʌnibiː/" } },
-    { "id": "en-vocab-018", "type": "word", "title": "单词：nest", "content": "巢穴", "metadata": { "word": "nest", "phonetic": "/nest/" } },
-    { "id": "en-vocab-019", "type": "word", "title": "单词：their", "content": "他们的；她们的；它们的", "metadata": { "word": "their", "phonetic": "/ðeə/" } },
-    { "id": "en-vocab-020", "type": "word", "title": "单词：tree hole", "content": "树洞", "metadata": { "word": "tree hole", "phonetic": "/triː həʊl/" } },
-    { "id": "en-vocab-021", "type": "word", "title": "单词：safe", "content": "安全的", "metadata": { "word": "safe", "phonetic": "/seɪf/" } },
-    { "id": "en-vocab-022", "type": "word", "title": "单词：there", "content": "那里；在那里", "metadata": { "word": "there", "phonetic": "/ðeə/" } },
-    { "id": "en-vocab-023", "type": "word", "title": "单词：snake", "content": "蛇", "metadata": { "word": "snake", "phonetic": "/sneɪk/" } },
-    { "id": "en-vocab-024", "type": "word", "title": "单词：hive", "content": "蜂巢", "metadata": { "word": "hive", "phonetic": "/haɪv/" } },
-    { "id": "en-vocab-025", "type": "word", "title": "单词：under", "content": "在……下面；小于；少于", "metadata": { "word": "under", "phonetic": "/ˈʌndə/" } },
-    { "id": "en-vocab-026", "type": "word", "title": "单词：at night", "content": "晚上", "metadata": { "word": "at night", "phonetic": "/ət naɪt/" } },
-    { "id": "en-vocab-027", "type": "word", "title": "单词：make honey", "content": "酿蜜", "metadata": { "word": "make honey", "phonetic": "/meɪk ˈhʌni/" } },
-    { "id": "en-vocab-028", "type": "word", "title": "单词：plus", "content": "加；加号", "metadata": { "word": "plus", "phonetic": "/plʌs/" } },
-    { "id": "en-vocab-029", "type": "word", "title": "单词：equal", "content": "等于", "metadata": { "word": "equal", "phonetic": "/ˈiːkwəl/" } },
-    { "id": "en-vocab-030", "type": "word", "title": "单词：answer", "content": "答案；回答", "metadata": { "word": "answer", "phonetic": "/ˈɑːnsə/" } },
-    { "id": "en-vocab-031", "type": "word", "title": "单词：minus", "content": "减；减号", "metadata": { "word": "minus", "phonetic": "/ˈmaɪnəs/" } },
-    { "id": "en-vocab-032", "type": "word", "title": "单词：odd numbers", "content": "奇数", "metadata": { "word": "odd numbers", "phonetic": "/ɒd ˈnʌmbəz/" } },
-    { "id": "en-vocab-033", "type": "word", "title": "单词：even numbers", "content": "偶数", "metadata": { "word": "even numbers", "phonetic": "/ˈiːvn ˈnʌmbəz/" } },
-    { "id": "en-vocab-034", "type": "word", "title": "单词：use", "content": "使用", "metadata": { "word": "use", "phonetic": "/juːz/" } },
-    { "id": "en-vocab-035", "type": "word", "title": "单词：help", "content": "帮助", "metadata": { "word": "help", "phonetic": "/help/" } },
-    { "id": "en-vocab-036", "type": "word", "title": "单词：count", "content": "（按顺序）数数", "metadata": { "word": "count", "phonetic": "/kaʊnt/" } },
-    { "id": "en-vocab-037", "type": "word", "title": "单词：thing", "content": "东西；事物", "metadata": { "word": "thing", "phonetic": "/θɪŋ/" } },
-    { "id": "en-vocab-038", "type": "word", "title": "单词：say", "content": "说", "metadata": { "word": "say", "phonetic": "/seɪ/" } },
-    { "id": "en-vocab-039", "type": "word", "title": "单词：every day", "content": "每天", "metadata": { "word": "every day", "phonetic": "/ˈevri deɪ/" } },
-    { "id": "en-vocab-040", "type": "word", "title": "单词：how many", "content": "（用于问数量）多少", "metadata": { "word": "how many", "phonetic": "/haʊ ˈmeni/" } },
-    { "id": "en-vocab-041", "type": "word", "title": "单词：supermarket", "content": "超市", "metadata": { "word": "supermarket", "phonetic": "/ˈsuːpəmɑːkɪt/" } },
-    { "id": "en-vocab-042", "type": "word", "title": "单词：a bag of rice", "content": "一袋米", "metadata": { "word": "a bag of rice", "phonetic": "/ə bæɡ əv raɪs/" } },
-    { "id": "en-vocab-043", "type": "word", "title": "单词：a box of eggs", "content": "一盒鸡蛋", "metadata": { "word": "a box of eggs", "phonetic": "/ə bɒks əv eɡz/" } },
-    { "id": "en-vocab-044", "type": "word", "title": "单词：a bottle of juice", "content": "一瓶果汁", "metadata": { "word": "a bottle of juice", "phonetic": "/ə ˈbɒtl əv dʒuːs/" } },
-    { "id": "en-vocab-045", "type": "word", "title": "单词：buy", "content": "购买", "metadata": { "word": "buy", "phonetic": "/baɪ/" } },
-    { "id": "en-vocab-046", "type": "word", "title": "单词：sell", "content": "出售", "metadata": { "word": "sell", "phonetic": "/sel/" } },
-    { "id": "en-vocab-047", "type": "word", "title": "单词：need", "content": "需要", "metadata": { "word": "need", "phonetic": "/niːd/" } },
-    { "id": "en-vocab-048", "type": "word", "title": "单词：shopping list", "content": "购物单", "metadata": { "word": "shopping list", "phonetic": "/ˈʃɒpɪŋ lɪst/" } },
-    { "id": "en-vocab-049", "type": "word", "title": "单词：each", "content": "每个", "metadata": { "word": "each", "phonetic": "/iːtʃ/" } },
-    { "id": "en-vocab-050", "type": "word", "title": "单词：team", "content": "队；组", "metadata": { "word": "team", "phonetic": "/tiːm/" } },
-    { "id": "en-vocab-051", "type": "word", "title": "单词：faster", "content": "更快的", "metadata": { "word": "faster", "phonetic": "/ˈfɑːstə/" } },
-    { "id": "en-vocab-052", "type": "word", "title": "单词：candy", "content": "糖果；巧克力", "metadata": { "word": "candy", "phonetic": "/ˈkændi/" } },
-    { "id": "en-vocab-053", "type": "word", "title": "单词：bread", "content": "面包", "metadata": { "word": "bread", "phonetic": "/bred/" } },
-    { "id": "en-vocab-054", "type": "word", "title": "单词：win", "content": "获胜", "metadata": { "word": "win", "phonetic": "/wɪn/" } },
-    { "id": "en-vocab-055", "type": "word", "title": "单词：still", "content": "还；仍然", "metadata": { "word": "still", "phonetic": "/stɪl/" } },
-    { "id": "en-vocab-056", "type": "word", "title": "单词：share", "content": "分享", "metadata": { "word": "share", "phonetic": "/ʃeə/" } },
-    { "id": "en-vocab-057", "type": "word", "title": "单词：water", "content": "水；给……浇水", "metadata": { "word": "water", "phonetic": "/ˈwɔːtə/" } },
-    { "id": "en-vocab-058", "type": "word", "title": "单词：how much", "content": "多少钱；多少", "metadata": { "word": "how much", "phonetic": "/haʊ mʌtʃ/" } },
-    { "id": "en-vocab-059", "type": "word", "title": "单词：a bar of chocolate", "content": "一块巧克力", "metadata": { "word": "a bar of chocolate", "phonetic": "/ə bɑːr əv ˈtʃɒklət/" } },
-    { "id": "en-vocab-060", "type": "word", "title": "单词：Here they are.", "content": "它们在这里。", "metadata": { "word": "Here they are.", "phonetic": "/hɪə ðeɪ ɑː/" } },
-    { "id": "en-vocab-061", "type": "word", "title": "单词：All right.", "content": "好的。", "metadata": { "word": "All right.", "phonetic": "/ɔːl raɪt/" } },
-    { "id": "en-vocab-062", "type": "word", "title": "单词：What would you like?", "content": "你想要什么？", "metadata": { "word": "What would you like?", "phonetic": "/wɒt wʊd juː laɪk/" } },
-    { "id": "en-vocab-063", "type": "word", "title": "单词：spring", "content": "春天", "metadata": { "word": "spring", "phonetic": "/sprɪŋ/" } },
-    { "id": "en-vocab-064", "type": "word", "title": "单词：warm", "content": "温暖的", "metadata": { "word": "warm", "phonetic": "/wɔːm/" } },
-    { "id": "en-vocab-065", "type": "word", "title": "单词：summer", "content": "夏天", "metadata": { "word": "summer", "phonetic": "/ˈsʌmə/" } },
-    { "id": "en-vocab-066", "type": "word", "title": "单词：hot", "content": "炎热的", "metadata": { "word": "hot", "phonetic": "/hɒt/" } },
-    { "id": "en-vocab-067", "type": "word", "title": "单词：autumn", "content": "秋天", "metadata": { "word": "autumn", "phonetic": "/ˈɔːtəm/" } },
-    { "id": "en-vocab-068", "type": "word", "title": "单词：cool", "content": "凉爽的", "metadata": { "word": "cool", "phonetic": "/kuːl/" } },
-    { "id": "en-vocab-069", "type": "word", "title": "单词：winter", "content": "冬天", "metadata": { "word": "winter", "phonetic": "/ˈwɪntə/" } },
-    { "id": "en-vocab-070", "type": "word", "title": "单词：cold", "content": "寒冷的", "metadata": { "word": "cold", "phonetic": "/kəʊld/" } },
-    { "id": "en-vocab-071", "type": "word", "title": "单词：parent", "content": "父亲（或母亲）", "metadata": { "word": "parent", "phonetic": "/ˈpeərənt/" } },
-    { "id": "en-vocab-072", "type": "word", "title": "单词：season", "content": "季节", "metadata": { "word": "season", "phonetic": "/ˈsiːzn/" } },
-    { "id": "en-vocab-073", "type": "word", "title": "单词：year", "content": "年", "metadata": { "word": "year", "phonetic": "/jɪə/" } },
-    { "id": "en-vocab-074", "type": "word", "title": "单词：grow", "content": "（使）生长", "metadata": { "word": "grow", "phonetic": "/ɡrəʊ/" } },
-    { "id": "en-vocab-075", "type": "word", "title": "单词：get", "content": "变得", "metadata": { "word": "get", "phonetic": "/ɡet/" } },
-    { "id": "en-vocab-076", "type": "word", "title": "单词：usually", "content": "通常", "metadata": { "word": "usually", "phonetic": "/ˈjuːʒuəli/" } },
-    { "id": "en-vocab-077", "type": "word", "title": "单词：after", "content": "在……之后", "metadata": { "word": "after", "phonetic": "/ˈɑːftə/" } },
-    { "id": "en-vocab-078", "type": "word", "title": "单词：fall", "content": "落下", "metadata": { "word": "fall", "phonetic": "/fɔːl/" } },
-    { "id": "en-vocab-079", "type": "word", "title": "单词：turn", "content": "（使）变成", "metadata": { "word": "turn", "phonetic": "/tɜːn/" } },
-    { "id": "en-vocab-080", "type": "word", "title": "单词：often", "content": "经常", "metadata": { "word": "often", "phonetic": "/ˈɒfn/" } },
-    { "id": "en-vocab-081", "type": "word", "title": "单词：snow", "content": "下雪；雪", "metadata": { "word": "snow", "phonetic": "/snəʊ/" } },
-    { "id": "en-vocab-082", "type": "word", "title": "单词：then", "content": "然后", "metadata": { "word": "then", "phonetic": "/ðen/" } },
-    { "id": "en-vocab-083", "type": "word", "title": "单词：begin", "content": "开始", "metadata": { "word": "begin", "phonetic": "/bɪˈɡɪn/" } },
-    { "id": "en-vocab-084", "type": "word", "title": "单词：flower", "content": "花", "metadata": { "word": "flower", "phonetic": "/ˈflaʊə/" } },
-    { "id": "en-vocab-085", "type": "word", "title": "单词：fruit", "content": "果实；水果", "metadata": { "word": "fruit", "phonetic": "/fruːt/" } },
-    { "id": "en-vocab-086", "type": "word", "title": "单词：leaf", "content": "叶子", "metadata": { "word": "leaf", "phonetic": "/liːf/" } },
-    { "id": "en-vocab-087", "type": "word", "title": "单词：soil", "content": "土壤", "metadata": { "word": "soil", "phonetic": "/sɔɪl/" } },
-    { "id": "en-vocab-088", "type": "word", "title": "单词：sunflower", "content": "向日葵", "metadata": { "word": "sunflower", "phonetic": "/ˈsʌnflaʊə/" } },
-    { "id": "en-vocab-089", "type": "word", "title": "单词：seed", "content": "种子", "metadata": { "word": "seed", "phonetic": "/siːd/" } },
-    { "id": "en-vocab-090", "type": "word", "title": "单词：put", "content": "放", "metadata": { "word": "put", "phonetic": "/pʊt/" } },
-    { "id": "en-vocab-091", "type": "word", "title": "单词：plant", "content": "植物", "metadata": { "word": "plant", "phonetic": "/plɑːnt/" } },
-    { "id": "en-vocab-092", "type": "word", "title": "单词：root", "content": "根", "metadata": { "word": "root", "phonetic": "/ruːt/" } },
-    { "id": "en-vocab-093", "type": "word", "title": "单词：tall", "content": "高的", "metadata": { "word": "tall", "phonetic": "/tɔːl/" } },
-    { "id": "en-vocab-094", "type": "word", "title": "单词：round", "content": "圆形的", "metadata": { "word": "round", "phonetic": "/raʊnd/" } },
-    { "id": "en-vocab-095", "type": "word", "title": "单词：oil", "content": "食用油", "metadata": { "word": "oil", "phonetic": "/ɔɪl/" } },
-    { "id": "en-vocab-096", "type": "word", "title": "单词：amazing", "content": "令人惊叹的", "metadata": { "word": "amazing", "phonetic": "/əˈmeɪzɪŋ/" } },
-    { "id": "en-vocab-097", "type": "word", "title": "单词：green light", "content": "绿灯", "metadata": { "word": "green light", "phonetic": "/ɡriːn laɪt/" } },
-    { "id": "en-vocab-098", "type": "word", "title": "单词：red light", "content": "红灯", "metadata": { "word": "red light", "phonetic": "/red laɪt/" } },
-    { "id": "en-vocab-099", "type": "word", "title": "单词：wait", "content": "等待", "metadata": { "word": "wait", "phonetic": "/weɪt/" } },
-    { "id": "en-vocab-100", "type": "word", "title": "单词：cross", "content": "穿越", "metadata": { "word": "cross", "phonetic": "/krɒs/" } },
-    { "id": "en-vocab-101", "type": "word", "title": "单词：Mr", "content": "先生", "metadata": { "word": "Mr", "phonetic": "/ˈmɪstə/" } },
-    { "id": "en-vocab-102", "type": "word", "title": "单词：way", "content": "路线；道路", "metadata": { "word": "way", "phonetic": "/weɪ/" } },
-    { "id": "en-vocab-103", "type": "word", "title": "单词：road", "content": "路；马路", "metadata": { "word": "road", "phonetic": "/rəʊd/" } },
-    { "id": "en-vocab-104", "type": "word", "title": "单词：should", "content": "应该", "metadata": { "word": "should", "phonetic": "/ʃʊd/" } },
-    { "id": "en-vocab-105", "type": "word", "title": "单词：first", "content": "首先", "metadata": { "word": "first", "phonetic": "/fɜːst/" } },
-    { "id": "en-vocab-106", "type": "word", "title": "单词：left", "content": "左边", "metadata": { "word": "left", "phonetic": "/left/" } },
-    { "id": "en-vocab-107", "type": "word", "title": "单词：car", "content": "小汽车", "metadata": { "word": "car", "phonetic": "/kɑː/" } },
-    { "id": "en-vocab-108", "type": "word", "title": "单词：right", "content": "右边", "metadata": { "word": "right", "phonetic": "/raɪt/" } },
-    { "id": "en-vocab-109", "type": "word", "title": "单词：skate", "content": "滑（滑板）", "metadata": { "word": "skate", "phonetic": "/skeɪt/" } },
-    { "id": "en-vocab-110", "type": "word", "title": "单词：sorry", "content": "对不起", "metadata": { "word": "sorry", "phonetic": "/ˈsɒri/" } },
-    { "id": "en-vocab-111", "type": "word", "title": "单词：kid", "content": "小孩；孩子", "metadata": { "word": "kid", "phonetic": "/kɪd/" } },
-    { "id": "en-vocab-112", "type": "word", "title": "单词：late", "content": "迟到", "metadata": { "word": "late", "phonetic": "/leɪt/" } },
-    { "id": "en-vocab-113", "type": "word", "title": "单词：Good job!", "content": "做得好！", "metadata": { "word": "Good job!", "phonetic": "/ɡʊd dʒɒb/" } },
-    { "id": "en-vocab-114", "type": "word", "title": "单词：Hurry up!", "content": "快点！", "metadata": { "word": "Hurry up!", "phonetic": "/ˈhʌri ʌp/" } },
-    { "id": "en-vocab-115", "type": "word", "title": "单词：go shopping", "content": "购物", "metadata": { "word": "go shopping", "phonetic": "/ɡəʊ ˈʃɒpɪŋ/" } },
-    { "id": "en-vocab-116", "type": "word", "title": "单词：go for a walk", "content": "去散步", "metadata": { "word": "go for a walk", "phonetic": "/ɡəʊ fər ə wɔːk/" } },
-    { "id": "en-vocab-117", "type": "word", "title": "单词：use the internet", "content": "使用互联网", "metadata": { "word": "use the internet", "phonetic": "/juːz ði ˈɪntənet/" } },
-    { "id": "en-vocab-118", "type": "word", "title": "单词：do exercise", "content": "锻炼", "metadata": { "word": "do exercise", "phonetic": "/duː ˈeksəsaɪz/" } },
-    { "id": "en-vocab-119", "type": "word", "title": "单词：always", "content": "总是", "metadata": { "word": "always", "phonetic": "/ˈɔːlweɪz/" } },
-    { "id": "en-vocab-120", "type": "word", "title": "单词：do housework", "content": "做家务", "metadata": { "word": "do housework", "phonetic": "/duː ˈhaʊswɜːk/" } },
-    { "id": "en-vocab-121", "type": "word", "title": "单词：vlog", "content": "视频博客", "metadata": { "word": "vlog", "phonetic": "/vlɒɡ/" } },
-    { "id": "en-vocab-122", "type": "word", "title": "单词：do gardening", "content": "做园艺", "metadata": { "word": "do gardening", "phonetic": "/duː ˈɡɑːdnɪŋ/" } },
-    { "id": "en-vocab-123", "type": "word", "title": "单词：watch", "content": "看；观看", "metadata": { "word": "watch", "phonetic": "/wɒtʃ/" } },
-    { "id": "en-vocab-124", "type": "word", "title": "单词：grandparent", "content": "祖父（母）；外祖父（母）", "metadata": { "word": "grandparent", "phonetic": "/ˈɡrænpeərənt/" } },
-    { "id": "en-vocab-125", "type": "word", "title": "单词：do tai chi", "content": "打太极拳", "metadata": { "word": "do tai chi", "phonetic": "/duː taɪ tʃiː/" } },
-    { "id": "en-vocab-126", "type": "word", "title": "单词：week", "content": "星期；周", "metadata": { "word": "week", "phonetic": "/wiːk/" } },
-    { "id": "en-vocab-127", "type": "word", "title": "单词：tidy up", "content": "收拾；整理", "metadata": { "word": "tidy up", "phonetic": "/ˈtaɪdi ʌp/" } },
-    { "id": "en-vocab-128", "type": "word", "title": "单词：work", "content": "工作", "metadata": { "word": "work", "phonetic": "/wɜːk/" } }
+    {
+      "id": "kp-en4-u1-pat",
+      "type": "skill",
+      "title": "Unit 1 常用句型",
+      "content": "把句型读熟，再替换关键词造句。注意 be 动词和主语要一致。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-u1-w01",
+      "type": "word",
+      "title": "PE",
+      "content": "体育(课)",
+      "metadata": {
+        "word": "PE",
+        "meaning": "体育(课)"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w02",
+      "type": "word",
+      "title": "job",
+      "content": "工作；职业",
+      "metadata": {
+        "word": "job",
+        "meaning": "工作；职业"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w03",
+      "type": "word",
+      "title": "doctor",
+      "content": "医生",
+      "metadata": {
+        "word": "doctor",
+        "meaning": "医生"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w04",
+      "type": "word",
+      "title": "farmer",
+      "content": "农场主；农民",
+      "metadata": {
+        "word": "farmer",
+        "meaning": "农场主；农民"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w05",
+      "type": "word",
+      "title": "nurse",
+      "content": "护士",
+      "metadata": {
+        "word": "nurse",
+        "meaning": "护士"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w06",
+      "type": "word",
+      "title": "office worker",
+      "content": "公司职员",
+      "metadata": {
+        "word": "office worker",
+        "meaning": "公司职员"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w07",
+      "type": "word",
+      "title": "factory worker",
+      "content": "工厂工人",
+      "metadata": {
+        "word": "factory worker",
+        "meaning": "工厂工人"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w08",
+      "type": "word",
+      "title": "busy",
+      "content": "忙碌的",
+      "metadata": {
+        "word": "busy",
+        "meaning": "忙碌的"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w09",
+      "type": "word",
+      "title": "tired",
+      "content": "疲倦的",
+      "metadata": {
+        "word": "tired",
+        "meaning": "疲倦的"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w10",
+      "type": "word",
+      "title": "chore",
+      "content": "家庭杂务",
+      "metadata": {
+        "word": "chore",
+        "meaning": "家庭杂务"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w11",
+      "type": "word",
+      "title": "cook",
+      "content": "烹饪；煮",
+      "metadata": {
+        "word": "cook",
+        "meaning": "烹饪；煮"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w12",
+      "type": "word",
+      "title": "clean",
+      "content": "打扫；干净的",
+      "metadata": {
+        "word": "clean",
+        "meaning": "打扫；干净的"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w13",
+      "type": "word",
+      "title": "room",
+      "content": "房间",
+      "metadata": {
+        "word": "room",
+        "meaning": "房间"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w14",
+      "type": "word",
+      "title": "look after",
+      "content": "照顾",
+      "metadata": {
+        "word": "look after",
+        "meaning": "照顾"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w15",
+      "type": "word",
+      "title": "sweep",
+      "content": "扫",
+      "metadata": {
+        "word": "sweep",
+        "meaning": "扫"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w16",
+      "type": "word",
+      "title": "floor",
+      "content": "地板；地面",
+      "metadata": {
+        "word": "floor",
+        "meaning": "地板；地面"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w17",
+      "type": "word",
+      "title": "together",
+      "content": "在一起；共同",
+      "metadata": {
+        "word": "together",
+        "meaning": "在一起；共同"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w18",
+      "type": "word",
+      "title": "people",
+      "content": "人；人们",
+      "metadata": {
+        "word": "people",
+        "meaning": "人；人们"
+      }
+    },
+    {
+      "id": "kp-en4-u1-w19",
+      "type": "word",
+      "title": "child",
+      "content": "儿童；小孩",
+      "metadata": {
+        "word": "child",
+        "meaning": "儿童；小孩"
+      }
+    },
+    {
+      "id": "kp-en4-u2-pat",
+      "type": "skill",
+      "title": "Unit 2 常用句型",
+      "content": "把句型读熟，再替换关键词造句。注意 be 动词和主语要一致。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-u2-w01",
+      "type": "word",
+      "title": "his",
+      "content": "他的",
+      "metadata": {
+        "word": "his",
+        "meaning": "他的"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w02",
+      "type": "word",
+      "title": "strong",
+      "content": "强壮的",
+      "metadata": {
+        "word": "strong",
+        "meaning": "强壮的"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w03",
+      "type": "word",
+      "title": "hair",
+      "content": "头发",
+      "metadata": {
+        "word": "hair",
+        "meaning": "头发"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w04",
+      "type": "word",
+      "title": "also",
+      "content": "也",
+      "metadata": {
+        "word": "also",
+        "meaning": "也"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w05",
+      "type": "word",
+      "title": "kind",
+      "content": "友好的",
+      "metadata": {
+        "word": "kind",
+        "meaning": "友好的"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w06",
+      "type": "word",
+      "title": "quiet",
+      "content": "文静的",
+      "metadata": {
+        "word": "quiet",
+        "meaning": "文静的"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w07",
+      "type": "word",
+      "title": "best",
+      "content": "最好的",
+      "metadata": {
+        "word": "best",
+        "meaning": "最好的"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w08",
+      "type": "word",
+      "title": "read",
+      "content": "阅读",
+      "metadata": {
+        "word": "read",
+        "meaning": "阅读"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w09",
+      "type": "word",
+      "title": "play",
+      "content": "玩耍",
+      "metadata": {
+        "word": "play",
+        "meaning": "玩耍"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w10",
+      "type": "word",
+      "title": "Chinese",
+      "content": "中文；中国人；中国的",
+      "metadata": {
+        "word": "Chinese",
+        "meaning": "中文；中国人；中国的"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w11",
+      "type": "word",
+      "title": "game",
+      "content": "游戏",
+      "metadata": {
+        "word": "game",
+        "meaning": "游戏"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w12",
+      "type": "word",
+      "title": "football",
+      "content": "足球运动",
+      "metadata": {
+        "word": "football",
+        "meaning": "足球运动"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w13",
+      "type": "word",
+      "title": "basketball",
+      "content": "篮球运动",
+      "metadata": {
+        "word": "basketball",
+        "meaning": "篮球运动"
+      }
+    },
+    {
+      "id": "kp-en4-u2-w14",
+      "type": "word",
+      "title": "always",
+      "content": "总是",
+      "metadata": {
+        "word": "always",
+        "meaning": "总是"
+      }
+    },
+    {
+      "id": "kp-en4-u3-pat",
+      "type": "skill",
+      "title": "Unit 3 常用句型",
+      "content": "把句型读熟，再替换关键词造句。注意 be 动词和主语要一致。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-u3-w01",
+      "type": "word",
+      "title": "afternoon",
+      "content": "下午",
+      "metadata": {
+        "word": "afternoon",
+        "meaning": "下午"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w02",
+      "type": "word",
+      "title": "there",
+      "content": "（表示存在）有",
+      "metadata": {
+        "word": "there",
+        "meaning": "（表示存在）有"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w03",
+      "type": "word",
+      "title": "playground",
+      "content": "游乐场；操场",
+      "metadata": {
+        "word": "playground",
+        "meaning": "游乐场；操场"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w04",
+      "type": "word",
+      "title": "park",
+      "content": "公园",
+      "metadata": {
+        "word": "park",
+        "meaning": "公园"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w05",
+      "type": "word",
+      "title": "over",
+      "content": "在……",
+      "metadata": {
+        "word": "over",
+        "meaning": "在……"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w06",
+      "type": "word",
+      "title": "hospital",
+      "content": "医院",
+      "metadata": {
+        "word": "hospital",
+        "meaning": "医院"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w07",
+      "type": "word",
+      "title": "shop",
+      "content": "商店",
+      "metadata": {
+        "word": "shop",
+        "meaning": "商店"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w08",
+      "type": "word",
+      "title": "toilet",
+      "content": "厕所；卫生间",
+      "metadata": {
+        "word": "toilet",
+        "meaning": "厕所；卫生间"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w09",
+      "type": "word",
+      "title": "bus stop",
+      "content": "公共汽车站",
+      "metadata": {
+        "word": "bus stop",
+        "meaning": "公共汽车站"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w10",
+      "type": "word",
+      "title": "library",
+      "content": "图书馆",
+      "metadata": {
+        "word": "library",
+        "meaning": "图书馆"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w11",
+      "type": "word",
+      "title": "sport",
+      "content": "体育运动",
+      "metadata": {
+        "word": "sport",
+        "meaning": "体育运动"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w12",
+      "type": "word",
+      "title": "walk",
+      "content": "散步；行走",
+      "metadata": {
+        "word": "walk",
+        "meaning": "散步；行走"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w13",
+      "type": "word",
+      "title": "community",
+      "content": "社区",
+      "metadata": {
+        "word": "community",
+        "meaning": "社区"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w14",
+      "type": "word",
+      "title": "favourite",
+      "content": "最喜欢的",
+      "metadata": {
+        "word": "favourite",
+        "meaning": "最喜欢的"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w15",
+      "type": "word",
+      "title": "place",
+      "content": "地方；场所",
+      "metadata": {
+        "word": "place",
+        "meaning": "地方；场所"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w16",
+      "type": "word",
+      "title": "photo",
+      "content": "照片",
+      "metadata": {
+        "word": "photo",
+        "meaning": "照片"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w17",
+      "type": "word",
+      "title": "story",
+      "content": "故事",
+      "metadata": {
+        "word": "story",
+        "meaning": "故事"
+      }
+    },
+    {
+      "id": "kp-en4-u3-w18",
+      "type": "word",
+      "title": "buy",
+      "content": "购买",
+      "metadata": {
+        "word": "buy",
+        "meaning": "购买"
+      }
+    },
+    {
+      "id": "kp-en4-u4-pat",
+      "type": "skill",
+      "title": "Unit 4 常用句型",
+      "content": "把句型读熟，再替换关键词造句。注意 be 动词和主语要一致。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-u4-w01",
+      "type": "word",
+      "title": "firefighter",
+      "content": "消防队员",
+      "metadata": {
+        "word": "firefighter",
+        "meaning": "消防队员"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w02",
+      "type": "word",
+      "title": "why",
+      "content": "为什么",
+      "metadata": {
+        "word": "why",
+        "meaning": "为什么"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w03",
+      "type": "word",
+      "title": "driver",
+      "content": "司机",
+      "metadata": {
+        "word": "driver",
+        "meaning": "司机"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w04",
+      "type": "word",
+      "title": "cleaner",
+      "content": "清洁工",
+      "metadata": {
+        "word": "cleaner",
+        "meaning": "清洁工"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w05",
+      "type": "word",
+      "title": "cook",
+      "content": "厨师",
+      "metadata": {
+        "word": "cook",
+        "meaning": "厨师"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w06",
+      "type": "word",
+      "title": "delivery worker",
+      "content": "快递员",
+      "metadata": {
+        "word": "delivery worker",
+        "meaning": "快递员"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w07",
+      "type": "word",
+      "title": "police officer",
+      "content": "警察；警员",
+      "metadata": {
+        "word": "police officer",
+        "meaning": "警察；警员"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w08",
+      "type": "word",
+      "title": "a lot of",
+      "content": "大量；许多",
+      "metadata": {
+        "word": "a lot of",
+        "meaning": "大量；许多"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w09",
+      "type": "word",
+      "title": "now",
+      "content": "现在",
+      "metadata": {
+        "word": "now",
+        "meaning": "现在"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w10",
+      "type": "word",
+      "title": "old",
+      "content": "过去的；年纪大的；老的",
+      "metadata": {
+        "word": "old",
+        "meaning": "过去的；年纪大的；老的"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w11",
+      "type": "word",
+      "title": "tell",
+      "content": "讲述；告诉",
+      "metadata": {
+        "word": "tell",
+        "meaning": "讲述；告诉"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w12",
+      "type": "word",
+      "title": "everyone",
+      "content": "每人",
+      "metadata": {
+        "word": "everyone",
+        "meaning": "每人"
+      }
+    },
+    {
+      "id": "kp-en4-u4-w13",
+      "type": "word",
+      "title": "Ms",
+      "content": "女士",
+      "metadata": {
+        "word": "Ms",
+        "meaning": "女士"
+      }
+    },
+    {
+      "id": "kp-en4-u5-pat",
+      "type": "skill",
+      "title": "Unit 5 常用句型",
+      "content": "把句型读熟，再替换关键词造句。注意 be 动词和主语要一致。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-u5-w01",
+      "type": "word",
+      "title": "speak",
+      "content": "说话；发言",
+      "metadata": {
+        "word": "speak",
+        "meaning": "说话；发言"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w02",
+      "type": "word",
+      "title": "weather",
+      "content": "天气",
+      "metadata": {
+        "word": "weather",
+        "meaning": "天气"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w03",
+      "type": "word",
+      "title": "sunny",
+      "content": "阳光充足的",
+      "metadata": {
+        "word": "sunny",
+        "meaning": "阳光充足的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w04",
+      "type": "word",
+      "title": "hot",
+      "content": "热的",
+      "metadata": {
+        "word": "hot",
+        "meaning": "热的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w05",
+      "type": "word",
+      "title": "bad",
+      "content": "令人不快的；坏的",
+      "metadata": {
+        "word": "bad",
+        "meaning": "令人不快的；坏的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w06",
+      "type": "word",
+      "title": "cold",
+      "content": "冷的",
+      "metadata": {
+        "word": "cold",
+        "meaning": "冷的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w07",
+      "type": "word",
+      "title": "windy",
+      "content": "多风的",
+      "metadata": {
+        "word": "windy",
+        "meaning": "多风的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w08",
+      "type": "word",
+      "title": "cloudy",
+      "content": "多云的",
+      "metadata": {
+        "word": "cloudy",
+        "meaning": "多云的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w09",
+      "type": "word",
+      "title": "rainy",
+      "content": "阴雨的",
+      "metadata": {
+        "word": "rainy",
+        "meaning": "阴雨的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w10",
+      "type": "word",
+      "title": "snowy",
+      "content": "多雪的",
+      "metadata": {
+        "word": "snowy",
+        "meaning": "多雪的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w11",
+      "type": "word",
+      "title": "cool",
+      "content": "凉爽的",
+      "metadata": {
+        "word": "cool",
+        "meaning": "凉爽的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w12",
+      "type": "word",
+      "title": "warm",
+      "content": "温暖的",
+      "metadata": {
+        "word": "warm",
+        "meaning": "温暖的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w13",
+      "type": "word",
+      "title": "tomorrow",
+      "content": "在明天",
+      "metadata": {
+        "word": "tomorrow",
+        "meaning": "在明天"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w14",
+      "type": "word",
+      "title": "rain",
+      "content": "下雨；雨",
+      "metadata": {
+        "word": "rain",
+        "meaning": "下雨；雨"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w15",
+      "type": "word",
+      "title": "closed",
+      "content": "关闭的",
+      "metadata": {
+        "word": "closed",
+        "meaning": "关闭的"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w16",
+      "type": "word",
+      "title": "film",
+      "content": "电影",
+      "metadata": {
+        "word": "film",
+        "meaning": "电影"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w17",
+      "type": "word",
+      "title": "idea",
+      "content": "想法；主意",
+      "metadata": {
+        "word": "idea",
+        "meaning": "想法；主意"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w18",
+      "type": "word",
+      "title": "fly",
+      "content": "操纵（飞行器等）；飞",
+      "metadata": {
+        "word": "fly",
+        "meaning": "操纵（飞行器等）；飞"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w19",
+      "type": "word",
+      "title": "kite",
+      "content": "风筝",
+      "metadata": {
+        "word": "kite",
+        "meaning": "风筝"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w20",
+      "type": "word",
+      "title": "snowman",
+      "content": "雪人",
+      "metadata": {
+        "word": "snowman",
+        "meaning": "雪人"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w21",
+      "type": "word",
+      "title": "fun",
+      "content": "享乐；乐趣",
+      "metadata": {
+        "word": "fun",
+        "meaning": "享乐；乐趣"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w22",
+      "type": "word",
+      "title": "swim",
+      "content": "游泳",
+      "metadata": {
+        "word": "swim",
+        "meaning": "游泳"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w23",
+      "type": "word",
+      "title": "Sydney",
+      "content": "悉尼",
+      "metadata": {
+        "word": "Sydney",
+        "meaning": "悉尼"
+      }
+    },
+    {
+      "id": "kp-en4-u5-w24",
+      "type": "word",
+      "title": "their",
+      "content": "他们的；她们的；它们的",
+      "metadata": {
+        "word": "their",
+        "meaning": "他们的；她们的；它们的"
+      }
+    },
+    {
+      "id": "kp-en4-u6-pat",
+      "type": "skill",
+      "title": "Unit 6 常用句型",
+      "content": "把句型读熟，再替换关键词造句。注意 be 动词和主语要一致。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-u6-w01",
+      "type": "word",
+      "title": "whose",
+      "content": "谁的",
+      "metadata": {
+        "word": "whose",
+        "meaning": "谁的"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w02",
+      "type": "word",
+      "title": "sweater",
+      "content": "毛衣",
+      "metadata": {
+        "word": "sweater",
+        "meaning": "毛衣"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w03",
+      "type": "word",
+      "title": "sock",
+      "content": "短袜",
+      "metadata": {
+        "word": "sock",
+        "meaning": "短袜"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w04",
+      "type": "word",
+      "title": "mine",
+      "content": "我的",
+      "metadata": {
+        "word": "mine",
+        "meaning": "我的"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w05",
+      "type": "word",
+      "title": "wear",
+      "content": "穿；戴",
+      "metadata": {
+        "word": "wear",
+        "meaning": "穿；戴"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w06",
+      "type": "word",
+      "title": "shirt",
+      "content": "衬衫",
+      "metadata": {
+        "word": "shirt",
+        "meaning": "衬衫"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w07",
+      "type": "word",
+      "title": "coat",
+      "content": "大衣；外套",
+      "metadata": {
+        "word": "coat",
+        "meaning": "大衣；外套"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w08",
+      "type": "word",
+      "title": "dress",
+      "content": "连衣裙",
+      "metadata": {
+        "word": "dress",
+        "meaning": "连衣裙"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w09",
+      "type": "word",
+      "title": "which",
+      "content": "哪一个；哪些",
+      "metadata": {
+        "word": "which",
+        "meaning": "哪一个；哪些"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w10",
+      "type": "word",
+      "title": "season",
+      "content": "季节",
+      "metadata": {
+        "word": "season",
+        "meaning": "季节"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w11",
+      "type": "word",
+      "title": "winter",
+      "content": "冬天",
+      "metadata": {
+        "word": "winter",
+        "meaning": "冬天"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w12",
+      "type": "word",
+      "title": "snow",
+      "content": "下雪；雪",
+      "metadata": {
+        "word": "snow",
+        "meaning": "下雪；雪"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w13",
+      "type": "word",
+      "title": "get together",
+      "content": "聚会",
+      "metadata": {
+        "word": "get together",
+        "meaning": "聚会"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w14",
+      "type": "word",
+      "title": "spring",
+      "content": "春天",
+      "metadata": {
+        "word": "spring",
+        "meaning": "春天"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w15",
+      "type": "word",
+      "title": "summer",
+      "content": "夏天",
+      "metadata": {
+        "word": "summer",
+        "meaning": "夏天"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w16",
+      "type": "word",
+      "title": "autumn",
+      "content": "秋天",
+      "metadata": {
+        "word": "autumn",
+        "meaning": "秋天"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w17",
+      "type": "word",
+      "title": "T-shirt",
+      "content": "T恤衫",
+      "metadata": {
+        "word": "T-shirt",
+        "meaning": "T恤衫"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w18",
+      "type": "word",
+      "title": "fall",
+      "content": "落下",
+      "metadata": {
+        "word": "fall",
+        "meaning": "落下"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w19",
+      "type": "word",
+      "title": "leaf",
+      "content": "叶",
+      "metadata": {
+        "word": "leaf",
+        "meaning": "叶"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w20",
+      "type": "word",
+      "title": "glove",
+      "content": "手套",
+      "metadata": {
+        "word": "glove",
+        "meaning": "手套"
+      }
+    },
+    {
+      "id": "kp-en4-u6-w21",
+      "type": "word",
+      "title": "then",
+      "content": "然后；那时",
+      "metadata": {
+        "word": "then",
+        "meaning": "然后；那时"
+      }
+    },
+    {
+      "id": "kp-en4-g1",
+      "type": "skill",
+      "title": "语法 · There be 句型",
+      "content": "There be 表示「某处有某物」，be 动词跟**离它最近的那个名词**一致（就近原则）：There is a book and two pens. / There are two pens and a book. 否定句和疑问句里 some 要变 any。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-g2",
+      "type": "skill",
+      "title": "语法 · be 动词与 have / has",
+      "content": "am 配 I，is 配第三人称单数，are 配 you/we/they 和复数。have 配 I/you/we/they，has 配第三人称单数（he/she/it/Amy）。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-g3",
+      "type": "skill",
+      "title": "语法 · 名词所有格",
+      "content": "表示「谁的」：名词后加 's（John's classroom）。形容词性物主代词（my/your/her/his）后面**必须跟名词**；名词性物主代词（mine/yours/hers）**单独使用**，后面不再跟名词。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-g4",
+      "type": "skill",
+      "title": "语法 · 形容词构词与词类",
+      "content": "常见构词：名词 + y（rain→rainy）、名词 + ful（help→helpful）、名词 + ly（friend→friendly）。注意 snow 是名词/动词，snowy 才是形容词。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-en4-g5",
+      "type": "skill",
+      "title": "语法 · 职业词汇与词形变化",
+      "content": "职业词：doctor / nurse / farmer / driver / cleaner / cook / firefighter / police officer / delivery worker。第三人称单数动词加 -s/-es；表示一类人时名词要用复数（cleaners, firefighters）。",
+      "prerequisites": []
+    }
   ],
   "exercises": [],
   "units": [
     {
-      "id": "vocab-u1",
+      "id": "en4-u1",
       "name": "Unit 1",
-      "title": "Unit 1 城市与乡村",
-      "desc": "city / building / flat / street / country ...",
+      "title": "Unit 1 · Helping at home",
+      "desc": "在家帮忙 · 19 个单词 + 4 个句型",
       "topics": [
         {
-          "id": "vocab-t1",
-          "title": "Unit 1 词汇",
-          "knowledgePointIds": ["en-vocab-001","en-vocab-002","en-vocab-003","en-vocab-004","en-vocab-005","en-vocab-006","en-vocab-007","en-vocab-008","en-vocab-009","en-vocab-010","en-vocab-011","en-vocab-012","en-vocab-013","en-vocab-014"],
-          "modules": [
-            { "id": "vocab-m1", "type": "english.vocab", "title": "Unit 1 词汇", "knowledgePointIds": ["en-vocab-001","en-vocab-002","en-vocab-003","en-vocab-004","en-vocab-005","en-vocab-006","en-vocab-007","en-vocab-008","en-vocab-009","en-vocab-010","en-vocab-011","en-vocab-012","en-vocab-013","en-vocab-014"] }
+          "id": "en4-u1-t1",
+          "title": "单词默写（19 个）",
+          "desc": "在家帮忙 · Helping at home",
+          "board": "单词",
+          "knowledgePointIds": [
+            "kp-en4-u1-w01",
+            "kp-en4-u1-w02",
+            "kp-en4-u1-w03",
+            "kp-en4-u1-w04",
+            "kp-en4-u1-w05",
+            "kp-en4-u1-w06",
+            "kp-en4-u1-w07",
+            "kp-en4-u1-w08",
+            "kp-en4-u1-w09",
+            "kp-en4-u1-w10",
+            "kp-en4-u1-w11",
+            "kp-en4-u1-w12",
+            "kp-en4-u1-w13",
+            "kp-en4-u1-w14",
+            "kp-en4-u1-w15",
+            "kp-en4-u1-w16",
+            "kp-en4-u1-w17",
+            "kp-en4-u1-w18",
+            "kp-en4-u1-w19"
           ],
-          "exercises": []
+          "modules": [
+            {
+              "id": "en4-u1-m1",
+              "type": "english.vocab",
+              "title": "Unit 1 词汇",
+              "knowledgePointIds": [
+                "kp-en4-u1-w01",
+                "kp-en4-u1-w02",
+                "kp-en4-u1-w03",
+                "kp-en4-u1-w04",
+                "kp-en4-u1-w05",
+                "kp-en4-u1-w06",
+                "kp-en4-u1-w07",
+                "kp-en4-u1-w08",
+                "kp-en4-u1-w09",
+                "kp-en4-u1-w10",
+                "kp-en4-u1-w11",
+                "kp-en4-u1-w12",
+                "kp-en4-u1-w13",
+                "kp-en4-u1-w14",
+                "kp-en4-u1-w15",
+                "kp-en4-u1-w16",
+                "kp-en4-u1-w17",
+                "kp-en4-u1-w18",
+                "kp-en4-u1-w19"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u1-w01",
+              "type": "blank",
+              "question": "【单词默写】体育(课) → （　）",
+              "answer": "PE",
+              "explanation": "体育(课) → PE",
+              "knowledgePointIds": [
+                "kp-en4-u1-w01"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "PE"
+              }
+            },
+            {
+              "id": "en4-u1-w02",
+              "type": "blank",
+              "question": "【单词默写】工作；职业 → （　）",
+              "answer": "job",
+              "explanation": "工作；职业 → job",
+              "knowledgePointIds": [
+                "kp-en4-u1-w02"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "job"
+              }
+            },
+            {
+              "id": "en4-u1-w03",
+              "type": "blank",
+              "question": "【单词默写】医生 → （　）",
+              "answer": "doctor",
+              "explanation": "医生 → doctor",
+              "knowledgePointIds": [
+                "kp-en4-u1-w03"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "doctor"
+              }
+            },
+            {
+              "id": "en4-u1-w04",
+              "type": "blank",
+              "question": "【单词默写】农场主；农民 → （　）",
+              "answer": "farmer",
+              "explanation": "农场主；农民 → farmer",
+              "knowledgePointIds": [
+                "kp-en4-u1-w04"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "farmer"
+              }
+            },
+            {
+              "id": "en4-u1-w05",
+              "type": "blank",
+              "question": "【单词默写】护士 → （　）",
+              "answer": "nurse",
+              "explanation": "护士 → nurse",
+              "knowledgePointIds": [
+                "kp-en4-u1-w05"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "nurse"
+              }
+            },
+            {
+              "id": "en4-u1-w06",
+              "type": "blank",
+              "question": "【单词默写】公司职员 → （　）",
+              "answer": "office worker",
+              "explanation": "公司职员 → office worker",
+              "knowledgePointIds": [
+                "kp-en4-u1-w06"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "office worker"
+              }
+            },
+            {
+              "id": "en4-u1-w07",
+              "type": "blank",
+              "question": "【单词默写】工厂工人 → （　）",
+              "answer": "factory worker",
+              "explanation": "工厂工人 → factory worker",
+              "knowledgePointIds": [
+                "kp-en4-u1-w07"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "factory worker"
+              }
+            },
+            {
+              "id": "en4-u1-w08",
+              "type": "blank",
+              "question": "【单词默写】忙碌的 → （　）",
+              "answer": "busy",
+              "explanation": "忙碌的 → busy",
+              "knowledgePointIds": [
+                "kp-en4-u1-w08"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "busy"
+              }
+            },
+            {
+              "id": "en4-u1-w09",
+              "type": "blank",
+              "question": "【单词默写】疲倦的 → （　）",
+              "answer": "tired",
+              "explanation": "疲倦的 → tired",
+              "knowledgePointIds": [
+                "kp-en4-u1-w09"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "tired"
+              }
+            },
+            {
+              "id": "en4-u1-w10",
+              "type": "blank",
+              "question": "【单词默写】家庭杂务 → （　）",
+              "answer": "chore",
+              "explanation": "家庭杂务 → chore",
+              "knowledgePointIds": [
+                "kp-en4-u1-w10"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "chore"
+              }
+            },
+            {
+              "id": "en4-u1-w11",
+              "type": "blank",
+              "question": "【单词默写】烹饪；煮 → （　）",
+              "answer": "cook",
+              "explanation": "烹饪；煮 → cook",
+              "knowledgePointIds": [
+                "kp-en4-u1-w11"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "cook"
+              }
+            },
+            {
+              "id": "en4-u1-w12",
+              "type": "blank",
+              "question": "【单词默写】打扫；干净的 → （　）",
+              "answer": "clean",
+              "explanation": "打扫；干净的 → clean",
+              "knowledgePointIds": [
+                "kp-en4-u1-w12"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "clean"
+              }
+            },
+            {
+              "id": "en4-u1-w13",
+              "type": "blank",
+              "question": "【单词默写】房间 → （　）",
+              "answer": "room",
+              "explanation": "房间 → room",
+              "knowledgePointIds": [
+                "kp-en4-u1-w13"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "room"
+              }
+            },
+            {
+              "id": "en4-u1-w14",
+              "type": "blank",
+              "question": "【单词默写】照顾 → （　）",
+              "answer": "look after",
+              "explanation": "照顾 → look after",
+              "knowledgePointIds": [
+                "kp-en4-u1-w14"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "look after"
+              }
+            },
+            {
+              "id": "en4-u1-w15",
+              "type": "blank",
+              "question": "【单词默写】扫 → （　）",
+              "answer": "sweep",
+              "explanation": "扫 → sweep",
+              "knowledgePointIds": [
+                "kp-en4-u1-w15"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "sweep"
+              }
+            },
+            {
+              "id": "en4-u1-w16",
+              "type": "blank",
+              "question": "【单词默写】地板；地面 → （　）",
+              "answer": "floor",
+              "explanation": "地板；地面 → floor",
+              "knowledgePointIds": [
+                "kp-en4-u1-w16"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "floor"
+              }
+            },
+            {
+              "id": "en4-u1-w17",
+              "type": "blank",
+              "question": "【单词默写】在一起；共同 → （　）",
+              "answer": "together",
+              "explanation": "在一起；共同 → together",
+              "knowledgePointIds": [
+                "kp-en4-u1-w17"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "together"
+              }
+            },
+            {
+              "id": "en4-u1-w18",
+              "type": "blank",
+              "question": "【单词默写】人；人们 → （　）",
+              "answer": "people",
+              "explanation": "人；人们 → people",
+              "knowledgePointIds": [
+                "kp-en4-u1-w18"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "people"
+              }
+            },
+            {
+              "id": "en4-u1-w19",
+              "type": "blank",
+              "question": "【单词默写】儿童；小孩 → （　）",
+              "answer": "child",
+              "explanation": "儿童；小孩 → child",
+              "knowledgePointIds": [
+                "kp-en4-u1-w19"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "child"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-u1-t2",
+          "title": "常用句型（4 题）",
+          "desc": "补全句子里的关键词",
+          "board": "句型",
+          "knowledgePointIds": [
+            "kp-en4-u1-pat"
+          ],
+          "modules": [
+            {
+              "id": "en4-u1-m2",
+              "type": "english.sentence",
+              "title": "Unit 1 句型",
+              "knowledgePointIds": [
+                "kp-en4-u1-pat"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u1-p01",
+              "type": "blank",
+              "question": "【句型】她是医生。\n— What's your mother's job? — She's a ____ .",
+              "answer": "doctor",
+              "explanation": "她是医生。 →「— What's your mother's job? — She's a doctor .」",
+              "knowledgePointIds": [
+                "kp-en4-u1-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "doctor"
+              }
+            },
+            {
+              "id": "en4-u1-p02",
+              "type": "blank",
+              "question": "【句型】爸爸妈妈又忙又累。\nMum and Dad are ____ and tired.",
+              "answer": "busy",
+              "explanation": "爸爸妈妈又忙又累。 →「Mum and Dad are busy and tired.」",
+              "knowledgePointIds": [
+                "kp-en4-u1-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "busy"
+              }
+            },
+            {
+              "id": "en4-u1-p03",
+              "type": "blank",
+              "question": "【句型】我们可以做一些家务活。\nWe can do some ____ .",
+              "answer": "chores",
+              "explanation": "我们可以做一些家务活。 →「We can do some chores .」",
+              "knowledgePointIds": [
+                "kp-en4-u1-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "chores"
+              }
+            },
+            {
+              "id": "en4-u1-p04",
+              "type": "blank",
+              "question": "【句型】他是工厂工人。\nHe is a factory ____ .",
+              "answer": "worker",
+              "explanation": "他是工厂工人。 →「He is a factory worker .」",
+              "knowledgePointIds": [
+                "kp-en4-u1-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "worker"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "vocab-u2",
+      "id": "en4-u2",
       "name": "Unit 2",
-      "title": "Unit 2 鸟类与昆虫",
-      "desc": "eagle / owl / honeybee / nest ...",
+      "title": "Unit 2 · My friends",
+      "desc": "我的朋友 · 14 个单词 + 4 个句型",
       "topics": [
         {
-          "id": "vocab-t2",
-          "title": "Unit 2 词汇",
-          "knowledgePointIds": ["en-vocab-015","en-vocab-016","en-vocab-017","en-vocab-018","en-vocab-019","en-vocab-020","en-vocab-021","en-vocab-022","en-vocab-023","en-vocab-024","en-vocab-025","en-vocab-026","en-vocab-027"],
-          "modules": [
-            { "id": "vocab-m2", "type": "english.vocab", "title": "Unit 2 词汇", "knowledgePointIds": ["en-vocab-015","en-vocab-016","en-vocab-017","en-vocab-018","en-vocab-019","en-vocab-020","en-vocab-021","en-vocab-022","en-vocab-023","en-vocab-024","en-vocab-025","en-vocab-026","en-vocab-027"] }
+          "id": "en4-u2-t1",
+          "title": "单词默写（14 个）",
+          "desc": "我的朋友 · My friends",
+          "board": "单词",
+          "knowledgePointIds": [
+            "kp-en4-u2-w01",
+            "kp-en4-u2-w02",
+            "kp-en4-u2-w03",
+            "kp-en4-u2-w04",
+            "kp-en4-u2-w05",
+            "kp-en4-u2-w06",
+            "kp-en4-u2-w07",
+            "kp-en4-u2-w08",
+            "kp-en4-u2-w09",
+            "kp-en4-u2-w10",
+            "kp-en4-u2-w11",
+            "kp-en4-u2-w12",
+            "kp-en4-u2-w13",
+            "kp-en4-u2-w14"
           ],
-          "exercises": []
+          "modules": [
+            {
+              "id": "en4-u2-m1",
+              "type": "english.vocab",
+              "title": "Unit 2 词汇",
+              "knowledgePointIds": [
+                "kp-en4-u2-w01",
+                "kp-en4-u2-w02",
+                "kp-en4-u2-w03",
+                "kp-en4-u2-w04",
+                "kp-en4-u2-w05",
+                "kp-en4-u2-w06",
+                "kp-en4-u2-w07",
+                "kp-en4-u2-w08",
+                "kp-en4-u2-w09",
+                "kp-en4-u2-w10",
+                "kp-en4-u2-w11",
+                "kp-en4-u2-w12",
+                "kp-en4-u2-w13",
+                "kp-en4-u2-w14"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u2-w01",
+              "type": "blank",
+              "question": "【单词默写】他的 → （　）",
+              "answer": "his",
+              "explanation": "他的 → his",
+              "knowledgePointIds": [
+                "kp-en4-u2-w01"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "his"
+              }
+            },
+            {
+              "id": "en4-u2-w02",
+              "type": "blank",
+              "question": "【单词默写】强壮的 → （　）",
+              "answer": "strong",
+              "explanation": "强壮的 → strong",
+              "knowledgePointIds": [
+                "kp-en4-u2-w02"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "strong"
+              }
+            },
+            {
+              "id": "en4-u2-w03",
+              "type": "blank",
+              "question": "【单词默写】头发 → （　）",
+              "answer": "hair",
+              "explanation": "头发 → hair",
+              "knowledgePointIds": [
+                "kp-en4-u2-w03"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "hair"
+              }
+            },
+            {
+              "id": "en4-u2-w04",
+              "type": "blank",
+              "question": "【单词默写】也 → （　）",
+              "answer": "also",
+              "explanation": "也 → also",
+              "knowledgePointIds": [
+                "kp-en4-u2-w04"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "also"
+              }
+            },
+            {
+              "id": "en4-u2-w05",
+              "type": "blank",
+              "question": "【单词默写】友好的 → （　）",
+              "answer": "kind",
+              "explanation": "友好的 → kind",
+              "knowledgePointIds": [
+                "kp-en4-u2-w05"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "kind"
+              }
+            },
+            {
+              "id": "en4-u2-w06",
+              "type": "blank",
+              "question": "【单词默写】文静的 → （　）",
+              "answer": "quiet",
+              "explanation": "文静的 → quiet",
+              "knowledgePointIds": [
+                "kp-en4-u2-w06"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "quiet"
+              }
+            },
+            {
+              "id": "en4-u2-w07",
+              "type": "blank",
+              "question": "【单词默写】最好的 → （　）",
+              "answer": "best",
+              "explanation": "最好的 → best",
+              "knowledgePointIds": [
+                "kp-en4-u2-w07"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "best"
+              }
+            },
+            {
+              "id": "en4-u2-w08",
+              "type": "blank",
+              "question": "【单词默写】阅读 → （　）",
+              "answer": "read",
+              "explanation": "阅读 → read",
+              "knowledgePointIds": [
+                "kp-en4-u2-w08"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "read"
+              }
+            },
+            {
+              "id": "en4-u2-w09",
+              "type": "blank",
+              "question": "【单词默写】玩耍 → （　）",
+              "answer": "play",
+              "explanation": "玩耍 → play",
+              "knowledgePointIds": [
+                "kp-en4-u2-w09"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "play"
+              }
+            },
+            {
+              "id": "en4-u2-w10",
+              "type": "blank",
+              "question": "【单词默写】中文；中国人；中国的 → （　）",
+              "answer": "Chinese",
+              "explanation": "中文；中国人；中国的 → Chinese",
+              "knowledgePointIds": [
+                "kp-en4-u2-w10"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "Chinese"
+              }
+            },
+            {
+              "id": "en4-u2-w11",
+              "type": "blank",
+              "question": "【单词默写】游戏 → （　）",
+              "answer": "game",
+              "explanation": "游戏 → game",
+              "knowledgePointIds": [
+                "kp-en4-u2-w11"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "game"
+              }
+            },
+            {
+              "id": "en4-u2-w12",
+              "type": "blank",
+              "question": "【单词默写】足球运动 → （　）",
+              "answer": "football",
+              "explanation": "足球运动 → football",
+              "knowledgePointIds": [
+                "kp-en4-u2-w12"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "football"
+              }
+            },
+            {
+              "id": "en4-u2-w13",
+              "type": "blank",
+              "question": "【单词默写】篮球运动 → （　）",
+              "answer": "basketball",
+              "explanation": "篮球运动 → basketball",
+              "knowledgePointIds": [
+                "kp-en4-u2-w13"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "basketball"
+              }
+            },
+            {
+              "id": "en4-u2-w14",
+              "type": "blank",
+              "question": "【单词默写】总是 → （　）",
+              "answer": "always",
+              "explanation": "总是 → always",
+              "knowledgePointIds": [
+                "kp-en4-u2-w14"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "always"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-u2-t2",
+          "title": "常用句型（4 题）",
+          "desc": "补全句子里的关键词",
+          "board": "句型",
+          "knowledgePointIds": [
+            "kp-en4-u2-pat"
+          ],
+          "modules": [
+            {
+              "id": "en4-u2-m2",
+              "type": "english.sentence",
+              "title": "Unit 2 句型",
+              "knowledgePointIds": [
+                "kp-en4-u2-pat"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u2-p01",
+              "type": "blank",
+              "question": "【句型】他又高又壮。\nHe's tall and ____ .",
+              "answer": "strong",
+              "explanation": "他又高又壮。 →「He's tall and strong .」",
+              "knowledgePointIds": [
+                "kp-en4-u2-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "strong"
+              }
+            },
+            {
+              "id": "en4-u2-p02",
+              "type": "blank",
+              "question": "【句型】他也很友善，他经常帮助我。\nHe's also ____ . He often helps me.",
+              "answer": "kind",
+              "explanation": "他也很友善，他经常帮助我。 →「He's also kind . He often helps me.」",
+              "knowledgePointIds": [
+                "kp-en4-u2-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "kind"
+              }
+            },
+            {
+              "id": "en4-u2-p03",
+              "type": "blank",
+              "question": "【句型】谁是你最好的朋友？\n— Who's your ____ friend? — Chen Jie.",
+              "answer": "best",
+              "explanation": "谁是你最好的朋友？ →「— Who's your best friend? — Chen Jie.」",
+              "knowledgePointIds": [
+                "kp-en4-u2-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "best"
+              }
+            },
+            {
+              "id": "en4-u2-p04",
+              "type": "blank",
+              "question": "【句型】她经常让我开心。\nShe often makes me ____ .",
+              "answer": "smile",
+              "explanation": "她经常让我开心。 →「She often makes me smile .」",
+              "knowledgePointIds": [
+                "kp-en4-u2-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "smile"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "vocab-u3",
+      "id": "en4-u3",
       "name": "Unit 3",
-      "title": "Unit 3 数字与运算",
-      "desc": "plus / equal / answer / minus ...",
+      "title": "Unit 3 · Places we live in",
+      "desc": "我们居住的地方 · 18 个单词 + 4 个句型",
       "topics": [
         {
-          "id": "vocab-t3",
-          "title": "Unit 3 词汇",
-          "knowledgePointIds": ["en-vocab-028","en-vocab-029","en-vocab-030","en-vocab-031","en-vocab-032","en-vocab-033","en-vocab-034","en-vocab-035","en-vocab-036","en-vocab-037","en-vocab-038","en-vocab-039","en-vocab-040"],
-          "modules": [
-            { "id": "vocab-m3", "type": "english.vocab", "title": "Unit 3 词汇", "knowledgePointIds": ["en-vocab-028","en-vocab-029","en-vocab-030","en-vocab-031","en-vocab-032","en-vocab-033","en-vocab-034","en-vocab-035","en-vocab-036","en-vocab-037","en-vocab-038","en-vocab-039","en-vocab-040"] }
+          "id": "en4-u3-t1",
+          "title": "单词默写（18 个）",
+          "desc": "我们居住的地方 · Places we live in",
+          "board": "单词",
+          "knowledgePointIds": [
+            "kp-en4-u3-w01",
+            "kp-en4-u3-w02",
+            "kp-en4-u3-w03",
+            "kp-en4-u3-w04",
+            "kp-en4-u3-w05",
+            "kp-en4-u3-w06",
+            "kp-en4-u3-w07",
+            "kp-en4-u3-w08",
+            "kp-en4-u3-w09",
+            "kp-en4-u3-w10",
+            "kp-en4-u3-w11",
+            "kp-en4-u3-w12",
+            "kp-en4-u3-w13",
+            "kp-en4-u3-w14",
+            "kp-en4-u3-w15",
+            "kp-en4-u3-w16",
+            "kp-en4-u3-w17",
+            "kp-en4-u3-w18"
           ],
-          "exercises": []
+          "modules": [
+            {
+              "id": "en4-u3-m1",
+              "type": "english.vocab",
+              "title": "Unit 3 词汇",
+              "knowledgePointIds": [
+                "kp-en4-u3-w01",
+                "kp-en4-u3-w02",
+                "kp-en4-u3-w03",
+                "kp-en4-u3-w04",
+                "kp-en4-u3-w05",
+                "kp-en4-u3-w06",
+                "kp-en4-u3-w07",
+                "kp-en4-u3-w08",
+                "kp-en4-u3-w09",
+                "kp-en4-u3-w10",
+                "kp-en4-u3-w11",
+                "kp-en4-u3-w12",
+                "kp-en4-u3-w13",
+                "kp-en4-u3-w14",
+                "kp-en4-u3-w15",
+                "kp-en4-u3-w16",
+                "kp-en4-u3-w17",
+                "kp-en4-u3-w18"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u3-w01",
+              "type": "blank",
+              "question": "【单词默写】下午 → （　）",
+              "answer": "afternoon",
+              "explanation": "下午 → afternoon",
+              "knowledgePointIds": [
+                "kp-en4-u3-w01"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "afternoon"
+              }
+            },
+            {
+              "id": "en4-u3-w02",
+              "type": "blank",
+              "question": "【单词默写】（表示存在）有 → （　）",
+              "answer": "there",
+              "explanation": "（表示存在）有 → there",
+              "knowledgePointIds": [
+                "kp-en4-u3-w02"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "there"
+              }
+            },
+            {
+              "id": "en4-u3-w03",
+              "type": "blank",
+              "question": "【单词默写】游乐场；操场 → （　）",
+              "answer": "playground",
+              "explanation": "游乐场；操场 → playground",
+              "knowledgePointIds": [
+                "kp-en4-u3-w03"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "playground"
+              }
+            },
+            {
+              "id": "en4-u3-w04",
+              "type": "blank",
+              "question": "【单词默写】公园 → （　）",
+              "answer": "park",
+              "explanation": "公园 → park",
+              "knowledgePointIds": [
+                "kp-en4-u3-w04"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "park"
+              }
+            },
+            {
+              "id": "en4-u3-w05",
+              "type": "blank",
+              "question": "【单词默写】在…… → （　）",
+              "answer": "over",
+              "explanation": "在…… → over",
+              "knowledgePointIds": [
+                "kp-en4-u3-w05"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "over"
+              }
+            },
+            {
+              "id": "en4-u3-w06",
+              "type": "blank",
+              "question": "【单词默写】医院 → （　）",
+              "answer": "hospital",
+              "explanation": "医院 → hospital",
+              "knowledgePointIds": [
+                "kp-en4-u3-w06"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "hospital"
+              }
+            },
+            {
+              "id": "en4-u3-w07",
+              "type": "blank",
+              "question": "【单词默写】商店 → （　）",
+              "answer": "shop",
+              "explanation": "商店 → shop",
+              "knowledgePointIds": [
+                "kp-en4-u3-w07"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "shop"
+              }
+            },
+            {
+              "id": "en4-u3-w08",
+              "type": "blank",
+              "question": "【单词默写】厕所；卫生间 → （　）",
+              "answer": "toilet",
+              "explanation": "厕所；卫生间 → toilet",
+              "knowledgePointIds": [
+                "kp-en4-u3-w08"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "toilet"
+              }
+            },
+            {
+              "id": "en4-u3-w09",
+              "type": "blank",
+              "question": "【单词默写】公共汽车站 → （　）",
+              "answer": "bus stop",
+              "explanation": "公共汽车站 → bus stop",
+              "knowledgePointIds": [
+                "kp-en4-u3-w09"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "bus stop"
+              }
+            },
+            {
+              "id": "en4-u3-w10",
+              "type": "blank",
+              "question": "【单词默写】图书馆 → （　）",
+              "answer": "library",
+              "explanation": "图书馆 → library",
+              "knowledgePointIds": [
+                "kp-en4-u3-w10"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "library"
+              }
+            },
+            {
+              "id": "en4-u3-w11",
+              "type": "blank",
+              "question": "【单词默写】体育运动 → （　）",
+              "answer": "sport",
+              "explanation": "体育运动 → sport",
+              "knowledgePointIds": [
+                "kp-en4-u3-w11"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "sport"
+              }
+            },
+            {
+              "id": "en4-u3-w12",
+              "type": "blank",
+              "question": "【单词默写】散步；行走 → （　）",
+              "answer": "walk",
+              "explanation": "散步；行走 → walk",
+              "knowledgePointIds": [
+                "kp-en4-u3-w12"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "walk"
+              }
+            },
+            {
+              "id": "en4-u3-w13",
+              "type": "blank",
+              "question": "【单词默写】社区 → （　）",
+              "answer": "community",
+              "explanation": "社区 → community",
+              "knowledgePointIds": [
+                "kp-en4-u3-w13"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "community"
+              }
+            },
+            {
+              "id": "en4-u3-w14",
+              "type": "blank",
+              "question": "【单词默写】最喜欢的 → （　）",
+              "answer": "favourite",
+              "explanation": "最喜欢的 → favourite",
+              "knowledgePointIds": [
+                "kp-en4-u3-w14"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "favourite"
+              }
+            },
+            {
+              "id": "en4-u3-w15",
+              "type": "blank",
+              "question": "【单词默写】地方；场所 → （　）",
+              "answer": "place",
+              "explanation": "地方；场所 → place",
+              "knowledgePointIds": [
+                "kp-en4-u3-w15"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "place"
+              }
+            },
+            {
+              "id": "en4-u3-w16",
+              "type": "blank",
+              "question": "【单词默写】照片 → （　）",
+              "answer": "photo",
+              "explanation": "照片 → photo",
+              "knowledgePointIds": [
+                "kp-en4-u3-w16"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "photo"
+              }
+            },
+            {
+              "id": "en4-u3-w17",
+              "type": "blank",
+              "question": "【单词默写】故事 → （　）",
+              "answer": "story",
+              "explanation": "故事 → story",
+              "knowledgePointIds": [
+                "kp-en4-u3-w17"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "story"
+              }
+            },
+            {
+              "id": "en4-u3-w18",
+              "type": "blank",
+              "question": "【单词默写】购买 → （　）",
+              "answer": "buy",
+              "explanation": "购买 → buy",
+              "knowledgePointIds": [
+                "kp-en4-u3-w18"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "buy"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-u3-t2",
+          "title": "常用句型（4 题）",
+          "desc": "补全句子里的关键词",
+          "board": "句型",
+          "knowledgePointIds": [
+            "kp-en4-u3-pat"
+          ],
+          "modules": [
+            {
+              "id": "en4-u3-m2",
+              "type": "english.sentence",
+              "title": "Unit 3 句型",
+              "knowledgePointIds": [
+                "kp-en4-u3-pat"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u3-p01",
+              "type": "blank",
+              "question": "【句型】那里有个游乐场，我们经常在那里玩儿。\nThere is a ____ . We often play there.",
+              "answer": "playground",
+              "explanation": "那里有个游乐场，我们经常在那里玩儿。 →「There is a playground . We often play there.」",
+              "knowledgePointIds": [
+                "kp-en4-u3-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "playground"
+              }
+            },
+            {
+              "id": "en4-u3-p02",
+              "type": "blank",
+              "question": "【句型】我最喜欢的地方是博物馆。\nMy favourite ____ is the museum.",
+              "answer": "place",
+              "explanation": "我最喜欢的地方是博物馆。 →「My favourite place is the museum.」",
+              "knowledgePointIds": [
+                "kp-en4-u3-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "place"
+              }
+            },
+            {
+              "id": "en4-u3-p03",
+              "type": "blank",
+              "question": "【句型】太棒了！我们一起做运动吧。\nGreat! Let's do some ____ .",
+              "answer": "sports",
+              "explanation": "太棒了！我们一起做运动吧。 →「Great! Let's do some sports .」",
+              "knowledgePointIds": [
+                "kp-en4-u3-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "sports"
+              }
+            },
+            {
+              "id": "en4-u3-p04",
+              "type": "blank",
+              "question": "【句型】我们可以去图书馆。\nWe can go to the ____ .",
+              "answer": "library",
+              "explanation": "我们可以去图书馆。 →「We can go to the library .」",
+              "knowledgePointIds": [
+                "kp-en4-u3-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "library"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "vocab-u4",
+      "id": "en4-u4",
       "name": "Unit 4",
-      "title": "Unit 4 购物",
-      "desc": "supermarket / buy / sell / need ...",
+      "title": "Unit 4 · Helping in the community",
+      "desc": "在社区帮忙 · 13 个单词 + 4 个句型",
       "topics": [
         {
-          "id": "vocab-t4",
-          "title": "Unit 4 词汇",
-          "knowledgePointIds": ["en-vocab-041","en-vocab-042","en-vocab-043","en-vocab-044","en-vocab-045","en-vocab-046","en-vocab-047","en-vocab-048","en-vocab-049","en-vocab-050","en-vocab-051","en-vocab-052","en-vocab-053","en-vocab-054","en-vocab-055","en-vocab-056","en-vocab-057","en-vocab-058","en-vocab-059","en-vocab-060","en-vocab-061","en-vocab-062"],
-          "modules": [
-            { "id": "vocab-m4", "type": "english.vocab", "title": "Unit 4 词汇", "knowledgePointIds": ["en-vocab-041","en-vocab-042","en-vocab-043","en-vocab-044","en-vocab-045","en-vocab-046","en-vocab-047","en-vocab-048","en-vocab-049","en-vocab-050","en-vocab-051","en-vocab-052","en-vocab-053","en-vocab-054","en-vocab-055","en-vocab-056","en-vocab-057","en-vocab-058","en-vocab-059","en-vocab-060","en-vocab-061","en-vocab-062"] }
+          "id": "en4-u4-t1",
+          "title": "单词默写（13 个）",
+          "desc": "在社区帮忙 · Helping in the community",
+          "board": "单词",
+          "knowledgePointIds": [
+            "kp-en4-u4-w01",
+            "kp-en4-u4-w02",
+            "kp-en4-u4-w03",
+            "kp-en4-u4-w04",
+            "kp-en4-u4-w05",
+            "kp-en4-u4-w06",
+            "kp-en4-u4-w07",
+            "kp-en4-u4-w08",
+            "kp-en4-u4-w09",
+            "kp-en4-u4-w10",
+            "kp-en4-u4-w11",
+            "kp-en4-u4-w12",
+            "kp-en4-u4-w13"
           ],
-          "exercises": []
+          "modules": [
+            {
+              "id": "en4-u4-m1",
+              "type": "english.vocab",
+              "title": "Unit 4 词汇",
+              "knowledgePointIds": [
+                "kp-en4-u4-w01",
+                "kp-en4-u4-w02",
+                "kp-en4-u4-w03",
+                "kp-en4-u4-w04",
+                "kp-en4-u4-w05",
+                "kp-en4-u4-w06",
+                "kp-en4-u4-w07",
+                "kp-en4-u4-w08",
+                "kp-en4-u4-w09",
+                "kp-en4-u4-w10",
+                "kp-en4-u4-w11",
+                "kp-en4-u4-w12",
+                "kp-en4-u4-w13"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u4-w01",
+              "type": "blank",
+              "question": "【单词默写】消防队员 → （　）",
+              "answer": "firefighter",
+              "explanation": "消防队员 → firefighter",
+              "knowledgePointIds": [
+                "kp-en4-u4-w01"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "firefighter"
+              }
+            },
+            {
+              "id": "en4-u4-w02",
+              "type": "blank",
+              "question": "【单词默写】为什么 → （　）",
+              "answer": "why",
+              "explanation": "为什么 → why",
+              "knowledgePointIds": [
+                "kp-en4-u4-w02"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "why"
+              }
+            },
+            {
+              "id": "en4-u4-w03",
+              "type": "blank",
+              "question": "【单词默写】司机 → （　）",
+              "answer": "driver",
+              "explanation": "司机 → driver",
+              "knowledgePointIds": [
+                "kp-en4-u4-w03"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "driver"
+              }
+            },
+            {
+              "id": "en4-u4-w04",
+              "type": "blank",
+              "question": "【单词默写】清洁工 → （　）",
+              "answer": "cleaner",
+              "explanation": "清洁工 → cleaner",
+              "knowledgePointIds": [
+                "kp-en4-u4-w04"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "cleaner"
+              }
+            },
+            {
+              "id": "en4-u4-w05",
+              "type": "blank",
+              "question": "【单词默写】厨师 → （　）",
+              "answer": "cook",
+              "explanation": "厨师 → cook",
+              "knowledgePointIds": [
+                "kp-en4-u4-w05"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "cook"
+              }
+            },
+            {
+              "id": "en4-u4-w06",
+              "type": "blank",
+              "question": "【单词默写】快递员 → （　）",
+              "answer": "delivery worker",
+              "explanation": "快递员 → delivery worker",
+              "knowledgePointIds": [
+                "kp-en4-u4-w06"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "delivery worker"
+              }
+            },
+            {
+              "id": "en4-u4-w07",
+              "type": "blank",
+              "question": "【单词默写】警察；警员 → （　）",
+              "answer": "police officer",
+              "explanation": "警察；警员 → police officer",
+              "knowledgePointIds": [
+                "kp-en4-u4-w07"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "police officer"
+              }
+            },
+            {
+              "id": "en4-u4-w08",
+              "type": "blank",
+              "question": "【单词默写】大量；许多 → （　）",
+              "answer": "a lot of",
+              "explanation": "大量；许多 → a lot of",
+              "knowledgePointIds": [
+                "kp-en4-u4-w08"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "a lot of"
+              }
+            },
+            {
+              "id": "en4-u4-w09",
+              "type": "blank",
+              "question": "【单词默写】现在 → （　）",
+              "answer": "now",
+              "explanation": "现在 → now",
+              "knowledgePointIds": [
+                "kp-en4-u4-w09"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "now"
+              }
+            },
+            {
+              "id": "en4-u4-w10",
+              "type": "blank",
+              "question": "【单词默写】过去的；年纪大的；老的 → （　）",
+              "answer": "old",
+              "explanation": "过去的；年纪大的；老的 → old",
+              "knowledgePointIds": [
+                "kp-en4-u4-w10"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "old"
+              }
+            },
+            {
+              "id": "en4-u4-w11",
+              "type": "blank",
+              "question": "【单词默写】讲述；告诉 → （　）",
+              "answer": "tell",
+              "explanation": "讲述；告诉 → tell",
+              "knowledgePointIds": [
+                "kp-en4-u4-w11"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "tell"
+              }
+            },
+            {
+              "id": "en4-u4-w12",
+              "type": "blank",
+              "question": "【单词默写】每人 → （　）",
+              "answer": "everyone",
+              "explanation": "每人 → everyone",
+              "knowledgePointIds": [
+                "kp-en4-u4-w12"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "everyone"
+              }
+            },
+            {
+              "id": "en4-u4-w13",
+              "type": "blank",
+              "question": "【单词默写】女士 → （　）",
+              "answer": "Ms",
+              "explanation": "女士 → Ms",
+              "knowledgePointIds": [
+                "kp-en4-u4-w13"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "Ms"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-u4-t2",
+          "title": "常用句型（4 题）",
+          "desc": "补全句子里的关键词",
+          "board": "句型",
+          "knowledgePointIds": [
+            "kp-en4-u4-pat"
+          ],
+          "modules": [
+            {
+              "id": "en4-u4-m2",
+              "type": "english.sentence",
+              "title": "Unit 4 句型",
+              "knowledgePointIds": [
+                "kp-en4-u4-pat"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u4-p01",
+              "type": "blank",
+              "question": "【句型】我们的邻居是消防员，他经常帮助别人。\nOur neighbour is a ____ . He often helps people.",
+              "answer": "firefighter",
+              "explanation": "我们的邻居是消防员，他经常帮助别人。 →「Our neighbour is a firefighter . He often helps people.」",
+              "knowledgePointIds": [
+                "kp-en4-u4-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "firefighter"
+              }
+            },
+            {
+              "id": "en4-u4-p02",
+              "type": "blank",
+              "question": "【句型】他是校车司机，他每天送我们去学校。\nHe's a school bus ____ . He takes us to school every day.",
+              "answer": "driver",
+              "explanation": "他是校车司机，他每天送我们去学校。 →「He's a school bus driver . He takes us to school every day.」",
+              "knowledgePointIds": [
+                "kp-en4-u4-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "driver"
+              }
+            },
+            {
+              "id": "en4-u4-p03",
+              "type": "blank",
+              "question": "【句型】那个工作也很重要！\nThat's an ____ job too.",
+              "answer": "important",
+              "explanation": "那个工作也很重要！ →「That's an important job too.」",
+              "knowledgePointIds": [
+                "kp-en4-u4-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "important"
+              }
+            },
+            {
+              "id": "en4-u4-p04",
+              "type": "blank",
+              "question": "【句型】陈杰正在铺床。\nChen Jie is ____ the bed.",
+              "answer": "making",
+              "explanation": "陈杰正在铺床。 →「Chen Jie is making the bed.」",
+              "knowledgePointIds": [
+                "kp-en4-u4-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "making"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "vocab-u5",
+      "id": "en4-u5",
       "name": "Unit 5",
-      "title": "Unit 5 季节",
-      "desc": "spring / summer / autumn / winter ...",
+      "title": "Unit 5 · The weather and us",
+      "desc": "天气与我们 · 24 个单词 + 4 个句型",
       "topics": [
         {
-          "id": "vocab-t5",
-          "title": "Unit 5 词汇",
-          "knowledgePointIds": ["en-vocab-063","en-vocab-064","en-vocab-065","en-vocab-066","en-vocab-067","en-vocab-068","en-vocab-069","en-vocab-070","en-vocab-071","en-vocab-072","en-vocab-073","en-vocab-074","en-vocab-075","en-vocab-076","en-vocab-077","en-vocab-078","en-vocab-079","en-vocab-080","en-vocab-081","en-vocab-082","en-vocab-083"],
-          "modules": [
-            { "id": "vocab-m5", "type": "english.vocab", "title": "Unit 5 词汇", "knowledgePointIds": ["en-vocab-063","en-vocab-064","en-vocab-065","en-vocab-066","en-vocab-067","en-vocab-068","en-vocab-069","en-vocab-070","en-vocab-071","en-vocab-072","en-vocab-073","en-vocab-074","en-vocab-075","en-vocab-076","en-vocab-077","en-vocab-078","en-vocab-079","en-vocab-080","en-vocab-081","en-vocab-082","en-vocab-083"] }
+          "id": "en4-u5-t1",
+          "title": "单词默写（24 个）",
+          "desc": "天气与我们 · The weather and us",
+          "board": "单词",
+          "knowledgePointIds": [
+            "kp-en4-u5-w01",
+            "kp-en4-u5-w02",
+            "kp-en4-u5-w03",
+            "kp-en4-u5-w04",
+            "kp-en4-u5-w05",
+            "kp-en4-u5-w06",
+            "kp-en4-u5-w07",
+            "kp-en4-u5-w08",
+            "kp-en4-u5-w09",
+            "kp-en4-u5-w10",
+            "kp-en4-u5-w11",
+            "kp-en4-u5-w12",
+            "kp-en4-u5-w13",
+            "kp-en4-u5-w14",
+            "kp-en4-u5-w15",
+            "kp-en4-u5-w16",
+            "kp-en4-u5-w17",
+            "kp-en4-u5-w18",
+            "kp-en4-u5-w19",
+            "kp-en4-u5-w20",
+            "kp-en4-u5-w21",
+            "kp-en4-u5-w22",
+            "kp-en4-u5-w23",
+            "kp-en4-u5-w24"
           ],
-          "exercises": []
+          "modules": [
+            {
+              "id": "en4-u5-m1",
+              "type": "english.vocab",
+              "title": "Unit 5 词汇",
+              "knowledgePointIds": [
+                "kp-en4-u5-w01",
+                "kp-en4-u5-w02",
+                "kp-en4-u5-w03",
+                "kp-en4-u5-w04",
+                "kp-en4-u5-w05",
+                "kp-en4-u5-w06",
+                "kp-en4-u5-w07",
+                "kp-en4-u5-w08",
+                "kp-en4-u5-w09",
+                "kp-en4-u5-w10",
+                "kp-en4-u5-w11",
+                "kp-en4-u5-w12",
+                "kp-en4-u5-w13",
+                "kp-en4-u5-w14",
+                "kp-en4-u5-w15",
+                "kp-en4-u5-w16",
+                "kp-en4-u5-w17",
+                "kp-en4-u5-w18",
+                "kp-en4-u5-w19",
+                "kp-en4-u5-w20",
+                "kp-en4-u5-w21",
+                "kp-en4-u5-w22",
+                "kp-en4-u5-w23",
+                "kp-en4-u5-w24"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u5-w01",
+              "type": "blank",
+              "question": "【单词默写】说话；发言 → （　）",
+              "answer": "speak",
+              "explanation": "说话；发言 → speak",
+              "knowledgePointIds": [
+                "kp-en4-u5-w01"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "speak"
+              }
+            },
+            {
+              "id": "en4-u5-w02",
+              "type": "blank",
+              "question": "【单词默写】天气 → （　）",
+              "answer": "weather",
+              "explanation": "天气 → weather",
+              "knowledgePointIds": [
+                "kp-en4-u5-w02"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "weather"
+              }
+            },
+            {
+              "id": "en4-u5-w03",
+              "type": "blank",
+              "question": "【单词默写】阳光充足的 → （　）",
+              "answer": "sunny",
+              "explanation": "阳光充足的 → sunny",
+              "knowledgePointIds": [
+                "kp-en4-u5-w03"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "sunny"
+              }
+            },
+            {
+              "id": "en4-u5-w04",
+              "type": "blank",
+              "question": "【单词默写】热的 → （　）",
+              "answer": "hot",
+              "explanation": "热的 → hot",
+              "knowledgePointIds": [
+                "kp-en4-u5-w04"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "hot"
+              }
+            },
+            {
+              "id": "en4-u5-w05",
+              "type": "blank",
+              "question": "【单词默写】令人不快的；坏的 → （　）",
+              "answer": "bad",
+              "explanation": "令人不快的；坏的 → bad",
+              "knowledgePointIds": [
+                "kp-en4-u5-w05"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "bad"
+              }
+            },
+            {
+              "id": "en4-u5-w06",
+              "type": "blank",
+              "question": "【单词默写】冷的 → （　）",
+              "answer": "cold",
+              "explanation": "冷的 → cold",
+              "knowledgePointIds": [
+                "kp-en4-u5-w06"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "cold"
+              }
+            },
+            {
+              "id": "en4-u5-w07",
+              "type": "blank",
+              "question": "【单词默写】多风的 → （　）",
+              "answer": "windy",
+              "explanation": "多风的 → windy",
+              "knowledgePointIds": [
+                "kp-en4-u5-w07"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "windy"
+              }
+            },
+            {
+              "id": "en4-u5-w08",
+              "type": "blank",
+              "question": "【单词默写】多云的 → （　）",
+              "answer": "cloudy",
+              "explanation": "多云的 → cloudy",
+              "knowledgePointIds": [
+                "kp-en4-u5-w08"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "cloudy"
+              }
+            },
+            {
+              "id": "en4-u5-w09",
+              "type": "blank",
+              "question": "【单词默写】阴雨的 → （　）",
+              "answer": "rainy",
+              "explanation": "阴雨的 → rainy",
+              "knowledgePointIds": [
+                "kp-en4-u5-w09"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "rainy"
+              }
+            },
+            {
+              "id": "en4-u5-w10",
+              "type": "blank",
+              "question": "【单词默写】多雪的 → （　）",
+              "answer": "snowy",
+              "explanation": "多雪的 → snowy",
+              "knowledgePointIds": [
+                "kp-en4-u5-w10"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "snowy"
+              }
+            },
+            {
+              "id": "en4-u5-w11",
+              "type": "blank",
+              "question": "【单词默写】凉爽的 → （　）",
+              "answer": "cool",
+              "explanation": "凉爽的 → cool",
+              "knowledgePointIds": [
+                "kp-en4-u5-w11"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "cool"
+              }
+            },
+            {
+              "id": "en4-u5-w12",
+              "type": "blank",
+              "question": "【单词默写】温暖的 → （　）",
+              "answer": "warm",
+              "explanation": "温暖的 → warm",
+              "knowledgePointIds": [
+                "kp-en4-u5-w12"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "warm"
+              }
+            },
+            {
+              "id": "en4-u5-w13",
+              "type": "blank",
+              "question": "【单词默写】在明天 → （　）",
+              "answer": "tomorrow",
+              "explanation": "在明天 → tomorrow",
+              "knowledgePointIds": [
+                "kp-en4-u5-w13"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "tomorrow"
+              }
+            },
+            {
+              "id": "en4-u5-w14",
+              "type": "blank",
+              "question": "【单词默写】下雨；雨 → （　）",
+              "answer": "rain",
+              "explanation": "下雨；雨 → rain",
+              "knowledgePointIds": [
+                "kp-en4-u5-w14"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "rain"
+              }
+            },
+            {
+              "id": "en4-u5-w15",
+              "type": "blank",
+              "question": "【单词默写】关闭的 → （　）",
+              "answer": "closed",
+              "explanation": "关闭的 → closed",
+              "knowledgePointIds": [
+                "kp-en4-u5-w15"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "closed"
+              }
+            },
+            {
+              "id": "en4-u5-w16",
+              "type": "blank",
+              "question": "【单词默写】电影 → （　）",
+              "answer": "film",
+              "explanation": "电影 → film",
+              "knowledgePointIds": [
+                "kp-en4-u5-w16"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "film"
+              }
+            },
+            {
+              "id": "en4-u5-w17",
+              "type": "blank",
+              "question": "【单词默写】想法；主意 → （　）",
+              "answer": "idea",
+              "explanation": "想法；主意 → idea",
+              "knowledgePointIds": [
+                "kp-en4-u5-w17"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "idea"
+              }
+            },
+            {
+              "id": "en4-u5-w18",
+              "type": "blank",
+              "question": "【单词默写】操纵（飞行器等）；飞 → （　）",
+              "answer": "fly",
+              "explanation": "操纵（飞行器等）；飞 → fly",
+              "knowledgePointIds": [
+                "kp-en4-u5-w18"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "fly"
+              }
+            },
+            {
+              "id": "en4-u5-w19",
+              "type": "blank",
+              "question": "【单词默写】风筝 → （　）",
+              "answer": "kite",
+              "explanation": "风筝 → kite",
+              "knowledgePointIds": [
+                "kp-en4-u5-w19"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "kite"
+              }
+            },
+            {
+              "id": "en4-u5-w20",
+              "type": "blank",
+              "question": "【单词默写】雪人 → （　）",
+              "answer": "snowman",
+              "explanation": "雪人 → snowman",
+              "knowledgePointIds": [
+                "kp-en4-u5-w20"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "snowman"
+              }
+            },
+            {
+              "id": "en4-u5-w21",
+              "type": "blank",
+              "question": "【单词默写】享乐；乐趣 → （　）",
+              "answer": "fun",
+              "explanation": "享乐；乐趣 → fun",
+              "knowledgePointIds": [
+                "kp-en4-u5-w21"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "fun"
+              }
+            },
+            {
+              "id": "en4-u5-w22",
+              "type": "blank",
+              "question": "【单词默写】游泳 → （　）",
+              "answer": "swim",
+              "explanation": "游泳 → swim",
+              "knowledgePointIds": [
+                "kp-en4-u5-w22"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "swim"
+              }
+            },
+            {
+              "id": "en4-u5-w23",
+              "type": "blank",
+              "question": "【单词默写】悉尼 → （　）",
+              "answer": "Sydney",
+              "explanation": "悉尼 → Sydney",
+              "knowledgePointIds": [
+                "kp-en4-u5-w23"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "Sydney"
+              }
+            },
+            {
+              "id": "en4-u5-w24",
+              "type": "blank",
+              "question": "【单词默写】他们的；她们的；它们的 → （　）",
+              "answer": "their",
+              "explanation": "他们的；她们的；它们的 → their",
+              "knowledgePointIds": [
+                "kp-en4-u5-w24"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "their"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-u5-t2",
+          "title": "常用句型（4 题）",
+          "desc": "补全句子里的关键词",
+          "board": "句型",
+          "knowledgePointIds": [
+            "kp-en4-u5-pat"
+          ],
+          "modules": [
+            {
+              "id": "en4-u5-m2",
+              "type": "english.sentence",
+              "title": "Unit 5 句型",
+              "knowledgePointIds": [
+                "kp-en4-u5-pat"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u5-p01",
+              "type": "blank",
+              "question": "【句型】悉尼的天气怎么样？\nWhat's the ____ like in Sydney?",
+              "answer": "weather",
+              "explanation": "悉尼的天气怎么样？ →「What's the weather like in Sydney?」",
+              "knowledgePointIds": [
+                "kp-en4-u5-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "weather"
+              }
+            },
+            {
+              "id": "en4-u5-p02",
+              "type": "blank",
+              "question": "【句型】北京只有两度。\nIt's only two ____ in Beijing.",
+              "answer": "degrees",
+              "explanation": "北京只有两度。 →「It's only two degrees in Beijing.」",
+              "knowledgePointIds": [
+                "kp-en4-u5-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "degrees"
+              }
+            },
+            {
+              "id": "en4-u5-p03",
+              "type": "blank",
+              "question": "【句型】现在下雨了。\nIt's ____ now.",
+              "answer": "raining",
+              "explanation": "现在下雨了。 →「It's raining now.」",
+              "knowledgePointIds": [
+                "kp-en4-u5-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "raining"
+              }
+            },
+            {
+              "id": "en4-u5-p04",
+              "type": "blank",
+              "question": "【句型】他们的孩子在泳池里游泳。\nTheir children swim in the ____ .",
+              "answer": "pool",
+              "explanation": "他们的孩子在泳池里游泳。 →「Their children swim in the pool .」",
+              "knowledgePointIds": [
+                "kp-en4-u5-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "pool"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "vocab-u6",
+      "id": "en4-u6",
       "name": "Unit 6",
-      "title": "Unit 6 植物",
-      "desc": "flower / fruit / leaf / soil ...",
+      "title": "Unit 6 · Changing for the seasons",
+      "desc": "随季节而变化 · 21 个单词 + 4 个句型",
       "topics": [
         {
-          "id": "vocab-t6",
-          "title": "Unit 6 词汇",
-          "knowledgePointIds": ["en-vocab-084","en-vocab-085","en-vocab-086","en-vocab-087","en-vocab-088","en-vocab-089","en-vocab-090","en-vocab-091","en-vocab-092","en-vocab-093","en-vocab-094","en-vocab-095","en-vocab-096"],
-          "modules": [
-            { "id": "vocab-m6", "type": "english.vocab", "title": "Unit 6 词汇", "knowledgePointIds": ["en-vocab-084","en-vocab-085","en-vocab-086","en-vocab-087","en-vocab-088","en-vocab-089","en-vocab-090","en-vocab-091","en-vocab-092","en-vocab-093","en-vocab-094","en-vocab-095","en-vocab-096"] }
+          "id": "en4-u6-t1",
+          "title": "单词默写（21 个）",
+          "desc": "随季节而变化 · Changing for the seasons",
+          "board": "单词",
+          "knowledgePointIds": [
+            "kp-en4-u6-w01",
+            "kp-en4-u6-w02",
+            "kp-en4-u6-w03",
+            "kp-en4-u6-w04",
+            "kp-en4-u6-w05",
+            "kp-en4-u6-w06",
+            "kp-en4-u6-w07",
+            "kp-en4-u6-w08",
+            "kp-en4-u6-w09",
+            "kp-en4-u6-w10",
+            "kp-en4-u6-w11",
+            "kp-en4-u6-w12",
+            "kp-en4-u6-w13",
+            "kp-en4-u6-w14",
+            "kp-en4-u6-w15",
+            "kp-en4-u6-w16",
+            "kp-en4-u6-w17",
+            "kp-en4-u6-w18",
+            "kp-en4-u6-w19",
+            "kp-en4-u6-w20",
+            "kp-en4-u6-w21"
           ],
-          "exercises": []
+          "modules": [
+            {
+              "id": "en4-u6-m1",
+              "type": "english.vocab",
+              "title": "Unit 6 词汇",
+              "knowledgePointIds": [
+                "kp-en4-u6-w01",
+                "kp-en4-u6-w02",
+                "kp-en4-u6-w03",
+                "kp-en4-u6-w04",
+                "kp-en4-u6-w05",
+                "kp-en4-u6-w06",
+                "kp-en4-u6-w07",
+                "kp-en4-u6-w08",
+                "kp-en4-u6-w09",
+                "kp-en4-u6-w10",
+                "kp-en4-u6-w11",
+                "kp-en4-u6-w12",
+                "kp-en4-u6-w13",
+                "kp-en4-u6-w14",
+                "kp-en4-u6-w15",
+                "kp-en4-u6-w16",
+                "kp-en4-u6-w17",
+                "kp-en4-u6-w18",
+                "kp-en4-u6-w19",
+                "kp-en4-u6-w20",
+                "kp-en4-u6-w21"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u6-w01",
+              "type": "blank",
+              "question": "【单词默写】谁的 → （　）",
+              "answer": "whose",
+              "explanation": "谁的 → whose",
+              "knowledgePointIds": [
+                "kp-en4-u6-w01"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "whose"
+              }
+            },
+            {
+              "id": "en4-u6-w02",
+              "type": "blank",
+              "question": "【单词默写】毛衣 → （　）",
+              "answer": "sweater",
+              "explanation": "毛衣 → sweater",
+              "knowledgePointIds": [
+                "kp-en4-u6-w02"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "sweater"
+              }
+            },
+            {
+              "id": "en4-u6-w03",
+              "type": "blank",
+              "question": "【单词默写】短袜 → （　）",
+              "answer": "sock",
+              "explanation": "短袜 → sock",
+              "knowledgePointIds": [
+                "kp-en4-u6-w03"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "sock"
+              }
+            },
+            {
+              "id": "en4-u6-w04",
+              "type": "blank",
+              "question": "【单词默写】我的 → （　）",
+              "answer": "mine",
+              "explanation": "我的 → mine",
+              "knowledgePointIds": [
+                "kp-en4-u6-w04"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "mine"
+              }
+            },
+            {
+              "id": "en4-u6-w05",
+              "type": "blank",
+              "question": "【单词默写】穿；戴 → （　）",
+              "answer": "wear",
+              "explanation": "穿；戴 → wear",
+              "knowledgePointIds": [
+                "kp-en4-u6-w05"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "wear"
+              }
+            },
+            {
+              "id": "en4-u6-w06",
+              "type": "blank",
+              "question": "【单词默写】衬衫 → （　）",
+              "answer": "shirt",
+              "explanation": "衬衫 → shirt",
+              "knowledgePointIds": [
+                "kp-en4-u6-w06"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "shirt"
+              }
+            },
+            {
+              "id": "en4-u6-w07",
+              "type": "blank",
+              "question": "【单词默写】大衣；外套 → （　）",
+              "answer": "coat",
+              "explanation": "大衣；外套 → coat",
+              "knowledgePointIds": [
+                "kp-en4-u6-w07"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "coat"
+              }
+            },
+            {
+              "id": "en4-u6-w08",
+              "type": "blank",
+              "question": "【单词默写】连衣裙 → （　）",
+              "answer": "dress",
+              "explanation": "连衣裙 → dress",
+              "knowledgePointIds": [
+                "kp-en4-u6-w08"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "dress"
+              }
+            },
+            {
+              "id": "en4-u6-w09",
+              "type": "blank",
+              "question": "【单词默写】哪一个；哪些 → （　）",
+              "answer": "which",
+              "explanation": "哪一个；哪些 → which",
+              "knowledgePointIds": [
+                "kp-en4-u6-w09"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "which"
+              }
+            },
+            {
+              "id": "en4-u6-w10",
+              "type": "blank",
+              "question": "【单词默写】季节 → （　）",
+              "answer": "season",
+              "explanation": "季节 → season",
+              "knowledgePointIds": [
+                "kp-en4-u6-w10"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "season"
+              }
+            },
+            {
+              "id": "en4-u6-w11",
+              "type": "blank",
+              "question": "【单词默写】冬天 → （　）",
+              "answer": "winter",
+              "explanation": "冬天 → winter",
+              "knowledgePointIds": [
+                "kp-en4-u6-w11"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "winter"
+              }
+            },
+            {
+              "id": "en4-u6-w12",
+              "type": "blank",
+              "question": "【单词默写】下雪；雪 → （　）",
+              "answer": "snow",
+              "explanation": "下雪；雪 → snow",
+              "knowledgePointIds": [
+                "kp-en4-u6-w12"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "snow"
+              }
+            },
+            {
+              "id": "en4-u6-w13",
+              "type": "blank",
+              "question": "【单词默写】聚会 → （　）",
+              "answer": "get together",
+              "explanation": "聚会 → get together",
+              "knowledgePointIds": [
+                "kp-en4-u6-w13"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "get together"
+              }
+            },
+            {
+              "id": "en4-u6-w14",
+              "type": "blank",
+              "question": "【单词默写】春天 → （　）",
+              "answer": "spring",
+              "explanation": "春天 → spring",
+              "knowledgePointIds": [
+                "kp-en4-u6-w14"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "spring"
+              }
+            },
+            {
+              "id": "en4-u6-w15",
+              "type": "blank",
+              "question": "【单词默写】夏天 → （　）",
+              "answer": "summer",
+              "explanation": "夏天 → summer",
+              "knowledgePointIds": [
+                "kp-en4-u6-w15"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "summer"
+              }
+            },
+            {
+              "id": "en4-u6-w16",
+              "type": "blank",
+              "question": "【单词默写】秋天 → （　）",
+              "answer": "autumn",
+              "explanation": "秋天 → autumn",
+              "knowledgePointIds": [
+                "kp-en4-u6-w16"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "autumn"
+              }
+            },
+            {
+              "id": "en4-u6-w17",
+              "type": "blank",
+              "question": "【单词默写】T恤衫 → （　）",
+              "answer": "T-shirt",
+              "explanation": "T恤衫 → T-shirt",
+              "knowledgePointIds": [
+                "kp-en4-u6-w17"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "T-shirt"
+              }
+            },
+            {
+              "id": "en4-u6-w18",
+              "type": "blank",
+              "question": "【单词默写】落下 → （　）",
+              "answer": "fall",
+              "explanation": "落下 → fall",
+              "knowledgePointIds": [
+                "kp-en4-u6-w18"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "fall"
+              }
+            },
+            {
+              "id": "en4-u6-w19",
+              "type": "blank",
+              "question": "【单词默写】叶 → （　）",
+              "answer": "leaf",
+              "explanation": "叶 → leaf",
+              "knowledgePointIds": [
+                "kp-en4-u6-w19"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "leaf"
+              }
+            },
+            {
+              "id": "en4-u6-w20",
+              "type": "blank",
+              "question": "【单词默写】手套 → （　）",
+              "answer": "glove",
+              "explanation": "手套 → glove",
+              "knowledgePointIds": [
+                "kp-en4-u6-w20"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "glove"
+              }
+            },
+            {
+              "id": "en4-u6-w21",
+              "type": "blank",
+              "question": "【单词默写】然后；那时 → （　）",
+              "answer": "then",
+              "explanation": "然后；那时 → then",
+              "knowledgePointIds": [
+                "kp-en4-u6-w21"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "title": "then"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-u6-t2",
+          "title": "常用句型（4 题）",
+          "desc": "补全句子里的关键词",
+          "board": "句型",
+          "knowledgePointIds": [
+            "kp-en4-u6-pat"
+          ],
+          "modules": [
+            {
+              "id": "en4-u6-m2",
+              "type": "english.sentence",
+              "title": "Unit 6 句型",
+              "knowledgePointIds": [
+                "kp-en4-u6-pat"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-u6-p01",
+              "type": "blank",
+              "question": "【句型】这是谁的毛衣，妈妈？\n— ____ sweater is this, Mum? — It's your dad's.",
+              "answer": "Whose",
+              "explanation": "这是谁的毛衣，妈妈？ →「— Whose sweater is this, Mum? — It's your dad's.」",
+              "knowledgePointIds": [
+                "kp-en4-u6-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "Whose"
+              }
+            },
+            {
+              "id": "en4-u6-p02",
+              "type": "blank",
+              "question": "【句型】你喜欢哪个季节？\n— ____ season do you like? — Winter.",
+              "answer": "Which",
+              "explanation": "你喜欢哪个季节？ →「— Which season do you like? — Winter.」",
+              "knowledgePointIds": [
+                "kp-en4-u6-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "Which"
+              }
+            },
+            {
+              "id": "en4-u6-p03",
+              "type": "blank",
+              "question": "【句型】接着春天又来了。\nThen ____ comes again.",
+              "answer": "spring",
+              "explanation": "接着春天又来了。 →「Then spring comes again.」",
+              "knowledgePointIds": [
+                "kp-en4-u6-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "spring"
+              }
+            },
+            {
+              "id": "en4-u6-p04",
+              "type": "blank",
+              "question": "【句型】可以，但是再穿一件外套吧。\nYes, but wear a ____ too.",
+              "answer": "coat",
+              "explanation": "可以，但是再穿一件外套吧。 →「Yes, but wear a coat too.」",
+              "knowledgePointIds": [
+                "kp-en4-u6-pat"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "coat"
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "id": "vocab-u7",
-      "name": "Unit 7",
-      "title": "Unit 7 交通",
-      "desc": "green light / red light / wait / cross ...",
+      "id": "en4-grammar",
+      "name": "语法专项",
+      "title": "语法专项 · 周末练习",
+      "desc": "There be、be/have、名词所有格、形容词构词、词形变化",
       "topics": [
         {
-          "id": "vocab-t7",
-          "title": "Unit 7 词汇",
-          "knowledgePointIds": ["en-vocab-097","en-vocab-098","en-vocab-099","en-vocab-100","en-vocab-101","en-vocab-102","en-vocab-103","en-vocab-104","en-vocab-105","en-vocab-106","en-vocab-107","en-vocab-108","en-vocab-109","en-vocab-110","en-vocab-111","en-vocab-112","en-vocab-113","en-vocab-114"],
-          "modules": [
-            { "id": "vocab-m7", "type": "english.vocab", "title": "Unit 7 词汇", "knowledgePointIds": ["en-vocab-097","en-vocab-098","en-vocab-099","en-vocab-100","en-vocab-101","en-vocab-102","en-vocab-103","en-vocab-104","en-vocab-105","en-vocab-106","en-vocab-107","en-vocab-108","en-vocab-109","en-vocab-110","en-vocab-111","en-vocab-112","en-vocab-113","en-vocab-114"] }
+          "id": "en4-g1-t",
+          "title": "There be 句型（9 题）",
+          "desc": "语法专项练习",
+          "board": "语法",
+          "knowledgePointIds": [
+            "kp-en4-g1"
           ],
-          "exercises": []
-        }
-      ]
-    },
-    {
-      "id": "vocab-u8",
-      "name": "Unit 8",
-      "title": "Unit 8 日常活动",
-      "desc": "go shopping / do exercise / watch ...",
-      "topics": [
+          "modules": [
+            {
+              "id": "en4-g1-m",
+              "type": "english.grammar",
+              "title": "There be 句型",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-g1-01",
+              "type": "single",
+              "question": "There ____ some oranges on the tree.",
+              "options": [
+                "A. is",
+                "B. are",
+                "C. has"
+              ],
+              "answer": "B",
+              "explanation": "oranges 是复数，There be 用 are。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g1-02",
+              "type": "single",
+              "question": "There is some ____ on the plate.",
+              "options": [
+                "A. apple",
+                "B. bread",
+                "C. bananas"
+              ],
+              "answer": "B",
+              "explanation": "is 后面跟不可数名词；bread 不可数，apple 和 bananas 都要用复数形式配 are。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g1-03",
+              "type": "single",
+              "question": "He ____ some cool shoes.",
+              "options": [
+                "A. are",
+                "B. has",
+                "C. is"
+              ],
+              "answer": "B",
+              "explanation": "主语 He 是第三人称单数，用 has。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g1-04",
+              "type": "single",
+              "question": "____ some trees on both sides of the street.",
+              "options": [
+                "A. Are there",
+                "B. There is",
+                "C. There are"
+              ],
+              "answer": "C",
+              "explanation": "trees 是复数，用 There are；陈述句不用倒装 Are there。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g1-05",
+              "type": "single",
+              "question": "There ____ a bed, two chairs, three toys and four books in the bedroom.",
+              "options": [
+                "A. Has",
+                "B. is",
+                "C. are"
+              ],
+              "answer": "B",
+              "explanation": "There be 的「就近原则」：看离 be 最近的名词 a bed（单数），所以用 is。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g1-06",
+              "type": "single",
+              "question": "There ____ two birds and a monkey in the tree.",
+              "options": [
+                "A. is",
+                "B. are",
+                "C. be"
+              ],
+              "answer": "B",
+              "explanation": "离 be 最近的是 two birds（复数），用 are。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g1-07",
+              "type": "single",
+              "question": "There ____ a pencil, some books and a ruler in my bag.",
+              "options": [
+                "A. is",
+                "B. are",
+                "C. have"
+              ],
+              "answer": "A",
+              "explanation": "就近的是 a pencil（单数），用 is。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g1-08",
+              "type": "single",
+              "question": "There aren't ____ apples in the basket.",
+              "options": [
+                "A. some",
+                "B. any",
+                "C. a"
+              ],
+              "answer": "B",
+              "explanation": "否定句里用 any，不用 some。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g1-09",
+              "type": "single",
+              "question": "There isn't ____ water in the glass.",
+              "options": [
+                "A. some",
+                "B. any",
+                "C. many"
+              ],
+              "answer": "B",
+              "explanation": "否定句用 any；water 不可数，也不能用 many。",
+              "knowledgePointIds": [
+                "kp-en4-g1"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            }
+          ]
+        },
         {
-          "id": "vocab-t8",
-          "title": "Unit 8 词汇",
-          "knowledgePointIds": ["en-vocab-115","en-vocab-116","en-vocab-117","en-vocab-118","en-vocab-119","en-vocab-120","en-vocab-121","en-vocab-122","en-vocab-123","en-vocab-124","en-vocab-125","en-vocab-126","en-vocab-127","en-vocab-128"],
-          "modules": [
-            { "id": "vocab-m8", "type": "english.vocab", "title": "Unit 8 词汇", "knowledgePointIds": ["en-vocab-115","en-vocab-116","en-vocab-117","en-vocab-118","en-vocab-119","en-vocab-120","en-vocab-121","en-vocab-122","en-vocab-123","en-vocab-124","en-vocab-125","en-vocab-126","en-vocab-127","en-vocab-128"] }
+          "id": "en4-g2-t",
+          "title": "be 动词与 have / has（5 题）",
+          "desc": "语法专项练习",
+          "board": "语法",
+          "knowledgePointIds": [
+            "kp-en4-g2"
           ],
-          "exercises": []
+          "modules": [
+            {
+              "id": "en4-g2-m",
+              "type": "english.grammar",
+              "title": "be 动词与 have / has",
+              "knowledgePointIds": [
+                "kp-en4-g2"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-g2-01",
+              "type": "single",
+              "question": "Amy ____ a small mouth.",
+              "options": [
+                "A. have",
+                "B. has",
+                "C. is"
+              ],
+              "answer": "B",
+              "explanation": "Amy 是第三人称单数，用 has。",
+              "knowledgePointIds": [
+                "kp-en4-g2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g2-02",
+              "type": "single",
+              "question": "I ____ fine, thank you.",
+              "options": [
+                "A. am",
+                "B. is",
+                "C. are"
+              ],
+              "answer": "A",
+              "explanation": "主语 I 配 am。",
+              "knowledgePointIds": [
+                "kp-en4-g2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g2-03",
+              "type": "single",
+              "question": "— What do you ____ ? — We ____ six oranges.",
+              "options": [
+                "A. have; have",
+                "B. has; have",
+                "C. have; has"
+              ],
+              "answer": "A",
+              "explanation": "do 后面用动词原形 have；We 是复数主语，也用 have。",
+              "knowledgePointIds": [
+                "kp-en4-g2"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g2-04",
+              "type": "single",
+              "question": "I ____ a lovely cat. It ____ a long tail.",
+              "options": [
+                "A. have; has",
+                "B. has; have",
+                "C. have; have"
+              ],
+              "answer": "A",
+              "explanation": "I 用 have；It 是第三人称单数用 has。",
+              "knowledgePointIds": [
+                "kp-en4-g2"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g2-05",
+              "type": "single",
+              "question": "Little Peter ____ two toy pandas. They ____ black and white.",
+              "options": [
+                "A. has; are",
+                "B. have; is",
+                "C. has; is"
+              ],
+              "answer": "A",
+              "explanation": "Peter 单数用 has；They 复数用 are。",
+              "knowledgePointIds": [
+                "kp-en4-g2"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-g3-t",
+          "title": "名词所有格（11 题）",
+          "desc": "语法专项练习",
+          "board": "语法",
+          "knowledgePointIds": [
+            "kp-en4-g3"
+          ],
+          "modules": [
+            {
+              "id": "en4-g3-m",
+              "type": "english.grammar",
+              "title": "名词所有格",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-g3-01",
+              "type": "single",
+              "question": "— Is that ____ cap? — Yes, it is.",
+              "options": [
+                "A. your",
+                "B. yours",
+                "C. you"
+              ],
+              "answer": "A",
+              "explanation": "cap 是名词，前面要用形容词性物主代词 your；yours 后面不能再跟名词。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g3-02",
+              "type": "single",
+              "question": "____ Mike, ____ eyes are big.",
+              "options": [
+                "A. He's; Her",
+                "B. His; He's",
+                "C. He's; His"
+              ],
+              "answer": "C",
+              "explanation": "句首要主语 He's（He is）；eyes 前用形容词性物主代词 His。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g3-03",
+              "type": "single",
+              "question": "This is ____ sister. ____ name is Lisa.",
+              "options": [
+                "A. mine; Her",
+                "B. my; She's",
+                "C. my; Her"
+              ],
+              "answer": "C",
+              "explanation": "sister 前用 my；name 前用 Her。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g3-04",
+              "type": "single",
+              "question": "— Is this ____ toy? — No, it's not ____ .",
+              "options": [
+                "A. your; my",
+                "B. your; mine",
+                "C. yours; mine"
+              ],
+              "answer": "B",
+              "explanation": "toy 前用 your；句末不跟名词时用名词性物主代词 mine。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g3-05",
+              "type": "single",
+              "question": "Kate: Is this ____ schoolbag, Chen Jie?",
+              "options": [
+                "A. your",
+                "B. yours",
+                "C. you"
+              ],
+              "answer": "A",
+              "explanation": "schoolbag 是名词，用 your。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g3-06",
+              "type": "single",
+              "question": "Chen Jie: No. Amy has a panda schoolbag. Maybe it's ____ .",
+              "options": [
+                "A. her",
+                "B. hers",
+                "C. she"
+              ],
+              "answer": "B",
+              "explanation": "句末独立使用，用名词性物主代词 hers。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g3-07",
+              "type": "single",
+              "question": "Kate: Hello, Amy. Is this ____ ?",
+              "options": [
+                "A. your",
+                "B. yours",
+                "C. you"
+              ],
+              "answer": "B",
+              "explanation": "后面没有名词，用名词性物主代词 yours。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g3-08",
+              "type": "single",
+              "question": "Amy: Yes, it's ____ . Thank you.",
+              "options": [
+                "A. my",
+                "B. mine",
+                "C. me"
+              ],
+              "answer": "B",
+              "explanation": "句末独立使用，用 mine。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g3-09",
+              "type": "single",
+              "question": "This is ____ classroom.",
+              "options": [
+                "A. John",
+                "B. John's",
+                "C. Johns"
+              ],
+              "answer": "B",
+              "explanation": "表示「约翰的」，名词后加 's。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g3-10",
+              "type": "single",
+              "question": "Look at this photo ____ my family.",
+              "options": [
+                "A. of",
+                "B. on",
+                "C. in"
+              ],
+              "answer": "A",
+              "explanation": "「一张我家的照片」用 a photo of my family。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g3-11",
+              "type": "single",
+              "question": "Is that your ____ bird?",
+              "options": [
+                "A. brother",
+                "B. brother's",
+                "C. brothers"
+              ],
+              "answer": "B",
+              "explanation": "鸟是哥哥的，要用所有格 brother's。",
+              "knowledgePointIds": [
+                "kp-en4-g3"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-g4-t",
+          "title": "形容词构词与词类（16 题）",
+          "desc": "语法专项练习",
+          "board": "语法",
+          "knowledgePointIds": [
+            "kp-en4-g4"
+          ],
+          "modules": [
+            {
+              "id": "en4-g4-m",
+              "type": "english.grammar",
+              "title": "形容词构词与词类",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-g4-01",
+              "type": "blank",
+              "question": "名词 + y 构成形容词：wind → windy，Sun → ____",
+              "answer": "sunny",
+              "explanation": "sun + n + y → sunny（双写 n 再加 y）。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "sunny"
+              }
+            },
+            {
+              "id": "en4-g4-02",
+              "type": "blank",
+              "question": "名词 + y 构成形容词：wind → windy，rain → ____",
+              "answer": "rainy",
+              "explanation": "rain + y → rainy。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "rainy"
+              }
+            },
+            {
+              "id": "en4-g4-03",
+              "type": "blank",
+              "question": "名词 + ful 构成形容词：colour → colourful，help → ____",
+              "answer": "helpful",
+              "explanation": "help + ful → helpful。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "helpful"
+              }
+            },
+            {
+              "id": "en4-g4-04",
+              "type": "blank",
+              "question": "名词 + ful 构成形容词：colour → colourful，care → ____",
+              "answer": "careful",
+              "explanation": "care + ful → careful。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "careful"
+              }
+            },
+            {
+              "id": "en4-g4-05",
+              "type": "blank",
+              "question": "名词 + ly 构成形容词：year → yearly，friend → ____",
+              "answer": "friendly",
+              "explanation": "friend + ly → friendly。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "friendly"
+              }
+            },
+            {
+              "id": "en4-g4-06",
+              "type": "blank",
+              "question": "名词 + ly 构成形容词：year → yearly，love → ____",
+              "answer": "lovely",
+              "explanation": "love + ly → lovely。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "lovely"
+              }
+            },
+            {
+              "id": "en4-g4-07",
+              "type": "single",
+              "question": "选出不同类的一项：",
+              "options": [
+                "A. rain",
+                "B. sunny",
+                "C. windy"
+              ],
+              "answer": "A",
+              "explanation": "rain 可作名词/动词，sunny 和 windy 都是形容词。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-08",
+              "type": "single",
+              "question": "选出不同类的一项：",
+              "options": [
+                "A. snowy",
+                "B. snowman",
+                "C. cloudy"
+              ],
+              "answer": "B",
+              "explanation": "snowman 是名词（雪人），其余两个是形容词。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-09",
+              "type": "single",
+              "question": "选出不同类的一项：",
+              "options": [
+                "A. red",
+                "B. blue",
+                "C. colour"
+              ],
+              "answer": "C",
+              "explanation": "red、blue 是具体的颜色，colour 是「颜色」这个总称。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-10",
+              "type": "single",
+              "question": "选出不同类的一项：",
+              "options": [
+                "A. friendly",
+                "B. helpful",
+                "C. friend"
+              ],
+              "answer": "C",
+              "explanation": "friend 是名词，其余两个是形容词。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-11",
+              "type": "single",
+              "question": "选出不同类的一项：",
+              "options": [
+                "A. hungry",
+                "B. hurry",
+                "C. happy"
+              ],
+              "answer": "B",
+              "explanation": "hurry 是动词，hungry 和 happy 是形容词。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-12",
+              "type": "single",
+              "question": "It is ____ and ____ . Children are having fun in the snow.",
+              "options": [
+                "A. cold; snowy",
+                "B. cold; snow",
+                "C. cool; snow"
+              ],
+              "answer": "A",
+              "explanation": "and 连接两个形容词；snow 是名词/动词，这里要用形容词 snowy。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-13",
+              "type": "single",
+              "question": "It is -5℃. It's ____ in Beijing now.",
+              "options": [
+                "A. hot",
+                "B. cold",
+                "C. warm"
+              ],
+              "answer": "B",
+              "explanation": "零下五度，只能是 cold。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-14",
+              "type": "single",
+              "question": "____ warm and cloudy today.",
+              "options": [
+                "A. It's",
+                "B. They're",
+                "C. There's"
+              ],
+              "answer": "A",
+              "explanation": "说天气用 It 作主语：It's warm and cloudy.",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-15",
+              "type": "single",
+              "question": "— Mike, it's ____ now. — Oh no! We can't play basketball in the park.",
+              "options": [
+                "A. rain",
+                "B. raining",
+                "C. rains"
+              ],
+              "answer": "B",
+              "explanation": "It's + 动词-ing 表示「正在下雨」：It's raining now.",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g4-16",
+              "type": "single",
+              "question": "It's ____ here. It's fun to play football in the park.",
+              "options": [
+                "A. sunny",
+                "B. snowy",
+                "C. rainy"
+              ],
+              "answer": "A",
+              "explanation": "能在公园踢足球，说明天气晴好，选 sunny。",
+              "knowledgePointIds": [
+                "kp-en4-g4"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            }
+          ]
+        },
+        {
+          "id": "en4-g5-t",
+          "title": "职业词汇与词形变化（10 题）",
+          "desc": "语法专项练习",
+          "board": "语法",
+          "knowledgePointIds": [
+            "kp-en4-g5"
+          ],
+          "modules": [
+            {
+              "id": "en4-g5-m",
+              "type": "english.grammar",
+              "title": "职业词汇与词形变化",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "en4-g5-01",
+              "type": "single",
+              "question": "Mr Green ____ English in a primary school.",
+              "options": [
+                "A. teaches",
+                "B. doctor",
+                "C. farmer",
+                "D. dancer"
+              ],
+              "answer": "A",
+              "explanation": "Mr Green 是第三人称单数，teach 加 -es → teaches。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g5-02",
+              "type": "single",
+              "question": "Mike is ill. His father takes him to see the ____ .",
+              "options": [
+                "A. uncle",
+                "B. doctor",
+                "C. dancer",
+                "D. farmer"
+              ],
+              "answer": "B",
+              "explanation": "生病了去看医生 doctor。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g5-03",
+              "type": "single",
+              "question": "My ____ is a good writer. I like his stories.",
+              "options": [
+                "A. doctor",
+                "B. uncle",
+                "C. farmer",
+                "D. teaches"
+              ],
+              "answer": "B",
+              "explanation": "「我的叔叔是一位好作家」，选 uncle。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "基础"
+              }
+            },
+            {
+              "id": "en4-g5-04",
+              "type": "single",
+              "question": "What's your ____ job? Is he a worker?",
+              "options": [
+                "A. uncle",
+                "B. farmer",
+                "C. father's",
+                "D. doctor"
+              ],
+              "answer": "C",
+              "explanation": "「你爸爸的工作是什么」，名词所有格 father's。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g5-05",
+              "type": "single",
+              "question": "She is a ____ . She grows fruit and feeds animals.",
+              "options": [
+                "A. dancer",
+                "B. doctor",
+                "C. uncle",
+                "D. farmer"
+              ],
+              "answer": "D",
+              "explanation": "种水果、养牲口的是农民 farmer。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g5-06",
+              "type": "single",
+              "question": "Yang Liping is a ____ . She is good at Chinese folk dance.",
+              "options": [
+                "A. farmer",
+                "B. teaches",
+                "C. dancer",
+                "D. father's"
+              ],
+              "answer": "C",
+              "explanation": "擅长中国民族舞的是舞蹈家 dancer。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "进阶"
+              }
+            },
+            {
+              "id": "en4-g5-07",
+              "type": "blank",
+              "question": "My father is a ____ . He ____ a taxi.（drive）",
+              "answer": "driver, drives",
+              "explanation": "「司机」是 driver；第三人称单数 drive → drives。两空用逗号隔开。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "driver, drives"
+              }
+            },
+            {
+              "id": "en4-g5-08",
+              "type": "blank",
+              "question": "Susan likes ____ . She wants to be a ____ in the future.（cook）",
+              "answer": "cooking, cook",
+              "explanation": "like doing sth → cooking；「厨师」是 cook。两空用逗号隔开。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "cooking, cook"
+              }
+            },
+            {
+              "id": "en4-g5-09",
+              "type": "blank",
+              "question": "There are some ____ on the street. They usually ____ the streets in the early morning.（clean）",
+              "answer": "cleaners, clean",
+              "explanation": "「清洁工」是 cleaner，some 后用复数 cleaners；they 后接动词原形 clean。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "cleaners, clean"
+              }
+            },
+            {
+              "id": "en4-g5-10",
+              "type": "blank",
+              "question": "There is a fire in the school. The ____ go there and help.（firefighter）",
+              "answer": "firefighters",
+              "explanation": "「消防队员」firefighter，The ... go 说明是复数 firefighters。",
+              "knowledgePointIds": [
+                "kp-en4-g5"
+              ],
+              "metadata": {
+                "difficulty": "进阶",
+                "title": "firefighters"
+              }
+            }
+          ]
         }
       ]
     }
