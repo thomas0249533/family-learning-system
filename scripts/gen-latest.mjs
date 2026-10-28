@@ -24,13 +24,19 @@ for (const f of [SRC_BIN, SRC_SIG]) {
   }
 }
 
-// 1. 归档到 updates/<ver>/（随仓库走，jsdelivr 直接从仓库取）
+// 1. 归档到 updates/<ver>/（随仓库走，作为 jsdelivr / 仓库内校验的备份位置）
 const outDir = path.join('updates', VER)
 fs.mkdirSync(outDir, { recursive: true })
 fs.copyFileSync(SRC_BIN, path.join(outDir, BIN))
 fs.copyFileSync(SRC_SIG, path.join(outDir, `${BIN}.sig`))
 
 // 2. latest.json
+//
+// ★ 安装包地址走 **Release 资产直链**，不走 `cdn.jsdelivr.net/...@main`：
+//   jsDelivr 对分支内容有 12 小时缓存。发版后立刻写进 @main 的新路径，在缓存刷新前
+//   一律 404 —— 更新器拿到清单、验过签名、开始下载，然后 404，家庭端只会看到
+//   「更新失败」。v2.12.1 就是这么翻车的（清单里的 URL 是 cdn.jsdelivr.net）。
+//   Release 资产地址带版本号、不经过 jsDelivr，发布即可用。
 const signature = fs.readFileSync(SRC_SIG, 'utf8').trim()
 const latest = {
   version: VER,
@@ -39,7 +45,7 @@ const latest = {
   platforms: {
     'windows-x86_64': {
       signature,
-      url: `https://cdn.jsdelivr.net/gh/${REPO}@main/updates/${VER}/${BIN}`,
+      url: `https://github.com/${REPO}/releases/download/v${VER}/${BIN}`,
     },
   },
 }

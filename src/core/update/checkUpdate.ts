@@ -11,28 +11,32 @@
  *   · 版本比较复用 `compareVersions`（真·semver，正确处理 1.10.0 > 1.9.0）。
  *   · version.json 约定：`{ "version": "x.y.z", "downloadUrl": "https://..." }`。
  *
- * ⚠️ `UPDATE_CHECK_URL` 是部署期常量：V2.8.0 起接入 GitHub 发布管线 —— 仓库
- * thomas0249533/family-learning-system 的 main 分支根目录放置 version.json
- * （raw.githubusercontent.com 带 `ACAO:*`，CORS 可过）。每次发版随 main 更新此文件。
+ * ⚠️ `UPDATE_CHECK_URL` 是部署期常量：V2.8.0 起接入 GitHub 发布管线 —— 每次发版把
+ * version.json 同时提交到 main 根目录、并作为 Release 资产上传。V2.12.2 起**主源换成
+ * Release 资产地址**（`releases/latest/download/`），原因是 jsDelivr 对分支内容有
+ * 12 小时缓存：发版后 12 小时内，`@main` 上的 version.json 还是旧版本号，客户端会
+ * 一本正经地告诉你「已是最新」，而实际上新版本早就发了。
  */
 import { compareVersions } from '@core/importer/catalogService'
 
 /**
  * 多镜像候选源（按顺序尝试，任一成功即用）。
  *
- * 背景：`raw.githubusercontent.com` 在中国大陆常被墙 / TLS 超时，导致「检查更新」直接
- * 报 `Failed to fetch`。三个源都带 `access-control-allow-origin: *`，WebView 跨域可过：
- *   - ① raw.githubusercontent.com：官方主源，非大陆环境最快最稳；
- *   - ② cdn.jsdelivr.net/gh：jsDelivr 的 GitHub 镜像，带 CORS；
- *   - ③ raw.gitmirror.com：gitmirror 镜像，大陆可达性较好，带 CORS。
- * 任一能连通即用，最大化不同网络环境下「检查更新」可用。
+ * 顺序按「新鲜度」排，不按「速度」排 —— 拿到旧清单比拿不到更糟：
+ *   ① GitHub Release 资产 `releases/latest/download/version.json`：
+ *      动态重定向到最新那个 Release，没有 CDN 的长缓存，发布即可见；
+ *   ② raw.githubusercontent.com：官方主源，但中国大陆常被墙；
+ *   ③ cdn.jsdelivr.net/gh：镜像可用，**但 @main 有 12 小时缓存**（V2.12.1 因此翻车）；
+ *   ④ raw.gitmirror.com：大陆可达性较好，第三方镜像，滞后时间不可控。
+ * 四个源都带 `access-control-allow-origin: *`，WebView 跨域可过。
  */
 export const UPDATE_CHECK_URL =
-  'https://raw.githubusercontent.com/thomas0249533/family-learning-system/main/version.json'
+  'https://github.com/thomas0249533/family-learning-system/releases/latest/download/version.json'
 
 /** 更新检查候选源。`UPDATE_CHECK_URL` 恒为第一项（保持部署常量语义不变） */
 export const UPDATE_CHECK_CANDIDATES: readonly string[] = [
   UPDATE_CHECK_URL,
+  'https://raw.githubusercontent.com/thomas0249533/family-learning-system/main/version.json',
   'https://cdn.jsdelivr.net/gh/thomas0249533/family-learning-system@main/version.json',
   'https://raw.gitmirror.com/thomas0249533/family-learning-system/main/version.json',
 ]

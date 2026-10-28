@@ -48,6 +48,7 @@ for (const want of [
   `FamilyLearningSystem_${VER}_x64-setup.exe`,
   `FamilyLearningSystem_${VER}_x64-setup.exe.sig`,
   'latest.json',
+  'version.json',
 ]) {
   check(names.includes(want), `资产存在：${want}`)
 }
@@ -79,12 +80,15 @@ async function blobText(pathInRepo) {
 }
 
 let cdnUnreachable = 0
-for (const url of [
+const manifestUrls = [
+  // ① 主源（V2.12.2 起）：Release 资产，动态重定向，没有 12 小时缓存
+  `https://github.com/${REPO}/releases/latest/download/latest.json`,
   `https://raw.githubusercontent.com/${REPO}/main/latest.json`,
   `https://cdn.jsdelivr.net/gh/${REPO}@main/latest.json`,
   `https://raw.gitmirror.com/${REPO}/main/latest.json`,
-]) {
-  const host = new URL(url).host
+]
+for (const url of manifestUrls) {
+  const host = new URL(url).host + new URL(url).pathname.split('/').pop()
   try {
     const r = await fetch(url, { headers: { 'User-Agent': 'fls' }, redirect: 'follow' })
     const j = r.ok ? await r.json() : null
@@ -102,8 +106,8 @@ for (const url of [
     check(ok, `${host} 不可达，改验仓库内 latest.json`, '本机 DNS 受限')
   }
 }
-if (cdnUnreachable === 3) {
-  console.log('   ⚠️  三个 CDN 域名本机全部不可达（代理与直连均失败）——这是本机网络限制，不代表家庭端不可达')
+if (cdnUnreachable === manifestUrls.length) {
+  console.log('   ⚠️  清单的所有源本机全部不可达（代理与直连均失败）——这是本机网络限制，不代表家庭端不可达')
 }
 
 // 4. 清单里的安装包 URL 真能下到（更新器下载的就是这个地址）

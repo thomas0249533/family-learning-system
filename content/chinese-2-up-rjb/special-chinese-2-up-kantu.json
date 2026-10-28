@@ -67,7 +67,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "蚂蚁搬粮食"
-              }
+              },
+              "image": "assets/kt2-01.svg",
+              "imageAlt": "秋天树林里，两只蚂蚁抬着一片大树叶往前走，树叶上站着一只小蚂蚁，树洞口堆着过冬的粮食"
             },
             {
               "id": "kt2-02",
@@ -86,7 +88,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "草地上的傍晚"
-              }
+              },
+              "image": "assets/kt2-02.svg",
+              "imageAlt": "傍晚，草地上铺着花毯子，一男一女两个孩子坐着，女孩抬手指着晚霞，旁边有一棵大树"
             },
             {
               "id": "kt2-03",
@@ -105,7 +109,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "吹蒲公英"
-              }
+              },
+              "image": "assets/kt2-03.svg",
+              "imageAlt": "晴朗的白天，房前草地上，扎着两条辫子的小女孩举着蒲公英吹，白色种子飘向天空"
             },
             {
               "id": "kt2-04",
@@ -124,7 +130,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "升国旗"
-              }
+              },
+              "image": "assets/kt2-04.svg",
+              "imageAlt": "早晨的学校操场，红色教学楼前，五星红旗正在升起，四个戴红领巾的小学生举手敬礼"
             },
             {
               "id": "kt2-05",
@@ -143,7 +151,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "树林里的发现"
-              }
+              },
+              "image": "assets/kt2-05.svg",
+              "imageAlt": "秋天的树林里，戴红领巾的小男孩抬手指着树上的鸟窝，身边的大人一起抬头看"
             },
             {
               "id": "kt2-06",
@@ -162,7 +172,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "大雁南飞"
-              }
+              },
+              "image": "assets/kt2-06.svg",
+              "imageAlt": "傍晚橘红色的天空中，一群大雁排成人字形飞过，下面是一望无际的绿色田野"
             },
             {
               "id": "kt2-07",
@@ -181,7 +193,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "足球掉进水缸"
-              }
+              },
+              "image": "assets/kt2-07.svg",
+              "imageAlt": "四幅连环画：三个小动物在缸边踢球、球滚进缸里、小兔提壶往缸里倒水、球浮上来大家跳起来"
             },
             {
               "id": "kt2-08",
@@ -200,7 +214,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "老鼠搬西瓜"
-              }
+              },
+              "image": "assets/kt2-08.svg",
+              "imageAlt": "三幅连环画：两只老鼠抬西瓜、老鼠一家围桌吃西瓜、西瓜皮当小船"
             },
             {
               "id": "kt2-09",
@@ -219,7 +235,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "灯下缝衣"
-              }
+              },
+              "image": "assets/kt2-09.svg",
+              "imageAlt": "夜晚屋里点着油灯，穿蓝裙的古人坐在床边低头缝补衣服，床上放着叠好的被褥"
             },
             {
               "id": "kt2-10",
@@ -238,7 +256,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "走在小路上"
-              }
+              },
+              "image": "assets/kt2-10.svg",
+              "imageAlt": "春天的山间小路上，戴红帽子的妈妈牵着背书包的女儿往前走，路边有绿树和蝴蝶小鸟"
             },
             {
               "id": "kt2-11",
@@ -257,7 +277,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "桥上的白鹤"
-              }
+              },
+              "image": "assets/kt2-11.svg",
+              "imageAlt": "傍晚夕阳把天染红，公园石拱桥横跨小河，桥边站着一只又高又大的白鹤，河面浮着荷叶"
             },
             {
               "id": "kt2-12",
@@ -276,7 +298,9 @@
               "metadata": {
                 "difficulty": "进阶",
                 "title": "捅马蜂窝"
-              }
+              },
+              "image": "assets/kt2-12.svg",
+              "imageAlt": "四幅连环画：男孩拿石头抬头看树上的马蜂窝、马蜂追着男孩跑、男孩躲到大树后狗在旁边叫、男孩摔倒在地捂着被蜇的脸"
             }
           ]
         }

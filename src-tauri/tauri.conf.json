@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "FamilyLearningSystem",
-  "version": "2.12.1",
+  "version": "2.12.2",
   "identifier": "com.family.learning",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -43,6 +43,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU0ODE1MzY5NDNDREFCNzgKUldSNHE4MURhVk9CVkk2S3ZvaHF5TFhuZWxldHNVVHYyWElraVNOdDkvK3Y2d3RwdFpReVlRejYK",
       "endpoints": [
+        "https://github.com/thomas0249533/family-learning-system/releases/latest/download/latest.json",
         "https://raw.githubusercontent.com/thomas0249533/family-learning-system/main/latest.json",
         "https://cdn.jsdelivr.net/gh/thomas0249533/family-learning-system@main/latest.json",
         "https://raw.gitmirror.com/thomas0249533/family-learning-system/main/latest.json"

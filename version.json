@@ -1,5 +1,5 @@
 {
-  "version": "2.12.1",
+  "version": "2.12.2",
   "downloadUrl": "https://github.com/thomas0249533/family-learning-system/releases/latest",
-  "notes": "V2.12.1 · 修复桌面端「更新完还是旧界面」。项目同时是 PWA，Service Worker 会在 tauri.localhost 上注册成功并接管页面导航；换掉 exe 之后，WebView2 仍然从 Cache Storage 取旧的 index.html 与旧资源，结果新版本明明装了、跑的却是旧逻辑——典型表现是导入含 essay 题型的语文包报 E006 题型无效、数学概念卡只显示「这里展示概念讲解」占位文字，而且全程不报错。本版在 Rust 侧于 WebView2 初始化之前按版本号清理 Service Worker 与 CacheStorage（只清这两处，IndexedDB 里的做题记录、错题本、导入的学习包一律不动），前端在桌面端也不再注册 SW。升级后首次启动自动清干净，不需要任何手动操作。其余内容同 2.12.0：题目配图支持、「巧数图形」专项包、数学概念卡真渲染、四年级数学必背 / 四年级语文默写 / 四年级英语单词句型语法 / 二四年级口语交际专项包"
+  "notes": "V2.12.2 · 修「检查更新永远说已是最新」。原因是更新清单的三个源都不可靠：raw.githubusercontent 在国内常被拦，cdn.jsdelivr.net 对分支内容有 12 小时缓存，于是客户端读到的还是上一版清单，判定为已最新；更糟的是安装包地址原本也指向 jsDelivr 的 @main 路径，发版后 12 小时内是 404，就算清单读对了也下载失败。本版把两份清单（latest.json / version.json）与安装包地址全部改为 GitHub Release 直链：releases/latest/download/ 是动态重定向、没有长缓存，releases/download/v<ver>/ 带版本号、发布即可下载。旧的三个源仍然保留在后面做兜底。其余内容同 2.12.1：修复桌面端「更新完还是旧界面」（启动前清理 WebView2 的 Service Worker / CacheStorage）、题目配图支持、「巧数图形」专项包、数学概念卡真渲染、二上看图写话 12 篇配图。"
 }

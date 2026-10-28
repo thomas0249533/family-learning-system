@@ -84,6 +84,9 @@ const assets = [
   [NSIS, `FamilyLearningSystem_${VER}_x64-setup.exe`],
   [`${NSIS}.sig`, `FamilyLearningSystem_${VER}_x64-setup.exe.sig`],
   ['latest.json', 'latest.json'],
+  // version.json 也挂上：前端「检查更新」降级路径的主源是
+  // releases/latest/download/version.json（不走 CDN，没有 12 小时缓存）
+  ['version.json', 'version.json'],
   ['src-tauri/target/release/app.exe', PORTABLE],
 ]
 
