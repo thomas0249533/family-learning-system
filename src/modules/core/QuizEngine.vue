@@ -92,7 +92,7 @@
         <div v-if="currentQuestion.type === 'single'" class="options">
           <n-radio-group v-model:value="userAnswer" name="quiz-single">
             <n-space vertical style="width: 100%;">
-              <n-radio v-for="opt in currentQuestion.options" :key="opt" :value="opt.charAt(0)" class="opt-item">
+              <n-radio v-for="opt in currentQuestion.options" :key="opt" :value="opt.charAt(0)" class="opt-item" :class="optionState(opt)">
                 {{ opt }}
               </n-radio>
             </n-space>
@@ -102,7 +102,7 @@
         <div v-else-if="currentQuestion.type === 'multiple'" class="options">
           <n-checkbox-group v-model:value="userAnswer">
             <n-space vertical style="width: 100%;">
-              <n-checkbox v-for="opt in currentQuestion.options" :key="opt" :value="opt.charAt(0)" class="opt-item">
+              <n-checkbox v-for="opt in currentQuestion.options" :key="opt" :value="opt.charAt(0)" class="opt-item" :class="optionState(opt)">
                 {{ opt }}
               </n-checkbox>
             </n-space>
@@ -167,7 +167,7 @@
 
         <div v-else-if="currentQuestion.type === 'essay'" class="essay-group">
           <div class="essay-hint">
-            ✍️ 主观题：请先写下你的答案，提交后对照参考答案自评
+            ✍️ 主观题：请先写下你的答案，提交后系统会按得分点自动判分，并展示参考答案供对照
             <!-- 主观题用 Ctrl/Cmd + Enter 提交：普通 Enter 必须留给换行 -->
             <span class="essay-kbd-hint">（写完按 Ctrl / ⌘ + Enter 提交）</span>
           </div>
@@ -190,20 +190,33 @@
           <div v-if="!examMode && showFeedback" class="feedback-box" :class="feedbackClass">
             <p class="sr-only">{{ announceHead }}</p>
             <p class="feedback-title">{{ feedbackTitle }}</p>
-            <p v-if="!isCorrect || isEssay" class="user-answer">你的答案：{{ userAnswerDisplay || '（未作答）' }}</p>
-            <p class="correct-answer">{{ isEssay ? '参考答案' : '正确答案' }}：{{ correctAnswerDisplay }}</p>
-            <p v-if="currentQuestion.explanation" class="explanation">💡 解析：{{ currentQuestion.explanation }}</p>
+            <p v-if="!isCorrect || isSubjectiveQ" class="user-answer">你的答案：{{ userAnswerDisplay || '（未作答）' }}</p>
+            <p class="correct-answer">{{ isSubjectiveQ ? '参考答案' : '正确答案' }}：{{ correctAnswerDisplay }}</p>
 
-            <div v-if="isEssay && selfRating === null" class="self-rate">
-              <span class="self-rate-tip">对照参考答案，你觉得自己答得怎么样？</span>
-              <div class="self-rate-btns">
-                <n-button size="small" type="success" @click="rateSelf(true)">✅ 我答对了</n-button>
-                <n-button size="small" @click="rateSelf(false)">📖 需要复习</n-button>
-              </div>
+            <!-- 主观题：得分点清单 + 系统判定 + 手动纠错 -->
+            <div v-if="isSubjectiveQ && displayGrade" class="keypoints">
+              <p class="keypoints-title">🎯 得分点（命中 {{ displayGrade.covered }}/{{ displayGrade.total }}）</p>
+              <ul>
+                <li
+                  v-for="(kp, i) in displayGrade.keyPoints"
+                  :key="i"
+                  :class="displayGrade.missing.includes(kp) ? 'kp-miss' : 'kp-hit'"
+                >
+                  {{ displayGrade.missing.includes(kp) ? '✗' : '✓' }} {{ kp }}
+                </li>
+              </ul>
             </div>
-            <p v-else-if="isEssay" class="self-rate-result">
-              你的自评：{{ selfRating ? '✅ 答对了' : '📖 需要复习' }}
+
+            <p v-if="isSubjectiveQ" class="grade-verdict">
+              系统判定：{{ displayGrade && displayGrade.correct ? '✅ 答对了' : '📖 还需努力' }}
             </p>
+            <div v-if="isSubjectiveQ" class="override-btns">
+              <span class="override-tip">判错了？可手动纠正：</span>
+              <n-button size="small" type="success" @click="overrideGrade(true)">实际答对了</n-button>
+              <n-button size="small" @click="overrideGrade(false)">实际还需复习</n-button>
+            </div>
+
+            <p v-if="currentQuestion.explanation" class="explanation">💡 解析：{{ currentQuestion.explanation }}</p>
           </div>
         </div>
 
@@ -268,6 +281,8 @@ import {
   NButton, NButtonGroup, NInput, NSelect, NModal,
 } from 'naive-ui'
 import { correctFeedback, wrongFeedback } from '@core/motivation/encouragement'
+// V2.11 · 即时反馈（音效 + 震动）。考试模式不发声，见 submitAnswer 内的注释。
+import { playCorrectFeedback, playWrongFeedback } from '@core/feedback'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuestionText from '@/components/QuestionText.vue'
 import {
@@ -276,6 +291,8 @@ import {
 } from '@core/quiz/judge'
 // 填空判分已抽到纯函数 @core/quiz/blank（SFC 内部不可测，见该文件头）
 import { gradeBlank } from '@core/quiz/blank'
+// 主观题（essay + 标为主观的填空/拼写）按得分点覆盖度判分
+import { gradeEssay, type EssayGradeResult } from '@core/quiz/essayGrade'
 import { useUiStore } from '@core/stores/ui'
 
 export type QuizQuestionType = 'single' | 'blank' | 'multiple' | 'judge' | 'matching' | 'spelling' | 'essay'
@@ -292,6 +309,18 @@ export interface QuizQuestion {
   right?: string[]
   hint?: string
   metadata?: { difficulty?: string }
+  /**
+   * 主观题得分点（可选）。作者显式给出最准；缺省由参考答案自动抽取。
+   * 用于 essay 及 `subjective: true` 的填空/拼写：按覆盖度判分 + 展示"你漏了哪几点"。
+   * 每个得分点内部可用 `/` 或 `／` 写同义备选（如 "比喻/比拟"）。
+   */
+  keyPoints?: string[]
+  /**
+   * 把本题当主观题判分（仅对 blank / spelling 有意义）。
+   * 语文阅读里的"短答填空"常需用词灵活，精确匹配会误判；标 true 后改走
+   * `gradeEssay` 的得分点覆盖度判分，而非精确匹配。essay 类型恒为主观，无需标。
+   */
+  subjective?: boolean
 }
 
 export interface AnswerPayload {
@@ -498,11 +527,22 @@ function gradeWith(q: QuizQuestion, ua: any): boolean {
   switch (q.type) {
     case 'single':
     case 'spelling':
+      // 普通拼写 = 精确匹配；标为主观的拼写 = 按得分点覆盖度判分
+      if (q.type === 'spelling' && q.subjective === true) {
+        return gradeEssay(String(ua ?? ''), String(q.answer ?? ''), q.keyPoints).correct
+      }
       return String(ua ?? '').trim().toLowerCase() === String(q.answer).trim().toLowerCase()
     case 'blank':
       // 传原始值（不做 String 归一）：数组答案要靠 Array.isArray 按元素边界切段，
       // 斜杠备选（`aren't / are not`）要在空格被删前按 `\s+\/\s+` 切分。
+      // 标为主观的填空（语文阅读短答）= 按得分点覆盖度判分，而非精确匹配。
+      if (q.subjective === true) {
+        return gradeEssay(String(ua ?? ''), String(q.answer ?? ''), q.keyPoints).correct
+      }
       return gradeBlank(ua, q.answer)
+    case 'essay':
+      // 主观题：按得分点覆盖度（含整段相似度回退）判分，不再依赖孩子自评
+      return gradeEssay(String(ua ?? ''), String(q.answer ?? ''), q.keyPoints).correct
     case 'multiple': {
       const correctRaw = Array.isArray(q.answer) ? q.answer : String(q.answer).split('')
       const correct = correctRaw.map(x => String(x).trim().toUpperCase()).sort()
@@ -542,17 +582,71 @@ const currentQuestion = computed(() => props.questions[currentIndex.value])
 const isLastQuestion = computed(() => currentIndex.value === props.questions.length - 1)
 const localAnsweredCount = computed(() => Object.keys(examAnswers.value).length)
 
-/** ✅ 主观题（essay）自评：null = 未自评 */
-const selfRating = ref<boolean | null>(null)
-const isEssay = computed(() => currentQuestion.value?.type === 'essay')
+/** ✅ 主观题（essay + 标为主观的填空/拼写）判分：自动按得分点覆盖度判，允许手动纠错 */
+const essayOverride = ref<boolean | null>(null)
+
+/** 本题是否按主观题判分（essay 恒为主观；blank/spelling 需 `subjective:true`） */
+function isSubjective(q: QuizQuestion): boolean {
+  return q.type === 'essay' || ((q.type === 'blank' || q.type === 'spelling') && q.subjective === true)
+}
+const isSubjectiveQ = computed(() => (currentQuestion.value ? isSubjective(currentQuestion.value) : false))
+
+/* ---------- V2.11 · 选项框的提交后染色（多邻国风） ----------
+ * 只用于单选/多选的**视觉反馈**，不参与判分：正确选项染绿、选错的染红。
+ * 判分真相仍在上面的 gradeWith / gradeEssay，这里纯展示，改错不影响对错。
+ *
+ * 为什么染"正确选项"而不只染"选中的"：孩子答错时最想知道的是"那正确答案
+ * 是哪个"，把正确项直接点亮比读一行"正确答案：B"快得多。
+ */
+function toLetterSet(raw: unknown): Set<string> {
+  const arr = Array.isArray(raw) ? raw.map((x) => String(x)) : String(raw ?? '').split('')
+  return new Set(arr.map((x) => x.trim().toUpperCase()).filter(Boolean))
+}
+
+const answerLetters = computed(() => toLetterSet(currentQuestion.value?.answer))
+const userLetters = computed(() => toLetterSet(userAnswer.value))
+
+/**
+ * 返回选项的反馈类名（空串 = 无状态）。
+ * 仅在提交后生效；未提交时一律空串，避免"还没答就剧透答案"。
+ */
+function optionState(opt: string): string {
+  if (!showFeedback.value) return ''
+  const t = currentQuestion.value?.type
+  if (t !== 'single' && t !== 'multiple') return ''
+  const letter = String(opt ?? '').trim().charAt(0).toUpperCase()
+  if (!letter) return ''
+  if (answerLetters.value.has(letter)) return 'opt-item--correct'
+  if (userLetters.value.has(letter)) return 'opt-item--wrong'
+  return ''
+}
+
+/** 当前主观题的实时判分结果（有作答时才算） */
+const liveEssayGrade = computed<EssayGradeResult | null>(() => {
+  const q = currentQuestion.value
+  if (!q || !isSubjective(q)) return null
+  const ua = String(userAnswer.value ?? '')
+  if (!ua.trim()) return null
+  return gradeEssay(ua, String(q.answer ?? ''), q.keyPoints)
+})
+
+/** 用于展示的判分结果：手动纠错后以纠错值为准 */
+const displayGrade = computed<EssayGradeResult | null>(() => {
+  const g = liveEssayGrade.value
+  if (!g) return null
+  if (essayOverride.value !== null) {
+    return { ...g, correct: essayOverride.value, missing: essayOverride.value ? [] : g.missing }
+  }
+  return g
+})
 
 const feedbackClass = computed(() => {
-  if (isEssay.value) return selfRating.value === false ? 'review' : 'reference'
+  // 主观题与客观题统一用 correct/wrong 配色（覆盖度达标即 correct）
   return isCorrect.value ? 'correct' : 'wrong'
 })
 
 const feedbackTitle = computed(() => {
-  if (isEssay.value) return '📖 参考答案 · 请对照自评'
+  if (isSubjectiveQ.value) return '📖 参考答案 · 系统已按得分点判分'
   // 用题号做种子：同一题内文案稳定，不同题目之间会轮换
   return isCorrect.value ? correctFeedback(currentIndex.value) : wrongFeedback(currentIndex.value)
 })
@@ -563,7 +657,7 @@ const feedbackTitle = computed(() => {
  * 读屏用户需要先听到一句确定的判定，再听正确答案与解析。
  */
 const announceHead = computed(() => {
-  if (isEssay.value) return '参考答案，请对照自评。'
+  if (isSubjectiveQ.value) return '参考答案与得分点已展示，请对照。'
   return isCorrect.value ? '回答正确。' : '回答错误。'
 })
 
@@ -741,7 +835,8 @@ function openFromSheet(i: number): void {
   void nextTick(() => {
     userAnswer.value = coerceAnswer(q, rec.userAnswer)
     isCorrect.value = rec.isCorrect
-    selfRating.value = q.type === 'essay' ? rec.isCorrect : null
+    // 主观题续传：把已存对错当作最终判定（不再要求重新自评）
+    essayOverride.value = isSubjective(q) ? rec.isCorrect : null
     showFeedback.value = true
     focusAfterSubmit()
   })
@@ -903,8 +998,8 @@ function focusAfterSubmit(): void {
     const root = rootRef.value
     if (!root) return
     const selfRateBtn =
-      isEssay.value && selfRating.value === null
-        ? root.querySelector<HTMLElement>('.self-rate button')
+      isSubjectiveQ.value && essayOverride.value === null
+        ? root.querySelector<HTMLElement>('.override-btns button')
         : null
     const actionBtn = root.querySelector<HTMLElement>('.quiz-actions button')
     const el = selfRateBtn ?? actionBtn
@@ -959,7 +1054,7 @@ onUnmounted(() => {
 
 watch(currentQuestion, (q) => {
   if (!q) return
-  selfRating.value = null
+  essayOverride.value = null
   questionStartedAt.value = Date.now()
 
   if (props.examMode) {
@@ -996,14 +1091,12 @@ function submitAnswer() {
   const q = currentQuestion.value
   showFeedback.value = true
 
-  // 主观题：不自动判分，先展示参考答案，由学生自评
-  if (q.type === 'essay') {
-    isCorrect.value = true
-    focusAfterSubmit()
-    return
-  }
-
-  isCorrect.value = gradeWith(q, userAnswer.value)
+  // 主观题（essay + 标为主观的填空/拼写）：按得分点覆盖度自动判分；其余走精确/容错判分
+  const subj = isSubjective(q)
+  isCorrect.value = subj
+    ? gradeEssay(String(userAnswer.value ?? ''), String(q.answer ?? ''), q.keyPoints).correct
+    : gradeWith(q, userAnswer.value)
+  if (subj) essayOverride.value = null
   if (isCorrect.value) correctCount.value++
 
   // V2.0 · 答题卡留档（每次提交都更新，允许改了再提交覆盖旧值）
@@ -1025,20 +1118,30 @@ function submitAnswer() {
 
   // 交卷后立即把焦点送到"下一题"（那个按钮刚被 v-else 新建出来）
   focusAfterSubmit()
+
+  // V2.11 · 即时反馈：先出判定再出声，顺序不能反——声音是"确认"，不是"预告"。
+  // 考试模式（examMode）不发声：它是"交卷后统一判"的场景，逐题叮/嗡会打断答题，
+  // 且此时页面本就不显示对错（feedback-box 有 !examMode 门禁）。
+  if (!props.examMode) {
+    if (isCorrect.value) playCorrectFeedback()
+    else playWrongFeedback()
+  }
 }
 
-/** ✅ 主观题自评：记录对错（自评「需要复习」进错题本，答对则计分） */
-function rateSelf(ok: boolean) {
+/**
+ * ✅ 主观题手动纠错：自动判分仅按关键词/得分点，可能误判（同义改写、长难句）。
+ * 孩子/家长觉得判错了，可一键改为"答对/复习"，更新掌握度与错题本。
+ * 仅在已提交且当前题为主观题时可用；重复点同一结论不重复计数。
+ */
+function overrideGrade(ok: boolean) {
   const q = currentQuestion.value
-  if (!q || q.type !== 'essay' || selfRating.value !== null) return
-  selfRating.value = ok
+  if (!q || !isSubjective(q) || essayOverride.value === ok) return
+  const prev = isCorrect.value
+  essayOverride.value = ok
   isCorrect.value = ok
-  if (ok) correctCount.value++
-
-  // 主观题在"自评"这一刻才算做完（提交时还没有对错）
-  if (!props.examMode) {
-    practiceAnswers.value[q.id] = { userAnswer: userAnswer.value, isCorrect: ok }
-  }
+  // 纠正计数：答对↑/复习↓，避免 correctCount 重复累加
+  if (ok && !prev) correctCount.value++
+  if (!ok && prev) correctCount.value--
 
   emit('answer', {
     exerciseId: q.id,
@@ -1048,6 +1151,10 @@ function rateSelf(ok: boolean) {
     correctAnswer: correctAnswerDisplay.value,
     elapsedMs: currentElapsedMs(),
   })
+
+  // 纠错也是一次"判定"，同样给即时反馈（孩子点了「我答对了」要有回应）
+  if (ok) playCorrectFeedback()
+  else playWrongFeedback()
 }
 
 function nextQuestion() {
@@ -1460,7 +1567,7 @@ function handleExit() {
   padding: 12px 16px;
   width: 100%;
   border: 2px solid $border-color;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   transition: all 0.15s;
   font-size: 15px;
   line-height: 1.5;
@@ -1469,6 +1576,40 @@ function handleExit() {
   align-items: center;
 
   &:hover { border-color: $primary-color; background: $primary-light; }
+}
+
+/* ---------- V2.11 · 提交后选项染色 + 物理反馈 ----------
+ * 用**双类选择器**（.opt-item.opt-item--x）而不是单类：上面 `&:hover` 编译成
+ * `.opt-item:hover`（特异性 0,2,0），单类 .opt-item--correct 只有 0,1,0，
+ * 会输给 hover —— 出现"鼠标还停在选项上时，绿色又被主色盖掉"的闪烁。
+ */
+.opt-item.opt-item--correct {
+  border-color: var(--success-color);
+  background: var(--success-light);
+  animation: opt-pop var(--duration-slow) var(--ease-spring);
+}
+
+.opt-item.opt-item--wrong {
+  border-color: var(--danger-color);
+  background: var(--danger-light);
+  animation: opt-shake 320ms var(--ease-standard);
+}
+
+/* 答对：弹性放大再回弹（多邻国式"奖励"） */
+@keyframes opt-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+
+/* 答错：左右衰减抖动。幅度逐次收敛，像真的撞了一下 */
+@keyframes opt-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-7px); }
+  30% { transform: translateX(6px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(3px); }
+  80% { transform: translateX(-1px); }
 }
 
 :deep(.n-space.n-space--vertical) {
@@ -1566,33 +1707,78 @@ function handleExit() {
 .feedback-box {
   margin-top: 16px;
   padding: 14px 18px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 14px;
   line-height: 1.65;
+  /* V2.11：判定结果要"浮"在页面上（多邻国的高调奖励），不能只靠换底色 */
+  box-shadow: var(--shadow-sm);
 }
-.feedback-box.correct { background: $success-light; border: 1px solid $success-color; }
-.feedback-box.wrong { background: $danger-light; border: 1px solid $danger-color; }
+/* 判定类反馈才弹入；reference / review 是"参考答案 / 需复习"的静态说明，不该抢戏 */
+.feedback-box.correct {
+  background: $success-light;
+  border: 2px solid $success-color;
+  animation: fb-rise var(--duration-slow) var(--ease-spring);
+}
+.feedback-box.wrong {
+  background: $danger-light;
+  border: 2px solid $danger-color;
+  animation: fb-rise var(--duration-slow) var(--ease-spring);
+}
 .feedback-box.reference { background: $primary-light; border: 1px solid $primary-color; }
 .feedback-box.review { background: $warning-light; border: 1px solid $warning-color; }
 
-.self-rate {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px dashed $border-color;
-
-  .self-rate-tip {
-    display: block;
-    font-size: 13px;
-    color: $text-sub;
-    margin-bottom: 8px;
-  }
-  .self-rate-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+@keyframes fb-rise {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
-.self-rate-result {
+
+.keypoints {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: $bg-color-hover;
+  border-radius: 8px;
+
+  .keypoints-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-main;
+    margin-bottom: 6px;
+  }
+  ul {
+    margin: 0;
+    padding-left: 4px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: $text-sub;
+  }
+  li.kp-hit { color: $success-text; }
+  li.kp-miss { color: $danger-text; }
+}
+
+.grade-verdict {
   margin-top: 10px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: $text-main;
+}
+
+.override-btns {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  .override-tip {
+    font-size: 12px;
+    color: $text-sub;
+  }
 }
 
 .feedback-title {
@@ -1660,7 +1846,10 @@ body.dark-mode {
   .feedback-box.wrong { background: rgba(var(--danger-rgb), 0.15); }
   .feedback-box.reference { background: rgba(var(--primary-rgb), 0.15); }
   .feedback-box.review { background: rgba(var(--warning-rgb), 0.15); }
-  .self-rate { border-top-color: rgba(var(--on-strong-rgb), 0.12); }
+  .keypoints { background: rgba(var(--on-strong-rgb), 0.06); }
+  .keypoints li.kp-hit { color: var(--success-text); }
+  .keypoints li.kp-miss { color: var(--danger-text); }
+  .override-tip { color: var(--text-sub); }
   .explanation { background: rgba(var(--on-strong-rgb), 0.06); }
   .question-nav .nav-dot {
     background: $card-bg;
@@ -1679,6 +1868,21 @@ body.dark-mode {
         0 0 0 3px rgba(var(--primary-rgb), 0.3),
         0 4px 12px rgba(var(--primary-rgb), 0.4);
     }
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * V2.11 · 动效降级（§6.6）
+ * 弹跳/抖动是"奖励与惩罚"的强化手段，对前庭敏感用户（晕动症）会不适，
+ * 系统开了「减少动态效果」就必须全部关掉 —— 但**染色与文案保留**：
+ * 反馈信息一点都不能少，只是不动。
+ * --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .opt-item.opt-item--correct,
+  .opt-item.opt-item--wrong,
+  .feedback-box.correct,
+  .feedback-box.wrong {
+    animation: none;
   }
 }
 </style>

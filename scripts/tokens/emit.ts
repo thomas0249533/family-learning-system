@@ -92,6 +92,7 @@ function themeRootPrimitives(): string[] {
   L.push(vline('radius-md', RADIUS.md))
   L.push(vline('radius-lg', RADIUS.lg))
   L.push(vline('radius-xl', RADIUS.xl))
+  L.push(vline('radius-2xl', RADIUS['2xl']))
   L.push(`  --radius-control: ${RADIUS.control};   /* 按钮 / 输入框统一圆角 */`)
   L.push(vline('radius-full', RADIUS.full))
   L.push('')
@@ -198,6 +199,9 @@ function themeRootJuniorLight(): string[] {
   for (const k of ['shadow-xs', 'shadow-sm', 'shadow', 'shadow-md', 'shadow-lg']) L.push(vline(k, sem[k]))
   L.push('  /* 上向阴影：固定底部横条抬升层次（精确搬运自 .app-nav / .quiz-actions）*/')
   L.push(vline('shadow-up', sem['shadow-up']))
+  L.push('  /* V2.11 · 积木厚度：y 偏移必须与按压位移一致，否则「穿模」 */')
+  for (const k of ['shadow-3d', 'shadow-badge']) L.push(vline(k, sem[k]))
+  L.push(vline('progress-gloss', sem['progress-gloss']))
   L.push('')
   L.push('  /* 渐变 */')
   for (const k of ['gradient-primary', 'gradient-warm', 'gradient-cool', 'gradient-success', 'gradient-sunset']) L.push(vline(k, sem[k]))
@@ -255,6 +259,7 @@ function themeBodyDark(): string[] {
   L.push('')
   for (const k of ['shadow-xs', 'shadow-sm', 'shadow', 'shadow-md', 'shadow-lg']) L.push(vline(k, sem[k]))
   L.push(vline('shadow-up', sem['shadow-up']))
+  for (const k of ['shadow-3d', 'shadow-badge', 'progress-gloss']) L.push(vline(k, sem[k]))
   L.push('')
   for (const k of ['gradient-primary', 'gradient-warm', 'gradient-cool', 'gradient-success', 'gradient-sunset']) L.push(vline(k, sem[k]))
   L.push('}')
@@ -521,6 +526,7 @@ export function generatePaletteTs(): string {
     `    md: '${RADIUS.md}',`,
     `    lg: '${RADIUS.lg}',`,
     `    xl: '${RADIUS.xl}',`,
+    `    '2xl': '${RADIUS['2xl']}',`,
     `    control: '${RADIUS.control}',`,
     `    full: '${RADIUS.full}',`,
     '  },',

@@ -261,6 +261,7 @@ export const palette: ThemePalette = {
     md: '12px',
     lg: '16px',
     xl: '20px',
+    '2xl': '24px',
     control: '10px',
     full: '999px',
   },

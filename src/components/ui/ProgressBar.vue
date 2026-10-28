@@ -99,10 +99,27 @@ const valuetext = computed(() => {
 }
 
 .progress__fill {
+  position: relative;
   height: 100%;
   border-radius: var(--radius-full);
-  background: var(--primary-color);
+  /* V2.11：默认即渐变（浅→深同色系），纯色填充在大面积进度条上过于"仪表盘" */
+  background: var(--progress-fill-bg);
   transition: width var(--duration-slow) var(--ease-decelerate);
+}
+
+/* V2.11 · 顶部内高光：一条压在填充上沿的白色带，让填充看起来是"有体积的液体"
+   而不是一块贴纸。用伪元素而非 inset box-shadow —— 后者会被 border-radius
+   弧线裁成"描边"，宽度到两端会变细，反而脏。
+   颜色必须走 --progress-gloss：check-hex 只放行纯黑半透明字面量，
+   白色的半透明字面量会被门禁拦下，且深色主题需要更弱的高光。 */
+.progress__fill::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 50%;
+  border-radius: var(--radius-full) var(--radius-full) 0 0;
+  background: var(--progress-gloss);
+  pointer-events: none;
 }
 
 .progress--gradient .progress__fill {

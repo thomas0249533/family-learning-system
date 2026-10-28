@@ -171,6 +171,8 @@ import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
 import { useUiStore } from '@core/stores/ui'
 import { runAutoUpdate, type AutoUpdateState } from '@core/update/autoUpdater'
+// V2.11 · 音效/震动偏好：启动即载入，避免"上次关了音效、重启后又响"
+import { loadFeedbackPreferences, syncFeedbackEngine } from '@core/feedback'
 
 const route = useRoute()
 const router = useRouter()
@@ -237,6 +239,19 @@ onMounted(() => {
   // 首屏：数据可能还没加载完（各页面自己在 onMounted 里 load），
   // 这里先结算一次，加载完成后由下面的 watch 再补一次。
   scheduleSettle(0)
+
+  // V2.11：音效/震动偏好**不放在首屏关键路径**上。
+  // 首屏此刻正排队着一串 db 事务（settle、包列表），多抢一次 settings 读会让
+  // 弱机（以及 e2e 里给 IDBDatabase.transaction 打补丁的环境）明显变慢。
+  // 反馈偏好只要"孩子第一次答题之前"就位即可，空闲时读完全够。
+  const loadFeedback = (): void => {
+    void loadFeedbackPreferences().then(() => syncFeedbackEngine())
+  }
+  const win = window as Window & {
+    requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+  }
+  if (typeof win.requestIdleCallback === 'function') win.requestIdleCallback(loadFeedback, { timeout: 3000 })
+  else setTimeout(loadFeedback, 1200)
 
   offProfileChange = onProfileChange((next) => {
     profileState.value = next

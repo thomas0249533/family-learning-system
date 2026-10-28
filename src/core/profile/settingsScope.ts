@@ -68,6 +68,17 @@ export const GLOBAL_KEYS = [
   'progress:lastRecovery',
   'progress:lastStartupRecovery',
   'fls:theme',
+  /**
+   * V2.11 · 音效 / 震动开关（`{ sound: boolean; haptics: boolean }`）。
+   *
+   * **设备级，不是 per-profile**：它回答的是「这台电脑现在吵不吵」（书房深夜、
+   * 家长开电话会），与是哪个孩子在做题无关。两个孩子的偏好差异用"谁用谁去关"
+   * 处理即可，不值得把设备偏好分片。
+   *
+   * 读取入口统一走 `src/core/feedback/feedbackSettings.ts`（含内存镜像，
+   * 因为答题反馈是同步路径，不能 await 读库）。
+   */
+  'fls:feedback',
   'owner:indexCache',
   /**
    * V1.11 · F1 · AI 助手配置（模型名 + 加密后的 API Key）。

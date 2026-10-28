@@ -142,7 +142,11 @@ const ariaLabel = computed(() => {
   gap: $space-3;
   background: $card-bg;
   border: 1px solid $border-color;
-  border-radius: $radius-md;
+  border-radius: $radius-lg;
+  /* V2.11 · 勋章像嵌进卡槽：6px 硬底影给「厚度」，再叠一层 1px 柔光避免纯硬影
+     显得像贴纸。**刻意保留 border** —— 本组件用 border-color 表达
+     earned / tier 状态（primary / success / info），删掉会丢失状态语义。 */
+  box-shadow: var(--shadow-badge), var(--shadow-xs);
   padding: $space-3 $space-4;
 
   /* ---- 原生 button 重置（本组件唯一的视觉风险点，逐条说明） ----

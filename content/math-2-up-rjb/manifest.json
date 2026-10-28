@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "setId": "math-2-up-rjb-set",
+  "title": "二年级数学上（人教版）",
+  "subject": "math",
+  "grade": 2,
+  "term": "up",
+  "edition": "人教版",
+  "importOrder": [
+    "daily-math-2-up-rjb-45d"
+  ]
+}

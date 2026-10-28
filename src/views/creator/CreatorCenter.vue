@@ -111,6 +111,18 @@
                         <label>解析（可空）</label>
                         <n-input v-model:value="q.explanation" size="small" />
                       </div>
+                      <div class="field" v-if="q.type === 'blank' || q.type === 'spelling'">
+                        <label>主观题判分（按得分点覆盖）</label>
+                        <n-switch v-model:value="q.subjective">
+                          <template #checked>按得分点判分</template>
+                          <template #unchecked>精确匹配</template>
+                        </n-switch>
+                        <p class="hint-sub">开启后语文阅读短答题按关键词/得分点覆盖度判分，换说法也能判对（essay 已默认按此判分）。</p>
+                      </div>
+                      <div class="field" v-if="(q.type === 'blank' || q.type === 'spelling') && q.subjective" v-show="q.subjective">
+                        <label>得分点（可选，逗号分隔；留空则自动从参考答案抽取）</label>
+                        <n-input v-model:value="q.keyPoints" size="small" placeholder="比喻,拟人,排比" />
+                      </div>
                     </div>
 
                     <n-button size="small" dashed block class="add-btn" @click="addQuestion(ui, ki)">+ 添加题目</n-button>
@@ -220,6 +232,8 @@ function makeQuestion(id: string, type: any = 'single') {
     leftText: '',
     rightText: '',
     explanation: '',
+    subjective: false,
+    keyPoints: '',
   }
 }
 
@@ -346,6 +360,12 @@ runValidation()
   label {
     font-size: 12px;
     color: $text-sub;
+  }
+  .hint-sub {
+    font-size: 11px;
+    color: $text-sub;
+    margin: 2px 0 0;
+    line-height: 1.4;
   }
 }
 .row2 {

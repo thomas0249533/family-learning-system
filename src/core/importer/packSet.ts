@@ -40,6 +40,13 @@ export interface CreatorQuestion {
   /** 连线题右列（每行一个） */
   rightText?: string
   explanation?: string
+  /**
+   * 把本题当主观题判分（仅 blank/spelling 有意义）。开启后语文阅读短答按得分点
+   * 覆盖度判分，而非精确匹配。essay 恒为主观，无需设。
+   */
+  subjective?: boolean
+  /** 主观题得分点（可选，逗号分隔）。作者显式给出最准，否则由参考答案自动抽取。 */
+  keyPoints?: string
 }
 
 export interface CreatorKnowledgePoint {
@@ -164,6 +171,11 @@ export function buildPackageModel(form: CreatorForm): any {
           ex.right = parseLines(q.rightText)
         }
         if (q.explanation && q.explanation.trim()) ex.explanation = q.explanation.trim()
+        // 主观题标记：blank/spelling 开启后改走得分点覆盖度判分
+        if (q.subjective === true) ex.subjective = true
+        if (q.keyPoints && q.keyPoints.trim()) {
+          ex.keyPoints = q.keyPoints.split(/[，,]/).map((s: string) => s.trim()).filter(Boolean)
+        }
         return ex
       })
 

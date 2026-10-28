@@ -1,11 +1,11 @@
 {
-  "version": "2.10.0",
-  "notes": "V2.10.0 · D-2 自动更新：应用内一键下载安装（NSIS 被动更新）。首个带更新器版本需手动安装一次，之后自动更新。",
-  "pub_date": "2026-10-27T03:43:28.940Z",
+  "version": "2.11.0",
+  "notes": "V2.11.0 · ①多邻国风「跃动心流」：按钮改积木厚度（按下位移=阴影厚度，明暗双套阴影），卡片去边框改 24px 大圆角，进度条默认渐变+顶部高光，勋章卡嵌槽底板；答题反馈做实时音效（Web Audio 现场合成「叮/嗡/哒」，零音频文件）+ 物理震动（桌面端无 Vibration API 故静默）+ 选项框染色与弹跳/抖动动画，全部受「减少动态效果」降级；设置新增「声音与反馈」分区（音效/震动开关，设备级） ②语文阅读主观题：essay/标为主观的填空按得分点覆盖度自动判分（参考答案+得分点清单+命中 X/total，覆盖达标即判对，语义相似度回退捕捉换说法），判错可手动纠错；Creator 增加「主观题判分」开关与得分点输入",
+  "pub_date": "2026-10-28T04:03:41.587Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkhQMGppOFMvazNweXNWLzBwblh5TGl3NlJiOU9OaHk1M3VPYXNYdVpTZkIvZW5EdGdacmRFMHdIOUprRGlscGgxcFNoV25hNElraEs3d2FxNW5YVEFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMDcyNDcyCWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMC4wX3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEwLjAKMVQwNmRlZmZFM2U5aUpXVmhnUldER3JEYUN0SGkwS0Z5NTVVMzlWNDA1SFZjUm5YSThzRjNxdmx5SE1EVEYrekl1ZDNaWWdLS1Q3dm5OTGpUWm9DQ0E9PQo=",
-      "url": "https://cdn.jsdelivr.net/gh/thomas0249533/family-learning-system@main/updates/2.10.0/FamilyLearningSystem_2.10.0_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVklrOGEzV0JuRERJK3NpWlJOSm56WkhKaXBqTGljYWZzMXhWWWRIVjc3MmJxYlRlUFFFbnVaSUtHaGQwdVVPVHRDOEFtRm54VlFya3JKL0hxL2l4UndrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMTYwMTc4CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMS4wX3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjExLjAKUFNaS2pTaUxuKzg1NXhxeXg0Ri8rbExBKy9VZFBtaVVhNldySnlSaVdrTUpuMGJ5QXRtKzBNZElOU0FpTXFQanBBSkt6SUpXdzBWRHpFVUVrV1FBQkE9PQo=",
+      "url": "https://cdn.jsdelivr.net/gh/thomas0249533/family-learning-system@main/updates/2.11.0/FamilyLearningSystem_2.11.0_x64-setup.exe"
     }
   }
 }

@@ -51,14 +51,14 @@ withDefaults(defineProps<AppCardProps>(), {
 </script>
 
 <style scoped lang="scss">
-/* 复刻现有观感的「最主流的那一套」：radius-lg + shadow-sm。
-   刻意 **不** 覆盖 border 与 header 背景 —— 现有各页的 n-card 用的是 naive 默认
-   （边框 = --border-color，标题栏无底色）；强行上 border-light / 给标题栏铺底
-   会让每一张被替换的卡片产生非预期可见变化（批3/批4 铁律：差异只应出现在
-   「原本各页就不一致」的地方）。
-   曾经存在的 card-header-bg 组件别名因零消费者 + 无真实语义，已于 2026-10 删除。 */
+/* V2.11 · 多邻国风：去掉实线边框，改为「大圆角 + 柔和投影」把卡片"托"起来。
+   为什么 border 必须去掉：3D 语汇里「厚度」只能由阴影表达，一旦同时存在 1px
+   实线，同一个边就出现了两种材质，看着像贴了一层贴纸。
+   圆角取 --radius-2xl（24px）：16px 在整页尺度上仍偏"办公软件"，24px 才有
+   玩具积木的圆润感。 */
 .app-card {
-  border-radius: var(--radius-lg);
+  border: 0;
+  border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--duration-base) var(--ease-standard),
     transform var(--duration-base) var(--ease-standard);
@@ -76,8 +76,10 @@ withDefaults(defineProps<AppCardProps>(), {
   line-height: 1;
 }
 
+/* danger 变体：边框没了，但"危险"的语义必须保留 → 改用 inset 描边，
+   与外投影叠加（inset 画内描边不参与盒模型，不会像 border 那样撑开尺寸）。 */
 .app-card--danger {
-  border-color: var(--danger-light);
+  box-shadow: inset 0 0 0 2px var(--danger-light), var(--shadow-sm);
 }
 
 .app-card--paddingless :deep(.n-card__content) {

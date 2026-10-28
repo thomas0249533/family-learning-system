@@ -127,6 +127,31 @@
     </AppCard>
     </section>
 
+    <section id="settings-feedback" class="settings-panel" data-section="feedback">
+    <!-- V2.11 · 声音与反馈：答题即时反馈的总开关。
+         「音效」是仓库内 Web Audio 实时合成（零音频文件），关掉即整个静音；
+         「震动」在桌面端（Windows WebView2）没有 Vibration API，恒为静默——
+         文案必须如实说明，不能让家长以为开了却没生效。 -->
+    <AppCard title="🔊 声音与反馈" class="card">
+      <n-space vertical size="large">
+        <div class="feedback-row">
+          <div class="feedback-text">
+            <h4 class="setting-label">答题音效</h4>
+            <p class="feedback-desc">答对「叮」、答错「嗡」、按钮「哒」。现场合成，不占安装包。</p>
+          </div>
+          <n-switch :value="feedbackPrefs.sound" @update:value="onSoundChange" />
+        </div>
+        <div class="feedback-row">
+          <div class="feedback-text">
+            <h4 class="setting-label">震动反馈</h4>
+            <p class="feedback-desc">{{ hapticsDesc }}</p>
+          </div>
+          <n-switch :value="feedbackPrefs.haptics" @update:value="onHapticsChange" />
+        </div>
+      </n-space>
+    </AppCard>
+    </section>
+
     <section id="settings-ai" class="settings-panel" data-section="ai">
     <!-- AI 助手设置（V1.11 · F1）
          Key 的存储策略（详见 src/core/ai/aiConfig.ts 顶部）：
@@ -300,6 +325,14 @@ import ImportPreview from '@/views/settings/ImportPreview.vue'
 import SyncSettings from '@/views/settings/SyncSettings.vue'
 import LocalAiCard from '@/views/settings/LocalAiCard.vue'
 import { useThemeStore } from '@core/stores/theme'
+// V2.11 · 音效/震动开关：内存镜像 + 落库，答题反馈走同步路径读镜像
+import {
+  isHapticsSupported,
+  loadFeedbackPreferences,
+  saveFeedbackPreferences,
+  syncFeedbackEngine,
+  type FeedbackPreferences,
+} from '@core/feedback'
 import { palette } from '@core/styles/palette'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { usePackageStore } from '@core/stores/package'
@@ -346,6 +379,7 @@ interface SettingsSection {
 /** 分区表：顺序必须与模板里的 section 顺序一致（滚动高亮依赖这个顺序） */
 const SECTIONS: SettingsSection[] = [
   { key: 'appearance', icon: '🎨', label: '外观设置' },
+  { key: 'feedback', icon: '🔊', label: '声音与反馈' },
   { key: 'ai', icon: '🤖', label: 'AI 助手' },
   { key: 'packages', icon: '📦', label: '学习包' },
   { key: 'export', icon: '📤', label: '导出' },
@@ -357,6 +391,29 @@ const SECTIONS: SettingsSection[] = [
 
 const activeSection = ref<string>(SECTIONS[0].key)
 const contentRef = ref<HTMLElement | null>(null)
+
+/* ---------- V2.11 · 声音与反馈 ---------- */
+
+const feedbackPrefs = ref<FeedbackPreferences>({ sound: true, haptics: true })
+
+/** 桌面端没有 Vibration API。文案必须如实说明，否则家长会以为「开了却没生效」。 */
+const hapticsSupported = isHapticsSupported()
+const hapticsDesc = computed(() =>
+  hapticsSupported
+    ? '答对轻震一下，答错长短交替三下。手机、平板上更明显。'
+    : '当前设备（电脑）不支持震动，此开关只在手机、平板上生效。',
+)
+
+async function onSoundChange(v: boolean): Promise<void> {
+  feedbackPrefs.value = { ...feedbackPrefs.value, sound: v }
+  await saveFeedbackPreferences({ sound: v })
+  syncFeedbackEngine()
+}
+
+async function onHapticsChange(v: boolean): Promise<void> {
+  feedbackPrefs.value = { ...feedbackPrefs.value, haptics: v }
+  await saveFeedbackPreferences({ haptics: v })
+}
 
 /** 当前页面的全部分区面板（DOM 即真相，避免再维护一份 ref 数组） */
 function panelEls(): HTMLElement[] {
@@ -585,6 +642,10 @@ onMounted(async () => {
   await scrollToHash()
 
   await refreshAiState()
+
+  // V2.11：载入音效/震动偏好并同步给音频引擎（此后答题反馈走内存镜像，同步读）
+  feedbackPrefs.value = await loadFeedbackPreferences()
+  syncFeedbackEngine()
 
   // 左栏滚动高亮：监听见 AppShell 的滚动容器（找不到时退化为 window）
   scrollHost = nearestScrollParent(contentRef.value)
@@ -886,6 +947,22 @@ function clearAllData() {
 }
 
 .hint { font-size: 12px; color: $text-sub; margin-top: 8px; }
+
+/* V2.11 · 声音与反馈行：左文右开关 */
+.feedback-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.feedback-text { min-width: 0; }
+.feedback-row .setting-label { margin-bottom: 4px; }
+.feedback-desc {
+  font-size: 12px;
+  color: $text-sub;
+  line-height: 1.5;
+  margin: 0;
+}
 .history-list { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* F1 · AI 助手设置：口令输入 + 动作按钮一行（窄屏自动换行） */

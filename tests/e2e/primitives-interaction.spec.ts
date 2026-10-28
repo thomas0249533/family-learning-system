@@ -227,7 +227,13 @@ const COOLDOWN_MS = 2000
 
 /** 等库真的就绪（`/home` 的成就头计数要等数据加载完才出现） */
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  // ⚠️ 选择器是 `.hall-head-count` 而不是 `.ach-head-count`：
+  // 从 V2.7 起首页的勋章墙换成了 `AchievementHall`（陈列室），旧的
+  // `AchievementSection`（图鉴）只留在 `/achievements` 独立页。类名也跟着
+  // 从 ach-head-count 变成 hall-head-count —— 这里原先沿用的是失效的旧类名，
+  // 导致等待必然超时（与业务无关的假失败）。同类迁移在 achievement-repeat /
+  // achievement-story 里已经做过，本文件与 achievement.spec.ts 是漏改的。
+  await page.locator('.hall-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 /** 删除整库并重载（每个用例从一致的空白库开始） */

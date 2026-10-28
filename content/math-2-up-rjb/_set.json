@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "setId": "math-2-up-rjb-set",
+  "root": "daily-math-2-up-rjb-45d",
+  "title": "二年级数学上（人教版）",
+  "subject": "math",
+  "grade": 2,
+  "term": "up",
+  "edition": "人教版",
+  "importOrder": [
+    "daily-math-2-up-rjb-45d"
+  ],
+  "packages": [
+    {
+      "file": "daily-math-2-up-rjb-45d.json",
+      "packageId": "daily-math-2-up-rjb-45d",
+      "type": "daily",
+      "visible": true,
+      "dependencies": []
+    }
+  ]
+}

@@ -90,15 +90,16 @@ async function seedPackages(page: Page, packages: SeedPkg[]): Promise<void> {
 // =====================================================================
 
 test.describe('A1 · 设置页左菜单', () => {
-  test('8 个分区可点、滚动进视口、菜单高亮跟随', async ({ page }) => {
+  test('9 个分区可点、滚动进视口、菜单高亮跟随', async ({ page }) => {
     await page.goto('/settings')
 
     const nav = page.locator('.settings-nav')
     await expect(nav).toBeVisible()
-    await expect(nav.locator('.nav-item')).toHaveCount(8)
+    // V2.11 起是 9 个：新增「声音与反馈」（音效/震动开关，设备级偏好）
+    await expect(nav.locator('.nav-item')).toHaveCount(9)
 
     // 所有面板都在 DOM 里（不是"只渲染当前 Tab"）
-    await expect(page.locator('.settings-panel')).toHaveCount(8)
+    await expect(page.locator('.settings-panel')).toHaveCount(9)
 
     // 点最后一个分区 → 该面板进入视口，且菜单只有它处于高亮
     await nav.locator('.nav-item', { hasText: '危险操作' }).click()

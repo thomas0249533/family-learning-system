@@ -9,6 +9,8 @@ dist-ssr/
 # Rust / Tauri 构建产物与打包
 src-tauri/target/
 src-tauri/gen/
+# Tauri 签名密钥（含私钥，严禁入库）
+.tauri/
 # 根目录手工打包的 exe（本项目不纳入版本库）
 /*.exe
 # 临时脚本
@@ -44,3 +46,5 @@ playwright-report/
 .pw-ai-out/
 .dist-prev-v*/
 mock-update/
+# 家长原始资料（体积大、非产物，不入库）
+content/资料/

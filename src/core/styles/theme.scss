@@ -40,6 +40,7 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
+  --radius-2xl: 24px;
   --radius-control: 10px;   /* 按钮 / 输入框统一圆角 */
   --radius-full: 999px;
 
@@ -162,6 +163,10 @@
   --shadow-lg: 0 20px 40px rgba(22, 38, 31, 0.12);
   /* 上向阴影：固定底部横条抬升层次（精确搬运自 .app-nav / .quiz-actions）*/
   --shadow-up: 0 -4px 16px rgba(0, 0, 0, 0.06);
+  /* V2.11 · 积木厚度：y 偏移必须与按压位移一致，否则「穿模」 */
+  --shadow-3d: 0 4px 0 rgba(22, 38, 31, 0.20);
+  --shadow-badge: 0 6px 0 rgba(22, 38, 31, 0.16);
+  --progress-gloss: rgba(255, 255, 255, 0.45);
 
   /* 渐变 */
   --gradient-primary: linear-gradient(135deg, #2d6a4f 0%, #4fa57f 100%);
@@ -336,6 +341,9 @@ body.dark-mode {
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.48);
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.56);
   --shadow-up: 0 -4px 16px rgba(0, 0, 0, 0.30);
+  --shadow-3d: 0 4px 0 rgba(0, 0, 0, 0.55);
+  --shadow-badge: 0 6px 0 rgba(0, 0, 0, 0.50);
+  --progress-gloss: rgba(255, 255, 255, 0.28);
 
   --gradient-primary: linear-gradient(135deg, #255c43 0%, #3f8a69 100%);
   --gradient-warm: linear-gradient(135deg, #b45309 0%, #b8453a 100%);

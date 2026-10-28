@@ -635,8 +635,10 @@ describe('A3 · settings 键分片静态扫描', () => {
     // 42 个可解析 + 2 个带豁免 = 44；V1.11 · F1 新增 `ai:config` 的 2 个访问点
     // （`aiConfig.ts` 的 get / put，设备级键，不按 profileId 分片）= 46。
     // V2.8 · C2 新增 `blindBox` 的 2 个访问点（blindBoxKey 的定义 + 默认参调用）= 48。
+    // V2.11 新增 `fls:feedback` 的 2 个访问点（feedbackSettings.ts 的 get / put，
+    // 设备级键）= 50。
     // 改这个数字等于承认"我看过每一个新访问点"。
-    expect(r.points.length).toBe(48)
+    expect(r.points.length).toBe(50)
     expect(r.exempts.length).toBe(2)
   })
 

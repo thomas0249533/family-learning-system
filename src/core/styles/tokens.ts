@@ -196,6 +196,26 @@ export interface ModeNeutrals {
   shadowLg: string
   /** --shadow-up */
   shadowUp: string
+  /**
+   * --shadow-3d · 「积木厚度」硬阴影（V2.11 · 多邻国风）
+   *
+   * 与柔和的 `--shadow-*` 是两套语汇：`--shadow-*` 表达「浮起」，本组表达
+   * 「有厚度的实体」，必须满足 **y 偏移 = 按压位移**，否则按下去会「穿模」。
+   *
+   * 深色主题**不能**沿用浅色的 `rgba(22,38,31,α)`：那个值在深绿/深灰底上
+   * 对比度趋近于 0，积木厚度会整块消失、按钮看着变平。深色改用高不透明度
+   * 纯黑，靠「暗」而非「色差」区分厚度。
+   */
+  shadow3d: string
+  /** --shadow-badge · 勋章卡底板（比 shadow-3d 更厚，嵌入卡槽的观感） */
+  shadowBadge: string
+  /**
+   * --progress-gloss · 进度条顶部内高光
+   *
+   * 白色半透明，故**不能**写在组件里：check-hex 只放行纯黑 rgba 字面量，
+   * `rgba(255,255,255,…)` 会被门禁拦下，必须经本 token。
+   */
+  progressGloss: string
   /** --band-success-bg */
   bandSuccessBg: string
   /** --band-success-border */
@@ -229,6 +249,10 @@ export const NEUTRALS: Record<ThemeMode, ModeNeutrals> = {
     shadowMd: '0 8px 24px rgba(22, 38, 31, 0.10)',
     shadowLg: '0 20px 40px rgba(22, 38, 31, 0.12)',
     shadowUp: '0 -4px 16px rgba(0, 0, 0, 0.06)',
+    // 浅色：4px 硬影，色相取中性墨绿（与 --shadow-* 同族），比纯黑更「软」不脏
+    shadow3d: '0 4px 0 rgba(22, 38, 31, 0.20)',
+    shadowBadge: '0 6px 0 rgba(22, 38, 31, 0.16)',
+    progressGloss: 'rgba(255, 255, 255, 0.45)',
     bandSuccessBg: '#effcf4', bandSuccessBorder: '#c8f0d8',
     bandWarningBg: '#fff9ec', bandWarningBorder: '#ffe4b0',
     bandDangerBg: '#fff0f0', bandDangerBorder: '#ffd4d4',
@@ -245,6 +269,10 @@ export const NEUTRALS: Record<ThemeMode, ModeNeutrals> = {
     shadowMd: '0 8px 24px rgba(0, 0, 0, 0.48)',
     shadowLg: '0 20px 40px rgba(0, 0, 0, 0.56)',
     shadowUp: '0 -4px 16px rgba(0, 0, 0, 0.30)',
+    // 深色：必须更重（0.55）才能被看见；浅色那套 0.20 在深底上等于没有
+    shadow3d: '0 4px 0 rgba(0, 0, 0, 0.55)',
+    shadowBadge: '0 6px 0 rgba(0, 0, 0, 0.50)',
+    progressGloss: 'rgba(255, 255, 255, 0.28)',
     bandSuccessBg: '#14301f', bandSuccessBorder: '#1e4a2f',
     bandWarningBg: '#3a2a12', bandWarningBorder: '#563d13',
     bandDangerBg: '#3a1a1a', bandDangerBorder: '#542222',
@@ -261,7 +289,8 @@ export const ON_STRONG = { color: '#ffffff', rgb: '255, 255, 255' } as const
 
 /** 圆角（不随主题变）。 */
 export const RADIUS = {
-  xs: '6px', sm: '8px', md: '12px', lg: '16px', xl: '20px', control: '10px', full: '999px',
+  xs: '6px', sm: '8px', md: '12px', lg: '16px', xl: '20px', '2xl': '24px',
+  control: '10px', full: '999px',
 } as const
 
 /** 间距（8pt 网格，不随主题变）。 */
@@ -398,6 +427,9 @@ export function buildSemantic(preset: ThemePreset, mode: ThemeMode): SemanticTok
     'shadow-md': n.shadowMd,
     'shadow-lg': n.shadowLg,
     'shadow-up': n.shadowUp,
+    'shadow-3d': n.shadow3d,
+    'shadow-badge': n.shadowBadge,
+    'progress-gloss': n.progressGloss,
 
     'gradient-primary': h.gradientPrimary,
     'gradient-warm': n.gradientWarm,

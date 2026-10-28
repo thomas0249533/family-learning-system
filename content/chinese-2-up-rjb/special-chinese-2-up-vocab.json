@@ -1,0 +1,5294 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "special-chinese-2-up-vocab",
+    "packageType": "special",
+    "type": "special",
+    "isInternal": false,
+    "examMode": false,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 2,
+    "term": "up",
+    "edition": "人教版",
+    "title": "二上语文 · 字词默写专项（8 单元）",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-u1",
+      "type": "word",
+      "title": "第一单元 识字与自然 · 字词积累",
+      "content": "《小蝌蚪找妈妈》《我是什么》《植物妈妈有办法》。本单元重点词语共 46 个，要求看拼音准确写出汉字。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-u2",
+      "type": "word",
+      "title": "第二单元 识字（场景·树之歌·拍手歌） · 字词积累",
+      "content": "《场景歌》《树之歌》《拍手歌》《田家四季歌》。本单元重点词语共 41 个，要求看拼音准确写出汉字。",
+      "prerequisites": [
+        "kp-u1"
+      ]
+    },
+    {
+      "id": "kp-u3",
+      "type": "word",
+      "title": "第三单元 儿童生活 · 字词积累",
+      "content": "《曹冲称象》《玲玲的画》《一封信》《妈妈睡了》。本单元重点词语共 48 个，要求看拼音准确写出汉字。",
+      "prerequisites": [
+        "kp-u2"
+      ]
+    },
+    {
+      "id": "kp-u4",
+      "type": "word",
+      "title": "第四单元 家乡与祖国 · 字词积累",
+      "content": "《古诗二首》《黄山奇石》《日月潭》《葡萄沟》。本单元重点词语共 48 个，要求看拼音准确写出汉字。",
+      "prerequisites": [
+        "kp-u3"
+      ]
+    },
+    {
+      "id": "kp-u5",
+      "type": "word",
+      "title": "第五单元 思维方法 · 字词积累",
+      "content": "《坐井观天》《寒号鸟》《我要的是葫芦》。本单元重点词语共 44 个，要求看拼音准确写出汉字。",
+      "prerequisites": [
+        "kp-u4"
+      ]
+    },
+    {
+      "id": "kp-u6",
+      "type": "word",
+      "title": "第六单元 伟人与革命 · 字词积累",
+      "content": "《八角楼上》《朱德的扁担》《难忘的泼水节》《刘胡兰》。本单元重点词语共 45 个，要求看拼音准确写出汉字。",
+      "prerequisites": [
+        "kp-u5"
+      ]
+    },
+    {
+      "id": "kp-u7",
+      "type": "word",
+      "title": "第七单元 想象与观察 · 字词积累",
+      "content": "《古诗二首》《雾在哪里》《雪孩子》。本单元重点词语共 41 个，要求看拼音准确写出汉字。",
+      "prerequisites": [
+        "kp-u6"
+      ]
+    },
+    {
+      "id": "kp-u8",
+      "type": "word",
+      "title": "第八单元 相处与友谊 · 字词积累",
+      "content": "《狐假虎威》《纸船和风筝》《风娃娃》。本单元重点词语共 42 个，要求看拼音准确写出汉字。",
+      "prerequisites": [
+        "kp-u7"
+      ]
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第 1 单元",
+      "title": "第一单元 识字与自然",
+      "desc": "《小蝌蚪找妈妈》《我是什么》《植物妈妈有办法》（46 词）",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "看拼音写词语",
+          "desc": "46 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u1"
+          ],
+          "modules": [
+            {
+              "id": "m1",
+              "type": "chinese.vocab",
+              "title": "第一单元 识字与自然",
+              "knowledgePointIds": [
+                "kp-u1"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u1-01",
+              "type": "blank",
+              "question": "【看拼音写词语】liǎng tiáo → （　）",
+              "answer": "两条",
+              "explanation": "liǎng tiáo → 两条",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "liǎng tiáo"
+              }
+            },
+            {
+              "id": "cn2-u1-02",
+              "type": "blank",
+              "question": "【看拼音写词语】nǎ lǐ → （　）",
+              "answer": "哪里",
+              "explanation": "nǎ lǐ → 哪里",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nǎ lǐ"
+              }
+            },
+            {
+              "id": "cn2-u1-03",
+              "type": "blank",
+              "question": "【看拼音写词语】nà biān → （　）",
+              "answer": "那边",
+              "explanation": "nà biān → 那边",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nà biān"
+              }
+            },
+            {
+              "id": "cn2-u1-04",
+              "type": "blank",
+              "question": "【看拼音写词语】kuān guǎng → （　）",
+              "answer": "宽广",
+              "explanation": "kuān guǎng → 宽广",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kuān guǎng"
+              }
+            },
+            {
+              "id": "cn2-u1-05",
+              "type": "blank",
+              "question": "【看拼音写词语】hái zi → （　）",
+              "answer": "孩子",
+              "explanation": "hái zi → 孩子",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hái zi"
+              }
+            },
+            {
+              "id": "cn2-u1-06",
+              "type": "blank",
+              "question": "【看拼音写词语】mā ma → （　）",
+              "answer": "妈妈",
+              "explanation": "mā ma → 妈妈",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "mā ma"
+              }
+            },
+            {
+              "id": "cn2-u1-07",
+              "type": "blank",
+              "question": "【看拼音写词语】tā men → （　）",
+              "answer": "他们",
+              "explanation": "tā men → 他们",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tā men"
+              }
+            },
+            {
+              "id": "cn2-u1-08",
+              "type": "blank",
+              "question": "【看拼音写词语】kàn jiàn → （　）",
+              "answer": "看见",
+              "explanation": "kàn jiàn → 看见",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kàn jiàn"
+              }
+            },
+            {
+              "id": "cn2-u1-09",
+              "type": "blank",
+              "question": "【看拼音写词语】wǒ men → （　）",
+              "answer": "我们",
+              "explanation": "wǒ men → 我们",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wǒ men"
+              }
+            },
+            {
+              "id": "cn2-u1-10",
+              "type": "blank",
+              "question": "【看拼音写词语】xuě bái → （　）",
+              "answer": "雪白",
+              "explanation": "xuě bái → 雪白",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xuě bái"
+              }
+            },
+            {
+              "id": "cn2-u1-11",
+              "type": "blank",
+              "question": "【看拼音写词语】guò qù → （　）",
+              "answer": "过去",
+              "explanation": "guò qù → 过去",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "guò qù"
+              }
+            },
+            {
+              "id": "cn2-u1-12",
+              "type": "blank",
+              "question": "【看拼音写词语】shén me → （　）",
+              "answer": "什么",
+              "explanation": "shén me → 什么",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shén me"
+              }
+            },
+            {
+              "id": "cn2-u1-13",
+              "type": "blank",
+              "question": "【看拼音写词语】liǎng gè → （　）",
+              "answer": "两个",
+              "explanation": "liǎng gè → 两个",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "liǎng gè"
+              }
+            },
+            {
+              "id": "cn2-u1-14",
+              "type": "blank",
+              "question": "【看拼音写词语】kuān dà → （　）",
+              "answer": "宽大",
+              "explanation": "kuān dà → 宽大",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kuān dà"
+              }
+            },
+            {
+              "id": "cn2-u1-15",
+              "type": "blank",
+              "question": "【看拼音写词语】duǎn xiǎo → （　）",
+              "answer": "短小",
+              "explanation": "duǎn xiǎo → 短小",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "duǎn xiǎo"
+              }
+            },
+            {
+              "id": "cn2-u1-16",
+              "type": "blank",
+              "question": "【看拼音写词语】chéng zhǎng → （　）",
+              "answer": "成长",
+              "explanation": "chéng zhǎng → 成长",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chéng zhǎng"
+              }
+            },
+            {
+              "id": "cn2-u1-17",
+              "type": "blank",
+              "question": "【看拼音写词语】yì qǐ → （　）",
+              "answer": "一起",
+              "explanation": "yì qǐ → 一起",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yì qǐ"
+              }
+            },
+            {
+              "id": "cn2-u1-18",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎi yáng → （　）",
+              "answer": "海洋",
+              "explanation": "hǎi yáng → 海洋",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎi yáng"
+              }
+            },
+            {
+              "id": "cn2-u1-19",
+              "type": "blank",
+              "question": "【看拼音写词语】xǔ duō → （　）",
+              "answer": "许多",
+              "explanation": "xǔ duō → 许多",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xǔ duō"
+              }
+            },
+            {
+              "id": "cn2-u1-20",
+              "type": "blank",
+              "question": "【看拼音写词语】gōng zuò → （　）",
+              "answer": "工作",
+              "explanation": "gōng zuò → 工作",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gōng zuò"
+              }
+            },
+            {
+              "id": "cn2-u1-21",
+              "type": "blank",
+              "question": "【看拼音写词语】bàn fǎ → （　）",
+              "answer": "办法",
+              "explanation": "bàn fǎ → 办法",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bàn fǎ"
+              }
+            },
+            {
+              "id": "cn2-u1-22",
+              "type": "blank",
+              "question": "【看拼音写词语】tài yáng → （　）",
+              "answer": "太阳",
+              "explanation": "tài yáng → 太阳",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tài yáng"
+              }
+            },
+            {
+              "id": "cn2-u1-23",
+              "type": "blank",
+              "question": "【看拼音写词语】tiān kōng → （　）",
+              "answer": "天空",
+              "explanation": "tiān kōng → 天空",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tiān kōng"
+              }
+            },
+            {
+              "id": "cn2-u1-24",
+              "type": "blank",
+              "question": "【看拼音写词语】dōng tiān → （　）",
+              "answer": "冬天",
+              "explanation": "dōng tiān → 冬天",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dōng tiān"
+              }
+            },
+            {
+              "id": "cn2-u1-25",
+              "type": "blank",
+              "question": "【看拼音写词语】huā duǒ → （　）",
+              "answer": "花朵",
+              "explanation": "huā duǒ → 花朵",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huā duǒ"
+              }
+            },
+            {
+              "id": "cn2-u1-26",
+              "type": "blank",
+              "question": "【看拼音写词语】chí zi → （　）",
+              "answer": "池子",
+              "explanation": "chí zi → 池子",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chí zi"
+              }
+            },
+            {
+              "id": "cn2-u1-27",
+              "type": "blank",
+              "question": "【看拼音写词语】jiāng hé → （　）",
+              "answer": "江河",
+              "explanation": "jiāng hé → 江河",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "jiāng hé"
+              }
+            },
+            {
+              "id": "cn2-u1-28",
+              "type": "blank",
+              "question": "【看拼音写词语】tián dì → （　）",
+              "answer": "田地",
+              "explanation": "tián dì → 田地",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tián dì"
+              }
+            },
+            {
+              "id": "cn2-u1-29",
+              "type": "blank",
+              "question": "【看拼音写词语】nǐ men → （　）",
+              "answer": "你们",
+              "explanation": "nǐ men → 你们",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nǐ men"
+              }
+            },
+            {
+              "id": "cn2-u1-30",
+              "type": "blank",
+              "question": "【看拼音写词语】shàng shēng → （　）",
+              "answer": "上升",
+              "explanation": "shàng shēng → 上升",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shàng shēng"
+              }
+            },
+            {
+              "id": "cn2-u1-31",
+              "type": "blank",
+              "question": "【看拼音写词语】xiāng lián → （　）",
+              "answer": "相连",
+              "explanation": "xiāng lián → 相连",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiāng lián"
+              }
+            },
+            {
+              "id": "cn2-u1-32",
+              "type": "blank",
+              "question": "【看拼音写词语】rú guǒ → （　）",
+              "answer": "如果",
+              "explanation": "rú guǒ → 如果",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "rú guǒ"
+              }
+            },
+            {
+              "id": "cn2-u1-33",
+              "type": "blank",
+              "question": "【看拼音写词语】yǐ jīng → （　）",
+              "answer": "已经",
+              "explanation": "yǐ jīng → 已经",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yǐ jīng"
+              }
+            },
+            {
+              "id": "cn2-u1-34",
+              "type": "blank",
+              "question": "【看拼音写词语】gào bié → （　）",
+              "answer": "告别",
+              "explanation": "gào bié → 告别",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gào bié"
+              }
+            },
+            {
+              "id": "cn2-u1-35",
+              "type": "blank",
+              "question": "【看拼音写词语】chū fā → （　）",
+              "answer": "出发",
+              "explanation": "chū fā → 出发",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chū fā"
+              }
+            },
+            {
+              "id": "cn2-u1-36",
+              "type": "blank",
+              "question": "【看拼音写词语】shuǐ guǒ → （　）",
+              "answer": "水果",
+              "explanation": "shuǐ guǒ → 水果",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shuǐ guǒ"
+              }
+            },
+            {
+              "id": "cn2-u1-37",
+              "type": "blank",
+              "question": "【看拼音写词语】dǎn zi → （　）",
+              "answer": "胆子",
+              "explanation": "dǎn zi → 胆子",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dǎn zi"
+              }
+            },
+            {
+              "id": "cn2-u1-38",
+              "type": "blank",
+              "question": "【看拼音写词语】dù zi → （　）",
+              "answer": "肚子",
+              "explanation": "dù zi → 肚子",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dù zi"
+              }
+            },
+            {
+              "id": "cn2-u1-39",
+              "type": "blank",
+              "question": "【看拼音写词语】nà lǐ → （　）",
+              "answer": "那里",
+              "explanation": "nà lǐ → 那里",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nà lǐ"
+              }
+            },
+            {
+              "id": "cn2-u1-40",
+              "type": "blank",
+              "question": "【看拼音写词语】zhī shi → （　）",
+              "answer": "知识",
+              "explanation": "zhī shi → 知识",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhī shi"
+              }
+            },
+            {
+              "id": "cn2-u1-41",
+              "type": "blank",
+              "question": "【看拼音写词语】zì jǐ → （　）",
+              "answer": "自己",
+              "explanation": "zì jǐ → 自己",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zì jǐ"
+              }
+            },
+            {
+              "id": "cn2-u1-42",
+              "type": "blank",
+              "question": "【看拼音写词语】dòng wù → （　）",
+              "answer": "动物",
+              "explanation": "dòng wù → 动物",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dòng wù"
+              }
+            },
+            {
+              "id": "cn2-u1-43",
+              "type": "blank",
+              "question": "【看拼音写词语】qīng qīng → （　）",
+              "answer": "轻轻",
+              "explanation": "qīng qīng → 轻轻",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qīng qīng"
+              }
+            },
+            {
+              "id": "cn2-u1-44",
+              "type": "blank",
+              "question": "【看拼音写词语】yīn zhuǎn qíng → （　）",
+              "answer": "阴转晴",
+              "explanation": "yīn zhuǎn qíng → 阴转晴",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yīn zhuǎn qíng"
+              }
+            },
+            {
+              "id": "cn2-u1-45",
+              "type": "blank",
+              "question": "【看拼音写词语】yǔ jiā xuě → （　）",
+              "answer": "雨夹雪",
+              "explanation": "yǔ jiā xuě → 雨夹雪",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yǔ jiā xuě"
+              }
+            },
+            {
+              "id": "cn2-u1-46",
+              "type": "blank",
+              "question": "【看拼音写词语】sì hǎi wéi jiā → （　）",
+              "answer": "四海为家",
+              "explanation": "sì hǎi wéi jiā → 四海为家",
+              "knowledgePointIds": [
+                "kp-u1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "sì hǎi wéi jiā"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2",
+      "name": "第 2 单元",
+      "title": "第二单元 识字（场景·树之歌·拍手歌）",
+      "desc": "《场景歌》《树之歌》《拍手歌》《田家四季歌》（41 词）",
+      "topics": [
+        {
+          "id": "t2",
+          "title": "看拼音写词语",
+          "desc": "41 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u2"
+          ],
+          "modules": [
+            {
+              "id": "m2",
+              "type": "chinese.vocab",
+              "title": "第二单元 识字（场景·树之歌·拍手歌）",
+              "knowledgePointIds": [
+                "kp-u2"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u2-01",
+              "type": "blank",
+              "question": "【看拼音写词语】huā yuán → （　）",
+              "answer": "花园",
+              "explanation": "huā yuán → 花园",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huā yuán"
+              }
+            },
+            {
+              "id": "cn2-u2-02",
+              "type": "blank",
+              "question": "【看拼音写词语】rén qún → （　）",
+              "answer": "人群",
+              "explanation": "rén qún → 人群",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "rén qún"
+              }
+            },
+            {
+              "id": "cn2-u2-03",
+              "type": "blank",
+              "question": "【看拼音写词语】fēi niǎo → （　）",
+              "answer": "飞鸟",
+              "explanation": "fēi niǎo → 飞鸟",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "fēi niǎo"
+              }
+            },
+            {
+              "id": "cn2-u2-04",
+              "type": "blank",
+              "question": "【看拼音写词语】zhù chù → （　）",
+              "answer": "住处",
+              "explanation": "zhù chù → 住处",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhù chù"
+              }
+            },
+            {
+              "id": "cn2-u2-05",
+              "type": "blank",
+              "question": "【看拼音写词语】tǔ kuài → （　）",
+              "answer": "土块",
+              "explanation": "tǔ kuài → 土块",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tǔ kuài"
+              }
+            },
+            {
+              "id": "cn2-u2-06",
+              "type": "blank",
+              "question": "【看拼音写词语】xīng zuò → （　）",
+              "answer": "星座",
+              "explanation": "xīng zuò → 星座",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xīng zuò"
+              }
+            },
+            {
+              "id": "cn2-u2-07",
+              "type": "blank",
+              "question": "【看拼音写词语】duì qí → （　）",
+              "answer": "队旗",
+              "explanation": "duì qí → 队旗",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "duì qí"
+              }
+            },
+            {
+              "id": "cn2-u2-08",
+              "type": "blank",
+              "question": "【看拼音写词语】yī lǐng → （　）",
+              "answer": "衣领",
+              "explanation": "yī lǐng → 衣领",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yī lǐng"
+              }
+            },
+            {
+              "id": "cn2-u2-09",
+              "type": "blank",
+              "question": "【看拼音写词语】huān xiào → （　）",
+              "answer": "欢笑",
+              "explanation": "huān xiào → 欢笑",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huān xiào"
+              }
+            },
+            {
+              "id": "cn2-u2-10",
+              "type": "blank",
+              "question": "【看拼音写词语】zhī jiān → （　）",
+              "answer": "之间",
+              "explanation": "zhī jiān → 之间",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhī jiān"
+              }
+            },
+            {
+              "id": "cn2-u2-11",
+              "type": "blank",
+              "question": "【看拼音写词语】yáng shù → （　）",
+              "answer": "杨树",
+              "explanation": "yáng shù → 杨树",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yáng shù"
+              }
+            },
+            {
+              "id": "cn2-u2-12",
+              "type": "blank",
+              "question": "【看拼音写词语】shù yè → （　）",
+              "answer": "树叶",
+              "explanation": "shù yè → 树叶",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shù yè"
+              }
+            },
+            {
+              "id": "cn2-u2-13",
+              "type": "blank",
+              "question": "【看拼音写词语】sōng bǎi → （　）",
+              "answer": "松柏",
+              "explanation": "sōng bǎi → 松柏",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "sōng bǎi"
+              }
+            },
+            {
+              "id": "cn2-u2-14",
+              "type": "blank",
+              "question": "【看拼音写词语】huà shí → （　）",
+              "answer": "化石",
+              "explanation": "huà shí → 化石",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huà shí"
+              }
+            },
+            {
+              "id": "cn2-u2-15",
+              "type": "blank",
+              "question": "【看拼音写词语】jīn guì → （　）",
+              "answer": "金桂",
+              "explanation": "jīn guì → 金桂",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "jīn guì"
+              }
+            },
+            {
+              "id": "cn2-u2-16",
+              "type": "blank",
+              "question": "【看拼音写词语】kāi huā → （　）",
+              "answer": "开花",
+              "explanation": "kāi huā → 开花",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kāi huā"
+              }
+            },
+            {
+              "id": "cn2-u2-17",
+              "type": "blank",
+              "question": "【看拼音写词语】pāi shǒu → （　）",
+              "answer": "拍手",
+              "explanation": "pāi shǒu → 拍手",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "pāi shǒu"
+              }
+            },
+            {
+              "id": "cn2-u2-18",
+              "type": "blank",
+              "question": "【看拼音写词语】shì jiè → （　）",
+              "answer": "世界",
+              "explanation": "shì jiè → 世界",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shì jiè"
+              }
+            },
+            {
+              "id": "cn2-u2-19",
+              "type": "blank",
+              "question": "【看拼音写词语】yún cai → （　）",
+              "answer": "云彩",
+              "explanation": "yún cai → 云彩",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yún cai"
+              }
+            },
+            {
+              "id": "cn2-u2-20",
+              "type": "blank",
+              "question": "【看拼音写词语】cóng lín → （　）",
+              "answer": "丛林",
+              "explanation": "cóng lín → 丛林",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "cóng lín"
+              }
+            },
+            {
+              "id": "cn2-u2-21",
+              "type": "blank",
+              "question": "【看拼音写词语】zhú lín → （　）",
+              "answer": "竹林",
+              "explanation": "zhú lín → 竹林",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhú lín"
+              }
+            },
+            {
+              "id": "cn2-u2-22",
+              "type": "blank",
+              "question": "【看拼音写词语】xiū xi → （　）",
+              "answer": "休息",
+              "explanation": "xiū xi → 休息",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiū xi"
+              }
+            },
+            {
+              "id": "cn2-u2-23",
+              "type": "blank",
+              "question": "【看拼音写词语】péng you → （　）",
+              "answer": "朋友",
+              "explanation": "péng you → 朋友",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "péng you"
+              }
+            },
+            {
+              "id": "cn2-u2-24",
+              "type": "blank",
+              "question": "【看拼音写词语】bǎo hù → （　）",
+              "answer": "保护",
+              "explanation": "bǎo hù → 保护",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bǎo hù"
+              }
+            },
+            {
+              "id": "cn2-u2-25",
+              "type": "blank",
+              "question": "【看拼音写词语】sì jì → （　）",
+              "answer": "四季",
+              "explanation": "sì jì → 四季",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "sì jì"
+              }
+            },
+            {
+              "id": "cn2-u2-26",
+              "type": "blank",
+              "question": "【看拼音写词语】chūn fēng → （　）",
+              "answer": "春风",
+              "explanation": "chūn fēng → 春风",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chūn fēng"
+              }
+            },
+            {
+              "id": "cn2-u2-27",
+              "type": "blank",
+              "question": "【看拼音写词语】féi tián → （　）",
+              "answer": "肥田",
+              "explanation": "féi tián → 肥田",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "féi tián"
+              }
+            },
+            {
+              "id": "cn2-u2-28",
+              "type": "blank",
+              "question": "【看拼音写词语】huà féi → （　）",
+              "answer": "化肥",
+              "explanation": "huà féi → 化肥",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huà féi"
+              }
+            },
+            {
+              "id": "cn2-u2-29",
+              "type": "blank",
+              "question": "【看拼音写词语】nóng shì → （　）",
+              "answer": "农事",
+              "explanation": "nóng shì → 农事",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nóng shì"
+              }
+            },
+            {
+              "id": "cn2-u2-30",
+              "type": "blank",
+              "question": "【看拼音写词语】yuè guāng → （　）",
+              "answer": "月光",
+              "explanation": "yuè guāng → 月光",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yuè guāng"
+              }
+            },
+            {
+              "id": "cn2-u2-31",
+              "type": "blank",
+              "question": "【看拼音写词语】wǔ gǔ → （　）",
+              "answer": "五谷",
+              "explanation": "wǔ gǔ → 五谷",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wǔ gǔ"
+              }
+            },
+            {
+              "id": "cn2-u2-32",
+              "type": "blank",
+              "question": "【看拼音写词语】gǔ yǔ → （　）",
+              "answer": "谷雨",
+              "explanation": "gǔ yǔ → 谷雨",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gǔ yǔ"
+              }
+            },
+            {
+              "id": "cn2-u2-33",
+              "type": "blank",
+              "question": "【看拼音写词语】shēn tǐ → （　）",
+              "answer": "身体",
+              "explanation": "shēn tǐ → 身体",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shēn tǐ"
+              }
+            },
+            {
+              "id": "cn2-u2-34",
+              "type": "blank",
+              "question": "【看拼音写词语】xīn kǔ → （　）",
+              "answer": "辛苦",
+              "explanation": "xīn kǔ → 辛苦",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xīn kǔ"
+              }
+            },
+            {
+              "id": "cn2-u2-35",
+              "type": "blank",
+              "question": "【看拼音写词语】xīn lǐ → （　）",
+              "answer": "心里",
+              "explanation": "xīn lǐ → 心里",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xīn lǐ"
+              }
+            },
+            {
+              "id": "cn2-u2-36",
+              "type": "blank",
+              "question": "【看拼音写词语】nián chū → （　）",
+              "answer": "年初",
+              "explanation": "nián chū → 年初",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nián chū"
+              }
+            },
+            {
+              "id": "cn2-u2-37",
+              "type": "blank",
+              "question": "【看拼音写词语】guò nián → （　）",
+              "answer": "过年",
+              "explanation": "guò nián → 过年",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "guò nián"
+              }
+            },
+            {
+              "id": "cn2-u2-38",
+              "type": "blank",
+              "question": "【看拼音写词语】dà jiā → （　）",
+              "answer": "大家",
+              "explanation": "dà jiā → 大家",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dà jiā"
+              }
+            },
+            {
+              "id": "cn2-u2-39",
+              "type": "blank",
+              "question": "【看拼音写词语】chū chǒu → （　）",
+              "answer": "出丑",
+              "explanation": "chū chǒu → 出丑",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chū chǒu"
+              }
+            },
+            {
+              "id": "cn2-u2-40",
+              "type": "blank",
+              "question": "【看拼音写词语】chéng xīn → （　）",
+              "answer": "诚心",
+              "explanation": "chéng xīn → 诚心",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chéng xīn"
+              }
+            },
+            {
+              "id": "cn2-u2-41",
+              "type": "blank",
+              "question": "【看拼音写词语】hóng lǐng jīn → （　）",
+              "answer": "红领巾",
+              "explanation": "hóng lǐng jīn → 红领巾",
+              "knowledgePointIds": [
+                "kp-u2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hóng lǐng jīn"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u3",
+      "name": "第 3 单元",
+      "title": "第三单元 儿童生活",
+      "desc": "《曹冲称象》《玲玲的画》《一封信》《妈妈睡了》（48 词）",
+      "topics": [
+        {
+          "id": "t3",
+          "title": "看拼音写词语",
+          "desc": "48 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u3"
+          ],
+          "modules": [
+            {
+              "id": "m3",
+              "type": "chinese.vocab",
+              "title": "第三单元 儿童生活",
+              "knowledgePointIds": [
+                "kp-u3"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u3-01",
+              "type": "blank",
+              "question": "【看拼音写词语】tiān shàng → （　）",
+              "answer": "天上",
+              "explanation": "tiān shàng → 天上",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tiān shàng"
+              }
+            },
+            {
+              "id": "cn2-u3-02",
+              "type": "blank",
+              "question": "【看拼音写词语】měi lì → （　）",
+              "answer": "美丽",
+              "explanation": "měi lì → 美丽",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "měi lì"
+              }
+            },
+            {
+              "id": "cn2-u3-03",
+              "type": "blank",
+              "question": "【看拼音写词语】bà ba → （　）",
+              "answer": "爸爸",
+              "explanation": "bà ba → 爸爸",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bà ba"
+              }
+            },
+            {
+              "id": "cn2-u3-04",
+              "type": "blank",
+              "question": "【看拼音写词语】tí shēng → （　）",
+              "answer": "提升",
+              "explanation": "tí shēng → 提升",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tí shēng"
+              }
+            },
+            {
+              "id": "cn2-u3-05",
+              "type": "blank",
+              "question": "【看拼音写词语】xià lái → （　）",
+              "answer": "下来",
+              "explanation": "xià lái → 下来",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xià lái"
+              }
+            },
+            {
+              "id": "cn2-u3-06",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎo ma → （　）",
+              "answer": "好吗",
+              "explanation": "hǎo ma → 好吗",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎo ma"
+              }
+            },
+            {
+              "id": "cn2-u3-07",
+              "type": "blank",
+              "question": "【看拼音写词语】bú yòng → （　）",
+              "answer": "不用",
+              "explanation": "bú yòng → 不用",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bú yòng"
+              }
+            },
+            {
+              "id": "cn2-u3-08",
+              "type": "blank",
+              "question": "【看拼音写词语】gāo xìng → （　）",
+              "answer": "高兴",
+              "explanation": "gāo xìng → 高兴",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gāo xìng"
+              }
+            },
+            {
+              "id": "cn2-u3-09",
+              "type": "blank",
+              "question": "【看拼音写词语】bàn yuán → （　）",
+              "answer": "半圆",
+              "explanation": "bàn yuán → 半圆",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bàn yuán"
+              }
+            },
+            {
+              "id": "cn2-u3-10",
+              "type": "blank",
+              "question": "【看拼音写词语】gē ge → （　）",
+              "answer": "哥哥",
+              "explanation": "gē ge → 哥哥",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gē ge"
+              }
+            },
+            {
+              "id": "cn2-u3-11",
+              "type": "blank",
+              "question": "【看拼音写词语】qiū qiān → （　）",
+              "answer": "秋千",
+              "explanation": "qiū qiān → 秋千",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qiū qiān"
+              }
+            },
+            {
+              "id": "cn2-u3-12",
+              "type": "blank",
+              "question": "【看拼音写词语】guà miàn → （　）",
+              "answer": "挂面",
+              "explanation": "guà miàn → 挂面",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "guà miàn"
+              }
+            },
+            {
+              "id": "cn2-u3-13",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎo a → （　）",
+              "answer": "好啊",
+              "explanation": "hǎo a → 好啊",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎo a"
+              }
+            },
+            {
+              "id": "cn2-u3-14",
+              "type": "blank",
+              "question": "【看拼音写词语】cǎi yún → （　）",
+              "answer": "彩云",
+              "explanation": "cǎi yún → 彩云",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "cǎi yún"
+              }
+            },
+            {
+              "id": "cn2-u3-15",
+              "type": "blank",
+              "question": "【看拼音写词语】bǎo bèi → （　）",
+              "answer": "宝贝",
+              "explanation": "bǎo bèi → 宝贝",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bǎo bèi"
+              }
+            },
+            {
+              "id": "cn2-u3-16",
+              "type": "blank",
+              "question": "【看拼音写词语】wán lè → （　）",
+              "answer": "玩乐",
+              "explanation": "wán lè → 玩乐",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wán lè"
+              }
+            },
+            {
+              "id": "cn2-u3-17",
+              "type": "blank",
+              "question": "【看拼音写词语】gàn huó → （　）",
+              "answer": "干活",
+              "explanation": "gàn huó → 干活",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gàn huó"
+              }
+            },
+            {
+              "id": "cn2-u3-18",
+              "type": "blank",
+              "question": "【看拼音写词语】huí lái → （　）",
+              "answer": "回来",
+              "explanation": "huí lái → 回来",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huí lái"
+              }
+            },
+            {
+              "id": "cn2-u3-19",
+              "type": "blank",
+              "question": "【看拼音写词语】yì xiē → （　）",
+              "answer": "一些",
+              "explanation": "yì xiē → 一些",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yì xiē"
+              }
+            },
+            {
+              "id": "cn2-u3-20",
+              "type": "blank",
+              "question": "【看拼音写词语】zǒng zhī → （　）",
+              "answer": "总之",
+              "explanation": "zǒng zhī → 总之",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zǒng zhī"
+              }
+            },
+            {
+              "id": "cn2-u3-21",
+              "type": "blank",
+              "question": "【看拼音写词语】fēn gěi → （　）",
+              "answer": "分给",
+              "explanation": "fēn gěi → 分给",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "fēn gěi"
+              }
+            },
+            {
+              "id": "cn2-u3-22",
+              "type": "blank",
+              "question": "【看拼音写词语】tiān qì → （　）",
+              "answer": "天气",
+              "explanation": "tiān qì → 天气",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tiān qì"
+              }
+            },
+            {
+              "id": "cn2-u3-23",
+              "type": "blank",
+              "question": "【看拼音写词语】huān kuài → （　）",
+              "answer": "欢快",
+              "explanation": "huān kuài → 欢快",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huān kuài"
+              }
+            },
+            {
+              "id": "cn2-u3-24",
+              "type": "blank",
+              "question": "【看拼音写词语】gào su → （　）",
+              "answer": "告诉",
+              "explanation": "gào su → 告诉",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gào su"
+              }
+            },
+            {
+              "id": "cn2-u3-25",
+              "type": "blank",
+              "question": "【看拼音写词语】xiǎo qū → （　）",
+              "answer": "小区",
+              "explanation": "xiǎo qū → 小区",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiǎo qū"
+              }
+            },
+            {
+              "id": "cn2-u3-26",
+              "type": "blank",
+              "question": "【看拼音写词语】míng zi → （　）",
+              "answer": "名字",
+              "explanation": "míng zi → 名字",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "míng zi"
+              }
+            },
+            {
+              "id": "cn2-u3-27",
+              "type": "blank",
+              "question": "【看拼音写词语】chū mén → （　）",
+              "answer": "出门",
+              "explanation": "chū mén → 出门",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chū mén"
+              }
+            },
+            {
+              "id": "cn2-u3-28",
+              "type": "blank",
+              "question": "【看拼音写词语】xiāng qi → （　）",
+              "answer": "香气",
+              "explanation": "xiāng qi → 香气",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiāng qi"
+              }
+            },
+            {
+              "id": "cn2-u3-29",
+              "type": "blank",
+              "question": "【看拼音写词语】xīng xing → （　）",
+              "answer": "星星",
+              "explanation": "xīng xing → 星星",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xīng xing"
+              }
+            },
+            {
+              "id": "cn2-u3-30",
+              "type": "blank",
+              "question": "【看拼音写词语】wǎn shang → （　）",
+              "answer": "晚上",
+              "explanation": "wǎn shang → 晚上",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wǎn shang"
+              }
+            },
+            {
+              "id": "cn2-u3-31",
+              "type": "blank",
+              "question": "【看拼音写词语】wú shù → （　）",
+              "answer": "无数",
+              "explanation": "wú shù → 无数",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wú shù"
+              }
+            },
+            {
+              "id": "cn2-u3-32",
+              "type": "blank",
+              "question": "【看拼音写词语】nǎi nai → （　）",
+              "answer": "奶奶",
+              "explanation": "nǎi nai → 奶奶",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nǎi nai"
+              }
+            },
+            {
+              "id": "cn2-u3-33",
+              "type": "blank",
+              "question": "【看拼音写词语】nín hǎo → （　）",
+              "answer": "您好",
+              "explanation": "nín hǎo → 您好",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nín hǎo"
+              }
+            },
+            {
+              "id": "cn2-u3-34",
+              "type": "blank",
+              "question": "【看拼音写词语】zhōng jiān → （　）",
+              "answer": "中间",
+              "explanation": "zhōng jiān → 中间",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhōng jiān"
+              }
+            },
+            {
+              "id": "cn2-u3-35",
+              "type": "blank",
+              "question": "【看拼音写词语】zǒng shì → （　）",
+              "answer": "总是",
+              "explanation": "zǒng shì → 总是",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zǒng shì"
+              }
+            },
+            {
+              "id": "cn2-u3-36",
+              "type": "blank",
+              "question": "【看拼音写词语】yé ye → （　）",
+              "answer": "爷爷",
+              "explanation": "yé ye → 爷爷",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yé ye"
+              }
+            },
+            {
+              "id": "cn2-u3-37",
+              "type": "blank",
+              "question": "【看拼音写词语】hěn hǎo → （　）",
+              "answer": "很好",
+              "explanation": "hěn hǎo → 很好",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hěn hǎo"
+              }
+            },
+            {
+              "id": "cn2-u3-38",
+              "type": "blank",
+              "question": "【看拼音写词语】běi biān → （　）",
+              "answer": "北边",
+              "explanation": "běi biān → 北边",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "běi biān"
+              }
+            },
+            {
+              "id": "cn2-u3-39",
+              "type": "blank",
+              "question": "【看拼音写词语】biàn huà → （　）",
+              "answer": "变化",
+              "explanation": "biàn huà → 变化",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "biàn huà"
+              }
+            },
+            {
+              "id": "cn2-u3-40",
+              "type": "blank",
+              "question": "【看拼音写词语】sháo zi → （　）",
+              "answer": "勺子",
+              "explanation": "sháo zi → 勺子",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "sháo zi"
+              }
+            },
+            {
+              "id": "cn2-u3-41",
+              "type": "blank",
+              "question": "【看拼音写词语】zhuǎn dòng → （　）",
+              "answer": "转动",
+              "explanation": "zhuǎn dòng → 转动",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhuǎn dòng"
+              }
+            },
+            {
+              "id": "cn2-u3-42",
+              "type": "blank",
+              "question": "【看拼音写词语】zhè ge → （　）",
+              "answer": "这个",
+              "explanation": "zhè ge → 这个",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhè ge"
+              }
+            },
+            {
+              "id": "cn2-u3-43",
+              "type": "blank",
+              "question": "【看拼音写词语】zhāng kāi → （　）",
+              "answer": "张开",
+              "explanation": "zhāng kāi → 张开",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhāng kāi"
+              }
+            },
+            {
+              "id": "cn2-u3-44",
+              "type": "blank",
+              "question": "【看拼音写词语】hòu lái → （　）",
+              "answer": "后来",
+              "explanation": "hòu lái → 后来",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hòu lái"
+              }
+            },
+            {
+              "id": "cn2-u3-45",
+              "type": "blank",
+              "question": "【看拼音写词语】hàn zì → （　）",
+              "answer": "汉字",
+              "explanation": "hàn zì → 汉字",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hàn zì"
+              }
+            },
+            {
+              "id": "cn2-u3-46",
+              "type": "blank",
+              "question": "【看拼音写词语】tú huà → （　）",
+              "answer": "图画",
+              "explanation": "tú huà → 图画",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tú huà"
+              }
+            },
+            {
+              "id": "cn2-u3-47",
+              "type": "blank",
+              "question": "【看拼音写词语】ní tǔ → （　）",
+              "answer": "泥土",
+              "explanation": "ní tǔ → 泥土",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "ní tǔ"
+              }
+            },
+            {
+              "id": "cn2-u3-48",
+              "type": "blank",
+              "question": "【看拼音写词语】tiě huán → （　）",
+              "answer": "铁环",
+              "explanation": "tiě huán → 铁环",
+              "knowledgePointIds": [
+                "kp-u3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tiě huán"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u4",
+      "name": "第 4 单元",
+      "title": "第四单元 家乡与祖国",
+      "desc": "《古诗二首》《黄山奇石》《日月潭》《葡萄沟》（48 词）",
+      "topics": [
+        {
+          "id": "t4",
+          "title": "看拼音写词语",
+          "desc": "48 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u4"
+          ],
+          "modules": [
+            {
+              "id": "m4",
+              "type": "chinese.vocab",
+              "title": "第四单元 家乡与祖国",
+              "knowledgePointIds": [
+                "kp-u4"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u4-01",
+              "type": "blank",
+              "question": "【看拼音写词语】yī cóng → （　）",
+              "answer": "一丛",
+              "explanation": "yī cóng → 一丛",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yī cóng"
+              }
+            },
+            {
+              "id": "cn2-u4-02",
+              "type": "blank",
+              "question": "【看拼音写词语】qióng jìn → （　）",
+              "answer": "穷尽",
+              "explanation": "qióng jìn → 穷尽",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qióng jìn"
+              }
+            },
+            {
+              "id": "cn2-u4-03",
+              "type": "blank",
+              "question": "【看拼音写词语】yún céng → （　）",
+              "answer": "云层",
+              "explanation": "yún céng → 云层",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yún céng"
+              }
+            },
+            {
+              "id": "cn2-u4-04",
+              "type": "blank",
+              "question": "【看拼音写词语】rì zhào → （　）",
+              "answer": "日照",
+              "explanation": "rì zhào → 日照",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "rì zhào"
+              }
+            },
+            {
+              "id": "cn2-u4-05",
+              "type": "blank",
+              "question": "【看拼音写词语】xiāng lú → （　）",
+              "answer": "香炉",
+              "explanation": "xiāng lú → 香炉",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiāng lú"
+              }
+            },
+            {
+              "id": "cn2-u4-06",
+              "type": "blank",
+              "question": "【看拼音写词语】yān huǒ → （　）",
+              "answer": "烟火",
+              "explanation": "yān huǒ → 烟火",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yān huǒ"
+              }
+            },
+            {
+              "id": "cn2-u4-07",
+              "type": "blank",
+              "question": "【看拼音写词语】shān chuān → （　）",
+              "answer": "山川",
+              "explanation": "shān chuān → 山川",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shān chuān"
+              }
+            },
+            {
+              "id": "cn2-u4-08",
+              "type": "blank",
+              "question": "【看拼音写词语】zhí chǐ → （　）",
+              "answer": "直尺",
+              "explanation": "zhí chǐ → 直尺",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhí chǐ"
+              }
+            },
+            {
+              "id": "cn2-u4-09",
+              "type": "blank",
+              "question": "【看拼音写词语】yín hé → （　）",
+              "answer": "银河",
+              "explanation": "yín hé → 银河",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yín hé"
+              }
+            },
+            {
+              "id": "cn2-u4-10",
+              "type": "blank",
+              "question": "【看拼音写词语】nà xiē → （　）",
+              "answer": "那些",
+              "explanation": "nà xiē → 那些",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nà xiē"
+              }
+            },
+            {
+              "id": "cn2-u4-11",
+              "type": "blank",
+              "question": "【看拼音写词语】shān dǐng → （　）",
+              "answer": "山顶",
+              "explanation": "shān dǐng → 山顶",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shān dǐng"
+              }
+            },
+            {
+              "id": "cn2-u4-12",
+              "type": "blank",
+              "question": "【看拼音写词语】shān tóu → （　）",
+              "answer": "山头",
+              "explanation": "shān tóu → 山头",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shān tóu"
+              }
+            },
+            {
+              "id": "cn2-u4-13",
+              "type": "blank",
+              "question": "【看拼音写词语】yún hǎi → （　）",
+              "answer": "云海",
+              "explanation": "yún hǎi → 云海",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yún hǎi"
+              }
+            },
+            {
+              "id": "cn2-u4-14",
+              "type": "blank",
+              "question": "【看拼音写词语】jù shí → （　）",
+              "answer": "巨石",
+              "explanation": "jù shí → 巨石",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "jù shí"
+              }
+            },
+            {
+              "id": "cn2-u4-15",
+              "type": "blank",
+              "question": "【看拼音写词语】fāng wèi → （　）",
+              "answer": "方位",
+              "explanation": "fāng wèi → 方位",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "fāng wèi"
+              }
+            },
+            {
+              "id": "cn2-u4-16",
+              "type": "blank",
+              "question": "【看拼音写词语】xiān rén → （　）",
+              "answer": "仙人",
+              "explanation": "xiān rén → 仙人",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiān rén"
+              }
+            },
+            {
+              "id": "cn2-u4-17",
+              "type": "blank",
+              "question": "【看拼音写词语】qián fāng → （　）",
+              "answer": "前方",
+              "explanation": "qián fāng → 前方",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qián fāng"
+              }
+            },
+            {
+              "id": "cn2-u4-18",
+              "type": "blank",
+              "question": "【看拼音写词语】xiān nǚ → （　）",
+              "answer": "仙女",
+              "explanation": "xiān nǚ → 仙女",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiān nǚ"
+              }
+            },
+            {
+              "id": "cn2-u4-19",
+              "type": "blank",
+              "question": "【看拼音写词语】shǎn diàn → （　）",
+              "answer": "闪电",
+              "explanation": "shǎn diàn → 闪电",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shǎn diàn"
+              }
+            },
+            {
+              "id": "cn2-u4-20",
+              "type": "blank",
+              "question": "【看拼音写词语】tiān gǒu → （　）",
+              "answer": "天狗",
+              "explanation": "tiān gǒu → 天狗",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tiān gǒu"
+              }
+            },
+            {
+              "id": "cn2-u4-21",
+              "type": "blank",
+              "question": "【看拼音写词语】xíng zhuàng → （　）",
+              "answer": "形状",
+              "explanation": "xíng zhuàng → 形状",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xíng zhuàng"
+              }
+            },
+            {
+              "id": "cn2-u4-22",
+              "type": "blank",
+              "question": "【看拼音写词语】hú shuǐ → （　）",
+              "answer": "湖水",
+              "explanation": "hú shuǐ → 湖水",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hú shuǐ"
+              }
+            },
+            {
+              "id": "cn2-u4-23",
+              "type": "blank",
+              "question": "【看拼音写词语】shān qū → （　）",
+              "answer": "山区",
+              "explanation": "shān qū → 山区",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shān qū"
+              }
+            },
+            {
+              "id": "cn2-u4-24",
+              "type": "blank",
+              "question": "【看拼音写词语】qún shān → （　）",
+              "answer": "群山",
+              "explanation": "qún shān → 群山",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qún shān"
+              }
+            },
+            {
+              "id": "cn2-u4-25",
+              "type": "blank",
+              "question": "【看拼音写词语】shù mù → （　）",
+              "answer": "树木",
+              "explanation": "shù mù → 树木",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shù mù"
+              }
+            },
+            {
+              "id": "cn2-u4-26",
+              "type": "blank",
+              "question": "【看拼音写词语】míng shèng → （　）",
+              "answer": "名胜",
+              "explanation": "míng shèng → 名胜",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "míng shèng"
+              }
+            },
+            {
+              "id": "cn2-u4-27",
+              "type": "blank",
+              "question": "【看拼音写词语】xiǎo dǎo → （　）",
+              "answer": "小岛",
+              "explanation": "xiǎo dǎo → 小岛",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiǎo dǎo"
+              }
+            },
+            {
+              "id": "cn2-u4-28",
+              "type": "blank",
+              "question": "【看拼音写词语】zhuǎn wān → （　）",
+              "answer": "转弯",
+              "explanation": "zhuǎn wān → 转弯",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhuǎn wān"
+              }
+            },
+            {
+              "id": "cn2-u4-29",
+              "type": "blank",
+              "question": "【看拼音写词语】dēng guāng → （　）",
+              "answer": "灯光",
+              "explanation": "dēng guāng → 灯光",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dēng guāng"
+              }
+            },
+            {
+              "id": "cn2-u4-30",
+              "type": "blank",
+              "question": "【看拼音写词语】zhōng wǔ → （　）",
+              "answer": "中午",
+              "explanation": "zhōng wǔ → 中午",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhōng wǔ"
+              }
+            },
+            {
+              "id": "cn2-u4-31",
+              "type": "blank",
+              "question": "【看拼音写词语】chū xiàn → （　）",
+              "answer": "出现",
+              "explanation": "chū xiàn → 出现",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chū xiàn"
+              }
+            },
+            {
+              "id": "cn2-u4-32",
+              "type": "blank",
+              "question": "【看拼音写词语】yǎn qián → （　）",
+              "answer": "眼前",
+              "explanation": "yǎn qián → 眼前",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yǎn qián"
+              }
+            },
+            {
+              "id": "cn2-u4-33",
+              "type": "blank",
+              "question": "【看拼音写词语】xì yǔ → （　）",
+              "answer": "细雨",
+              "explanation": "xì yǔ → 细雨",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xì yǔ"
+              }
+            },
+            {
+              "id": "cn2-u4-34",
+              "type": "blank",
+              "question": "【看拼音写词语】chéng jiù → （　）",
+              "answer": "成就",
+              "explanation": "chéng jiù → 成就",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chéng jiù"
+              }
+            },
+            {
+              "id": "cn2-u4-35",
+              "type": "blank",
+              "question": "【看拼音写词语】fēng guāng → （　）",
+              "answer": "风光",
+              "explanation": "fēng guāng → 风光",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "fēng guāng"
+              }
+            },
+            {
+              "id": "cn2-u4-36",
+              "type": "blank",
+              "question": "【看拼音写词语】zhōng wài → （　）",
+              "answer": "中外",
+              "explanation": "zhōng wài → 中外",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhōng wài"
+              }
+            },
+            {
+              "id": "cn2-u4-37",
+              "type": "blank",
+              "question": "【看拼音写词语】dì fang → （　）",
+              "answer": "地方",
+              "explanation": "dì fang → 地方",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dì fang"
+              }
+            },
+            {
+              "id": "cn2-u4-38",
+              "type": "blank",
+              "question": "【看拼音写词语】yuè fèn → （　）",
+              "answer": "月份",
+              "explanation": "yuè fèn → 月份",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yuè fèn"
+              }
+            },
+            {
+              "id": "cn2-u4-39",
+              "type": "blank",
+              "question": "【看拼音写词语】zhī yè → （　）",
+              "answer": "枝叶",
+              "explanation": "zhī yè → 枝叶",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhī yè"
+              }
+            },
+            {
+              "id": "cn2-u4-40",
+              "type": "blank",
+              "question": "【看拼音写词语】hào kè → （　）",
+              "answer": "好客",
+              "explanation": "hào kè → 好客",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hào kè"
+              }
+            },
+            {
+              "id": "cn2-u4-41",
+              "type": "blank",
+              "question": "【看拼音写词语】lǎo xiāng → （　）",
+              "answer": "老乡",
+              "explanation": "lǎo xiāng → 老乡",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "lǎo xiāng"
+              }
+            },
+            {
+              "id": "cn2-u4-42",
+              "type": "blank",
+              "question": "【看拼音写词语】chéng shì → （　）",
+              "answer": "城市",
+              "explanation": "chéng shì → 城市",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chéng shì"
+              }
+            },
+            {
+              "id": "cn2-u4-43",
+              "type": "blank",
+              "question": "【看拼音写词语】xiǎo kǒng → （　）",
+              "answer": "小孔",
+              "explanation": "xiǎo kǒng → 小孔",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiǎo kǒng"
+              }
+            },
+            {
+              "id": "cn2-u4-44",
+              "type": "blank",
+              "question": "【看拼音写词语】kōng qì → （　）",
+              "answer": "空气",
+              "explanation": "kōng qì → 空气",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kōng qì"
+              }
+            },
+            {
+              "id": "cn2-u4-45",
+              "type": "blank",
+              "question": "【看拼音写词语】shuǐ fèn → （　）",
+              "answer": "水分",
+              "explanation": "shuǐ fèn → 水分",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shuǐ fèn"
+              }
+            },
+            {
+              "id": "cn2-u4-46",
+              "type": "blank",
+              "question": "【看拼音写词语】zhè lǐ → （　）",
+              "answer": "这里",
+              "explanation": "zhè lǐ → 这里",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhè lǐ"
+              }
+            },
+            {
+              "id": "cn2-u4-47",
+              "type": "blank",
+              "question": "【看拼音写词语】wèi dào → （　）",
+              "answer": "味道",
+              "explanation": "wèi dào → 味道",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wèi dào"
+              }
+            },
+            {
+              "id": "cn2-u4-48",
+              "type": "blank",
+              "question": "【看拼音写词语】yǒu míng → （　）",
+              "answer": "有名",
+              "explanation": "yǒu míng → 有名",
+              "knowledgePointIds": [
+                "kp-u4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yǒu míng"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u5",
+      "name": "第 5 单元",
+      "title": "第五单元 思维方法",
+      "desc": "《坐井观天》《寒号鸟》《我要的是葫芦》（44 词）",
+      "topics": [
+        {
+          "id": "t5",
+          "title": "看拼音写词语",
+          "desc": "44 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u5"
+          ],
+          "modules": [
+            {
+              "id": "m5",
+              "type": "chinese.vocab",
+              "title": "第五单元 思维方法",
+              "knowledgePointIds": [
+                "kp-u5"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u5-01",
+              "type": "blank",
+              "question": "【看拼音写词语】nǎ lǐ → （　）",
+              "answer": "哪里",
+              "explanation": "nǎ lǐ → 哪里",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nǎ lǐ"
+              }
+            },
+            {
+              "id": "cn2-u5-02",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎo ya → （　）",
+              "answer": "好呀",
+              "explanation": "hǎo ya → 好呀",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎo ya"
+              }
+            },
+            {
+              "id": "cn2-u5-03",
+              "type": "blank",
+              "question": "【看拼音写词语】huí dá → （　）",
+              "answer": "回答",
+              "explanation": "huí dá → 回答",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huí dá"
+              }
+            },
+            {
+              "id": "cn2-u5-04",
+              "type": "blank",
+              "question": "【看拼音写词语】dà huà → （　）",
+              "answer": "大话",
+              "explanation": "dà huà → 大话",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dà huà"
+              }
+            },
+            {
+              "id": "cn2-u5-05",
+              "type": "blank",
+              "question": "【看拼音写词语】bú guò → （　）",
+              "answer": "不过",
+              "explanation": "bú guò → 不过",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bú guò"
+              }
+            },
+            {
+              "id": "cn2-u5-06",
+              "type": "blank",
+              "question": "【看拼音写词语】nà me → （　）",
+              "answer": "那么",
+              "explanation": "nà me → 那么",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nà me"
+              }
+            },
+            {
+              "id": "cn2-u5-07",
+              "type": "blank",
+              "question": "【看拼音写词语】tái tóu → （　）",
+              "answer": "抬头",
+              "explanation": "tái tóu → 抬头",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tái tóu"
+              }
+            },
+            {
+              "id": "cn2-u5-08",
+              "type": "blank",
+              "question": "【看拼音写词语】néng lì → （　）",
+              "answer": "能力",
+              "explanation": "néng lì → 能力",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "néng lì"
+              }
+            },
+            {
+              "id": "cn2-u5-09",
+              "type": "blank",
+              "question": "【看拼音写词语】shū xìn → （　）",
+              "answer": "书信",
+              "explanation": "shū xìn → 书信",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shū xìn"
+              }
+            },
+            {
+              "id": "cn2-u5-10",
+              "type": "blank",
+              "question": "【看拼音写词语】dàng zuò → （　）",
+              "answer": "当作",
+              "explanation": "dàng zuò → 当作",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dàng zuò"
+              }
+            },
+            {
+              "id": "cn2-u5-11",
+              "type": "blank",
+              "question": "【看拼音写词语】qián miàn → （　）",
+              "answer": "前面",
+              "explanation": "qián miàn → 前面",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qián miàn"
+              }
+            },
+            {
+              "id": "cn2-u5-12",
+              "type": "blank",
+              "question": "【看拼音写词语】shàng zhèn → （　）",
+              "answer": "上阵",
+              "explanation": "shàng zhèn → 上阵",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shàng zhèn"
+              }
+            },
+            {
+              "id": "cn2-u5-13",
+              "type": "blank",
+              "question": "【看拼音写词语】chū qù → （　）",
+              "answer": "出去",
+              "explanation": "chū qù → 出去",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chū qù"
+              }
+            },
+            {
+              "id": "cn2-u5-14",
+              "type": "blank",
+              "question": "【看拼音写词语】guò dōng → （　）",
+              "answer": "过冬",
+              "explanation": "guò dōng → 过冬",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "guò dōng"
+              }
+            },
+            {
+              "id": "cn2-u5-15",
+              "type": "blank",
+              "question": "【看拼音写词语】zhī dào → （　）",
+              "answer": "知道",
+              "explanation": "zhī dào → 知道",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhī dào"
+              }
+            },
+            {
+              "id": "cn2-u5-16",
+              "type": "blank",
+              "question": "【看拼音写词语】gǎn kuài → （　）",
+              "answer": "赶快",
+              "explanation": "gǎn kuài → 赶快",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gǎn kuài"
+              }
+            },
+            {
+              "id": "cn2-u5-17",
+              "type": "blank",
+              "question": "【看拼音写词语】zuò shì → （　）",
+              "answer": "做事",
+              "explanation": "zuò shì → 做事",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zuò shì"
+              }
+            },
+            {
+              "id": "cn2-u5-18",
+              "type": "blank",
+              "question": "【看拼音写词语】zhèng hǎo → （　）",
+              "answer": "正好",
+              "explanation": "zhèng hǎo → 正好",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhèng hǎo"
+              }
+            },
+            {
+              "id": "cn2-u5-19",
+              "type": "blank",
+              "question": "【看拼音写词语】bīng dòng → （　）",
+              "answer": "冰冻",
+              "explanation": "bīng dòng → 冰冻",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bīng dòng"
+              }
+            },
+            {
+              "id": "cn2-u5-20",
+              "type": "blank",
+              "question": "【看拼音写词语】míng tiān → （　）",
+              "answer": "明天",
+              "explanation": "míng tiān → 明天",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "míng tiān"
+              }
+            },
+            {
+              "id": "cn2-u5-21",
+              "type": "blank",
+              "question": "【看拼音写词语】qīng zǎo → （　）",
+              "answer": "清早",
+              "explanation": "qīng zǎo → 清早",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qīng zǎo"
+              }
+            },
+            {
+              "id": "cn2-u5-22",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎo xiàng → （　）",
+              "answer": "好像",
+              "explanation": "hǎo xiàng → 好像",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎo xiàng"
+              }
+            },
+            {
+              "id": "cn2-u5-23",
+              "type": "blank",
+              "question": "【看拼音写词语】yí yàng → （　）",
+              "answer": "一样",
+              "explanation": "yí yàng → 一样",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yí yàng"
+              }
+            },
+            {
+              "id": "cn2-u5-24",
+              "type": "blank",
+              "question": "【看拼音写词语】bīng lěng → （　）",
+              "answer": "冰冷",
+              "explanation": "bīng lěng → 冰冷",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bīng lěng"
+              }
+            },
+            {
+              "id": "cn2-u5-25",
+              "type": "blank",
+              "question": "【看拼音写词语】tiān liàng → （　）",
+              "answer": "天亮",
+              "explanation": "tiān liàng → 天亮",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tiān liàng"
+              }
+            },
+            {
+              "id": "cn2-u5-26",
+              "type": "blank",
+              "question": "【看拼音写词语】chū lái → （　）",
+              "answer": "出来",
+              "explanation": "chū lái → 出来",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chū lái"
+              }
+            },
+            {
+              "id": "cn2-u5-27",
+              "type": "blank",
+              "question": "【看拼音写词语】cóng qián → （　）",
+              "answer": "从前",
+              "explanation": "cóng qián → 从前",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "cóng qián"
+              }
+            },
+            {
+              "id": "cn2-u5-28",
+              "type": "blank",
+              "question": "【看拼音写词语】zhòng tián → （　）",
+              "answer": "种田",
+              "explanation": "zhòng tián → 种田",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhòng tián"
+              }
+            },
+            {
+              "id": "cn2-u5-29",
+              "type": "blank",
+              "question": "【看拼音写词语】yǐ hòu → （　）",
+              "answer": "以后",
+              "explanation": "yǐ hòu → 以后",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yǐ hòu"
+              }
+            },
+            {
+              "id": "cn2-u5-30",
+              "type": "blank",
+              "question": "【看拼音写词语】duō me → （　）",
+              "answer": "多么",
+              "explanation": "duō me → 多么",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "duō me"
+              }
+            },
+            {
+              "id": "cn2-u5-31",
+              "type": "blank",
+              "question": "【看拼音写词语】nà ge → （　）",
+              "answer": "那个",
+              "explanation": "nà ge → 那个",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nà ge"
+              }
+            },
+            {
+              "id": "cn2-u5-32",
+              "type": "blank",
+              "question": "【看拼音写词语】yè zi → （　）",
+              "answer": "叶子",
+              "explanation": "yè zi → 叶子",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yè zi"
+              }
+            },
+            {
+              "id": "cn2-u5-33",
+              "type": "blank",
+              "question": "【看拼音写词语】xīn xiǎng → （　）",
+              "answer": "心想",
+              "explanation": "xīn xiǎng → 心想",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xīn xiǎng"
+              }
+            },
+            {
+              "id": "cn2-u5-34",
+              "type": "blank",
+              "question": "【看拼音写词语】chóng zi → （　）",
+              "answer": "虫子",
+              "explanation": "chóng zi → 虫子",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chóng zi"
+              }
+            },
+            {
+              "id": "cn2-u5-35",
+              "type": "blank",
+              "question": "【看拼音写词语】lín jū → （　）",
+              "answer": "邻居",
+              "explanation": "lín jū → 邻居",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "lín jū"
+              }
+            },
+            {
+              "id": "cn2-u5-36",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎo ba → （　）",
+              "answer": "好吧",
+              "explanation": "hǎo ba → 好吧",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎo ba"
+              }
+            },
+            {
+              "id": "cn2-u5-37",
+              "type": "blank",
+              "question": "【看拼音写词语】qí guài → （　）",
+              "answer": "奇怪",
+              "explanation": "qí guài → 奇怪",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qí guài"
+              }
+            },
+            {
+              "id": "cn2-u5-38",
+              "type": "blank",
+              "question": "【看拼音写词语】huò chē → （　）",
+              "answer": "货车",
+              "explanation": "huò chē → 货车",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huò chē"
+              }
+            },
+            {
+              "id": "cn2-u5-39",
+              "type": "blank",
+              "question": "【看拼音写词语】kē xué → （　）",
+              "answer": "科学",
+              "explanation": "kē xué → 科学",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kē xué"
+              }
+            },
+            {
+              "id": "cn2-u5-40",
+              "type": "blank",
+              "question": "【看拼音写词语】dì yī cì → （　）",
+              "answer": "第一次",
+              "explanation": "dì yī cì → 第一次",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dì yī cì"
+              }
+            },
+            {
+              "id": "cn2-u5-41",
+              "type": "blank",
+              "question": "【看拼音写词语】miàn duì miàn → （　）",
+              "answer": "面对面",
+              "explanation": "miàn duì miàn → 面对面",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "miàn duì miàn"
+              }
+            },
+            {
+              "id": "cn2-u5-42",
+              "type": "blank",
+              "question": "【看拼音写词语】yì kē shù → （　）",
+              "answer": "一棵树",
+              "explanation": "yì kē shù → 一棵树",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yì kē shù"
+              }
+            },
+            {
+              "id": "cn2-u5-43",
+              "type": "blank",
+              "question": "【看拼音写词语】zuò jǐng guān tiān → （　）",
+              "answer": "坐井观天",
+              "explanation": "zuò jǐng guān tiān → 坐井观天",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zuò jǐng guān tiān"
+              }
+            },
+            {
+              "id": "cn2-u5-44",
+              "type": "blank",
+              "question": "【看拼音写词语】zì yán zì yǔ → （　）",
+              "answer": "自言自语",
+              "explanation": "zì yán zì yǔ → 自言自语",
+              "knowledgePointIds": [
+                "kp-u5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zì yán zì yǔ"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u6",
+      "name": "第 6 单元",
+      "title": "第六单元 伟人与革命",
+      "desc": "《八角楼上》《朱德的扁担》《难忘的泼水节》《刘胡兰》（45 词）",
+      "topics": [
+        {
+          "id": "t6",
+          "title": "看拼音写词语",
+          "desc": "45 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u6"
+          ],
+          "modules": [
+            {
+              "id": "m6",
+              "type": "chinese.vocab",
+              "title": "第六单元 伟人与革命",
+              "knowledgePointIds": [
+                "kp-u6"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u6-01",
+              "type": "blank",
+              "question": "【看拼音写词语】nián dài → （　）",
+              "answer": "年代",
+              "explanation": "nián dài → 年代",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nián dài"
+              }
+            },
+            {
+              "id": "cn2-u6-02",
+              "type": "blank",
+              "question": "【看拼音写词语】chuān dài → （　）",
+              "answer": "穿戴",
+              "explanation": "chuān dài → 穿戴",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chuān dài"
+              }
+            },
+            {
+              "id": "cn2-u6-03",
+              "type": "blank",
+              "question": "【看拼音写词语】míng liàng → （　）",
+              "answer": "明亮",
+              "explanation": "míng liàng → 明亮",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "míng liàng"
+              }
+            },
+            {
+              "id": "cn2-u6-04",
+              "type": "blank",
+              "question": "【看拼音写词语】shì lì → （　）",
+              "answer": "视力",
+              "explanation": "shì lì → 视力",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shì lì"
+              }
+            },
+            {
+              "id": "cn2-u6-05",
+              "type": "blank",
+              "question": "【看拼音写词语】zhōng guó → （　）",
+              "answer": "中国",
+              "explanation": "zhōng guó → 中国",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhōng guó"
+              }
+            },
+            {
+              "id": "cn2-u6-06",
+              "type": "blank",
+              "question": "【看拼音写词语】shèng lì → （　）",
+              "answer": "胜利",
+              "explanation": "shèng lì → 胜利",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shèng lì"
+              }
+            },
+            {
+              "id": "cn2-u6-07",
+              "type": "blank",
+              "question": "【看拼音写词语】dào lù → （　）",
+              "answer": "道路",
+              "explanation": "dào lù → 道路",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dào lù"
+              }
+            },
+            {
+              "id": "cn2-u6-08",
+              "type": "blank",
+              "question": "【看拼音写词语】tóng zhì → （　）",
+              "answer": "同志",
+              "explanation": "tóng zhì → 同志",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tóng zhì"
+              }
+            },
+            {
+              "id": "cn2-u6-09",
+              "type": "blank",
+              "question": "【看拼音写词语】hóng jūn → （　）",
+              "answer": "红军",
+              "explanation": "hóng jūn → 红军",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hóng jūn"
+              }
+            },
+            {
+              "id": "cn2-u6-10",
+              "type": "blank",
+              "question": "【看拼音写词语】dí rén → （　）",
+              "answer": "敌人",
+              "explanation": "dí rén → 敌人",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dí rén"
+              }
+            },
+            {
+              "id": "cn2-u6-11",
+              "type": "blank",
+              "question": "【看拼音写词语】shēng chǎn → （　）",
+              "answer": "生产",
+              "explanation": "shēng chǎn → 生产",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shēng chǎn"
+              }
+            },
+            {
+              "id": "cn2-u6-12",
+              "type": "blank",
+              "question": "【看拼音写词语】cháng cháng → （　）",
+              "answer": "常常",
+              "explanation": "cháng cháng → 常常",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "cháng cháng"
+              }
+            },
+            {
+              "id": "cn2-u6-13",
+              "type": "blank",
+              "question": "【看拼音写词语】lái huí → （　）",
+              "answer": "来回",
+              "explanation": "lái huí → 来回",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "lái huí"
+              }
+            },
+            {
+              "id": "cn2-u6-14",
+              "type": "blank",
+              "question": "【看拼音写词语】fēi cháng → （　）",
+              "answer": "非常",
+              "explanation": "fēi cháng → 非常",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "fēi cháng"
+              }
+            },
+            {
+              "id": "cn2-u6-15",
+              "type": "blank",
+              "question": "【看拼音写词语】měi cì → （　）",
+              "answer": "每次",
+              "explanation": "měi cì → 每次",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "měi cì"
+              }
+            },
+            {
+              "id": "cn2-u6-16",
+              "type": "blank",
+              "question": "【看拼音写词语】zhàn shì → （　）",
+              "answer": "战士",
+              "explanation": "zhàn shì → 战士",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhàn shì"
+              }
+            },
+            {
+              "id": "cn2-u6-17",
+              "type": "blank",
+              "question": "【看拼音写词语】bái tiān → （　）",
+              "answer": "白天",
+              "explanation": "bái tiān → 白天",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bái tiān"
+              }
+            },
+            {
+              "id": "cn2-u6-18",
+              "type": "blank",
+              "question": "【看拼音写词语】nán wàng → （　）",
+              "answer": "难忘",
+              "explanation": "nán wàng → 难忘",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nán wàng"
+              }
+            },
+            {
+              "id": "cn2-u6-19",
+              "type": "blank",
+              "question": "【看拼音写词语】huǒ hóng → （　）",
+              "answer": "火红",
+              "explanation": "huǒ hóng → 火红",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huǒ hóng"
+              }
+            },
+            {
+              "id": "cn2-u6-20",
+              "type": "blank",
+              "question": "【看拼音写词语】rén mín → （　）",
+              "answer": "人民",
+              "explanation": "rén mín → 人民",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "rén mín"
+              }
+            },
+            {
+              "id": "cn2-u6-21",
+              "type": "blank",
+              "question": "【看拼音写词语】yīn wèi → （　）",
+              "answer": "因为",
+              "explanation": "yīn wèi → 因为",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yīn wèi"
+              }
+            },
+            {
+              "id": "cn2-u6-22",
+              "type": "blank",
+              "question": "【看拼音写词语】zǒng lǐ → （　）",
+              "answer": "总理",
+              "explanation": "zǒng lǐ → 总理",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zǒng lǐ"
+              }
+            },
+            {
+              "id": "cn2-u6-23",
+              "type": "blank",
+              "question": "【看拼音写词语】rén men → （　）",
+              "answer": "人们",
+              "explanation": "rén men → 人们",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "rén men"
+              }
+            },
+            {
+              "id": "cn2-u6-24",
+              "type": "blank",
+              "question": "【看拼音写词语】wèi le → （　）",
+              "answer": "为了",
+              "explanation": "wèi le → 为了",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wèi le"
+              }
+            },
+            {
+              "id": "cn2-u6-25",
+              "type": "blank",
+              "question": "【看拼音写词语】cháng kù → （　）",
+              "answer": "长裤",
+              "explanation": "cháng kù → 长裤",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "cháng kù"
+              }
+            },
+            {
+              "id": "cn2-u6-26",
+              "type": "blank",
+              "question": "【看拼音写词语】rén qún → （　）",
+              "answer": "人群",
+              "explanation": "rén qún → 人群",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "rén qún"
+              }
+            },
+            {
+              "id": "cn2-u6-27",
+              "type": "blank",
+              "question": "【看拼音写词语】huān lè → （　）",
+              "answer": "欢乐",
+              "explanation": "huān lè → 欢乐",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huān lè"
+              }
+            },
+            {
+              "id": "cn2-u6-28",
+              "type": "blank",
+              "question": "【看拼音写词语】kāi xīn → （　）",
+              "answer": "开心",
+              "explanation": "kāi xīn → 开心",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kāi xīn"
+              }
+            },
+            {
+              "id": "cn2-u6-29",
+              "type": "blank",
+              "question": "【看拼音写词语】xià lìng → （　）",
+              "answer": "下令",
+              "explanation": "xià lìng → 下令",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xià lìng"
+              }
+            },
+            {
+              "id": "cn2-u6-30",
+              "type": "blank",
+              "question": "【看拼音写词语】fǎn duì → （　）",
+              "answer": "反对",
+              "explanation": "fǎn duì → 反对",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "fǎn duì"
+              }
+            },
+            {
+              "id": "cn2-u6-31",
+              "type": "blank",
+              "question": "【看拼音写词语】xiāng cūn → （　）",
+              "answer": "乡村",
+              "explanation": "xiāng cūn → 乡村",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiāng cūn"
+              }
+            },
+            {
+              "id": "cn2-u6-32",
+              "type": "blank",
+              "question": "【看拼音写词语】yóu yú → （　）",
+              "answer": "由于",
+              "explanation": "yóu yú → 由于",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yóu yú"
+              }
+            },
+            {
+              "id": "cn2-u6-33",
+              "type": "blank",
+              "question": "【看拼音写词语】nián qīng → （　）",
+              "answer": "年轻",
+              "explanation": "nián qīng → 年轻",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nián qīng"
+              }
+            },
+            {
+              "id": "cn2-u6-34",
+              "type": "blank",
+              "question": "【看拼音写词语】bèi dòng → （　）",
+              "answer": "被动",
+              "explanation": "bèi dòng → 被动",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bèi dòng"
+              }
+            },
+            {
+              "id": "cn2-u6-35",
+              "type": "blank",
+              "question": "【看拼音写词语】xiàn zài → （　）",
+              "answer": "现在",
+              "explanation": "xiàn zài → 现在",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiàn zài"
+              }
+            },
+            {
+              "id": "cn2-u6-36",
+              "type": "blank",
+              "question": "【看拼音写词语】dà shēng → （　）",
+              "answer": "大声",
+              "explanation": "dà shēng → 大声",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dà shēng"
+              }
+            },
+            {
+              "id": "cn2-u6-37",
+              "type": "blank",
+              "question": "【看拼音写词语】suì yuè → （　）",
+              "answer": "岁月",
+              "explanation": "suì yuè → 岁月",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "suì yuè"
+              }
+            },
+            {
+              "id": "cn2-u6-38",
+              "type": "blank",
+              "question": "【看拼音写词语】xiāo xi → （　）",
+              "answer": "消息",
+              "explanation": "xiāo xi → 消息",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiāo xi"
+              }
+            },
+            {
+              "id": "cn2-u6-39",
+              "type": "blank",
+              "question": "【看拼音写词语】chāo shū → （　）",
+              "answer": "抄书",
+              "explanation": "chāo shū → 抄书",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chāo shū"
+              }
+            },
+            {
+              "id": "cn2-u6-40",
+              "type": "blank",
+              "question": "【看拼音写词语】chǎo miàn → （　）",
+              "answer": "炒面",
+              "explanation": "chǎo miàn → 炒面",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chǎo miàn"
+              }
+            },
+            {
+              "id": "cn2-u6-41",
+              "type": "blank",
+              "question": "【看拼音写词语】bā jiǎo lóu → （　）",
+              "answer": "八角楼",
+              "explanation": "bā jiǎo lóu → 八角楼",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bā jiǎo lóu"
+              }
+            },
+            {
+              "id": "cn2-u6-42",
+              "type": "blank",
+              "question": "【看拼音写词语】yí chuàn chuàn → （　）",
+              "answer": "一串串",
+              "explanation": "yí chuàn chuàn → 一串串",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yí chuàn chuàn"
+              }
+            },
+            {
+              "id": "cn2-u6-43",
+              "type": "blank",
+              "question": "【看拼音写词语】yí kuàir → （　）",
+              "answer": "一块儿",
+              "explanation": "yí kuàir → 一块儿",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yí kuàir"
+              }
+            },
+            {
+              "id": "cn2-u6-44",
+              "type": "blank",
+              "question": "【看拼音写词语】yì diǎnr → （　）",
+              "answer": "一点儿",
+              "explanation": "yì diǎnr → 一点儿",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yì diǎnr"
+              }
+            },
+            {
+              "id": "cn2-u6-45",
+              "type": "blank",
+              "question": "【看拼音写词语】gòng chǎn dǎng → （　）",
+              "answer": "共产党",
+              "explanation": "gòng chǎn dǎng → 共产党",
+              "knowledgePointIds": [
+                "kp-u6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "gòng chǎn dǎng"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u7",
+      "name": "第 7 单元",
+      "title": "第七单元 想象与观察",
+      "desc": "《古诗二首》《雾在哪里》《雪孩子》（41 词）",
+      "topics": [
+        {
+          "id": "t7",
+          "title": "看拼音写词语",
+          "desc": "41 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u7"
+          ],
+          "modules": [
+            {
+              "id": "m7",
+              "type": "chinese.vocab",
+              "title": "第七单元 想象与观察",
+              "knowledgePointIds": [
+                "kp-u7"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u7-01",
+              "type": "blank",
+              "question": "【看拼音写词语】miè jué → （　）",
+              "answer": "灭绝",
+              "explanation": "miè jué → 灭绝",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "miè jué"
+              }
+            },
+            {
+              "id": "cn2-u7-02",
+              "type": "blank",
+              "question": "【看拼音写词语】xiǎo zhōu → （　）",
+              "answer": "小舟",
+              "explanation": "xiǎo zhōu → 小舟",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiǎo zhōu"
+              }
+            },
+            {
+              "id": "cn2-u7-03",
+              "type": "blank",
+              "question": "【看拼音写词语】dú zì → （　）",
+              "answer": "独自",
+              "explanation": "dú zì → 独自",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dú zì"
+              }
+            },
+            {
+              "id": "cn2-u7-04",
+              "type": "blank",
+              "question": "【看拼音写词语】yīn tiān → （　）",
+              "answer": "阴天",
+              "explanation": "yīn tiān → 阴天",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yīn tiān"
+              }
+            },
+            {
+              "id": "cn2-u7-05",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎo sì → （　）",
+              "answer": "好似",
+              "explanation": "hǎo sì → 好似",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎo sì"
+              }
+            },
+            {
+              "id": "cn2-u7-06",
+              "type": "blank",
+              "question": "【看拼音写词语】shì yě → （　）",
+              "answer": "视野",
+              "explanation": "shì yě → 视野",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shì yě"
+              }
+            },
+            {
+              "id": "cn2-u7-07",
+              "type": "blank",
+              "question": "【看拼音写词语】dī tóu → （　）",
+              "answer": "低头",
+              "explanation": "dī tóu → 低头",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dī tóu"
+              }
+            },
+            {
+              "id": "cn2-u7-08",
+              "type": "blank",
+              "question": "【看拼音写词语】yú shì → （　）",
+              "answer": "于是",
+              "explanation": "yú shì → 于是",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yú shì"
+              }
+            },
+            {
+              "id": "cn2-u7-09",
+              "type": "blank",
+              "question": "【看拼音写词语】wú lùn → （　）",
+              "answer": "无论",
+              "explanation": "wú lùn → 无论",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "wú lùn"
+              }
+            },
+            {
+              "id": "cn2-u7-10",
+              "type": "blank",
+              "question": "【看拼音写词语】chuán zhī → （　）",
+              "answer": "船只",
+              "explanation": "chuán zhī → 船只",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chuán zhī"
+              }
+            },
+            {
+              "id": "cn2-u7-11",
+              "type": "blank",
+              "question": "【看拼音写词语】tóng shí → （　）",
+              "answer": "同时",
+              "explanation": "tóng shí → 同时",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tóng shí"
+              }
+            },
+            {
+              "id": "cn2-u7-12",
+              "type": "blank",
+              "question": "【看拼音写词语】xíng rén → （　）",
+              "answer": "行人",
+              "explanation": "xíng rén → 行人",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xíng rén"
+              }
+            },
+            {
+              "id": "cn2-u7-13",
+              "type": "blank",
+              "question": "【看拼音写词语】xiǎo māo → （　）",
+              "answer": "小猫",
+              "explanation": "xiǎo māo → 小猫",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiǎo māo"
+              }
+            },
+            {
+              "id": "cn2-u7-14",
+              "type": "blank",
+              "question": "【看拼音写词语】yí qiè → （　）",
+              "answer": "一切",
+              "explanation": "yí qiè → 一切",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yí qiè"
+              }
+            },
+            {
+              "id": "cn2-u7-15",
+              "type": "blank",
+              "question": "【看拼音写词语】shàng kōng → （　）",
+              "answer": "上空",
+              "explanation": "shàng kōng → 上空",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shàng kōng"
+              }
+            },
+            {
+              "id": "cn2-u7-16",
+              "type": "blank",
+              "question": "【看拼音写词语】yīng gāi → （　）",
+              "answer": "应该",
+              "explanation": "yīng gāi → 应该",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yīng gāi"
+              }
+            },
+            {
+              "id": "cn2-u7-17",
+              "type": "blank",
+              "question": "【看拼音写词语】kàn lái → （　）",
+              "answer": "看来",
+              "explanation": "kàn lái → 看来",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kàn lái"
+              }
+            },
+            {
+              "id": "cn2-u7-18",
+              "type": "blank",
+              "question": "【看拼音写词语】bù jiǔ → （　）",
+              "answer": "不久",
+              "explanation": "bù jiǔ → 不久",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bù jiǔ"
+              }
+            },
+            {
+              "id": "cn2-u7-19",
+              "type": "blank",
+              "question": "【看拼音写词语】lù shang → （　）",
+              "answer": "路上",
+              "explanation": "lù shang → 路上",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "lù shang"
+              }
+            },
+            {
+              "id": "cn2-u7-20",
+              "type": "blank",
+              "question": "【看拼音写词语】chū xiàn → （　）",
+              "answer": "出现",
+              "explanation": "chū xiàn → 出现",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chū xiàn"
+              }
+            },
+            {
+              "id": "cn2-u7-21",
+              "type": "blank",
+              "question": "【看拼音写词语】sàn bù → （　）",
+              "answer": "散步",
+              "explanation": "sàn bù → 散步",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "sàn bù"
+              }
+            },
+            {
+              "id": "cn2-u7-22",
+              "type": "blank",
+              "question": "【看拼音写词语】xiāo shī → （　）",
+              "answer": "消失",
+              "explanation": "xiāo shī → 消失",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiāo shī"
+              }
+            },
+            {
+              "id": "cn2-u7-23",
+              "type": "blank",
+              "question": "【看拼音写词语】kuài yào → （　）",
+              "answer": "快要",
+              "explanation": "kuài yào → 快要",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kuài yào"
+              }
+            },
+            {
+              "id": "cn2-u7-24",
+              "type": "blank",
+              "question": "【看拼音写词语】kòng dì → （　）",
+              "answer": "空地",
+              "explanation": "kòng dì → 空地",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kòng dì"
+              }
+            },
+            {
+              "id": "cn2-u7-25",
+              "type": "blank",
+              "question": "【看拼音写词语】huǒ bàn → （　）",
+              "answer": "伙伴",
+              "explanation": "huǒ bàn → 伙伴",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huǒ bàn"
+              }
+            },
+            {
+              "id": "cn2-u7-26",
+              "type": "blank",
+              "question": "【看拼音写词语】chàng gē → （　）",
+              "answer": "唱歌",
+              "explanation": "chàng gē → 唱歌",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chàng gē"
+              }
+            },
+            {
+              "id": "cn2-u7-27",
+              "type": "blank",
+              "question": "【看拼音写词语】huí jiā → （　）",
+              "answer": "回家",
+              "explanation": "huí jiā → 回家",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huí jiā"
+              }
+            },
+            {
+              "id": "cn2-u7-28",
+              "type": "blank",
+              "question": "【看拼音写词语】guān bì → （　）",
+              "answer": "关闭",
+              "explanation": "guān bì → 关闭",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "guān bì"
+              }
+            },
+            {
+              "id": "cn2-u7-29",
+              "type": "blank",
+              "question": "【看拼音写词语】zháo huǒ → （　）",
+              "answer": "着火",
+              "explanation": "zháo huǒ → 着火",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zháo huǒ"
+              }
+            },
+            {
+              "id": "cn2-u7-30",
+              "type": "blank",
+              "question": "【看拼音写词语】huǒ xīng → （　）",
+              "answer": "火星",
+              "explanation": "huǒ xīng → 火星",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "huǒ xīng"
+              }
+            },
+            {
+              "id": "cn2-u7-31",
+              "type": "blank",
+              "question": "【看拼音写词语】yì biān → （　）",
+              "answer": "一边",
+              "explanation": "yì biān → 一边",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yì biān"
+              }
+            },
+            {
+              "id": "cn2-u7-32",
+              "type": "blank",
+              "question": "【看拼音写词语】lián máng → （　）",
+              "answer": "连忙",
+              "explanation": "lián máng → 连忙",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "lián máng"
+              }
+            },
+            {
+              "id": "cn2-u7-33",
+              "type": "blank",
+              "question": "【看拼音写词语】shù lín → （　）",
+              "answer": "树林",
+              "explanation": "shù lín → 树林",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shù lín"
+              }
+            },
+            {
+              "id": "cn2-u7-34",
+              "type": "blank",
+              "question": "【看拼音写词语】shì shuí → （　）",
+              "answer": "是谁",
+              "explanation": "shì shuí → 是谁",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shì shuí"
+              }
+            },
+            {
+              "id": "cn2-u7-35",
+              "type": "blank",
+              "question": "【看拼音写词语】shuǐ qì → （　）",
+              "answer": "水汽",
+              "explanation": "shuǐ qì → 水汽",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shuǐ qì"
+              }
+            },
+            {
+              "id": "cn2-u7-36",
+              "type": "blank",
+              "question": "【看拼音写词语】bái yún → （　）",
+              "answer": "白云",
+              "explanation": "bái yún → 白云",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "bái yún"
+              }
+            },
+            {
+              "id": "cn2-u7-37",
+              "type": "blank",
+              "question": "【看拼音写词语】jī è → （　）",
+              "answer": "饥饿",
+              "explanation": "jī è → 饥饿",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "jī è"
+              }
+            },
+            {
+              "id": "cn2-u7-38",
+              "type": "blank",
+              "question": "【看拼音写词语】ān níng → （　）",
+              "answer": "安宁",
+              "explanation": "ān níng → 安宁",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "ān níng"
+              }
+            },
+            {
+              "id": "cn2-u7-39",
+              "type": "blank",
+              "question": "【看拼音写词语】chē kù → （　）",
+              "answer": "车库",
+              "explanation": "chē kù → 车库",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chē kù"
+              }
+            },
+            {
+              "id": "cn2-u7-40",
+              "type": "blank",
+              "question": "【看拼音写词语】pǎo de kuài → （　）",
+              "answer": "跑得快",
+              "explanation": "pǎo de kuài → 跑得快",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "pǎo de kuài"
+              }
+            },
+            {
+              "id": "cn2-u7-41",
+              "type": "blank",
+              "question": "【看拼音写词语】kuài yí huìr → （　）",
+              "answer": "快一会儿",
+              "explanation": "kuài yí huìr → 快一会儿",
+              "knowledgePointIds": [
+                "kp-u7"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kuài yí huìr"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u8",
+      "name": "第 8 单元",
+      "title": "第八单元 相处与友谊",
+      "desc": "《狐假虎威》《纸船和风筝》《风娃娃》（42 词）",
+      "topics": [
+        {
+          "id": "t8",
+          "title": "看拼音写词语",
+          "desc": "42 题 · 看拼音写出正确的词语",
+          "board": "字词默写",
+          "knowledgePointIds": [
+            "kp-u8"
+          ],
+          "modules": [
+            {
+              "id": "m8",
+              "type": "chinese.vocab",
+              "title": "第八单元 相处与友谊",
+              "knowledgePointIds": [
+                "kp-u8"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "cn2-u8-01",
+              "type": "blank",
+              "question": "【看拼音写词语】guǒ zi → （　）",
+              "answer": "果子",
+              "explanation": "guǒ zi → 果子",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "guǒ zi"
+              }
+            },
+            {
+              "id": "cn2-u8-02",
+              "type": "blank",
+              "question": "【看拼音写词语】mù gōng → （　）",
+              "answer": "木工",
+              "explanation": "mù gōng → 木工",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "mù gōng"
+              }
+            },
+            {
+              "id": "cn2-u8-03",
+              "type": "blank",
+              "question": "【看拼音写词语】shēn biān → （　）",
+              "answer": "身边",
+              "explanation": "shēn biān → 身边",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shēn biān"
+              }
+            },
+            {
+              "id": "cn2-u8-04",
+              "type": "blank",
+              "question": "【看拼音写词语】ná qǐ → （　）",
+              "answer": "拿起",
+              "explanation": "ná qǐ → 拿起",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "ná qǐ"
+              }
+            },
+            {
+              "id": "cn2-u8-05",
+              "type": "blank",
+              "question": "【看拼音写词语】zǐ xì → （　）",
+              "answer": "仔细",
+              "explanation": "zǐ xì → 仔细",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zǐ xì"
+              }
+            },
+            {
+              "id": "cn2-u8-06",
+              "type": "blank",
+              "question": "【看拼音写词语】néng gàn → （　）",
+              "answer": "能干",
+              "explanation": "néng gàn → 能干",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "néng gàn"
+              }
+            },
+            {
+              "id": "cn2-u8-07",
+              "type": "blank",
+              "question": "【看拼音写词语】běi jí → （　）",
+              "answer": "北极",
+              "explanation": "běi jí → 北极",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "běi jí"
+              }
+            },
+            {
+              "id": "cn2-u8-08",
+              "type": "blank",
+              "question": "【看拼音写词语】sòng gěi → （　）",
+              "answer": "送给",
+              "explanation": "sòng gěi → 送给",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "sòng gěi"
+              }
+            },
+            {
+              "id": "cn2-u8-09",
+              "type": "blank",
+              "question": "【看拼音写词语】yǐ zi → （　）",
+              "answer": "椅子",
+              "explanation": "yǐ zi → 椅子",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yǐ zi"
+              }
+            },
+            {
+              "id": "cn2-u8-10",
+              "type": "blank",
+              "question": "【看拼音写词语】zěn me → （　）",
+              "answer": "怎么",
+              "explanation": "zěn me → 怎么",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zěn me"
+              }
+            },
+            {
+              "id": "cn2-u8-11",
+              "type": "blank",
+              "question": "【看拼音写词语】lā shǒu → （　）",
+              "answer": "拉手",
+              "explanation": "lā shǒu → 拉手",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "lā shǒu"
+              }
+            },
+            {
+              "id": "cn2-u8-12",
+              "type": "blank",
+              "question": "【看拼音写词语】zì xìn → （　）",
+              "answer": "自信",
+              "explanation": "zì xìn → 自信",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zì xìn"
+              }
+            },
+            {
+              "id": "cn2-u8-13",
+              "type": "blank",
+              "question": "【看拼音写词语】jiē shōu → （　）",
+              "answer": "接收",
+              "explanation": "jiē shōu → 接收",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "jiē shōu"
+              }
+            },
+            {
+              "id": "cn2-u8-14",
+              "type": "blank",
+              "question": "【看拼音写词语】zhè me → （　）",
+              "answer": "这么",
+              "explanation": "zhè me → 这么",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhè me"
+              }
+            },
+            {
+              "id": "cn2-u8-15",
+              "type": "blank",
+              "question": "【看拼音写词语】zhǐ chuán → （　）",
+              "answer": "纸船",
+              "explanation": "zhǐ chuán → 纸船",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhǐ chuán"
+              }
+            },
+            {
+              "id": "cn2-u8-16",
+              "type": "blank",
+              "question": "【看拼音写词语】shàng miàn → （　）",
+              "answer": "上面",
+              "explanation": "shàng miàn → 上面",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shàng miàn"
+              }
+            },
+            {
+              "id": "cn2-u8-17",
+              "type": "blank",
+              "question": "【看拼音写词语】kuài lè → （　）",
+              "answer": "快乐",
+              "explanation": "kuài lè → 快乐",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kuài lè"
+              }
+            },
+            {
+              "id": "cn2-u8-18",
+              "type": "blank",
+              "question": "【看拼音写词语】zhuā zhù → （　）",
+              "answer": "抓住",
+              "explanation": "zhuā zhù → 抓住",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhuā zhù"
+              }
+            },
+            {
+              "id": "cn2-u8-19",
+              "type": "blank",
+              "question": "【看拼音写词语】xiàn tiáo → （　）",
+              "answer": "线条",
+              "explanation": "xiàn tiáo → 线条",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "xiàn tiáo"
+              }
+            },
+            {
+              "id": "cn2-u8-20",
+              "type": "blank",
+              "question": "【看拼音写词语】chǎo jià → （　）",
+              "answer": "吵架",
+              "explanation": "chǎo jià → 吵架",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "chǎo jià"
+              }
+            },
+            {
+              "id": "cn2-u8-21",
+              "type": "blank",
+              "question": "【看拼音写词语】nán guò → （　）",
+              "answer": "难过",
+              "explanation": "nán guò → 难过",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "nán guò"
+              }
+            },
+            {
+              "id": "cn2-u8-22",
+              "type": "blank",
+              "question": "【看拼音写词语】dàn shì → （　）",
+              "answer": "但是",
+              "explanation": "dàn shì → 但是",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dàn shì"
+              }
+            },
+            {
+              "id": "cn2-u8-23",
+              "type": "blank",
+              "question": "【看拼音写词语】hé hǎo → （　）",
+              "answer": "和好",
+              "explanation": "hé hǎo → 和好",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hé hǎo"
+              }
+            },
+            {
+              "id": "cn2-u8-24",
+              "type": "blank",
+              "question": "【看拼音写词语】jiē shòu → （　）",
+              "answer": "接受",
+              "explanation": "jiē shòu → 接受",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "jiē shòu"
+              }
+            },
+            {
+              "id": "cn2-u8-25",
+              "type": "blank",
+              "question": "【看拼音写词语】jù zi → （　）",
+              "answer": "句子",
+              "explanation": "jù zi → 句子",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "jù zi"
+              }
+            },
+            {
+              "id": "cn2-u8-26",
+              "type": "blank",
+              "question": "【看拼音写词语】dà kū → （　）",
+              "answer": "大哭",
+              "explanation": "dà kū → 大哭",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dà kū"
+              }
+            },
+            {
+              "id": "cn2-u8-27",
+              "type": "blank",
+              "question": "【看拼音写词语】yǎn lèi → （　）",
+              "answer": "眼泪",
+              "explanation": "yǎn lèi → 眼泪",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yǎn lèi"
+              }
+            },
+            {
+              "id": "cn2-u8-28",
+              "type": "blank",
+              "question": "【看拼音写词语】shuǐ huā → （　）",
+              "answer": "水花",
+              "explanation": "shuǐ huā → 水花",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "shuǐ huā"
+              }
+            },
+            {
+              "id": "cn2-u8-29",
+              "type": "blank",
+              "question": "【看拼音写词语】qīng cǎo → （　）",
+              "answer": "青草",
+              "explanation": "qīng cǎo → 青草",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qīng cǎo"
+              }
+            },
+            {
+              "id": "cn2-u8-30",
+              "type": "blank",
+              "question": "【看拼音写词语】yóu xì → （　）",
+              "answer": "游戏",
+              "explanation": "yóu xì → 游戏",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yóu xì"
+              }
+            },
+            {
+              "id": "cn2-u8-31",
+              "type": "blank",
+              "question": "【看拼音写词语】zhǐ yǒu → （　）",
+              "answer": "只有",
+              "explanation": "zhǐ yǒu → 只有",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zhǐ yǒu"
+              }
+            },
+            {
+              "id": "cn2-u8-32",
+              "type": "blank",
+              "question": "【看拼音写词语】kě ài → （　）",
+              "answer": "可爱",
+              "explanation": "kě ài → 可爱",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kě ài"
+              }
+            },
+            {
+              "id": "cn2-u8-33",
+              "type": "blank",
+              "question": "【看拼音写词语】kě yǐ → （　）",
+              "answer": "可以",
+              "explanation": "kě yǐ → 可以",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "kě yǐ"
+              }
+            },
+            {
+              "id": "cn2-u8-34",
+              "type": "blank",
+              "question": "【看拼音写词语】hǎo ne → （　）",
+              "answer": "好呢",
+              "explanation": "hǎo ne → 好呢",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "hǎo ne"
+              }
+            },
+            {
+              "id": "cn2-u8-35",
+              "type": "blank",
+              "question": "【看拼音写词语】duō shǎo → （　）",
+              "answer": "多少",
+              "explanation": "duō shǎo → 多少",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "duō shǎo"
+              }
+            },
+            {
+              "id": "cn2-u8-36",
+              "type": "blank",
+              "question": "【看拼音写词语】tiào gāo → （　）",
+              "answer": "跳高",
+              "explanation": "tiào gāo → 跳高",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tiào gāo"
+              }
+            },
+            {
+              "id": "cn2-u8-37",
+              "type": "blank",
+              "question": "【看拼音写词语】zán men → （　）",
+              "answer": "咱们",
+              "explanation": "zán men → 咱们",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "zán men"
+              }
+            },
+            {
+              "id": "cn2-u8-38",
+              "type": "blank",
+              "question": "【看拼音写词语】tián yě → （　）",
+              "answer": "田野",
+              "explanation": "tián yě → 田野",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "tián yě"
+              }
+            },
+            {
+              "id": "cn2-u8-39",
+              "type": "blank",
+              "question": "【看拼音写词语】dà dì → （　）",
+              "answer": "大地",
+              "explanation": "dà dì → 大地",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "dà dì"
+              }
+            },
+            {
+              "id": "cn2-u8-40",
+              "type": "blank",
+              "question": "【看拼音写词语】yuǎn fāng → （　）",
+              "answer": "远方",
+              "explanation": "yuǎn fāng → 远方",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "yuǎn fāng"
+              }
+            },
+            {
+              "id": "cn2-u8-41",
+              "type": "blank",
+              "question": "【看拼音写词语】láng qún → （　）",
+              "answer": "狼群",
+              "explanation": "láng qún → 狼群",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "láng qún"
+              }
+            },
+            {
+              "id": "cn2-u8-42",
+              "type": "blank",
+              "question": "【看拼音写词语】qīng shé → （　）",
+              "answer": "青蛇",
+              "explanation": "qīng shé → 青蛇",
+              "knowledgePointIds": [
+                "kp-u8"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "pinyin": "qīng shé"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
