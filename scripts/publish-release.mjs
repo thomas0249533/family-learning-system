@@ -31,7 +31,11 @@ async function gh(method, url, body, raw = false) {
   return text ? JSON.parse(text) : null
 }
 
-const head = execFileSync('git', ['rev-parse', 'HEAD']).toString().trim()
+// tag 要指向远端 main 上的真实提交。push-to-github 是走 tree API 重建提交，
+// 远端 SHA 与本地 HEAD 并不相同 —— 用本地 HEAD 打 tag 会得到一个不挂在 main 上的孤立 tag。
+const head = await gh('GET', `/repos/${REPO}/git/ref/heads/main`)
+  .then((r) => r.object.sha)
+  .catch(() => execFileSync('git', ['rev-parse', 'HEAD']).toString().trim())
 const ver = JSON.parse(fs.readFileSync('version.json', 'utf8'))
 
 // 1. tag（已存在则跳过）
@@ -65,9 +69,8 @@ try {
 // 源文件名里带版本号，硬编码过一次 2.11.0 就会在下次发版时静默传错包 —— 一律由 VER 推出
 const NSIS = `src-tauri/target/release/bundle/nsis/FamilyLearningSystem_${VER}_x64-setup.exe`
 
-// 便携版命名 app<日期><字母>.exe。同一天发两版（2.11.0 与 2.12.0 都在 10-28）时，
-// 硬写 'a' 会撞上上一版已上传的资产名 —— 而下面的「已存在则跳过」会把新包静默丢掉，
-// 日志上还是一行 ✅。所以先看这一版已有哪些同名前缀，取下一个空位。
+// 便携版命名 app<日期><字母>.exe（沿用历次发布习惯）。资产按 Release 隔离，
+// 跨版本同名不会冲突；这里仍取空位字母，是为了同一天在同一 Release 重跑时不会互相覆盖。
 const today = new Date().toISOString().slice(0, 10)
 const taken = (rel.assets || [])
   .map((a) => new RegExp(`^app${today}([a-z])\\.exe$`).exec(a.name))
@@ -84,20 +87,66 @@ const assets = [
   ['src-tauri/target/release/app.exe', PORTABLE],
 ]
 
-const existing = new Set((rel.assets || []).map((a) => a.name))
+/**
+ * 查某资产在远端的状态。上传 20MB 时 GitHub 偶发 504 —— 那是**响应**超时，
+ * 数据往往已经落库。若直接当失败重跑，会重复上传或误报；必须先回查。
+ */
+async function remoteAsset(name) {
+  const cur = await gh('GET', `/repos/${REPO}/releases/${rel.id}`)
+  return (cur.assets || []).find((a) => a.name === name) ?? null
+}
+
 for (const [file, name] of assets) {
-  if (existing.has(name)) {
-    console.log(`  跳过（已存在）${name}`)
+  const buf = fs.readFileSync(file)
+  const already = await remoteAsset(name)
+  if (already && already.size === buf.length) {
+    console.log(`  跳过（已存在且大小一致）${name}`)
     continue
   }
-  const buf = fs.readFileSync(file)
-  const up = await gh('POST',
-    `https://uploads.github.com/repos/${REPO}/releases/${rel.id}/assets?name=${encodeURIComponent(name)}`,
-    buf, true)
-  console.log(`  ✅ ${name} (${(buf.length / 1048576).toFixed(2)}MB) -> ${up.state}`)
+  // 大小不一致说明上次传了一半或传了旧包，先删掉再传，避免留下坏资产
+  if (already) {
+    await gh('DELETE', `/repos/${REPO}/releases/assets/${already.id}`)
+    console.log(`  删除不完整资产 ${name}（远端 ${already.size} ≠ 本地 ${buf.length}）`)
+  }
+
+  let ok = false
+  for (let attempt = 1; attempt <= 3 && !ok; attempt++) {
+    try {
+      const up = await gh(
+        'POST',
+        `https://uploads.github.com/repos/${REPO}/releases/${rel.id}/assets?name=${encodeURIComponent(name)}`,
+        buf,
+        true,
+      )
+      console.log(`  ✅ ${name} (${(buf.length / 1048576).toFixed(2)}MB) -> ${up.state}`)
+      ok = true
+    } catch (e) {
+      // 失败后不立刻重试：先看是不是「其实已经传上去了」
+      const now = await remoteAsset(name)
+      if (now && now.size === buf.length) {
+        console.log(`  ✅ ${name} 已上传（首次报错：${String(e.message).slice(0, 40)}…，回查确认完整）`)
+        ok = true
+        break
+      }
+      if (attempt === 3) throw e
+      console.log(`  ↻ ${name} 第 ${attempt} 次失败，2s 后重试`)
+      await new Promise((r) => setTimeout(r, 2000))
+    }
+  }
+  if (!ok) throw new Error(`资产上传失败：${name}`)
 }
 
 const final = await gh('GET', `/repos/${REPO}/releases/${rel.id}`)
 console.log(`\n📦 Release: ${final.html_url}`)
 console.log(`   资产 ${final.assets.length} 个:`)
 for (const a of final.assets) console.log(`   - ${a.name} (${(a.size / 1024).toFixed(0)}KB)`)
+
+// 收尾自证：四个资产必须在、且大小与本地一致。少一个就是发版失败，不能靠人眼看日志。
+const expected = assets.map(([file, name]) => [name, fs.statSync(file).size])
+const bad = expected.filter(([name, size]) => final.assets.find((a) => a.name === name)?.size !== size)
+if (bad.length) {
+  console.error('\n❌ 资产校验失败：')
+  for (const [name, size] of bad) console.error(`   ${name} 期望 ${size}B，远端不符或缺失`)
+  process.exit(1)
+}
+console.log('\n✅ 资产校验通过（4 个，大小与本地一致）')
