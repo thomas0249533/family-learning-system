@@ -87,7 +87,6 @@
       "packageId": "special-math-4-up-u3",
       "type": "special",
       "visible": true,
-      "examMode": true,
       "sourceUnitIds": [
         "unit-math-4-up-rjb-p3::u3"
       ],

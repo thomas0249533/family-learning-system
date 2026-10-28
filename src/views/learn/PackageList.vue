@@ -308,9 +308,10 @@ import {
   CARD_STATUS_LABEL,
   CARD_STATUS_MARK,
   cardStatusClass,
-  packageCardStatusOf,
   type CardStatus,
 } from '@core/learning/cardStatus'
+import { completionStatusOf, scopeOfPackage } from '@core/learning/completion'
+import { buildOwnerIndex, type OwnerIndex } from '@core/progress/ownerIndex'
 import { buildShareString, drawQrToCanvas } from '@core/share/qrcode'
 import { groupByWeek, resolveWeekOf } from '@core/learning/weekBucket'
 import type { LearningPackageRecord } from '@/db'
@@ -418,17 +419,41 @@ onMounted(async () => {
 /**
  * D1 · 学习包 → 卡片状态（每日一练的「打卡」落到这里：仓库没有日历格子，
  * 每日包本来就是卡片列表）。状态由该包的进度行反演：没有进度行 = 今天还没练 = none。
- * 一次算完一屏，模板只查表。
+ * 一次算完一整屏，模板只查表。
  *
- * 聚合走 **`progress` 模式**（`packageCardStatusOf` 内部固定传）：这一格问的是
+ * 聚合走 **`progress` 模式**（`completionStatusOf` 内部固定传）：这一格问的是
  * 「这天做了没做完」，所以「练了一部分」必须留在 `learning`（黄），不能因为有一个
  * 知识点到期就整格挂红。45 天的包有几百个知识点，「全部同时已掌握」不可达 ——
  * 用 `attention` 口径会让包卡几乎永不变绿（详见 `cardStatus.ts` 文件头）。
+ *
+ * ## V2.12.3 · 「全部完成」通道
+ *
+ * 除了掌握度聚合，包卡现在还多一条**题目级**判定（`@core/learning/completion`）：
+ * 该包范围内所有知识点都学过 + 没有未掌握的错题 → 判「已掌握」。
+ * 这一层让「做完了但没连对 3 次」的情况也能正确变绿。
  */
+/**
+ * 归属包索引：状态查表时按 kpId 反查真实落库的包，与 `recordProgress` 写入端同源。
+ * 每日一练自包含包（knowledgePoints 为空、进度记到教材单元归属包）靠它才能点亮状态。
+ */
+const ownerIndex = computed<OwnerIndex>(() => buildOwnerIndex(packageStore.packages))
+
 const statusByPackageId = computed<Map<string, CardStatus>>(() => {
   const map = new Map<string, CardStatus>()
   for (const pkg of packageStore.packages) {
-    map.set(pkg.packageId, packageCardStatusOf(pkg.packageId, userDataStore.progress))
+    const scope = scopeOfPackage(pkg)
+    map.set(
+      pkg.packageId,
+      completionStatusOf({
+        entryPackageId: pkg.packageId,
+        kpIds: scope.kpIds,
+        exerciseIds: scope.exerciseIds,
+        progress: userDataStore.progress,
+        mistakes: userDataStore.mistakes,
+        ownerIndex: ownerIndex.value,
+        manual: userDataStore.isCardManuallyComplete('package', pkg.packageId),
+      })
+    )
   }
   return map
 })

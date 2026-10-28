@@ -114,10 +114,37 @@ export function splitAnswerSegments(answer: unknown): string[] {
   if (Array.isArray(answer)) {
     return answer.map((el) => String(el ?? '').trim()).filter((s) => s !== '')
   }
-  return String(answer ?? '')
-    .split(SEGMENT_SPLIT_RE)
-    .map((s) => s.trim())
-    .filter((s) => s !== '')
+  return splitTopLevelSegments(String(answer ?? ''))
+}
+
+/**
+ * 按 `SEGMENT_SPLIT_RE` 的分隔符切段，但**括号内的分隔符不算**。
+ *
+ * ## 为什么
+ *
+ * 判分内核（`@core/quiz/blank` 的 `splitCommaParts`）已经改成「括号保护」切段：
+ * 答案 `6,省（直辖市、自治区）` 的**第 2 段**是 `省(直辖市,自治区)`，
+ * 括号里的顿号是「同一空的并列备选之间」的分隔符，不是「第二个空」的分隔符。
+ *
+ * 校验脚本若还用无脑切，就会把这段数成 3 段 → 对一个**2 空**的题报 W023，
+ * 制造噪音。**两处口径必须一致**，否则「校验说有问题、判分说没问题」。
+ */
+export function splitTopLevelSegments(text: string): string[] {
+  const parts: string[] = []
+  let depth = 0
+  let buf = ''
+  for (const ch of text) {
+    if (ch === '(' || ch === '（') depth++
+    else if (ch === ')' || ch === '）') depth = Math.max(0, depth - 1)
+    if (depth === 0 && SEPARATOR_CHAR_RE.test(ch)) {
+      parts.push(buf)
+      buf = ''
+      continue
+    }
+    buf += ch
+  }
+  parts.push(buf)
+  return parts.map((s) => s.trim()).filter((s) => s !== '')
 }
 
 /** 答案段数 */

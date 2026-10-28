@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { db, type MistakeRecord, type ProgressRecord } from '@/db'
+import { db, type CardCompletionRecord, type MistakeRecord, type ProgressRecord, type Table } from '@/db'
 import type { QuizQuestion } from '@modules/core/QuizEngine.vue'
 import {
   legacyCardFromStage,
@@ -26,6 +26,18 @@ function toPlain<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
 }
 
+/**
+ * 取「手动全部完成」那张表。
+ *
+ * 为什么可能不存在：本仓单测用的是 `tests/helpers/fakeDexie.ts`（一个**只实现了 6 张表**
+ * 的假 IndexedDB），它没有 `cardCompletions`。真库里一定存在（db v8 起）。
+ * 所以这里做一次**静默降级**：表不在 → 视为「没有任何手动标记」，功能其余部分照常。
+ */
+function cardCompletionsTable(): Table<CardCompletionRecord, number> | undefined {
+  return (db as unknown as { cardCompletions?: Table<CardCompletionRecord, number> })
+    .cardCompletions
+}
+
 export interface RecordProgressOptions {
   /** 题型：用于 BKT 蒙对率（判断题 50% vs 填空题 5%） */
   questionType?: string
@@ -38,6 +50,8 @@ export interface RecordProgressOptions {
 export const useUserDataStore = defineStore('userData', () => {
   const mistakes = ref<MistakeRecord[]>([])
   const progress = ref<ProgressRecord[]>([])
+  /** V2.12.3 · 学习卡片的**手动「全部完成」标记**（见 `db/index.ts` 的 `CardCompletionRecord`） */
+  const cardCompletions = ref<CardCompletionRecord[]>([])
 
   /**
    * 读当前档案的进度与错题。
@@ -64,6 +78,85 @@ export const useUserDataStore = defineStore('userData', () => {
     })
     if (changed) await db.progress.bulkPut(decayed.map(toPlain))
     progress.value = decayed
+
+    const table = cardCompletionsTable()
+    cardCompletions.value = table
+      ? await table.where('profileId').equals(pid).toArray()
+      : []
+  }
+
+  /**
+   * V2.12.3 · 手动把一张学习卡片标记为「全部完成」。
+   *
+   * ## 它解决什么
+   *
+   * 自动判定（`@core/learning/completion`）能覆盖两种情况：当天全做对、或者
+   * 错题本里那些题都连续答对 2 次了。但覆盖不了「题**本来**就是对的，只是历史上
+   * 判错了」——比如判分缺陷留下的错题、或者孩子已经真的会了但没再点一遍。
+   * 这时再要求「把整天从头重做一遍」是纯粹的浪费。
+   *
+   * ## 红线（与 `markReviewedVirtual` 同一条纪律）
+   *
+   * **绝不**改 `progress.status` / `bkt` / `correctCount` / `wrongCount` ——
+   * 掌握率统计、成就、弱项推荐全都读那些字段，污染它们等于让统计说谎。
+   * 本标记只存在 `cardCompletions` 表里，只在卡片渲染时作为 override 生效。
+   *
+   * @param kind `'unit'`（每日打卡的一天 / 专项的章节）或 `'package'`（整包）
+   * @param packageId 入口包 id
+   * @param targetId 单元 id 或包 id
+   */
+  async function markCardComplete(
+    kind: 'unit' | 'package',
+    packageId: string,
+    targetId: string
+  ): Promise<void> {
+    if (!packageId || !targetId) return
+    const table = cardCompletionsTable()
+    if (!table) return
+    const pid = currentProfileId()
+    const existing = await table
+      .where('[profileId+kind+targetId]')
+      .equals([pid, kind, targetId])
+      .first()
+    if (existing) return
+
+    await table.add(toPlain({
+      profileId: pid,
+      kind,
+      packageId,
+      targetId,
+      createdAt: new Date().toISOString(),
+    }))
+    await loadUserData()
+  }
+
+  /** 撤销手动「全部完成」标记 */
+  async function unmarkCardComplete(
+    kind: 'unit' | 'package',
+    targetId: string
+  ): Promise<void> {
+    if (!targetId) return
+    const table = cardCompletionsTable()
+    if (!table) return
+    const pid = currentProfileId()
+    const existing = await table
+      .where('[profileId+kind+targetId]')
+      .equals([pid, kind, targetId])
+      .first()
+    if (!existing) return
+    await table.delete(existing.id!)
+    await loadUserData()
+  }
+
+  /** 某张卡是否被手动标记为「全部完成」 */
+  function isCardManuallyComplete(
+    kind: 'unit' | 'package',
+    targetId: string
+  ): boolean {
+    if (!targetId) return false
+    return cardCompletions.value.some(
+      (c) => c.kind === kind && c.targetId === targetId
+    )
   }
 
   /**
@@ -395,6 +488,7 @@ export const useUserDataStore = defineStore('userData', () => {
   return {
     mistakes,
     progress,
+    cardCompletions,
     loadUserData,
     addMistake,
     resolveMistake,
@@ -403,5 +497,8 @@ export const useUserDataStore = defineStore('userData', () => {
     recordProgress,
     markReviewedVirtual,
     recordAnswerEvent,
+    markCardComplete,
+    unmarkCardComplete,
+    isCardManuallyComplete,
   }
 })

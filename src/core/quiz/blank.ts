@@ -113,9 +113,39 @@ function partsMatch(u: string, c: string): boolean {
   return false
 }
 
-/** 按 `,` 切段（归一化后所有分隔符都已是 `,`），丢掉空段 */
+/**
+ * 按 `,` 切段（归一化后所有分隔符都已是 `,`），丢掉空段。
+ *
+ * ## ⚠️ 括号内的逗号**不是**空位分隔符
+ *
+ * `normalizeBlank` 会把顿号 `、` 变成逗号，于是答案 `省（直辖市、自治区）`
+ * 归一化后是 `省(直辖市,自治区)` —— 若无脑按逗号切，**一个空位会被切成三段**
+ * （`省(直辖市` / `自治区)`），段数与用户作答对不上，孩子填「直辖市」反被判错。
+ *
+ * 括号里的逗号是**并列备选之间**的分隔符（`省` 与 `直辖市、自治区` 是同一空的
+ * 三种可接受写法），不是「第二个空」。所以这里做**括号深度保护**：只在深度 0
+ * 处切。
+ *
+ * 这是**修正**而非放宽：题库里的多空答案用逗号分隔空位，括号内的逗号从来不是
+ * 空位分隔符。改前 `6,省（直辖市、自治区）` 被切成 3 段（答案本来只有 2 个空），
+ * 改后才是正确的 2 段。
+ */
 function splitCommaParts(text: string): string[] {
-  return text.split(',').map((s) => s.trim()).filter(Boolean)
+  const parts: string[] = []
+  let depth = 0
+  let buf = ''
+  for (const ch of text) {
+    if (ch === '(' || ch === '（') depth++
+    else if (ch === ')' || ch === '）') depth = Math.max(0, depth - 1)
+    if (ch === ',' && depth === 0) {
+      parts.push(buf)
+      buf = ''
+      continue
+    }
+    buf += ch
+  }
+  parts.push(buf)
+  return parts.map((s) => s.trim()).filter(Boolean)
 }
 
 /**
@@ -326,6 +356,163 @@ function gradeBlankAlternatives(userAnswer: unknown, correctAnswer: unknown): bo
 }
 
 /**
+ * 数字型答案的**度量单位后缀表**（长单位在前，避免「分」先于「分钟」命中）。
+ *
+ * ## 为什么要这张表
+ *
+ * 题库的既有约定是「单位写题干、answer 只填数字」（见本文件头「纯数字答案是
+ * 最大的一类」）。但**大量知识点卡题把单位写进了答案**：
+ * - `kd4-18-1`「1 周角=（　），1 平角=180 度」→ 答案 `360 度`
+ * - `kd4-34-1`「四边形的内角和是（　）。」→ 答案 `360 度`
+ * - `kd4-14-3`「每一份多对应的角的大小是（　）。」→ 答案 `1 度`
+ * - `m4-u3-ex-012`「总质量一共是多少克？」→ 答案 `15174克`
+ *
+ * 这些题里**孩子填 `30`（或 `360`）是标准答案在题干语境下的正确写法**，
+ * 却因为答案串里多带一个单位被判错 —— 这是「正确答案被判错」，必须修。
+ *
+ * ## 为什么只限「数字型」答案
+ *
+ * 单位通道只在**答案与作答都是 `<数字><可选单位>` 形态**时启用。文字型答案
+ * （`排比` / `省` / `易变形`）完全不受影响 —— 这样通道的爆炸半径被压到最小：
+ * 它只能影响本来就该判对的数字题，不可能把文字题判松。
+ *
+ * ## 为什么要有白名单而不是「随便剥后缀」
+ *
+ * 无白名单地剥后缀会把 `15万` 判成 `15`（答案 `15`，孩子答 `15万` → 对），
+ * 也会把 `2个` 判成 `2`（这倒是对的）。白名单把「万」「千」「倍」这类**不是
+ * 单位的数词修饰**挡在外面 —— `85 千米/时` 的斜杠形式也因不在白名单而被排除。
+ */
+const MEASURE_UNITS: readonly string[] = [
+  '平方千米', '平方厘米', '平方分米', '平方毫米',
+  '立方厘米', '立方分米', '立方米',
+  '平方米', '公顷', '千米', '厘米', '毫米', '分米',
+  '千克', '公斤', '分钟', '小时', '星期',
+  '米', '克', '吨', '元', '角', '度',
+  '条', '只', '个', '本', '支', '辆', '棵', '朵', '张', '册', '页', '人', '天', '秒',
+  '°',
+]
+
+/** `<数字><可选单位>` 的形态：数字部分只允许数字与小数点（归一化后空格已删） */
+const NUM_UNIT_RE = /^(\d+(?:\.\d+)?)(.*)$/
+
+/**
+ * 把一个归一化后的串拆成「数值 + 单位」。形态不匹配时返回 `null`。
+ *
+ * @param text 已 `normalizeBlank` 的字符串
+ */
+function splitNumberUnit(text: string): { value: number; unit: string } | null {
+  const m = NUM_UNIT_RE.exec(text)
+  if (!m) return null
+  const unit = m[2]
+  // 单位要么为空，要么必须命中白名单；命中不了就整体放弃（不做「剥掉任意后缀」）
+  if (unit !== '' && !MEASURE_UNITS.includes(unit)) return null
+  return { value: Number(m[1]), unit }
+}
+
+/**
+ * 单位后缀容错通道：**「答案带单位 ↔ 孩子只写数字」单向兼容**。
+ *
+ * - 答案 `360 度` ↔ 用户 `360` → 判对（题干已给单位时孩子只写数字是标准写法）；
+ * - 答案 `360 度` ↔ 用户 `360 度` → 判对（原样，严格路径已命中）；
+ * - 答案 `360 度` ↔ 用户 `360 米` → **判错**（单位不一致不是笔误）。
+ *
+ * ## 为什么是**单向**的（答案带单位 → 用户不带）
+ *
+ * 反方向（答案 `10000`、用户 `10000千克`）**刻意不放行**：既有回归护栏
+ * `gradeBlank('10000千克', '10000') === false` 明确钉死了「单段答案不做子串容错，
+ * 带单位不算对」。那是一条**故意**的严格规则（避免 `15万` 蒙对 `15`），
+ * 不能为了修一个缺陷去推翻另一条护栏。
+ *
+ * 用户报的那个场景恰好是单向的：**答案给的是 `30 度`，孩子填 `30`** —— 答案多带了
+ * 单位才是错的那一方。方向对上了，护栏也保住了。
+ *
+ * ## 安全边界
+ *
+ * 1. 只处理**单段**答案（多空答案的每一段由 `partsMatch` 负责，不走这里）；
+ * 2. 两侧都必须是 `<数字><可选单位>` 形态 —— 文字答案完全不受影响；
+ * 3. 数值必须完全相等（`360` ≠ `360.5`），不做近似；
+ * 4. 用户单位要么为空、要么与答案单位相同 —— 两边都带且不同则判错。
+ *
+ * @param userAnswer 用户原始输入
+ * @param correctAnswer 正确答案
+ */
+function gradeBlankUnits(userAnswer: unknown, correctAnswer: unknown): boolean {
+  const ua = normalizeBlank(userAnswer)
+  const ca = normalizeBlank(correctAnswer)
+  if (!ua || !ca) return false
+
+  const u = splitNumberUnit(ua)
+  const c = splitNumberUnit(ca)
+  if (!u || !c) return false
+  // 答案没带单位 → 不走本通道（反向兼容被既有护栏钉死为 false）
+  if (c.unit === '') return false
+  if (u.value !== c.value) return false
+  return u.unit === '' || u.unit === c.unit
+}
+
+/**
+ * 括号里的并列补充说明 ——「括号外的主干」与「括号内的每一项」都是可接受答案。
+ *
+ * ## 修的缺陷
+ *
+ * `省（直辖市、自治区）` 这类答案：**单空**时只有 `gradeBlankStrict` 的两条
+ * 规则生效（完全一致 / 去括号后一致），于是
+ * - 填 `省` → 判对（去括号后相等）；
+ * - 填 `直辖市` → **判错**（正确答案里明明写着「直辖市」）；
+ * - 填 `自治区` → **判错**（同上）。
+ *
+ * 也就是说**孩子照着答案括号里的内容填，反被判错**。多空路径因为走
+ * `partsMatch` 的 `c.includes(u)` 子串规则侥幸没这个问题，单空路径是真空。
+ *
+ * ## 为什么限定「单空」
+ *
+ * 多空答案的每一段本来就由 `partsMatch` 处理（含子串规则），不需要这条通道；
+ * 混进来反而会让「只填了第一个空」被误判为对。
+ *
+ * ## 单空判定：先剥括号内容再看逗号
+ *
+ * 判定「是不是多空」时**先把括号整段剥掉**再数逗号：
+ * - `省（直辖市、自治区）` → 剥后 `省` → 1 段 → 单空 → 走本通道 ✓
+ * - `两组（或多组），图例` → 剥后 `两组，图例` → 2 段 → 多空 → 不走本通道 ✓
+ *
+ * 直接看原文会被括号内的逗号骗到（`省(直辖市,自治区)` 会被当成多空）。
+ *
+ * @param userAnswer 用户原始输入
+ * @param correctAnswer 正确答案
+ */
+function gradeBlankParenAlternatives(userAnswer: unknown, correctAnswer: unknown): boolean {
+  const rawCorrect = String(correctAnswer ?? '')
+  if (!rawCorrect) return false
+
+  // 剥掉括号内容后再数分隔符：括号内的逗号是「备选之间的逗号」，不是空位分隔符
+  if (/[,，;；]/.test(stripParentheses(rawCorrect))) return false
+
+  const ua = normalizeBlank(userAnswer)
+  if (!ua) return false
+
+  const m = /[（(]([^（()）]*)[）)]/.exec(rawCorrect)
+  if (!m) return false
+
+  const head = rawCorrect.slice(0, m.index).trim()
+  const inner = m[1] ?? ''
+  // 括号内按顿号/逗号切出并列项
+  const inners = inner
+    .split(/[、,，]/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+  // 上限 6 项：括号里塞一长串说明文字时多半不是「并列备选」，不放行
+  if (inners.length === 0 || inners.length > 6) return false
+
+  const candidates = [head, ...inners]
+    .filter(Boolean)
+    .map((s) => normalizeBlank(s))
+    .filter(Boolean)
+  if (candidates.length === 0) return false
+
+  return candidates.includes(ua)
+}
+
+/**
  * 数组答案路径：按**元素边界**切段，元素内部不再二次切分。
  *
  * ## 修的缺陷
@@ -386,7 +573,9 @@ function gradeBlankArray(userAnswer: unknown, correctAnswer: unknown): boolean {
  * 1. `gradeBlankStrict` —— 既有语义（完全一致 → 括号容错 → 多空按位置）；
  * 2. `gradeBlankArray` —— 数组答案按元素边界切段（修顿号膨胀段数）；
  * 3. `gradeBlankSpaced` —— 空格/标点都当分隔符（`排比 比喻`）；
- * 4. `gradeBlankAlternatives` —— 斜杠备选答案（`aren't / are not` 只写一个也判对）。
+ * 4. `gradeBlankAlternatives` —— 斜杠备选答案（`aren't / are not` 只写一个也判对）；
+ * 5. `gradeBlankUnits` —— 数字型答案的单位后缀容错（`360 度` ↔ `360`）；
+ * 6. `gradeBlankParenAlternatives` —— 括号里的并列补充（`省（直辖市、自治区）` 填任一项都对）。
  *
  * 刻意不做部分给分：`AnswerPayload.isCorrect` 是 boolean，直接驱动 BKT 概率、
  * FSRS 排期、掌握四态、错题三级、成就打卡 —— 改成分数要穿透五层内核，
@@ -416,5 +605,11 @@ export function gradeBlank(userAnswer: unknown, correctAnswer: unknown): boolean
   if (gradeBlankSpaced(userAnswer, correctAnswer)) return true
 
   // 4. 斜杠备选（`aren't / are not`）
-  return gradeBlankAlternatives(userAnswer, correctAnswer)
+  if (gradeBlankAlternatives(userAnswer, correctAnswer)) return true
+
+  // 5. 数字 + 单位后缀（`360 度` ↔ `360`）
+  if (gradeBlankUnits(userAnswer, correctAnswer)) return true
+
+  // 6. 括号里的并列补充（`省（直辖市、自治区）` 填任一项都对）
+  return gradeBlankParenAlternatives(userAnswer, correctAnswer)
 }

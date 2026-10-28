@@ -25,21 +25,28 @@
       "type": "poem",
       "title": "神话故事《精卫填海》古文基础与精神内涵",
       "content": "出自《山海经》：“炎帝之少女，名曰女娃。女娃游于东海，溺而不返，故为精卫，常衔西山之木石，以堙于东海。” 体现了坚持不懈、永不放弃的抗争精神。",
-      "prerequisites": ["kp-chinese-014"]
+      "prerequisites": [
+        "kp-chinese-014"
+      ]
     },
     {
       "id": "kp-chinese-016",
       "type": "concept",
       "title": "神话故事《普罗米修斯》情节梳理",
       "content": "古希腊神话，普罗米修斯为人类盗取火种，忍受宙斯残酷惩罚，始终不肯屈服。最终大力神赫拉克勒斯解救了他，展现了普罗米修斯为民造福、不畏强权的伟大精神。",
-      "prerequisites": ["kp-chinese-014"]
+      "prerequisites": [
+        "kp-chinese-014"
+      ]
     },
     {
       "id": "kp-chinese-017",
       "type": "concept",
       "title": "神话故事《女娲补天》传统文化知识点",
       "content": "中国经典神话，水神共工撞断不周山，天塌下大窟窿，女娲炼五色石补天，斩神龟四足撑天，拯救了苍生百姓。是中国古代神话中母系英雄的经典代表。",
-      "prerequisites": ["kp-chinese-015", "kp-chinese-016"]
+      "prerequisites": [
+        "kp-chinese-015",
+        "kp-chinese-016"
+      ]
     }
   ],
   "exercises": [
@@ -47,49 +54,91 @@
       "id": "u4-ex-001",
       "type": "single",
       "question": "《盘古开天地》中，盘古用来劈开混沌的是一把（ ）。",
-      "options": ["A. 宝剑", "B. 板斧", "C. 木棒", "D. 神杖"],
+      "options": [
+        "A. 宝剑",
+        "B. 板斧",
+        "C. 木棒",
+        "D. 神杖"
+      ],
       "answer": "B",
       "explanation": "传说盘古用一把大板斧劈开了混沌，天和地从此分开，他的身体化作了世间万物。",
-      "knowledgePointIds": ["kp-chinese-014"],
-      "metadata": { "difficulty": "基础" }
+      "knowledgePointIds": [
+        "kp-chinese-014"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
     },
     {
       "id": "u4-ex-002",
       "type": "blank",
       "question": "《精卫填海》中“女娃游于东海，溺而不返，故为精卫”，其中“溺”的意思是______。",
-      "answer": ["淹没、淹死"],
+      "answer": "淹没（淹死）",
       "explanation": "“溺”是淹没、淹死的意思。女娃在东海游玩时溺水身亡，化为精卫鸟，衔木石填海，体现了坚韧执着的精神。",
-      "knowledgePointIds": ["kp-chinese-015"],
-      "metadata": { "difficulty": "提高" }
+      "knowledgePointIds": [
+        "kp-chinese-015"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
     },
     {
       "id": "u4-ex-003",
       "type": "multiple",
       "question": "下列属于神话故事的有（ ）。",
-      "options": ["A. 盘古开天地", "B. 女娲补天", "C. 普罗米修斯", "D. 田忌赛马"],
-      "answer": ["A", "B", "C"],
+      "options": [
+        "A. 盘古开天地",
+        "B. 女娲补天",
+        "C. 普罗米修斯",
+        "D. 田忌赛马"
+      ],
+      "answer": [
+        "A",
+        "B",
+        "C"
+      ],
       "explanation": "盘古开天地、女娲补天是中国的神话，普罗米修斯是古希腊神话；田忌赛马是历史故事，出自《史记》。",
-      "knowledgePointIds": ["kp-chinese-017"],
-      "metadata": { "difficulty": "提高" }
+      "knowledgePointIds": [
+        "kp-chinese-017"
+      ],
+      "metadata": {
+        "difficulty": "提高"
+      }
     },
     {
       "id": "u4-ex-004",
       "type": "single",
       "question": "在古希腊神话中，普罗米修斯为人类做的一件大事是（ ）。",
-      "options": ["A. 开天辟地", "B. 盗取火种", "C. 补天填海", "D. 创造文字"],
+      "options": [
+        "A. 开天辟地",
+        "B. 盗取火种",
+        "C. 补天填海",
+        "D. 创造文字"
+      ],
       "answer": "B",
       "explanation": "普罗米修斯冒着生命危险为人类盗取天火，忍受宙斯的残酷惩罚，体现了他为民造福、不畏强权的精神。",
-      "knowledgePointIds": ["kp-chinese-016"],
-      "metadata": { "difficulty": "基础" }
+      "knowledgePointIds": [
+        "kp-chinese-016"
+      ],
+      "metadata": {
+        "difficulty": "基础"
+      }
     },
     {
       "id": "u4-ex-005",
       "type": "blank",
       "question": "写“我和______过一天”，要选择一位神话人物，展开丰富的______，把这神奇的一天写清楚。",
-      "answer": ["想象"],
+      "answer": [
+        "想象",
+        "想象"
+      ],
       "explanation": "这是一个想象类习作，要大胆想象与神话人物相处的场景，同时注意把事情的经过写具体、写清楚。",
-      "knowledgePointIds": ["kp-chinese-017"],
-      "metadata": { "difficulty": "挑战" }
+      "knowledgePointIds": [
+        "kp-chinese-017"
+      ],
+      "metadata": {
+        "difficulty": "挑战"
+      }
     }
   ],
   "units": [
@@ -102,21 +151,29 @@
         {
           "id": "u4-t1",
           "title": "中国神话·盘古与精卫、女娲",
-          "knowledgePointIds": ["kp-chinese-014", "kp-chinese-015", "kp-chinese-017"],
+          "knowledgePointIds": [
+            "kp-chinese-014",
+            "kp-chinese-015",
+            "kp-chinese-017"
+          ],
           "modules": [],
           "exercises": []
         },
         {
           "id": "u4-t2",
           "title": "希腊神话·普罗米修斯",
-          "knowledgePointIds": ["kp-chinese-016"],
+          "knowledgePointIds": [
+            "kp-chinese-016"
+          ],
           "modules": [],
           "exercises": []
         },
         {
           "id": "u4-t3",
           "title": "习作·我和神话人物过一天",
-          "knowledgePointIds": ["kp-chinese-017"],
+          "knowledgePointIds": [
+            "kp-chinese-017"
+          ],
           "modules": [],
           "exercises": []
         }

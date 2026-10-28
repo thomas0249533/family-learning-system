@@ -33,6 +33,21 @@
                 <span class="unit-card-meta">
                   {{ ru.unit.topics?.length ?? 0 }} 个主题
                 </span>
+                <!-- V2.12.3 · 完成度提示：这摊内容里还有几道题没攻克（错题本里未掌握） -->
+                <span v-if="pendingMistakes(ru) > 0" class="unit-card-pending">
+                  还有 {{ pendingMistakes(ru) }} 道待攻克
+                </span>
+                <!-- V2.12.3 · 手动「全部完成」：自动判定覆盖不到时的兜底（可撤销） -->
+                <button
+                  v-if="unitStatus(ru) !== 'mastered' || isManualComplete(ru)"
+                  class="unit-card-flag"
+                  type="button"
+                  :aria-pressed="isManualComplete(ru)"
+                  :title="isManualComplete(ru) ? '取消「全部完成」标记' : '标记为已全部掌握'"
+                  @click.stop="toggleComplete(ru)"
+                >
+                  {{ isManualComplete(ru) ? '✓ 已标记' : '✓ 全完成' }}
+                </button>
               </div>
             </div>
             <div class="unit-card-arrow">→</div>
@@ -60,9 +75,13 @@ import {
   CARD_STATUS_LABEL,
   CARD_STATUS_MARK,
   cardStatusClass,
-  unitCardStatusOf,
   type CardStatus,
 } from '@core/learning/cardStatus'
+import {
+  completionStatusOf,
+  pendingMistakeCount,
+  scopeOfUnit,
+} from '@core/learning/completion'
 import { buildOwnerIndex, type OwnerIndex } from '@core/progress/ownerIndex'
 import ExamPanel from './ExamPanel.vue'
 
@@ -89,25 +108,80 @@ const ownerIndex = computed<OwnerIndex>(() => buildOwnerIndex(packageStore.packa
 /**
  * D1 · 单元 → 卡片状态。**一次算完一整屏**，模板只查表。
  *
- * 两个细节：
+ * 三个细节：
  *   1. 归属包用 `ru.sourcePackageId` 而非路由上的入口包 —— 学期/专项包会把依赖包的
  *      单元聚合进来，进度行落在**归属包**上，拿入口包去查会一律「未学」。
  *   2. `userDataStore.progress` 在 computed 里被读到 → 学习记录变化会自动重算，
  *      不需要手动刷新（从单元里学完返回本页即可见状态变化）。
- *   3. 聚合走 **`progress` 模式**（`unitCardStatusOf` 内部固定传）：单元是「任务」，
+ *   3. 聚合走 **`progress` 模式**（`completionStatusOf` 内部固定传）：单元是「任务」，
  *      用户问的是「这个单元我推进到哪了」，不是「里面有没有一个知识点到期了」。
  *      混着未学时不会因为一个到期项就整卡变红 —— 理由见 `cardStatus.ts` 文件头。
+ *
+ * ## V2.12.3 · 「全部完成」判定
+ *
+ * 单元状态现在多了一条**题目级**通道（见 `@core/learning/completion` 的文件头）：
+ * 所有知识点都学过 + 范围内没有未掌握的错题 → 判「已掌握」。
+ * 这条通道解决的是「没全做对就得把整天从头重做一遍」的老毛病。
  */
 const statusByUnitId = computed<Map<string, CardStatus>>(() => {
   const map = new Map<string, CardStatus>()
   for (const ru of resolvedUnits.value) {
-    map.set(ru.unit.id, unitCardStatusOf(ru.unit, ru.sourcePackageId, userDataStore.progress, ownerIndex.value))
+    const scope = scopeOfUnit(ru.unit)
+    map.set(
+      ru.unit.id,
+      completionStatusOf({
+        entryPackageId: ru.sourcePackageId,
+        kpIds: scope.kpIds,
+        exerciseIds: scope.exerciseIds,
+        progress: userDataStore.progress,
+        mistakes: userDataStore.mistakes,
+        ownerIndex: ownerIndex.value,
+        manual: userDataStore.isCardManuallyComplete('unit', ru.unit.id),
+      })
+    )
   }
   return map
 })
 
 function unitStatus(ru: ResolvedUnit): CardStatus {
   return statusByUnitId.value.get(ru.unit.id) ?? 'none'
+}
+
+/**
+ * 这张卡里还有几道题没攻克（错题本里尚未连对 2 次的题）。
+ *
+ * 用途：**告诉用户差什么**。原来「没变绿」是个黑箱，用户只能把整天重做一遍；
+ * 现在他能直接看到「还有 3 道待攻克」，知道去错题本攻哪几道就能变绿。
+ */
+function pendingMistakes(ru: ResolvedUnit): number {
+  const scope = scopeOfUnit(ru.unit)
+  return pendingMistakeCount({
+    entryPackageId: ru.sourcePackageId,
+    kpIds: scope.kpIds,
+    exerciseIds: scope.exerciseIds,
+    progress: userDataStore.progress,
+    mistakes: userDataStore.mistakes,
+    ownerIndex: ownerIndex.value,
+  })
+}
+
+/** 是否被手动标记为「全部完成」 */
+function isManualComplete(ru: ResolvedUnit): boolean {
+  return userDataStore.isCardManuallyComplete('unit', ru.unit.id)
+}
+
+/**
+ * 手动「全部完成」的开关。
+ *
+ * 只写 `cardCompletions` 表，**绝不**碰 `progress.status` —— 掌握度统计要保持干净
+ * （理由见 `@core/learning/completion` 的文件头与 `userData.ts` 的同名方法注释）。
+ */
+function toggleComplete(ru: ResolvedUnit) {
+  if (isManualComplete(ru)) {
+    void userDataStore.unmarkCardComplete('unit', ru.unit.id)
+  } else {
+    void userDataStore.markCardComplete('unit', ru.sourcePackageId, ru.unit.id)
+  }
 }
 
 onMounted(async () => {
@@ -297,6 +371,44 @@ function selectUnit(ru: ResolvedUnit) {
     }
 
     .unit-card-meta { white-space: nowrap; }
+
+    /* V2.12.3 · 「还有 N 道待攻克」提示：告诉用户差什么，而不是让他把整天重做一遍 */
+    .unit-card-pending {
+      white-space: nowrap;
+      color: var(--warning-text, $text-muted);
+    }
+
+    /* V2.12.3 · 手动「全部完成」开关。视觉语言对齐包列表里的分享按钮（小圆角方块） */
+    .unit-card-flag {
+      flex-shrink: 0;
+      padding: 2px 8px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid $border-color;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: $text-muted;
+      font-size: 11px;
+      line-height: 1.6;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: var(--bg-color-hover);
+        color: $primary-text;
+        border-color: $primary-color;
+      }
+
+      &:focus-visible {
+        outline: var(--focus-ring-w) solid var(--focus-ring);
+      }
+
+      &[aria-pressed='true'] {
+        background: var(--badge-success-bg);
+        color: var(--success-text);
+        border-color: transparent;
+      }
+    }
   }
 
   .unit-card-arrow {

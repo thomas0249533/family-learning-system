@@ -7,6 +7,16 @@ import type { BktState } from '../core/mastery/bkt';
 import { migrateProgressV3 } from '../core/storage/migrateV3';
 import { migrateProfileV4 } from '../core/storage/migrateV4';
 
+/**
+ * Dexie 的 `Table` 类型从这里再导出一次。
+ *
+ * 为什么：调用方要声明「某张表可能不存在」（见 `core/stores/userData.ts` 的
+ * `cardCompletionsTable` —— 单测的 fakeDexie 只实现了 6 张表），需要拿到
+ * `Table<Row, Key>` 这个类型。让调用方直接 `import { type Table } from 'dexie'`
+ * 会绕过本文件这一层，读者也看不出「为什么这里要 Dexie 的类型」。
+ */
+export type { Table };
+
 export interface LearningPackageRecord {
   packageId: string;
   manifest: LearningPackageManifest;
@@ -189,6 +199,33 @@ export interface PackageAssetRecord {
   createdAt: string;
 }
 
+export interface CardCompletionRecord {
+  /** 自增主键（Dexie 生成） */
+  id?: number;
+  /** 归属档案（V1.4 · B1 规则：必填，取值只有 `currentProfileId()` 一个来源） */
+  profileId: string;
+  /**
+   * 卡片种类：
+   * - `unit`    —— 每日打卡的「一天」/ 专项练习的「知识点章节」（单元）
+   * - `package` —— 整个学习包（包列表里那张卡）
+   */
+  kind: 'unit' | 'package';
+  /** 入口包 id（`ru.sourcePackageId` 或包自身的 `packageId`） */
+  packageId: string;
+  /** 卡片 id：单元 id 或包 id */
+  targetId: string;
+  createdAt: string;
+  /**
+   * ⚠️ **不进备份、不进合并**（与 `topicSessions` / `customSounds` / `packageAssets`
+   * 同一条边界）。
+   *
+   * 理由：这是一条**便利性**标记，不是学习数据 —— 真正的学习数据（进度、错题）
+   * 都在备份里，跨设备后**自动判定**照样能把卡片判绿（错题本里已掌握的题仍算已掌握）。
+   * 手动标记丢了最多是「卡片暂时显示为学习中」，点一下就能补回来。
+   * 而给 `Bundle` 契约加字段要同时改导出 / 导入 / 合并三处 + 备份字段集合测试，
+   * 收益远小于风险。
+   */
+}
 export class FamilyLearningDB extends Dexie {
   packages!: Table<LearningPackageRecord, string>;
   progress!: Table<ProgressRecord, number>;
@@ -198,6 +235,7 @@ export class FamilyLearningDB extends Dexie {
   topicSessions!: Table<TopicSessionRecord, number>;
   customSounds!: Table<CustomSoundRecord, number>;
   packageAssets!: Table<PackageAssetRecord, number>;
+  cardCompletions!: Table<CardCompletionRecord, number>;
 
   constructor() {
     super('FamilyLearningDB');
@@ -285,6 +323,34 @@ export class FamilyLearningDB extends Dexie {
       topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt',
       customSounds: '++id, [profileId+soundId], profileId, createdAt',
       packageAssets: '++id, [packageId+path], packageId'
+    });
+    // V2.12.3 · 学习卡片的**手动「全部完成」标记**（纯新增表，无存量数据要搬 →
+    // **不写 upgrade 钩子**，与 v5 加 topicSessions、v6 加 customSounds、v7 加
+    // packageAssets 的处理一致：加钩子只会多一条「迁移失败」的失败路径）。
+    //
+    // ## 为什么单独一张表，而不是写进 `progress.status`
+    //
+    // `progress.status` 是 BKT / FSRS / 掌握率统计 / 成就 / 弱项推荐的共同输入。
+    // 「一键把某天的 status 改成已掌握」会污染这一整条链的统计口径 —— 这正是
+    // V2.4「虚拟 Good」踩过的红线（见 `core/stores/userData.ts` 的
+    // `markReviewedVirtual` 注释：绝不写 status / bkt / correctCount / wrongCount）。
+    //
+    // 所以手动标记**独立存**，只在卡片渲染时作为 override 生效：
+    // 掌握率统计仍然是原来那套干净口径，且标记可以随时撤销。
+    //
+    // 索引 `[profileId+kind+targetId]`：一个档案的同一张卡只该有一行标记；
+    // 重复标记走 update（幂等），取消标记走 delete。
+    this.version(8).stores({
+      packages: 'packageId, manifest.subject, manifest.grade',
+      progress:
+        '++id, [profileId+packageId+knowledgePointId], [profileId+packageId], profileId, status',
+      mistakes: '++id, [profileId+exerciseId], packageId, profileId, mastered',
+      settings: 'key',
+      examSessions: '++id, [profileId+packageId], profileId, status, startedAt',
+      topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt',
+      customSounds: '++id, [profileId+soundId], profileId, createdAt',
+      packageAssets: '++id, [packageId+path], packageId',
+      cardCompletions: '++id, [profileId+kind+targetId], profileId, kind'
     });
   }
 }

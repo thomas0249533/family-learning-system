@@ -410,3 +410,118 @@ describe('gradeBlank · 数组答案按元素边界切段', () => {
     expect(gradeBlank('', ['甲'])).toBe(false)
   })
 })
+
+/**
+ * V2.12.3 · 数字型答案的**单位后缀容错**。
+ *
+ * 修的缺陷：题库约定「单位写题干、answer 只填数字」，但大量知识点卡题把单位写进了
+ * 答案（`360 度` / `1 度` / `100 公顷` / `15174克`），孩子按题干语境填数字反被判错。
+ *
+ * 护栏两条：① 只影响「数字 + 可选单位」形态，文字答案语义零变化；
+ * ② 单位不一致时必须判错（`360 度` ≠ `360 米`）。
+ */
+describe('gradeBlank · 数字 + 单位后缀容错', () => {
+  // content/math-4-up-rjb/special-math-4-up-kaodian.json :: kd4-18-1
+  const ZHOUJIAO = '360 度'
+  // content/math-4-up-rjb/special-math-4-up-kaodian.json :: kd4-14-3
+  const YI_DU = '1 度'
+  // content/math-4-up-rjb/special-math-4-up-kaodian.json :: kd4-34-1
+  const NEIJIAO = '360 度'
+  // content/math-4-up-rjb/special-math-4-up-u3.json :: m4-u3-ex-012
+  const KE = '15174克'
+  // content/math-4-up-rjb/special-math-4-up-kaodian.json :: kd4-10-1
+  const GONGQING = '100 公顷'
+
+  it('答案带单位、孩子只写数字 → 判对', () => {
+    expect(gradeBlank('360', ZHOUJIAO)).toBe(true)
+    expect(gradeBlank('1', YI_DU)).toBe(true)
+    expect(gradeBlank('360', NEIJIAO)).toBe(true)
+    expect(gradeBlank('15174', KE)).toBe(true)
+    expect(gradeBlank('100', GONGQING)).toBe(true)
+  })
+
+  it('答案带单位、孩子也写单位 → 判对（原样）', () => {
+    expect(gradeBlank('360度', ZHOUJIAO)).toBe(true)
+    expect(gradeBlank('1度', YI_DU)).toBe(true)
+    expect(gradeBlank('15174克', KE)).toBe(true)
+  })
+
+  it('答案不带单位、孩子多写了单位 → **判错**（反向不放行：既有护栏钉死）', () => {
+    // 既有回归护栏：gradeBlank('10000千克', '10000') === false
+    // 「15万」蒙对「15」是这条严格规则要挡的事，不能为修一个缺陷推翻它。
+    expect(gradeBlank('30度', '30')).toBe(false)
+    expect(gradeBlank('10000千克', '10000')).toBe(false)
+  })
+
+  it('数值不一致 → 判错', () => {
+    expect(gradeBlank('180', ZHOUJIAO)).toBe(false)
+    expect(gradeBlank('360.5', ZHOUJIAO)).toBe(false)
+  })
+
+  it('单位不一致（两边都带且不同）→ 判错', () => {
+    expect(gradeBlank('360米', ZHOUJIAO)).toBe(false)
+    expect(gradeBlank('360度', '360米')).toBe(false)
+  })
+
+  it('单位不在白名单 → 不做后缀兼容（`85 千米/时` 的斜杠形式）', () => {
+    // content/math-4-up-rjb/daily-math-4-up-rjb-45d.json :: d45-26-x01
+    expect(gradeBlank('85', '85 千米/时')).toBe(false)
+    expect(gradeBlank('85千米/时', '85 千米/时')).toBe(true)
+  })
+
+  it('文字型答案完全不受影响（通道只吃数字形态）', () => {
+    expect(gradeBlank('排比', '排比')).toBe(true)
+    expect(gradeBlank('比喻', '排比')).toBe(false)
+    expect(gradeBlank('易变形', '易变形')).toBe(true)
+  })
+
+  it('「万」「千」这类数词修饰不是单位 → 不被剥掉', () => {
+    expect(gradeBlank('15万', '15')).toBe(false)
+    expect(gradeBlank('15', '15万')).toBe(false)
+  })
+})
+
+/**
+ * V2.12.3 · 括号里的**并列补充说明**。
+ *
+ * 修的缺陷：`省（直辖市、自治区）` 这种答案，单空路径只认「完全一致」与「去括号后
+ * 一致」两条规则 —— 孩子填括号里的「直辖市」「自治区」会被判错，而那明明写在答案上。
+ */
+describe('gradeBlank · 括号里的并列补充（单空）', () => {
+  // content/math-4-up-rjb/unit-math-4-up-rjb-p2.json :: u2-ex-002（多空，见下一组）
+  const SHENG = '省（直辖市、自治区）'
+
+  it('填括号外的主干 → 判对（既有语义，回归护栏）', () => {
+    expect(gradeBlank('省', SHENG)).toBe(true)
+  })
+
+  it('填括号里的任一项 → 判对', () => {
+    expect(gradeBlank('直辖市', SHENG)).toBe(true)
+    expect(gradeBlank('自治区', SHENG)).toBe(true)
+  })
+
+  it('填不相关的内容 → 判错', () => {
+    expect(gradeBlank('北京市', SHENG)).toBe(false)
+    expect(gradeBlank('', SHENG)).toBe(false)
+  })
+
+  it('多空答案的某一段带括号 → 仍按位置比对（多空走 partsMatch，不走本通道）', () => {
+    // content/math-4-up-rjb/unit-math-4-up-rjb-p2.json :: u2-ex-002
+    expect(gradeBlank('6,省', '6,省（直辖市、自治区）')).toBe(true)
+    expect(gradeBlank('6,直辖市', '6,省（直辖市、自治区）')).toBe(true)
+    expect(gradeBlank('6,自治区', '6,省（直辖市、自治区）')).toBe(true)
+    // 只填一个空仍然判错（多空全或无）
+    expect(gradeBlank('6', '6,省（直辖市、自治区）')).toBe(false)
+  })
+
+  it('括号里只有一项时等价于「主干 / 该项」二选一', () => {
+    expect(gradeBlank('长度', '长度（高度）')).toBe(true)
+    expect(gradeBlank('高度', '长度（高度）')).toBe(true)
+    expect(gradeBlank('宽度', '长度（高度）')).toBe(false)
+  })
+
+  it('括号里塞一长串说明（>6 项）→ 不放行', () => {
+    const long = '甲（乙、丙、丁、戊、己、庚、辛）'
+    expect(gradeBlank('庚', long)).toBe(false)
+  })
+})

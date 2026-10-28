@@ -1373,7 +1373,7 @@
               "id": "kd4-40-1",
               "type": "blank",
               "question": "除数不变，被除数乘或者除以几，商也会（　）",
-              "answer": "乘或者除以几",
+              "answer": "乘或除以相同的数",
               "explanation": "考点 40：除数不变，被除数乘或者除以几，商也会（乘或者除以几）",
               "knowledgePointIds": [
                 "kp-kd6"

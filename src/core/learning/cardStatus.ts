@@ -227,8 +227,11 @@ type StatusIndex = ReadonlyMap<string, MasteryStatus>
  * 代价：每次调用都会重算一次表。调用方是 `computed`/渲染函数，输入（卡片数 ×
  * 进度行数）在本仓量级（≤ 数百行）下是一次线性遍历，不做缓存——缓存键只能是数组
  * 引用，而 pinia 把数组换成新引用时 WeakMap 会漏判，得不偿失。
+ *
+ * **导出**：`@core/learning/completion` 的「全部完成」判定要复用同一张表 ——
+ * 两处各自建表会出现「卡片说已掌握、完成度说没学完」的口径分裂。
  */
-function buildStatusIndex(progress: readonly ProgressRecord[]): StatusIndex {
+export function buildStatusIndex(progress: readonly ProgressRecord[]): StatusIndex {
   const index = new Map<string, MasteryStatus>()
   const rows: ProgressRecord[] = []
 
@@ -284,8 +287,10 @@ function statusOf(index: StatusIndex, packageId: string, kpId: string): MasteryS
  * `sourcePackageId` 本就等于归属包的情况）。
  *
  * 不传 `ownerIndex` 时退化为 `statusOf`（旧行为，单测可无索引直接喂数据）。
+ *
+ * **导出**：`@core/learning/completion` 的「全部完成」判定复用它，保证两处口径一致。
  */
-function statusOfOwner(
+export function statusOfOwner(
   index: StatusIndex,
   packageId: string,
   kpId: string,
