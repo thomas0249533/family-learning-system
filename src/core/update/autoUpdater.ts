@@ -13,6 +13,7 @@
 import { check } from '@tauri-apps/plugin-updater'
 import { relaunch } from '@tauri-apps/plugin-process'
 import { checkUpdate, type UpdateCheckResult } from './checkUpdate'
+import { manualDownloadUrls, type DownloadSource } from './downloadSources'
 
 export interface AutoUpdateProgress {
   downloaded: number
@@ -37,6 +38,12 @@ export interface AutoUpdateState {
   /** D-1 兜底结果（plugin 不可用时），UI 据此渲染「前往官网下载」链接 */
   fallback?: UpdateCheckResult
   error?: string
+  /**
+   * 下载失败时的手动兜底地址（V2.12.3）。
+   * 清单里每个平台只有一个安装包 URL，没有多源容错；那个 host 一旦被墙，
+   * 自动更新就只能失败。此时把同一份安装包的可达地址摆出来，让用户自己点。
+   */
+  manualDownloads?: DownloadSource[]
 }
 
 /**
@@ -102,6 +109,9 @@ export async function runAutoUpdate(
       phase: 'error',
       version: update.version,
       error: String(e?.message ?? e),
+      // 失败不能只留一句「更新失败」：清单里的下载 URL 是单点（无多源容错），
+      // 这里给出同一份安装包的两条直达链接，用户点一下即可手动安装。
+      manualDownloads: manualDownloadUrls(update.version),
     })
     return
   }

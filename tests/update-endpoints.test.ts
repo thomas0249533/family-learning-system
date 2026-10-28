@@ -14,9 +14,10 @@
  * 这类错误不会让任何单测变红，也不会让人在 review 时停一下——它只在
  * 「发版 30 分钟后家里点一下」这个场景里暴露。所以把地址钉在这里：
  * 主源必须是 Release 资产（`releases/latest/download/`，动态重定向、无长缓存），
- * 安装包必须是 `releases/download/v<ver>/` 直链，jsDelivr 只能排在后面兜底。
+ * 安装包必须是 jsDelivr 的 **tag 固定路径**（`@v<ver>/`，URL 从未被缓存、内容不变），
+ * jsDelivr 只能排在清单源的后面兜底。
  */
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
@@ -61,4 +62,79 @@ describe('更新链路 · 地址选择', () => {
     // 主源常量必须仍是候选列表的第一项（有单测固定这个不变量）
     expect(src).toMatch(/UPDATE_CHECK_CANDIDATES[\s\S]*?\[\s*\n?\s*UPDATE_CHECK_URL/)
   })
+})
+
+/**
+ * 下载兜底 · V2.12.3
+ *
+ * 清单里每个平台**只能写一个安装包 URL**（Tauri 的格式限制，没有多源容错），
+ * 所以「清单读得通、安装包下不动」是个真实存在的死角：用户只会看到一句
+ * 「更新失败：timeout」，而安装包其实早就挂在 Release 资产上了。
+ * 这组测试锁两件事：兜底地址必须指回同一个仓库的同一份文件；失败时必须真的给出来。
+ */
+describe('下载兜底 · 失败时能自己下', () => {
+  it('由版本号推导出两个可达地址，且文件名与 tauri.conf 的产物一致', async () => {
+    const { manualDownloadUrls, UPDATE_REPO, setupAssetName } = await import('@core/update/downloadSources')
+    const list = manualDownloadUrls('2.12.3')
+
+    expect(list).toHaveLength(2)
+    expect(setupAssetName('2.12.3')).toBe('FamilyLearningSystem_2.12.3_x64-setup.exe')
+
+    // ① GitHub Release 资产直链：能读到清单就说明这个 host 通，同一个 host 上安装包也通
+    expect(list[0].url).toBe(
+      `https://github.com/${UPDATE_REPO}/releases/latest/download/FamilyLearningSystem_2.12.3_x64-setup.exe`
+    )
+    // ② jsDelivr tag 固定路径：大陆可达性更好，且 tag 路径不会被 CDN 缓存
+    expect(list[1].url).toBe(
+      `https://cdn.jsdelivr.net/gh/${UPDATE_REPO}@v2.12.3/updates/2.12.3/FamilyLearningSystem_2.12.3_x64-setup.exe`
+    )
+    // @main 的分支缓存会让新版本的路径 404，这是 V2.12.1 的老坑
+    for (const s of list) expect(s.url).not.toContain('@main')
+    expect(manualDownloadUrls('v2.12.3')[0].url).toBe(list[0].url) // 容忍 v 前缀
+    expect(manualDownloadUrls('')).toEqual([])
+  })
+
+  it('兜底地址、清单候选源、安装包生成脚本必须同仓（否则指向不存在的资产）', () => {
+    const gen = read('scripts/gen-latest.mjs')
+    const chk = read('src/core/update/checkUpdate.ts')
+    const conf = JSON.parse(read('src-tauri/tauri.conf.json'))
+    const repoInGen = gen.match(/REPO\s*=\s*['"]([^'"]+)['"]/)
+    expect(repoInGen, 'gen-latest.mjs 里找不到 REPO 常量').toBeTruthy()
+    const repo = repoInGen![1]
+    expect(chk).toContain(`github.com/${repo}/`)
+    for (const u of conf.plugins.updater.endpoints as string[]) {
+      if (u.includes('github.com')) expect(u).toContain(repo)
+      if (u.includes('jsdelivr')) expect(u).toContain(repo)
+    }
+    const dl = read('src/core/update/downloadSources.ts')
+    expect(dl).toContain(repo)
+  })
+
+  it('下载抛错时，error 态必须带上 manualDownloads（不只是一句失败文案）', async () => {
+    vi.resetModules()
+    const checkMock = vi.fn()
+    vi.doMock('@tauri-apps/plugin-updater', () => ({ check: checkMock }))
+    vi.doMock('@tauri-apps/plugin-process', () => ({ relaunch: vi.fn() }))
+    checkMock.mockResolvedValue({
+      version: '2.12.3',
+      body: 'notes',
+      downloadAndInstall: async () => {
+        throw new Error('timeout')
+      },
+    })
+
+    const { runAutoUpdate } = await import('@core/update/autoUpdater')
+    const states: any[] = []
+    await runAutoUpdate('2.12.2', (s) => states.push(s))
+
+    const err = states.find((s) => s.phase === 'error')
+    expect(err, '没有进入 error 态').toBeTruthy()
+    expect(err.manualDownloads).toHaveLength(2)
+    expect(err.manualDownloads[0].url).toContain('/releases/latest/download/')
+    expect(err.manualDownloads[0].url).toContain('2.12.3')
+    vi.doUnmock('@tauri-apps/plugin-updater')
+    vi.doUnmock('@tauri-apps/plugin-process')
+  })
+
+  beforeEach(() => vi.resetModules())
 })

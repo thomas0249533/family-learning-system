@@ -88,7 +88,20 @@
           </template>
           <template v-else-if="autoState.phase === 'installing'">正在安装 v{{ autoState.version }}…</template>
           <template v-else-if="autoState.phase === 'done'">更新完成，即将重启…</template>
-          <template v-else-if="autoState.phase === 'error'">更新失败：{{ autoState.error }}</template>
+          <template v-else-if="autoState.phase === 'error'">
+            更新失败：{{ autoState.error }}
+            <template v-if="autoState.manualDownloads && autoState.manualDownloads.length">
+              <span class="update-manual">手动下载安装包：</span>
+              <a
+                v-for="src in autoState.manualDownloads"
+                :key="src.url"
+                :href="src.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="app-update-manual-link"
+              >{{ src.label }}</a>
+            </template>
+          </template>
           <template v-else-if="autoState.phase === 'fallback' && autoState.fallback">
             <template v-if="autoState.fallback.ok">
               <template v-if="autoState.fallback.hasUpdate">
@@ -584,6 +597,9 @@ const progressPercent = computed(() => {
       text-decoration: underline;
       font-weight: 700;
     }
+    /* 手动下载兜底链接（下载失败才出现）：两个源并排，留出间隔免得黏成一串 */
+    a + a { margin-left: 12px; }
+    .update-manual { margin-left: 6px; }
   }
   &__close {
     flex-shrink: 0;
@@ -639,6 +655,8 @@ const progressPercent = computed(() => {
     background: $danger-light;
     color: $danger-text;
     border-bottom-color: $danger-color;
+
+    a { color: $danger-text; }
   }
 }
 
