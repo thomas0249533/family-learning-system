@@ -1,11 +1,11 @@
 {
-  "version": "2.12.0",
-  "notes": "V2.12.0 · ①题目配图支持（图形题可用）：包格式新增 exercise.image / imageAlt，导入时把 zip 内 assets/ 下的图片解压进新的 IndexedDB 资产表（按「包+路径」存 Blob，不出 base64 也不存 objectURL），答题页、考试详情、错题本三处都能显示图，URL 由组件创建并随卸载释放；每题写入来源 packageId，依赖包题目也能查对图。校验新增 E022 路径非法 / E023 图不存在 / E024 超单张 2MB 或单包 8MB、W034 缺画面描述、W035 导入时被拒、W036 孤儿图 ②新增「巧数图形」专项包（13 题配图，数线段/角/三角形/长方形/正方形，答案由程序枚举得出）③修复数学概念卡：之前所有数学概念精讲都只显示「此处展示概念讲解」占位文字，现在真实渲染知识点标题与内容 ④新增四年级数学必背考点、四年级语文基础知识默写、四年级英语单词句型语法、二/四年级口语交际五个专项包",
-  "pub_date": "2026-10-28T06:20:15.933Z",
+  "version": "2.12.1",
+  "notes": "V2.12.1 · 修复桌面端「更新完还是旧界面」。项目同时是 PWA，Service Worker 会在 tauri.localhost 上注册成功并接管页面导航；换掉 exe 之后，WebView2 仍然从 Cache Storage 取旧的 index.html 与旧资源，结果新版本明明装了、跑的却是旧逻辑——典型表现是导入含 essay 题型的语文包报 E006 题型无效、数学概念卡只显示「这里展示概念讲解」占位文字，而且全程不报错。本版在 Rust 侧于 WebView2 初始化之前按版本号清理 Service Worker 与 CacheStorage（只清这两处，IndexedDB 里的做题记录、错题本、导入的学习包一律不动），前端在桌面端也不再注册 SW。升级后首次启动自动清干净，不需要任何手动操作。其余内容同 2.12.0：题目配图支持、「巧数图形」专项包、数学概念卡真渲染、四年级数学必背 / 四年级语文默写 / 四年级英语单词句型语法 / 二四年级口语交际专项包",
+  "pub_date": "2026-10-28T07:19:50.501Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkdKQ0VnRlpIN2lXTEVVNlgrOVZLLytCRkN1enRHTnJIYmlVOUtSditmU21nMGc0QnNndG43S1hrUHhSeU9IUEpIcDBpdmhlcTlTRm9ZQ2NnZ3JkaGdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMTY4NDExCWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi4wX3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjAKMjkrV1Nxc0VXYzhPeGlZUnBML0NmclpSL1crNnhkMTB2SGlzWGthTTBScHMvKzl0YmwweThnT24veE1rWFhZb2RHVjkzRlR3OFlMZEZ5enRUZDQ1RHc9PQo=",
-      "url": "https://cdn.jsdelivr.net/gh/thomas0249533/family-learning-system@main/updates/2.12.0/FamilyLearningSystem_2.12.0_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVk1tNWxKazR2dDZYWFRlY0tmNFF0blhxK0phaXZTNThnMlYrTGE0RGpKSG9ZWEJkZGlXVW1TN05aMEJEdlkrSTlGRGJZbHBRZzF4bGp4OWYxbFpUNmdnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMTcxOTgxCWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi4xX3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjEKdkdoS3F3TWl1ZEI4dkFMazFuRTM1dUxLUjRvL01acmgwWUNZL2pKTGM5emwrV25NRTFLTmQ3Y1JSaFlJMnplajdUaGJ2Z1NNRVF4b0RNVVVSdTYrQnc9PQo=",
+      "url": "https://cdn.jsdelivr.net/gh/thomas0249533/family-learning-system@main/updates/2.12.1/FamilyLearningSystem_2.12.1_x64-setup.exe"
     }
   }
 }
