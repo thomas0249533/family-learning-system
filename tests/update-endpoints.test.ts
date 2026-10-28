@@ -43,11 +43,11 @@ describe('更新链路 · 地址选择', () => {
     for (const u of endpoints) expect(u.startsWith('https://')).toBe(true)
   })
 
-  it('安装包 url 用 Release 资产直链，不带 @main、不走 jsDelivr', () => {
+  it('安装包 url 用 jsDelivr 的 tag 固定路径，不许出现 @main', () => {
     const gen = read('scripts/gen-latest.mjs')
-    expect(gen).toContain("releases/download/v${VER}/${BIN}")
-    // 生成器里不许再把安装包指向 jsDelivr（那是 V2.12.1 下载 404 的根因）
-    expect(gen).not.toMatch(/url:\s*`https:\/\/cdn\.jsdelivr\.net[^`]*updates/)
+    expect(gen).toContain('@v${VER}/updates/${VER}/${BIN}')
+    // @main 的 12 小时缓存正是 V2.12.1「清单读到旧版 / 下载 404」的根因
+    expect(gen).not.toMatch(/url:\s*`[^`]*@main[^`]*updates/)
   })
 
   it('发布脚本会把 version.json 一起上传（前端降级路径的主源要用它）', () => {

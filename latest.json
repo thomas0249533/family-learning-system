@@ -1,11 +1,11 @@
 {
   "version": "2.12.2",
   "notes": "V2.12.2 · 修「检查更新永远说已是最新」。原因是更新清单的三个源都不可靠：raw.githubusercontent 在国内常被拦，cdn.jsdelivr.net 对分支内容有 12 小时缓存，于是客户端读到的还是上一版清单，判定为已最新；更糟的是安装包地址原本也指向 jsDelivr 的 @main 路径，发版后 12 小时内是 404，就算清单读对了也下载失败。本版把两份清单（latest.json / version.json）与安装包地址全部改为 GitHub Release 直链：releases/latest/download/ 是动态重定向、没有长缓存，releases/download/v<ver>/ 带版本号、发布即可下载。旧的三个源仍然保留在后面做兜底。其余内容同 2.12.1：修复桌面端「更新完还是旧界面」（启动前清理 WebView2 的 Service Worker / CacheStorage）、题目配图支持、「巧数图形」专项包、数学概念卡真渲染、二上看图写话 12 篇配图。",
-  "pub_date": "2026-10-28T08:11:49.267Z",
+  "pub_date": "2026-10-28T08:15:50.677Z",
   "platforms": {
     "windows-x86_64": {
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkFWWDFJcVNkdDNUbm1oaG14YWV0Q2VzaUR6dkM0OFo0WGNJbmlKREtrc3RsRWJaaUNoSnI1ZjhYb2k4cWxwd0NnR3FPNHVIQlBueW9Fb3FmeXZjMWdNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMTc1MDk2CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi4yX3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjIKVXAwdVRHQUYzMnJTa2owbWZXZ3htNWpRS25QME1jSjJzK0tIM2tNZmhoMVhPSDcrK1ZhcVllRlBJVUg3OXVnN3FVWG1uWWJzZ2J1aTM5eThyd2pyQUE9PQo=",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.2/FamilyLearningSystem_2.12.2_x64-setup.exe"
+      "url": "https://cdn.jsdelivr.net/gh/thomas0249533/family-learning-system@v2.12.2/updates/2.12.2/FamilyLearningSystem_2.12.2_x64-setup.exe"
     }
   }
 }

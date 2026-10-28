@@ -32,11 +32,18 @@ fs.copyFileSync(SRC_SIG, path.join(outDir, `${BIN}.sig`))
 
 // 2. latest.json
 //
-// ★ 安装包地址走 **Release 资产直链**，不走 `cdn.jsdelivr.net/...@main`：
-//   jsDelivr 对分支内容有 12 小时缓存。发版后立刻写进 @main 的新路径，在缓存刷新前
-//   一律 404 —— 更新器拿到清单、验过签名、开始下载，然后 404，家庭端只会看到
-//   「更新失败」。v2.12.1 就是这么翻车的（清单里的 URL 是 cdn.jsdelivr.net）。
-//   Release 资产地址带版本号、不经过 jsDelivr，发布即可用。
+// ★ 安装包地址用 **jsDelivr 的 tag 固定路径**（`@v<版本>`），不用 `@main`：
+//   jsDelivr 对**分支**内容有 12 小时缓存，发版后写进 @main 的新路径在缓存刷新前
+//   一律 404 —— 更新器拿到清单、验过签名、开始下载，然后 404，家庭端只看到
+//   「更新失败」。v2.12.1 就是这么翻车的（清单里是 `@main/updates/2.12.1/...`）。
+//
+//   换成 `@v2.12.2/updates/2.12.2/...` 之后：这个 tag 是发版时才有的，该 URL 从未
+//   被缓存过，jsDelivr 首次请求会直接回源 GitHub；而它指向的内容**永远不变**，
+//   缓存住也无妨 —— 既不会 404，也不会拿到旧包。
+//
+//   为什么不用 `github.com/releases/download/...` 直链：那个域名在部分网络下连不上
+//   （本机实测超时，而 jsDelivr / objects.githubusercontent 通），而安装包下载是
+//   **没有兜底**的一步：清单有四个源，下载只有一个地址。
 const signature = fs.readFileSync(SRC_SIG, 'utf8').trim()
 const latest = {
   version: VER,
@@ -45,7 +52,7 @@ const latest = {
   platforms: {
     'windows-x86_64': {
       signature,
-      url: `https://github.com/${REPO}/releases/download/v${VER}/${BIN}`,
+      url: `https://cdn.jsdelivr.net/gh/${REPO}@v${VER}/updates/${VER}/${BIN}`,
     },
   },
 }
