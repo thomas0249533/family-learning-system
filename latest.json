@@ -1,11 +1,11 @@
 {
-  "version": "2.12.4",
-  "notes": "V2.12.4 · 填空判分再放宽一处：孩子在答案末尾顺手带的句号（直角。/ 70。）现在会被忽略，不再因为一个句号被判错。只剥末尾的句末标点，答案中间的顿号、分号等语义分隔符完全不动，所以「淹没、淹死」「48 亿；60」这类多空题不受影响。其余同 V2.12.3：单位与括号并列容错、四年级数学语文包开放题修正、每日打卡与专项练习的「全部完成」判定。",
-  "pub_date": "2026-10-28T17:20:41.103Z",
+  "version": "2.12.5",
+  "notes": "V2.12.5 · 学习包列表按学科优化：导入的包一多（语数英 + 多个专项/每日/冲刺）就不再满屏堆叠。①顶部新增学科筛选条（全部/数学/语文/英语/其他，带数量徽标），点一下只看那一科；②主体按学科分区，每科面板内再按「教材/每日一练/专项/冲刺」折叠；③双层折叠——学科面板默认展开、内部类型小节默认折叠，首屏只看到 3~4 个学科标题，找包最快；搜索或选中具体学科时自动全部展开。整体配色与卡片学科 chip 同套色，视觉一致。其余同 V2.12.4：填空判分末尾句末标点容错、单位与括号并列容错、四年级数学语文包开放题修正、每日打卡与专项练习「全部完成」、安装包下载源换回 GitHub Releases（国内可达）。",
+  "pub_date": "2026-10-29T03:43:39.293Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVk1oU0lCNHZxc1I0Sm1ZWmZvK0V6NGo5REJSNWwxQWsyYkk0cjBPbDUxcnJKK3lFNHQvOEJvNXE4cFRjYURGTG1IeUNGMm0yTmcxZW5HM3BURmpwYkE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMjA4MDIwCWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi40X3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjQKR3hvYnhnd1ZBQnVwVnNLRW82YnpHN1pQOUExR0UvM1JHbFV2UkhTSGM1Vzc2Mm5oYnAydmJtRTJ1elhmTWppMEFkQTlCbUJveUVSam9RcmdyQnhCREE9PQo=",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.4/FamilyLearningSystem_2.12.4_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkpFWDg5KzRnZ2IrV09PeFUweVEzdG4zbCtkc3dFY1Z6NWhUWXYyR1B2Sy9lZEo0VkhGYnMxa3pHQUdlQm1neTZJT05mZDRWNFIvb3I1cWRkb044TkFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMjQ1NDA2CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi41X3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjUKNkZ2bllGeW82OEJYMjlNd1FhWUw2NWQrazRGMXg5T2U2Q2VpSE9BdzllejNDeFVyd1FXZWUxd09Iem5QdVNNNDNNSktucHBuUmhtSERzRG85dmNYRGc9PQo=",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.5/FamilyLearningSystem_2.12.5_x64-setup.exe"
     }
   }
 }

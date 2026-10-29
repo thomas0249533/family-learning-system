@@ -44,10 +44,13 @@ describe('更新链路 · 地址选择', () => {
     for (const u of endpoints) expect(u.startsWith('https://')).toBe(true)
   })
 
-  it('安装包 url 用 jsDelivr 的 tag 固定路径，不许出现 @main', () => {
+  it('安装包 url 用 GitHub Releases 直链（国内可达），且不用 jsDelivr 分支缓存路径', () => {
     const gen = read('scripts/gen-latest.mjs')
-    expect(gen).toContain('@v${VER}/updates/${VER}/${BIN}')
-    // @main 的 12 小时缓存正是 V2.12.1「清单读到旧版 / 下载 404」的根因
+    expect(gen).toContain('releases/download/v${VER}/${BIN}')
+    // 安装包必须随仓库归档到 updates/<ver>/（gen 头部注释也写明），供校验与兜底
+    expect(gen).toContain('updates/${VER}/')
+    // @main 的 12 小时缓存正是 V2.12.1「清单读到旧版 / 下载 404」的根因；
+    // 安装包 URL 不得在 url: 模板里用 @main（手动兜底的 jsDelivr 节点才允许 @main）
     expect(gen).not.toMatch(/url:\s*`[^`]*@main[^`]*updates/)
   })
 
@@ -77,19 +80,22 @@ describe('下载兜底 · 失败时能自己下', () => {
     const { manualDownloadUrls, UPDATE_REPO, setupAssetName } = await import('@core/update/downloadSources')
     const list = manualDownloadUrls('2.12.3')
 
-    expect(list).toHaveLength(2)
+    // 推荐顺序：GitHub 直链 → 两个 ghproxy 镜像 → 两个 jsDelivr 节点（详见文件头）
+    expect(list).toHaveLength(5)
     expect(setupAssetName('2.12.3')).toBe('FamilyLearningSystem_2.12.3_x64-setup.exe')
 
-    // ① GitHub Release 资产直链：能读到清单就说明这个 host 通，同一个 host 上安装包也通
+    // ① GitHub Release 资产直链（同 host 验证可达）：releases/download/v<ver>/<bin>
     expect(list[0].url).toBe(
-      `https://github.com/${UPDATE_REPO}/releases/latest/download/FamilyLearningSystem_2.12.3_x64-setup.exe`
+      `https://github.com/${UPDATE_REPO}/releases/download/v2.12.3/FamilyLearningSystem_2.12.3_x64-setup.exe`
     )
-    // ② jsDelivr tag 固定路径：大陆可达性更好，且 tag 路径不会被 CDN 缓存
-    expect(list[1].url).toBe(
-      `https://cdn.jsdelivr.net/gh/${UPDATE_REPO}@v2.12.3/updates/2.12.3/FamilyLearningSystem_2.12.3_x64-setup.exe`
-    )
-    // @main 的分支缓存会让新版本的路径 404，这是 V2.12.1 的老坑
-    for (const s of list) expect(s.url).not.toContain('@main')
+    // GitHub 直链本身不允许 @main（那是分支缓存老坑）；ghproxy/jsDelivr 兜底可带 @main
+    for (const s of list) {
+      if (s.url.includes('github.com/') && !s.url.includes('ghproxy')) {
+        expect(s.url).not.toContain('@main')
+      }
+    }
+    // 至少含一个镜像代理兜底（国内 cdn.jsdelivr 被墙时的可达路）
+    expect(list.some((s) => s.url.includes('ghproxy'))).toBe(true)
     expect(manualDownloadUrls('v2.12.3')[0].url).toBe(list[0].url) // 容忍 v 前缀
     expect(manualDownloadUrls('')).toEqual([])
   })
@@ -129,9 +135,11 @@ describe('下载兜底 · 失败时能自己下', () => {
 
     const err = states.find((s) => s.phase === 'error')
     expect(err, '没有进入 error 态').toBeTruthy()
-    expect(err.manualDownloads).toHaveLength(2)
-    expect(err.manualDownloads[0].url).toContain('/releases/latest/download/')
+    expect(err.manualDownloads.length).toBeGreaterThanOrEqual(2)
+    expect(err.manualDownloads[0].url).toContain('/releases/download/v2.12.3/')
     expect(err.manualDownloads[0].url).toContain('2.12.3')
+    // 失败兜底必须给出镜像代理链（国内 jsDelivr 被墙时的可达路）
+    expect(err.manualDownloads.some((s: any) => s.url.includes('ghproxy'))).toBe(true)
     vi.doUnmock('@tauri-apps/plugin-updater')
     vi.doUnmock('@tauri-apps/plugin-process')
   })

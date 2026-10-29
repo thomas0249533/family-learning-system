@@ -24,244 +24,100 @@
         <span v-if="searching" class="search-count">找到 {{ totalVisible }} 个</span>
       </div>
 
-      <!-- 每日一练：包内声明了周号就按周折叠（weekBucket 纯函数），否则整段一张网格 -->
-      <section v-if="groups.daily.length > 0" class="group-section">
-        <header class="group-header">
-          <div class="group-title-wrap">
-            <span class="group-icon">📅</span>
-            <h2 class="group-title">每日一练</h2>
-          </div>
-          <div class="group-actions">
-            <span class="group-count">{{ groups.daily.length }}</span>
-            <button
-              class="group-toggle"
-              type="button"
-              :aria-expanded="!isCollapsed('daily')"
-              aria-controls="pkg-panel-daily"
-              :aria-label="isCollapsed('daily') ? '展开每日一练' : '收起每日一练'"
-              @click="toggleGroup('daily')"
-            >▾</button>
-          </div>
+      <!-- V2.12.5 · 按学科筛选：顶部一排学科标签，点了只看那一科；
+           「全部」恢复按学科分区的完整视图。窄屏横向滚动。 -->
+      <div class="subject-filter" role="tablist" aria-label="按学科筛选">
+        <button
+          v-for="opt in subjectFilterOptions"
+          :key="opt.value"
+          class="subject-chip-btn"
+          :class="[{ active: subjectFilter === opt.value }, `sf-${opt.value}`]"
+          type="button"
+          role="tab"
+          :aria-selected="subjectFilter === opt.value"
+          @click="subjectFilter = opt.value"
+        >
+          <span class="sf-icon" aria-hidden="true">{{ opt.icon }}</span>
+          <span class="sf-label">{{ opt.label }}</span>
+          <span class="sf-count">{{ subjectCounts[opt.value] ?? 0 }}</span>
+        </button>
+      </div>
+
+      <!-- 按学科分区：每个学科一个面板，面板内再按「教材 / 每日一练 / 专项 / 冲刺」折叠 -->
+      <div
+        v-for="g in visibleSubjects"
+        :key="g.subject"
+        class="subject-panel"
+        :class="`panel-${g.subject}`"
+      >
+        <header class="subject-header" @click="toggleSubject(g.subject)">
+          <span class="subject-bar" aria-hidden="true"></span>
+          <span class="subject-icon" aria-hidden="true">{{ subjectIcon(g.subject) }}</span>
+          <span class="subject-name">{{ g.label }}</span>
+          <span class="subject-count">{{ g.textbook.length + g.daily.length + g.special.length + g.sprint.length }}</span>
+          <button
+            class="subject-toggle"
+            type="button"
+            :aria-expanded="!isSubjectCollapsed(g.subject)"
+            :aria-label="isSubjectCollapsed(g.subject) ? `展开${g.label}` : `收起${g.label}`"
+            @click.stop="toggleSubject(g.subject)"
+          >▾</button>
         </header>
-        <div v-show="!isCollapsed('daily')" id="pkg-panel-daily" class="group-body">
-          <div v-for="b in dailyBuckets" :key="b.label" class="week-block">
-            <button
-              v-if="b.showHead"
-              class="week-head"
-              type="button"
-              :aria-expanded="!isWeekCollapsed(b.label)"
-              @click="toggleWeek(b.label)"
-            >
-              <span class="week-label">{{ b.label }}</span>
-              <span class="week-count">{{ b.items.length }} 个</span>
-              <span class="week-chevron" aria-hidden="true">▾</span>
-            </button>
-            <div
-              v-show="!b.showHead || !isWeekCollapsed(b.label)"
-              class="package-grid"
-            >
-              <div
-                v-for="row in b.items"
-                :key="row.pkg.packageId"
-                class="pkg-card"
-                :class="cardStatusClass(pkgStatus(row.pkg))"
-                @click="selectPackage(row.pkg)"
-              >
-                <div class="pkg-card-accent accent-green"></div>
-                <div class="pkg-card-body">
-                  <div class="pkg-card-head">
-                    <h3 class="pkg-card-title">{{ row.pkg.manifest.title }}</h3>
-                    <span class="pkg-card-tag tag-green">每日一练</span>
-                    <!-- G3 · 跨设备分享：`.stop` 防止触发整卡的学习跳转 -->
-                    <button
-                      class="pkg-share-btn"
-                      type="button"
-                      aria-label="分享此学习包"
-                      title="分享此学习包"
-                      @click.stop="openShare(row.pkg)"
-                    >📤</button>
-                  </div>
-                  <div class="pkg-card-meta">
-                    <span class="subject-chip" :class="subjectChipClass(row.pkg.manifest.subject)">
-                      {{ subjectLabel(row.pkg.manifest.subject) }}
-                    </span>
-                    <span class="meta-text">
-                      {{ row.pkg.manifest.grade }}年级 ·
-                      {{ row.pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ row.pkg.manifest.edition }}
-                    </span>
-                    <span v-if="dailyMeta(row.pkg)" class="meta-text">{{ dailyMeta(row.pkg) }}</span>
+
+        <div v-show="!isSubjectCollapsed(g.subject)" class="subject-body">
+          <section v-for="blk in subjectBlocks(g)" :key="blk.type" class="type-section">
+            <header class="type-header" @click="toggleSection(g.subject, blk.type)">
+              <span class="type-title">
+                <span class="type-icon" aria-hidden="true">{{ blk.icon }}</span>
+                {{ blk.title }}
+              </span>
+              <span class="type-count">{{ blk.items.length }}</span>
+              <span class="type-chevron" :class="{ collapsed: isSectionCollapsed(g.subject, blk.type) }" aria-hidden="true">▾</span>
+            </header>
+
+            <div v-show="!isSectionCollapsed(g.subject, blk.type)" class="type-body">
+              <!-- 每日一练：按周分桶（多周才显示周头） -->
+              <template v-if="blk.type === 'daily'">
+                <div v-for="b in dailyBucketsOf(g.daily)" :key="b.label" class="week-block">
+                  <button
+                    v-if="b.showHead"
+                    class="week-head"
+                    type="button"
+                    :aria-expanded="!isWeekCollapsed(`${g.subject}:${b.label}`)"
+                    @click="toggleWeek(`${g.subject}:${b.label}`)"
+                  >
+                    <span class="week-label">{{ b.label }}</span>
+                    <span class="week-count">{{ b.items.length }} 个</span>
+                    <span class="week-chevron" aria-hidden="true">▾</span>
+                  </button>
+                  <div v-show="!b.showHead || !isWeekCollapsed(`${g.subject}:${b.label}`)" class="package-grid">
+                    <PackageCard
+                      v-for="row in b.items"
+                      :key="row.pkg.packageId"
+                      :pkg="row.pkg"
+                      mode="daily"
+                      :status="pkgStatus(row.pkg)"
+                      @share="openShare"
+                    />
                   </div>
                 </div>
-                <div class="pkg-card-arrow">→</div>
-                <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
-                <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(row.pkg)] }}</span>
-                <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(row.pkg)] }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+              </template>
 
-      <!-- 教材 -->
-      <section v-if="groups.textbook.length > 0" class="group-section">
-        <header class="group-header">
-          <div class="group-title-wrap">
-            <span class="group-icon">📚</span>
-            <h2 class="group-title">教材</h2>
-          </div>
-          <div class="group-actions">
-            <span class="group-count">{{ groups.textbook.length }}</span>
-            <button class="group-toggle" type="button"
-              :aria-expanded="!isCollapsed('textbook')" aria-controls="pkg-panel-textbook"
-              :aria-label="isCollapsed('textbook') ? '展开教材' : '收起教材'"
-              @click="toggleGroup('textbook')">▾</button>
-          </div>
-        </header>
-        <div v-show="!isCollapsed('textbook')" id="pkg-panel-textbook" class="package-grid">
-          <div
-            v-for="pkg in groups.textbook"
-            :key="pkg.packageId"
-            class="pkg-card"
-            :class="cardStatusClass(pkgStatus(pkg))"
-            @click="selectPackage(pkg)"
-          >
-            <div class="pkg-card-accent accent-blue"></div>
-            <div class="pkg-card-body">
-              <div class="pkg-card-head">
-                <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
-                <span class="pkg-card-tag tag-blue">{{ typeLabel(getPackageType(pkg)) }}</span>
-                <button
-                  class="pkg-share-btn"
-                  type="button"
-                  aria-label="分享此学习包"
-                  title="分享此学习包"
-                  @click.stop="openShare(pkg)"
-                >📤</button>
-              </div>
-              <div class="pkg-card-meta">
-                <span class="subject-chip" :class="subjectChipClass(pkg.manifest.subject)">
-                  {{ subjectLabel(pkg.manifest.subject) }}
-                </span>
-                <span class="meta-text">
-                  {{ pkg.manifest.grade }}年级 ·
-                  {{ pkg.manifest.term === 'up' ? '上册' : '下册' }} · {{ pkg.manifest.edition }}
-                </span>
+              <!-- 其余类型：直接卡片网格 -->
+              <div v-else class="package-grid">
+                <PackageCard
+                  v-for="pkg in blk.items"
+                  :key="pkg.packageId"
+                  :pkg="pkg"
+                  :mode="blk.mode"
+                  :status="pkgStatus(pkg)"
+                  @share="openShare"
+                />
               </div>
             </div>
-            <div class="pkg-card-arrow">→</div>
-            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
-            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
-            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
-          </div>
+          </section>
         </div>
-      </section>
-
-      <!-- 专项 -->
-      <section v-if="groups.special.length > 0" class="group-section">
-        <header class="group-header">
-          <div class="group-title-wrap">
-            <span class="group-icon">🎯</span>
-            <h2 class="group-title">专项突破</h2>
-          </div>
-          <div class="group-actions">
-            <span class="group-count">{{ groups.special.length }}</span>
-            <button class="group-toggle" type="button"
-              :aria-expanded="!isCollapsed('special')" aria-controls="pkg-panel-special"
-              :aria-label="isCollapsed('special') ? '展开专项突破' : '收起专项突破'"
-              @click="toggleGroup('special')">▾</button>
-          </div>
-        </header>
-        <div v-show="!isCollapsed('special')" id="pkg-panel-special" class="package-grid">
-          <div
-            v-for="pkg in groups.special"
-            :key="pkg.packageId"
-            class="pkg-card exam"
-            :class="cardStatusClass(pkgStatus(pkg))"
-            @click="selectPackage(pkg)"
-          >
-            <div class="pkg-card-accent accent-orange"></div>
-            <div class="pkg-card-body">
-              <div class="pkg-card-head">
-                <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
-                <span class="pkg-card-tag tag-orange">专项测验</span>
-                <button
-                  class="pkg-share-btn"
-                  type="button"
-                  aria-label="分享此学习包"
-                  title="分享此学习包"
-                  @click.stop="openShare(pkg)"
-                >📤</button>
-              </div>
-              <div class="pkg-card-meta">
-                <span class="subject-chip" :class="subjectChipClass(pkg.manifest.subject)">
-                  {{ subjectLabel(pkg.manifest.subject) }}
-                </span>
-                <span class="meta-text">
-                  {{ pkg.manifest.grade }}年级
-                  <template v-if="(pkg.manifest as any).sourceUnitIds?.length">
-                    · 基于 {{ (pkg.manifest as any).sourceUnitIds.length }} 个单元
-                  </template>
-                </span>
-              </div>
-            </div>
-            <div class="pkg-card-arrow">→</div>
-            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
-            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
-            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- 冲刺 -->
-      <section v-if="groups.sprint.length > 0" class="group-section">
-        <header class="group-header">
-          <div class="group-title-wrap">
-            <span class="group-icon">🏁</span>
-            <h2 class="group-title">冲刺模拟</h2>
-          </div>
-          <div class="group-actions">
-            <span class="group-count">{{ groups.sprint.length }}</span>
-            <button class="group-toggle" type="button"
-              :aria-expanded="!isCollapsed('sprint')" aria-controls="pkg-panel-sprint"
-              :aria-label="isCollapsed('sprint') ? '展开冲刺模拟' : '收起冲刺模拟'"
-              @click="toggleGroup('sprint')">▾</button>
-          </div>
-        </header>
-        <div v-show="!isCollapsed('sprint')" id="pkg-panel-sprint" class="package-grid">
-          <div
-            v-for="pkg in groups.sprint"
-            :key="pkg.packageId"
-            class="pkg-card exam"
-            :class="cardStatusClass(pkgStatus(pkg))"
-            @click="selectPackage(pkg)"
-          >
-            <div class="pkg-card-accent accent-red"></div>
-            <div class="pkg-card-body">
-              <div class="pkg-card-head">
-                <h3 class="pkg-card-title">{{ pkg.manifest.title }}</h3>
-                <span class="pkg-card-tag tag-red">冲刺卷</span>
-                <button
-                  class="pkg-share-btn"
-                  type="button"
-                  aria-label="分享此学习包"
-                  title="分享此学习包"
-                  @click.stop="openShare(pkg)"
-                >📤</button>
-              </div>
-              <div class="pkg-card-meta">
-                <span class="subject-chip" :class="subjectChipClass(pkg.manifest.subject)">
-                  {{ subjectLabel(pkg.manifest.subject) }}
-                </span>
-                <span class="meta-text">{{ pkg.manifest.grade }}年级</span>
-              </div>
-            </div>
-            <div class="pkg-card-arrow">→</div>
-            <!-- D1 · 掌握状态角标：字形是颜色之外的冗余信号（色弱 / 灰度打印可分辨） -->
-            <span class="pkg-status-mark" aria-hidden="true">{{ CARD_STATUS_MARK[pkgStatus(pkg)] }}</span>
-            <span class="sr-only">掌握状态：{{ CARD_STATUS_LABEL[pkgStatus(pkg)] }}</span>
-          </div>
-        </div>
-      </section>
+      </div>
 
       <EmptyState
         v-if="totalVisible === 0"
@@ -298,18 +154,13 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
 import { NSpin, NModal, NSpace } from 'naive-ui'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import PackageCard from './PackageCard.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
-import {
-  CARD_STATUS_LABEL,
-  CARD_STATUS_MARK,
-  cardStatusClass,
-  type CardStatus,
-} from '@core/learning/cardStatus'
+import { type CardStatus } from '@core/learning/cardStatus'
 import { completionStatusOf, scopeOfPackage } from '@core/learning/completion'
 import { buildOwnerIndex, type OwnerIndex } from '@core/progress/ownerIndex'
 import { buildShareString, drawQrToCanvas } from '@core/share/qrcode'
@@ -318,7 +169,6 @@ import type { LearningPackageRecord } from '@/db'
 
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
-const router = useRouter()
 const loading = ref(true)
 
 // ==================== V2.7 · 轨道 A3：搜索 + 折叠 ====================
@@ -326,7 +176,8 @@ const search = ref('')
 /** 搜索态（去掉空白后非空）。搜索时强制展开：命中的内容藏在折叠里等于没搜到 */
 const searching = computed(() => search.value.trim().length > 0)
 
-const COLLAPSE_KEY = 'packageListCollapsed'
+const SUBJECT_COLLAPSE_KEY = 'packageListSubjectCollapsed'
+const SECTION_COLLAPSE_KEY = 'packageListSectionCollapsed'
 const WEEK_COLLAPSE_KEY = 'packageListWeekCollapsed'
 
 /** localStorage 里的字符串数组（脏数据静默降级为空 = 全部展开） */
@@ -348,31 +199,86 @@ function saveKeys(key: string, value: string[]): void {
   }
 }
 
-const collapsedKeys = ref<string[]>(loadKeys(COLLAPSE_KEY))
+/**
+ * 双层折叠：
+ * - collapsedSubjects：学科面板是否整块收起（默认全空 = 学科面板全展开）。
+ * - collapsedSections：学科内「教材/每日一练/专项/冲刺」小节是否收起
+ *   （默认全空 = 全折叠，首屏只看到小节标题，不堆叠卡片）。
+ * - collapsedWeeks：每日一练周分桶（key 带学科前缀区分不同学科）。
+ */
+const collapsedSubjects = ref<string[]>(loadKeys(SUBJECT_COLLAPSE_KEY))
+const collapsedSections = ref<string[]>(loadKeys(SECTION_COLLAPSE_KEY))
 const collapsedWeeks = ref<string[]>(loadKeys(WEEK_COLLAPSE_KEY))
 
-function isCollapsed(key: string): boolean {
-  return !searching.value && collapsedKeys.value.includes(key)
+function isSubjectCollapsed(subject: string): boolean {
+  if (searching.value) return false
+  return collapsedSubjects.value.includes(subject)
 }
 
-function toggleGroup(key: string): void {
-  const next = collapsedKeys.value.includes(key)
-    ? collapsedKeys.value.filter((k) => k !== key)
-    : [...collapsedKeys.value, key]
-  collapsedKeys.value = next
-  saveKeys(COLLAPSE_KEY, next)
+function toggleSubject(subject: string): void {
+  collapsedSubjects.value = collapsedSubjects.value.includes(subject)
+    ? collapsedSubjects.value.filter((k) => k !== subject)
+    : [...collapsedSubjects.value, subject]
+  saveKeys(SUBJECT_COLLAPSE_KEY, collapsedSubjects.value)
+}
+
+function isSectionCollapsed(subject: string, type: string): boolean {
+  // 搜索态、或选中具体某一科时，强制展开小节，便于直接看到包
+  if (searching.value || subjectFilter.value !== 'all') return false
+  return collapsedSections.value.includes(`${subject}:${type}`)
+}
+
+function toggleSection(subject: string, type: string): void {
+  const k = `${subject}:${type}`
+  collapsedSections.value = collapsedSections.value.includes(k)
+    ? collapsedSections.value.filter((x) => x !== k)
+    : [...collapsedSections.value, k]
+  saveKeys(SECTION_COLLAPSE_KEY, collapsedSections.value)
 }
 
 function isWeekCollapsed(label: string): boolean {
-  return !searching.value && collapsedWeeks.value.includes(label)
+  if (searching.value || subjectFilter.value !== 'all') return false
+  return collapsedWeeks.value.includes(label)
 }
 
 function toggleWeek(label: string): void {
-  const next = collapsedWeeks.value.includes(label)
+  collapsedWeeks.value = collapsedWeeks.value.includes(label)
     ? collapsedWeeks.value.filter((k) => k !== label)
     : [...collapsedWeeks.value, label]
-  collapsedWeeks.value = next
-  saveKeys(WEEK_COLLAPSE_KEY, next)
+  saveKeys(WEEK_COLLAPSE_KEY, collapsedWeeks.value)
+}
+
+// ==================== V2.12.5 · 按学科筛选 ====================
+/** 学科顺序即分区渲染顺序；other = 无学科 / 未知学科 */
+const SUBJECT_ORDER = ['math', 'chinese', 'english', 'other'] as const
+
+const subjectFilter = ref<string>('all')
+
+/** 顶部筛选条选项（含数量徽标）。顺序：全部 → 数学 → 语文 → 英语 → 其他 */
+const subjectFilterOptions = [
+  { value: 'all', label: '全部', icon: '🗂️' },
+  { value: 'math', label: '数学', icon: '📐' },
+  { value: 'chinese', label: '语文', icon: '📖' },
+  { value: 'english', label: '英语', icon: '🔤' },
+  { value: 'other', label: '其他', icon: '📦' },
+] as const
+
+function subjectLabel(subject: string): string {
+  switch (subject) {
+    case 'math': return '数学'
+    case 'chinese': return '语文'
+    case 'english': return '英语'
+    default: return '其他'
+  }
+}
+
+function subjectIcon(subject: string): string {
+  switch (subject) {
+    case 'math': return '📐'
+    case 'chinese': return '📖'
+    case 'english': return '🔤'
+    default: return '📦'
+  }
 }
 
 // ==================== G3 · 跨设备分享 ====================
@@ -495,67 +401,6 @@ function matchesSearch(pkg: LearningPackageRecord): boolean {
   return hay.includes(kw)
 }
 
-const groups = computed(() => {
-  const textbook: LearningPackageRecord[] = []
-  const daily: LearningPackageRecord[] = []
-  const special: LearningPackageRecord[] = []
-  const sprint: LearningPackageRecord[] = []
-
-  for (const pkg of packageStore.packages) {
-    if (isInternal(pkg)) continue
-    if (!matchesSearch(pkg)) continue
-    const type = getPackageType(pkg)
-    if (type === 'daily') daily.push(pkg)
-    else if (type === 'special') special.push(pkg)
-    else if (type === 'sprint') sprint.push(pkg)
-    else textbook.push(pkg)
-  }
-
-  return { textbook, daily, special, sprint }
-})
-
-const totalVisible = computed(
-  () =>
-    groups.value.textbook.length +
-    groups.value.daily.length +
-    groups.value.special.length +
-    groups.value.sprint.length,
-)
-
-interface DailyRow {
-  pkg: LearningPackageRecord
-  week: number | null
-  title: string
-}
-
-/**
- * 每日一练按周分桶（V2.7 · A3）。桶头只在**真的分出多周**时渲染 ——
- * 一个包都没声明周号时，硬塞一个「未分周」标题只是多一层噪音。
- */
-const dailyBuckets = computed(() => {
-  const rows: DailyRow[] = groups.value.daily.map((pkg) => ({
-    pkg,
-    week: resolveWeekOf(pkg.manifest as unknown as Record<string, unknown>),
-    title: pkg.manifest.title,
-  }))
-  const buckets = groupByWeek(rows)
-  const showHead = buckets.length > 1
-  return buckets.map((b) => ({ ...b, showHead }))
-})
-
-/** 每日一练：展示「N 天 · 每天 M 个板块」 */
-function dailyMeta(pkg: LearningPackageRecord): string {
-  const units = (pkg as any).units ?? []
-  if (units.length === 0) return ''
-  const boards = units[0]?.topics?.length ?? 0
-  return boards > 0 ? `${units.length} 天 · 每天 ${boards} 个板块` : `${units.length} 天`
-}
-
-function selectPackage(pkg: LearningPackageRecord) {
-  packageStore.setCurrentPackage(pkg)
-  router.push(`/learn/${pkg.packageId}`)
-}
-
 function typeLabel(type?: string): string {
   switch (type) {
     case 'base': return '基础包'
@@ -568,28 +413,99 @@ function typeLabel(type?: string): string {
   }
 }
 
-function subjectLabel(subject?: string): string {
-  switch (subject) {
-    case 'math': return '数学'
-    case 'chinese': return '语文'
-    case 'english': return '英语'
-    default: return subject ?? ''
+/**
+ * V2.12.5 · 先按学科分、再按类型分的两级结构。
+ * 内部包（isInternal）不出现在学习页；搜索词先过滤；其余按 subject 落入对应学科分区，
+ * 学科内再按包类型归到 textbook/daily/special/sprint 四档。
+ */
+interface SubjectGroup {
+  subject: string
+  label: string
+  textbook: LearningPackageRecord[]
+  daily: LearningPackageRecord[]
+  special: LearningPackageRecord[]
+  sprint: LearningPackageRecord[]
+}
+
+const emptyGroup = (subject: string): SubjectGroup => ({
+  subject,
+  label: subjectLabel(subject),
+  textbook: [],
+  daily: [],
+  special: [],
+  sprint: [],
+})
+
+const bySubject = computed<SubjectGroup[]>(() => {
+  const map: Record<string, SubjectGroup> = {}
+  for (const s of SUBJECT_ORDER) map[s] = emptyGroup(s)
+
+  for (const pkg of packageStore.packages) {
+    if (isInternal(pkg)) continue
+    if (!matchesSearch(pkg)) continue
+    const subj = (pkg.manifest as any).subject as string | undefined
+    const key: string = subj && (SUBJECT_ORDER as readonly string[]).includes(subj) ? subj : 'other'
+    const g = map[key]
+    const type = getPackageType(pkg)
+    if (type === 'daily') g.daily.push(pkg)
+    else if (type === 'special') g.special.push(pkg)
+    else if (type === 'sprint') g.sprint.push(pkg)
+    else g.textbook.push(pkg)
   }
+
+  return SUBJECT_ORDER.map((s) => map[s]).filter(
+    (g) => g.textbook.length || g.daily.length || g.special.length || g.sprint.length,
+  )
+})
+
+/** 顶部筛选条的数量徽标：all = 总数，其余 = 各学科包数 */
+const subjectCounts = computed<Record<string, number>>(() => {
+  const c: Record<string, number> = { all: 0 }
+  for (const g of bySubject.value) {
+    const n = g.textbook.length + g.daily.length + g.special.length + g.sprint.length
+    c[g.subject] = n
+    c.all += n
+  }
+  return c
+})
+
+/** 当前筛选下要渲染的学科面板（选具体学科时只显示那一个） */
+const visibleSubjects = computed<SubjectGroup[]>(() => {
+  if (subjectFilter.value === 'all') return bySubject.value
+  return bySubject.value.filter((g) => g.subject === subjectFilter.value)
+})
+
+/** 学科面板内要渲染的类型小节（过滤掉空档） */
+function subjectBlocks(g: SubjectGroup) {
+  return [
+    { type: 'textbook', mode: 'textbook' as const, icon: '📚', title: '教材', items: g.textbook },
+    { type: 'daily', mode: 'daily' as const, icon: '📅', title: '每日一练', items: g.daily },
+    { type: 'special', mode: 'special' as const, icon: '🎯', title: '专项突破', items: g.special },
+    { type: 'sprint', mode: 'sprint' as const, icon: '🏁', title: '冲刺模拟', items: g.sprint },
+  ].filter((b) => b.items.length)
+}
+
+const totalVisible = computed(() => subjectCounts.value.all)
+
+interface DailyRow {
+  pkg: LearningPackageRecord
+  week: number | null
+  title: string
 }
 
 /**
- * V2.8 · 学科彩色 chip（对标参考图3 的标签系统）：
- * 数学=主色（品牌松绿）、语文=暖橙、英语=绿，未知学科走中性。
- * chip 组合沿用 pkg-card-tag 的软底胶囊配方（badge-*-bg + *-text），
- * 均属 contrast-report.ts 的 MUST_PASS 白名单 —— 新增组合前先跑 a11y 门禁。
+ * 每日一练按周分桶（V2.7 · A3）。桶头只在**真的分出多周**时渲染 ——
+ * 一个包都没声明周号时，硬塞一个「未分周」标题只是多一层噪音。
  */
-function subjectChipClass(subject?: string): string {
-  switch (subject) {
-    case 'math': return 'chip-math'
-    case 'chinese': return 'chip-chinese'
-    case 'english': return 'chip-english'
-    default: return 'chip-neutral'
-  }
+function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
+  const rows: DailyRow[] = pkgs.map((pkg) => ({
+    pkg,
+    week: resolveWeekOf(pkg.manifest as unknown as Record<string, unknown>),
+    title: pkg.manifest.title,
+  }))
+  const buckets = groupByWeek(rows)
+  const showHead = buckets.length > 1
+  return buckets.map((b) => ({ ...b, showHead }))
 }
 </script>
 
@@ -599,7 +515,7 @@ function subjectChipClass(subject?: string): string {
 .package-list-page {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 20px;
   padding-bottom: 16px;
 }
 
@@ -690,48 +606,220 @@ function subjectChipClass(subject?: string): string {
   white-space: nowrap;
 }
 
-/* ===== 分组折叠 ===== */
-.group-actions {
+/* ===== V2.12.5 · 顶部学科筛选条 ===== */
+.subject-filter {
   display: flex;
   align-items: center;
   gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  /* 细滚动条，窄屏横向滚动时不抢眼 */
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar { height: 6px; }
+  &::-webkit-scrollbar-thumb { background: $border-color; border-radius: 999px; }
 }
 
-.group-toggle {
-  width: 24px;
-  height: 24px;
+.subject-chip-btn {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
   border: 1px solid $border-color;
   border-radius: $radius-full;
   background: $card-bg;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
   color: $text-sub;
-  font-size: 11px;
-  line-height: 1;
   cursor: pointer;
-  transition: transform $duration-fast $ease-standard,
-    background $duration-fast $ease-standard, color $duration-fast $ease-standard;
+  transition: all $duration-fast $ease-standard;
 
-  &[aria-expanded='false'] { transform: rotate(-90deg); }
+  .sf-icon { font-size: 14px; line-height: 1; }
+  .sf-label { white-space: nowrap; }
+  .sf-count {
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: $bg-color-hover;
+    color: $text-muted;
+  }
 
   &:hover {
     background: $bg-color-hover;
-    color: $primary-text;
+    color: $text-main;
+    border-color: $primary-color;
   }
 
   &:focus-visible {
     outline: 2px solid $primary-color;
     outline-offset: 2px;
   }
+
+  /* 选中态：主色渐变填充，文字反白，计数徽标反白 */
+  &.active {
+    border-color: transparent;
+    background: $gradient-primary;
+    color: $text-on-primary;
+    box-shadow: $shadow-sm;
+
+    .sf-count {
+      background: rgba(255, 255, 255, 0.22); // check-hex-allow 渐变底上的反白徽标，同族于 --progress-gloss
+      color: $text-on-primary;
+    }
+  }
 }
 
-.group-body {
+/* ===== V2.12.5 · 学科分区面板 ===== */
+.subject-panel {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+}
+
+.subject-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background $duration-fast $ease-standard;
+
+  &:hover { background: $bg-color-hover; }
+  &:focus-visible { outline: 2px solid $primary-color; outline-offset: -2px; }
+
+  /* 学科主题色竖条（与卡片 accent 同语汇，但更粗，作分区标识） */
+  .subject-bar {
+    width: 5px;
+    height: 22px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .subject-icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .subject-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: $text-main;
+    letter-spacing: 0.2px;
+  }
+
+  .subject-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-sub;
+    background: $bg-color-hover;
+    padding: 2px 10px;
+    border-radius: 999px;
+  }
+
+  .subject-toggle {
+    margin-left: auto;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid $border-color;
+    border-radius: $radius-full;
+    background: $card-bg;
+    color: $text-sub;
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform $duration-fast $ease-standard, background $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+    &[aria-expanded='false'] { transform: rotate(-90deg); }
+
+    &:hover {
+      background: $bg-color-hover;
+      color: $primary-text;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+}
+
+/* 学科主题色：数学=主色、语文=警示色、英语=成功色、其他=中性 */
+.panel-math .subject-bar { background: $primary-color; }
+.panel-chinese .subject-bar { background: $warning-color; }
+.panel-english .subject-bar { background: $success-color; }
+.panel-other .subject-bar { background: $text-muted; }
+
+.subject-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 4px;
+  padding: 4px 12px 14px;
 }
+
+/* ===== 学科内类型小节（比学科头低一档层级） ===== */
+.type-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.type-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 4px;
+  cursor: pointer;
+  user-select: none;
+  border-top: 1px dashed $border-light;
+
+  &:first-child { border-top: none; }
+
+  &:hover .type-title { color: $primary-text; }
+
+  .type-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: $text-main;
+    transition: color $duration-fast $ease-standard;
+  }
+
+  .type-icon { font-size: 14px; line-height: 1; }
+
+  .type-count {
+    font-size: 11px;
+    font-weight: 700;
+    color: $text-muted;
+    background: $bg-color-hover;
+    padding: 1px 8px;
+    border-radius: 999px;
+  }
+
+  .type-chevron {
+    margin-left: auto;
+    font-size: 11px;
+    color: $text-muted;
+    transition: transform $duration-fast $ease-standard;
+
+    &.collapsed { transform: rotate(-90deg); }
+  }
+}
+
+.type-body { padding-top: 4px; }
 
 /* ===== 每日一练：按周分桶 ===== */
 .week-block {
@@ -779,43 +867,6 @@ function subjectChipClass(subject?: string): string {
   &[aria-expanded='false'] .week-chevron { transform: rotate(-90deg); }
 }
 
-.group-section {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.group-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .group-title-wrap {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .group-icon { font-size: 20px; line-height: 1; }
-
-  .group-title {
-    font-size: 17px;
-    font-weight: 800;
-    color: $text-main;
-    margin: 0;
-    letter-spacing: 0.2px;
-  }
-
-  .group-count {
-    font-size: 12px;
-    font-weight: 700;
-    color: $text-sub;
-    background: $bg-color-hover;
-    padding: 3px 10px;
-    border-radius: 20px;
-  }
-}
-
 .package-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -823,148 +874,6 @@ function subjectChipClass(subject?: string): string {
 
   @media (max-width: 720px) {
     grid-template-columns: 1fr;
-  }
-}
-
-.pkg-card {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-  background: $card-bg;
-  border: 1px solid $border-color;
-  border-radius: $radius-lg;
-  box-shadow: $shadow-sm;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  min-height: 84px;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
-    border-color: $primary-color;
-
-    .pkg-card-arrow {
-      transform: translateX(4px);
-      color: $primary-text;
-    }
-  }
-
-  &.exam:hover {
-    border-color: $warning-color;
-    .pkg-card-arrow { color: $warning-text; }
-  }
-
-  /* ===== D1 · 掌握状态（每日一练的「打卡」状态）=====
-     底色只用 --badge-{tone}-bg（= -light），与 --{tone}-text 角标同属
-     contrast-report.ts 的 MUST_PASS 白名单；未学（none）不改底色。
-     左侧 4px 板块色条（.pkg-card-accent）与背景色正交，不冲突。 */
-  &.is-learning { @include card-status-surface(learning); }
-  &.is-review   { @include card-status-surface(review); }
-  &.is-mastered { @include card-status-surface(mastered); }
-
-  .pkg-status-mark {
-    @include card-status-mark-slot;
-    @include card-status-mark-corner;
-    @include card-status-ink(none);
-  }
-
-  &.is-learning .pkg-status-mark { @include card-status-ink(learning); }
-  &.is-review .pkg-status-mark { @include card-status-ink(review); }
-  &.is-mastered .pkg-status-mark { @include card-status-ink(mastered); }
-
-  /* 读屏专用文本：视觉不可见，但「掌握状态：需复习」会被读出来 */
-  .sr-only { @include sr-only; }
-
-  .pkg-card-accent {
-    width: 4px;
-    flex-shrink: 0;
-
-    &.accent-blue { background: $primary-color; }
-    &.accent-green { background: $success-color; }
-    &.accent-orange { background: $warning-color; }
-    &.accent-red { background: $danger-color; }
-  }
-
-  .pkg-card-body {
-    flex: 1;
-    min-width: 0;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .pkg-card-head {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .pkg-card-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: $text-main;
-    margin: 0;
-    line-height: 1.4;
-    flex: 1;
-    min-width: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .pkg-card-tag {
-    flex-shrink: 0;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 12px;
-
-    &.tag-blue { background: var(--badge-primary-bg); color: $primary-text; }
-    &.tag-green { background: var(--badge-success-bg); color: $success-text; }
-    &.tag-orange { background: var(--badge-warning-bg); color: $warning-text; }
-    &.tag-red { background: var(--badge-danger-bg); color: $danger-text; }
-  }
-
-  .pkg-card-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 12px;
-    color: $text-sub;
-    line-height: 1.5;
-
-    /* V2.8 · 学科彩色软底胶囊：扫视卡片列表时学科一眼可辨，
-       册别/版本降为普通文本，信息层级更清楚 */
-    .subject-chip {
-      flex-shrink: 0;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 9px;
-      border-radius: 10px;
-      line-height: 1.6;
-
-      &.chip-math { background: var(--badge-primary-bg); color: $primary-text; }
-      &.chip-chinese { background: var(--badge-warning-bg); color: $warning-text; }
-      &.chip-english { background: var(--badge-success-bg); color: $success-text; }
-      &.chip-neutral { background: var(--badge-neutral-bg); color: $text-sub; }
-    }
-
-    .meta-text { white-space: nowrap; }
-  }
-
-  .pkg-card-arrow {
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    color: $text-muted;
-    font-size: 18px;
-    transition: all 0.2s;
   }
 }
 
@@ -1034,32 +943,5 @@ function subjectChipClass(subject?: string): string {
   font-size: var(--font-2xs);
   color: var(--text-muted);
   text-align: center;
-}
-
-/* 分享按钮：卡片头里的低存在感入口，悬停才浮出主色 */
-.pkg-share-btn {
-  flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  font-size: 14px;
-  line-height: 1;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: all 0.2s;
-
-  &:hover {
-    background: var(--bg-color-hover);
-    color: var(--primary-text);
-  }
-
-  &:focus-visible {
-    outline: var(--focus-ring-w) solid var(--focus-ring);
-  }
 }
 </style>
