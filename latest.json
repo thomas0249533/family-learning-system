@@ -1,11 +1,11 @@
 {
-  "version": "2.12.5",
-  "notes": "V2.12.5 · 学习包列表按学科优化：导入的包一多（语数英 + 多个专项/每日/冲刺）就不再满屏堆叠。①顶部新增学科筛选条（全部/数学/语文/英语/其他，带数量徽标），点一下只看那一科；②主体按学科分区，每科面板内再按「教材/每日一练/专项/冲刺」折叠；③双层折叠——学科面板默认展开、内部类型小节默认折叠，首屏只看到 3~4 个学科标题，找包最快；搜索或选中具体学科时自动全部展开。整体配色与卡片学科 chip 同套色，视觉一致。其余同 V2.12.4：填空判分末尾句末标点容错、单位与括号并列容错、四年级数学语文包开放题修正、每日打卡与专项练习「全部完成」、安装包下载源换回 GitHub Releases（国内可达）。",
-  "pub_date": "2026-10-29T03:43:39.293Z",
+  "version": "2.12.6",
+  "notes": "V2.12.6 · 修复专项/词汇包「找不到」+ 精简发布：①学习包列表的折叠偏好 localStorage key 升级后缀，升级后旧版手动收起「专项突破」小节的偏好失效、默认展开，英语/语文词汇等专项包直接可见（此前部分用户因旧偏好把该小节收起而找不到包）；②若列表里词汇包单元数不对（如显示 5 个而非 6 内容+1 语法=7），属旧版导入数据残留，请在「导入学习包」重新导入对应 zip 覆盖即可——当前词汇包已支持按单元选择背记；③即日起不再发布便携包，安装包（NSIS setup）已覆盖手动安装场景，Release 体积更小。其余同 V2.12.5：学习包列表按学科分区、填空判分容错、开放题修正、安装包下载源为 GitHub Releases（国内可达）。",
+  "pub_date": "2026-10-29T16:19:18.181Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkpFWDg5KzRnZ2IrV09PeFUweVEzdG4zbCtkc3dFY1Z6NWhUWXYyR1B2Sy9lZEo0VkhGYnMxa3pHQUdlQm1neTZJT05mZDRWNFIvb3I1cWRkb044TkFZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMjQ1NDA2CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi41X3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjUKNkZ2bllGeW82OEJYMjlNd1FhWUw2NWQrazRGMXg5T2U2Q2VpSE9BdzllejNDeFVyd1FXZWUxd09Iem5QdVNNNDNNSktucHBuUmhtSERzRG85dmNYRGc9PQo=",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.5/FamilyLearningSystem_2.12.5_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkFIYXNkRWljeWtNZnZRbDIrSTM5UCtWaWRWY1FFaTJiNFB2YVFkOVJiZTJ0VVFHZFpqZkpCN2drZkZIbWpJSDliM2l6Wk5teS8vQjRRVDdqMjYrREE0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMjkwNjg4CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi42X3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjYKZ1duRGpTT0pkZVFrRGY1YXd2bmVjblo1Rm4zam0wd3NHbHhub0F3TkR1UGthYTdzLzJNbUd4RjVYV1pwQS81QVY4Y0Z0eDg3bmJsRk9XTmhWckUwRHc9PQo=",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.6/FamilyLearningSystem_2.12.6_x64-setup.exe"
     }
   }
 }

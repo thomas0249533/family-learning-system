@@ -176,9 +176,13 @@ const search = ref('')
 /** 搜索态（去掉空白后非空）。搜索时强制展开：命中的内容藏在折叠里等于没搜到 */
 const searching = computed(() => search.value.trim().length > 0)
 
-const SUBJECT_COLLAPSE_KEY = 'packageListSubjectCollapsed'
-const SECTION_COLLAPSE_KEY = 'packageListSectionCollapsed'
-const WEEK_COLLAPSE_KEY = 'packageListWeekCollapsed'
+// V2.12.6 · 折叠偏好 key 升级后缀：旧版用户若曾手动收起「专项突破」小节，
+// 该偏好会持久化在 localStorage 并随升级保留，导致词汇/专项包"找不到"。
+// 改名使旧偏好失效，升级后回到默认（小节默认展开），专项包直接可见；
+// 折叠交互仍保留，用户点一下仍可收起。
+const SUBJECT_COLLAPSE_KEY = 'packageListSubjectCollapsedV2'
+const SECTION_COLLAPSE_KEY = 'packageListSectionCollapsedV2'
+const WEEK_COLLAPSE_KEY = 'packageListWeekCollapsedV2'
 
 /** localStorage 里的字符串数组（脏数据静默降级为空 = 全部展开） */
 function loadKeys(key: string): string[] {

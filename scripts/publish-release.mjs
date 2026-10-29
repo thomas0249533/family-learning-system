@@ -69,17 +69,7 @@ try {
 // 源文件名里带版本号，硬编码过一次 2.11.0 就会在下次发版时静默传错包 —— 一律由 VER 推出
 const NSIS = `src-tauri/target/release/bundle/nsis/FamilyLearningSystem_${VER}_x64-setup.exe`
 
-// 便携版命名 app<日期><字母>.exe（沿用历次发布习惯）。资产按 Release 隔离，
-// 跨版本同名不会冲突；这里仍取空位字母，是为了同一天在同一 Release 重跑时不会互相覆盖。
-const today = new Date().toISOString().slice(0, 10)
-const taken = (rel.assets || [])
-  .map((a) => new RegExp(`^app${today}([a-z])\\.exe$`).exec(a.name))
-  .filter(Boolean)
-  .map((m) => m[1])
-let letter = 'a'
-while (taken.includes(letter)) letter = String.fromCharCode(letter.charCodeAt(0) + 1)
-const PORTABLE = `app${today}${letter}.exe`
-
+// V2.12.6 起只发 NSIS 安装包 + latest.json + version.json（不再发便携版）。
 const assets = [
   [NSIS, `FamilyLearningSystem_${VER}_x64-setup.exe`],
   [`${NSIS}.sig`, `FamilyLearningSystem_${VER}_x64-setup.exe.sig`],
@@ -87,7 +77,6 @@ const assets = [
   // version.json 也挂上：前端「检查更新」降级路径的主源是
   // releases/latest/download/version.json（不走 CDN，没有 12 小时缓存）
   ['version.json', 'version.json'],
-  ['src-tauri/target/release/app.exe', PORTABLE],
 ]
 
 /**

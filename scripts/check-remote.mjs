@@ -58,11 +58,9 @@ if (fs.existsSync(localSetup)) {
   const a = (rel.assets ?? []).find((x) => x.name === path.basename(localSetup))
   check(a?.size === size, '安装包大小与本地一致', a ? `${a.size}B` : '缺失')
 }
-check(
-  names.some((n) => /^app\d{4}-\d{2}-\d{2}[a-z]\.exe$/.test(n)),
-  '便携版存在',
-  names.filter((n) => n.startsWith('app')).join(', '),
-)
+// V2.12.6 起不再发布便携版（用户明确要求「以后都不需要打便携包了」）。
+// 安装包（NSIS setup）已覆盖手动安装场景，故移除便携版存在性校验。
+console.log('ℹ️  便携版自 V2.12.6 起不再发布（仅发 NSIS 安装包），跳过便携版校验')
 
 // 3. 更新清单可达且版本正确（三个 endpoint 都要能用：raw / jsdelivr / gitmirror）
 //
