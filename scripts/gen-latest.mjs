@@ -32,18 +32,18 @@ fs.copyFileSync(SRC_SIG, path.join(outDir, `${BIN}.sig`))
 
 // 2. latest.json
 //
-// ★ 安装包地址用 **jsDelivr 的 tag 固定路径**（`@v<版本>`），不用 `@main`：
-//   jsDelivr 对**分支**内容有 12 小时缓存，发版后写进 @main 的新路径在缓存刷新前
-//   一律 404 —— 更新器拿到清单、验过签名、开始下载，然后 404，家庭端只看到
-//   「更新失败」。v2.12.1 就是这么翻车的（清单里是 `@main/updates/2.12.1/...`）。
+// ★ 安装包地址用 **GitHub Releases 直链**（`releases/download/v<版本>/<文件>`）。
 //
-//   换成 `@v2.12.2/updates/2.12.2/...` 之后：这个 tag 是发版时才有的，该 URL 从未
-//   被缓存过，jsDelivr 首次请求会直接回源 GitHub；而它指向的内容**永远不变**，
-//   缓存住也无妨 —— 既不会 404，也不会拿到旧包。
+// 为什么不是 jsDelivr（v2.12.2–v2.12.4 一直用的 `cdn.jsdelivr.net/gh/...@v<版本>`）：
+//   2026-10-29 家庭端实测 —— `cdn.jsdelivr.net` 在国内被墙，自动更新报
+//   「error sending request」/「403 Forbidden」，怎么都下不下来。而**同一台机器**
+//   能正常拉到 `releases/latest/download/latest.json`（更新清单），说明
+//   `github.com` 这个 host 对他们网络是通的。安装包与清单同属 GitHub Releases，
+//   换个同 host 的直链即可绕开被墙的 jsDelivr，无需重编客户端。
 //
-//   为什么不用 `github.com/releases/download/...` 直链：那个域名在部分网络下连不上
-//   （本机实测超时，而 jsDelivr / objects.githubusercontent 通），而安装包下载是
-//   **没有兜底**的一步：清单有四个源，下载只有一个地址。
+//   （jsDelivr 仍作为「手动下载」兜底的备选项保留在 downloadSources.ts，且改用
+//   `@main` 路径——因为归档提交在打 tag 之后，`@v<版本>` 的 tag 树里并没有安装包，
+//   按 tag 取必定 404；`@main` 树里安装包已提交，能取到。）
 const signature = fs.readFileSync(SRC_SIG, 'utf8').trim()
 const latest = {
   version: VER,
@@ -52,7 +52,7 @@ const latest = {
   platforms: {
     'windows-x86_64': {
       signature,
-      url: `https://cdn.jsdelivr.net/gh/${REPO}@v${VER}/updates/${VER}/${BIN}`,
+      url: `https://github.com/${REPO}/releases/download/v${VER}/${BIN}`,
     },
   },
 }

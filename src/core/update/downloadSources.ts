@@ -37,20 +37,33 @@ export interface DownloadSource {
 
 /**
  * 由版本号推导「手动下载」候选地址，顺序即推荐顺序。
- * @param version 目标版本号（如 `2.12.3`）；不接受 `v` 前缀，由内部统一加。
+ *
+ * 2026-10-29 实测：`cdn.jsdelivr.net` 在国内被墙，自动更新拉不动。所以手动兜底
+ * 也换成国内可达的源，给「自动更新失败」的用户一条能点就下的路：
+ *   ① GitHub Releases 直链（与清单同源，host 已验证可达）；
+ *   ② ghproxy.net / ghproxy.com —— GitHub 镜像代理，绕开 objects.githubusercontent.com，
+ *      在 raw.githubusercontent / cdn.jsdelivr 被墙的网络下通常仍能下；
+ *   ③ jsDelivr 备用节点（cdn 被墙时，gcore 有时仍通），用 `@main` 路径
+ *      （归档提交在打 tag 之后，`@v<版本>` 的 tag 树里没有安装包，按 tag 取必 404）。
+ *
+ * @param version 目标版本号（如 `2.12.4`）；不接受 `v` 前缀，由内部统一加。
  */
 export function manualDownloadUrls(version: string): DownloadSource[] {
   const ver = String(version ?? '').trim().replace(/^v/i, '')
   if (!ver) return []
   const bin = setupAssetName(ver)
+  const ghRelease = `https://github.com/${UPDATE_REPO}/releases/download/v${ver}/${bin}`
   return [
+    { label: 'GitHub', url: ghRelease },
+    { label: 'ghproxy.net', url: `https://ghproxy.net/${ghRelease}` },
+    { label: 'ghproxy.com', url: `https://ghproxy.com/${ghRelease}` },
     {
-      label: 'GitHub',
-      url: `https://github.com/${UPDATE_REPO}/releases/latest/download/${bin}`,
+      label: 'jsDelivr(gcore)',
+      url: `https://gcore.jsdelivr.net/gh/${UPDATE_REPO}@main/updates/${ver}/${bin}`,
     },
     {
       label: 'jsDelivr',
-      url: `https://cdn.jsdelivr.net/gh/${UPDATE_REPO}@v${ver}/updates/${ver}/${bin}`,
+      url: `https://cdn.jsdelivr.net/gh/${UPDATE_REPO}@main/updates/${ver}/${bin}`,
     },
   ]
 }

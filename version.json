@@ -1,5 +1,5 @@
 {
   "version": "2.12.4",
-  "downloadUrl": "https://github.com/thomas0249533/family-learning-system/releases/latest",
+  "downloadUrl": "https://ghproxy.net/https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.4/FamilyLearningSystem_2.12.4_x64-setup.exe",
   "notes": "V2.12.4 · 填空判分再放宽一处：孩子在答案末尾顺手带的句号（直角。/ 70。）现在会被忽略，不再因为一个句号被判错。只剥末尾的句末标点，答案中间的顿号、分号等语义分隔符完全不动，所以「淹没、淹死」「48 亿；60」这类多空题不受影响。其余同 V2.12.3：单位与括号并列容错、四年级数学语文包开放题修正、每日打卡与专项练习的「全部完成」判定。"
 }
