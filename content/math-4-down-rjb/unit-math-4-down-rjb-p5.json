@@ -1,0 +1,397 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p5",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第5部分 · 三角形",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-tri-001",
+      "type": "concept",
+      "title": "三角形的特性与三边关系",
+      "content": "三角形有 3 条边、3 个角、3 个顶点；三角形具有稳定性（不容易变形）。\n三边关系：三角形任意两边的和大于第三边。判断三条线段能否围成三角形，只要看**较短两边之和**是否大于最长边即可。\n推论：两边之差小于第三边。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念",
+        "tags": [
+          "三角形",
+          "三边关系"
+        ]
+      }
+    },
+    {
+      "id": "kp-tri-002",
+      "type": "concept",
+      "title": "三角形的分类与内角和",
+      "content": "按角分：锐角三角形（三个角都是锐角）、直角三角形（有一个直角）、钝角三角形（有一个钝角）。\n按边分：不等边三角形、等腰三角形（两条边相等，两个底角相等）、等边三角形（三条边都相等，三个角都是 60°）。\n三角形的内角和是 180°。等边三角形也是等腰三角形（特殊的一种）。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念",
+        "tags": [
+          "分类",
+          "内角和"
+        ]
+      }
+    },
+    {
+      "id": "kp-tri-003",
+      "type": "concept",
+      "title": "四边形的内角和",
+      "content": "四边形可以分成两个三角形，所以内角和是 180°×2＝360°。\n推广：多边形内角和 = (边数－2)×180°。例如五边形是 540°，六边形是 720°。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "推理",
+        "ability": "推理能力",
+        "tags": [
+          "内角和",
+          "多边形"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第五单元",
+      "title": "三角形",
+      "desc": "认识三角形的特性与三边关系，会按角和边分类，掌握三角形与四边形的内角和。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "三角形的特性与三边关系",
+          "knowledgePointIds": [
+            "kp-tri-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.concept",
+              "title": "稳定性与任意两边之和大于第三边",
+              "knowledgePointIds": [
+                "kp-tri-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "blank",
+              "question": "三角形有（______）条边、（______）个角、（______）个顶点。",
+              "answer": "3,3,3",
+              "explanation": "三角形的三个要素：3 条边、3 个角、3 个顶点。",
+              "knowledgePointIds": [
+                "kp-tri-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "三角形任意两边的和（______）第三边。",
+              "answer": "大于",
+              "explanation": "这是三角形三边关系的核心结论，判断时看较短两边之和是否大于最长边。",
+              "knowledgePointIds": [
+                "kp-tri-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "single",
+              "question": "下面每组小棒（单位：cm），能围成三角形的是（　　）。",
+              "options": [
+                "A. 3、4、5",
+                "B. 1、2、3",
+                "C. 2、2、5",
+                "D. 1、4、6"
+              ],
+              "answer": "A",
+              "explanation": "B：1＋2＝3，不大于 3，不行；C：2＋2＝4＜5，不行；D：1＋4＝5＜6，不行。只有 A 的 3＋4＞5 成立。",
+              "knowledgePointIds": [
+                "kp-tri-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "blank",
+              "question": "一个三角形两条边分别是 5 厘米和 8 厘米，第三条边最长是（______）厘米（取整厘米数）。",
+              "answer": "12",
+              "explanation": "两边之和 5＋8＝13，第三边必须小于 13，所以取整厘米最大是 12。",
+              "knowledgePointIds": [
+                "kp-tri-001"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "推理能力"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "blank",
+              "question": "用一根 18 厘米长的铁丝围成一个三角形，其中两条边都是 5 厘米，第三条边是（______）厘米。",
+              "answer": "8",
+              "explanation": "18－5－5＝8（厘米）。检验：5＋5＞8，能围成三角形。",
+              "knowledgePointIds": [
+                "kp-tri-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "single",
+              "question": "自行车的车架做成三角形，是利用了三角形的（　　）。",
+              "options": [
+                "A. 稳定性",
+                "B. 易变形",
+                "C. 对称性",
+                "D. 内角和是 180°"
+              ],
+              "answer": "A",
+              "explanation": "三角形三条边长度确定后形状就确定了，不会变形，这叫稳定性。",
+              "knowledgePointIds": [
+                "kp-tri-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "应用意识"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "三角形的分类与内角和",
+          "knowledgePointIds": [
+            "kp-tri-002"
+          ],
+          "modules": [
+            {
+              "id": "t2-m1",
+              "type": "math.concept",
+              "title": "按角分、按边分与 180°",
+              "knowledgePointIds": [
+                "kp-tri-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-007",
+              "type": "blank",
+              "question": "三角形按角分类，可以分为（______）三角形、（______）三角形和（______）三角形。",
+              "answer": "锐角,直角,钝角",
+              "explanation": "按最大的角来分：三个角都是锐角是锐角三角形，有一个直角是直角三角形，有一个钝角是钝角三角形。",
+              "knowledgePointIds": [
+                "kp-tri-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-008",
+              "type": "blank",
+              "question": "三角形的内角和是（______）°。",
+              "answer": "180",
+              "explanation": "任意三角形的三个内角拼起来正好是一个平角，所以内角和是 180°。",
+              "knowledgePointIds": [
+                "kp-tri-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-009",
+              "type": "blank",
+              "question": "一个直角三角形中，一个锐角是 35°，另一个锐角是（______）°。",
+              "answer": "55",
+              "explanation": "直角三角形两个锐角的和是 90°，90－35＝55（度）。",
+              "knowledgePointIds": [
+                "kp-tri-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-010",
+              "type": "blank",
+              "question": "一个等腰三角形的顶角是 80°，它的一个底角是（______）°。",
+              "answer": "50",
+              "explanation": "两个底角相等：(180－80)÷2＝50（度）。",
+              "knowledgePointIds": [
+                "kp-tri-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-011",
+              "type": "blank",
+              "question": "一个三角形有两个角都是 45°，这个三角形既是（______）三角形，又是（______）三角形。",
+              "answer": "直角,等腰",
+              "explanation": "第三个角是 180－45－45＝90°，所以是直角三角形；两个角相等，所以也是等腰三角形。",
+              "knowledgePointIds": [
+                "kp-tri-002"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-012",
+              "type": "single",
+              "question": "一个三角形中，最大的角是 89°，这个三角形是（　　）。",
+              "options": [
+                "A. 锐角三角形",
+                "B. 直角三角形",
+                "C. 钝角三角形",
+                "D. 无法确定"
+              ],
+              "answer": "A",
+              "explanation": "最大的角是 89°，说明另外两个角都小于 89°，三个角都是锐角，所以是锐角三角形。",
+              "knowledgePointIds": [
+                "kp-tri-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t3",
+          "title": "四边形的内角和",
+          "knowledgePointIds": [
+            "kp-tri-003"
+          ],
+          "modules": [
+            {
+              "id": "t3-m1",
+              "type": "math.concept",
+              "title": "分成两个三角形来算",
+              "knowledgePointIds": [
+                "kp-tri-003"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-013",
+              "type": "blank",
+              "question": "四边形的内角和是（______）°。",
+              "answer": "360",
+              "explanation": "从一个顶点画一条对角线，把四边形分成两个三角形，180°×2＝360°。",
+              "knowledgePointIds": [
+                "kp-tri-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            },
+            {
+              "id": "u1-ex-014",
+              "type": "blank",
+              "question": "一个四边形的三个内角分别是 90°、90°、100°，第四个角是（______）°。",
+              "answer": "80",
+              "explanation": "360－90－90－100＝80（度）。",
+              "knowledgePointIds": [
+                "kp-tri-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            },
+            {
+              "id": "u1-ex-015",
+              "type": "blank",
+              "question": "五边形的内角和是（______）°。",
+              "answer": "540",
+              "explanation": "(5－2)×180°＝3×180°＝540°。",
+              "knowledgePointIds": [
+                "kp-tri-003"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "推理能力"
+              }
+            },
+            {
+              "id": "u1-ex-016",
+              "type": "single",
+              "question": "把一个大三角形沿一条线剪成两个小三角形，每个小三角形的内角和是（　　）。",
+              "options": [
+                "A. 90°",
+                "B. 180°",
+                "C. 360°",
+                "D. 无法确定"
+              ],
+              "answer": "B",
+              "explanation": "三角形无论大小，内角和都是 180°。",
+              "knowledgePointIds": [
+                "kp-tri-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            },
+            {
+              "id": "u1-ex-017",
+              "type": "blank",
+              "question": "长方形四个角都是（______）°，它的内角和是（______）°。",
+              "answer": "90,360",
+              "explanation": "长方形的四个角都是直角（90°），90°×4＝360°。",
+              "knowledgePointIds": [
+                "kp-tri-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

@@ -138,6 +138,16 @@
                 <span>{{ MISTAKE_CAUSE_LABELS[c] }}</span>
               </label>
               <span v-if="!m.mistakeCause" class="cause-unset">{{ mistakeCauseLabelOf(m) }}</span>
+              <!-- V3.0 · M3：错因**建议**（不自动写库，家长点「采纳」才落库） -->
+              <button
+                v-for="sug in suggestionList(m)"
+                :key="sug.signal"
+                type="button"
+                class="cause-suggest"
+                @click="onCauseChange(m, sug.cause)"
+              >
+                建议：{{ MISTAKE_CAUSE_LABELS[sug.cause] }} · {{ sug.evidence }}（采纳）
+              </button>
             </div>
             <QuestionText
               class="question-text"
@@ -224,6 +234,16 @@
             <span>{{ MISTAKE_CAUSE_LABELS[c] }}</span>
           </label>
           <span v-if="!m.mistakeCause" class="cause-unset">{{ mistakeCauseLabelOf(m) }}</span>
+          <!-- V3.0 · M3：错因建议（同上，不自动写库） -->
+          <button
+            v-for="sug in suggestionList(m)"
+            :key="sug.signal"
+            type="button"
+            class="cause-suggest"
+            @click="onCauseChange(m, sug.cause)"
+          >
+            建议：{{ MISTAKE_CAUSE_LABELS[sug.cause] }} · {{ sug.evidence }}（采纳）
+          </button>
         </div>
         <QuestionText
           class="question-text"
@@ -345,6 +365,7 @@ import {
 import { AI_ENGINE_LABEL, describeAiFailure, describeDegradation, type AiEngine } from '@core/ai/aiMessages'
 import { AiHintError, requestAiHintCandleFirst } from '@core/ai/aiClient'
 import { currentApiKey, hasRememberedKey, loadAiConfig } from '@core/ai/aiConfig'
+import { suggestCause, type CauseSuggestion } from '@core/mistake/errorClassify'
 import type { MistakeMasteryLevel } from '@/db'
 
 const message = useMessage()
@@ -711,6 +732,29 @@ type CauseRow = { exerciseId: string; mistakeCause?: MistakeCause }
  */
 function onCauseChange(m: CauseRow, cause: MistakeCause) {
   void userDataStore.setMistakeCause(m.exerciseId, cause)
+}
+
+/**
+ * 错因**建议**（V3.0 · M3）。
+ *
+ * 只在「还没打标」且「拿得出可核对证据」时返回一条；否则返回空数组
+ * （模板用 `v-for` 渲染，空数组即不出现，不需要额外的 v-if 包裹）。
+ *
+ * 这里**绝不写库**：`core/mistake/errorClassify.ts` 的定位是"给证据"，
+ * 落库必须由家长点「采纳」触发 —— 自动归因等于替家长编一个他从未做过的判断。
+ */
+function suggestionList(m: {
+  mistakeCause?: MistakeCause
+  questionData?: { type?: string; answer?: unknown } | null
+  lastUserAnswer?: string
+}): CauseSuggestion[] {
+  if (m.mistakeCause) return []
+  const s = suggestCause({
+    type: m.questionData?.type,
+    correctAnswer: m.questionData?.answer,
+    userAnswer: m.lastUserAnswer,
+  })
+  return s ? [s] : []
 }
 
 /**
@@ -1121,6 +1165,22 @@ function formatDate(iso: string): string {
     .cause-unset {
       font-size: $font-2xs;
       color: $text-muted;
+    }
+
+    /* V3.0 · M3 · 错因建议（虚线框 = "这是一条建议，还没生效"） */
+    .cause-suggest {
+      font-size: $font-2xs;
+      color: $primary-text;
+      background: $primary-light;
+      border: 1px dashed $primary-color;
+      border-radius: $radius-sm;
+      padding: 2px 8px;
+      cursor: pointer;
+
+      &:hover {
+        background: $primary-color;
+        color: var(--text-on-primary);
+      }
     }
   }
 

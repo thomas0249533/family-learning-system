@@ -285,11 +285,15 @@ function sortedUnique(ids: readonly string[]): string[] {
   return [...new Set(ids)].sort((a, b) => a.localeCompare(b))
 }
 
-/** 三张业务表的中文名（拒绝文案要写"哪张表"，家长才可能看懂） */
-const ROW_TABLE_LABEL: Record<'progress' | 'mistakes' | 'examSessions', string> = {
+/** 业务表的中文名（拒绝文案要写"哪张表"，家长才可能看懂） */
+const ROW_TABLE_LABEL: Record<
+  'progress' | 'mistakes' | 'examSessions' | 'cardCompletions',
+  string
+> = {
   progress: '学习进度',
   mistakes: '错题本',
   examSessions: '模考记录',
+  cardCompletions: '完成标记',
 }
 
 /**
@@ -329,7 +333,7 @@ export function guardRemoteBundles(
 
   for (const bundle of bundles) {
     const pid = bundle.profileId
-    for (const field of ['progress', 'mistakes', 'examSessions'] as const) {
+    for (const field of ['progress', 'mistakes', 'examSessions', 'cardCompletions'] as const) {
       for (const row of (bundle[field] ?? []) as Array<{ profileId?: string }>) {
         const rowPid = row?.profileId
         if (typeof rowPid !== 'string' || rowPid === '') {
@@ -435,14 +439,15 @@ export interface SyncOptions extends RequestDeps {
 /**
  * 桌面端 / 网页端的 CORS 现实 —— 拼进错误文案里，别让家长自己去猜为什么不行。
  *
- * 这不是免责声明，是**这件事的真相**：本仓没有 Rust 侧的 http 插件
- * （`Cargo.toml` 里只有 `tauri-plugin-log`），所以桌面端同样跑在 WebView 的同源策略下。
- * 没验证过就声称支持，是这个项目最忌讳的事。
+ * 桌面端从 P3 起已经改由 Rust 侧的 `webdav_fetch` 发请求（见 `net.rs`），
+ * 请求不经过 WebView 的同源策略，正常情况下不会再出现 cors 错误。因此这里
+ * 的桌面端文案改成"检查地址"，而不是让用户去等一个已经做完的插件。
+ * 网页版没有这条后路，只能依赖网盘自身放行 CORS —— 这条限制真实存在。
  */
 export function environmentHint(): string {
   return isTauri()
-    ? '当前是桌面端：桌面容器本身没有放宽网页的跨域检查，真机直连还需要 Rust 侧的 HTTP 插件放行（已单开任务）。'
-    : '当前是网页版（浏览器）：云端网盘默认不给网页放行跨域，这一跳基本必被拦住。'
+    ? '当前是桌面端：请求已交给本机进程直接发出，正常不会再被跨域拦住。若仍报跨域，多半是网盘地址填错了——请填写该网盘公开的 WebDAV 入口（如坚果云的 https://dav.jianguoyun.com/dav/）。'
+    : '当前是网页版（浏览器）：云端网盘默认不给网页放行跨域，这一跳基本必被拦住，请改用桌面版。'
 }
 
 /**

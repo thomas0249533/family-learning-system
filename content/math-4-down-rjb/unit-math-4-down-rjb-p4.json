@@ -1,0 +1,525 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p4",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第4部分 · 小数的意义和性质",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-dec-001",
+      "type": "concept",
+      "title": "小数的意义与数位顺序",
+      "content": "把单位“1”平均分成 10 份、100 份、1000 份……表示这样的一份或几份，可以用小数表示。\n小数点右边第一位是十分位（计数单位 0.1），第二位是百分位（计数单位 0.01），第三位是千分位（计数单位 0.001）。\n每相邻两个计数单位之间的进率都是 10。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "小数",
+          "数位",
+          "计数单位"
+        ]
+      }
+    },
+    {
+      "id": "kp-dec-002",
+      "type": "concept",
+      "title": "小数的性质与大小比较",
+      "content": "小数的性质：小数的末尾添上 0 或去掉 0，小数的大小不变。例如 0.5＝0.50＝0.500。\n注意只有“末尾”的 0 能去掉，小数点后面中间的 0 不能动（0.05≠0.5）。\n比较大小：先比整数部分，整数部分大的就大；整数部分相同，从十分位起一位一位往下比。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "小数性质",
+          "比较大小"
+        ]
+      }
+    },
+    {
+      "id": "kp-dec-003",
+      "type": "concept",
+      "title": "小数点位置移动引起小数大小的变化",
+      "content": "小数点向右移动一位、两位、三位……小数就扩大到原来的 10 倍、100 倍、1000 倍……\n小数点向左移动一位、两位、三位……小数就缩小到原来的 1/10、1/100、1/1000……\n位数不够时用 0 补足，例如 3 的小数点向左移动两位是 0.03。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "运算能力",
+        "tags": [
+          "小数点移动"
+        ]
+      }
+    },
+    {
+      "id": "kp-dec-004",
+      "type": "concept",
+      "title": "名数改写与求近似数",
+      "content": "低级单位改写成高级单位要除以进率，高级单位改写成低级单位要乘进率。\n常用进率：1 米＝100 厘米，1 千米＝1000 米，1 千克＝1000 克，1 元＝10 角＝100 分。\n求近似数用“四舍五入”：保留两位小数就看千分位，精确到个位就看十分位。\n注意：表示近似数时，小数末尾的 0 不能去掉（3.75 精确到百分位，写 3.8 就变了精度）。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "运算能力",
+        "tags": [
+          "名数改写",
+          "四舍五入"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第四单元",
+      "title": "小数的意义和性质",
+      "desc": "理解小数的意义与数位，掌握小数的性质、小数点移动规律、名数改写与求近似数。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "小数的意义与计数单位",
+          "knowledgePointIds": [
+            "kp-dec-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.concept",
+              "title": "十分位、百分位、千分位",
+              "knowledgePointIds": [
+                "kp-dec-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "blank",
+              "question": "0.6 里面有（______）个 0.1；0.06 里面有（______）个 0.01。",
+              "answer": "6,6",
+              "explanation": "0.6 是十分位上的 6，表示 6 个 0.1；0.06 是百分位上的 6，表示 6 个 0.01。",
+              "knowledgePointIds": [
+                "kp-dec-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "由 5 个一、3 个十分之一和 7 个百分之一组成的数是（______）。",
+              "answer": "5.37",
+              "explanation": "5 个一是 5，3 个十分之一是 0.3，7 个百分之一是 0.07，合起来是 5.37。",
+              "knowledgePointIds": [
+                "kp-dec-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "blank",
+              "question": "在 0.375 中，3 在（______）位上，表示 3 个（______）。",
+              "answer": "十分,0.1",
+              "explanation": "小数点右边第一位是十分位，3 在十分位上，表示 3 个 0.1（即 0.3）。",
+              "knowledgePointIds": [
+                "kp-dec-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "single",
+              "question": "下面各数中，计数单位最大的是（　　）。",
+              "options": [
+                "A. 0.5",
+                "B. 0.05",
+                "C. 0.005",
+                "D. 0.505"
+              ],
+              "answer": "A",
+              "explanation": "0.5 的计数单位是 0.1，0.05 是 0.01，0.005 和 0.505 是 0.001。0.1 最大。",
+              "knowledgePointIds": [
+                "kp-dec-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "blank",
+              "question": "1 里面有（______）个 0.01。",
+              "answer": "100",
+              "explanation": "1＝1.00，百分位上是 100 个 0.01；也可以想 1÷0.01＝100。",
+              "knowledgePointIds": [
+                "kp-dec-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "blank",
+              "question": "由 8 个十和 4 个十分之一组成的数是（______）。",
+              "answer": "80.4",
+              "explanation": "8 个十是 80，4 个十分之一是 0.4，合起来是 80.4。",
+              "knowledgePointIds": [
+                "kp-dec-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "小数的性质与大小比较",
+          "knowledgePointIds": [
+            "kp-dec-002"
+          ],
+          "modules": [
+            {
+              "id": "t2-m1",
+              "type": "math.concept",
+              "title": "末尾添 0 去 0、逐位比较",
+              "knowledgePointIds": [
+                "kp-dec-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-007",
+              "type": "blank",
+              "question": "0.80 化简后是（______）。",
+              "answer": "0.8",
+              "explanation": "小数末尾的 0 可以去掉，大小不变，所以 0.80＝0.8。",
+              "knowledgePointIds": [
+                "kp-dec-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-008",
+              "type": "blank",
+              "question": "把 5.6 改写成大小不变的两位小数是（______）。",
+              "answer": "5.60",
+              "explanation": "在小数末尾添一个 0，大小不变，变成两位小数 5.60。",
+              "knowledgePointIds": [
+                "kp-dec-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-009",
+              "type": "single",
+              "question": "下面各数中，与 0.6 相等的是（　　）。",
+              "options": [
+                "A. 0.06",
+                "B. 0.60",
+                "C. 6.0",
+                "D. 0.006"
+              ],
+              "answer": "B",
+              "explanation": "0.60 只是末尾多了一个 0，大小与 0.6 相同。其余三个数位都变了。",
+              "knowledgePointIds": [
+                "kp-dec-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-010",
+              "type": "blank",
+              "question": "把 3.05、3.5、3.005、0.35 从小到大排列，最大的数是（______）。",
+              "answer": "3.5",
+              "explanation": "先看整数部分：0.35 最小；剩下三个整数部分都是 3，比十分位：3.5 的十分位是 5 最大，所以 3.5 最大。",
+              "knowledgePointIds": [
+                "kp-dec-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-011",
+              "type": "blank",
+              "question": "不改变数的大小，把 7 改写成两位小数是（______）。",
+              "answer": "7.00",
+              "explanation": "整数 7 可以写成 7.00，小数点后添两个 0，大小不变。",
+              "knowledgePointIds": [
+                "kp-dec-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-012",
+              "type": "single",
+              "question": "下面各数中，最小的是（　　）。",
+              "options": [
+                "A. 0.099",
+                "B. 0.1",
+                "C. 0.9",
+                "D. 0.909"
+              ],
+              "answer": "A",
+              "explanation": "都化成三位小数比较：0.099、0.100、0.900、0.909。0.099 最小。",
+              "knowledgePointIds": [
+                "kp-dec-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t3",
+          "title": "小数点位置移动",
+          "knowledgePointIds": [
+            "kp-dec-003"
+          ],
+          "modules": [
+            {
+              "id": "t3-m1",
+              "type": "math.formula",
+              "title": "右移扩大、左移缩小",
+              "knowledgePointIds": [
+                "kp-dec-003"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-013",
+              "type": "blank",
+              "question": "把 3.6 的小数点向右移动一位，得到的数是（______）。",
+              "answer": "36",
+              "explanation": "向右移动一位，小数扩大到原来的 10 倍：3.6×10＝36。",
+              "knowledgePointIds": [
+                "kp-dec-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-014",
+              "type": "blank",
+              "question": "把 42 的小数点向左移动两位，得到的数是（______）。",
+              "answer": "0.42",
+              "explanation": "向左移动两位，缩小到原来的 1/100：42÷100＝0.42，位数不够用 0 补足。",
+              "knowledgePointIds": [
+                "kp-dec-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-015",
+              "type": "blank",
+              "question": "把 0.05 扩大到原来的 10 倍是（______）。",
+              "answer": "0.5",
+              "explanation": "扩大到 10 倍就是小数点向右移动一位：0.05→0.5。",
+              "knowledgePointIds": [
+                "kp-dec-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-016",
+              "type": "blank",
+              "question": "把 8.6 缩小到原来的 1/10 是（______）。",
+              "answer": "0.86",
+              "explanation": "缩小到 1/10 就是小数点向左移动一位：8.6→0.86。",
+              "knowledgePointIds": [
+                "kp-dec-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-017",
+              "type": "blank",
+              "question": "把 5.2 的小数点先向左移动三位，再乘 1000，结果是（______）。",
+              "answer": "5.2",
+              "explanation": "向左移动三位得 0.0052，再乘 1000（相当于右移三位）又回到 5.2。",
+              "knowledgePointIds": [
+                "kp-dec-003"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-018",
+              "type": "judge",
+              "question": "把一个小数的小数点向右移动两位，这个数就扩大到原来的 100 倍。",
+              "answer": "对",
+              "explanation": "小数点右移一位扩大 10 倍，右移两位就扩大 100 倍。",
+              "knowledgePointIds": [
+                "kp-dec-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t4",
+          "title": "名数改写与求近似数",
+          "knowledgePointIds": [
+            "kp-dec-004"
+          ],
+          "modules": [
+            {
+              "id": "t4-m1",
+              "type": "math.life",
+              "title": "单位换算与四舍五入",
+              "knowledgePointIds": [
+                "kp-dec-004"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-019",
+              "type": "blank",
+              "question": "3 米 5 厘米＝（______）米。",
+              "answer": "3.05",
+              "explanation": "5 厘米＝0.05 米，所以是 3.05 米。",
+              "knowledgePointIds": [
+                "kp-dec-004"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "应用意识"
+              }
+            },
+            {
+              "id": "u1-ex-020",
+              "type": "blank",
+              "question": "2.4 千克＝（______）克。",
+              "answer": "2400",
+              "explanation": "1 千克＝1000 克，高级化低级要乘进率：2.4×1000＝2400。",
+              "knowledgePointIds": [
+                "kp-dec-004"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "应用意识"
+              }
+            },
+            {
+              "id": "u1-ex-021",
+              "type": "blank",
+              "question": "1.05 千米＝（______）米。",
+              "answer": "1050",
+              "explanation": "1 千米＝1000 米，1.05×1000＝1050。",
+              "knowledgePointIds": [
+                "kp-dec-004"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "应用意识"
+              }
+            },
+            {
+              "id": "u1-ex-022",
+              "type": "blank",
+              "question": "把 3.746 保留两位小数约是（______）。",
+              "answer": "3.75",
+              "explanation": "看千分位上的 6，满 5 向前一位进 1，3.74＋0.01＝3.75。",
+              "knowledgePointIds": [
+                "kp-dec-004"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "应用意识"
+              }
+            },
+            {
+              "id": "u1-ex-023",
+              "type": "blank",
+              "question": "把 8.9 精确到个位约是（______）。",
+              "answer": "9",
+              "explanation": "精确到个位要看十分位，十分位是 9，满 5 进 1，所以约是 9。",
+              "knowledgePointIds": [
+                "kp-dec-004"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "应用意识"
+              }
+            },
+            {
+              "id": "u1-ex-024",
+              "type": "blank",
+              "question": "5 元 6 角＝（______）元。",
+              "answer": "5.6",
+              "explanation": "1 元＝10 角，6 角＝0.6 元，所以是 5.6 元。",
+              "knowledgePointIds": [
+                "kp-dec-004"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "应用意识"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

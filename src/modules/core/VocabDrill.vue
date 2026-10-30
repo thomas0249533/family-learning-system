@@ -48,6 +48,14 @@
         </div>
       </div>
 
+      <div class="config-block" v-if="mode === 'dictation'">
+        <div class="config-label">听写设置</div>
+        <label class="dictation-toggle">
+          <input v-model="showPromptInDictation" type="checkbox" />
+          <span>显示中文提示（默认关闭，关闭才是真听写）</span>
+        </label>
+      </div>
+
       <div class="intro-actions">
         <AppButton type="primary" size="large" block @click="startDrill">
           ▶ 开始背记（{{ sessionSize }} 题）
@@ -98,6 +106,26 @@
         />
       </div>
 
+      <!-- 听写模式：连续作答，作答过程中不判对错，最后统一批改 -->
+      <div v-else-if="mode === 'dictation'" class="input-area">
+        <div class="listen-block">
+          <button class="listen-btn" @click="playAudio">🔊 再听一遍</button>
+          <div class="listen-hint">
+            听音写出{{ lang === 'chinese' ? '汉字' : '单词' }}，写完一起批改
+          </div>
+        </div>
+        <div v-if="showPromptInDictation" class="prompt-block">
+          <div class="prompt-label">提示</div>
+          <div class="prompt-content">{{ currentPrompt }}</div>
+        </div>
+        <n-input
+          v-model:value="userInput"
+          :placeholder="lang === 'chinese' ? '请输入汉字...' : '请输入英文单词...'"
+          size="large"
+          @keyup.enter="submitDictation"
+        />
+      </div>
+
       <!-- 选择模式 -->
       <div v-else-if="mode === 'choice'" class="choice-area">
         <div class="prompt-block">
@@ -132,6 +160,12 @@
           <AppButton size="large" @click="markWrong">🔄 再练练</AppButton>
           <AppButton type="success" size="large" @click="markCorrect">✅ 我记住了</AppButton>
         </template>
+        <!-- 听写模式：提交即进入下一题，全程不给对错，最后统一批改 -->
+        <template v-else-if="mode === 'dictation'">
+          <AppButton type="primary" size="large" block @click="submitDictation" :disabled="!userInput.trim()">
+            {{ currentIndex === sessionWords.length - 1 ? '🏁 完成并批改' : '提交并下一题 ➡️' }}
+          </AppButton>
+        </template>
         <template v-else-if="!showFeedback">
           <AppButton type="primary" size="large" block @click="submitAnswer" :disabled="!userInput.trim()">
             提交
@@ -163,6 +197,62 @@
         <AppButton block @click="emit('close')">← 返回词汇表</AppButton>
       </div>
     </div>
+
+    <!-- ============ 听写批改（统一判分，逐词对照） ============ -->
+    <div v-else-if="phase === 'review'" class="review-screen">
+      <div class="review-head">
+        <div class="review-icon">{{ doneIcon }}</div>
+        <div class="review-title">听写批改</div>
+        <div class="review-score">
+          <span class="review-num">{{ correctCount }}</span>
+          <span class="review-div">/</span>
+          <span class="review-total">{{ dictationAnswers.length }}</span>
+        </div>
+        <div class="review-rate">
+          正确率 {{ doneRate }}% · 用时 {{ formatDuration(elapsedSeconds) }}
+        </div>
+      </div>
+
+      <div class="review-list">
+        <div
+          v-for="(a, i) in dictationAnswers"
+          :key="a.wordId + '-' + i"
+          class="review-row"
+          :class="a.correct ? 'ok' : 'no'"
+        >
+          <span class="review-idx">{{ i + 1 }}</span>
+          <span class="review-mark">{{ a.correct ? '✅' : '❌' }}</span>
+          <span class="review-ans">
+            <b>{{ a.answer }}</b>
+            <span v-if="!a.correct" class="review-mine">你写的是「{{ a.input || '（空）' }}」</span>
+          </span>
+          <button class="review-speak" type="button" title="朗读" @click="speakWord(a.answer)">
+            🔊
+          </button>
+        </div>
+      </div>
+
+      <div class="review-actions">
+        <AppButton
+          v-if="wrongAnswers.length > 0"
+          type="primary"
+          size="large"
+          block
+          @click="retryWrong"
+        >
+          🔁 只重练这 {{ wrongAnswers.length }} 个
+        </AppButton>
+        <AppButton
+          :type="wrongAnswers.length > 0 ? 'default' : 'primary'"
+          size="large"
+          block
+          @click="startDrill"
+        >
+          🔁 整轮再来一遍
+        </AppButton>
+        <AppButton block @click="emit('close')">← 返回词汇表</AppButton>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -170,11 +260,21 @@
 import { ref, computed, onUnmounted } from 'vue'
 import { NInput } from 'naive-ui'
 import { speak } from '@core/audio/speechService'
+import { gradeDictation } from '@core/quiz/dictationGrade'
 import { useUserDataStore } from '@core/stores/userData'
 import AppButton from '@/components/ui/AppButton.vue'
 
-type Mode = 'flip' | 'input' | 'listen' | 'choice'
-type Phase = 'intro' | 'drilling' | 'done'
+type Mode = 'flip' | 'input' | 'listen' | 'choice' | 'dictation'
+type Phase = 'intro' | 'drilling' | 'done' | 'review'
+
+/** 听写模式下的一题作答记录（统一批改用，作答过程中不判对错） */
+interface DictationAnswer {
+  wordId: string
+  prompt: string
+  answer: string
+  input: string
+  correct: boolean
+}
 
 const props = withDefaults(defineProps<{
   words: any[]
@@ -203,6 +303,10 @@ const showFeedback = ref(false)
 const lastCorrect = ref(false)
 const correctCount = ref(0)
 const elapsedSeconds = ref(0)
+/** 听写模式：连续作答的答案在这里攒着，最后一起批改 */
+const dictationAnswers = ref<DictationAnswer[]>([])
+/** 听写时是否显示中文提示（默认关，才是真听写） */
+const showPromptInDictation = ref(false)
 let timer: number | null = null
 
 const countOptions = computed(() => [
@@ -239,6 +343,7 @@ const modeOptions = [
   { value: 'input' as Mode, icon: '✍️', label: '输入', desc: '看中文写' },
   { value: 'listen' as Mode, icon: '🔊', label: '听音', desc: '听声音写' },
   { value: 'choice' as Mode, icon: '🔘', label: '选择', desc: '4 选 1' },
+  { value: 'dictation' as Mode, icon: '🎧', label: '听写', desc: '连写后批改' },
 ]
 
 const currentWord = computed(() => sessionWords.value[currentIndex.value])
@@ -332,15 +437,79 @@ function startDrill() {
   if (props.words.length === 0) return
   const shuffled = [...props.words].sort(() => Math.random() - 0.5)
   const count = Math.min(countPerSession.value, props.words.length)
-  sessionWords.value = shuffled.slice(0, count)
+  beginSession(shuffled.slice(0, count))
+}
+
+/** 开一轮练习：所有模式共用，避免 startDrill / retryWrong 各写一套重置逻辑 */
+function beginSession(words: any[]) {
+  sessionWords.value = words
   currentIndex.value = 0
   correctCount.value = 0
   elapsedSeconds.value = 0
   userInput.value = ''
   flipped.value = false
   showFeedback.value = false
+  dictationAnswers.value = []
   phase.value = 'drilling'
   startTimer()
+  // 听写是连续作业：进来先把第一个词读出来，不让孩子每题点一次播放
+  if (mode.value === 'dictation') playAudio()
+}
+
+/**
+ * 听写模式提交：记录答案 → 下一题；最后一题进入统一批改。全程不判对错。
+ * 判分规则抽在 `core/quiz/dictationGrade`（纯函数，有单测），组件只负责流程。
+ */
+async function submitDictation() {
+  const w = currentWord.value
+  const typed = userInput.value.trim()
+  if (!w || !typed) return
+  const expected = currentAnswer.value.trim()
+  dictationAnswers.value.push({
+    wordId: w.id ?? '',
+    prompt: currentPrompt.value,
+    answer: expected,
+    input: typed,
+    correct: gradeDictation(typed, expected),
+  })
+  userInput.value = ''
+  if (currentIndex.value < sessionWords.value.length - 1) {
+    currentIndex.value++
+    playAudio()
+  } else {
+    await finishDictation()
+  }
+}
+
+/**
+ * 统一批改：**一次性**写进度。
+ * 作答过程中刻意不写，否则"逐题判分 + 即时反馈"会把听写变成可试错的填空题，
+ * 掌握度会被虚高的正确率带偏（这与 FSRS 的稳定性估计直接冲突）。
+ */
+async function finishDictation() {
+  stopTimer()
+  correctCount.value = dictationAnswers.value.filter(a => a.correct).length
+  for (const a of dictationAnswers.value) {
+    const w = sessionWords.value.find(x => x.id === a.wordId)
+    if (w) await writeProgress(w, a.correct)
+  }
+  phase.value = 'review'
+}
+
+const wrongAnswers = computed(() => dictationAnswers.value.filter(a => !a.correct))
+
+/** 只重练错词：把错的几个词单独再来一轮听写 */
+function retryWrong() {
+  const wrongIds = new Set(wrongAnswers.value.map(a => a.wordId))
+  const words = sessionWords.value.filter(w => w?.id && wrongIds.has(w.id))
+  if (words.length === 0) return
+  beginSession(words)
+}
+
+/** 批改清单里单个词的朗读 */
+function speakWord(text: string) {
+  if (!text) return
+  speak({ text, lang: props.lang === 'chinese' ? 'zh-CN' : 'en-US', rate: 0.9 })
 }
 
 async function submitAnswer() {
@@ -468,7 +637,8 @@ onUnmounted(() => {
 
 .mode-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  // 5 种模式（含听写）：固定 4 列会把最后一个挤到第二行孤零零，改自适应列宽
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
   gap: 8px;
 
   @media (max-width: 600px) {
@@ -784,6 +954,128 @@ onUnmounted(() => {
   }
   .done-rate { font-size: 14px; color: $text-sub; margin-top: 8px; }
   .done-time { font-size: 12px; color: $text-muted; margin-top: 4px; }
+}
+
+.dictation-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: $text-sub;
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    accent-color: $primary-color;
+    cursor: pointer;
+  }
+}
+
+/* ============ 听写批改 ============ */
+.review-screen {
+  padding: 4px 0;
+}
+
+.review-head {
+  text-align: center;
+  padding: 8px 0 16px;
+
+  .review-icon { font-size: 48px; }
+  .review-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: $text-main;
+    margin: 4px 0 8px;
+  }
+  .review-score {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+
+    .review-num { font-size: 40px; font-weight: 900; color: $primary-text; }
+    .review-div { font-size: 24px; color: $text-muted; }
+    .review-total { font-size: 24px; font-weight: 700; color: $text-sub; }
+  }
+  .review-rate {
+    margin-top: 6px;
+    font-size: 13px;
+    color: $text-sub;
+  }
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 46vh;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+.review-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid $border-color;
+  background: $card-bg;
+
+  &.ok {
+    background: var(--badge-success-bg);
+    border-color: $success-color;
+  }
+  &.no {
+    background: var(--badge-danger-bg);
+    border-color: $danger-color;
+  }
+
+  .review-idx {
+    min-width: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-muted;
+  }
+  .review-mark { font-size: 14px; }
+  .review-ans {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+
+    b {
+      font-size: 16px;
+      color: $text-main;
+      word-break: break-word;
+    }
+    .review-mine {
+      font-size: 12px;
+      color: $danger-text;
+      word-break: break-word;
+    }
+  }
+  .review-speak {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: $bg-color-hover;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover { background: $primary-light; }
+  }
+}
+
+.review-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .done-actions {

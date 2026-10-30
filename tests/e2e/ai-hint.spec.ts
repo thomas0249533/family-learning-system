@@ -37,7 +37,7 @@ const NDJSON_BODY = STREAM_PARTS.map(
 const FULL_TEXT = STREAM_PARTS.join('')
 
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {

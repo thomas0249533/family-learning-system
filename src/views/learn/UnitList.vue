@@ -14,6 +14,12 @@
           以下依赖包未找到：{{ missingDeps.join('、') }}。请一并导入这些包。
         </n-alert>
 
+        <div v-if="suggestedUnit && !isExamMode" class="path-tip">
+          <span class="path-tip__icon">💡</span>
+          <span class="path-tip__text">建议先学：<b>{{ suggestedUnit.unit.title }}</b>（还没掌握，先把它啃下来）</span>
+          <button class="path-tip__btn" type="button" @click="selectUnit(suggestedUnit)">去学 →</button>
+        </div>
+
         <div v-if="resolvedUnits.length > 0" class="unit-grid">
           <div
             v-for="(ru, idx) in resolvedUnits"
@@ -36,6 +42,10 @@
                 <!-- V2.12.3 · 完成度提示：这摊内容里还有几道题没攻克（错题本里未掌握） -->
                 <span v-if="pendingMistakes(ru) > 0" class="unit-card-pending">
                   还有 {{ pendingMistakes(ru) }} 道待攻克
+                </span>
+                <!-- P2 · 学习路径建议：标出最该先学的一单元 -->
+                <span v-if="ru.unit.id === suggestedUnitId" class="unit-card-suggest">
+                  ⭐ 建议优先
                 </span>
                 <!-- V2.12.3 · 手动「全部完成」：自动判定覆盖不到时的兜底（可撤销） -->
                 <button
@@ -169,6 +179,21 @@ function pendingMistakes(ru: ResolvedUnit): number {
 function isManualComplete(ru: ResolvedUnit): boolean {
   return userDataStore.isCardManuallyComplete('unit', ru.unit.id)
 }
+
+/**
+ * P2 · 学习路径建议：**第一个还没掌握的单元**就是当前最该先学的。
+ * 按单元顺序扫，命中即返回 —— 孩子顺着列表往下推，第一块没啃下的就是瓶颈。
+ * 全掌握则返回 null（banner 自然不显示）。
+ */
+const suggestedUnitId = computed<string | null>(() => {
+  for (const ru of resolvedUnits.value) {
+    if (unitStatus(ru) !== 'mastered') return ru.unit.id
+  }
+  return null
+})
+const suggestedUnit = computed<ResolvedUnit | null>(
+  () => resolvedUnits.value.find((ru) => ru.unit.id === suggestedUnitId.value) ?? null,
+)
 
 /**
  * 手动「全部完成」的开关。
@@ -427,5 +452,44 @@ function selectUnit(ru: ResolvedUnit) {
   padding: 60px 20px;
   box-shadow: $shadow-sm;
   border: 1px solid $border-color;
+}
+
+/* P2 · 学习路径建议横幅：与「学习小贴士」同一语言（主色软底 + 左侧图标） */
+.path-tip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: $primary-light;
+  border: 1px solid $primary-color;
+  border-radius: $radius-lg;
+
+  &__icon { font-size: 18px; flex-shrink: 0; }
+  &__text { flex: 1; font-size: 13px; color: $text-main; line-height: 1.5; }
+  &__btn {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary-text);
+    color: var(--text-on-primary);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: filter 0.15s;
+    &:hover { filter: brightness(1.06); }
+  }
+}
+
+/* P2 · 单元卡上的「建议优先」角标 */
+.unit-card-suggest {
+  white-space: nowrap;
+  color: var(--warning-text, $text-muted);
+  background: var(--badge-warning-bg, $bg-color-hover);
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 10px;
 }
 </style>

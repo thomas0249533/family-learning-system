@@ -1,11 +1,11 @@
 {
-  "version": "2.12.7",
-  "notes": "V2.12.7 · 英语拔高内容 + 听写/默写朗读：①英语词汇包新增「拔高 · 句型转换与语法运用」单元（35 道提高/挑战难度题：句型转换、语法选择、疑问词问答、词汇分类、阅读理解、综合听写），孩子英语基础较好可上更难；②听写/默写模式：单词默写/拼写题新增 🔊 听发音按钮，用系统语音朗读英文单词（听音写词），零音频资产、可离线，仅英文朗读英文、中文朗读中文；③其余同 V2.12.6：专项包默认展开、按单元选择背记、安装包下载源为 GitHub Releases（国内可达）、不再发布便携包。",
-  "pub_date": "2026-10-30T00:52:57.894Z",
+  "version": "3.0.0",
+  "notes": "V3.0 · 里程碑：今日任务 + 自适应难度 + 数据可信。①今日任务：首页从「一堆推荐」改成「今天有 N 件事」，按到期复习 / 待攻克错题 / 弱项 / 新学四类自动编排，做完就结算，目标可按题量或时长切换；②自适应难度：每次练习按最近表现挑难度档（连续答对升档、连续答错降档），题目难度标注为基础 / 提高 / 挑战；③数据可信：每天首次启动自动拍一份本地快照（保留 7 份，设置页可一键回滚），导入备份后自动做「包 / 进度 / 错题 / 徽章 / 完成标记」五项计数对账，手动标记的「已完成」也会随备份搬到新设备；④错因归类：错题本给出可核对的错因建议（漏单位 / 数字错位 / 顺序颠倒 / 拼写等），家长点采纳才记录；⑤修复：从设置页点侧边栏会整页空白（页面切换动画状态机卡住），现已修好。",
+  "pub_date": "2026-10-30T08:16:05.764Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVk84NncwRVhRSkVFanFmZTlwa1NCRmJzWTZvM2o3Zy9qZitlNlFNRnNmdExiRmFjbGJvMFpOUTZuSDZ1R212SzFzeFlOdEtIcU8vK05DeGgrVHdZQUFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMzIxNTY0CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi43X3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjcKK0RZNzRMWEFhUE9JOENhRXU4b0Z2NFRUOHJFazNPeGE1bXFvS2tsZnUzeUZiVzZPUkFkTXFrSGtFZWxnUjZRa2UzV3Rwc0VLQ1FkN0hMSFBXMGZCQ2c9PQo=",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.7/FamilyLearningSystem_2.12.7_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkNabzFEZFlScnVEMmFEOC9MZVZQT29NRkRIbE02QVdwYTc4dkpzR2YvaDVrM2RONGdPWjRkQnVHNDR6OG9BdFFWalhITXJ2OHZGbnJqbVcwanhCQ3dvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMzQ4MTYwCWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4wLjBfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMC4wCm95aytaNTBTSzVTelF6TS9kb0dZTGIvazAzYmoxRHNPUlBlZFZ6cUJJenRHK2xEeDNYM1AzTjV5N0piaGpqeG5MUG1CcC9rRVd2L3J3RWh0ckZ3OUJRPT0K",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.0.0/FamilyLearningSystem_3.0.0_x64-setup.exe"
     }
   }
 }

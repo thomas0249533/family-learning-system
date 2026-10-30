@@ -26,24 +26,30 @@ import {
  */
 
 describe('settingsScope — 键清单', () => {
-  it('10 个 per-profile 键、11 个 global 键一个都不能少（删键等于那个键不再被搬）', () => {
+  it('12 个 per-profile 键、12 个 global 键一个都不能少（删键等于那个键不再被搬）', () => {
     // V1.4 · B3 起 per-profile 是 9 个：新增 `customChecks`（家长手工勾选，per-profile）。
     // V1.11 · F1 起 global 是 10 个：新增 `ai:config`（AI 助手配置，设备级 ——
     // API Key 是家长买的、全家共用的一份资产，**不按 profileId 分片**）。
     // V2.8 · C1 起 per-profile 是 10 个：新增 `blindBox`（盲盒拥有/已抽日，孩子各自的惊喜）。
     // V2.11 起 global 是 11 个：新增 `fls:feedback`（音效/震动开关，设备级 ——
     // 它回答「这台电脑现在吵不吵」，与是哪个孩子在做题无关）。
+    // V3.0 · M1 起 per-profile 是 12 个：新增 `dailyGoal`（每日目标，一年级 12 题、
+    // 四年级 24 题，换孩子就不成立）与 `dailyPlan`（今日队列，是"这个孩子今天做什么"）。
+    // V3.0 · M4 起 global 是 12 个：新增 `backup:snapshots`（自动快照，属于这台设备）。
     // 断言写**字面量**而不是 `PROFILE_SCOPED_KEYS.length`：这条测试要挡的正是
     // "清单被悄悄改动"，用清单自己的长度去断言等于把它关掉。
-    expect(PROFILE_SCOPED_KEYS).toHaveLength(10)
-    expect(GLOBAL_KEYS).toHaveLength(11)
+    expect(PROFILE_SCOPED_KEYS).toHaveLength(12)
+    expect(GLOBAL_KEYS).toHaveLength(12)
     // 抽查两组里最容易被人"顺手删掉"的成员：家长开关、勾选态与迁移标记
     expect(PROFILE_SCOPED_KEYS).toContain('achievement:discoveryEnabled')
     expect(PROFILE_SCOPED_KEYS).toContain('customChecks')
     expect(PROFILE_SCOPED_KEYS).toContain('blindBox')
+    expect(PROFILE_SCOPED_KEYS).toContain('dailyGoal')
+    expect(PROFILE_SCOPED_KEYS).toContain('dailyPlan')
     expect(GLOBAL_KEYS).toContain('migration:v4')
     expect(GLOBAL_KEYS).toContain('ai:config')
     expect(GLOBAL_KEYS).toContain('fls:feedback')
+    expect(GLOBAL_KEYS).toContain('backup:snapshots')
   })
 
   it('两个清单不允许有交集（同时在两边的键，分类结果只取决于判定顺序）', () => {

@@ -125,8 +125,24 @@ const TABLE_NAMES = [
   // V2.0 · 专题练习断点（db v5）。传 `indices: 'v4' / 'v3'` 时本表索引清单为空，
   // 那时 `.where(...)` 会抛「未知索引」—— 正是想要的：老结构里本来就没这张表。
   'topicSessions',
+  // V3.0 · M4 起「手动完成标记」进备份契约，`bundleIO` / `applyMergePlan` 都会读写它。
+  // 表在 db v8 才有，但它不属于 v3/v4/v5 任何一个历史形态的索引清单，
+  // 所以索引单独放在 POST_V5_INDICES（见下），不污染那三份预设。
+  'cardCompletions',
 ] as const
 export type TableName = (typeof TABLE_NAMES)[number]
+
+/**
+ * db **v5 之后**才加的表 —— 不属于任何历史预设形态。
+ *
+ * 为什么单独放：`V5_INDICES` 等三份清单是**历史 schema 的快照**，
+ * `tests/fakeDexie-guard.test.ts` 会拿它们与 `src/db/index.ts` 的 `version(n)` 原文逐字比对。
+ * 把 v8 的表塞进去会让"v5 快照"变成谎言。这里只补"任何形态下都存在的行为需求"：
+ * 跑合并/备份路径的用例需要这张表存在（否则 `where('profileId')` 会抛未知索引）。
+ */
+const POST_V5_INDICES: Record<string, readonly string[]> = {
+  cardCompletions: ['[profileId+kind+targetId]', 'profileId', 'kind'],
+}
 
 /** 每张表的默认主键（与 schema 的 `++id` / `key` 对应） */
 const DEFAULT_KEY: Record<TableName, (r: Row) => any> = {
@@ -136,6 +152,7 @@ const DEFAULT_KEY: Record<TableName, (r: Row) => any> = {
   settings: (r) => r.key,
   examSessions: (r) => r.id,
   topicSessions: (r) => r.id,
+  cardCompletions: (r) => r.id,
 }
 
 /** 哪些表是自增主键 */
@@ -146,6 +163,7 @@ const AUTO_ID: Record<TableName, boolean> = {
   settings: false,
   examSessions: true,
   topicSessions: true,
+  cardCompletions: true,
 }
 
 export interface TableOpts {
@@ -196,6 +214,7 @@ export interface FakeDexie {
   settings: FakeTable
   examSessions: FakeTable
   topicSessions: FakeTable
+  cardCompletions: FakeTable
   /** 喂给 `vi.mock('@/db', () => ({ db: fake.db }))` 的对象 */
   db: {
     packages: FakeTable
@@ -204,6 +223,7 @@ export interface FakeDexie {
     settings: FakeTable
     examSessions: FakeTable
     topicSessions: FakeTable
+    cardCompletions: FakeTable
     transaction(mode: any, ...args: any[]): Promise<any>
   }
   /**
@@ -253,7 +273,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
   for (const name of TABLE_NAMES) {
     const over = overrides[name] ?? {}
     const keyOf = over.keyOf ?? DEFAULT_KEY[name]
-    const indices = over.indices ?? indexMap[name] ?? []
+    const indices = over.indices ?? indexMap[name] ?? POST_V5_INDICES[name] ?? []
     const autoId = AUTO_ID[name]
     const rows: Row[] = []
     let seq = 1
@@ -432,6 +452,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     settings: tables.settings,
     examSessions: tables.examSessions,
     topicSessions: tables.topicSessions,
+    cardCompletions: tables.cardCompletions,
 
     /**
      * 手写事务：提交前快照涉及的表，抛错时整张还原。
@@ -465,6 +486,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     settings: tables.settings,
     examSessions: tables.examSessions,
     topicSessions: tables.topicSessions,
+    cardCompletions: tables.cardCompletions,
     db,
     failOn,
     writes,

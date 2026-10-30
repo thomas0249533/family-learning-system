@@ -118,8 +118,17 @@
 
       <main class="app-main">
         <div class="app-main-inner">
+          <!-- 页面切换的淡入淡出。
+               ⚠️ **不要加 `mode="out-in"`**（V3.0 · M5 移除，这是一个真实事故）：
+               `out-in` 要等旧页面 leave 结束才挂新页面，而"leave 何时结束"依赖
+               Vue 对计算样式的推断 + 过渡状态机。实测从设置页离开时它永远不结束
+               （等 8 秒仍空白、无任何控制台报错、路由已切换、外壳正常渲染）——
+               用户的观感就是"点侧边栏，整页白掉，除了刷新没法恢复"。
+               不用 out-in 后两个页面短暂共存 200ms 交叉淡出，视觉上更连贯，
+               也不再有那个状态机可卡。`:duration` 显式指定时长，
+               让 Vue 不必去猜过渡是否结束。 -->
           <router-view v-slot="{ Component }">
-            <transition name="fade" mode="out-in">
+            <transition name="fade" :duration="200">
               <component :is="Component" />
             </transition>
           </router-view>
@@ -266,6 +275,18 @@ onMounted(() => {
   if (typeof win.requestIdleCallback === 'function') win.requestIdleCallback(loadFeedback, { timeout: 3000 })
   else setTimeout(loadFeedback, 1200)
 
+  // V3.0 · M4：每日自动快照。同样**不占首屏关键路径** —— 它要跑一次全库转储，
+  // 在孩子等着进首页的那几百毫秒里做这件事毫无意义。空闲时做，做完就完了；
+  // 失败也不提示（后台保险，弹窗只会让家长困惑）。
+  const takeSnapshot = (): void => {
+    void import('@core/backup/autoSnapshot').then((m) => m.maybeAutoSnapshot())
+  }
+  if (typeof win.requestIdleCallback === 'function') {
+    win.requestIdleCallback(takeSnapshot, { timeout: 8000 })
+  } else {
+    setTimeout(takeSnapshot, 3000)
+  }
+
   offProfileChange = onProfileChange((next) => {
     profileState.value = next
   })
@@ -305,8 +326,10 @@ watch(
 /** 导航项：mobile=true 时同时出现在底部 tab */
 const navItems = [
   { path: '/home', icon: '🏠', label: '首页', mobile: true },
+  { path: '/today', icon: '🎯', label: '今日', mobile: true },
   { path: '/learn', icon: '📚', label: '学习', mobile: true },
   { path: '/mistakes', icon: '📕', label: '错题本', mobile: true },
+  { path: '/stroke', icon: '✍️', label: '笔顺', mobile: true },
   { path: '/search', icon: '🔍', label: '搜索', mobile: true },
   { path: '/report', icon: '📄', label: '报告', mobile: true },
   { path: '/parent', icon: '👨‍👩‍👧', label: '家长', mobile: false },

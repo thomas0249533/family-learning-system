@@ -98,6 +98,7 @@ function remoteBundle(over: Partial<Bundle> = {}): Bundle {
       }),
     ],
     examSessions: [],
+    cardCompletions: [],
     settings: {},
     ...over,
   }
@@ -123,6 +124,7 @@ async function snapshotFromDb(profiles: string[] = [PID]): Promise<LocalSnapshot
         progress: (await fake.progress.toArray()).filter((r) => r.profileId === id) as ProgressRecord[],
         mistakes: (await fake.mistakes.toArray()).filter((r) => r.profileId === id) as MistakeRecord[],
         examSessions: [],
+        cardCompletions: [],
         settings: {},
       })),
     ),
@@ -420,7 +422,14 @@ describe('A6 · L2 — planMerge 必须把基线填满', () => {
     expect(plan.stalenessGuard).toEqual({ progress: {}, mistakes: {} })
 
     const applied = await applyMergePlan(plan)
-    expect(applied).toEqual({ progress: 0, mistakes: 0, sessions: 0, settings: 0, profiles: 0 })
+    expect(applied).toEqual({
+      progress: 0,
+      mistakes: 0,
+      sessions: 0,
+      settings: 0,
+      profiles: 0,
+      marks: 0,
+    })
     expect(fake.txCount).toBe(0)
   })
 })

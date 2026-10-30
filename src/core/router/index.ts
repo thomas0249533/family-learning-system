@@ -3,6 +3,9 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/home' },
   { path: '/home', name: 'Home', component: () => import('@/views/Home.vue') },
+  // 今日任务（V3.0 · M1）：首页的唯一主入口。单独一条路由而不是首页的一个区块，
+  // 是因为答题完成后要有个地方"回来"——回首页会让人顺手点别的东西，回今日页才能结算。
+  { path: '/today', name: 'TodayPlan', component: () => import('@/views/TodayPlan.vue') },
   // 技能树（V1.12 · G1）。echarts tree 渲染学科 → 单元 → 知识点，lazy import 同其余条目
   { path: '/graph', name: 'KnowledgeGraph', component: () => import('@/views/KnowledgeGraph.vue') },
   {
@@ -18,6 +21,8 @@ const routes: RouteRecordRaw[] = [
   { path: '/review', name: 'Review', component: () => import('@/views/Review.vue') },
   { path: '/settings/import', name: 'ImportWizard', component: () => import('@/views/settings/ImportWizard.vue') },
   { path: '/mistakes', name: 'Mistakes', component: () => import('@/views/Mistakes.vue') },
+  // P3 · 笔顺描红（降级版：纯 canvas 描红，离线可用，无外部依赖）
+  { path: '/stroke', name: 'StrokePractice', component: () => import('@/views/StrokePractice.vue') },
   { path: '/search', name: 'Search', component: () => import('@/views/Search.vue') },
   { path: '/settings', name: 'Settings', component: () => import('@/views/Settings.vue') },
   { path: '/report', name: 'Report', component: () => import('@/views/Report.vue') },

@@ -4,8 +4,9 @@
  * ## 这份测试要钉住的四件事
  *  1. **URL 拼接**是最容易出错又最不显眼的一层：地址一错就是"找不到文件"，
  *     而家长会以为网络坏了。所以覆盖中文、空格、已编码、多余斜杠、非法档案 id。
- *  2. **失败分类必须可断言**：CORS 是本仓的现实约束（没有 Rust 侧 http 插件），
- *     它必须是一条明确的路，而不是笼统的"失败了"。
+ *  2. **失败分类必须可断言**：CORS 是**网页版**的现实约束（浏览器不给网页放行跨域），
+ *     桌面端自 P3 起改走 Rust 的 `webdav_fetch`（见 `src-tauri/src/net.rs`）已能真正连通；
+ *     但两端的失败都必须是一条明确的路，而不是笼统的"失败了"。
  *  3. **合并前置校验**：跨档案的数据必须在进 `planMerge` 之前被拦下 ——
  *     一旦进去，别人家的档案就会被当成"新档案"静默造出来。
  *  4. **单调不减不能被通道破坏**：最后一组用例跑完整条链路
@@ -150,6 +151,7 @@ function localSnapshotWith(profileId: string, rows: ProgressRecord[]): LocalSnap
         progress: rows,
         mistakes: [],
         examSessions: [],
+        cardCompletions: [],
         settings: {},
       },
     ],
@@ -166,6 +168,7 @@ function remoteBundleWith(profileId: string, rows: ProgressRecord[]): Bundle[] {
       progress: rows,
       mistakes: [],
       examSessions: [],
+      cardCompletions: [],
       settings: {},
     },
   ]
@@ -620,6 +623,7 @@ describe('同步 · 合并前置校验（防跨档案串数据）', () => {
       progress: [progressRow('p_other', 'pkg-a', 'kp-1', T1)],
       mistakes: [],
       examSessions: [],
+      cardCompletions: [],
       settings: {},
     }
     const guard = sync.guardRemoteBundles(localSnapshotWith('default', []), [bundle])
@@ -636,6 +640,7 @@ describe('同步 · 合并前置校验（防跨档案串数据）', () => {
       progress: [{ ...progressRow('default', 'pkg-a', 'kp-1', T1), profileId: '' }],
       mistakes: [],
       examSessions: [],
+      cardCompletions: [],
       settings: {},
     }
     const guard = sync.guardRemoteBundles(localSnapshotWith('default', []), [bundle])

@@ -569,3 +569,24 @@ describe('gradeBlank · 末尾句末标点容错', () => {
     expect(gradeBlank('70。', '70,锐角')).toBe(false)      // 漏填一个空仍判错
   })
 })
+
+describe('gradeBlank · 弯引号归一（V2.12.8）', () => {
+  it('中文输入法的弯引号与键盘直引号视为同一字符', () => {
+    // 四年级英语默写 `o'clock` / `teachers' office`，中文输入法打出来的就是 ’
+    expect(gradeBlank('o\u2019clock', "o'clock")).toBe(true)
+    expect(gradeBlank('teachers\u2019 office', "teachers' office")).toBe(true)
+    expect(gradeBlank('\u201chello\u201d', '"hello"')).toBe(true)
+  })
+
+  it('归一化两侧对称，不会把原本判错的判对', () => {
+    // 拼写本身错了，引号再怎么归一也不该放行
+    expect(gradeBlank('o\u2019clockk', "o'clock")).toBe(false)
+    // 漏写撇号仍是拼写错误（英语默写要求写全）
+    expect(gradeBlank('teachers office', "teachers' office")).toBe(false)
+  })
+
+  it('normalizeBlank 把弯引号统一成直引号', () => {
+    expect(normalizeBlank('o\u2019clock')).toBe("o'clock")
+    expect(normalizeBlank('\u201cx\u201d')).toBe('"x"')
+  })
+})

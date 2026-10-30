@@ -1,0 +1,102 @@
+{
+  "setId": "math-4-down-rjb-set",
+  "title": "四年级数学下（人教版）",
+  "subject": "math",
+  "grade": 4,
+  "term": "down",
+  "edition": "人教版",
+  "importOrder": [
+    "unit-math-4-down-rjb-p1",
+    "unit-math-4-down-rjb-p2",
+    "unit-math-4-down-rjb-p3",
+    "unit-math-4-down-rjb-p4",
+    "unit-math-4-down-rjb-p5",
+    "unit-math-4-down-rjb-p6",
+    "unit-math-4-down-rjb-p7",
+    "unit-math-4-down-rjb-p8",
+    "unit-math-4-down-rjb-p9",
+    "term-math-4-down-rjb"
+  ],
+  "packages": [
+    {
+      "file": "unit-math-4-down-rjb-p1.json",
+      "packageId": "unit-math-4-down-rjb-p1",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p2.json",
+      "packageId": "unit-math-4-down-rjb-p2",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p3.json",
+      "packageId": "unit-math-4-down-rjb-p3",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p4.json",
+      "packageId": "unit-math-4-down-rjb-p4",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p5.json",
+      "packageId": "unit-math-4-down-rjb-p5",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p6.json",
+      "packageId": "unit-math-4-down-rjb-p6",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p7.json",
+      "packageId": "unit-math-4-down-rjb-p7",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p8.json",
+      "packageId": "unit-math-4-down-rjb-p8",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "unit-math-4-down-rjb-p9.json",
+      "packageId": "unit-math-4-down-rjb-p9",
+      "type": "unit",
+      "visible": false,
+      "dependencies": []
+    },
+    {
+      "file": "term-math-4-down-rjb.json",
+      "packageId": "term-math-4-down-rjb",
+      "type": "term",
+      "visible": true,
+      "dependencies": [
+        "unit-math-4-down-rjb-p1",
+        "unit-math-4-down-rjb-p2",
+        "unit-math-4-down-rjb-p3",
+        "unit-math-4-down-rjb-p4",
+        "unit-math-4-down-rjb-p5",
+        "unit-math-4-down-rjb-p6",
+        "unit-math-4-down-rjb-p7",
+        "unit-math-4-down-rjb-p8",
+        "unit-math-4-down-rjb-p9"
+      ]
+    }
+  ]
+}

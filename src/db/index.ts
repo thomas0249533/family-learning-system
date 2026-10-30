@@ -216,14 +216,19 @@ export interface CardCompletionRecord {
   targetId: string;
   createdAt: string;
   /**
-   * ⚠️ **不进备份、不进合并**（与 `topicSessions` / `customSounds` / `packageAssets`
-   * 同一条边界）。
+   * ✅ **进备份、进合并**（V3.0 · M4 起；此前 V1.4 的决定是"不进"）。
    *
-   * 理由：这是一条**便利性**标记，不是学习数据 —— 真正的学习数据（进度、错题）
-   * 都在备份里，跨设备后**自动判定**照样能把卡片判绿（错题本里已掌握的题仍算已掌握）。
-   * 手动标记丢了最多是「卡片暂时显示为学习中」，点一下就能补回来。
-   * 而给 `Bundle` 契约加字段要同时改导出 / 导入 / 合并三处 + 备份字段集合测试，
-   * 收益远小于风险。
+   * 为什么改口：V1.4 时它只是便利标记，而当时的验收里没有换机场景。M4 把
+   * 「换机后标记不丢」写进了里程碑验收（`docs/plan/v3.0-milestone.md`），
+   * 而且这条标记有一个别处没有的性质 —— **无法从备份里重建**：
+   * 自动判定只能把"所有知识点都学过且没错题"的卡片判绿，家长手动点绿的往往是
+   * "这个单元我让孩子口算过了，不用刷题"，那是家长的判断，不在任何数据里。
+   *
+   * 代价可控：5 个标量字段、无 Blob、行数上限＝单元数×孩子数。
+   * 合并语义是**纯并集**（`core/merge/mergeCardCompletions.ts`）。
+   *
+   * 仍然不进的邻居（同一条边界，别顺手加）：`topicSessions`（断点，设备级）、
+   * `customSounds`（设备资产）、`packageAssets`（图片二进制，太大且随包走）。
    */
 }
 export class FamilyLearningDB extends Dexie {

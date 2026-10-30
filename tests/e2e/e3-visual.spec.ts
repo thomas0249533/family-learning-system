@@ -278,7 +278,7 @@ const PARENT_SETTINGS: Array<{ key: string; value: unknown }> = [
 
 /** `.ach-head-count` 只在读库完成后渲染 → 「Dexie 已建好 v4 schema」的可靠信号 */
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {
@@ -486,7 +486,8 @@ const SHOTS: ShotSpec[] = [
       await expect(tops).toHaveCount(3)
       await expect(tops.nth(0)).toContainText('两位数乘法')
       await expect(tops.nth(0)).toContainText('错 3 次')
-      await expect(card.locator('.weekly-card__ach')).toHaveText('🏅 成就 2 / 27')
+      // 2 / 37：27 是 V1.6 的数，V2.8 · C1 加了 10 枚习惯成就
+      await expect(card.locator('.weekly-card__ach')).toHaveText('🏅 成就 2 / 37')
       // 遮罩不入境：截图时 exporting 必须是 false（没有 fixed 浮层）
       await expect(page.locator('.export-overlay')).toHaveCount(0)
       // 页面其它区也随播种渲染（家长端总览六卡 / 学科分布 / Top5）

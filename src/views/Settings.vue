@@ -273,6 +273,9 @@
       <div class="hint">来自另一台设备的备份可以合并进来；本机已有的较新记录不会被覆盖</div>
     </AppCard>
 
+    <!-- V3.0 · M4：每日自动快照 + 一键恢复（本机回滚点） -->
+    <AutoSnapshotPanel />
+
     </section>
 
     <section id="settings-sync" class="settings-panel" data-section="sync">
@@ -322,6 +325,7 @@ import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import ImportPreview from '@/views/settings/ImportPreview.vue'
+import AutoSnapshotPanel from '@/components/AutoSnapshotPanel.vue'
 import SyncSettings from '@/views/settings/SyncSettings.vue'
 import LocalAiCard from '@/views/settings/LocalAiCard.vue'
 import { useThemeStore } from '@core/stores/theme'

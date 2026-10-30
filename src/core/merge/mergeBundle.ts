@@ -19,7 +19,12 @@
  * 家长在本机改的名字是本机意图，不该被一份旧备份改回去。
  */
 
-import type { ExamSessionRecord, MistakeRecord, ProgressRecord } from '@/db'
+import type {
+  CardCompletionRecord,
+  ExamSessionRecord,
+  MistakeRecord,
+  ProgressRecord,
+} from '@/db'
 import {
   isPlanNoop,
   emptyPlan,
@@ -36,6 +41,7 @@ import {
 } from './mergeProgress'
 import { mergeMistakes, mistakeKey } from './mergeMistakes'
 import { mergeSessions, sessionKey } from './mergeSessions'
+import { markKey, mergeCardCompletions } from './mergeCardCompletions'
 import { isSkippedBase, mergeSettingValue, mergeSettings } from './mergeSettings'
 
 /**
@@ -45,7 +51,13 @@ import { isSkippedBase, mergeSettingValue, mergeSettings } from './mergeSettings
  *     见 types.ts 对 `BackupV2` 的注释）。合并它等于产出"启用了但内容不在本机"的假卡片，
  *     图鉴里会出现永远无法解锁的剪影 —— 比不导入糟糕得多。
  */
-const GLOBAL_NEVER_MERGE = new Set<string>(['profiles', 'achievement:customPacks'])
+const GLOBAL_NEVER_MERGE = new Set<string>([
+  'profiles',
+  'achievement:customPacks',
+  // V3.0 · M4：自动快照是**本机**的回滚副本。从别人设备的备份里混进来既不安全
+  // （那台机器的数据会覆盖/掺进本机回滚点），也没有意义。
+  'backup:snapshots',
+])
 
 /** 把一行的 `profileId` 强制成所属档案：**外层是权威归属** */
 function stampProfile<T extends { profileId: string }>(rows: readonly T[], pid: string): T[] {
@@ -85,6 +97,7 @@ function foldBundles(pid: string, bundles: readonly Bundle[]): Bundle {
   const progress: ProgressRecord[] = []
   const mistakes: MistakeRecord[] = []
   const examSessions: ExamSessionRecord[] = []
+  const cardCompletions: CardCompletionRecord[] = []
   const settings: Record<string, unknown> = {}
 
   for (const bundle of bundles) {
@@ -102,6 +115,9 @@ function foldBundles(pid: string, bundles: readonly Bundle[]): Bundle {
       stampProfile(rowsOf<ExamSessionRecord>(bundle.examSessions), pid),
     )
     upsertByKey(examSessions, s.upserts, sessionKey)
+
+    const c = mergeCardCompletions(cardCompletions, stampProfile(rowsOf(bundle.cardCompletions), pid))
+    upsertByKey(cardCompletions, c.upserts, markKey)
 
     const raw = (bundle.settings ?? {}) as Record<string, unknown>
     for (const base of PROFILE_SCOPED_KEYS) {
@@ -121,6 +137,7 @@ function foldBundles(pid: string, bundles: readonly Bundle[]): Bundle {
     progress,
     mistakes,
     examSessions,
+    cardCompletions,
     settings,
   }
 }
@@ -258,6 +275,13 @@ export function planMerge(
     plan.sessionUpserts.push(...sessions.upserts)
     plan.stats.sessionsAdded += sessions.added
     plan.stats.sessionsKeptLocal += sessions.keptLocal
+
+    // 手动完成标记：纯并集，本机已有同卡片就留本机（见 mergeCardCompletions 文件头）。
+    // 不进 `stalenessGuard`：不覆盖任何既有行，也就没有"用旧值盖掉新记录"的风险。
+    const marks = mergeCardCompletions(localBundle?.cardCompletions ?? [], folded.cardCompletions)
+    plan.markUpserts.push(...marks.upserts)
+    plan.stats.marksAdded += marks.added
+    plan.stats.marksKeptLocal += marks.keptLocal
 
     const settings = mergeSettings(localBundle?.settings ?? {}, folded.settings, pid)
     plan.settingUpserts.push(...settings.upserts)

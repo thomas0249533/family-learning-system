@@ -1,0 +1,284 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p2",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第2部分 · 观察物体（二）",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-obs-001",
+      "type": "concept",
+      "title": "从不同方向观察同一物体",
+      "content": "观察物体时，站的位置不同，看到的形状可能不同，也可能相同。\n从一个位置观察长方体（或由小正方体摆成的立体图形），最多能看到 3 个面，最少看到 1 个面。\n从正面、上面、左面看到的图形，分别叫正面图、上面图、左面图。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "观察",
+        "ability": "空间观念",
+        "tags": [
+          "观察物体"
+        ]
+      }
+    },
+    {
+      "id": "kp-obs-002",
+      "type": "concept",
+      "title": "根据视图还原立体图形",
+      "content": "给出几个方向的视图，可以推断立体图形最少/最多用几个小正方体。\n方法：把“从上面看”的图形当作地面摆放图，再看正面图和左面图决定每一列的高度。\n注意“至少”两个字：只要能摆出这个视图就行，不必把所有可能都摆满。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "推理",
+        "ability": "空间观念",
+        "tags": [
+          "三视图",
+          "搭积木"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第二单元",
+      "title": "观察物体（二）",
+      "desc": "从正面、上面、左面观察立体图形，能根据视图判断小正方体的数量。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "从不同方向观察物体",
+          "knowledgePointIds": [
+            "kp-obs-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.concept",
+              "title": "正面、上面、左面三个方向",
+              "knowledgePointIds": [
+                "kp-obs-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "single",
+              "question": "从不同位置观察同一个物体，看到的形状（　　）。",
+              "options": [
+                "A. 一定相同",
+                "B. 一定不同",
+                "C. 可能相同，也可能不同",
+                "D. 无法判断"
+              ],
+              "answer": "C",
+              "explanation": "比如球从任何方向看都是圆（相同）；长方体从正面和上面看一般不同。所以要分情况。",
+              "knowledgePointIds": [
+                "kp-obs-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "从一个位置观察长方体，最多能看到（______）个面。",
+              "answer": "3",
+              "explanation": "站在一个角上观察时，能看到相交于这个角的 3 个面，这是最多的情形。",
+              "knowledgePointIds": [
+                "kp-obs-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "blank",
+              "question": "观察一个物体时，一次最少能看到（______）个面。",
+              "answer": "1",
+              "explanation": "正对着一个面看时只能看到 1 个面。",
+              "knowledgePointIds": [
+                "kp-obs-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "single",
+              "question": "从正面、上面、左面观察一个球，看到的都是（　　）。",
+              "options": [
+                "A. 圆",
+                "B. 正方形",
+                "C. 长方形",
+                "D. 三角形"
+              ],
+              "answer": "A",
+              "explanation": "球从任何方向看都是同样大小的圆。",
+              "knowledgePointIds": [
+                "kp-obs-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "judge",
+              "question": "从同一方向观察不同的物体，看到的形状可能相同。",
+              "answer": "对",
+              "explanation": "例如一个正方体和一个球，从正面看分别是正方形和圆（不同）；但两个大小不同、摆法不同的长方体，也可能从某个方向看都是长方形。题目说“可能”，所以是对的。",
+              "knowledgePointIds": [
+                "kp-obs-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "judge",
+              "question": "从一个方向观察物体，就能确定这个物体的形状。",
+              "answer": "错",
+              "explanation": "只看一个方向往往不能确定。例如从上面看是两个并排的正方形，可能是 2 个正方体，也可能是 2 个叠高的立方体柱。要多看几个方向。",
+              "knowledgePointIds": [
+                "kp-obs-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "根据视图判断小正方体的个数",
+          "knowledgePointIds": [
+            "kp-obs-002"
+          ],
+          "modules": [
+            {
+              "id": "t2-m1",
+              "type": "math.concept",
+              "title": "用“上面图当地面”推高度",
+              "knowledgePointIds": [
+                "kp-obs-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-007",
+              "type": "single",
+              "question": "用 3 个同样的小正方体摆成一行，从正面看到的是（　　）。",
+              "options": [
+                "A. 3 个正方形横排",
+                "B. 2 个正方形横排",
+                "C. 1 个正方形",
+                "D. 4 个正方形横排"
+              ],
+              "answer": "A",
+              "explanation": "3 个正方体并排摆，从正面看就是 3 个正方形排成一行。",
+              "knowledgePointIds": [
+                "kp-obs-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-008",
+              "type": "blank",
+              "question": "从正面看是 2 个正方形横排，从上面看也是 2 个正方形横排，这个图形至少用了（______）个小正方体。",
+              "answer": "2",
+              "explanation": "把上面图的 2 个格子当地面，正面看高度都是 1 层，所以每格放 1 个，共 2 个。",
+              "knowledgePointIds": [
+                "kp-obs-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-009",
+              "type": "blank",
+              "question": "从正面看是 3 个正方形排成一行，从左面看是 1 个正方形，这个图形至少用了（______）个小正方体。",
+              "answer": "3",
+              "explanation": "正面 3 个说明横向有 3 列；左面只有 1 个说明只有 1 层、1 排。所以是 3 个并排，共 3 个。",
+              "knowledgePointIds": [
+                "kp-obs-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-010",
+              "type": "blank",
+              "question": "从上面看是 4 个正方形排成一行，这个图形至少用了（______）个小正方体。",
+              "answer": "4",
+              "explanation": "上面图有 4 个格子，每个格子至少要放 1 个小正方体才能被看到，所以至少 4 个。",
+              "knowledgePointIds": [
+                "kp-obs-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-011",
+              "type": "blank",
+              "question": "搭一个图形：从正面看下层 2 个正方形、上层 1 个正方形，至少需要（______）个小正方体。",
+              "answer": "3",
+              "explanation": "下层 2 个必须有 2 个小正方体；上层那 1 个要踩在下层的某一个上面，再加 1 个，共 3 个。",
+              "knowledgePointIds": [
+                "kp-obs-002"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-012",
+              "type": "blank",
+              "question": "从正面看是 2 层（下层 3 个、上层 2 个），从左面看是 1 排，至少用（______）个小正方体。",
+              "answer": "5",
+              "explanation": "下层 3 个 + 上层 2 个 = 5 个；左面只有 1 排，说明没有前后叠加，不需要额外的小正方体。",
+              "knowledgePointIds": [
+                "kp-obs-002"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "空间观念"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

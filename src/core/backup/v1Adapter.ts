@@ -115,6 +115,8 @@ export function adaptV1ToBundles(flat: LegacyFlat): Bundle[] {
       // v1 没有考试记录这一层（`examSessions` 是 v2 schema 才进备份的）。
       // 写成 `[]` 而不是省略：`Bundle` 是"完整的一份档案"，省略会让合并函数多一条分支。
       examSessions: [] as ExamSessionRecord[],
+      // 同理：v1 时代还没有"手动完成标记"这个概念（db v8 · V2.0 才加的表）
+      cardCompletions: [],
       settings: adaptSettings(flat.settings),
     },
   ]

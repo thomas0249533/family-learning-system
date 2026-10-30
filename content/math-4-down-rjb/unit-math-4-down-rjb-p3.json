@@ -1,0 +1,392 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p3",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第3部分 · 运算定律",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-law-001",
+      "type": "concept",
+      "title": "加法交换律与结合律",
+      "content": "加法交换律：两个数相加，交换加数的位置，和不变。a＋b＝b＋a。\n加法结合律：三个数相加，先把前两个数相加，或者先把后两个数相加，和不变。(a＋b)＋c＝a＋(b＋c)。\n用法：把能凑成整十、整百的数放在一起算。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "加法运算律",
+          "简便计算"
+        ]
+      }
+    },
+    {
+      "id": "kp-law-002",
+      "type": "concept",
+      "title": "乘法交换律、结合律与分配律",
+      "content": "乘法交换律：a×b＝b×a。\n乘法结合律：(a×b)×c＝a×(b×c)。\n乘法分配律：(a＋b)×c＝a×c＋b×c，反过来 a×c＋b×c＝(a＋b)×c 也成立。\n凑整口诀：25×4＝100，125×8＝1000，这两对最常用。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "乘法运算律",
+          "凑整"
+        ]
+      }
+    },
+    {
+      "id": "kp-law-003",
+      "type": "concept",
+      "title": "运用运算定律简便计算",
+      "content": "简便计算的核心是“凑整”：先用交换律、结合律把能凑成 10、100、1000 的数凑到一起。\n常见变形：\n· 99×a＋a 看成 (99＋1)×a；\n· a×102 看成 a×(100＋2)；\n· 连减看成减两数之和：a－b－c＝a－(b＋c)；\n· 连除看成除以两数之积：a÷b÷c＝a÷(b×c)。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "运算能力",
+        "tags": [
+          "简便计算"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第三单元",
+      "title": "运算定律",
+      "desc": "掌握加法、乘法的交换律、结合律与分配律，并能用它们进行简便计算。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "加法的运算定律",
+          "knowledgePointIds": [
+            "kp-law-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.formula",
+              "title": "加法交换律与结合律",
+              "knowledgePointIds": [
+                "kp-law-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "blank",
+              "question": "a＋b＝b＋（______）。",
+              "answer": "a",
+              "explanation": "这是加法交换律：交换两个加数的位置，和不变。",
+              "knowledgePointIds": [
+                "kp-law-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "38＋56＋44＝38＋(56＋44)，这里运用了加法（______）律。",
+              "answer": "结合",
+              "explanation": "把后两个数先加起来，改变了运算顺序，和不变，是加法结合律。",
+              "knowledgePointIds": [
+                "kp-law-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "blank",
+              "question": "45＋27＋55＝(45＋55)＋27，这里运用了加法（______）律和加法（______）律。",
+              "answer": "交换,结合",
+              "explanation": "先交换 27 与 55 的位置，再把 45 和 55 结合成 100。",
+              "knowledgePointIds": [
+                "kp-law-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "blank",
+              "question": "计算：176＋58＋24 = （______）。",
+              "answer": "258",
+              "explanation": "先凑整：176＋24＝200，再加 58 得 258。",
+              "knowledgePointIds": [
+                "kp-law-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "single",
+              "question": "下面等式成立的是（　　）。",
+              "options": [
+                "A. a－b＝b－a",
+                "B. a÷b＝b÷a",
+                "C. a＋b＝b＋a",
+                "D. a＋(b－c)＝a－b＋c"
+              ],
+              "answer": "C",
+              "explanation": "减法和除法都没有交换律（A、B 错）；D 去括号时符号写错了。只有 C 是加法交换律。",
+              "knowledgePointIds": [
+                "kp-law-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "blank",
+              "question": "果园里有苹果树 128 棵，梨树 72 棵，桃树 65 棵，三种树一共（______）棵。",
+              "answer": "265",
+              "explanation": "128＋72＝200 先凑整，再加 65 得 265（棵）。",
+              "knowledgePointIds": [
+                "kp-law-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "乘法的运算定律",
+          "knowledgePointIds": [
+            "kp-law-002"
+          ],
+          "modules": [
+            {
+              "id": "t2-m1",
+              "type": "math.formula",
+              "title": "交换律、结合律与分配律",
+              "knowledgePointIds": [
+                "kp-law-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-007",
+              "type": "blank",
+              "question": "25×4＝4×25，这里运用了乘法（______）律。",
+              "answer": "交换",
+              "explanation": "两个因数交换位置，积不变，这是乘法交换律。",
+              "knowledgePointIds": [
+                "kp-law-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-008",
+              "type": "blank",
+              "question": "(25×4)×8＝25×(4×8)，这里运用了乘法（______）律。",
+              "answer": "结合",
+              "explanation": "改变相乘的顺序，积不变，这是乘法结合律。",
+              "knowledgePointIds": [
+                "kp-law-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-009",
+              "type": "blank",
+              "question": "25×(4＋8)＝25×4＋25×8，这里运用了乘法（______）律。",
+              "answer": "分配",
+              "explanation": "把括号外的 25 分别乘括号里的两个数再相加，这是乘法分配律。",
+              "knowledgePointIds": [
+                "kp-law-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-010",
+              "type": "blank",
+              "question": "计算：125×8×5 = （______）。",
+              "answer": "5000",
+              "explanation": "125×8＝1000 先凑整，再乘 5 得 5000。",
+              "knowledgePointIds": [
+                "kp-law-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-011",
+              "type": "blank",
+              "question": "计算：36×99＋36 = （______）。",
+              "answer": "3600",
+              "explanation": "把后面的 36 看成 36×1，用分配律：(99＋1)×36＝100×36＝3600。",
+              "knowledgePointIds": [
+                "kp-law-002"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-012",
+              "type": "blank",
+              "question": "计算：102×45 = （______）。",
+              "answer": "4590",
+              "explanation": "把 102 拆成 (100＋2)：100×45＋2×45＝4500＋90＝4590。",
+              "knowledgePointIds": [
+                "kp-law-002"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t3",
+          "title": "简便计算（凑整与变形）",
+          "knowledgePointIds": [
+            "kp-law-003"
+          ],
+          "modules": [
+            {
+              "id": "t3-m1",
+              "type": "math.formula",
+              "title": "连减、连除、分配律的变形",
+              "knowledgePointIds": [
+                "kp-law-003"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-013",
+              "type": "blank",
+              "question": "计算：176－59－41 = （______）。",
+              "answer": "76",
+              "explanation": "连减两数等于减去它们的和：176－(59＋41)＝176－100＝76。",
+              "knowledgePointIds": [
+                "kp-law-003"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-014",
+              "type": "blank",
+              "question": "计算：800÷25÷4 = （______）。",
+              "answer": "8",
+              "explanation": "连除两数等于除以它们的积：800÷(25×4)＝800÷100＝8。",
+              "knowledgePointIds": [
+                "kp-law-003"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-015",
+              "type": "blank",
+              "question": "计算：25×32×125 = （______）。",
+              "answer": "100000",
+              "explanation": "把 32 拆成 4×8：(25×4)×(8×125)＝100×1000＝100000。",
+              "knowledgePointIds": [
+                "kp-law-003"
+              ],
+              "metadata": {
+                "difficulty": "挑战",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-016",
+              "type": "blank",
+              "question": "计算：45×102－45×2 = （______）。",
+              "answer": "4500",
+              "explanation": "用分配律反过来提公因数：45×(102－2)＝45×100＝4500。",
+              "knowledgePointIds": [
+                "kp-law-003"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-017",
+              "type": "blank",
+              "question": "学校买 45 套课桌椅，每张桌子 128 元，每把椅子 72 元，一共需要（______）元。",
+              "answer": "9000",
+              "explanation": "先求一套多少钱：128＋72＝200（元）；再乘 45 套：200×45＝9000（元）。",
+              "knowledgePointIds": [
+                "kp-law-003"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "问题解决"
+              }
+            },
+            {
+              "id": "u1-ex-018",
+              "type": "judge",
+              "question": "a－b－c 与 a－(b＋c) 的结果一定相等。",
+              "answer": "对",
+              "explanation": "连续减去两个数，等于一次减去这两个数的和。例如 20－5－3＝12，20－(5＋3)＝12。",
+              "knowledgePointIds": [
+                "kp-law-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

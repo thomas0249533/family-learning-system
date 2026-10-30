@@ -191,6 +191,39 @@ function validateV2(doc: Record<string, unknown>): BackupRoute | null {
     if (checkSettingKeys(raw.settings as unknown[], pid) === 'mismatch') {
       return reject('mismatch', `档案 ${pid} 的 settings 里有关键字指向别的档案（后缀与 pid 不符）`)
     }
+
+    // `cardCompletions` 是 V3.0 才进备份的字段 → **可选**。
+    // 老备份文件里没有它，加上必填校验等于把用户手里所有历史备份判成"文件已损坏"。
+    // 但只要它出现了，就必须是合法形状：一段形状错误的数组会被当成"没有标记"静默吞掉，
+    // 而用户以为标记搬过来了 —— 这正是本项目最忌讳的失败模式（漏搬且不报错）。
+    if (raw.cardCompletions !== undefined) {
+      const rows = raw.cardCompletions
+      if (!Array.isArray(rows)) {
+        return reject('malformed', `档案 ${pid} 的 cardCompletions 不是数组`)
+      }
+      if (!rowsAreObjects(rows)) {
+        return reject('malformed', `档案 ${pid} 的 cardCompletions 里有非对象的行`)
+      }
+      for (const row of rows as Record<string, unknown>[]) {
+        const res = checkRowPid(row, pid)
+        if (res === 'missing') {
+          return reject('malformed', `档案 ${pid} 的 cardCompletions 有一行缺少 profileId`)
+        }
+        if (res === 'mismatch') {
+          return reject(
+            'mismatch',
+            `档案 ${pid} 的 cardCompletions 里有一行的 profileId 是 ${String(row.profileId)}，` +
+              `与外层所属档案不一致（备份可能被手工改过）`
+          )
+        }
+        if (typeof row.packageId !== 'string' || typeof row.targetId !== 'string') {
+          return reject('malformed', `档案 ${pid} 的 cardCompletions 有一行缺少 packageId 或 targetId`)
+        }
+        if (row.kind !== 'unit' && row.kind !== 'package') {
+          return reject('malformed', `档案 ${pid} 的 cardCompletions 有一行的 kind 不是 unit / package`)
+        }
+      }
+    }
   }
 
   return null

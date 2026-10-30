@@ -1,0 +1,399 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p1",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第1部分 · 四则运算",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-ops-001",
+      "type": "concept",
+      "title": "加减乘除的意义与各部分名称",
+      "content": "加：把两个数合并成一个数的运算。相加的两个数叫加数，结果叫和。\n减：已知两个数的和与其中一个加数，求另一个加数的运算。\n乘：求几个相同加数的和的简便运算。\n除：已知两个因数的积与其中一个因数，求另一个因数的运算。\n关系式：和＝加数＋加数；一个加数＝和－另一个加数；被减数＝差＋减数；减数＝被减数－差；一个因数＝积÷另一个因数；除数＝被除数÷商。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "四则运算",
+          "各部分关系"
+        ]
+      }
+    },
+    {
+      "id": "kp-ops-002",
+      "type": "concept",
+      "title": "含括号的混合运算顺序",
+      "content": "1. 一个算式里只有加减法或只有乘除法，要从左往右依次计算。\n2. 既有加减法又有乘除法，要先算乘除法，再算加减法。\n3. 有小括号要先算小括号里面的；既有小括号又有中括号，先算小括号里的，再算中括号里的。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "运算顺序",
+          "括号"
+        ]
+      }
+    },
+    {
+      "id": "kp-ops-003",
+      "type": "concept",
+      "title": "有关 0 的运算与解决问题",
+      "content": "有关 0 的运算：一个数加上 0 还得这个数；一个数减去 0 还得这个数；被减数等于减数时差是 0；一个数和 0 相乘得 0；0 除以任何非 0 的数得 0。\n注意：0 不能作除数。\n解决问题（租船/租车）：先算人均单价比较哪种更省钱，再按“尽量用便宜的、剩下的人也要安排”的思路凑整数，最后检验总人数与座位数。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "0的运算",
+          "解决问题"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第一单元",
+      "title": "四则运算",
+      "desc": "理解加减乘除的意义与各部分关系，掌握含括号的运算顺序，会解决租船一类的最优问题。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "四则运算的意义与各部分关系",
+          "knowledgePointIds": [
+            "kp-ops-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.concept",
+              "title": "加减乘除各部分之间的关系",
+              "knowledgePointIds": [
+                "kp-ops-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "blank",
+              "question": "在算式 36+48=84 中，84 是（______），36 和 48 是（______）。",
+              "answer": "和,加数",
+              "explanation": "相加的两个数叫加数，相加的结果叫和。所以 84 是和，36、48 是加数。",
+              "knowledgePointIds": [
+                "kp-ops-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "被减数＝差＋（______）。",
+              "answer": "减数",
+              "explanation": "由“被减数－减数＝差”可以推出：被减数＝差＋减数。",
+              "knowledgePointIds": [
+                "kp-ops-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "blank",
+              "question": "一个因数＝积÷（______）。",
+              "answer": "另一个因数",
+              "explanation": "乘法与除法互为逆运算：积÷一个因数＝另一个因数。",
+              "knowledgePointIds": [
+                "kp-ops-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "blank",
+              "question": "在 48÷6=8 中，48 是（______），6 是（______），8 是（______）。",
+              "answer": "被除数,除数,商",
+              "explanation": "除法算式中，除号前面的数是被除数，除号后面的是除数，结果是商。",
+              "knowledgePointIds": [
+                "kp-ops-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "judge",
+              "question": "在减法中，被减数一定比差大。",
+              "answer": "错",
+              "explanation": "当减数是 0 时，差就等于被减数，并不比被减数小。例如 25－0＝25。",
+              "knowledgePointIds": [
+                "kp-ops-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "blank",
+              "question": "学校买了 12 箱粉笔，每箱 25 盒，平均分给 5 个年级。每个年级分到（______）盒。",
+              "answer": "60",
+              "explanation": "先求总盒数：12×25＝300（盒）；再平均分：300÷5＝60（盒）。",
+              "knowledgePointIds": [
+                "kp-ops-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "含括号的运算顺序",
+          "knowledgePointIds": [
+            "kp-ops-002"
+          ],
+          "modules": [
+            {
+              "id": "t2-m1",
+              "type": "math.concept",
+              "title": "先乘除后加减、先括号里后括号外",
+              "knowledgePointIds": [
+                "kp-ops-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-007",
+              "type": "single",
+              "question": "计算 120－36×2÷4 时，第一步应该算（　　）。",
+              "options": [
+                "A. 120－36",
+                "B. 36×2",
+                "C. 2÷4",
+                "D. 按从左到右"
+              ],
+              "answer": "B",
+              "explanation": "既有减法又有乘除法时，先算乘除法。乘除法同级，从左往右，所以第一步是 36×2。",
+              "knowledgePointIds": [
+                "kp-ops-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-008",
+              "type": "blank",
+              "question": "计算 (36+24)×5 时，应先算（______）法，再算（______）法。",
+              "answer": "加,乘",
+              "explanation": "有小括号先算括号里面的加法：36＋24＝60；再算乘法：60×5＝300。",
+              "knowledgePointIds": [
+                "kp-ops-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-009",
+              "type": "blank",
+              "question": "计算：(480÷12+15)×4 = （______）。",
+              "answer": "220",
+              "explanation": "先算小括号里的除法 480÷12＝40，再加 15 得 55，最后乘 4 得 220。",
+              "knowledgePointIds": [
+                "kp-ops-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-010",
+              "type": "blank",
+              "question": "计算：360÷[(12+18)×3] = （______）。",
+              "answer": "4",
+              "explanation": "先算小括号：12＋18＝30；再算中括号：30×3＝90；最后 360÷90＝4。",
+              "knowledgePointIds": [
+                "kp-ops-002"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-011",
+              "type": "blank",
+              "question": "计算：96－24÷6＋8 = （______）。",
+              "answer": "100",
+              "explanation": "先算除法 24÷6＝4；减法与加法同级，从左往右：96－4＝92，再加 8 得 100。",
+              "knowledgePointIds": [
+                "kp-ops-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-012",
+              "type": "blank",
+              "question": "一本书共 240 页，小明每天读 25 页，读了 6 天后还剩（______）页。",
+              "answer": "90",
+              "explanation": "已读：25×6＝150（页）；还剩：240－150＝90（页）。",
+              "knowledgePointIds": [
+                "kp-ops-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t3",
+          "title": "有关 0 的运算与租船问题",
+          "knowledgePointIds": [
+            "kp-ops-003"
+          ],
+          "modules": [
+            {
+              "id": "t3-m1",
+              "type": "math.life",
+              "title": "0 的运算规则与最省钱方案",
+              "knowledgePointIds": [
+                "kp-ops-003"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-013",
+              "type": "blank",
+              "question": "0 乘任何数都得（______）；0 除以任何非 0 的数都得（______）。",
+              "answer": "0,0",
+              "explanation": "0×a＝0；0÷a＝0（a≠0）。注意 0 不能作除数。",
+              "knowledgePointIds": [
+                "kp-ops-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-014",
+              "type": "single",
+              "question": "下面算式中，结果是 0 的是（　　）。",
+              "options": [
+                "A. 0＋25",
+                "B. 25－0",
+                "C. 0×25",
+                "D. 25÷25"
+              ],
+              "answer": "C",
+              "explanation": "0＋25＝25，25－0＝25，0×25＝0，25÷25＝1。所以选 C。",
+              "knowledgePointIds": [
+                "kp-ops-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-015",
+              "type": "blank",
+              "question": "一个数减去它自己，差是（______）。",
+              "answer": "0",
+              "explanation": "被减数等于减数时，差是 0，例如 37－37＝0。",
+              "knowledgePointIds": [
+                "kp-ops-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-016",
+              "type": "blank",
+              "question": "计算：25×4÷25×4 = （______）。",
+              "answer": "16",
+              "explanation": "同级运算从左往右：25×4＝100，100÷25＝4，4×4＝16。不能先算 25×4÷(25×4)。",
+              "knowledgePointIds": [
+                "kp-ops-003"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-017",
+              "type": "blank",
+              "question": "四年级 240 名学生去春游，每辆大客车限乘 45 人，至少需要租（______）辆。",
+              "answer": "6",
+              "explanation": "240÷45＝5 余 15，余下的人也要一辆车，所以要用“进一法”，至少租 6 辆。",
+              "knowledgePointIds": [
+                "kp-ops-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "问题解决"
+              }
+            },
+            {
+              "id": "u1-ex-018",
+              "type": "blank",
+              "question": "商店有 360 个鸡蛋，每 30 个装一箱，每箱卖 45 元。全部卖出可得（______）元。",
+              "answer": "540",
+              "explanation": "先求箱数：360÷30＝12（箱）；再求总价：12×45＝540（元）。",
+              "knowledgePointIds": [
+                "kp-ops-003"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

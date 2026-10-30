@@ -7,7 +7,7 @@
  * 更重要的不是性能，而是**正确性**：`db.progress.toArray()` 是 `scripts/check-profile-scope.mjs`
  * 判定为"跨档案读"的写法，它出现在导出路径上会让"导出"与"档案"脱钩 ——
  * 一旦将来有人把这段代码复制到读取路径上，两个孩子就串了。
- * 所以本文件**没有一处**裸 `toArray()` 读这三张表。
+ * 所以本文件**没有一处**裸 `toArray()` 读这四张表（V3.0 · M4 起含 `cardCompletions`）。
  *
  * ## 为什么导出的 settings 要两套口径
  * - `LocalSnapshot.bundles[].settings` 是 `Record<基名, 值>`（合并引擎用它，键不带 pid，
@@ -28,6 +28,7 @@
 
 import { db } from '@/db'
 import type {
+  CardCompletionRecord,
   ExamSessionRecord,
   MistakeRecord,
   ProgressRecord,
@@ -58,13 +59,17 @@ export const EXPORT_EXCLUDED_GLOBAL_KEYS: ReadonlySet<string> = new Set([
   'owner:indexCache',
   'progress:lastRecovery',
   'progress:lastStartupRecovery',
+  // V3.0 · M4：自动快照本身就是一份备份。跟着备份导出会自我嵌套（备份里 7 份备份，
+  // 每份又含快照），体积指数膨胀；且恢复一台新设备时不需要别人的快照。
+  'backup:snapshots',
 ])
 
-/** 单个档案在库里的三张表行 */
+/** 单个档案在库里的四张表行（V3.0 · M4 起 `cardCompletions` 也在内） */
 interface ProfileRows {
   progress: ProgressRecord[]
   mistakes: MistakeRecord[]
   examSessions: ExamSessionRecord[]
+  cardCompletions: CardCompletionRecord[]
 }
 
 /**
@@ -165,14 +170,22 @@ async function dumpLocal(): Promise<LocalDump> {
   const profiles = listProfilesSync()
   const activeProfileId = profilesState().activeId
   const rows = new Map<string, ProfileRows>()
+  // 单测替身（fakeDexie）不一定建了 `cardCompletions`（db v8 才加的表）。
+  // 真库里一定在。查一次存在性，避免在循环里包 try/catch 掩盖真正的读库错误。
+  const marksTable = (db as unknown as { cardCompletions?: typeof db.cardCompletions })
+    .cardCompletions
 
   for (const profile of profiles) {
     const pid = profile.id
-    // 三行都走 `where('profileId')`：这是门禁要求的写法，也是唯一正确的读法
+    // 四张表都走 `where('profileId')`：这是门禁要求的写法，也是唯一正确的读法
     const progress = await db.progress.where('profileId').equals(pid).toArray()
     const mistakes = await db.mistakes.where('profileId').equals(pid).toArray()
     const examSessions = await db.examSessions.where('profileId').equals(pid).toArray()
-    rows.set(pid, { progress, mistakes, examSessions })
+    // 读不到表 → 当"没有标记"：备份少带几条便利标记可以忍，整笔导入失败不可忍
+    const cardCompletions = marksTable
+      ? await marksTable.where('profileId').equals(pid).toArray()
+      : []
+    rows.set(pid, { progress, mistakes, examSessions, cardCompletions })
   }
 
   const allSettings = await db.settings.toArray()
@@ -182,9 +195,9 @@ async function dumpLocal(): Promise<LocalDump> {
   return { profiles, activeProfileId, rows, scopedSettings: scoped, globalSettings: global }
 }
 
-/** 空档案的三张表（避免各处写 `?? []` 时漏字段） */
+/** 空档案的四张表（避免各处写 `?? []` 时漏字段） */
 function emptyRows(): ProfileRows {
-  return { progress: [], mistakes: [], examSessions: [] }
+  return { progress: [], mistakes: [], examSessions: [], cardCompletions: [] }
 }
 
 /**
@@ -217,6 +230,7 @@ export async function readLocalSnapshot(): Promise<LocalSnapshot> {
       progress: rows.progress,
       mistakes: rows.mistakes,
       examSessions: rows.examSessions,
+      cardCompletions: rows.cardCompletions,
       settings: settingsByPid.get(profile.id) ?? {},
     }
   })
@@ -265,6 +279,7 @@ export async function buildBackupV2(): Promise<BackupV2> {
         progress: rows.progress,
         mistakes: rows.mistakes,
         examSessions: rows.examSessions,
+        cardCompletions: rows.cardCompletions,
         // 键已带 `:<pid>` 后缀（`scopedKey` 拼出来的就是全名，这里只是把契约写明）
         settings: settingsByPid.get(profile.id) ?? [],
       }

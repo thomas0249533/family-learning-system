@@ -157,6 +157,15 @@ async function afterPackagesChanged(): Promise<void> {
   } catch (e) {
     console.warn('[import] 进度重归因失败（不影响导入结果）', e)
   }
+  // V3.0 · M1：今日队列是**当天冻结**的，包集合变了必须让它失效，
+  // 否则早上导入了新包、今日页仍说"今天没有排任务"。
+  // 动态 import 是为了让 plan 层可独立删除而不牵连导入链（也没有静态循环依赖）。
+  try {
+    const { invalidateDailyPlan } = await import('@core/plan/dailyPlanService')
+    await invalidateDailyPlan()
+  } catch (e) {
+    console.warn('[import] 今日队列失效失败（不影响导入结果）', e)
+  }
 }
 
 export const PackageImporter = {

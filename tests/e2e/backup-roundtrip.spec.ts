@@ -18,9 +18,22 @@ import { test, expect, type Page } from '@playwright/test'
 
 const DB_NAME = 'FamilyLearningDB'
 
-/** 等库真的就绪再种数据（裸开 IDB 抢在 Dexie 之前会造空库，V1.3 已踩过） */
+/**
+ * 等库真的就绪再种数据（裸开 IDB 抢在 Dexie 之前会造空库，V1.3 已踩过）。
+ *
+ * 判据是**成就墙的计数**：它要等 `achievements` 的视图模型算完才渲染，
+ * 而那份模型正是"库已打开 + store 已 load"的最短证据。
+ *
+ * ⚠️ V3.0 · M1 首页改版：原来的 `.ach-head-count`（`AchievementSection`）已经
+ * 不在首页了 —— 首页换成陈列式的 `AchievementHall`（`.hall-head-count`），
+ * 两级折叠的图鉴移到独立页 `/achievements`。这里两个都认，
+ * 免得以后再搬一次组件又要跟着改断言。
+ */
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page
+    .locator('.hall-head-count, .ach-head-count')
+    .first()
+    .waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {

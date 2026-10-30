@@ -56,6 +56,22 @@ export const PROFILE_SCOPED_KEYS = [
    * `mergeSettings.ts` 的 `blindBox` 条目（owned 并集 + usedDays 并集）。
    */
   'blindBox',
+  /**
+   * 每日目标（V3.0 · M1）：`{ mode: 'questions'|'minutes', questions, minutes }`。
+   *
+   * **per-profile**：一年级 12 题、四年级 24 题，换孩子就不成立。
+   * 两个数字都存（切口径时不必重算另一个），归一化在
+   * `core/plan/dailyPlan.ts` 的 `normalizeGoal`。
+   */
+  'dailyGoal',
+  /**
+   * 今日任务队列（V3.0 · M1）：`DailyPlan` 的落盘形态。
+   *
+   * **per-profile**：队列是"这个孩子今天要做什么"。
+   * **按天冻结**：同一天内不因到期集合变化而重排（否则每做完一项顺序就变一次），
+   * 跨天由 `isPlanStale` 判定重算；旧日期的记录不保留历史，直接覆盖。
+   */
+  'dailyPlan',
 ] as const
 
 /** global 的键：不分片，原样保留 */
@@ -80,6 +96,16 @@ export const GLOBAL_KEYS = [
    */
   'fls:feedback',
   'owner:indexCache',
+  /**
+   * 每日自动快照（V3.0 · M4）：`{ version: 1, items: SnapshotEntry[] }`（保留 7 份）。
+   *
+   * **设备级（global）**：快照是"这台电脑上那份数据库"的副本，与是哪个孩子无关；
+   * 按档案分片会让"恢复整个库"变成"恢复一个孩子"。
+   *
+   * **必须排除导出**（见 `EXPORT_EXCLUDED_GLOBAL_KEYS`）：它的内容就是一份完整备份，
+   * 跟着备份导出会造成自我嵌套、体积指数膨胀。
+   */
+  'backup:snapshots',
   /**
    * V1.11 · F1 · AI 助手配置（模型名 + 加密后的 API Key）。
    *

@@ -1,0 +1,21 @@
+{
+  "setId": "english-4-down-vocab-set",
+  "title": "四年级英语下（人教 PEP）",
+  "subject": "english",
+  "grade": 4,
+  "term": "down",
+  "edition": "人教版",
+  "importOrder": [
+    "special-english-4-down-vocab"
+  ],
+  "packages": [
+    {
+      "file": "special-english-4-down-vocab.json",
+      "packageId": "special-english-4-down-vocab",
+      "type": "special",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    }
+  ]
+}

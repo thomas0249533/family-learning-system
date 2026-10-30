@@ -1,0 +1,265 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p7",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第7部分 · 图形的运动（二）",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-sym-001",
+      "type": "concept",
+      "title": "轴对称与对称轴",
+      "content": "把一个图形沿一条直线对折，两侧能完全重合，这个图形就是轴对称图形，这条直线叫对称轴。\n常见对称轴条数：长方形 2 条，正方形 4 条，等腰三角形 1 条，等边三角形 3 条，等腰梯形 1 条，圆有无数条。\n平行四边形（一般的）不是轴对称图形。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "观察",
+        "ability": "空间观念",
+        "tags": [
+          "轴对称",
+          "对称轴"
+        ]
+      }
+    },
+    {
+      "id": "kp-sym-002",
+      "type": "concept",
+      "title": "平移与旋转",
+      "content": "平移：图形沿直线移动，**形状、大小、方向都不变，只有位置变了**。\n旋转：图形绕一个点（或轴）转动，方向会改变。\n数平移格数的方法：找一个对应点，数它移动了几格。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "观察",
+        "ability": "空间观念",
+        "tags": [
+          "平移",
+          "旋转"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第七单元",
+      "title": "图形的运动（二）",
+      "desc": "认识轴对称图形与对称轴，掌握平移、旋转的特征及平移格数的数法。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "轴对称图形与对称轴",
+          "knowledgePointIds": [
+            "kp-sym-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.concept",
+              "title": "常见图形的对称轴条数",
+              "knowledgePointIds": [
+                "kp-sym-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "blank",
+              "question": "长方形有（______）条对称轴。",
+              "answer": "2",
+              "explanation": "长方形只有两条对称轴：两条对边中点的连线。两条对角线不是对称轴（对折后不重合）。",
+              "knowledgePointIds": [
+                "kp-sym-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "正方形有（______）条对称轴。",
+              "answer": "4",
+              "explanation": "正方形有 2 条对边中点的连线 + 2 条对角线，共 4 条。",
+              "knowledgePointIds": [
+                "kp-sym-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "blank",
+              "question": "等腰三角形有（______）条对称轴。",
+              "answer": "1",
+              "explanation": "等腰三角形只有底边上的高所在的直线是对称轴，共 1 条。",
+              "knowledgePointIds": [
+                "kp-sym-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "blank",
+              "question": "圆有（______）条对称轴。",
+              "answer": "无数",
+              "explanation": "圆的每一条直径所在的直线都是对称轴，直径有无数条，所以对称轴有无数条。",
+              "knowledgePointIds": [
+                "kp-sym-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "single",
+              "question": "下面图形中，不是轴对称图形的是（　　）。",
+              "options": [
+                "A. 等腰梯形",
+                "B. 平行四边形",
+                "C. 等边三角形",
+                "D. 正方形"
+              ],
+              "answer": "B",
+              "explanation": "一般的平行四边形对折后两侧不能完全重合，不是轴对称图形（它是中心对称图形）。",
+              "knowledgePointIds": [
+                "kp-sym-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "blank",
+              "question": "等边三角形有（______）条对称轴。",
+              "answer": "3",
+              "explanation": "等边三角形三条边上的高所在直线都是对称轴，共 3 条。",
+              "knowledgePointIds": [
+                "kp-sym-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "平移与旋转",
+          "knowledgePointIds": [
+            "kp-sym-002"
+          ],
+          "modules": [
+            {
+              "id": "t2-m1",
+              "type": "math.concept",
+              "title": "形状大小不变、只看位置变",
+              "knowledgePointIds": [
+                "kp-sym-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-007",
+              "type": "blank",
+              "question": "图形平移后，形状和大小（______），位置（______）。",
+              "answer": "不变,改变",
+              "explanation": "平移只改变位置，形状、大小、方向都不变。",
+              "knowledgePointIds": [
+                "kp-sym-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-008",
+              "type": "blank",
+              "question": "把一个图形向右平移 5 格，再向右平移 3 格，相当于向右平移（______）格。",
+              "answer": "8",
+              "explanation": "同一方向连续平移，格数相加：5＋3＝8（格）。",
+              "knowledgePointIds": [
+                "kp-sym-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-009",
+              "type": "single",
+              "question": "下面说法正确的是（　　）。",
+              "options": [
+                "A. 平移改变图形的大小",
+                "B. 平移改变图形的形状",
+                "C. 平移只改变图形的位置",
+                "D. 平移改变图形的方向"
+              ],
+              "answer": "C",
+              "explanation": "平移的特征就是只改变位置，形状、大小、方向都不变。",
+              "knowledgePointIds": [
+                "kp-sym-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-010",
+              "type": "blank",
+              "question": "钟表指针的运动属于（______）现象。",
+              "answer": "旋转",
+              "explanation": "指针绕中心点转动，方向不断改变，是旋转。",
+              "knowledgePointIds": [
+                "kp-sym-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            },
+            {
+              "id": "u1-ex-011",
+              "type": "blank",
+              "question": "电梯上下运动属于（______）现象。",
+              "answer": "平移",
+              "explanation": "电梯沿直线上下移动，形状大小方向都不变，是平移。",
+              "knowledgePointIds": [
+                "kp-sym-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "空间观念"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

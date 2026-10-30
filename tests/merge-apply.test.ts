@@ -107,7 +107,7 @@ beforeEach(() => {
 describe('applyMergePlan — 不写库的两条短路', () => {
   it('★ noop 计划：返回全 0，且**不开启事务**', async () => {
     const result = await applyMergePlan(emptyPlan())
-    expect(result).toEqual({ progress: 0, mistakes: 0, sessions: 0, settings: 0, profiles: 0 })
+    expect(result).toEqual({ progress: 0, mistakes: 0, sessions: 0, settings: 0, profiles: 0, marks: 0 })
     expect(fake.txCount).toBe(0)
     expect(fake.progress.rows).toHaveLength(0)
     expect(fake.settings.rows).toHaveLength(0)

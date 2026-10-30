@@ -1,0 +1,270 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p8",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第8部分 · 平均数与条形统计图",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-avg-001",
+      "type": "concept",
+      "title": "平均数的意义与求法",
+      "content": "平均数 = 总数量 ÷ 总份数。它表示一组数据的**整体水平**，不代表其中某一个具体数据。\n平均数的特点：\n· 一定在最小值和最大值之间（可能等于其中某个数，也可能都不等于）；\n· 容易受极端数据影响。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "平均数"
+        ]
+      }
+    },
+    {
+      "id": "kp-avg-002",
+      "type": "concept",
+      "title": "复式条形统计图",
+      "content": "复式条形统计图用两种或两种以上不同颜色（或花纹）的直条表示两组或多组数据，同一项目的直条要相邻排列，并画出图例说明。\n优点是便于**比较两组数据**；单式条形统计图只能看出数量的多少。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "理解",
+        "ability": "运算能力",
+        "tags": [
+          "统计图",
+          "复式条形"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第八单元",
+      "title": "平均数与条形统计图",
+      "desc": "理解平均数的意义并会求平均数，认识复式条形统计图的特点与作用。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "平均数",
+          "knowledgePointIds": [
+            "kp-avg-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.concept",
+              "title": "总数量÷总份数",
+              "knowledgePointIds": [
+                "kp-avg-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "blank",
+              "question": "平均数＝总数量÷（______）。",
+              "answer": "总份数",
+              "explanation": "求平均数就是把总数平均分成若干份，所以要除以总份数。",
+              "knowledgePointIds": [
+                "kp-avg-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "小明语文、数学、英语分别考了 92 分、96 分、88 分，三科的平均分是（______）分。",
+              "answer": "92",
+              "explanation": "总分：92＋96＋88＝276（分）；平均分：276÷3＝92（分）。",
+              "knowledgePointIds": [
+                "kp-avg-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "blank",
+              "question": "4 个数的和是 100，这 4 个数的平均数是（______）。",
+              "answer": "25",
+              "explanation": "100÷4＝25。",
+              "knowledgePointIds": [
+                "kp-avg-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "blank",
+              "question": "一组数据 5、7、9、11 的平均数是（______）。",
+              "answer": "8",
+              "explanation": "(5＋7＋9＋11)÷4＝32÷4＝8。",
+              "knowledgePointIds": [
+                "kp-avg-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "blank",
+              "question": "小红前 3 天每天读书 20 页，第 4 天读了 32 页。这 4 天平均每天读（______）页。",
+              "answer": "23",
+              "explanation": "总页数：20×3＋32＝92（页）；平均：92÷4＝23（页）。",
+              "knowledgePointIds": [
+                "kp-avg-001"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "问题解决"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "single",
+              "question": "下面说法正确的是（　　）。",
+              "options": [
+                "A. 平均数一定比每个数据都大",
+                "B. 平均数一定等于其中某个数据",
+                "C. 平均数可能比最大的数小",
+                "D. 一组数据里不能有 0"
+              ],
+              "answer": "C",
+              "explanation": "平均数在最小值和最大值之间，所以一定不大于最大值；它可能等于其中某个数，也可能一个都不等。数据里有 0 是完全可以的。",
+              "knowledgePointIds": [
+                "kp-avg-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "运算能力"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "title": "复式条形统计图",
+          "knowledgePointIds": [
+            "kp-avg-002"
+          ],
+          "modules": [
+            {
+              "id": "t2-m1",
+              "type": "math.concept",
+              "title": "两组数据放一张图上比较",
+              "knowledgePointIds": [
+                "kp-avg-002"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-007",
+              "type": "single",
+              "question": "要同时比较两个班各科的平均分，最好用（　　）。",
+              "options": [
+                "A. 单式条形统计图",
+                "B. 复式条形统计图",
+                "C. 统计表",
+                "D. 文字描述"
+              ],
+              "answer": "B",
+              "explanation": "要同时表示并比较两组数据，复式条形统计图最直观。",
+              "knowledgePointIds": [
+                "kp-avg-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "数据分析"
+              }
+            },
+            {
+              "id": "u1-ex-008",
+              "type": "blank",
+              "question": "复式条形统计图要用（______）种或更多种不同颜色（或花纹）的直条表示数据。",
+              "answer": "2",
+              "explanation": "复式就是把两组或多组数据画在同一张图上，至少要两种直条样式。",
+              "knowledgePointIds": [
+                "kp-avg-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "数据分析"
+              }
+            },
+            {
+              "id": "u1-ex-009",
+              "type": "single",
+              "question": "与单式条形统计图相比，复式条形统计图的优点是（　　）。",
+              "options": [
+                "A. 更好看",
+                "B. 便于比较两组数据",
+                "C. 画起来更简单",
+                "D. 不需要标数据"
+              ],
+              "answer": "B",
+              "explanation": "单式只能看一组数据的多少；复式把两组放在一起，比较起来一目了然。",
+              "knowledgePointIds": [
+                "kp-avg-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "数据分析"
+              }
+            },
+            {
+              "id": "u1-ex-010",
+              "type": "blank",
+              "question": "条形统计图能清楚地看出数量的（______）。",
+              "answer": "多少",
+              "explanation": "条形统计图用直条的长短表示数量，一眼就能看出谁多谁少。",
+              "knowledgePointIds": [
+                "kp-avg-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "数据分析"
+              }
+            },
+            {
+              "id": "u1-ex-011",
+              "type": "blank",
+              "question": "在复式条形统计图中，表示同一项目的两组直条应该（______）排列。",
+              "answer": "相邻",
+              "explanation": "同一项目的两组直条挨在一起，才方便直接比较长短。",
+              "knowledgePointIds": [
+                "kp-avg-002"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "数据分析"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

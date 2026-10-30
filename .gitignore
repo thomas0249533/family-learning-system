@@ -48,3 +48,6 @@ playwright-report/
 mock-update/
 # 家长原始资料（体积大、非产物，不入库）
 content/资料/
+
+# 时间戳型 dist 备份（构建安全删除防护规避）
+.dist-prev-*/

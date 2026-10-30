@@ -19,113 +19,148 @@
       </div>
     </div>
 
-    <!-- ========== 今日计划（今日复习 + 最需要复习 + 今日推荐，统一分区，§11.4） ========== -->
+    <!-- ========== 今日任务（V3.0 · M1：首页的**唯一主入口**）
+         三块并列的推荐列表收进下方「更多推荐」，默认折叠。
+         理由很具体：并列的列表让人选择困难，孩子会点第一个顺眼的做两题就退，
+         系统于是永远不知道"今天完成了多少"。一条队列 + 一个目标才有节奏。 ========== -->
     <section class="section">
-      <SectionTitle title="今日计划" icon="📋" accent gradient />
-
-      <!-- 今日复习 -->
-      <div class="plan-block">
-        <SectionTitle level="h3" title="今日复习" />
-
+      <SectionTitle title="今天的学习" icon="🎯" accent gradient />
+      <div class="today-card" @click="goToday">
+        <div class="today-head">
+          <div class="today-title">{{ todayTitle }}</div>
+          <div class="today-sub">{{ todaySub }}</div>
+        </div>
+        <!-- 自建细进度条：共享 ProgressBar 的轨道色是 `--surface-2`，与卡片底色几乎同色，
+             0% 时整条「消失」。这里用 `--border-color` 作轨道，任何主题下都看得见。 -->
         <div
-          class="review-card"
-          :class="{ 'has-due': dueCount > 0 }"
-          @click="goToReview"
+          class="today-bar"
+          role="progressbar"
+          :aria-valuenow="todayPercent"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-label="今日任务进度"
         >
-          <div class="review-icon-wrap">
-            <span class="review-icon">{{ dueCount > 0 ? '🔥' : '✅' }}</span>
-          </div>
-          <div class="review-body">
-            <div class="review-main">
-              <template v-if="dueCount > 0">
-                今天有 <strong>{{ dueCount }}</strong> 个知识点待复习
-              </template>
-              <template v-else>
-                今天没有待复习的知识点
-              </template>
-            </div>
-            <div class="review-sub">
-              <span v-if="nextUpText">{{ nextUpText }}</span>
-              <span v-else>继续保持，稳扎稳打 ✨</span>
-            </div>
-          </div>
-          <div class="review-action">
-            <span class="action-pill" :class="{ primary: dueCount > 0 }">
-              {{ dueCount > 0 ? '开始复习' : '查看' }}
-              <span class="action-arrow">→</span>
-            </span>
-          </div>
+          <div class="today-bar__fill" :style="{ width: `${todayPercent}%` }" />
         </div>
-      </div>
-
-      <!-- 最需要复习（弱项推荐，§11.4：只展事实不露分数） -->
-      <div v-if="weakPoints.length > 0" class="plan-block">
-        <SectionTitle level="h3" title="最需要复习">
-          <AppBadge size="md">{{ weakPoints.length }} 个</AppBadge>
-        </SectionTitle>
-        <div class="weak-list">
-          <div
-            v-for="wp in weakPoints"
-            :key="wp.knowledgePointId"
-            class="weak-row"
-            @click="goToWeakPoint(wp)"
-          >
-            <div class="weak-body">
-              <div class="weak-title">{{ wp.title }}</div>
-              <div class="weak-reason">{{ wp.reason }}</div>
-            </div>
-            <div class="weak-cta">
-              去练习
-              <span class="weak-arrow">→</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 今日推荐 -->
-      <div class="plan-block">
-        <SectionTitle level="h3" title="今日推荐">
-          <AppBadge v-if="recommendations.length > 0" size="md">
-            {{ recommendations.length }} 项
-          </AppBadge>
-        </SectionTitle>
-
-        <EmptyState
-          v-if="recommendations.length === 0"
-          description="暂无推荐，去导入学习包并开始学习吧！"
-          class="empty-card"
-        />
-
-        <div v-else class="rec-grid">
-          <div
-            v-for="rec in recommendations"
-            :key="rec.knowledgePointId"
-            class="rec-card"
-            :class="'rec-' + rec.type"
-            @click="goToRecommendation(rec)"
-          >
-            <div class="rec-accent"></div>
-            <div class="rec-content">
-              <div class="rec-badge-row">
-                <span class="rec-badge">{{ recBadge(rec.type) }}</span>
-              </div>
-              <h3 class="rec-title">{{ rec.title }}</h3>
-              <p class="rec-reason">{{ rec.reason }}</p>
-              <div class="rec-footer">
-                <span class="rec-source">
-                  <span class="source-icon">📖</span>
-                  <span class="source-text">{{ rec.sourcePkgTitle }}</span>
-                </span>
-                <span class="rec-cta">
-                  去学习
-                  <span class="cta-arrow">→</span>
-                </span>
-              </div>
-            </div>
-          </div>
+        <div class="today-foot">
+          <span class="today-count">{{ todayCountText }}</span>
+          <span class="action-pill primary">
+            {{ todayActionText }}
+            <span class="action-arrow">→</span>
+          </span>
         </div>
       </div>
     </section>
+
+    <!-- ========== 更多推荐（原三块并列内容，现在默认折叠） ========== -->
+    <section class="section">
+      <button type="button" class="more-toggle" :aria-expanded="showMore" @click="showMore = !showMore">
+        <span>{{ showMore ? '收起推荐' : '更多推荐' }}</span>
+        <span class="more-arrow" :class="{ open: showMore }">▾</span>
+      </button>
+
+      <template v-if="showMore">
+        <!-- 今日复习 -->
+        <div class="plan-block">
+          <SectionTitle level="h3" title="今日复习" />
+
+          <div class="review-card" :class="{ 'has-due': dueCount > 0 }" @click="goToReview">
+            <div class="review-icon-wrap">
+              <span class="review-icon">{{ dueCount > 0 ? '🔥' : '✅' }}</span>
+            </div>
+            <div class="review-body">
+              <div class="review-main">
+                <template v-if="dueCount > 0">
+                  今天有 <strong>{{ dueCount }}</strong> 个知识点待复习
+                </template>
+                <template v-else>
+                  今天没有待复习的知识点
+                </template>
+              </div>
+              <div class="review-sub">
+                <span v-if="nextUpText">{{ nextUpText }}</span>
+                <span v-else>继续保持，稳扎稳打 ✨</span>
+              </div>
+            </div>
+            <div class="review-action">
+              <span class="action-pill" :class="{ primary: dueCount > 0 }">
+                {{ dueCount > 0 ? '开始复习' : '查看' }}
+                <span class="action-arrow">→</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 最需要复习（弱项推荐，§11.4：只展事实不露分数） -->
+        <div v-if="weakPoints.length > 0" class="plan-block">
+          <SectionTitle level="h3" title="最需要复习">
+            <AppBadge size="md">{{ weakPoints.length }} 个</AppBadge>
+          </SectionTitle>
+          <div class="weak-list">
+            <div
+              v-for="wp in weakPoints"
+              :key="wp.knowledgePointId"
+              class="weak-row"
+              @click="goToWeakPoint(wp)"
+            >
+              <div class="weak-body">
+                <div class="weak-title">{{ wp.title }}</div>
+                <div class="weak-reason">{{ wp.reason }}</div>
+              </div>
+              <div class="weak-cta">
+                去练习
+                <span class="weak-arrow">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 今日推荐 -->
+        <div class="plan-block">
+          <SectionTitle level="h3" title="今日推荐">
+            <AppBadge v-if="recommendations.length > 0" size="md">
+              {{ recommendations.length }} 项
+            </AppBadge>
+          </SectionTitle>
+
+          <EmptyState
+            v-if="recommendations.length === 0"
+            description="暂无推荐，去导入学习包并开始学习吧！"
+            class="empty-card"
+          />
+
+          <div v-else class="rec-grid">
+            <div
+              v-for="rec in recommendations"
+              :key="rec.knowledgePointId"
+              class="rec-card"
+              :class="'rec-' + rec.type"
+              @click="goToRecommendation(rec)"
+            >
+              <div class="rec-accent"></div>
+              <div class="rec-content">
+                <div class="rec-badge-row">
+                  <span class="rec-badge">{{ recBadge(rec.type) }}</span>
+                </div>
+                <h3 class="rec-title">{{ rec.title }}</h3>
+                <p class="rec-reason">{{ rec.reason }}</p>
+                <div class="rec-footer">
+                  <span class="rec-source">
+                    <span class="source-icon">📖</span>
+                    <span class="source-text">{{ rec.sourcePkgTitle }}</span>
+                  </span>
+                  <span class="rec-cta">
+                    去学习
+                    <span class="cta-arrow">→</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </section>
+
 
     <!-- ========== 荣誉勋章墙（V2.7 · 轨道 A2：大图标 + 分类 Tab + 点击详情）
          完整图鉴（两级折叠 + 证据）仍在独立页 /achievements —— 首页要陈列感，
@@ -195,6 +230,8 @@ import AchievementHall from '@/components/AchievementHall.vue'
 import BlindBoxEntrance from '@/components/BlindBoxEntrance.vue'
 import { EMPTY_STREAK, loadRepair, loadStreak, repairLeft, streakText, studiedToday, type StreakState } from '@core/motivation/streak'
 import { useChartTheme } from '@core/theme/useChartTheme'
+import { planProgress, type DailyPlan } from '@core/plan/dailyPlan'
+import { ensureDailyPlan } from '@core/plan/dailyPlanService'
 
 interface AggregatedRec extends Recommendation {
   sourcePackageId: string
@@ -209,6 +246,54 @@ const router = useRouter()
 const recommendations = ref<AggregatedRec[]>([])
 const weakPoints = ref<WeakPoint[]>([])
 const chartRef = ref<HTMLElement | null>(null)
+
+/**
+ * 今日任务（V3.0 · M1）：首页只摆一个"今天做到哪了"。
+ *
+ * 这里**不自己编排**：`ensureDailyPlan()` 读的是今日页/答题页同一份落盘队列，
+ * 所以首页看到的 3/8 与今日页完全一致（自己再算一遍必然会出现两处数字不一致）。
+ */
+const dailyPlan = ref<DailyPlan | null>(null)
+const showMore = ref(false)
+
+const todayProgress = computed(() => (dailyPlan.value ? planProgress(dailyPlan.value) : null))
+const todayPercent = computed(() => Math.round((todayProgress.value?.ratio ?? 0) * 100))
+
+const todayTitle = computed(() => {
+  const p = todayProgress.value
+  if (!dailyPlan.value) return '正在安排今天的学习'
+  if (dailyPlan.value.items.length === 0) return '今天没有排任务'
+  if (p?.finished) return '今天的任务全部完成 🎉'
+  if (!p || p.doneItems === 0) {
+    return `今天有 ${p?.totalItems ?? 0} 项，约 ${dailyPlan.value.totals.minutes} 分钟`
+  }
+  return `还剩 ${p.totalItems - p.doneItems} 项`
+})
+
+const todaySub = computed(() => {
+  const p = todayProgress.value
+  if (!p) return ''
+  const goal = dailyPlan.value?.goal
+  const budget = goal?.mode === 'minutes' ? `${goal.minutes} 分钟` : `${goal?.questions ?? 24} 题`
+  return `今日目标 ${budget} · 已完成 ${p.doneQuestions} 题`
+})
+
+const todayCountText = computed(() => {
+  const p = todayProgress.value
+  if (!p) return ''
+  return `${p.doneItems} / ${p.totalItems} 项`
+})
+
+const todayActionText = computed(() => {
+  const p = todayProgress.value
+  if (dailyPlan.value && dailyPlan.value.items.length === 0) return '去看看'
+  if (p?.finished) return '看总结'
+  return p && p.doneItems > 0 ? '继续' : '开始'
+})
+
+function goToday(): void {
+  void router.push('/today')
+}
 
 /** 体验激励：连续打卡 */
 const streak = ref<StreakState>({ ...EMPTY_STREAK })
@@ -429,6 +514,13 @@ onMounted(async () => {
 
   recommendations.value = generateAllRecommendations()
 
+  // 今日任务：读（或生成）今日队列。失败不阻塞首页 —— 下面三块推荐仍可用
+  try {
+    dailyPlan.value = (await ensureDailyPlan()).plan
+  } catch (err) {
+    console.warn('[Home] 今日任务加载失败（忽略）', err)
+  }
+
   // C3 · 弱项推荐：与今日推荐的 mistake/review 类去重后，取最需要练的知识点（§11.4）。
   // 同一屏不得重复出现同一知识点；弱项只作首页行动入口，不进报告页（落报告 = 推迟行动）。
   const takenByRecs = new Set(
@@ -455,6 +547,115 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+/* ========== 今日任务卡（V3.0 · M1） ========== */
+.today-card {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+.today-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.today-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: $text-main;
+}
+
+.today-sub {
+  font-size: 13px;
+  color: $text-sub;
+}
+
+.today-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: $border-color;
+  overflow: hidden;
+}
+
+.today-bar__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: $gradient-primary;
+  transition: width 0.3s ease;
+}
+
+.today-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .today-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-sub;
+  }
+
+  .action-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-sub;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: $bg-color-hover;
+
+    &.primary {
+      background: $primary-color;
+      color: var(--text-on-primary);
+    }
+  }
+}
+
+/* 更多推荐折叠开关（原三块并列内容不能消失，只能降级） */
+.more-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed $border-color;
+  border-radius: $radius-md;
+  background: transparent;
+  color: $text-sub;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    color: $primary-text;
+    border-color: $primary-color;
+  }
+
+  .more-arrow {
+    transition: transform 0.2s;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+}
+
 .home-page {
   display: flex;
   flex-direction: column;

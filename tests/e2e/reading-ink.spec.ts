@@ -42,7 +42,7 @@ const TEXT_CONTENT = [
 
 /** `.ach-head-count` 只在读库完成（`refreshView()` await 过）后渲染 → 库已就绪的可靠信号 */
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {

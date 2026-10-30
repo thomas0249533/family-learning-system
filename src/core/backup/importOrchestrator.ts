@@ -63,6 +63,8 @@ export interface ImportApplied {
   sessions: number
   settings: number
   profiles: number
+  /** 写入的手动完成标记条数（V3.0 · M4 起随备份搬运） */
+  marks: number
   /**
    * 实际写进库的那些行里，属于"本机没装的包"的包 id（升序去重）。
    *
@@ -134,6 +136,7 @@ function zeroApplied(): ImportApplied {
     sessions: 0,
     settings: 0,
     profiles: 0,
+    marks: 0,
     missingPackages: [],
     missingPackageRows: 0,
   }
@@ -211,6 +214,8 @@ export function bundlesFromV2(doc: BackupV2): Bundle[] {
       progress: profile.progress,
       mistakes: profile.mistakes,
       examSessions: profile.examSessions,
+      // 老备份文件没有这个字段（V3.0 之前不导出）→ 按"没有标记"处理，不拒收
+      cardCompletions: Array.isArray(profile.cardCompletions) ? profile.cardCompletions : [],
       settings,
     }
   })
@@ -335,6 +340,26 @@ export async function executeImport(plan: MergePlan): Promise<ImportApplied> {
   // 用户看到的数字仍然是"真的写了几条"。
   const applied = await applyMergePlan(plain)
 
+  // ---- 让"今日队列"失效（V3.0 · M1/M4 的接缝）----
+  //
+  // 队列是**当天冻结**的（同日重排会让每做完一项顺序就变，孩子会晕）。
+  // 但导入/恢复改变了进度与错题的**全集**：昨天排的"复习 3 题"可能已经不需要了，
+  // 而新导进来的到期卡、待攻克错题根本没进队列。所以这里必须主动失效一次。
+  //
+  // 为什么放在 `core` 而不是 UI：恢复快照（`autoSnapshot.restoreSnapshot`）、
+  // 设置页导入、将来的同步下行走的都是 `executeImport` 这一个入口 ——
+  // 让每个调用方各自记得去失效，迟早漏一个，而漏掉的症状是
+  // "导入了但今天没任务"，安静得没有任何报错（本轮的 e2e 主闭环就是这么抓到的）。
+  //
+  // 动态 import：`dailyPlanService` 依赖 db 与 stores，静态引入会让这个纯逻辑层
+  // 在单测/启动早期被拖进一整套依赖。失败一律吞掉（队列失效不成功最多是今天还用旧队列）。
+  try {
+    const { invalidateDailyPlan } = await import('@core/plan/dailyPlanService')
+    await invalidateDailyPlan()
+  } catch (e) {
+    console.warn('[backup] 导入后使今日队列失效失败（今日页可能仍显示旧队列）', e)
+  }
+
   // ---- 以下都是"重新读一遍"，不写业务表 ----
 
   // ① 档案列表可能刚被 apply 写过（新档案）。`currentProfile` 模块持有一份内存状态，
@@ -393,6 +418,7 @@ export async function executeImport(plan: MergePlan): Promise<ImportApplied> {
     sessions: applied.sessions,
     settings: applied.settings,
     profiles: applied.profiles,
+    marks: applied.marks,
     missingPackages,
     missingPackageRows,
   }
@@ -408,7 +434,7 @@ export async function executeImport(plan: MergePlan): Promise<ImportApplied> {
 export async function importBackupFile(
   json: unknown,
   now?: string
-): Promise<ImportPreview & { applied: boolean }> {
+): Promise<ImportPreview & { applied: boolean; detail: ImportApplied }> {
   const preview = await previewImport(json, now)
   const plan = preview.plan
 
@@ -416,13 +442,19 @@ export async function importBackupFile(
   // 这里若自己再排一次 reject / noop，就会有两套口径 —— 而 UI 读的是 `outcome`，
   // 两边一旦分叉，用户的按钮状态与点击后的行为会对不上。
   if (preview.outcome === 'reject' || preview.outcome === 'noop' || !plan) {
-    return { ...preview, applied: false }
+    return { ...preview, applied: false, detail: zeroApplied() }
   }
 
   const applied = await executeImport(plan)
   // `applied` 以**实际写入条数**为准：计划说"有 3 条"，但若 apply 侧做了二次去重一条都没写，
   // 报 `true` 会让 UI 弹出"导入成功"，而用户看到的数据没有任何变化。
   const written =
-    applied.progress + applied.mistakes + applied.sessions + applied.settings + applied.profiles
-  return { ...preview, applied: written > 0 }
+    applied.progress +
+    applied.mistakes +
+    applied.sessions +
+    applied.settings +
+    applied.profiles +
+    // V3.0 · M4：只带过来几条手动标记也是一次真实导入（否则会报"未导入任何数据"）
+    applied.marks
+  return { ...preview, applied: written > 0, detail: applied }
 }

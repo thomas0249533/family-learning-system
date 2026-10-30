@@ -1,4 +1,5 @@
 mod ai;
+mod net;
 
 use tauri::Manager;
 
@@ -60,6 +61,8 @@ pub fn run() {
       ai::models::ai_model_download,
       ai::models::ai_model_pick,
       ai::models::ai_model_remove,
+      // P3 · WebDAV 同步：桌面端跨域网盘请求必须由 Rust 侧发出（绕开 CORS）
+      net::webdav_fetch,
     ])
     .setup(|app| {
       // 必须在窗口/WebView2 创建之前：SW 把导航接管了的话，前端拿到的是旧资源，

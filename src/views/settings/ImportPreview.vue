@@ -111,6 +111,31 @@
 
           <div v-if="applied" class="import-done-note">已导入，数据已刷新。</div>
 
+          <!-- V3.0 · M4 · 换机迁移自检：导入完成后立刻做计数对账。
+               "导入成功"这句话本身没有信息量 —— 少 3 条进度不会报错，
+               要等孩子几天后复习才被发现。这里把"备份里有多少 / 本机现在有多少"
+               逐项摆出来，只有"少了"才是问题（合并是并集，多出来是正常的）。 -->
+          <div
+            v-if="applied && migrationReport"
+            class="migration-check"
+            :class="{ 'migration-check--bad': !migrationReport.ok }"
+          >
+            <div class="migration-check-title">
+              {{ migrationReport.ok ? '✅ 数据自检通过' : '⚠️ 数据自检有异常' }}
+            </div>
+            <div class="migration-check-summary">{{ migrationSummary }}</div>
+            <ul class="migration-check-rows">
+              <li v-for="row in migrationReport.rows" :key="row.key" class="migration-check-row">
+                <span class="migration-check-label">{{ row.label }}</span>
+                <span class="migration-check-value">
+                  <template v-if="row.expected === null">{{ row.actual }} 项</template>
+                  <template v-else>{{ row.actual }} / {{ row.expected }}</template>
+                </span>
+                <span class="migration-check-hint" :class="verdictClass(row.verdict)">{{ row.hint }}</span>
+              </li>
+            </ul>
+          </div>
+
           <!-- E1 · 备份引用了本机没装的学习包（"专项练习进度丢了"的真相）。
                放在统计之后、导入期警告之前：统计是"会导入什么"，这一条是
                "导完之后还得做什么"，两句并列才读得通。
@@ -197,6 +222,8 @@ import {
   type FriendlyError,
 } from '@core/errors/messages'
 import type { BackupRejectReason } from '@core/backup/types'
+import { summarizeReport, type MigrationReport } from '@core/backup/migrationCheck'
+import { checkAfterImport } from '@core/backup/migrationCheckService'
 
 const message = useMessage()
 const router = useRouter()
@@ -225,6 +252,27 @@ const preview = shallowRef<ImportPreviewResult | null>(null)
 const outcome = ref<ImportOutcome | null>(null)
 /** 执行结果（非空 = 已成功导入，统计改为显示"实际写入"的数字） */
 const applied = ref<ImportApplied | null>(null)
+/**
+ * 导入后的换机迁移自检（V3.0 · M4）。
+ *
+ * `null` = 还没算 / 算失败。**算失败不报错**：自检是"给家长增加信心"的附加信息，
+ * 让它把一次成功的导入变成错误页是本末倒置 —— 真实的写入结果已经由 `applied` 说明了。
+ */
+const migrationReport = shallowRef<MigrationReport | null>(null)
+const migrationSummary = computed<string>(() =>
+  migrationReport.value ? summarizeReport(migrationReport.value) : '',
+)
+
+/**
+ * 结论 → 类名。
+ *
+ * **不能写成 `` `is-${verdict}` ``**：`n/a` 里的 `/` 会被 CSS 解析器当成选择器语法，
+ * `page.locator('.is-n/a')` 直接报 "Unexpected token '/'"。所以这里做一次显式映射，
+ * 而不是把 verdict 原样拼进 class —— 类名对 `verdict` 的枚举扩张也就此多了一道闸。
+ */
+function verdictClass(verdict: MigrationReport['rows'][number]['verdict']): string {
+  return verdict === 'n/a' ? 'is-na' : `is-${verdict}`
+}
 /** 读文件 / JSON 解析 / 预览的失败原文（停在第一步） */
 const readError = ref('')
 /** 执行失败的原文（停在第二步，正文说明"一行都没写进去"） */
@@ -352,6 +400,8 @@ const statRows = computed<StatRow[]>(() => {
     pushRow(rows, 'progress', '新增进度', done.progress, '条')
     pushRow(rows, 'mistakes', '新增错题', done.mistakes, '条')
     pushRow(rows, 'sessions', '新增模考场次', done.sessions, '场')
+    // V3.0 · M4：手动完成标记随备份搬运，家长要能看到它确实过来了
+    pushRow(rows, 'marks', '新增完成标记', done.marks, '个')
     pushRow(rows, 'settings', '更新设置', done.settings, '项')
     return rows
   }
@@ -368,6 +418,8 @@ const statRows = computed<StatRow[]>(() => {
   pushRow(rows, 'mistakes-kept', '本机较新，已保留', stats.mistakesKeptLocal, '条错题')
   pushRow(rows, 'sessions', '新增模考场次', stats.sessionsAdded, '场')
   pushRow(rows, 'sessions-kept', '本机较新，已保留', stats.sessionsKeptLocal, '场模考')
+  pushRow(rows, 'marks', '新增完成标记', stats.marksAdded, '个')
+  pushRow(rows, 'marks-kept', '已有同一标记，已保留', stats.marksKeptLocal, '个')
   // 徽章单独一行：它不是"条数"，混在进度里会被当成错题数
   pushRow(rows, 'achievements', '徽章', stats.achievementsAdded, '', '+')
   pushRow(rows, 'settings', '更新设置', stats.settingsChanged, '项')
@@ -519,6 +571,16 @@ async function confirmImport(): Promise<void> {
   applyErrorCode.value = ''
   try {
     applied.value = await executeImport(plan)
+    // ---- 换机迁移自检（V3.0 · M4）----
+    // 比对基准是**这份备份里**的档案（`preview.bundles`），不是全库：
+    // 新设备上可能还留着别的档案的行，算进来会让报告永远"更多"= 永远不报警。
+    // 自检失败一律吞掉（见 `migrationReport` 注释），绝不影响这次导入的结论。
+    try {
+      migrationReport.value = await checkAfterImport(preview.value?.bundles ?? [])
+    } catch (e) {
+      migrationReport.value = null
+      console.warn('[backup] 迁移自检失败（导入本身已成功）', e)
+    }
     // E1：缺包时把"下一步该做什么"直接说进完成提示 —— 否则家长只看到
     // "导入成功"，转头去学习页找不到那些记录，就会以为导入丢了数据。
     // 用 warning 而不是拼在 success 后面：拼出来的长句会被整条略读掉，
@@ -558,6 +620,7 @@ function reset(): void {
   preview.value = null
   outcome.value = null
   applied.value = null
+  migrationReport.value = null
   readError.value = ''
   applyError.value = ''
   applyErrorCode.value = ''
@@ -760,6 +823,83 @@ function reset(): void {
   font-size: var(--font-xs);
   font-weight: 600;
   color: var(--success-text);
+}
+
+/* ---- 换机迁移自检（V3.0 · M4）----
+   成功时用 success 语义，出现"少了"时整块换成 danger 语义（不只是换个图标）：
+   这块的价值在于"一眼看出有没有问题"，靠一个红字标签是看不出来的。 */
+.migration-check {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--success-soft);
+  border-left: 3px solid var(--success-color);
+  border-radius: var(--radius-sm);
+}
+
+.migration-check--bad {
+  background: var(--danger-soft);
+  border-left-color: var(--danger-color);
+}
+
+.migration-check-title {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--success-text);
+
+  .migration-check--bad & {
+    color: var(--danger-text);
+  }
+}
+
+.migration-check-summary {
+  font-size: var(--font-xs);
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+.migration-check-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.migration-check-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 var(--space-3);
+  padding: var(--space-1) 0;
+  border-bottom: 1px dashed var(--border-light);
+  font-size: var(--font-xs);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.migration-check-label {
+  color: var(--text-sub);
+}
+
+.migration-check-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-main);
+}
+
+/* 提示语占满整行（在"标签 / 数字"下一行），长文案才不会把数字挤变形 */
+.migration-check-hint {
+  grid-column: 1 / -1;
+  color: var(--text-hint);
+
+  &.is-less {
+    font-weight: 600;
+    color: var(--danger-text);
+  }
 }
 
 /* ---- 缺包提示（E1）----

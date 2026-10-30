@@ -637,18 +637,27 @@ describe('A3 · settings 键分片静态扫描', () => {
     // V2.8 · C2 新增 `blindBox` 的 2 个访问点（blindBoxKey 的定义 + 默认参调用）= 48。
     // V2.11 新增 `fls:feedback` 的 2 个访问点（feedbackSettings.ts 的 get / put，
     // 设备级键）= 50。
+    // V3.0 · M1 新增 `dailyGoal` / `dailyPlan` 的 5 个访问点
+    // （dailyPlanService.ts 的 loadDailyGoal.get / saveDailyGoal.put / readPlan.get /
+    //   writePlan.put / invalidateDailyPlan.delete，都是 per-profile 键）= 55。
+    // V3.0 · M4 新增 `backup:snapshots` 的 4 个访问点（autoSnapshot.ts 的
+    // listSnapshots.get / maybeAutoSnapshot.get+put / clearSnapshots.put，
+    // 设备级键）= 59。
+    // V3.0 · M4 新增迁移自检的 1 个访问点（migrationCheckService.ts 的
+    // `settings.get(scopedKey('achievements', pid))`，按备份里的档案逐个读徽章数）= 60。
     // 改这个数字等于承认"我看过每一个新访问点"。
-    expect(r.points.length).toBe(50)
+    expect(r.points.length).toBe(60)
     expect(r.exempts.length).toBe(2)
   })
 
   it('豁免恰好是那两处「键来自合并计划」的写入，且都写了理由', () => {
     const r = scanSrc(LISTS)
     // ⚠️ 行号对源码编辑敏感：applyMergePlan.ts 加过 A6 · L2 守卫（在豁免注释之前），
-    // 那一处的行号就从 119 挪到了 228。改行号不等于放宽断言 —— 位置与条数都还钉着。
+    // 那一处的行号就从 119 挪到了 228；V3.0 · M4 又插入了「手动完成标记」写入块，
+    // 再挪到 248。改行号不等于放宽断言 —— 位置与条数都还钉着。
     const at = (e: Exempt) => `${e.file.split('src')[1].split('\\').join('/')}:${e.line}`
     expect(r.exempts.map(at).sort()).toEqual([
-      '/core/merge/applyMergePlan.ts:228',
+      '/core/merge/applyMergePlan.ts:248',
       '/core/storage/migrateV4.ts:199',
     ])
     for (const e of r.exempts) expect(e.reason.length).toBeGreaterThan(4)

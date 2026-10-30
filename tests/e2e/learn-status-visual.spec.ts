@@ -268,12 +268,23 @@ const PACKAGE_SEEDS: PackageSeed[] = [
 interface SeedPayload {
   packages: Array<Record<string, unknown>>
   progress: Array<Record<string, unknown>>
+  /**
+   * 错题行。
+   *
+   * **必须种**：卡片的完成判定（`completionStatusOf`）有一条"自动通道" ——
+   * 「所有知识点都学过 且 范围内没有未攻克的错题」就判为已掌握。
+   * 只写 `progress` 的话，一台「需复习」的卡会被这条规则判成已掌握（绿 ✓），
+   * 四态同屏的断言就永远缺 `is-review`。
+   * 而真实数据里 `wrongCount > 0` 必然伴随错题行，之前"只写 progress"的种子本身就不自洽。
+   */
+  mistakes: Array<Record<string, unknown>>
 }
 
 /** 由字面量种子推导出 `packages` 行与 `progress` 行（字段名照 `src/db/index.ts` 的接口，不臆造） */
 function buildSeed(): SeedPayload {
   const packages: Array<Record<string, unknown>> = []
   const progress: Array<Record<string, unknown>> = []
+  const mistakes: Array<Record<string, unknown>> = []
 
   for (const pkg of PACKAGE_SEEDS) {
     const knowledgePoints: Array<Record<string, unknown>> = []
@@ -313,6 +324,23 @@ function buildSeed(): SeedPayload {
             lastStudiedAt: STUDIED_AT,
             studySeconds: 600,
           })
+
+          // 「需复习」的知识点同时种一条**未攻克**的错题：与上面的 wrongCount 自洽，
+          // 也是卡片保持"需复习（橙 ↻）"而不是被自动通道判绿的原因。
+          if (status === '需复习') {
+            mistakes.push({
+              profileId: PROFILE_ID,
+              packageId: pkg.packageId,
+              exerciseId: `vis-${kpId}`,
+              knowledgePointIds: [kpId],
+              questionData: { type: 'blank', question: '视觉回归占位题', answer: '1' },
+              lastUserAnswer: '2',
+              wrongAt: STUDIED_AT,
+              wrongCount: 3,
+              mastered: false,
+              masteryLevel: 'none',
+            })
+          }
         })
       }
 
@@ -339,7 +367,7 @@ function buildSeed(): SeedPayload {
     })
   }
 
-  return { packages, progress }
+  return { packages, progress, mistakes }
 }
 
 // ===========================================================================
@@ -348,7 +376,7 @@ function buildSeed(): SeedPayload {
 
 /** `.ach-head-count` 只在读库完成后渲染 → 「Dexie 已建好 v4 schema」的可靠信号 */
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {
@@ -371,7 +399,7 @@ async function resetDb(page: Page): Promise<void> {
  */
 async function seedAll(page: Page, seed: SeedPayload): Promise<void> {
   await page.evaluate(
-    async ({ dbName, packages, progress, profileId, createdAt }) => {
+    async ({ dbName, packages, progress, mistakes, profileId, createdAt }) => {
       const db = await new Promise<IDBDatabase>((resolve, reject) => {
         const req = indexedDB.open(dbName)
         req.onsuccess = () => resolve(req.result)
@@ -380,7 +408,7 @@ async function seedAll(page: Page, seed: SeedPayload): Promise<void> {
       })
 
       await new Promise<void>((resolve, reject) => {
-        const tx = db.transaction(['settings', 'packages', 'progress'], 'readwrite')
+        const tx = db.transaction(['settings', 'packages', 'progress', 'mistakes'], 'readwrite')
         // 档案表：没有它 `currentProfileId()` 回落到 default，进度行按 pid 过滤后全是空的
         tx.objectStore('settings').put({
           key: 'profiles',
@@ -388,6 +416,7 @@ async function seedAll(page: Page, seed: SeedPayload): Promise<void> {
         })
         for (const pkg of packages) tx.objectStore('packages').put(pkg)
         for (const row of progress) tx.objectStore('progress').put(row)
+        for (const row of mistakes) tx.objectStore('mistakes').put(row)
         tx.oncomplete = () => {
           db.close()
           resolve()
@@ -400,6 +429,7 @@ async function seedAll(page: Page, seed: SeedPayload): Promise<void> {
       dbName: DB_NAME,
       packages: seed.packages,
       progress: seed.progress,
+      mistakes: seed.mistakes,
       profileId: PROFILE_ID,
       createdAt: PROFILE_CREATED_AT,
     }

@@ -104,6 +104,55 @@
       <p class="stats-note">手动标记的复习，将在下次答题后正式计入掌握度统计。</p>
     </section>
 
+    <!-- ========== 每日目标（V3.0 · M3：家长可行动） ==========
+         家长端从"看数据"变成"做决定"的第一块：目标定多少、今天怎么排，
+         都在这里改，孩子端下一次刷新立刻生效（同一份落盘设置，不是各算一遍）。 ========== -->
+    <section class="section">
+      <SectionTitle title="🎯 每日目标" />
+      <div class="goal-card">
+        <div class="goal-row">
+          <span class="goal-label">按什么算</span>
+          <div class="goal-modes">
+            <button
+              v-for="opt in goalModes"
+              :key="opt.value"
+              type="button"
+              class="goal-mode"
+              :class="{ on: goalMode === opt.value }"
+              :aria-pressed="goalMode === opt.value"
+              @click="changeGoalMode(opt.value)"
+            >
+              {{ opt.label }}
+            </button>
+          </div>
+        </div>
+
+        <div class="goal-row">
+          <span class="goal-label">每天做</span>
+          <div class="goal-inputs">
+            <label class="goal-field">
+              <input v-model.number="goalForm.questions" type="number" min="5" max="120" step="1" @change="saveGoalNumbers" />
+              <span>题</span>
+            </label>
+            <label class="goal-field">
+              <input v-model.number="goalForm.minutes" type="number" min="5" max="180" step="5" @change="saveGoalNumbers" />
+              <span>分钟</span>
+            </label>
+          </div>
+        </div>
+
+        <p class="goal-hint">
+          今天：已完成 {{ todayDoneItems }} / {{ todayTotalItems }} 项 · {{ todayDoneQuestions }} 题
+          <span v-if="goalMode === 'questions'">（按题量算，题量不超目标）</span>
+          <span v-else>（按时长算，允许略微超出）</span>
+        </p>
+
+        <div class="goal-actions">
+          <AppButton size="small" @click="redoToday">重新安排今天</AppButton>
+        </div>
+      </div>
+    </section>
+
     <!--
       补签（V1.6 · Stage C · C5 / PRD §11.1 + §11.6）。
       入口只在家长端 —— 补签的前提是"昨天真的练过、家长能作证"，孩子端不能自己点
@@ -368,6 +417,14 @@ import PageHeader from '@/components/ui/PageHeader.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
+import {
+  ensureDailyPlan,
+  loadDailyGoal,
+  rebuildDailyPlan,
+  saveDailyGoal,
+  setGoalMode,
+} from '@core/plan/dailyPlanService'
+import { planProgress, type DailyGoal, type GoalMode } from '@core/plan/dailyPlan'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import CustomPackPanel from '@/components/CustomPackPanel.vue'
@@ -439,6 +496,70 @@ const packageStore = usePackageStore()
 // ---------- 档案管理（V1.4 · B1）----------
 const dialog = useDialog()
 const message = useMessage()
+
+// ---------------------------------------------------------------------------
+// 每日目标（V3.0 · M3）—— 家长端唯一"改了就影响孩子端"的一块
+// ---------------------------------------------------------------------------
+const goalModes: Array<{ value: GoalMode; label: string }> = [
+  { value: 'questions', label: '按题量' },
+  { value: 'minutes', label: '按时长' },
+]
+const goalForm = ref<DailyGoal>({ mode: 'questions', questions: 24, minutes: 20 })
+const goalMode = computed(() => goalForm.value.mode)
+const todayDoneItems = ref(0)
+const todayTotalItems = ref(0)
+const todayDoneQuestions = ref(0)
+
+/**
+ * 读目标 + 今日进度。
+ * 两件事都**失败可忽略**：这块是家长端的附加卡，读不到不该把整页拖白
+ * （页面主体还有总览 / 成就 / 错题 Top5）。
+ */
+async function loadGoalCard(): Promise<void> {
+  try {
+    goalForm.value = await loadDailyGoal()
+  } catch {
+    /* 保留默认值 */
+  }
+  try {
+    const { plan } = await ensureDailyPlan()
+    const p = planProgress(plan)
+    todayDoneItems.value = p.doneItems
+    todayTotalItems.value = p.totalItems
+    todayDoneQuestions.value = p.doneQuestions
+  } catch {
+    todayDoneItems.value = 0
+    todayTotalItems.value = 0
+    todayDoneQuestions.value = 0
+  }
+}
+
+async function changeGoalMode(mode: GoalMode): Promise<void> {
+  if (mode === goalMode.value) return
+  goalForm.value = { ...(await setGoalMode(mode)) }
+}
+
+async function saveGoalNumbers(): Promise<void> {
+  goalForm.value = {
+    ...(await saveDailyGoal({
+      questions: goalForm.value.questions,
+      minutes: goalForm.value.minutes,
+    })),
+  }
+  message.success('目标已保存，孩子端下次打开即按新目标排队')
+}
+
+/** 重排今天：不改变已完成的记账，只换剩下的任务 */
+async function redoToday(): Promise<void> {
+  try {
+    await rebuildDailyPlan()
+    await loadGoalCard()
+    message.success('今天的任务已重新安排')
+  } catch {
+    message.error('重排失败，请稍后再试')
+  }
+}
+
 const profileState = ref<ProfilesState>(profilesState())
 const creating = ref(false)
 const draftName = ref('')
@@ -683,6 +804,7 @@ onMounted(async () => {
   unlockedRecords.value = await loadUnlocked()
   discoveryEnabled.value = await loadDiscoveryEnabled()
   await refreshStreakState()
+  await loadGoalCard()
 })
 
 onUnmounted(() => {
@@ -1114,6 +1236,89 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 /* V2.4 · 任务3 · 家长端口径安抚常驻提示（零硬编码） */
+/* V3.0 · M3 · 每日目标卡（全 token；虚线感留给"可调的旋钮"，实底留给信息） */
+.goal-card {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.goal-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.goal-label {
+  font-size: 13px;
+  color: $text-sub;
+  min-width: 56px;
+}
+
+.goal-modes {
+  display: flex;
+  gap: 8px;
+}
+
+.goal-mode {
+  border: 1px solid $border-color;
+  background: transparent;
+  color: $text-sub;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+
+  &.on {
+    border-color: $primary-color;
+    color: $primary-text;
+    background: $primary-light;
+  }
+}
+
+.goal-inputs {
+  display: flex;
+  gap: 12px;
+}
+
+.goal-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: $text-sub;
+
+  input {
+    width: 68px;
+    padding: 5px 8px;
+    border: 1px solid $border-color;
+    border-radius: $radius-sm;
+    background: $surface-2;
+    color: $text-main;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.goal-hint {
+  margin: 0;
+  font-size: 12px;
+  color: $text-sub;
+  line-height: $leading-normal;
+}
+
+.goal-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .stats-note {
   font-size: 12px;
   line-height: 1.6;

@@ -44,7 +44,7 @@
  */
 
 import { db } from '@/db'
-import type { ExamSessionRecord, MistakeRecord, ProgressRecord } from '@/db'
+import type { CardCompletionRecord, ExamSessionRecord, MistakeRecord, ProgressRecord } from '@/db'
 import { isPlanNoop, type MergePlan } from '@core/backup/types'
 import { PROFILES_KEY, normalizeProfilesState } from '@core/profile/profileTypes'
 import { mistakeKey } from './mergeMistakes'
@@ -56,6 +56,8 @@ export interface ApplyMergeResult {
   sessions: number
   settings: number
   profiles: number
+  /** 写进去的手动完成标记条数（V3.0 · M4 起也在备份契约里） */
+  marks: number
 }
 
 /**
@@ -105,7 +107,7 @@ function staleGuardError(): Error {
 
 /** 全 0 结果（noop 与"什么都没发生"用同一个对象形状） */
 function zeroResult(): ApplyMergeResult {
-  return { progress: 0, mistakes: 0, sessions: 0, settings: 0, profiles: 0 }
+  return { progress: 0, mistakes: 0, sessions: 0, settings: 0, profiles: 0, marks: 0 }
 }
 
 /**
@@ -128,6 +130,7 @@ export async function applyMergePlan(plan: MergePlan): Promise<ApplyMergeResult>
     db.mistakes,
     db.examSessions,
     db.settings,
+    db.cardCompletions,
     async () => {
       // ================= A6 · L2 陈旧快照守卫 =================
       // 必须在**任何写入之前**：progress / mistakes / sessions / settings / 新档案
@@ -219,6 +222,23 @@ export async function applyMergePlan(plan: MergePlan): Promise<ApplyMergeResult>
           await db.examSessions.add(rest as ExamSessionRecord)
         }
         result.sessions++
+      }
+
+      // ---------------- 手动完成标记（纯并集，见 mergeCardCompletions 文件头）----------------
+      for (const row of plan.markUpserts) {
+        const { id: _dropId4, ...rest } = row
+        const existing = await db.cardCompletions
+          .where('[profileId+kind+targetId]')
+          .equals([rest.profileId, rest.kind, rest.targetId])
+          .first()
+        if (existing && typeof existing.id === 'number') {
+          // 计划侧已经保证"本机没有才写"，这里命中只可能是手工拼的计划或快照过期。
+          // 覆盖成远端那行没有语义差别（内容只有 createdAt），但保持与其余三张表一致的写法。
+          await db.cardCompletions.update(existing.id, rest)
+        } else {
+          await db.cardCompletions.add(rest as CardCompletionRecord)
+        }
+        result.marks++
       }
 
       // ---------------- settings（分片键与全局键走同一条路：put 整条记录）----------------

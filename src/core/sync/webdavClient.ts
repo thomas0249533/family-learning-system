@@ -18,17 +18,18 @@
  * 人话**（不是给开发看的堆栈线索）。文案里一律附上可执行的下一步。
  *
  * ## 约定③：CORS 要如实处理，不许假装能通
- * 本仓 `src-tauri/Cargo.toml` 没有 `tauri-plugin-http`，`tauri.conf.json` 也没有
- * http capabilities（方案 0-① 已核实）。于是 WebView 里的 `fetch` 完全受同源策略约束：
- *   - PWA 模式：跨域请求**一定**被浏览器拦下（抛 `TypeError`，且拿不到任何线索）；
- *   - Tauri 模式：桌面容器本身不放宽 WebView 的 CORS，真机直连大概率同样被拦，
- *     彻底解决要 Rust 侧插件（已单开任务）。
+ * - **桌面端（P3 起）**：请求交给 Rust 侧的 `webdav_fetch`（`src-tauri/src/net.rs`），
+ *   由 reqwest 直接发出，不经过 WebView 的同源策略，跨域网盘可以真正连通。
+ * - **网页版（PWA）**：没有这条后路，跨域请求仍会被浏览器拦下（抛 `TypeError`，
+ *   拿不到任何线索），只能依赖网盘自身放行 CORS。
  * 所以这里把 CORS 做成**一等失败类型**（`cors`），并在消息里指回本来就通的
  * 「导出文件 / 导入文件」通道。**为了让测试变绿而伪造成功是本项目最忌讳的事**，
  * 一次都不会做。
  */
 
 import type { BackupV2 } from '@core/backup/types'
+import { isTauri } from '@core/pwa/isTauri'
+import { createTauriFetch } from './tauriFetch'
 
 // ---------------------------------------------------------------------------
 // 失败分类
@@ -362,7 +363,14 @@ export function basicAuthHeader(username: string, password: string): string {
   return `Basic ${base64Encode(new TextEncoder().encode(`${username}:${password}`))}`
 }
 
-/** 取真正要用的 fetch：优先注入替身，否则回落到宿主全局 `fetch` */
+/**
+ * 取真正要用的 fetch：优先注入替身，否则按运行环境选宿主实现。
+ *
+ * 桌面端走 Rust 侧的 `webdav_fetch`：WebView2 的请求同样受同源策略约束，
+ * 跨域网盘（坚果云 / Nextcloud / 自建 NAS）用原生 fetch 必被 CORS 拦。
+ * 浏览器版没有这条后路，只能依赖网盘自身放行 CORS —— 这与 `environmentHint()`
+ * 里给用户的那句实话是同一件事。
+ */
 function resolveFetch(
   deps: RequestDeps,
   which: 'fetchImpl' | 'probeImpl' = 'fetchImpl',
@@ -370,6 +378,10 @@ function resolveFetch(
   const direct = deps[which]
   if (typeof direct === 'function') return direct
   if (which === 'probeImpl' && typeof deps.fetchImpl === 'function') return deps.fetchImpl
+  if (isTauri()) {
+    // 超时交给 reqwest（前端 AbortController 拦不住跨进程的 invoke）
+    return createTauriFetch(deps.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+  }
   const host = typeof globalThis !== 'undefined' ? globalThis.fetch : undefined
   if (typeof host !== 'function') {
     fail('config', '当前环境不支持 fetch，连不上网盘。' + FALLBACK_HINT)
@@ -445,6 +457,12 @@ async function request(
     return res
   } catch (err) {
     if (isWebDavError(err)) throw err
+    // 桌面端：Rust 已经把原因说清楚了（超时 / 域名解析 / 证书），
+    // 照着它报，别泛化成"请求没能发出去"把家长引向网络排查的错方向。
+    const transportMsg = (err as { webdavMessage?: unknown } | null)?.webdavMessage
+    if (typeof transportMsg === 'string' && transportMsg.trim()) {
+      fail('network', `${transportMsg.trim()}\n${FALLBACK_HINT}`, err)
+    }
     // 超时单独给一句人话：否则家长看到的是"连不上"，而真实情况是"这次太慢了"。
     if (controller?.signal.aborted) {
       fail(

@@ -55,7 +55,7 @@ async function installClockFreeze(page: Page): Promise<void> {
 async function waitDbReady(page: Page): Promise<void> {
   // `.ach-head-count` 只在读库完成后渲染 → 「Dexie 已建好 v4 schema」的可靠信号。
   // 裸开 IDB 抢在 Dexie 之前会造空库（V1.3 已踩过）。
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {
@@ -136,7 +136,7 @@ const PACKAGES: Array<Record<string, unknown>> = [
  *   · 近 7 天：3 行学在昨天（01-14）、1 行学在 3 天前（01-12）→ 合计 4；
  *   · 打卡 current=5 且 lastDate=今天 → 连续 5 天（max(旧口径 1, 打卡 5)）；
  *   · 错题：kp1 错 5+2=7 次（Top 1）、kp2 错 1 次；
- *   · 成就：first-step + streak-3 已解锁 → 2 / 27
+ *   · 成就：first-step + streak-3 已解锁 → 2 / 37（V2.8 · C1 加了 10 枚习惯成就）
  *     （刻意预种 streak-3：不种的话 `settle()` 会在加载后解锁它并弹 toast，
  *      虽不影响卡片快照，但会让页面多一个 fixed 浮层，平添不确定因素）。
  */
@@ -346,8 +346,8 @@ test.describe('E3 · 周报卡片（生成快照 + 导出 PNG）', () => {
     await expect(tops.nth(1)).toContainText('带余除法')
     await expect(tops.nth(1)).toContainText('错 1 次')
 
-    // 成就：可收集口径 2 / 27
-    await expect(card.locator('.weekly-card__ach')).toHaveText('🏅 成就 2 / 27')
+    // 成就：2 / 37（27 是 V1.6 的数，V2.8 · C1 加了 10 枚习惯成就）
+    await expect(card.locator('.weekly-card__ach')).toHaveText('🏅 成就 2 / 37')
   })
 
   test('导出图片 → 产出 download 事件，文件名带本地日期', async ({ page }) => {

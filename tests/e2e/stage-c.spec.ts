@@ -35,7 +35,7 @@ const STREAK_KEY = 'studyStreak:default'
 async function waitDbReady(page: Page): Promise<void> {
   // `.ach-head-count` 只在 `refreshView()`（内部 await 了读库）完成后才渲染，
   // 所以它是"库已建好 v4 表"的可靠信号。裸开 IDB 抢在 Dexie 之前会造空库（V1.3 已踩过）。
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {
@@ -345,6 +345,15 @@ test.describe('C3 · 首页弱项推荐（只展事实、不露分数）', () =>
     })
 
     await page.goto('/home')
+    // V3.0 · M1 首页改版：三块推荐（今日复习 / 最需要复习 / 今日推荐）默认收进
+    // 「更多推荐」折叠区 —— 首页第一屏只留「今天的学习」一个主入口。
+    // 这一条测的是**弱项块本身**的规则（排序 / 上限 / 不露分数），所以先展开。
+    // 折叠态本身由 `today-plan.spec.ts` 的 `aria-expanded=false` 断言守着。
+    const more = page.locator('.more-toggle')
+    await expect(more).toHaveAttribute('aria-expanded', 'false')
+    await more.click()
+    await expect(more).toHaveAttribute('aria-expanded', 'true')
+
     const block = page.locator('.plan-block', { hasText: '最需要复习' })
     await expect(block).toBeVisible({ timeout: 20_000 })
 

@@ -1,7 +1,7 @@
 <template>
   <AppCard title="☁️ 同步（WebDAV）" class="card">
     <n-space vertical size="large">
-      <!-- 现实提醒：CORS 让网页 / 桌面端直连网盘大概率被拦，先讲清楚再给按钮 -->
+      <!-- 现实提醒：桌面端已可由本机进程直连网盘；网页版仍受 CORS 限制。 -->
       <div class="sync-note">
         <strong>这是实验性功能。</strong>{{ envHint }}若连不上，请用本页已有的「导出 / 导入备份文件」通道搬运数据。
       </div>

@@ -166,6 +166,7 @@ function genBundle(rnd: () => number, pid: string): Bundle {
     progress: Array.from({ length: int(rnd, 4) }, () => genProgress(rnd, pid)),
     mistakes: Array.from({ length: int(rnd, 3) }, () => genMistake(rnd, pid)),
     examSessions: Array.from({ length: int(rnd, 2) }, () => genSession(rnd, pid)),
+    cardCompletions: [],
     settings: genSettings(rnd),
   }
 }
@@ -230,6 +231,7 @@ function applyPlanToSnapshot(local: LocalSnapshot, plan: MergePlan): LocalSnapsh
         progress: [],
         mistakes: [],
         examSessions: [],
+        cardCompletions: [],
         settings: {},
       }
       bundles.push(hit)
@@ -437,6 +439,8 @@ function bundle(pid: string, over: Partial<Bundle> = {}): Bundle {
     examSessions: [],
     settings: {},
     ...over,
+    // `...Partial` 展开会把必填字段变回 `T | undefined`，这里显式收口
+    cardCompletions: over.cardCompletions ?? [],
   }
 }
 

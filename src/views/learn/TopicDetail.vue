@@ -150,6 +150,11 @@
       <!-- V1.6 · C3：复习模式提示条（仅 ?mode=review 时出现，渐进增强） -->
       <div v-if="reviewMode" class="review-mode-banner">复习模式 · 这个知识点需要加强，直接做下面的练习</div>
 
+      <!-- V3.0 · M2：队列模式下告诉孩子"现在给你什么难度"，难度变化不该是黑箱 -->
+      <div v-if="sessionMode" class="session-mode-banner">
+        今日任务 · 这批是<strong>{{ DIFFICULTY_LABEL[sessionLevel] }}</strong>题（按你最近的表现挑的）
+      </div>
+
       <!-- 练习区 -->
       <AppCard
         v-if="topicExercises.length > 0"
@@ -229,6 +234,8 @@ import {
   type TopicAnswers,
 } from '@core/session/topicSession'
 import { db, type MasteryStatus, type TopicSessionRecord } from '@/db'
+import { completePlanItem } from '@core/plan/dailyPlanService'
+import { levelOf, selectSessionQuestions, DIFFICULTY_LABEL, type Difficulty } from '@core/plan/adaptive'
 import QuizEngine, { type AnswerPayload } from '@modules/core/QuizEngine.vue'
 import { useUiStore } from '@core/stores/ui'
 
@@ -321,10 +328,20 @@ async function initPracticeProgress(): Promise<void> {
   practiceFinished.value = false
   practiceStartedAt.value = new Date().toISOString()
 
+  // 队列模式：难度在此**一次性冻结**（理由见 `frozenLevel` 注释）。
+  // 必须放在下面算 qids 之前 —— 题单由它决定。
+  if (sessionMode.value) frozenLevel.value = computeSessionLevel()
+
   const pid = currentProfileId()
   const tid = practiceTopicId.value
   const qids = currentQuestionIds()
   if (!pid || !tid || qids.length === 0) {
+    practiceReady.value = true
+    return
+  }
+
+  // 队列模式不查断点：直接从头开始（理由见 `sessionMode` 注释第 2 条）
+  if (sessionMode.value) {
     practiceReady.value = true
     return
   }
@@ -435,6 +452,8 @@ async function flushProgress(status: TopicSessionRecord['status'] = 'ongoing'): 
 
 function handleSaveProgress(patch: { currentIndex: number }): void {
   if (!practiceReady.value || practiceFinished.value) return
+  // 队列模式不留断点（见 `sessionMode` 注释）
+  if (sessionMode.value) return
   scheduleSave(patch.currentIndex)
 }
 
@@ -443,7 +462,7 @@ onUnmounted(() => {
     window.clearTimeout(saveTimer)
     saveTimer = null
   }
-  if (practiceReady.value && !practiceFinished.value) void flushProgress()
+  if (practiceReady.value && !practiceFinished.value && !sessionMode.value) void flushProgress()
 })
 
 /** ✅ 纯词汇主题：不显示"暂无练习"提示 */
@@ -608,7 +627,7 @@ const autoKnowledgePoints = computed(() => {
 })
 
 /** 从全局题池筛题 */
-const topicExercises = computed(() => {
+const allTopicExercises = computed(() => {
   const topic = currentTopic.value
   if (!topic) return []
 
@@ -647,6 +666,66 @@ const topicKpIds = computed(() => {
   if (topic.knowledgePointIds) ids.push(...topic.knowledgePointIds)
   return Array.from(new Set(ids))
 })
+
+/**
+ * 今日任务会话（V3.0 · M1）：`?session=<itemId>` 存在时进入"队列模式"。
+ *
+ * 队列模式下有三处行为不同（都在本文件里就近标注）：
+ *   1. `?limit=N` 只取前 N 题 —— 计划说 3 题就做 3 题，不是把整个主题 8 题做完；
+ *   2. **不查也不写断点** —— 队列项是一次性的短练习，留断点只会在下次
+ *      自由进这个主题时弹"继续上次（1/3 题）"，反而困惑；
+ *   3. 做完后**回今日页结算**，由它推进下一项。
+ */
+const sessionItemId = computed(() => String(route.query.session ?? ''))
+const sessionMode = computed(() => sessionItemId.value !== '')
+
+const sessionLimit = computed(() => {
+  const n = Number(route.query.limit)
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0
+})
+
+/** 本主题实际要做的题（队列模式下被 `limit` 截断 + 按冻结的难度挑题） */
+const topicExercises = computed(() => {
+  const all = allTopicExercises.value
+  if (sessionLimit.value <= 0) return all
+  if (sessionMode.value) {
+    return selectSessionQuestions(all, frozenLevel.value, sessionLimit.value)
+  }
+  return all.slice(0, sessionLimit.value)
+})
+
+/**
+ * 队列模式下这个知识点该给什么难度（V3.0 · M2）。
+ *
+ * 取主题第一个知识点的真实作答状态算：正确率定基准，`correctStreak >= 3` 升一档、
+ * `wrongStreak >= 2` 降一档。**不新增埋点**，用的是 `recordProgress` 一直在维护的字段。
+ */
+function computeSessionLevel(): Difficulty {
+  const kpId = topicKpIds.value[0]
+  if (!kpId) return '基础'
+  const p = progressOf(kpId)
+  if (!p) return '基础'
+  return levelOf({
+    correctCount: p.correctCount,
+    wrongCount: p.wrongCount,
+    correctStreak: p.correctStreak,
+    wrongStreak: p.wrongStreak,
+    masteryProbability: p.masteryProbability ?? null,
+  })
+}
+
+/**
+ * ⚠️ 难度必须在**会话开始时冻结**，不能是 computed。
+ *
+ * 踩过的坑（真机复现）：难度最初写成 `computed(() => levelOf(progressOf(...)))`，
+ * 于是孩子每答一题 → `progress` 变化 → 难度重算 → 挑题结果变 → `questions` 数组
+ * 在会话中途被换掉。表现极其诡异：答完第 1 题，第 1 题**变成了另一道题**
+ * （`currentIndex` 没动，但数组换了），孩子会以为自己点错了。
+ *
+ * 所以：level 在 `initPracticeProgress` 里算一次，整个会话内只读。
+ */
+const frozenLevel = ref<Difficulty>('基础')
+const sessionLevel = computed(() => frozenLevel.value)
 
 /** 本地补全版的进度记录（老数据可能缺 masteryProbability） */
 function progressOf(kpId: string) {
@@ -880,6 +959,29 @@ function handleQuizFinish(correctCount: number) {
     saveTimer = null
   }
   void flushProgress('finished')
+
+  // V3.0 · M1：队列模式做完 → 记账 + 回今日页结算
+  if (sessionMode.value) void finishSessionItem(total)
+}
+
+/**
+ * 队列项结算。
+ *
+ * 记的是**实际做题数与真实耗时**（不是计划值）：进度环要能反映"这项比计划长"，
+ * 否则孩子做了 8 题、环只前进 3 题的份额，会觉得白做了。
+ */
+async function finishSessionItem(total: number): Promise<void> {
+  const startedMs = Date.parse(practiceStartedAt.value)
+  const elapsedMin = Number.isFinite(startedMs)
+    ? Math.max(1, Math.round((Date.now() - startedMs) / 60000))
+    : 1
+  try {
+    await completePlanItem(sessionItemId.value, { questions: total, minutes: elapsedMin })
+  } catch (err) {
+    // 记账失败不能让练习结果丢失：题目本身的进度已经写进 progress 了
+    console.warn('[TopicDetail] 今日任务记账失败（忽略）', err)
+  }
+  void router.push({ path: '/today' })
 }
 </script>
 
@@ -921,6 +1023,18 @@ function handleQuizFinish(correctCount: number) {
   font-size: $font-sm;
   font-weight: 600;
   color: $warning-text;
+  line-height: $leading-normal;
+}
+
+/* V3.0 · M2：今日任务的难度说明（复用复习条的形状，换主语色，避免两套视觉语言） */
+.session-mode-banner {
+  margin-top: 16px;
+  padding: $space-3 $space-4;
+  background: $primary-light;
+  border-radius: $radius-md;
+  font-size: $font-sm;
+  font-weight: 600;
+  color: $primary-text;
   line-height: $leading-normal;
 }
 

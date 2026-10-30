@@ -350,6 +350,18 @@ const SAMPLE: Record<ProfileScopedBase, unknown> = {
   attemptedTypes: ['blank'],
   customChecks: [{ packId: 'my-pack', itemId: 'i1', checked: true, at: '2026-01-01' }],
   blindBox: { owned: ['bb-lucky-star'], usedDays: ['2026-01-01'] },
+  // V3.0 · M1
+  dailyGoal: { mode: 'questions', questions: 24, minutes: 20 },
+  dailyPlan: {
+    version: 1,
+    date: '2026-01-01',
+    goal: { mode: 'questions', questions: 24, minutes: 20 },
+    items: [],
+    doneIds: [],
+    totals: { questions: 0, minutes: 0 },
+    done: { questions: 0, minutes: 0 },
+    builtAt: 0,
+  },
 }
 
 describe('逐键规则的登记完整性', () => {

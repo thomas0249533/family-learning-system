@@ -21,7 +21,7 @@ async function seedMasteredOne(page: Page): Promise<void> {
   // （不带版本号）抢先建库，会造出一个"没有任何表"的空库，后续 Dexie 升级就对不上了。
   // `.ach-head-count` 只在 `refreshView()`（内部 await 了读库）完成后才渲染，
   // 所以它是"库已就绪"的可靠信号。
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 
   await page.evaluate(() => {
     return new Promise<void>((resolve, reject) => {
@@ -84,7 +84,7 @@ async function seedMasteredOne(page: Page): Promise<void> {
  * 只掌握 10 个 —— ten-kp 照常解锁，而 one-go（10/12）**不**解锁，5 枚的确定性保住。
  */
 async function seedFiveUnlocks(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 
   await page.evaluate(() => {
     return new Promise<void>((resolve, reject) => {

@@ -1,0 +1,27 @@
+{
+  "manifest": {
+    "packageId": "term-math-4-down-rjb",
+    "type": "term",
+    "packageType": "term",
+    "title": "四年级下册数学 · 学期总包（9 个单元）",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": [
+      "unit-math-4-down-rjb-p1",
+      "unit-math-4-down-rjb-p2",
+      "unit-math-4-down-rjb-p3",
+      "unit-math-4-down-rjb-p4",
+      "unit-math-4-down-rjb-p5",
+      "unit-math-4-down-rjb-p6",
+      "unit-math-4-down-rjb-p7",
+      "unit-math-4-down-rjb-p8",
+      "unit-math-4-down-rjb-p9"
+    ]
+  },
+  "knowledgePoints": [],
+  "units": [],
+  "exercises": []
+}

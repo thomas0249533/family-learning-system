@@ -26,7 +26,7 @@ const WEAKPOINTS_PACKAGE_ID = 'special-weakpoints-auto'
 async function waitDbReady(page: Page): Promise<void> {
   // `.ach-head-count` 只在读库完成后渲染 → 「Dexie 已建好 v4 schema」的可靠信号。
   // 裸开 IDB 抢在 Dexie 之前会造空库（V1.3 已踩过）。
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {

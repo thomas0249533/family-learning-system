@@ -15,7 +15,7 @@ import { test, expect, type Page } from '@playwright/test'
 const DB_NAME = 'FamilyLearningDB'
 
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {

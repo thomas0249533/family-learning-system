@@ -1,0 +1,147 @@
+{
+  "manifest": {
+    "packageId": "unit-math-4-down-rjb-p9",
+    "type": "unit",
+    "packageType": "unit",
+    "title": "数学4下第9部分 · 数学广角——鸡兔同笼",
+    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "term": "down",
+    "edition": "人教版",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-chick-001",
+      "type": "concept",
+      "title": "鸡兔同笼（假设法）",
+      "content": "已知头的总数和脚的总数，求鸡、兔各几只。用**假设法**：\n1. 假设全是鸡，脚数 = 头数×2；\n2. 实际脚数比假设多出来的部分，是因为把兔当成了鸡，每只兔少算了 2 只脚；\n3. 兔的只数 = (实际脚数－头数×2) ÷ (4－2)；鸡的只数 = 头数－兔的只数。\n也可以假设全是兔：鸡的只数 = (头数×4－实际脚数) ÷ 2。\n列式前先想清楚“差÷2”得到的到底是鸡还是兔，这是最容易错的一步。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "推理能力",
+        "tags": [
+          "鸡兔同笼",
+          "假设法"
+        ]
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u1",
+      "name": "第九单元",
+      "title": "数学广角——鸡兔同笼",
+      "desc": "用假设法解决鸡兔同笼问题，并能迁移到租车、买票等同类问题。",
+      "topics": [
+        {
+          "id": "t1",
+          "title": "用假设法解鸡兔同笼",
+          "knowledgePointIds": [
+            "kp-chick-001"
+          ],
+          "modules": [
+            {
+              "id": "t1-m1",
+              "type": "math.life",
+              "title": "假设全是鸡（或全是兔）",
+              "knowledgePointIds": [
+                "kp-chick-001"
+              ]
+            }
+          ],
+          "exercises": [
+            {
+              "id": "u1-ex-001",
+              "type": "blank",
+              "question": "鸡兔同笼，共 10 个头、28 条腿，鸡有（______）只，兔有（______）只。",
+              "answer": "6,4",
+              "explanation": "假设全是鸡：10×2＝20 条腿；实际多 28－20＝8 条；每只兔多算 2 条，兔：8÷2＝4 只；鸡：10－4＝6 只。",
+              "knowledgePointIds": [
+                "kp-chick-001"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-002",
+              "type": "blank",
+              "question": "鸡兔同笼，共 8 个头、22 条腿，兔有（______）只。",
+              "answer": "3",
+              "explanation": "假设全是鸡：8×2＝16 条；多出 22－16＝6 条；兔：6÷2＝3 只。",
+              "knowledgePointIds": [
+                "kp-chick-001"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-003",
+              "type": "blank",
+              "question": "鸡兔共 15 只，腿共 40 条，鸡有（______）只。",
+              "answer": "10",
+              "explanation": "假设全是兔：15×4＝60 条；多算 60－40＝20 条；鸡：20÷2＝10 只（把鸡当成兔，每只鸡多算 2 条）。",
+              "knowledgePointIds": [
+                "kp-chick-001"
+              ],
+              "metadata": {
+                "difficulty": "提高",
+                "ability": "运算能力"
+              }
+            },
+            {
+              "id": "u1-ex-004",
+              "type": "blank",
+              "question": "停车场有小汽车和摩托车共 12 辆，共 38 个轮子。小汽车有（______）辆。",
+              "answer": "7",
+              "explanation": "假设全是摩托车：12×2＝24 个轮子；多出 38－24＝14 个；每辆小汽车多 2 个，小汽车：(38－24)÷2＝7 辆。",
+              "knowledgePointIds": [
+                "kp-chick-001"
+              ],
+              "metadata": {
+                "difficulty": "挑战",
+                "ability": "问题解决"
+              }
+            },
+            {
+              "id": "u1-ex-005",
+              "type": "blank",
+              "question": "笼子里有鸡和兔共 20 只，腿共 56 条，鸡有（______）只。",
+              "answer": "12",
+              "explanation": "假设全是兔：20×4＝80 条腿；多算 80－56＝24 条；鸡：24÷2＝12 只。检验：12×2＋8×4＝24＋32＝56，对上了。",
+              "knowledgePointIds": [
+                "kp-chick-001"
+              ],
+              "metadata": {
+                "difficulty": "挑战",
+                "ability": "问题解决"
+              }
+            },
+            {
+              "id": "u1-ex-006",
+              "type": "judge",
+              "question": "用假设法解鸡兔同笼时，算出“腿数差÷2”得到的一定是兔的只数。",
+              "answer": "错",
+              "explanation": "要看假设的是谁。假设全是鸡，差÷2 得到的是兔；假设全是兔，差÷2 得到的是鸡。列式之前一定要想清楚，这是本题型最常见的错因。",
+              "knowledgePointIds": [
+                "kp-chick-001"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "ability": "推理能力"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "exercises": []
+}

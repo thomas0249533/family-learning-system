@@ -305,7 +305,18 @@ describe('备份口径：topicSessions 不进备份 / 不进本机快照', () =>
     const profile = backup.profiles[0] as unknown as Record<string, unknown>
 
     expect(Object.keys(profile).sort()).toEqual(
-      ['createdAt', 'examSessions', 'mistakes', 'name', 'profileId', 'progress', 'settings'].sort()
+      [
+        // V3.0 · M4 起 `cardCompletions`（手动完成标记）也在契约里；多加一个字段
+        // 必须同时改这条断言 —— 这正是它的用途。
+        'cardCompletions',
+        'createdAt',
+        'examSessions',
+        'mistakes',
+        'name',
+        'profileId',
+        'progress',
+        'settings',
+      ].sort()
     )
     expect(JSON.stringify(backup)).not.toContain('topicSessions')
     expect(JSON.stringify(backup)).not.toContain('"topicId"')
@@ -315,7 +326,16 @@ describe('备份口径：topicSessions 不进备份 / 不进本机快照', () =>
     const snapshot = await readLocalSnapshot()
     const bundle = snapshot.bundles[0] as unknown as Record<string, unknown>
     expect(Object.keys(bundle).sort()).toEqual(
-      ['createdAt', 'examSessions', 'mistakes', 'name', 'profileId', 'progress', 'settings'].sort()
+      [
+        'cardCompletions',
+        'createdAt',
+        'examSessions',
+        'mistakes',
+        'name',
+        'profileId',
+        'progress',
+        'settings',
+      ].sort()
     )
     expect(JSON.stringify(snapshot)).not.toContain('topicSessions')
   })

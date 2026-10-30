@@ -38,18 +38,22 @@ test.describe('375px 窄屏', () => {
   test.use({ viewport: { width: 375, height: 812 } })
 
   test('成就图鉴全部展开后不出现页面级横向滚动（AC-17）', async ({ page }) => {
-    await page.goto('/home')
+    // 图鉴在独立页 `/achievements`（V2.7 起首页只陈列 `AchievementHall`，
+    // 两级折叠 + 证据的 `AchievementSection` 搬到了独立页）。
+    await page.goto('/achievements')
     await resetDb(page)
     await expect(page.getByRole('heading', { name: '成就图鉴' })).toBeVisible()
 
-    // 0 枚解锁 → 待解锁区默认展开，27 张卡都在（可收集口径，V1.6 · C6）
-    await expect(page.locator('.ach-card')).toHaveCount(27)
+    // 0 枚解锁 → 待解锁区默认展开，37 张卡都在。
+    // 27 是 V1.6 时代的数（C6 可收集口径）；V2.8 · C1 加了 10 枚习惯成就 → 37，
+    // 与 `achievement.spec.ts` 里的 `x / 37` 同源。
+    await expect(page.locator('.ach-card')).toHaveCount(37)
     expect(await hasHorizontalScroll(page)).toBe(false)
 
     // 全部展开（含组）后仍然不横向溢出
     const toggle = page.getByRole('button', { name: /全部展开|全部收起/ })
     if ((await toggle.textContent())?.includes('全部展开')) await toggle.click()
-    await expect(page.locator('.ach-card')).toHaveCount(27)
+    await expect(page.locator('.ach-card')).toHaveCount(37)
 
     await expect(page.locator('.ach-card').first()).toBeVisible()
     expect(await hasHorizontalScroll(page)).toBe(false)

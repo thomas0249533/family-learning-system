@@ -1,7 +1,7 @@
 {
   "name": "family-learning-system",
   "private": true,
-  "version": "2.12.7",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "pretest": "npm run tokens:build",

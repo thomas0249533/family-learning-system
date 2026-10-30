@@ -80,6 +80,11 @@
           </div>
         </div>
 
+        <!-- P3 · 掌握热力图 / 学习日历 / 准确率趋势（纯前端可视化，复用现有掌握度与每日统计） -->
+        <div class="section">
+          <LearningVisuals />
+        </div>
+
         <!-- 错题统计 -->
         <div class="section">
           <SectionTitle title="📕 错题情况" accent />
@@ -142,6 +147,7 @@ import AppButton from '@/components/ui/AppButton.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
+import LearningVisuals from '@/components/LearningVisuals.vue'
 import { generateReportData, type ReportData } from '@core/report/reportGenerator'
 import { exportReportAsPDF } from '@core/report/pdfExporter'
 import { localDayKey } from '@core/motivation/streak'

@@ -83,6 +83,12 @@ export function normalizeBlank(text: unknown): string {
     .replace(/：/g, ':')
     .replace(/（/g, '(').replace(/）/g, ')')
     .replace(/、/g, ',')
+    // ✅ 弯引号统一成直引号（V2.12.8）
+    // 中文输入法直接打出来的 ’ “ ” 与键盘上的 ' " 是同一个字符的两种写法。
+    // 不归一会让 `o'clock`、`teachers' office`、`don't` 这类**拼写完全正确**的答案
+    // 被判错 —— 孩子根本不知道差别在哪。两侧同时归一，只会让"本该相等"的相等，
+    // 不可能把原本判对的判错。
+    .replace(/[\u2018\u2019]/g, "'").replace(/[\u201c\u201d]/g, '"')
     .replace(/\u3000/g, ' ').replace(/\s+/g, '')
     // ✅ 剥末尾句末标点（只剥末尾连续的一段；前面必须有内容）
     .replace(/(.+)[。．.!?！？]+$/, '$1')

@@ -378,6 +378,13 @@ const RULES: Record<ProfileScopedBase, SettingRule | typeof SKIP> = {
     view: normalizeBlindBoxState,
   },
   customChecks: SKIP,
+  // 每日目标（V3.0 · M1）：偏好类，本机优先。两端设了不同目标时没有"更正确"的一边，
+  // 按"谁在用谁说了算"处理（换设备后如果本机没设过，自然取远端的）。
+  dailyGoal: LOCAL_FIRST,
+  // 今日队列（V3.0 · M1）：也是本机优先，且**过期自动失效** ——
+  // 远端搬来的队列日期不是今天就由 `isPlanStale` 判掉并重算，
+  // 所以这里不需要做"两台设备同一天的队列合并"（那会把两边的完成项混在一起）。
+  dailyPlan: LOCAL_FIRST,
 }
 
 /**

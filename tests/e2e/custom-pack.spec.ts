@@ -23,7 +23,7 @@ const DB_NAME = 'FamilyLearningDB'
 
 /** 等库真的就绪（裸开 IDB 抢在 Dexie 之前会造空库，V1.3 已踩过） */
 async function waitDbReady(page: Page): Promise<void> {
-  await page.locator('.ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
+  await page.locator('.hall-head-count, .ach-head-count').first().waitFor({ state: 'visible', timeout: 20_000 })
 }
 
 async function resetDb(page: Page): Promise<void> {

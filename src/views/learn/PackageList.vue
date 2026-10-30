@@ -66,7 +66,20 @@
 
         <div v-show="!isSubjectCollapsed(g.subject)" class="subject-body">
           <section v-for="blk in subjectBlocks(g)" :key="blk.type" class="type-section">
-            <header class="type-header" @click="toggleSection(g.subject, blk.type)">
+            <!-- 小节头是**可点击的折叠开关** → 必须是个无障碍控件：
+                 有 role=button / tabindex / aria-expanded / aria-controls，
+                 且支持 Enter 与 Space。以前用裸 `<header @click>`，
+                 键盘用户完全够不到它（e2e 也因此只能断言"卡片可见"而断言不了 aria）。 -->
+            <header
+              class="type-header"
+              role="button"
+              tabindex="0"
+              :aria-expanded="!isSectionCollapsed(g.subject, blk.type)"
+              :aria-controls="typeBodyId(g.subject, blk.type)"
+              @click="toggleSection(g.subject, blk.type)"
+              @keydown.enter.prevent="toggleSection(g.subject, blk.type)"
+              @keydown.space.prevent="toggleSection(g.subject, blk.type)"
+            >
               <span class="type-title">
                 <span class="type-icon" aria-hidden="true">{{ blk.icon }}</span>
                 {{ blk.title }}
@@ -75,7 +88,11 @@
               <span class="type-chevron" :class="{ collapsed: isSectionCollapsed(g.subject, blk.type) }" aria-hidden="true">▾</span>
             </header>
 
-            <div v-show="!isSectionCollapsed(g.subject, blk.type)" class="type-body">
+            <div
+              :id="typeBodyId(g.subject, blk.type)"
+              v-show="!isSectionCollapsed(g.subject, blk.type)"
+              class="type-body"
+            >
               <!-- 每日一练：按周分桶（多周才显示周头） -->
               <template v-if="blk.type === 'daily'">
                 <div v-for="b in dailyBucketsOf(g.daily)" :key="b.label" class="week-block">
@@ -230,6 +247,16 @@ function isSectionCollapsed(subject: string, type: string): boolean {
   // 搜索态、或选中具体某一科时，强制展开小节，便于直接看到包
   if (searching.value || subjectFilter.value !== 'all') return false
   return collapsedSections.value.includes(`${subject}:${type}`)
+}
+
+/**
+ * 小节内容区的 id（`aria-controls` 的目标）。
+ *
+ * 用 `-` 连接而不是 `:`：这个 id 会进 DOM，而 `:` 在 CSS 选择器里要转义，
+ * e2e 里写 `#[id="..."]` 才点得到，容易写错且难查。
+ */
+function typeBodyId(subject: string, type: string): string {
+  return `type-body-${subject}-${type}`
 }
 
 function toggleSection(subject: string, type: string): void {

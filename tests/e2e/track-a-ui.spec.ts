@@ -237,17 +237,30 @@ test.describe('A3 · 学习页搜索与折叠', () => {
     await expect(weekHeads).toHaveCount(2)
     await expect(weekHeads.first()).toContainText('第 1 周')
 
-    // 折叠「教材」分组：卡片隐藏，aria-expanded 同步
-    const toggle = page.locator('.group-toggle[aria-controls="pkg-panel-textbook"]')
+    // 折叠「教材」小节：卡片隐藏，aria-expanded 同步
+    //
+    // 学习页在 V2.12 重构过信息架构：以前是「学科面板 → `.group-toggle` + `#pkg-panel-*`」，
+    // 现在是「学科面板 → `.type-section`（教材/每日一练/专项/冲刺）→ `.type-header`」。
+    // 小节头在 V3.0 补上了 `role=button` + `aria-expanded` + `aria-controls`
+    // （以前是裸 `<header @click>`，键盘用户够不到，也没法断言 aria）。
+    const toggle = page
+      .locator('.type-section')
+      .filter({ has: page.locator('.type-title', { hasText: '教材' }) })
+      .locator('.type-header')
+      .first()
     await expect(toggle).toHaveAttribute('aria-expanded', 'true')
-    await page.locator('#pkg-panel-textbook .pkg-card').first().waitFor({ state: 'visible' })
+    // 从 `aria-controls` 取内容区 id，不硬编码（id 里带学科名，种子换学科就会失配）
+    const controls = await toggle.getAttribute('aria-controls')
+    expect(controls, '小节头必须用 aria-controls 指向内容区').toBeTruthy()
+    const body = page.locator(`[id="${controls}"]`)
+    await expect(body.locator('.pkg-card').first()).toBeVisible()
     await toggle.click()
     await expect(toggle).toHaveAttribute('aria-expanded', 'false')
-    await expect(page.locator('#pkg-panel-textbook')).toBeHidden()
+    await expect(body).toBeHidden()
 
     // 搜索时强制展开（命中的内容不能藏在折叠里）
     await page.locator('.search-input').fill('语文')
     await expect(toggle).toHaveAttribute('aria-expanded', 'true')
-    await expect(page.locator('#pkg-panel-textbook .pkg-card')).toHaveCount(1)
+    await expect(body.locator('.pkg-card')).toHaveCount(1)
   })
 })

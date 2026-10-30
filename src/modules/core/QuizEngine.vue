@@ -304,6 +304,8 @@ import {
 import { correctFeedback, wrongFeedback } from '@core/motivation/encouragement'
 // V2.11 · 即时反馈（音效 + 震动）。考试模式不发声，见 submitAnswer 内的注释。
 import { playCorrectFeedback, playWrongFeedback } from '@core/feedback'
+// 听写朗读走统一的语音服务（含音色匹配与语种推断），不在组件里重复实现一套
+import { isSpeechAvailable, speak as speakText } from '@core/audio/speechService'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuestionText from '@/components/QuestionText.vue'
 import {
@@ -634,33 +636,23 @@ const currentQuestion = computed(() => props.questions[currentIndex.value])
  * 🔊 听写/默写朗读（P1）：仅 blank / spelling 题型显示朗读按钮。
  * 朗读内容取 `answer`（英文单词默写场景里 answer 就是单词本身，
  * 听音写词正好用这个答案），有显式 `dictationText` 时优先用它。
- * 语言按字符启发式推断：纯 ASCII → en-US（英语发音），否则 zh-CN。
- * 全程 feature-detect：`window.speechSynthesis` 不可用时按钮不渲染，绝不抛错。
+ * 语种推断与音色匹配交给 `core/audio/speechService`：纯 ASCII → en-US，
+ * 含中文 → zh-CN；`speak()` 内部已 feature-detect 并 cancel 上一段朗读。
  */
 const canSpeak = computed(
   () => currentQuestion.value?.type === 'blank' || currentQuestion.value?.type === 'spelling',
 )
-const speechSupported = typeof window !== 'undefined' && 'speechSynthesis' in window
-
-function speakLangOf(text: string): string {
-  return /^[A-Za-z0-9\s.,\-'/]+$/.test(text) ? 'en-US' : 'zh-CN'
-}
+const speechSupported = isSpeechAvailable()
 
 function speakAnswer() {
-  if (!speechSupported || !currentQuestion.value) return
+  if (!currentQuestion.value) return
   const q = currentQuestion.value
-  const text = (typeof q.dictationText === 'string' && q.dictationText.trim()) ||
+  const text =
+    (typeof q.dictationText === 'string' && q.dictationText.trim()) ||
     (Array.isArray(q.answer) ? String(q.answer[0]) : String(q.answer || ''))
   if (!text) return
-  try {
-    window.speechSynthesis.cancel()
-    const u = new SpeechSynthesisUtterance(text)
-    u.lang = speakLangOf(text)
-    u.rate = 0.9
-    window.speechSynthesis.speak(u)
-  } catch {
-    /* 朗读失败静默忽略，不影响作答 */
-  }
+  // 0.9 倍速：比默认慢一点，孩子听音写词跟得上
+  speakText({ text, rate: 0.9 })
 }
 const isLastQuestion = computed(() => currentIndex.value === props.questions.length - 1)
 const localAnsweredCount = computed(() => Object.keys(examAnswers.value).length)

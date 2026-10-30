@@ -15,6 +15,7 @@
  */
 
 import type {
+  CardCompletionRecord,
   ExamSessionRecord,
   MistakeRecord,
   ProgressRecord,
@@ -40,6 +41,21 @@ export interface Bundle {
   progress: ProgressRecord[]
   mistakes: MistakeRecord[]
   examSessions: ExamSessionRecord[]
+  /**
+   * 手动「已完成」标记（V3.0 · M4 起进备份）。
+   *
+   * 这是**推翻** `db/index.ts` 里 V1.4 那句"不进备份"的决定，理由变了：
+   * 当时它是纯便利标记、且没有换机场景的验收要求；M4 把"换机后标记不丢"
+   * 写进了里程碑验收（`docs/plan/v3.0-milestone.md`），自检报告也要比这一项。
+   * 代价可控：这张表只有 5 个标量字段、无 Blob、行数上限＝单元数×孩子数。
+   *
+   * 合并语义是**纯并集**（同一个 `[kind, packageId, targetId]` 在就算有），
+   * 没有"谁覆盖谁"的问题 —— 行里唯一的内容字段 `createdAt` 不参与任何判断。
+   *
+   * 在 `Bundle` 上**必填**（内存契约，生产者必须给，空就 `[]`）；
+   * 在 `BackupV2` 的档案上**可选**（老备份文件里没有这个字段）。
+   */
+  cardCompletions: CardCompletionRecord[]
   /** 基名 → 值。只含 `PROFILE_SCOPED_KEYS` 里登记过的键中出现的那些 */
   settings: Record<string, unknown>
 }
@@ -64,6 +80,9 @@ export interface MergeStats {
   mistakesKeptLocal: number
   sessionsAdded: number
   sessionsKeptLocal: number
+  /** 手动完成标记：并集后**新增**的条数（本机已有同卡片的标记算 keptLocal） */
+  marksAdded: number
+  marksKeptLocal: number
   /** `achievements` 并集后**新增**的徽章数 */
   achievementsAdded: number
   settingsChanged: number
@@ -103,6 +122,8 @@ export interface MergePlan {
   progressUpserts: ProgressRecord[]
   mistakeUpserts: MistakeRecord[]
   sessionUpserts: ExamSessionRecord[]
+  /** 手动完成标记的并集：只写本机没有的那些（行里没有可冲突的字段） */
+  markUpserts: CardCompletionRecord[]
   /** 键是**全名**（`dailyStats:p1`），直接 `settings.put` */
   settingUpserts: SettingRecord[]
   /**
@@ -131,6 +152,7 @@ export function emptyPlan(): MergePlan {
     progressUpserts: [],
     mistakeUpserts: [],
     sessionUpserts: [],
+    markUpserts: [],
     settingUpserts: [],
     // A6 · L2：空计划没有要写的行，也就没有基线可记（见 StalenessGuard）
     stalenessGuard: { progress: {}, mistakes: {} },
@@ -142,6 +164,8 @@ export function emptyPlan(): MergePlan {
       mistakesKeptLocal: 0,
       sessionsAdded: 0,
       sessionsKeptLocal: 0,
+      marksAdded: 0,
+      marksKeptLocal: 0,
       achievementsAdded: 0,
       settingsChanged: 0,
       settingsKeptLocal: 0,
@@ -157,6 +181,7 @@ export function isPlanNoop(plan: MergePlan): boolean {
     plan.progressUpserts.length === 0 &&
     plan.mistakeUpserts.length === 0 &&
     plan.sessionUpserts.length === 0 &&
+    plan.markUpserts.length === 0 &&
     plan.settingUpserts.length === 0
   )
 }
@@ -189,6 +214,14 @@ export interface BackupV2 {
     progress: ProgressRecord[]
     mistakes: MistakeRecord[]
     examSessions: ExamSessionRecord[]
+    /**
+     * 手动完成标记。**可选**：V3.0 之前的备份文件里没有这个字段。
+     *
+     * 为什么不像别的行数组那样做成必填 + 拒绝缺失：老备份是**用户手里已有的
+     * 真实文件**，加一个必填字段等于让所有历史备份变成"文件已损坏"。
+     * 缺失按 `[]` 处理（老备份本来就没带过这些标记），不报错也不拒收。
+     */
+    cardCompletions?: CardCompletionRecord[]
     /** 键已带 `:<pid>` 后缀 */
     settings: SettingRecord[]
   }>
