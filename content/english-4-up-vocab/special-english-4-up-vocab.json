@@ -1181,6 +1181,66 @@
       "title": "语法 · 职业词汇与词形变化",
       "content": "职业词：doctor / nurse / farmer / driver / cleaner / cook / firefighter / police officer / delivery worker。第三人称单数动词加 -s/-es；表示一类人时名词要用复数（cleaners, firefighters）。",
       "prerequisites": []
+    },
+    {
+      "id": "kp-en4-adv-s1",
+      "type": "skill",
+      "title": "句型转换（变一般疑问句）",
+      "content": "肯定句变一般疑问句：be 动词/情态动词/助动词提前；主语 I->you、we->you；实义动词加 do/does，三单用 does 且动词还原。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "kp-en4-adv-s2",
+      "type": "skill",
+      "title": "语法选择（主谓一致/单三/there be）",
+      "content": "主语三单时 be 用 is、动词加 s/es；there be 就近原则；would like 后接动词原形。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "kp-en4-adv-s3",
+      "type": "skill",
+      "title": "疑问词问答（what/who/where/how many/what color）",
+      "content": "what 问事物、who 问人、where 问地点、how many 问数量、what color 问颜色。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "kp-en4-adv-s4",
+      "type": "skill",
+      "title": "词汇分类辨析",
+      "content": "按类别（学习用品/职业/房间/食物）归类，区分形近、义近词。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高"
+      }
+    },
+    {
+      "id": "kp-en4-adv-s5",
+      "type": "reading",
+      "title": "阅读理解（家庭主题短文）",
+      "content": "阅读关于家庭的短文，抓取人物、数量、职业、年龄等关键信息作答。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "挑战"
+      }
+    },
+    {
+      "id": "kp-en4-adv-s6",
+      "type": "skill",
+      "title": "综合听写（拔高词）",
+      "content": "听音写词：巩固 window/friendly/driver/chopsticks/bedroom/schoolbag 等四上较难的词。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "挑战"
+      }
     }
   ],
   "exercises": [],
@@ -4549,6 +4609,694 @@
           ]
         }
       ]
+    },
+    {
+      "id": "en4-advanced",
+      "title": "拔高 · 句型转换与语法运用",
+      "topics": [
+        {
+          "id": "en4-adv-t1",
+          "title": "句型转换（变一般疑问句）",
+          "desc": "把肯定句改成一般疑问句，填提前的词",
+          "board": "拔高",
+          "knowledgePointIds": [
+            "kp-en4-adv-s1"
+          ],
+          "exercises": [
+            {
+              "id": "en4-adv-t1-1",
+              "type": "blank",
+              "question": "I am a student. → ___ you a student?",
+              "answer": "Are",
+              "explanation": "I am -> Are you",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t1-2",
+              "type": "blank",
+              "question": "They are on the desk. → ___ they on the desk?",
+              "answer": "Are",
+              "explanation": "They are -> Are they",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t1-3",
+              "type": "blank",
+              "question": "He can swim. → ___ he swim?",
+              "answer": "Can",
+              "explanation": "情态动词 can 提前",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t1-4",
+              "type": "blank",
+              "question": "I like apples. → ___ you like apples?",
+              "answer": "Do",
+              "explanation": "实义动词 like 前加 Do",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t1-5",
+              "type": "blank",
+              "question": "She is my friend. → ___ she your friend?",
+              "answer": "Is",
+              "explanation": "She is -> Is she",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t1-6",
+              "type": "blank",
+              "question": "We have a new classroom. → ___ you have a new classroom?",
+              "answer": "Do",
+              "explanation": "实义动词 have 前加 Do",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t1-7",
+              "type": "blank",
+              "question": "He goes to school. → ___ he go to school?",
+              "answer": "Does",
+              "explanation": "三单用 Does，动词还原 go",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ],
+          "modules": [
+            {
+              "id": "en4-adv-t1-m1",
+              "type": "english.sentence",
+              "title": "句型转换（变一般疑问句）",
+              "knowledgePointIds": [
+                "kp-en4-adv-s1"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "en4-adv-t2",
+          "title": "语法选择（主谓一致/单三）",
+          "desc": "选择正确的一项",
+          "board": "拔高",
+          "knowledgePointIds": [
+            "kp-en4-adv-s2"
+          ],
+          "exercises": [
+            {
+              "id": "en4-adv-t2-1",
+              "type": "single",
+              "question": "My friend ___ tall and thin.",
+              "options": [
+                "A. is",
+                "B. am",
+                "C. are"
+              ],
+              "answer": "A",
+              "explanation": "主语 my friend 三单，be 用 is",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t2-2",
+              "type": "single",
+              "question": "I ___ a new maths book.",
+              "options": [
+                "A. has",
+                "B. have",
+                "C. haves"
+              ],
+              "answer": "B",
+              "explanation": "主语 I 用 have",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t2-3",
+              "type": "single",
+              "question": "___ your father a doctor?",
+              "options": [
+                "A. Are",
+                "B. Is",
+                "C. Am"
+              ],
+              "answer": "B",
+              "explanation": "主语 your father 三单，be 用 Is",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t2-4",
+              "type": "single",
+              "question": "There ___ a book and two pens on the desk.",
+              "options": [
+                "A. is",
+                "B. are",
+                "C. am"
+              ],
+              "answer": "A",
+              "explanation": "there be 就近原则，最近是 a book 用 is",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t2-5",
+              "type": "single",
+              "question": "She ___ to school by bus.",
+              "options": [
+                "A. go",
+                "B. goes",
+                "C. going"
+              ],
+              "answer": "B",
+              "explanation": "三单动词加 es",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t2-6",
+              "type": "single",
+              "question": "How many ___ are there in your family?",
+              "options": [
+                "A. people",
+                "B. peoples",
+                "C. a people"
+              ],
+              "answer": "A",
+              "explanation": "people 本身表复数，不加 s",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t2-7",
+              "type": "single",
+              "question": "What ___ your mother's job?",
+              "options": [
+                "A. am",
+                "B. is",
+                "C. are"
+              ],
+              "answer": "B",
+              "explanation": "主语 job 单数用 is",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t2-8",
+              "type": "single",
+              "question": "I'd ___ some beef, please.",
+              "options": [
+                "A. like",
+                "B. likes",
+                "C. liking"
+              ],
+              "answer": "A",
+              "explanation": "would like 后接动词原形",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ],
+          "modules": [
+            {
+              "id": "en4-adv-t2-m1",
+              "type": "english.sentence",
+              "title": "语法选择（主谓一致/单三）",
+              "knowledgePointIds": [
+                "kp-en4-adv-s2"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "en4-adv-t3",
+          "title": "疑问词问答（情景补全）",
+          "desc": "根据答句填疑问词",
+          "board": "拔高",
+          "knowledgePointIds": [
+            "kp-en4-adv-s3"
+          ],
+          "exercises": [
+            {
+              "id": "en4-adv-t3-1",
+              "type": "blank",
+              "question": "A: ___ is your schoolbag? B: It's blue.",
+              "answer": "What color",
+              "explanation": "问颜色用 What color",
+              "knowledgePointIds": [
+                "kp-en4-adv-s3"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t3-2",
+              "type": "blank",
+              "question": "A: ___ books do you have? B: I have three.",
+              "answer": "How many",
+              "explanation": "问数量用 How many",
+              "knowledgePointIds": [
+                "kp-en4-adv-s3"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t3-3",
+              "type": "blank",
+              "question": "A: ___ is she? B: She is my sister.",
+              "answer": "Who",
+              "explanation": "问人用 Who",
+              "knowledgePointIds": [
+                "kp-en4-adv-s3"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t3-4",
+              "type": "blank",
+              "question": "A: ___ would you like? B: I'd like some soup.",
+              "answer": "What",
+              "explanation": "问事物用 What",
+              "knowledgePointIds": [
+                "kp-en4-adv-s3"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t3-5",
+              "type": "blank",
+              "question": "A: ___ is the book? B: It's on the desk.",
+              "answer": "Where",
+              "explanation": "问地点用 Where",
+              "knowledgePointIds": [
+                "kp-en4-adv-s3"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t3-6",
+              "type": "blank",
+              "question": "A: ___ you like maths? B: Yes, I do.",
+              "answer": "Do",
+              "explanation": "用 do 提问，用 do 回答",
+              "knowledgePointIds": [
+                "kp-en4-adv-s3"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ],
+          "modules": [
+            {
+              "id": "en4-adv-t3-m1",
+              "type": "english.sentence",
+              "title": "疑问词问答（情景补全）",
+              "knowledgePointIds": [
+                "kp-en4-adv-s3"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "en4-adv-t4",
+          "title": "词汇分类辨析（多选）",
+          "desc": "选出所有正确的选项",
+          "board": "拔高",
+          "knowledgePointIds": [
+            "kp-en4-adv-s4"
+          ],
+          "exercises": [
+            {
+              "id": "en4-adv-t4-1",
+              "type": "multiple",
+              "question": "Which are school things?（多选）",
+              "options": [
+                "A. book",
+                "B. eraser",
+                "C. farmer",
+                "D. pencil"
+              ],
+              "answer": [
+                "A",
+                "B",
+                "D"
+              ],
+              "explanation": "学习用品：book/eraser/pencil；farmer 是职业",
+              "knowledgePointIds": [
+                "kp-en4-adv-s4"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t4-2",
+              "type": "multiple",
+              "question": "Which can be a job?（多选）",
+              "options": [
+                "A. doctor",
+                "B. nurse",
+                "C. table",
+                "D. driver"
+              ],
+              "answer": [
+                "A",
+                "B",
+                "D"
+              ],
+              "explanation": "职业：doctor/nurse/driver；table 是家具",
+              "knowledgePointIds": [
+                "kp-en4-adv-s4"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t4-3",
+              "type": "multiple",
+              "question": "Which are rooms in a home?（多选）",
+              "options": [
+                "A. bedroom",
+                "B. bathroom",
+                "C. classroom",
+                "D. kitchen"
+              ],
+              "answer": [
+                "A",
+                "B",
+                "D"
+              ],
+              "explanation": "家里房间：bedroom/bathroom/kitchen；classroom 是教室",
+              "knowledgePointIds": [
+                "kp-en4-adv-s4"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            },
+            {
+              "id": "en4-adv-t4-4",
+              "type": "multiple",
+              "question": "Which are foods?（多选）",
+              "options": [
+                "A. beef",
+                "B. rice",
+                "C. shoe",
+                "D. noodles"
+              ],
+              "answer": [
+                "A",
+                "B",
+                "D"
+              ],
+              "explanation": "食物：beef/rice/noodles；shoe 是鞋",
+              "knowledgePointIds": [
+                "kp-en4-adv-s4"
+              ],
+              "metadata": {
+                "difficulty": "提高"
+              }
+            }
+          ],
+          "modules": [
+            {
+              "id": "en4-adv-t4-m1",
+              "type": "english.sentence",
+              "title": "词汇分类辨析（多选）",
+              "knowledgePointIds": [
+                "kp-en4-adv-s4"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "en4-adv-t5",
+          "title": "阅读理解（家庭主题）",
+          "desc": "读短文，选择正确答案",
+          "board": "拔高",
+          "knowledgePointIds": [
+            "kp-en4-adv-s5"
+          ],
+          "exercises": [
+            {
+              "id": "en4-adv-t5-1",
+              "type": "single",
+              "question": "【短文】Hello, I'm Lucy. I'm ten. I have a big family. My father is a doctor. My mother is a nurse. I have a baby brother. He is one. We have a cute dog, Coco. I love my family. \n\nQ1: How many people are there in Lucy's family?",
+              "options": [
+                "A. Three",
+                "B. Four",
+                "C. Five"
+              ],
+              "answer": "B",
+              "explanation": "father, mother, Lucy, baby brother 共 4 人（dog 不算人）",
+              "knowledgePointIds": [
+                "kp-en4-adv-s5"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t5-2",
+              "type": "single",
+              "question": "【短文】Hello, I'm Lucy. I'm ten. I have a big family. My father is a doctor. My mother is a nurse. I have a baby brother. He is one. We have a cute dog, Coco. I love my family. \n\nQ2: What is Lucy's father's job?",
+              "options": [
+                "A. A nurse",
+                "B. A doctor",
+                "C. A driver"
+              ],
+              "answer": "B",
+              "explanation": "My father is a doctor",
+              "knowledgePointIds": [
+                "kp-en4-adv-s5"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t5-3",
+              "type": "single",
+              "question": "【短文】Hello, I'm Lucy. I'm ten. I have a big family. My father is a doctor. My mother is a nurse. I have a baby brother. He is one. We have a cute dog, Coco. I love my family. \n\nQ3: How old is Lucy's brother?",
+              "options": [
+                "A. One",
+                "B. Ten",
+                "C. Two"
+              ],
+              "answer": "A",
+              "explanation": "He is one",
+              "knowledgePointIds": [
+                "kp-en4-adv-s5"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t5-4",
+              "type": "single",
+              "question": "【短文】Hello, I'm Lucy. I'm ten. I have a big family. My father is a doctor. My mother is a nurse. I have a baby brother. He is one. We have a cute dog, Coco. I love my family. \n\nQ4: What is Coco?",
+              "options": [
+                "A. A cat",
+                "B. A dog",
+                "C. A bird"
+              ],
+              "answer": "B",
+              "explanation": "We have a cute dog, Coco",
+              "knowledgePointIds": [
+                "kp-en4-adv-s5"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            }
+          ],
+          "modules": [
+            {
+              "id": "en4-adv-t5-m1",
+              "type": "english.sentence",
+              "title": "阅读理解（家庭主题）",
+              "knowledgePointIds": [
+                "kp-en4-adv-s5"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "en4-adv-t6",
+          "title": "综合听写（拔高词 · 听音写词）",
+          "desc": "点 🔊 听发音，写出单词",
+          "board": "拔高",
+          "knowledgePointIds": [
+            "kp-en4-adv-s6"
+          ],
+          "exercises": [
+            {
+              "id": "en4-adv-t6-1",
+              "type": "spelling",
+              "hint": "窗户",
+              "answer": "window",
+              "explanation": "window 窗户",
+              "knowledgePointIds": [
+                "kp-en4-adv-s6"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t6-2",
+              "type": "spelling",
+              "hint": "友好的",
+              "answer": "friendly",
+              "explanation": "friendly 友好的",
+              "knowledgePointIds": [
+                "kp-en4-adv-s6"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t6-3",
+              "type": "spelling",
+              "hint": "司机",
+              "answer": "driver",
+              "explanation": "driver 司机",
+              "knowledgePointIds": [
+                "kp-en4-adv-s6"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t6-4",
+              "type": "spelling",
+              "hint": "筷子",
+              "answer": "chopsticks",
+              "explanation": "chopsticks 筷子",
+              "knowledgePointIds": [
+                "kp-en4-adv-s6"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t6-5",
+              "type": "spelling",
+              "hint": "卧室",
+              "answer": "bedroom",
+              "explanation": "bedroom 卧室",
+              "knowledgePointIds": [
+                "kp-en4-adv-s6"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            },
+            {
+              "id": "en4-adv-t6-6",
+              "type": "spelling",
+              "hint": "书包",
+              "answer": "schoolbag",
+              "explanation": "schoolbag 书包",
+              "knowledgePointIds": [
+                "kp-en4-adv-s6"
+              ],
+              "metadata": {
+                "difficulty": "挑战"
+              }
+            }
+          ],
+          "modules": [
+            {
+              "id": "en4-adv-t6-m1",
+              "type": "english.vocab",
+              "title": "综合听写（拔高词 · 听音写词）",
+              "knowledgePointIds": [
+                "kp-en4-adv-s6"
+              ]
+            }
+          ]
+        }
+      ],
+      "name": "拔高 · 句型转换与语法运用"
     }
   ]
 }

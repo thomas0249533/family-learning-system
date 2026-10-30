@@ -114,13 +114,22 @@
         </div>
 
         <div v-else-if="currentQuestion.type === 'blank'" class="fill-blank">
-          <n-input
-            ref="answerInputRef"
-            v-model:value="userAnswer"
-            placeholder="请输入你的答案..."
-            size="large"
-            @keyup.enter="onInputEnter"
-          />
+          <div class="answer-row">
+            <n-input
+              ref="answerInputRef"
+              v-model:value="userAnswer"
+              placeholder="请输入你的答案..."
+              size="large"
+              @keyup.enter="onInputEnter"
+            />
+            <n-button
+              v-if="canSpeak && speechSupported"
+              class="speak-btn"
+              secondary
+              type="primary"
+              @click="speakAnswer"
+            >🔊 听发音</n-button>
+          </div>
         </div>
 
         <div v-else-if="currentQuestion.type === 'judge'" :class="['judge-group', judgeParts ? 'judge-group--multi' : '']">
@@ -159,13 +168,22 @@
 
         <div v-else-if="currentQuestion.type === 'spelling'" class="spelling-group">
           <div v-if="currentQuestion.hint" class="spelling-hint">提示：{{ currentQuestion.hint }}</div>
-          <n-input
-            ref="answerInputRef"
-            v-model:value="userAnswer"
-            placeholder="请输入完整单词..."
-            size="large"
-            @keyup.enter="onInputEnter"
-          />
+          <div class="answer-row">
+            <n-input
+              ref="answerInputRef"
+              v-model:value="userAnswer"
+              placeholder="请输入完整单词..."
+              size="large"
+              @keyup.enter="onInputEnter"
+            />
+            <n-button
+              v-if="canSpeak && speechSupported"
+              class="speak-btn"
+              secondary
+              type="primary"
+              @click="speakAnswer"
+            >🔊 听发音</n-button>
+          </div>
         </div>
 
         <div v-else-if="currentQuestion.type === 'essay'" class="essay-group">
@@ -338,6 +356,11 @@ export interface QuizQuestion {
    * 图片资产仍存在它自己的包里。缺省时回退到入口包，旧包没有这个字段也能跑。
    */
   packageId?: string
+  /**
+   * 听写朗读文本（P1，可选）：🔊 按钮优先朗读它，缺省则朗读 `answer`。
+   * 用于"听音写词"场景想读与答案不同的内容（如读整句、读音标）。
+   */
+  dictationText?: string
 }
 
 export interface AnswerPayload {
@@ -365,6 +388,11 @@ export interface ExamDetailItem {
   imageAlt?: string
   /** 配图所属包（跨包时与入口包不同） */
   packageId?: string
+  /**
+   * 听写朗读文本（P1，可选）：🔊 按钮优先朗读它，缺省则朗读 `answer`。
+   * 用于"听音写词"场景想读与答案不同的内容（如读整句、读音标）。
+   */
+  dictationText?: string
 }
 export interface ExamDetailPayload {
   items: ExamDetailItem[]
@@ -601,6 +629,39 @@ function formatUserAnswer(q: QuizQuestion, ua: any): string {
 }
 
 const currentQuestion = computed(() => props.questions[currentIndex.value])
+
+/**
+ * 🔊 听写/默写朗读（P1）：仅 blank / spelling 题型显示朗读按钮。
+ * 朗读内容取 `answer`（英文单词默写场景里 answer 就是单词本身，
+ * 听音写词正好用这个答案），有显式 `dictationText` 时优先用它。
+ * 语言按字符启发式推断：纯 ASCII → en-US（英语发音），否则 zh-CN。
+ * 全程 feature-detect：`window.speechSynthesis` 不可用时按钮不渲染，绝不抛错。
+ */
+const canSpeak = computed(
+  () => currentQuestion.value?.type === 'blank' || currentQuestion.value?.type === 'spelling',
+)
+const speechSupported = typeof window !== 'undefined' && 'speechSynthesis' in window
+
+function speakLangOf(text: string): string {
+  return /^[A-Za-z0-9\s.,\-'/]+$/.test(text) ? 'en-US' : 'zh-CN'
+}
+
+function speakAnswer() {
+  if (!speechSupported || !currentQuestion.value) return
+  const q = currentQuestion.value
+  const text = (typeof q.dictationText === 'string' && q.dictationText.trim()) ||
+    (Array.isArray(q.answer) ? String(q.answer[0]) : String(q.answer || ''))
+  if (!text) return
+  try {
+    window.speechSynthesis.cancel()
+    const u = new SpeechSynthesisUtterance(text)
+    u.lang = speakLangOf(text)
+    u.rate = 0.9
+    window.speechSynthesis.speak(u)
+  } catch {
+    /* 朗读失败静默忽略，不影响作答 */
+  }
+}
 const isLastQuestion = computed(() => currentIndex.value === props.questions.length - 1)
 const localAnsweredCount = computed(() => Object.keys(examAnswers.value).length)
 
@@ -1719,6 +1780,19 @@ function handleExit() {
     font-size: 15px; color: $primary-text; background: $primary-light;
     padding: 8px 14px; border-radius: 6px; margin-bottom: 12px;
     font-family: 'Times New Roman', monospace; letter-spacing: 2px;
+  }
+}
+
+/* 🔊 听写/默写：输入框与朗读按钮并排 */
+.answer-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  .n-input { flex: 1; }
+  .speak-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    align-self: center;
   }
 }
 

@@ -1,11 +1,11 @@
 {
-  "version": "2.12.6",
-  "notes": "V2.12.6 · 修复专项/词汇包「找不到」+ 精简发布：①学习包列表的折叠偏好 localStorage key 升级后缀，升级后旧版手动收起「专项突破」小节的偏好失效、默认展开，英语/语文词汇等专项包直接可见（此前部分用户因旧偏好把该小节收起而找不到包）；②若列表里词汇包单元数不对（如显示 5 个而非 6 内容+1 语法=7），属旧版导入数据残留，请在「导入学习包」重新导入对应 zip 覆盖即可——当前词汇包已支持按单元选择背记；③即日起不再发布便携包，安装包（NSIS setup）已覆盖手动安装场景，Release 体积更小。其余同 V2.12.5：学习包列表按学科分区、填空判分容错、开放题修正、安装包下载源为 GitHub Releases（国内可达）。",
-  "pub_date": "2026-10-29T16:19:18.181Z",
+  "version": "2.12.7",
+  "notes": "V2.12.7 · 英语拔高内容 + 听写/默写朗读：①英语词汇包新增「拔高 · 句型转换与语法运用」单元（35 道提高/挑战难度题：句型转换、语法选择、疑问词问答、词汇分类、阅读理解、综合听写），孩子英语基础较好可上更难；②听写/默写模式：单词默写/拼写题新增 🔊 听发音按钮，用系统语音朗读英文单词（听音写词），零音频资产、可离线，仅英文朗读英文、中文朗读中文；③其余同 V2.12.6：专项包默认展开、按单元选择背记、安装包下载源为 GitHub Releases（国内可达）、不再发布便携包。",
+  "pub_date": "2026-10-30T00:52:57.894Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkFIYXNkRWljeWtNZnZRbDIrSTM5UCtWaWRWY1FFaTJiNFB2YVFkOVJiZTJ0VVFHZFpqZkpCN2drZkZIbWpJSDliM2l6Wk5teS8vQjRRVDdqMjYrREE0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMjkwNjg4CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi42X3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjYKZ1duRGpTT0pkZVFrRGY1YXd2bmVjblo1Rm4zam0wd3NHbHhub0F3TkR1UGthYTdzLzJNbUd4RjVYV1pwQS81QVY4Y0Z0eDg3bmJsRk9XTmhWckUwRHc9PQo=",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.6/FamilyLearningSystem_2.12.6_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVk84NncwRVhRSkVFanFmZTlwa1NCRmJzWTZvM2o3Zy9qZitlNlFNRnNmdExiRmFjbGJvMFpOUTZuSDZ1R212SzFzeFlOdEtIcU8vK05DeGgrVHdZQUFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMzIxNTY0CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMi4xMi43X3g2NC1zZXR1cC5leGUJdmVyc2lvbjoyLjEyLjcKK0RZNzRMWEFhUE9JOENhRXU4b0Z2NFRUOHJFazNPeGE1bXFvS2tsZnUzeUZiVzZPUkFkTXFrSGtFZWxnUjZRa2UzV3Rwc0VLQ1FkN0hMSFBXMGZCQ2c9PQo=",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v2.12.7/FamilyLearningSystem_2.12.7_x64-setup.exe"
     }
   }
 }

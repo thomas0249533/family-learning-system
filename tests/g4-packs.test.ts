@@ -140,11 +140,17 @@ describe('四年级语文 · 基础知识默写包', () => {
 describe('四年级英语 · 单词句型语法包', () => {
   const { pkg, exercises, topics } = load(EN4)
 
-  it('包配置正确：非考试模式、人教版、6 个单元 + 语法', () => {
+  it('包配置正确：非考试模式、人教版、6 个单元 + 语法 + 拔高', () => {
     expect(pkg.manifest.examMode).toBe(false)
     expect(pkg.manifest.edition).toBe('人教版')
-    expect(pkg.units.length).toBe(7)
+    expect(pkg.units.length).toBe(8)
     expect(pkg.units[6].name).toBe('语法专项')
+    expect(pkg.units[7].name).toBe('拔高 · 句型转换与语法运用')
+    // 拔高单元知识点带难度标记（提高/挑战）
+    const adv = pkg.units[7]
+    const advKpIds = new Set(adv.topics.flatMap((t: any) => t.knowledgePointIds ?? []))
+    const advKps = pkg.knowledgePoints.filter((k: any) => advKpIds.has(k.id))
+    expect(advKps.every((k: any) => ['提高', '挑战'].includes(k.metadata?.difficulty))).toBe(true)
   })
 
   it('模块类型都已注册', () => {
