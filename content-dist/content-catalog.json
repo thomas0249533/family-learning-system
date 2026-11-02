@@ -105,9 +105,9 @@
     },
     {
       "packageId": "special-english-4-up-vocab",
-      "version": "1.0.0",
-      "title": "四上英语 · 词汇·单词句型语法（PEP 6 单元）",
-      "sha256": "2d67448863d9082f978933033ca96fe98ac7b1e447c6b1159c0286c03bce8edc"
+      "version": "1.1.1",
+      "title": "四上英语 · 词汇（沪教版牛津上海 8 单元 + 附录）",
+      "sha256": "8af1728007624d3257f244ba5823975d2dddfa3c623178e67127aeff5b652984"
     },
     {
       "packageId": "special-english-7-up-birthday",
