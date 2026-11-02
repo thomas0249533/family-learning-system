@@ -45,3 +45,10 @@
 - `check-remote` 全环通过：tag 挂 main、资产大小一致、安装包 URL 200、签名文件名/版本一致。
 - **发版顺序纪律再次生效**：归档 commit 先推、tag 后打——tag 树里必须有安装包，否则 releases/download 直链 404。
 - 家庭端升级路径：已装 3.0.0 → 启动自动检查更新升 3.1.0；装好后学习页点「🔄 检查题库更新」→ p3（1.0.0→1.0.1）+ 无版本号的旧包（0.0.0→1.0.0 规范化）一次性刷平，之后全靠版本号比对。
+
+## 发版记录（V3.1.1）
+
+- 内容：答题反馈态锁定全部作答控件（judge 单/多陈述 / single / multiple / blank / spelling / matching / essay），杜绝「判错后点另一个选项 → 你的答案与正确答案一致却显示答错」的矛盾画面。判分内核无 bug。
+- 版本号 7 处升 3.1.1（check-version ✓，Cargo.lock 精确只动 name="app" 一处）。
+- 构建 6m29s，签名 .sig 一次过。归档 commit → push（远端 main 23c8b47e）→ tag v3.1.1 → Release 4 资产（exe 6.36MB / .sig / latest.json / version.json）。
+- check-remote 全环通过。家庭端已装 3.0.0/3.1.0 启动即自动升级。
