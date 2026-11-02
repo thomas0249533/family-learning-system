@@ -93,7 +93,10 @@
         />
 
         <div v-if="currentQuestion.type === 'single'" class="options">
-          <n-radio-group v-model:value="userAnswer" name="quiz-single">
+          <!-- 反馈态锁定作答控件（judge/single/multiple/blank 四处同一语义）：
+               曾出过「判错后孩子改点选项，你的答案跟着变、判定却不重算」的
+               自相矛盾画面，家长误以为判分 bug。 -->
+          <n-radio-group v-model:value="userAnswer" name="quiz-single" :disabled="showFeedback">
             <n-space vertical style="width: 100%;">
               <n-radio v-for="opt in currentQuestion.options" :key="opt" :value="opt.charAt(0)" class="opt-item" :class="optionState(opt)">
                 {{ opt }}
@@ -103,7 +106,7 @@
         </div>
 
         <div v-else-if="currentQuestion.type === 'multiple'" class="options">
-          <n-checkbox-group v-model:value="userAnswer">
+          <n-checkbox-group v-model:value="userAnswer" :disabled="showFeedback">
             <n-space vertical style="width: 100%;">
               <n-checkbox v-for="opt in currentQuestion.options" :key="opt" :value="opt.charAt(0)" class="opt-item" :class="optionState(opt)">
                 {{ opt }}
@@ -120,6 +123,7 @@
               v-model:value="userAnswer"
               placeholder="请输入你的答案..."
               size="large"
+              :disabled="showFeedback"
               @keyup.enter="onInputEnter"
             />
             <n-button
@@ -141,20 +145,26 @@
               <n-button-group class="judge-stmt__btns">
                 <n-button
                   size="small"
+                  :disabled="showFeedback"
                   :type="userAnswer[i] === '对' ? 'success' : 'default'"
                   @click="setJudgeAt(i, '对')"
                 >✅ {{ judgeLabel.t }}</n-button>
                 <n-button
                   size="small"
+                  :disabled="showFeedback"
                   :type="userAnswer[i] === '错' ? 'error' : 'default'"
                   @click="setJudgeAt(i, '错')"
                 >❌ {{ judgeLabel.f }}</n-button>
               </n-button-group>
             </li>
           </ol>
+          <!-- 反馈态必须锁按钮：曾出过「提交判错后孩子不服又点另一个选项，
+               userAnswer 被改、红框里的「你的答案」跟着变，但判定不重算」——
+               画面成了 你的答案:错 / 正确答案:错 / 红色警示 的自相矛盾现场，
+               家长误以为判分有 bug。其他题型提交后输入即锁定，judge 补齐同一语义。 -->
           <n-button-group v-else>
-            <n-button :type="userAnswer === '对' ? 'success' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '对'">✅ {{ judgeLabel.t }}</n-button>
-            <n-button :type="userAnswer === '错' ? 'error' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '错'">❌ {{ judgeLabel.f }}</n-button>
+            <n-button :disabled="showFeedback" :type="userAnswer === '对' ? 'success' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '对'">✅ {{ judgeLabel.t }}</n-button>
+            <n-button :disabled="showFeedback" :type="userAnswer === '错' ? 'error' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '错'">❌ {{ judgeLabel.f }}</n-button>
           </n-button-group>
         </div>
 
@@ -162,7 +172,7 @@
           <div v-for="(leftItem, i) in currentQuestion.left" :key="i" class="matching-row">
             <span class="matching-left">{{ leftItem }}</span>
             <span class="matching-arrow">→</span>
-            <n-select v-model:value="userAnswer[i]" :options="rightOptions" size="medium" placeholder="请选择" class="matching-select" />
+            <n-select v-model:value="userAnswer[i]" :options="rightOptions" size="medium" placeholder="请选择" class="matching-select" :disabled="showFeedback" />
           </div>
         </div>
 
@@ -174,6 +184,7 @@
               v-model:value="userAnswer"
               placeholder="请输入完整单词..."
               size="large"
+              :disabled="showFeedback"
               @keyup.enter="onInputEnter"
             />
             <n-button
@@ -198,6 +209,7 @@
             type="textarea"
             :autosize="{ minRows: 4, maxRows: 9 }"
             placeholder="在这里写下你的答案…"
+            :disabled="showFeedback"
           />
         </div>
 
