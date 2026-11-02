@@ -36,3 +36,12 @@
 
 - `npm run verify` 全绿：123 文件 / 4099 项（新增 15 项）。
 - typecheck / typecheck:test 通过。
+
+## 发版记录（V3.1.0）
+
+- 版本号 7 处升 3.1.0（`check-version` ✓，Cargo.lock 精确只动 `name="app"` 一处）。
+- 构建 6m25s，签名 `.sig` 一次过（私钥内容注入 `TAURI_SIGNING_PRIVATE_KEY`）。
+- 归档 commit `43f5c8b` → push（远端 main `ff9c2d44`）→ tag `v3.1.0` → Release 4 资产（exe 6.36MB / .sig / latest.json / version.json，无便携包）。
+- `check-remote` 全环通过：tag 挂 main、资产大小一致、安装包 URL 200、签名文件名/版本一致。
+- **发版顺序纪律再次生效**：归档 commit 先推、tag 后打——tag 树里必须有安装包，否则 releases/download 直链 404。
+- 家庭端升级路径：已装 3.0.0 → 启动自动检查更新升 3.1.0；装好后学习页点「🔄 检查题库更新」→ p3（1.0.0→1.0.1）+ 无版本号的旧包（0.0.0→1.0.0 规范化）一次性刷平，之后全靠版本号比对。
