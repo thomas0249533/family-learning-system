@@ -1,11 +1,11 @@
 {
-  "version": "3.1.0",
-  "notes": "V3.1 · 题库在线更新：学习页新增「🔄 检查题库更新」按钮，点一下即可把官方题库更到最新，不用再手动找文件导入。①更新不丢进度：孩子做过的题、错题本、掌握状态全部原样保留，只换题目内容；②安全：下载内容经 sha256 完整性核对 + 全量校验，任何不符直接拒收，宁可更新失败也不写半套数据；③可控：只有你手动点按钮才检查，不会自动联网打扰孩子做题；④本次同时修复一道内容硬伤：四年级上册数学第 3 部分「积是五位数的是」答案标错（C 改为 B），装好本版后点一次「检查题库更新」即可收到修正。",
-  "pub_date": "2026-11-02T02:22:43.536Z",
+  "version": "3.1.1",
+  "notes": "V3.1.1 · 修复：答题提交后选项仍可点击的问题。此前孩子判错后如果不服气再点另一个选项，画面会出现「你的答案和正确答案一样却显示答错」的自相矛盾，让家长误以为判分出了错。现在提交判分后所有作答控件统一锁定，杜绝这种困惑。判分内核本身没有问题。",
+  "pub_date": "2026-11-02T03:10:17.298Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkc3Y0RrQWFYU0JyM3NYZFdpRXQwS1hVbmo4bk83VGcxaUVROGJqNVluaFpKOTRpdzlWWHZvZ3J1OGQ0RE90a3drNTh4VlNvYzF2eGRkQ2VDaVdCUWdvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzNTg2MTQ1CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjBfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS4wCjlrUmFIZFUzQmk1Q041Rkw5VGtVTEFicllneFh5ZXVIbTA5bDROMmNobENUbE9TdDUxV0Vvd3FxaEQ2ckhBdjk4NUJza3JCNG1hamUrM29QTGloYUR3PT0K",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.0/FamilyLearningSystem_3.1.0_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVk5jK2RlQ2o2UHZKcUJ3OGFieldNQU00bEdnRVNhdTViaE42UFV1V0JWaWZHYzlTdEZ6MzVFTThnMVlZenV3MnFLQ216UUpRUWs5WWdDc29GZzZlMWdVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzNTg5MDEwCWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjFfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS4xClBQSTJpWThOd01EZGxJY2NyS1BKWjM4ZWg3UVdZdFZTNlpCYVBXVFdZUnVGVmZMZjlXRmJ4WVVhQXE0OUk5bzMyS0JNS0FKVWxQeU8vS1B0Rm9lU0FRPT0K",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.1/FamilyLearningSystem_3.1.1_x64-setup.exe"
     }
   }
 }
