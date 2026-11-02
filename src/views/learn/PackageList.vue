@@ -22,6 +22,22 @@
           @click="search = ''"
         >清除</button>
         <span v-if="searching" class="search-count">找到 {{ totalVisible }} 个</span>
+
+        <!-- V3.1 · 题库在线更新：仅手动触发（不打扰孩子做题、启动不多一次网络请求）。
+             有更新时红点 + 文案变化；点击后走 checkForUpdates → applyAllUpdates，
+             更新只覆盖 db.packages（进度按 (packageId, kpId) 自动接续）。 -->
+        <button
+          class="content-update-btn"
+          :class="{ 'has-update': updatable.length > 0 }"
+          type="button"
+          :disabled="contentChecking"
+          :aria-label="contentChecking ? '正在检查题库更新' : updatable.length > 0 ? `有 ${updatable.length} 个题库可更新，点击更新` : '检查题库更新'"
+          @click="onCheckContentUpdate"
+        >
+          <span class="cu-icon" aria-hidden="true" :class="{ spinning: contentChecking }">🔄</span>
+          <span class="cu-label">{{ contentUpdateLabel }}</span>
+          <span v-if="updatable.length > 0" class="cu-dot" aria-hidden="true"></span>
+        </button>
       </div>
 
       <!-- V2.12.5 · 按学科筛选：顶部一排学科标签，点了只看那一科；
@@ -171,7 +187,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { NSpin, NModal, NSpace } from 'naive-ui'
+import { NSpin, NModal, NSpace, useMessage } from 'naive-ui'
+import { checkForUpdates, applyAllUpdates, type UpdatablePackage } from '@core/content/contentUpdater'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import PackageCard from './PackageCard.vue'
@@ -187,6 +204,54 @@ import type { LearningPackageRecord } from '@/db'
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
 const loading = ref(true)
+
+// ==================== V3.1 · 题库在线更新（仅手动触发） ====================
+const message = useMessage()
+const contentChecking = ref(false)
+/** 检查到可更新的包；更新成功后清空（红点消失） */
+const updatable = ref<UpdatablePackage[]>([])
+const contentUpdateLabel = computed(() => {
+  if (contentChecking.value) return '检查中…'
+  if (updatable.value.length > 0) return `更新 ${updatable.value.length} 个题库`
+  return '检查题库更新'
+})
+
+/** 注入默认 fetch —— 与镜像链的约定签名一致（只用到 ok/status/text） */
+const defaultFetch = (url: string) => fetch(url)
+
+async function onCheckContentUpdate(): Promise<void> {
+  if (contentChecking.value) return
+  contentChecking.value = true
+  try {
+    const res = await checkForUpdates(defaultFetch)
+    if (!res.ok) {
+      message.error(`检查更新失败：${res.error ?? '网络不可达'}`)
+      return
+    }
+    if (res.updatable.length === 0) {
+      updatable.value = []
+      message.success('题库已是最新')
+      return
+    }
+    updatable.value = res.updatable
+    message.info(`发现 ${res.updatable.length} 个题库有新版本，正在更新…`)
+    const done = await applyAllUpdates(res.updatable, defaultFetch)
+    if (done.updated.length > 0) {
+      // 包集合变了 → 列表 + 归属索引 + 今日队列都由 loadPackages/收尾函数接管
+      await packageStore.loadPackages()
+      updatable.value = []
+      message.success(`已更新 ${done.updated.length} 个学习包`)
+    }
+    for (const f of done.failed) {
+      message.error(`${f.packageId} 更新失败：${f.reason}`)
+    }
+  } catch (e) {
+    // checkForUpdates 内部已把网络失败折进 ok:false；走到这里属于意外异常，兜住别白屏
+    message.error(`检查更新异常：${e instanceof Error ? e.message : String(e)}`)
+  } finally {
+    contentChecking.value = false
+  }
+}
 
 // ==================== V2.7 · 轨道 A3：搜索 + 折叠 ====================
 const search = ref('')
@@ -635,6 +700,73 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   font-weight: 700;
   color: $text-sub;
   white-space: nowrap;
+}
+
+/* ===== V3.1 · 题库在线更新按钮 ===== */
+.content-update-btn {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid $border-color;
+  border-radius: $radius-full;
+  background: $card-bg;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $text-sub;
+  cursor: pointer;
+  transition: background $duration-fast $ease-standard, color $duration-fast $ease-standard,
+    border-color $duration-fast $ease-standard;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  /* 有更新时升级为警示语义：红点 + 主色描边，扫一眼就能看见 */
+  &.has-update {
+    border-color: $danger-color;
+    color: $danger-text;
+  }
+
+  .cu-icon {
+    font-size: 13px;
+    line-height: 1;
+
+    &.spinning {
+      animation: content-check-spin 1s linear infinite;
+    }
+  }
+
+  .cu-label {
+    white-space: nowrap;
+  }
+
+  .cu-dot {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    border-radius: $radius-full;
+    background: $danger-color;
+    /* 与按钮边界拉开一点，深浅两套主题下都看得清 */
+    box-shadow: 0 0 0 2px $card-bg;
+  }
+}
+
+@keyframes content-check-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* ===== V2.12.5 · 顶部学科筛选条 ===== */

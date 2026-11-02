@@ -149,8 +149,12 @@ function sortByImportOrder(packages: any[], importOrder: string[]): any[] {
  * **必须 await**：调用方紧接着就会读进度列表，而且重归因与 `recordProgress`
  * 的写入必须串行，否则同一条进度会被写两行。
  * 失败只告警 —— 导入本身已经成功，重归因是加分项。
+ *
+ * 导出：手动导入（confirmAndImport / importPackageSet）与题库在线更新
+ * （contentUpdater.applyUpdate）共用这同一个收尾 —— 包集合变化后的副作用
+ * 必须只有一个实现，散落两份迟早漂移（V3.0 导入后队列不重排的教训）。
  */
-async function afterPackagesChanged(): Promise<void> {
+export async function afterPackagesChanged(): Promise<void> {
   invalidateOwnerIndex()
   try {
     await ensureE1Migrated({ orphanOnly: true })

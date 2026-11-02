@@ -26,6 +26,12 @@ export interface LearningPackageManifest {
   subtitle?: string;
   theme?: { primary?: string };
   dependencies?: string[];
+  /**
+   * 包内容版本（semver 风格）。V3.1 起题库在线更新按它与 content-catalog.json
+   * 比对 —— 内容有变必须升这个号，否则家庭端收不到（gen-content-dist 有护栏）。
+   * 老包可能没有：比对时缺号按 0.0.0 处理（normalizeVersion）。
+   */
+  version?: string;
   /** 考试模式：为 `true` 时进入 ExamPanel（题目导航、无阅读模块） */
   examMode?: boolean;
   /**

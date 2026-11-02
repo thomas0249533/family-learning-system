@@ -1,0 +1,401 @@
+{
+  "updatedAt": "2026-11-02",
+  "packages": [
+    {
+      "packageId": "special-chinese-2-up-kantu",
+      "version": "1.0.0",
+      "title": "二上语文 · 看图写话专项（12 篇）",
+      "sha256": "19f292614d67a6d8321a3eb5c59a72dadccf5ee401f889941f9e9ae54faf7718"
+    },
+    {
+      "packageId": "special-chinese-2-up-oral",
+      "version": "1.0.0",
+      "title": "二上语文 · 口语交际专项（4 个话题）",
+      "sha256": "e73e16acc171b9d233746b698e2be14d3dc41ea6ce824af9770894d677b58bae"
+    },
+    {
+      "packageId": "special-chinese-2-up-vocab",
+      "version": "1.0.0",
+      "title": "二上语文 · 字词默写专项（8 单元）",
+      "sha256": "87b8205aa7dc22717fef468cbcb6be6b0566a3d9140a53f13b1e94e1281b0fc8"
+    },
+    {
+      "packageId": "base-chinese-4-up-rjb",
+      "version": "1.0.0",
+      "title": "语文四年级上册 基础知识点包",
+      "sha256": "7a965a8366ebd01f9101916fc8a340b0c68a4551900fd64714e7b81958698f4b"
+    },
+    {
+      "packageId": "special-chinese-4-up-oral",
+      "version": "1.0.0",
+      "title": "四上语文 · 口语交际专项（4 个话题）",
+      "sha256": "6ebd6fc521b0c577d87f4498bc79a8349b027536b6d1c7888ed6299925768d03"
+    },
+    {
+      "packageId": "special-chinese-4-up-reading",
+      "version": "1.0.0",
+      "title": "语文课外阅读专项训练（1-3单元）",
+      "sha256": "06965ddc441db4cada33623ae431ead71767d68409e851ff8819814c65429919"
+    },
+    {
+      "packageId": "special-chinese-4-up-vocab",
+      "version": "1.0.0",
+      "title": "四上语文 · 词汇默写（8 个单元）",
+      "sha256": "ad37a8f3e55ba8febe9c22c057946ef8d671590949f418eb4cf0f26b1263cd1d"
+    },
+    {
+      "packageId": "term-chinese-4-up-rjb",
+      "version": "1.0.0",
+      "title": "语文四年级上册 学期课程包",
+      "sha256": "3e6f30f0585b5855f6dbbf12c4323c1449974b8e170a0af853fa037a0671bcdf"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u1",
+      "version": "1.0.0",
+      "title": "第一单元 自然之美",
+      "sha256": "b02b08792bf6e4323fe286bd457a12f90ffbcf539182172bfcebb75c31b44059"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u2",
+      "version": "1.0.0",
+      "title": "第二单元 提问策略",
+      "sha256": "7bc8fd46a41c7b2f197d5fde1c6d8125b9bfd00f98157483767b575414fbe456"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u3",
+      "version": "1.0.0",
+      "title": "第三单元 观察与发现",
+      "sha256": "895367d26c9d556b3dfa9c32cff2c19ef251977a47aa5d8fb1f93e59473f07dc"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u4",
+      "version": "1.0.0",
+      "title": "第四单元 神话故事",
+      "sha256": "0610c44d706a7f984a6fb3c249a8dee135ef454eee7231f836fe6999109eb2a0"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u5",
+      "version": "1.0.0",
+      "title": "第五单元 习作单元·写事",
+      "sha256": "22f53b54c2a4542fc42dbf24105a5d3e65d4a4dc599900bb6c500376121a7d55"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u6",
+      "version": "1.0.0",
+      "title": "第六单元 祖国壮丽山河",
+      "sha256": "cef2bec2d61b0b4e430f3d5c46b3a7c100ad1fe3dbf358fec84182db7b8ca347"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u7",
+      "version": "1.0.0",
+      "title": "第七单元 成长故事",
+      "sha256": "e469ef7fe968a0acf60dcd4471e385f8086b2a8c26312dba9a33f0d98591e4b7"
+    },
+    {
+      "packageId": "unit-chinese-4-up-rjb-u8",
+      "version": "1.0.0",
+      "title": "第八单元 家国情怀",
+      "sha256": "4f650bfe1a4c4f948933b7e0f8e1ea76d21f172d9526785d3cbb79fb143bd706"
+    },
+    {
+      "packageId": "special-english-4-down-vocab",
+      "version": "1.0.0",
+      "title": "四下英语 · 词汇·单词句型语法（PEP 6 单元）",
+      "sha256": "b451ef1357444deda0fbcca9e55262567f7d0eb1137d47b4098b622ecb3526c9"
+    },
+    {
+      "packageId": "special-english-4-up-vocab",
+      "version": "1.0.0",
+      "title": "四上英语 · 词汇·单词句型语法（PEP 6 单元）",
+      "sha256": "2d67448863d9082f978933033ca96fe98ac7b1e447c6b1159c0286c03bce8edc"
+    },
+    {
+      "packageId": "special-english-7-up-birthday",
+      "version": "1.0.0",
+      "title": "Happy Birthday! 生日与庆祝专项测验",
+      "sha256": "0af2dbe228ef3ce8de24bac80c1640081e199a68ebb9ec062fda1fec866d3349"
+    },
+    {
+      "packageId": "special-english-7-up-club",
+      "version": "1.0.0",
+      "title": "Fun Clubs 社团选择与能力表达专项测验",
+      "sha256": "24f6392ef4e11fa10b0b24aa2032c181a620f81eab629f5e24491334d20784d8"
+    },
+    {
+      "packageId": "special-english-7-up-dailylife",
+      "version": "1.0.0",
+      "title": "A Day in the Life 日常作息与时间表达专项测验",
+      "sha256": "a6ec7d7a93464a89b62980c9982fe3f8f51a46c25800df6a289f6247fb945281"
+    },
+    {
+      "packageId": "special-english-7-up-family",
+      "version": "1.0.0",
+      "title": "We're Family! 家庭与成员专项测验",
+      "sha256": "9cf212f041b28c22c90988e429b07f948bdd65aba11cc4730d0ac18f6306ad2d"
+    },
+    {
+      "packageId": "special-english-7-up-grammar",
+      "version": "1.0.0",
+      "title": "七年级上册语法综合专项测验",
+      "sha256": "17a39094eeceb77b65e53a59589d6e40c40ae4d68b9f08c9bbc6218bf4b9ac9f"
+    },
+    {
+      "packageId": "special-english-7-up-phrases",
+      "version": "1.0.0",
+      "title": "七年级上册核心短语专项测验",
+      "sha256": "f52a3524f74079bf5bb0ca06c9cc98ed96c626f661e7af04ef7edd03fbcbb888"
+    },
+    {
+      "packageId": "special-english-7-up-school",
+      "version": "1.0.0",
+      "title": "My School 学校设施与方位专项测验",
+      "sha256": "c93bea1afb49dbc4ae63b9858180a7f14a68ceabe85ef480ed6c8ac1b406a960"
+    },
+    {
+      "packageId": "special-english-7-up-subject",
+      "version": "1.0.0",
+      "title": "My Favourite Subject 学科喜好与逻辑表达专项测验",
+      "sha256": "e12849dd4e331f30d3fed738397f34d28fd8558d1480c9fd07390583bb66ba97"
+    },
+    {
+      "packageId": "special-english-7-up-tenses-combo",
+      "version": "1.0.0",
+      "title": "英语时态与主谓一致综合专项训练",
+      "sha256": "8091ee18fdd922f0ee02262cc74359ed57c3711f4099d6790deeb872ac2aaf71"
+    },
+    {
+      "packageId": "special-english-7-up-vocab",
+      "version": "1.0.0",
+      "title": "七年级上册核心词汇专项测验",
+      "sha256": "85a1add79f36207263ced6b33fedcdbcf8bda8fda85c0b5ccd5c01345a38fecf"
+    },
+    {
+      "packageId": "special-english-7-up-youandme",
+      "version": "1.0.0",
+      "title": "You and Me 结交朋友专项测验",
+      "sha256": "a2e88b1d8b04d8abd157320fbf284b6d828d17d14976ac33b22699dea691bf9c"
+    },
+    {
+      "packageId": "sprint-english-7-up-final",
+      "version": "1.0.0",
+      "title": "七年级上册期末模拟卷（太原平民中学适用）",
+      "sha256": "07f9cf38125aa40bb71e49aa005be38204eb231c8865d73cb9af6f40d237ec18"
+    },
+    {
+      "packageId": "term-english-7-up-rjb",
+      "version": "1.0.0",
+      "title": "七年级英语上册学期复习",
+      "sha256": "d56c8acf2a8735518bde98dd30432e9cef648bdb215678cbefd5225037c23295"
+    },
+    {
+      "packageId": "unit-english-7-up-rjb-p1",
+      "version": "1.0.0",
+      "title": "You and Me",
+      "sha256": "2b8dbea3871c712b603e15da47b00a68fc62913d2bf682f77b3b490bc468d766"
+    },
+    {
+      "packageId": "unit-english-7-up-rjb-p2",
+      "version": "1.0.0",
+      "title": "We're Family!",
+      "sha256": "7e70c4b3b685163ce319621a9182d41b224f4813a66b383db4dbf2716bee6f0a"
+    },
+    {
+      "packageId": "unit-english-7-up-rjb-p3",
+      "version": "1.0.0",
+      "title": "My School",
+      "sha256": "f2effe0f8811f98254fa970a100afe7c4052fca51ba340e884fb65ae182e5024"
+    },
+    {
+      "packageId": "unit-english-7-up-rjb-p4",
+      "version": "1.0.0",
+      "title": "My Favourite Subject",
+      "sha256": "078f53864dcb035a68d6667708eb3cda26cc259079cedeacae9b9106c9b5e156"
+    },
+    {
+      "packageId": "unit-english-7-up-rjb-p5",
+      "version": "1.0.0",
+      "title": "Fun Clubs",
+      "sha256": "0afb4c45bd7f5418135e552d1c0ca3c8f2a4884321b659a8fb1e472571bc471b"
+    },
+    {
+      "packageId": "unit-english-7-up-rjb-p6",
+      "version": "1.0.0",
+      "title": "A Day in the Life",
+      "sha256": "a700b98895f82f21a0a0feae02c00407c1e6950d4db8daf3a268ab7372a6b6a4"
+    },
+    {
+      "packageId": "unit-english-7-up-rjb-p7",
+      "version": "1.0.0",
+      "title": "Happy Birthday!",
+      "sha256": "4373f871b5e46a69b3d00912a0864bd70d11296d9a99ee54c993aa3ea463cf75"
+    },
+    {
+      "packageId": "special-english-movers-mock",
+      "version": "1.0.0",
+      "title": "剑桥 Movers · 全真模拟（阅读写作 33 题）",
+      "sha256": "cea5b598c07d4ae3edda81b8d0c011c50aa62c3301ac5a6874647883c00eb549"
+    },
+    {
+      "packageId": "special-english-movers-review",
+      "version": "1.0.0",
+      "title": "剑桥 Movers · 三套复习测试（阅读写作）",
+      "sha256": "5d3ccd131d2a005cfa5fe58be5a0a87562a70a8ee57a2d18f184a6a642682498"
+    },
+    {
+      "packageId": "special-english-movers-unit",
+      "version": "1.0.0",
+      "title": "剑桥 Movers · 单元阅读写作精练",
+      "sha256": "dc8cd5728453c0eb0c2941a6c10f153cd3c83a3cea8dd9951937f8decd3d75a1"
+    },
+    {
+      "packageId": "daily-math-2-up-rjb-45d",
+      "version": "1.0.0",
+      "title": "数学每日一练 45 天（二年级上·人教版）",
+      "sha256": "c672edbb5fe6bb65aa4fe46c64fcbdcb40d83102a7eaf3db00a11c90c57f00fc"
+    },
+    {
+      "packageId": "term-math-4-down-rjb",
+      "version": "1.0.0",
+      "title": "四年级下册数学 · 学期总包（9 个单元）",
+      "sha256": "1b2218a9ab93b5883b0a07706394c1b8afe01009e650754b1daed2c447caa4ac"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p1",
+      "version": "1.0.0",
+      "title": "数学4下第1部分 · 四则运算",
+      "sha256": "a1161f8751ee37fbf8cdee85633dff3b7b892ccbaab69af9a5ec78e83351db13"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p2",
+      "version": "1.0.0",
+      "title": "数学4下第2部分 · 观察物体（二）",
+      "sha256": "8466ffd7f331b20641358f1f8d25430aa00d48416ad9fe6936d927d529bf6f92"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p3",
+      "version": "1.0.0",
+      "title": "数学4下第3部分 · 运算定律",
+      "sha256": "91c4864a0754697749e359b67b12b14982f9b707d04c407d3de7113438cdb5dc"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p4",
+      "version": "1.0.0",
+      "title": "数学4下第4部分 · 小数的意义和性质",
+      "sha256": "198ff058a15bc8c68e16d37757dfa44465c382c6b9eae8bac447d85178b61209"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p5",
+      "version": "1.0.0",
+      "title": "数学4下第5部分 · 三角形",
+      "sha256": "194e8931a27f62509ded2eda7fda77f40b19ff68b5ee6e1911ffe4a0cfb81f0d"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p6",
+      "version": "1.0.0",
+      "title": "数学4下第6部分 · 小数的加法和减法",
+      "sha256": "cadfdbefa28fcc43ef9750e6ef0c43c326812a34cd377dca74098d81b8fcb423"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p7",
+      "version": "1.0.0",
+      "title": "数学4下第7部分 · 图形的运动（二）",
+      "sha256": "23ffc66b452daef1b7f0f218c5a098feacec4a18cb4e1247f5fb4c3af19ec525"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p8",
+      "version": "1.0.0",
+      "title": "数学4下第8部分 · 平均数与条形统计图",
+      "sha256": "0a0b69be920c59e3fa9596ae46a40824ab448ae5cd6588290e4e38e668bb5b44"
+    },
+    {
+      "packageId": "unit-math-4-down-rjb-p9",
+      "version": "1.0.0",
+      "title": "数学4下第9部分 · 数学广角——鸡兔同笼",
+      "sha256": "5cd4d42ad4a9564518aadf7280994399e2b0e24654d0a3246b345e6a1e3aa25f"
+    },
+    {
+      "packageId": "daily-math-4-up-rjb-45d",
+      "version": "1.0.0",
+      "title": "数学每日一练 45 天（四年级上·人教版）",
+      "sha256": "56afb251453dc3e4a0dfab43fd5a3493fe77645afd153de23219465a8b03d75b"
+    },
+    {
+      "packageId": "special-math-4-up-jiajiancheng",
+      "version": "1.0.0",
+      "title": "加法和乘法模型专项突破",
+      "sha256": "c141e0b50b59d55fc930a748e124349c222de0e7aaf7faeccf6607bc73bd5e62"
+    },
+    {
+      "packageId": "special-math-4-up-kaodian",
+      "version": "1.0.0",
+      "title": "四上数学 · 43 个必背考点填空",
+      "sha256": "3981013926cf1bcae30d336b25cad9338dffe4f93eaf38845b0b39e265f5934f"
+    },
+    {
+      "packageId": "special-math-4-up-shape",
+      "version": "1.0.0",
+      "title": "四年级思维训练 · 巧数图形",
+      "sha256": "ed68ae4f2778513c55c3b93436331e9b7dcee31f26f0c9efea78bc6d72be8038"
+    },
+    {
+      "packageId": "special-math-4-up-u3",
+      "version": "1.0.0",
+      "title": "第三单元 乘法专项训练",
+      "sha256": "4b045f63b0bcb8bc9fd82999a33dbc7cdccff9b58de6631c1017b00202bc9e92"
+    },
+    {
+      "packageId": "special-math-4-up-yunsuanlv",
+      "version": "1.0.0",
+      "title": "运算律专项突破",
+      "sha256": "7c8fa8c8f264fd466975dce8dc83f6581b9046bd8f5fd02e8401ec9094c0ef34"
+    },
+    {
+      "packageId": "sprint-math-4-up-final",
+      "version": "1.0.0",
+      "title": "期末冲刺模拟卷",
+      "sha256": "95f23bdca8d09ace363aa946734e22d7142a07b262b4f9491703ade7e3746c12"
+    },
+    {
+      "packageId": "term-math-4-up-rjb",
+      "version": "1.0.0",
+      "title": "四年级上册学期包（自动合成）",
+      "sha256": "ee614e04d68d3cff9ce505668de48924d98d8f3d3b7bf623bc9f5214e145db66"
+    },
+    {
+      "packageId": "unit-math-4-up-rjb-p1",
+      "version": "1.0.0",
+      "title": "数学4上第1部分",
+      "sha256": "9861894c66ecf688d35478d2fdd750fc956d139f7b0cea963b943a80149712ca"
+    },
+    {
+      "packageId": "unit-math-4-up-rjb-p2",
+      "version": "1.0.0",
+      "title": "数学4上第2部分",
+      "sha256": "1fc3a5d07aeae9714647ebf2845e6d45d1f8665769084c8b38b7a79a5c27dd7d"
+    },
+    {
+      "packageId": "unit-math-4-up-rjb-p3",
+      "version": "1.0.1",
+      "title": "数学4上第3部分",
+      "sha256": "7bb0118f4e043a82b52035e6473611374dc8678a41740d44c68324b66a6f8b06"
+    },
+    {
+      "packageId": "unit-math-4-up-rjb-p4",
+      "version": "1.0.0",
+      "title": "数学4上第4部分",
+      "sha256": "46643c65f2d9ff5286edf742358790c60e7eb87bee0aceb253a7b013517741fa"
+    },
+    {
+      "packageId": "unit-math-4-up-rjb-p5",
+      "version": "1.0.0",
+      "title": "数学4上第5部分",
+      "sha256": "4b708503f6b218fdd66ce949e16f24170bcb865adefb073b27f973644014073d"
+    },
+    {
+      "packageId": "unit-math-4-up-rjb-p6",
+      "version": "1.0.0",
+      "title": "数学4上第6部分",
+      "sha256": "b270ed938b84a2ad86ea2ce57db2c811f3d974711c3a647b9ff0ae76f0c0d71c"
+    }
+  ]
+}

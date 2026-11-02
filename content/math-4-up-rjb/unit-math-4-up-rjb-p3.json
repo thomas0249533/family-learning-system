@@ -3,7 +3,7 @@
     "packageId": "unit-math-4-up-rjb-p3",
     "type": "unit",
     "title": "数学4上第3部分",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "dependencies": [
       "unit-math-4-up-rjb-p2"
     ]
@@ -210,7 +210,7 @@
                 "C. 108 × 25",
                 "D. 99 × 99"
               ],
-              "answer": "C",
+              "answer": "B",
               "explanation": "A. 120 × 30 = 3600（四位数）；B. 250 × 40 = 10000（五位数）；C. 108 × 25 = 2700（四位数）；D. 99 × 99 = 9801（四位数）。只有B的积是五位数。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p3::kp-num-005"
