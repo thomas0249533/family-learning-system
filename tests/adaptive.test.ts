@@ -6,6 +6,7 @@ import {
   baseLevelOf,
   levelOf,
   selectSessionQuestions,
+  filterByKnowledgePoint,
   describeShift,
 } from '@core/plan/adaptive'
 
@@ -173,6 +174,78 @@ describe('selectSessionQuestions · 挑题', () => {
     const out = selectSessionQuestions(skewed, '提高', 3)
     // 没有提高题 → 先降阶拿基础，而不是把唯一一道挑战题浪费掉
     expect(out.map((x) => x.id)).toEqual(['b0', 'b1', 'b2'])
+  })
+})
+
+/**
+ * 真机复现（2026-11-04）：四上语文「词汇默写」把几十个词放进同一个 topic，
+ * 每个词是独立 KP、各 1 道题。今日队列项写「柔和」，点进去却是「奇观」
+ * （该 topic 第一题）——因为取题时没按 knowledgePointId 收窄。
+ */
+describe('filterByKnowledgePoint · 今日任务按 KP 精确筛题', () => {
+  const vocabPool = [
+    { id: 'cn4-u1-w01', metadata: { difficulty: '基础' }, knowledgePointIds: ['kp-cn4-u1-w01'] }, // 奇观
+    { id: 'cn4-u1-w02', metadata: { difficulty: '基础' }, knowledgePointIds: ['kp-cn4-u1-w02'] }, // 据说
+    { id: 'cn4-u1-w15', metadata: { difficulty: '基础' }, knowledgePointIds: ['kp-cn4-u1-w15'] }, // 柔和
+    { id: 'cn4-u1-w08', metadata: { difficulty: '基础' }, knowledgePointIds: ['kp-cn4-u1-w08'] }, // 堵车
+  ]
+
+  it('按 KP 精确命中，不串到同 topic 的其它词', () => {
+    const out = filterByKnowledgePoint(vocabPool, 'kp-cn4-u1-w15')
+    expect(out.map((q) => q.id)).toEqual(['cn4-u1-w15'])
+  })
+
+  it('核心回归：「柔和」项 + limit=1 拿到的必须是柔和，不是奇观', () => {
+    const scoped = filterByKnowledgePoint(vocabPool, 'kp-cn4-u1-w15')
+    const out = selectSessionQuestions(scoped, '基础', 1)
+    expect(out.map((q) => q.id)).toEqual(['cn4-u1-w15'])
+    expect(out[0].id).not.toBe('cn4-u1-w01')
+  })
+
+  it('不筛的话必然命中第一题奇观（锁住原 bug 的成因）', () => {
+    const out = selectSessionQuestions(vocabPool, '基础', 1)
+    expect(out[0].id).toBe('cn4-u1-w01')
+  })
+
+  it('一个 KP 多道题时全部保留，且保持题库原顺序', () => {
+    const pool = [
+      { id: 'a1', knowledgePointIds: ['kp-a'] },
+      { id: 'b1', knowledgePointIds: ['kp-b'] },
+      { id: 'a2', knowledgePointIds: ['kp-a'] },
+      { id: 'a3', knowledgePointIds: ['kp-a', 'kp-b'] },
+    ]
+    expect(filterByKnowledgePoint(pool, 'kp-a').map((q) => q.id)).toEqual(['a1', 'a2', 'a3'])
+  })
+
+  it('限定 id 与裸 id 混用也能命中（进度行常是裸 id）', () => {
+    const pool = [
+      { id: 'x', knowledgePointIds: ['special-chinese-4-up-vocab::kp-cn4-u1-w15'] },
+      { id: 'y', knowledgePointIds: ['special-chinese-4-up-vocab::kp-cn4-u1-w01'] },
+    ]
+    expect(filterByKnowledgePoint(pool, 'kp-cn4-u1-w15').map((q) => q.id)).toEqual(['x'])
+    // 反向：传限定 id、题里是裸 id
+    expect(filterByKnowledgePoint(vocabPool, 'special-chinese-4-up-vocab::kp-cn4-u1-w15').map((q) => q.id))
+      .toEqual(['cn4-u1-w15'])
+  })
+
+  it('kpId 为空 → 原样返回全池（new 项按单元新学，行为不变）', () => {
+    expect(filterByKnowledgePoint(vocabPool, '')).toBe(vocabPool)
+    expect(filterByKnowledgePoint(vocabPool, undefined)).toBe(vocabPool)
+    expect(filterByKnowledgePoint(vocabPool, null)).toBe(vocabPool)
+  })
+
+  it('筛不到就退回全池，绝不返回空题单（不空转红线）', () => {
+    expect(filterByKnowledgePoint(vocabPool, 'kp-not-exist')).toBe(vocabPool)
+    expect(filterByKnowledgePoint([], 'kp-cn4-u1-w15')).toEqual([])
+  })
+
+  it('题上缺 knowledgePointIds / 脏值 → 跳过不报错', () => {
+    const pool = [
+      { id: 'no-ids' },
+      { id: 'bad-ids', knowledgePointIds: 'kp-a' },
+      { id: 'ok', knowledgePointIds: ['kp-a'] },
+    ]
+    expect(filterByKnowledgePoint(pool, 'kp-a').map((q) => q.id)).toEqual(['ok'])
   })
 })
 

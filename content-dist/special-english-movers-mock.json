@@ -13,7 +13,7 @@
     "edition": "剑桥少儿英语",
     "title": "剑桥 Movers · 全真模拟（阅读写作 33 题）",
     "dependencies": [],
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "knowledgePoints": [
     {
@@ -171,11 +171,11 @@
               "type": "single",
               "question": "People go to this place to eat, drink and talk to their friends.",
               "options": [
-                "A. a café",
-                "B. a towel",
-                "C. a blanket"
+                "A. a towel",
+                "B. a blanket",
+                "C. a café"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "吃饭、喝东西、和朋友聊天的地方 → 咖啡馆 a café。a towel 是毛巾，a blanket 是毯子。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p1"
@@ -190,11 +190,11 @@
               "type": "single",
               "question": "This animal flies at night and sleeps in the day.",
               "options": [
-                "A. a bat",
-                "B. a snail",
-                "C. a blanket"
+                "A. a blanket",
+                "B. a bat",
+                "C. a snail"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "夜里飞、白天睡 → 蝙蝠 a bat。a snail 是蜗牛（爬得很慢，不飞）。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p1"
@@ -209,11 +209,11 @@
               "type": "single",
               "question": "People who are ill go to these places.",
               "options": [
-                "A. hospitals",
+                "A. cafés",
                 "B. fields",
-                "C. cafés"
+                "C. hospitals"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "生病的人去的地方 → 医院 hospitals（复数，因为 these places）。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p1"
@@ -248,8 +248,8 @@
               "question": "You find these in the country and they often have animals in them.",
               "options": [
                 "A. fields",
-                "B. hospitals",
-                "C. cafés"
+                "B. cafés",
+                "C. hospitals"
               ],
               "answer": "A",
               "explanation": "乡下、里面有动物 → 田地 fields。",
@@ -287,11 +287,11 @@
               "type": "single",
               "question": "Paul: Why didn't you go home yesterday?\nDaisy: ____",
               "options": [
-                "A. Because my mother was at work.",
-                "B. Because my mother can work.",
-                "C. Because my mother would like to work."
+                "A. Because my mother can work.",
+                "B. Because my mother would like to work.",
+                "C. Because my mother was at work."
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "Why 问原因，要用 Because + 一件过去发生的事（was at work）。B、C 语法没错，但都不是「昨天没回家」的理由。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p2"
@@ -326,8 +326,8 @@
               "question": "Paul: How often do you go to see your aunt?\nDaisy: ____",
               "options": [
                 "A. Every Tuesday.",
-                "B. I take a bus there.",
-                "C. She's never here."
+                "B. She's never here.",
+                "C. I take a bus there."
               ],
               "answer": "A",
               "explanation": "How often 问频率 → Every Tuesday（每周二）。I take a bus there 回答的是 How（怎么去）。",
@@ -344,11 +344,11 @@
               "type": "single",
               "question": "Paul: Do you enjoy going to see your aunt?\nDaisy: ____",
               "options": [
-                "A. Yes, I do.",
-                "B. Yes, that's better.",
-                "C. Yes, I know."
+                "A. Yes, I know.",
+                "B. Yes, I do.",
+                "C. Yes, that's better."
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "Do you…? 的答语用 Yes, I do. —— 助动词必须跟问句一致。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p2"
@@ -364,8 +364,8 @@
               "question": "Paul: What kind of games do you play at your aunt's house?\nDaisy: ____",
               "options": [
                 "A. Soccer and tennis.",
-                "B. It's in the garden.",
-                "C. Three or four."
+                "B. Three or four.",
+                "C. It's in the garden."
               ],
               "answer": "A",
               "explanation": "What kind of games 问种类 → 具体说出运动名 Soccer and tennis。It's in the garden 回答 Where。",
@@ -382,11 +382,11 @@
               "type": "single",
               "question": "Paul: Can I come with you this week?\nDaisy: ____",
               "options": [
-                "A. All right.",
-                "B. I didn't know.",
+                "A. I didn't know.",
+                "B. All right.",
                 "C. You're happy."
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "Can I…? 是请求许可，答语要表态 → All right.（好啊）。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p2"
@@ -431,11 +431,11 @@
               "type": "single",
               "question": "Fred was very (1) ____ . It was his first day at school and he did not want to go.",
               "options": [
-                "A. sad",
-                "B. happy",
-                "C. hungry"
+                "A. hungry",
+                "B. sad",
+                "C. happy"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "下文说\"他不想去上学\"，所以心里是难过的 sad。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p3"
@@ -450,11 +450,11 @@
               "type": "single",
               "question": "Outside the classroom Fred started to (2) ____ .",
               "options": [
-                "A. cry",
+                "A. run",
                 "B. laugh",
-                "C. run"
+                "C. cry"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "不想上学 + 站在教室外面 → 开始哭 cry。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p3"
@@ -469,11 +469,11 @@
               "type": "single",
               "question": "A young woman with black, (3) ____ hair smiled at Fred.",
               "options": [
-                "A. curly",
-                "B. straight",
-                "C. short"
+                "A. short",
+                "B. curly",
+                "C. straight"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "形容头发形状的词；故事里老师是一头黑色卷发 → curly。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p3"
@@ -488,11 +488,11 @@
               "type": "single",
               "question": "Fred had a (4) ____ and a bottle of juice for his lunch.",
               "options": [
-                "A. sandwich",
-                "B. candle",
-                "C. pillow"
+                "A. candle",
+                "B. pillow",
+                "C. sandwich"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "午餐吃的 + 一瓶果汁 → 三明治 sandwich。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p3"
@@ -575,11 +575,11 @@
               "type": "single",
               "question": "There (1) ____ often a lot of snow in the mountains.",
               "options": [
-                "A. is",
-                "B. are",
-                "C. be"
+                "A. are",
+                "B. be",
+                "C. is"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "there be 句型看后面的名词：a lot of snow 是不可数名词，用 is。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p4"
@@ -613,11 +613,11 @@
               "type": "single",
               "question": "Children often like (3) ____ outside in the snow.",
               "options": [
-                "A. playing",
-                "B. played",
-                "C. play"
+                "A. played",
+                "B. play",
+                "C. playing"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "like 后面接 -ing：like playing（喜欢在雪里玩）。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p4"
@@ -840,11 +840,11 @@
               "type": "single",
               "question": "The only ____ in the sky is above the waterfall.",
               "options": [
-                "A. cloud",
-                "B. bird",
-                "C. plane"
+                "A. bird",
+                "B. plane",
+                "C. cloud"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "天空里只有一个白色的东西，就在瀑布上方 → cloud（云）。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p6"
@@ -862,8 +862,8 @@
               "question": "What is the pirate with the hat holding?",
               "options": [
                 "A. A map.",
-                "B. A camera.",
-                "C. A box."
+                "B. A box.",
+                "C. A camera."
               ],
               "answer": "A",
               "explanation": "戴帽子的那个海盗高高举着的是一张藏宝图 → a map。摄像机在左边女孩手里。",
@@ -882,11 +882,11 @@
               "type": "single",
               "question": "What is the girl with the yellow hat doing?",
               "options": [
-                "A. Making a film.",
-                "B. Reading a book.",
-                "C. Swimming."
+                "A. Reading a book.",
+                "B. Swimming.",
+                "C. Making a film."
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "戴黄帽子的女孩正扛着摄像机对着瀑布拍摄 → making a film（也可说 holding a camera）。",
               "knowledgePointIds": [
                 "special-english-movers-mock::kp-enmv-m-p6"
@@ -910,11 +910,11 @@
       "type": "single",
       "question": "People go to this place to eat, drink and talk to their friends.",
       "options": [
-        "A. a café",
-        "B. a towel",
-        "C. a blanket"
+        "A. a towel",
+        "B. a blanket",
+        "C. a café"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "吃饭、喝东西、和朋友聊天的地方 → 咖啡馆 a café。a towel 是毛巾，a blanket 是毯子。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p1"
@@ -929,11 +929,11 @@
       "type": "single",
       "question": "This animal flies at night and sleeps in the day.",
       "options": [
-        "A. a bat",
-        "B. a snail",
-        "C. a blanket"
+        "A. a blanket",
+        "B. a bat",
+        "C. a snail"
       ],
-      "answer": "A",
+      "answer": "B",
       "explanation": "夜里飞、白天睡 → 蝙蝠 a bat。a snail 是蜗牛（爬得很慢，不飞）。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p1"
@@ -948,11 +948,11 @@
       "type": "single",
       "question": "People who are ill go to these places.",
       "options": [
-        "A. hospitals",
+        "A. cafés",
         "B. fields",
-        "C. cafés"
+        "C. hospitals"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "生病的人去的地方 → 医院 hospitals（复数，因为 these places）。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p1"
@@ -987,8 +987,8 @@
       "question": "You find these in the country and they often have animals in them.",
       "options": [
         "A. fields",
-        "B. hospitals",
-        "C. cafés"
+        "B. cafés",
+        "C. hospitals"
       ],
       "answer": "A",
       "explanation": "乡下、里面有动物 → 田地 fields。",
@@ -1005,11 +1005,11 @@
       "type": "single",
       "question": "Paul: Why didn't you go home yesterday?\nDaisy: ____",
       "options": [
-        "A. Because my mother was at work.",
-        "B. Because my mother can work.",
-        "C. Because my mother would like to work."
+        "A. Because my mother can work.",
+        "B. Because my mother would like to work.",
+        "C. Because my mother was at work."
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "Why 问原因，要用 Because + 一件过去发生的事（was at work）。B、C 语法没错，但都不是「昨天没回家」的理由。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p2"
@@ -1044,8 +1044,8 @@
       "question": "Paul: How often do you go to see your aunt?\nDaisy: ____",
       "options": [
         "A. Every Tuesday.",
-        "B. I take a bus there.",
-        "C. She's never here."
+        "B. She's never here.",
+        "C. I take a bus there."
       ],
       "answer": "A",
       "explanation": "How often 问频率 → Every Tuesday（每周二）。I take a bus there 回答的是 How（怎么去）。",
@@ -1062,11 +1062,11 @@
       "type": "single",
       "question": "Paul: Do you enjoy going to see your aunt?\nDaisy: ____",
       "options": [
-        "A. Yes, I do.",
-        "B. Yes, that's better.",
-        "C. Yes, I know."
+        "A. Yes, I know.",
+        "B. Yes, I do.",
+        "C. Yes, that's better."
       ],
-      "answer": "A",
+      "answer": "B",
       "explanation": "Do you…? 的答语用 Yes, I do. —— 助动词必须跟问句一致。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p2"
@@ -1082,8 +1082,8 @@
       "question": "Paul: What kind of games do you play at your aunt's house?\nDaisy: ____",
       "options": [
         "A. Soccer and tennis.",
-        "B. It's in the garden.",
-        "C. Three or four."
+        "B. Three or four.",
+        "C. It's in the garden."
       ],
       "answer": "A",
       "explanation": "What kind of games 问种类 → 具体说出运动名 Soccer and tennis。It's in the garden 回答 Where。",
@@ -1100,11 +1100,11 @@
       "type": "single",
       "question": "Paul: Can I come with you this week?\nDaisy: ____",
       "options": [
-        "A. All right.",
-        "B. I didn't know.",
+        "A. I didn't know.",
+        "B. All right.",
         "C. You're happy."
       ],
-      "answer": "A",
+      "answer": "B",
       "explanation": "Can I…? 是请求许可，答语要表态 → All right.（好啊）。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p2"
@@ -1119,11 +1119,11 @@
       "type": "single",
       "question": "Fred was very (1) ____ . It was his first day at school and he did not want to go.",
       "options": [
-        "A. sad",
-        "B. happy",
-        "C. hungry"
+        "A. hungry",
+        "B. sad",
+        "C. happy"
       ],
-      "answer": "A",
+      "answer": "B",
       "explanation": "下文说\"他不想去上学\"，所以心里是难过的 sad。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p3"
@@ -1138,11 +1138,11 @@
       "type": "single",
       "question": "Outside the classroom Fred started to (2) ____ .",
       "options": [
-        "A. cry",
+        "A. run",
         "B. laugh",
-        "C. run"
+        "C. cry"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "不想上学 + 站在教室外面 → 开始哭 cry。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p3"
@@ -1157,11 +1157,11 @@
       "type": "single",
       "question": "A young woman with black, (3) ____ hair smiled at Fred.",
       "options": [
-        "A. curly",
-        "B. straight",
-        "C. short"
+        "A. short",
+        "B. curly",
+        "C. straight"
       ],
-      "answer": "A",
+      "answer": "B",
       "explanation": "形容头发形状的词；故事里老师是一头黑色卷发 → curly。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p3"
@@ -1176,11 +1176,11 @@
       "type": "single",
       "question": "Fred had a (4) ____ and a bottle of juice for his lunch.",
       "options": [
-        "A. sandwich",
-        "B. candle",
-        "C. pillow"
+        "A. candle",
+        "B. pillow",
+        "C. sandwich"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "午餐吃的 + 一瓶果汁 → 三明治 sandwich。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p3"
@@ -1233,11 +1233,11 @@
       "type": "single",
       "question": "There (1) ____ often a lot of snow in the mountains.",
       "options": [
-        "A. is",
-        "B. are",
-        "C. be"
+        "A. are",
+        "B. be",
+        "C. is"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "there be 句型看后面的名词：a lot of snow 是不可数名词，用 is。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p4"
@@ -1271,11 +1271,11 @@
       "type": "single",
       "question": "Children often like (3) ____ outside in the snow.",
       "options": [
-        "A. playing",
-        "B. played",
-        "C. play"
+        "A. played",
+        "B. play",
+        "C. playing"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "like 后面接 -ing：like playing（喜欢在雪里玩）。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p4"
@@ -1447,11 +1447,11 @@
       "type": "single",
       "question": "The only ____ in the sky is above the waterfall.",
       "options": [
-        "A. cloud",
-        "B. bird",
-        "C. plane"
+        "A. bird",
+        "B. plane",
+        "C. cloud"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "天空里只有一个白色的东西，就在瀑布上方 → cloud（云）。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p6"
@@ -1469,8 +1469,8 @@
       "question": "What is the pirate with the hat holding?",
       "options": [
         "A. A map.",
-        "B. A camera.",
-        "C. A box."
+        "B. A box.",
+        "C. A camera."
       ],
       "answer": "A",
       "explanation": "戴帽子的那个海盗高高举着的是一张藏宝图 → a map。摄像机在左边女孩手里。",
@@ -1489,11 +1489,11 @@
       "type": "single",
       "question": "What is the girl with the yellow hat doing?",
       "options": [
-        "A. Making a film.",
-        "B. Reading a book.",
-        "C. Swimming."
+        "A. Reading a book.",
+        "B. Swimming.",
+        "C. Making a film."
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "戴黄帽子的女孩正扛着摄像机对着瀑布拍摄 → making a film（也可说 holding a camera）。",
       "knowledgePointIds": [
         "special-english-movers-mock::kp-enmv-m-p6"

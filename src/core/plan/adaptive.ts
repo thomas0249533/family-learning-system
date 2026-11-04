@@ -173,6 +173,66 @@ function orderByLevel<T extends { metadata?: { difficulty?: unknown } }>(pool: T
 }
 
 /**
+ * 去掉 `pkg::` 限定前缀。与 `ownerIndex.stripPrefix` 同一语义，
+ * 这里自持一份是为了不把 `@/db` 依赖拉进本文件的纯函数链（单测跑在 node 环境）。
+ */
+function shortKp(id: string): string {
+  const i = id.indexOf('::')
+  return i >= 0 ? id.slice(i + 2) : id
+}
+
+/**
+ * 今日任务会话：按队列项指定的知识点**先精确筛题，再挑难度**。
+ *
+ * ## 为什么必须有这一步（真机复现 2026-11-04）
+ * 四上语文「词汇默写」把 30~50 个词放进**同一个 topic**，每个词是独立 KP、
+ * 各自只有 1 道默写题。今日队列项写的是「柔和」(`kp-cn4-u1-w15`)，
+ * 但会话取题时只拿到 `topicId`，于是从整个 topic 的题池里按难度挑前 N 题 ——
+ * 词汇题全是「基础」档、同档保持题库原顺序，**永远命中该 topic 第一题「奇观」**。
+ * 表现：列表标题是「柔和/堵车/顿时」，点进去每一项的题都是「奇观」，
+ * 标题与题目完全错配，孩子等于反复默同一个词。
+ *
+ * `DailyPlanItem.knowledgePointId` 本来就有值，只是跳转时没带下来；
+ * 这里把它作为**唯一收口**，所有 `review/mistake/weak` 项（凡一个 topic 含多个 KP）
+ * 一并受益。`new` 项没有 KP（按单元新学），传空即可，行为与从前一致。
+ *
+ * ## 三条纪律
+ * 1. **精确匹配优先**：先按原值比，避免短 id 撞车时误串到别的包；
+ * 2. **去前缀兜底**：进度行里常是裸 id、题里是 `pkg::` 限定 id（或反之），
+ *    两边都 `shortKp` 后再比一次；
+ * 3. **筛不到就退回全池**：宁可给原题池，也绝不返回空数组 ——
+ *    点进队列项却是空题单，比给错题更糟（与 `selectSessionQuestions`
+ *    「永远凑够 limit」同一条不空转红线）。
+ */
+export function filterByKnowledgePoint<T>(
+  pool: T[],
+  kpId: string | null | undefined
+): T[] {
+  const all = Array.isArray(pool) ? pool : []
+  const target = typeof kpId === 'string' ? kpId.trim() : ''
+  if (!target) return all
+
+  // 泛型不加约束：题池元素是 any / 带 metadata 的完整题型，
+  // 约束成 `{knowledgePointIds?: unknown}` 会把 T 收窄、丢掉 metadata，
+  // 后续 selectSessionQuestions 就接不住了。这里内部安全读取即可。
+  const idsOf = (q: T): string[] => {
+    if (q === null || typeof q !== 'object') return []
+    const raw = (q as unknown as Record<string, unknown>).knowledgePointIds
+    return Array.isArray(raw) ? raw.filter((x): x is string => typeof x === 'string') : []
+  }
+
+  // ① 原值精确匹配
+  const exact = all.filter((q) => idsOf(q).includes(target))
+  if (exact.length > 0) return exact
+
+  // ② 去前缀匹配（限定 id ↔ 裸 id 混用）
+  const short = shortKp(target)
+  if (!short) return all
+  const loose = all.filter((q) => idsOf(q).some((id) => shortKp(id) === short))
+  return loose.length > 0 ? loose : all
+}
+
+/**
  * 会话结束后，这个知识点的档位会怎么变（**给结算页/家长端看的预告**）。
  * 纯展示用，不写库。
  */

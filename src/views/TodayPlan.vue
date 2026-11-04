@@ -304,6 +304,10 @@ function startItem(item: DailyPlanItem): void {
       mode: 'session',
       session: item.id,
       limit: String(item.questions),
+      // ⚠️ 必须带上队列项指定的知识点：词汇默写等包把几十个 KP 放进同一个 topic，
+      // 只给 topicId 的话会话会从全池按难度挑前 N 题（全是第一题「奇观」），
+      // 与列表标题错配。见 adaptive.filterByKnowledgePoint 的复现说明。
+      ...(item.knowledgePointId ? { kp: item.knowledgePointId } : {}),
     },
   })
 }

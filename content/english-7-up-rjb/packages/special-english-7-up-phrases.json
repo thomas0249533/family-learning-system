@@ -26,7 +26,8 @@
       "unit-english-7-up-rjb-p5::u5",
       "unit-english-7-up-rjb-p6::u6",
       "unit-english-7-up-rjb-p7::u7"
-    ]
+    ],
+    "version": "1.0.1"
   },
   "knowledgePoints": [],
   "exercises": [],
@@ -53,12 +54,12 @@
               "type": "single",
               "difficulty": "提高",
               "options": [
-                "A. Nice to meet you, too.",
+                "A. You're welcome.",
                 "B. I'm fine, thank you.",
-                "C. You're welcome.",
-                "D. Yes, I am."
+                "C. Yes, I am.",
+                "D. Nice to meet you, too."
               ],
-              "answer": "A",
+              "answer": "D",
               "knowledgePointIds": [
                 "unit-english-7-up-rjb-p1::kp-sentence-001"
               ],
@@ -84,9 +85,9 @@
               "difficulty": "提高",
               "options": [
                 "A. He is a doctor.",
-                "B. He is fine.",
+                "B. He likes reading.",
                 "C. He is at home.",
-                "D. He likes reading."
+                "D. He is fine."
               ],
               "answer": "A",
               "knowledgePointIds": [
@@ -126,12 +127,12 @@
               "type": "single",
               "difficulty": "挑战",
               "options": [
-                "A. Because it is useful.",
-                "B. Yes, I do.",
-                "C. It's on Monday.",
-                "D. I like English."
+                "A. I like English.",
+                "B. Because it is useful.",
+                "C. Yes, I do.",
+                "D. It's on Monday."
               ],
-              "answer": "A",
+              "answer": "B",
               "knowledgePointIds": [
                 "unit-english-7-up-rjb-p4::kp-sentence-001"
               ],
@@ -156,12 +157,12 @@
               "type": "single",
               "difficulty": "挑战",
               "options": [
-                "A. At 6:30.",
-                "B. In the morning.",
-                "C. On Monday.",
-                "D. It's 6:30."
+                "A. On Monday.",
+                "B. At 6:30.",
+                "C. It's 6:30.",
+                "D. In the morning."
               ],
-              "answer": "A",
+              "answer": "B",
               "knowledgePointIds": [
                 "unit-english-7-up-rjb-p6::kp-sentence-001"
               ],

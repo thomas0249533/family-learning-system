@@ -71,24 +71,32 @@ const byId = new Map(allEx.map((e) => [e.id, e]))
 
 /**
  * 官方 Answer Key 转录表（**独立于生成脚本**）。
- * 键 = 题 id，值 = 期望答案（单选记字母，填空记完整答案字符串）。
+ * 键 = 题 id，值 = 官方答案**文本**：
+ *   - 单选题：记正确答案的英文文本（不带 `A. ` 前缀），见下方「位置无关」说明；
+ *   - 填空题：记包内 answer 的完整字符串（含 `/` 备选）。
  * 来源：Cambridge English Practice Tests Answer Key（三个 zip 里的 *_answers.pdf
  * 与模拟卷末的 Marking Key）。
+ *
+ * ⚠️ 单选题**曾经记的是字母 'A'**（因为正确项被固定在 A 位）。V3.1.2 前把选项
+ * 位置确定性打散，破掉「无脑选 A 即满分」；字母随之改变，但**正确内容一字未动**
+ * （已用 `git show HEAD~` 对拍 65 题、0 漂移）。所以这里改成记内容：
+ * 测试比对的是「answer 指向的那个选项的文本」，选项再怎么重排都不会误报，
+ * 一旦有人改了正确内容或忘了同步 answer，仍然会红。
  */
 const EXPECTED: Record<string, string> = {
   // Unit 1 · Movers R&W Part 6（看图回答，官方 key：the/a (big) rock、a/the island、
-  // a/the (toy) kangaroo、a/the (purple) swimsuit；这里改成选择题，正确答案仍是各自首项）
-  'mv-u1-01': 'A',
-  'mv-u1-02': 'A',
-  'mv-u1-03': 'A',
-  'mv-u1-04': 'A',
+  // a/the (toy) kangaroo、a/the (purple) swimsuit）
+  'mv-u1-01': 'a big rock',
+  'mv-u1-02': 'the island',
+  'mv-u1-03': 'A toy kangaroo.',
+  'mv-u1-04': 'A purple swimsuit.',
 
   // Unit 3 · Movers R&W Part 4（Part 4 (5 marks) 1 eat 2 sleeping 3 every 4 them 5 do）
-  'mv-u3-01': 'A', // eat
-  'mv-u3-02': 'A', // sleeping
-  'mv-u3-03': 'A', // every
-  'mv-u3-04': 'A', // them
-  'mv-u3-05': 'A', // do
+  'mv-u3-01': 'eat',
+  'mv-u3-02': 'sleeping',
+  'mv-u3-03': 'every',
+  'mv-u3-04': 'them',
+  'mv-u3-05': 'do',
 
   // Unit 4 · Movers R&W Part 5（1 dancing 2 Saturday(s) 3 (her) dad 4 (a)(new) dress
   // 5 market 6 Wednesday 7 a/the CD）
@@ -102,24 +110,24 @@ const EXPECTED: Record<string, string> = {
 
   // Unit 7 · Flyers R&W Part 1（1 an airport 2 hotels 3 salt 4 butterflies 5 jam
   // 6 an octopus 7 banks 8 castles 9 a pizza 10 camels）
-  'mv-u7-01': 'A',
-  'mv-u7-02': 'A',
-  'mv-u7-03': 'A',
-  'mv-u7-04': 'A',
-  'mv-u7-05': 'A',
-  'mv-u7-06': 'A',
-  'mv-u7-07': 'A',
-  'mv-u7-08': 'A',
-  'mv-u7-09': 'A',
-  'mv-u7-10': 'A',
+  'mv-u7-01': 'an airport',
+  'mv-u7-02': 'hotels',
+  'mv-u7-03': 'salt',
+  'mv-u7-04': 'butterflies',
+  'mv-u7-05': 'jam',
+  'mv-u7-06': 'an octopus',
+  'mv-u7-07': 'banks',
+  'mv-u7-08': 'castles',
+  'mv-u7-09': 'a pizza',
+  'mv-u7-10': 'camels',
 
   // Review 1 · Part 2 circle（1 tallest 2 as 3 funniest 4 fastest 5 curliest 6 better）
-  'mv-r1-01': 'A',
-  'mv-r1-02': 'A',
-  'mv-r1-03': 'A',
-  'mv-r1-04': 'A',
-  'mv-r1-05': 'A',
-  'mv-r1-06': 'A',
+  'mv-r1-01': 'tallest',
+  'mv-r1-02': 'as',
+  'mv-r1-03': 'funniest',
+  'mv-r1-04': 'fastest',
+  'mv-r1-05': 'curliest',
+  'mv-r1-06': 'better',
   // Review 1 · Part 3 read and answer（2 Saturday 3 John 4 his knee 5 their dad 6 the hospital）
   'mv-r1-11': 'basketball',
   'mv-r1-12': 'Saturday / the following Saturday / next Saturday / following Saturday',
@@ -136,12 +144,12 @@ const EXPECTED: Record<string, string> = {
   'mv-r2-05': 'brick',
   'mv-r2-06': 'glass',
   // Review 2 · Part 3 look, read and write（1 must 2 Shall 3 must 4 Let's 5 carefully 6 loudly）
-  'mv-r2-11': 'A',
-  'mv-r2-12': 'A',
-  'mv-r2-13': 'A',
-  'mv-r2-14': 'A',
-  'mv-r2-15': 'A',
-  'mv-r2-16': 'A',
+  'mv-r2-11': 'must',
+  'mv-r2-12': 'Shall',
+  'mv-r2-13': 'must',
+  'mv-r2-14': "Let's",
+  'mv-r2-15': 'carefully',
+  'mv-r2-16': 'loudly',
 
   // Review 3 · Part 2（friendly / clever / brave / kind / lazy / interesting）
   'mv-r3-01': 'friendly',
@@ -153,31 +161,31 @@ const EXPECTED: Record<string, string> = {
 
   // 模拟卷 · R&W Marking Key
   // PART 1: 1 a café 2 a bat 3 hospitals 4 a toothbrush 5 fields
-  'mv-m-01': 'A',
-  'mv-m-02': 'A',
-  'mv-m-03': 'A',
-  'mv-m-04': 'A',
-  'mv-m-05': 'A',
-  // PART 2: 1 A 2 C 3 B 4 A 5 B 6 C（对应问答顺序，见各题干）
-  'mv-m-06': 'A',
-  'mv-m-07': 'A',
-  'mv-m-08': 'A',
-  'mv-m-09': 'A',
-  'mv-m-10': 'A',
-  'mv-m-11': 'A',
+  'mv-m-01': 'a café',
+  'mv-m-02': 'a bat',
+  'mv-m-03': 'hospitals',
+  'mv-m-04': 'a toothbrush',
+  'mv-m-05': 'fields',
+  // PART 2（问答匹配，官方 Marking Key 的 6 个答语，见各题干）
+  'mv-m-06': 'Because my mother was at work.',
+  'mv-m-07': 'The aunt who lives opposite the market.',
+  'mv-m-08': 'Every Tuesday.',
+  'mv-m-09': 'Yes, I do.',
+  'mv-m-10': 'Soccer and tennis.',
+  'mv-m-11': 'All right.',
   // PART 3: 1 sad 2 cry 3 curly 4 sandwich 5 playground 6 Fred starts school
-  'mv-m-12': 'A',
-  'mv-m-13': 'A',
-  'mv-m-14': 'A',
-  'mv-m-15': 'A',
-  'mv-m-16': 'A',
-  'mv-m-17': 'A',
+  'mv-m-12': 'sad',
+  'mv-m-13': 'cry',
+  'mv-m-14': 'curly',
+  'mv-m-15': 'sandwich',
+  'mv-m-16': 'playground',
+  'mv-m-17': 'Fred starts school',
   // PART 4: 1 is 2 on 3 playing 4 which 5 because
-  'mv-m-18': 'A',
-  'mv-m-19': 'A',
-  'mv-m-20': 'A',
-  'mv-m-21': 'A',
-  'mv-m-22': 'A',
+  'mv-m-18': 'is',
+  'mv-m-19': 'on',
+  'mv-m-20': 'playing',
+  'mv-m-21': 'which',
+  'mv-m-22': 'because',
   // PART 5: 1 (fat)(grey) cat 2 (beautiful) lizard 3 grass 4 hop 5 the basement 6 trees 7 pet shop
   'mv-m-23': 'fat grey cat / grey cat / cat',
   'mv-m-24': 'beautiful lizard / lizard',
@@ -187,10 +195,10 @@ const EXPECTED: Record<string, string> = {
   'mv-m-28': 'trees / the trees',
   'mv-m-29': 'pet shop / the pet shop / a pet shop',
   // PART 6: 1 shoulder 2 cloud 3 (a) map 4 Making a film/holding a camera/filming the pirates
-  'mv-m-30': 'A',
-  'mv-m-31': 'A',
-  'mv-m-32': 'A',
-  'mv-m-33': 'A',
+  'mv-m-30': 'shoulder',
+  'mv-m-31': 'cloud',
+  'mv-m-32': 'A map.',
+  'mv-m-33': 'Making a film.',
 }
 
 describe('Movers 阅读写作包 · 结构', () => {
@@ -235,13 +243,38 @@ describe('Movers 阅读写作包 · 答案与官方 Answer Key 一致', () => {
     expect(Object.keys(EXPECTED).sort()).toEqual(allEx.map((e) => e.id).sort())
   })
 
-  it('逐题比对答案', () => {
+  /** 去掉选项的 `A. ` / `A．` 前缀与首尾空白，便于和官方答案文本比对 */
+  const optionText = (o: string): string => String(o ?? '').replace(/^[A-Da-d][.．、]\s*/, '').trim()
+  const norm = (s: string): string => optionText(s).replace(/[.。！!？?]+$/, '').trim().toLowerCase()
+
+  it('逐题比对答案（单选按「答案指向的选项内容」比对，与选项位置无关）', () => {
     const wrong: string[] = []
     for (const [id, want] of Object.entries(EXPECTED)) {
-      const got = byId.get(id)?.answer
-      if (got !== want) wrong.push(`${id}: 期望 ${want}，实际 ${got}`)
+      const ex = byId.get(id)
+      if (!ex) {
+        wrong.push(`${id}: 题目不存在`)
+        continue
+      }
+      if (ex.type === 'single') {
+        const idx = 'ABCD'.indexOf(String(ex.answer ?? '').trim().toUpperCase())
+        const got = idx >= 0 ? optionText(ex.options?.[idx] ?? '') : `<答案字母越界 ${ex.answer}>`
+        // 选项位置打散后字母会变，这里只认「answer 真正指向的那段文本」。
+        // 一旦有人改了正确内容、或重排选项忘了同步 answer，这里就会红。
+        if (norm(got) !== norm(want)) wrong.push(`${id}: 期望「${want}」，实际答案 ${ex.answer} 指向「${got}」`)
+      } else if (ex.answer !== want) {
+        wrong.push(`${id}: 期望 ${want}，实际 ${ex.answer}`)
+      }
     }
     expect(wrong, wrong.join('\n')).toEqual([])
+  })
+
+  it('单选答案位置已打散（回归：曾 57 题全 A，孩子无脑选 A 即满分）', () => {
+    const singles = allEx.filter((x) => x.type === 'single')
+    const dist = new Map<string, number>()
+    for (const e of singles) dist.set(e.answer, (dist.get(e.answer) ?? 0) + 1)
+    expect(dist.size, `答案字母只有 ${[...dist.keys()].join(',')}`).toBeGreaterThanOrEqual(3)
+    // 任一字母占比不得过半，否则又回到「蒙一个字母就能刷分」
+    expect(Math.max(...dist.values()) / singles.length, `分布 ${JSON.stringify([...dist])}`).toBeLessThan(0.5)
   })
 
   it('单选题：选项数量正确、答案字母落在范围内、正确选项确实是官方答案', () => {

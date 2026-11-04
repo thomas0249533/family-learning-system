@@ -13,7 +13,7 @@
     "edition": "剑桥少儿英语",
     "title": "剑桥 Movers · 三套复习测试（阅读写作）",
     "dependencies": [],
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "knowledgePoints": [
     {
@@ -169,8 +169,8 @@
               "question": "Mia is the (1) ____ in the class.",
               "options": [
                 "A. tallest",
-                "B. taller",
-                "C. tall"
+                "B. tall",
+                "C. taller"
               ],
               "answer": "A",
               "explanation": "班上一群人里比出第一名 → the + 最高级 the tallest。taller 要跟 than 搭配，这里没有 than。",
@@ -187,11 +187,11 @@
               "type": "single",
               "question": "She's as tall (2) ____ our teacher, Mrs Green.",
               "options": [
-                "A. as",
+                "A. like",
                 "B. than",
-                "C. like"
+                "C. as"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "as + 原级 + as 是固定搭配：as tall as our teacher（和老师一样高）。",
               "knowledgePointIds": [
                 "special-english-movers-review::kp-enmv-r1-cmp"
@@ -207,8 +207,8 @@
               "question": "Jake is the (3) ____ . He loves to make people laugh.",
               "options": [
                 "A. funniest",
-                "B. funnier",
-                "C. funny"
+                "B. funny",
+                "C. funnier"
               ],
               "answer": "A",
               "explanation": "全班里最滑稽的那一个 → the funniest。funnier 后面必须跟 than。",
@@ -225,11 +225,11 @@
               "type": "single",
               "question": "Mary is the smallest but she's the (4) ____ runner.",
               "options": [
-                "A. fastest",
-                "B. faster",
+                "A. faster",
+                "B. fastest",
                 "C. fast"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "「最矮但跑得最快」—— 全班范围比出第一名 → the fastest runner。",
               "knowledgePointIds": [
                 "special-english-movers-review::kp-enmv-r1-cmp"
@@ -244,11 +244,11 @@
               "type": "single",
               "question": "Melanie has got the longest hair and Kim has got the (5) ____ hair.",
               "options": [
-                "A. curliest",
-                "B. curlier",
-                "C. curly"
+                "A. curly",
+                "B. curliest",
+                "C. curlier"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "前半句用的是 the longest（最高级），后半句并列，同样用 the curliest。",
               "knowledgePointIds": [
                 "special-english-movers-review::kp-enmv-r1-cmp"
@@ -539,11 +539,11 @@
               "type": "single",
               "question": "You (1) ____ go through the different places to find the treasure.",
               "options": [
-                "A. must",
+                "A. Let's",
                 "B. Shall",
-                "C. Let's"
+                "C. must"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "游戏规则、必须做的事 → must。后半句 \"You have to walk…\" 也在提示这是「必须」。",
               "knowledgePointIds": [
                 "special-english-movers-review::kp-enmv-r2-modal"
@@ -615,11 +615,11 @@
               "type": "single",
               "question": "Then you must cross the river (5) ____ to get to the waterfall.",
               "options": [
-                "A. carefully",
-                "B. loudly",
-                "C. must"
+                "A. loudly",
+                "B. must",
+                "C. carefully"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "过河要「小心地」，用方式副词 carefully；loudly 是大声地，跟过河不搭。",
               "knowledgePointIds": [
                 "special-english-movers-review::kp-enmv-r2-modal"
@@ -774,8 +774,8 @@
       "question": "Mia is the (1) ____ in the class.",
       "options": [
         "A. tallest",
-        "B. taller",
-        "C. tall"
+        "B. tall",
+        "C. taller"
       ],
       "answer": "A",
       "explanation": "班上一群人里比出第一名 → the + 最高级 the tallest。taller 要跟 than 搭配，这里没有 than。",
@@ -792,11 +792,11 @@
       "type": "single",
       "question": "She's as tall (2) ____ our teacher, Mrs Green.",
       "options": [
-        "A. as",
+        "A. like",
         "B. than",
-        "C. like"
+        "C. as"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "as + 原级 + as 是固定搭配：as tall as our teacher（和老师一样高）。",
       "knowledgePointIds": [
         "special-english-movers-review::kp-enmv-r1-cmp"
@@ -812,8 +812,8 @@
       "question": "Jake is the (3) ____ . He loves to make people laugh.",
       "options": [
         "A. funniest",
-        "B. funnier",
-        "C. funny"
+        "B. funny",
+        "C. funnier"
       ],
       "answer": "A",
       "explanation": "全班里最滑稽的那一个 → the funniest。funnier 后面必须跟 than。",
@@ -830,11 +830,11 @@
       "type": "single",
       "question": "Mary is the smallest but she's the (4) ____ runner.",
       "options": [
-        "A. fastest",
-        "B. faster",
+        "A. faster",
+        "B. fastest",
         "C. fast"
       ],
-      "answer": "A",
+      "answer": "B",
       "explanation": "「最矮但跑得最快」—— 全班范围比出第一名 → the fastest runner。",
       "knowledgePointIds": [
         "special-english-movers-review::kp-enmv-r1-cmp"
@@ -849,11 +849,11 @@
       "type": "single",
       "question": "Melanie has got the longest hair and Kim has got the (5) ____ hair.",
       "options": [
-        "A. curliest",
-        "B. curlier",
-        "C. curly"
+        "A. curly",
+        "B. curliest",
+        "C. curlier"
       ],
-      "answer": "A",
+      "answer": "B",
       "explanation": "前半句用的是 the longest（最高级），后半句并列，同样用 the curliest。",
       "knowledgePointIds": [
         "special-english-movers-review::kp-enmv-r1-cmp"
@@ -1055,11 +1055,11 @@
       "type": "single",
       "question": "You (1) ____ go through the different places to find the treasure.",
       "options": [
-        "A. must",
+        "A. Let's",
         "B. Shall",
-        "C. Let's"
+        "C. must"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "游戏规则、必须做的事 → must。后半句 \"You have to walk…\" 也在提示这是「必须」。",
       "knowledgePointIds": [
         "special-english-movers-review::kp-enmv-r2-modal"
@@ -1131,11 +1131,11 @@
       "type": "single",
       "question": "Then you must cross the river (5) ____ to get to the waterfall.",
       "options": [
-        "A. carefully",
-        "B. loudly",
-        "C. must"
+        "A. loudly",
+        "B. must",
+        "C. carefully"
       ],
-      "answer": "A",
+      "answer": "C",
       "explanation": "过河要「小心地」，用方式副词 carefully；loudly 是大声地，跟过河不搭。",
       "knowledgePointIds": [
         "special-english-movers-review::kp-enmv-r2-modal"

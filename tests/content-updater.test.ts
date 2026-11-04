@@ -277,6 +277,87 @@ describe('applyUpdate（下载 → 校验 → 覆盖写入）', () => {
   })
 })
 
+describe('applyUpdate 跨包知识点引用（E009 回归）', () => {
+  /** 一个只声明知识点的「单元包」，模拟已安装的 unit-math-4-up-rjb-pX */
+  function makeUnitPackage(packageId: string, kpId: string): any {
+    return {
+      packageId,
+      manifest: { packageId, title: '单元包', subject: 'math', grade: 4, term: 'up', version: '1.0.0' },
+      knowledgePoints: [{ id: kpId, name: '单元知识点', prerequisites: [] }],
+      exercises: [],
+    }
+  }
+
+  /** 一个自身不声明知识点、只跨包引用 unit 包 KP 的 special/sprint 包 */
+  function makeCrossRefPackage(kpId: string, version: string): any {
+    return {
+      packageId: 'pkg-cross',
+      manifest: { packageId: 'pkg-cross', title: '跨包引用包', subject: 'math', grade: 4, term: 'up', version },
+      knowledgePoints: [],
+      // normalizePackage 只遍历 units[].topics[].exercises（与真实包结构一致）
+      units: [
+        {
+          id: 'u1',
+          name: '单元',
+          topics: [
+            {
+              id: 't1',
+              name: '话题',
+              exercises: [
+                {
+                  id: 'ex-1',
+                  type: 'single',
+                  question: '题目（跨包引用）',
+                  options: ['A. 2', 'B. 3'],
+                  answer: 'A',
+                  explanation: 'x',
+                  knowledgePointIds: [kpId],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }
+  }
+
+  const CROSS_KP = 'unit-math-4-up-rjb-p1::kp-num-001'
+
+  it('已安装 unit 包时：合法跨包引用应校验通过并写入', async () => {
+    // 模拟家庭端已安装该 unit 包（其 KP 已在本地库）
+    await fake.db.packages.put(makeUnitPackage('unit-math-4-up-rjb-p1', CROSS_KP))
+
+    const text = JSON.stringify(makeCrossRefPackage(CROSS_KP, '1.1.0'))
+    const item: UpdatablePackage = {
+      packageId: 'pkg-cross',
+      title: '跨包引用包',
+      localVersion: '1.0.0',
+      remoteVersion: '1.1.0',
+      sha256: await sha256Hex(text),
+    }
+    const res = await applyUpdate(item, fetcherOf({ 'pkg-cross.json': text }))
+
+    expect(res.ok).toBe(true)
+    const row = await fake.db.packages.get('pkg-cross')
+    expect(row?.manifest.version).toBe('1.1.0')
+  })
+
+  it('未安装 unit 包时：跨包引用仍应被 E009 拒绝（不是放宽校验）', async () => {
+    // beforeEach 只装了 pkg-a（kp-1），不含 CROSS_KP → 跨包引用无法解析
+    const text = JSON.stringify(makeCrossRefPackage(CROSS_KP, '1.1.0'))
+    const item: UpdatablePackage = {
+      packageId: 'pkg-cross',
+      title: '跨包引用包',
+      localVersion: '1.0.0',
+      remoteVersion: '1.1.0',
+      sha256: await sha256Hex(text),
+    }
+    const res = expectFail(await applyUpdate(item, fetcherOf({ 'pkg-cross.json': text })))
+
+    expect(res.reason).toContain('E009')
+  })
+})
+
 describe('applyAllUpdates（批量串行）', () => {
   it('一个成一个败：updated / failed 各归各位', async () => {
     const itemA = await makeUpdatable()

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-02",
+  "updatedAt": "2026-11-04",
   "packages": [
     {
       "packageId": "special-chinese-2-up-kantu",
@@ -141,9 +141,9 @@
     },
     {
       "packageId": "special-english-7-up-phrases",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "七年级上册核心短语专项测验",
-      "sha256": "f52a3524f74079bf5bb0ca06c9cc98ed96c626f661e7af04ef7edd03fbcbb888"
+      "sha256": "ad6234307591198ffe60300734dc10128fad33132864df4740b019a011a95d15"
     },
     {
       "packageId": "special-english-7-up-school",
@@ -231,21 +231,21 @@
     },
     {
       "packageId": "special-english-movers-mock",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "剑桥 Movers · 全真模拟（阅读写作 33 题）",
-      "sha256": "cea5b598c07d4ae3edda81b8d0c011c50aa62c3301ac5a6874647883c00eb549"
+      "sha256": "a00318a8b5e1e9ffdb2fb2de128b2fb3ee698b1cc0f52f55d96a6ceef221378e"
     },
     {
       "packageId": "special-english-movers-review",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "剑桥 Movers · 三套复习测试（阅读写作）",
-      "sha256": "5d3ccd131d2a005cfa5fe58be5a0a87562a70a8ee57a2d18f184a6a642682498"
+      "sha256": "eb6e58bfdac5b65682b528a36dffac4086493334e41013b83d77fe7443337370"
     },
     {
       "packageId": "special-english-movers-unit",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "剑桥 Movers · 单元阅读写作精练",
-      "sha256": "dc8cd5728453c0eb0c2941a6c10f153cd3c83a3cea8dd9951937f8decd3d75a1"
+      "sha256": "7cd8612baa4a378e6e312ec282ccb744e609f1d85895eb3ca7f97a8dd50f8c68"
     },
     {
       "packageId": "daily-math-2-up-rjb-45d",

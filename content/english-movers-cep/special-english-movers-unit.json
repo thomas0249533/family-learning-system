@@ -12,7 +12,8 @@
     "term": "up",
     "edition": "剑桥少儿英语",
     "title": "剑桥 Movers · 单元阅读写作精练",
-    "dependencies": []
+    "dependencies": [],
+    "version": "1.0.1"
   },
   "knowledgePoints": [
     {
@@ -97,11 +98,11 @@
               "type": "single",
               "question": "The whale is in the sea behind ____.（图：鲸鱼在大海里，前面挡着什么？）",
               "options": [
-                "A. a big rock",
+                "A. a ship",
                 "B. the island",
-                "C. a ship"
+                "C. a big rock"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "鲸鱼在海水里，它前方挡着一块灰色的大石头（the big rock）。岛在鲸鱼左边远处，船在更左边，都不是「鲸鱼身后/前面的遮挡物」。",
               "knowledgePointIds": [
                 "kp-enmv-u1-pic"
@@ -117,11 +118,11 @@
               "type": "single",
               "question": "There are four trees on ____.（图：四棵树长在哪里？）",
               "options": [
-                "A. the island",
-                "B. the beach",
-                "C. the rock"
+                "A. the rock",
+                "B. the island",
+                "C. the beach"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "海里那个小岛上有四棵椰子树（four trees on the island）。沙滩上只有一棵大树，石头上什么都没有。",
               "knowledgePointIds": [
                 "kp-enmv-u1-pic"
@@ -137,11 +138,11 @@
               "type": "single",
               "question": "What is next to the ball?（图：球旁边是谁？）",
               "options": [
-                "A. A toy kangaroo.",
-                "B. A toy rabbit.",
-                "C. A bag."
+                "A. A toy rabbit.",
+                "B. A bag.",
+                "C. A toy kangaroo."
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "球在沙滩左下角，紧挨着它的是一只玩具袋鼠（a toy kangaroo）。包（bag）在毛巾旁边，不挨着球。",
               "knowledgePointIds": [
                 "kp-enmv-u1-pic"
@@ -157,11 +158,11 @@
               "type": "single",
               "question": "What is the girl who is sitting in the water wearing?（图：坐在水里的女孩穿什么？）",
               "options": [
-                "A. A purple swimsuit.",
-                "B. A pink swimsuit.",
+                "A. A pink swimsuit.",
+                "B. A purple swimsuit.",
                 "C. A blue T-shirt."
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "水里有两个人：坐/蹲在水里的女孩穿**紫色**泳衣；站着扶游泳圈的女孩穿**粉色**泳衣。题目问 in the water 的那位 → purple。",
               "knowledgePointIds": [
                 "kp-enmv-u1-pic"
@@ -215,11 +216,11 @@
               "type": "single",
               "question": "They have very big teeth because they only (1) ____ meat.",
               "options": [
-                "A. eat",
-                "B. eating",
-                "C. ate"
+                "A. ate",
+                "B. eat",
+                "C. eating"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "主语 they（狮子）讲的是一般事实，用一般现在时；only 后面的动词用原形 eat。eating 需要 be 动词，ate 是过去时（这里没有过去的时间）。",
               "knowledgePointIds": [
                 "kp-enmv-u3-lion"
@@ -251,11 +252,11 @@
               "type": "single",
               "question": "Because lions must drink water (3) ____ day, you can sometimes see them next to a river.",
               "options": [
-                "A. every",
-                "B. any",
+                "A. any",
+                "B. every",
                 "C. another"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "「每一天」是 every day。any 只用于否定句和疑问句（not any / Do you have any…），another 后面接单数名词表示「另一个」，不能跟 day 表频率。",
               "knowledgePointIds": [
                 "kp-enmv-u3-lion"
@@ -269,11 +270,11 @@
               "type": "single",
               "question": "You can sometimes see (4) ____ next to a river.",
               "options": [
-                "A. them",
-                "B. it",
-                "C. him"
+                "A. him",
+                "B. them",
+                "C. it"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "前面说的是 lions（复数动物），代词要用宾格复数 them。it 指单数物，him 指单数男性。",
               "knowledgePointIds": [
                 "kp-enmv-u3-lion"
@@ -287,11 +288,11 @@
               "type": "single",
               "question": "Smaller cats (5) ____ not like being in water.",
               "options": [
-                "A. do",
-                "B. have",
+                "A. have",
+                "B. do",
                 "C. are"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "一般现在时的否定：主语是复数 cats，用 do not + 动词原形（do not like）。have not like / are not like 都不成立。",
               "knowledgePointIds": [
                 "kp-enmv-u3-lion"
@@ -463,11 +464,11 @@
               "type": "single",
               "question": "This is a building where you can go if you want to catch a plane.",
               "options": [
-                "A. an airport",
-                "B. a bus stop",
-                "C. a hotel"
+                "A. a hotel",
+                "B. an airport",
+                "C. a bus stop"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "catch a plane（坐飞机）的地方是机场 an airport。a bus stop 是等公交的地方，a hotel 是住的地方。",
               "knowledgePointIds": [
                 "kp-enmv-u7-def"
@@ -481,11 +482,11 @@
               "type": "single",
               "question": "You find these in most towns, and people stay in them when they're away from home.",
               "options": [
-                "A. hotels",
-                "B. banks",
-                "C. castles"
+                "A. castles",
+                "B. hotels",
+                "C. banks"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "「离家在外时住在那里」→ 旅馆 hotels。banks 是取钱的银行，castles 是城堡（不住客）。",
               "knowledgePointIds": [
                 "kp-enmv-u7-def"
@@ -517,11 +518,11 @@
               "type": "single",
               "question": "These insects have beautiful wings and fly from flower to flower.",
               "options": [
-                "A. butterflies",
+                "A. camels",
                 "B. swans",
-                "C. camels"
+                "C. butterflies"
               ],
-              "answer": "A",
+              "answer": "C",
               "explanation": "insects（昆虫）+ 花间飞 → 蝴蝶 butterflies。swans 是天鹅（鸟），camels 是骆驼（哺乳动物）。",
               "knowledgePointIds": [
                 "kp-enmv-u7-def"
@@ -535,11 +536,11 @@
               "type": "single",
               "question": "This is made from sugar and different kinds of fruit. People often put it on bread.",
               "options": [
-                "A. jam",
-                "B. a pizza",
+                "A. a pizza",
+                "B. jam",
                 "C. biscuits"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "糖 + 水果做的、涂在面包上 → 果酱 jam。a pizza 是烤的咸食，biscuits 是饼干。",
               "knowledgePointIds": [
                 "kp-enmv-u7-def"
@@ -553,11 +554,11 @@
               "type": "single",
               "question": "This animal has eight legs and lives near rocks in the sea.",
               "options": [
-                "A. an octopus",
-                "B. a snail",
-                "C. a swan"
+                "A. a swan",
+                "B. an octopus",
+                "C. a snail"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "八条腿 + 海里的石头旁 → 章鱼 an octopus。a snail 是蜗牛（陆生，壳），a swan 是水上的天鹅（两条腿）。",
               "knowledgePointIds": [
                 "kp-enmv-u7-def"
@@ -589,11 +590,11 @@
               "type": "single",
               "question": "In story books for young children these are usually the homes of kings and queens.",
               "options": [
-                "A. castles",
-                "B. banks",
+                "A. banks",
+                "B. castles",
                 "C. bus stops"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "国王和王后的家 → 城堡 castles（童话里的固定设定）。",
               "knowledgePointIds": [
                 "kp-enmv-u7-def"
@@ -608,8 +609,8 @@
               "question": "You cook this in an oven. It usually has cheese and tomatoes on the top.",
               "options": [
                 "A. a pizza",
-                "B. jam",
-                "C. cereal"
+                "B. cereal",
+                "C. jam"
               ],
               "answer": "A",
               "explanation": "烤箱 + 上面有奶酪和番茄 → 披萨 a pizza。jam 不烤，cereal 是冷食冲牛奶。",
@@ -625,11 +626,11 @@
               "type": "single",
               "question": "Some people ride these animals when they need to travel across hot, dry places like deserts.",
               "options": [
-                "A. camels",
-                "B. swans",
+                "A. swans",
+                "B. camels",
                 "C. butterflies"
               ],
-              "answer": "A",
+              "answer": "B",
               "explanation": "沙漠里骑的动物 → 骆驼 camels（驼峰储脂肪，能走很久不喝水）。",
               "knowledgePointIds": [
                 "kp-enmv-u7-def"

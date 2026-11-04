@@ -1,5 +1,5 @@
 {
-  "version": "3.1.1",
-  "downloadUrl": "https://ghproxy.net/https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.1/FamilyLearningSystem_3.1.1_x64-setup.exe",
-  "notes": "V3.1.1 · 修复：答题提交后选项仍可点击的问题。此前孩子判错后如果不服气再点另一个选项，画面会出现「你的答案和正确答案一样却显示答错」的自相矛盾，让家长误以为判分出了错。现在提交判分后所有作答控件统一锁定，杜绝这种困惑。判分内核本身没有问题。"
+  "version": "3.1.2",
+  "downloadUrl": "https://ghproxy.net/https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.2/FamilyLearningSystem_3.1.2_x64-setup.exe",
+  "notes": "V3.1.2 · 修复：①今日任务里「词汇默写」点进去每道题都是同一个词（列表写「柔和」，进去却是「奇观」）——队列取题时没按该项的知识点收窄，现在精确按知识点筛题，且难度也按该词计算；②「检查题库更新」对部分数学包误报包校验未通过（跨包知识点引用被误杀），现已放行；③剑桥少儿英语单选题正确选项原先固定在 A 位，无脑选 A 即可全对，现已把选项位置打散。另含英语四上词汇包按沪教版课本重录。"
 }

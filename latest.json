@@ -1,11 +1,11 @@
 {
-  "version": "3.1.1",
-  "notes": "V3.1.1 · 修复：答题提交后选项仍可点击的问题。此前孩子判错后如果不服气再点另一个选项，画面会出现「你的答案和正确答案一样却显示答错」的自相矛盾，让家长误以为判分出了错。现在提交判分后所有作答控件统一锁定，杜绝这种困惑。判分内核本身没有问题。",
-  "pub_date": "2026-11-02T03:10:17.298Z",
+  "version": "3.1.2",
+  "notes": "V3.1.2 · 修复：①今日任务里「词汇默写」点进去每道题都是同一个词（列表写「柔和」，进去却是「奇观」）——队列取题时没按该项的知识点收窄，现在精确按知识点筛题，且难度也按该词计算；②「检查题库更新」对部分数学包误报包校验未通过（跨包知识点引用被误杀），现已放行；③剑桥少儿英语单选题正确选项原先固定在 A 位，无脑选 A 即可全对，现已把选项位置打散。另含英语四上词汇包按沪教版课本重录。",
+  "pub_date": "2026-11-04T13:23:03.485Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVk5jK2RlQ2o2UHZKcUJ3OGFieldNQU00bEdnRVNhdTViaE42UFV1V0JWaWZHYzlTdEZ6MzVFTThnMVlZenV3MnFLQ216UUpRUWs5WWdDc29GZzZlMWdVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzNTg5MDEwCWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjFfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS4xClBQSTJpWThOd01EZGxJY2NyS1BKWjM4ZWg3UVdZdFZTNlpCYVBXVFdZUnVGVmZMZjlXRmJ4WVVhQXE0OUk5bzMyS0JNS0FKVWxQeU8vS1B0Rm9lU0FRPT0K",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.1/FamilyLearningSystem_3.1.1_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkk4dUJ4M29NV0t1UjJCaTAwUHhBWkEySUxGTjBsVTgrRk50b0JRSXZCdFpHaENJSUUzUmY1YmppQnU0Z2VUQUkreExtWjBDZVl6U3NTNWFubXQ1dXdnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzNzk4NTU5CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjJfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS4yCmZWNUtpbHdOdDNzYlVoN0tpRFNGSU41WVRuZ3loYUZLSnJNamRSL2hpc0ZmOGhPUTRFY0xrVFBXcjltblZlRUthUW1FUXJaZUY0T3FGaHd2WTNNUkF3PT0K",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.2/FamilyLearningSystem_3.1.2_x64-setup.exe"
     }
   }
 }

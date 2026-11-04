@@ -146,7 +146,19 @@ export async function applyUpdate(
     return { ok: false, reason: '下载内容不是合法 JSON' }
   }
 
-  const { package: normalized, errors } = normalizePackage(raw)
+  // 跨包知识点引用池：special/sprint/daily 包的题目会合法引用「已安装的 unit 包」
+  // 里的知识点（如 `unit-math-4-up-rjb-p1::kp-num-001`）。ZIP 整批导入走
+  // `externalKpIds` 批次池放行；在线更新是逐包校验，必须把「已安装全部包的 KP」
+  // 喂进校验池，否则合法跨包引用会被 E009 误杀（见 normalizePackage.ts /
+  // generateWeakpoints.ts 注释）。注意：只用于校验 idExists，不写入，不影响进度。
+  const installedRows = await db.packages.toArray()
+  const externalKpIds = new Set<string>()
+  for (const row of installedRows) {
+    const kps = (row as any)?.knowledgePoints
+    if (Array.isArray(kps)) for (const kp of kps) if (kp?.id) externalKpIds.add(kp.id)
+  }
+
+  const { package: normalized, errors } = normalizePackage(raw, { externalKpIds })
   if (errors.length > 0 || !normalized) {
     return {
       ok: false,

@@ -235,7 +235,7 @@ import {
 } from '@core/session/topicSession'
 import { db, type MasteryStatus, type TopicSessionRecord } from '@/db'
 import { completePlanItem } from '@core/plan/dailyPlanService'
-import { levelOf, selectSessionQuestions, DIFFICULTY_LABEL, type Difficulty } from '@core/plan/adaptive'
+import { levelOf, selectSessionQuestions, filterByKnowledgePoint, DIFFICULTY_LABEL, type Difficulty } from '@core/plan/adaptive'
 import QuizEngine, { type AnswerPayload } from '@modules/core/QuizEngine.vue'
 import { useUiStore } from '@core/stores/ui'
 
@@ -626,8 +626,8 @@ const autoKnowledgePoints = computed(() => {
     .filter(Boolean)
 })
 
-/** 从全局题池筛题 */
-const allTopicExercises = computed(() => {
+/** 从全局题池筛题（显式 any[]：题面来自 JSON，元素形状不固定，且需传给 selectSessionQuestions） */
+const allTopicExercises = computed<any[]>(() => {
   const topic = currentTopic.value
   if (!topic) return []
 
@@ -679,17 +679,27 @@ const topicKpIds = computed(() => {
 const sessionItemId = computed(() => String(route.query.session ?? ''))
 const sessionMode = computed(() => sessionItemId.value !== '')
 
+/**
+ * 队列项指定的知识点（由 `TodayPlan.startItem` 放在 `?kp=` 上）。
+ * 一个 topic 常含几十个 KP，不按它筛题就会「列表写柔和、进去是奇观」。
+ */
+const sessionKpId = computed(() => String(route.query.kp ?? '').trim())
+
 const sessionLimit = computed(() => {
   const n = Number(route.query.limit)
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0
 })
 
-/** 本主题实际要做的题（队列模式下被 `limit` 截断 + 按冻结的难度挑题） */
+/** 本主题实际要做的题（队列模式下先按 KP 精确筛、再被 `limit` 截断 + 按冻结的难度挑题） */
 const topicExercises = computed(() => {
   const all = allTopicExercises.value
-  if (sessionLimit.value <= 0) return all
+  if (sessionLimit.value <= 0) {
+    // 没给 limit（老链接 / 异常）时也要按 KP 收窄，否则同样会串题
+    return sessionMode.value ? filterByKnowledgePoint(all, sessionKpId.value) : all
+  }
   if (sessionMode.value) {
-    return selectSessionQuestions(all, frozenLevel.value, sessionLimit.value)
+    const scoped = filterByKnowledgePoint(all, sessionKpId.value)
+    return selectSessionQuestions(scoped, frozenLevel.value, sessionLimit.value)
   }
   return all.slice(0, sessionLimit.value)
 })
@@ -701,7 +711,11 @@ const topicExercises = computed(() => {
  * `wrongStreak >= 2` 降一档。**不新增埋点**，用的是 `recordProgress` 一直在维护的字段。
  */
 function computeSessionLevel(): Difficulty {
-  const kpId = topicKpIds.value[0]
+  // 队列模式下必须用「本项指定的知识点」，不能用 topic 第一个 KP ——
+  // 否则「柔和」项会拿「奇观」的作答记录算难度，与题目错配同源。
+  const kpId = (sessionMode.value && sessionKpId.value)
+    ? sessionKpId.value
+    : topicKpIds.value[0]
   if (!kpId) return '基础'
   const p = progressOf(kpId)
   if (!p) return '基础'
