@@ -645,8 +645,14 @@ describe('A3 · settings 键分片静态扫描', () => {
     // 设备级键）= 59。
     // V3.0 · M4 新增迁移自检的 1 个访问点（migrationCheckService.ts 的
     // `settings.get(scopedKey('achievements', pid))`，按备份里的档案逐个读徽章数）= 60。
+    // V3.1.3 新增 7 个访问点，全部落在**同一个已登记的 `backup:snapshots` 键**上
+    // （没有引入新 settings 键，因此 GLOBAL_KEYS / EXPORT_EXCLUDED_GLOBAL_KEYS /
+    //  GLOBAL_NEVER_MERGE 都不用改，静态扫描已确认零问题）：
+    //   autoSnapshot.ts 里 capturePreClearSnapshot、clearAllUserDataExceptSnapshots、
+    //   deleteSnapshot、clearSnapshots（改写后多了 get）新增的 get/put/clear。
+    // 逐条核对：都是设备级、值仍是 SnapshotFile 结构 = 67。
     // 改这个数字等于承认"我看过每一个新访问点"。
-    expect(r.points.length).toBe(60)
+    expect(r.points.length).toBe(67)
     expect(r.exempts.length).toBe(2)
   })
 

@@ -342,6 +342,10 @@ import { currentProfileId } from '@core/profile/currentProfile'
 import { usePackageStore } from '@core/stores/package'
 import { db } from '@/db'
 import {
+  withPreClearSnapshot,
+  clearAllUserDataExceptSnapshots,
+} from '@core/backup/autoSnapshot'
+import {
   exportMistakes, exportBackupV2, exportAllPackages,
 } from '@/core/export/exportService'
 import type { ThemePreset } from '@core/styles/palette'
@@ -703,27 +707,43 @@ async function doExportFamilyBackup() {
   }
 }
 
+/**
+ * V3.1.3 · 三个危险操作的统一收口
+ * ---------------------------------------------------------------------
+ * 事故复盘：3.1.1 的「清空所有数据」执行 `db.settings.clear()`，
+ * 把存在 settings 里的自动快照一起删了，事后**没有任何恢复入口**。
+ * 现在每个清空动作执行前都强制拍一份保护快照（`withPreClearSnapshot`），
+ * 拍不上就中止清空 —— 宁可清空失败，也不能让数据裸奔。
+ */
+const RECOVER_HINT = '执行前会自动保存一份恢复点，之后可在「设置 → 备份导入 → 自动快照」里恢复。'
+
 function doClearMistakes() {
   dialog.warning({
-    title: '确认清空错题？', content: '此操作不可恢复',
+    title: '确认清空错题？', content: `只清空当前孩子的错题。${RECOVER_HINT}`,
     positiveText: '清空', negativeText: '取消',
     onPositiveClick: async () => {
       // V1.4 · B1：只清**当前档案**的错题。`clear()` 会把另一个孩子的错题一起删掉，
       // 而且没有任何提示能让人发现这件事。
-      await db.mistakes.where('profileId').equals(currentProfileId()).delete()
-      message.success('已清空错题')
+      const r = await withPreClearSnapshot('清空所有错题', async () => {
+        await db.mistakes.where('profileId').equals(currentProfileId()).delete()
+      })
+      if (!r.ok) { message.error(r.error ?? '清空失败'); return }
+      message.success('已清空错题（已保留恢复点）')
     },
   })
 }
 
 function doClearProgress() {
   dialog.warning({
-    title: '确认清空进度？', content: '此操作不可恢复',
+    title: '确认清空学习进度？', content: `只清空当前孩子的学习进度。${RECOVER_HINT}`,
     positiveText: '清空', negativeText: '取消',
     onPositiveClick: async () => {
       // 同上：只清当前档案
-      await db.progress.where('profileId').equals(currentProfileId()).delete()
-      message.success('已清空进度')
+      const r = await withPreClearSnapshot('清空学习进度', async () => {
+        await db.progress.where('profileId').equals(currentProfileId()).delete()
+      })
+      if (!r.ok) { message.error(r.error ?? '清空失败'); return }
+      message.success('已清空学习进度（已保留恢复点）')
     },
   })
 }
@@ -731,12 +751,13 @@ function doClearProgress() {
 function clearAllData() {
   dialog.error({
     title: '⚠️ 清空所有数据',
-    content: '将删除所有学习包、进度、错题、设置。此操作不可恢复！',
+    content: `将删除所有学习包、进度、错题、设置。${RECOVER_HINT}这是破坏性最大的操作，建议先点「📤 导出 → 家庭备份」另存一份文件到电脑。`,
     positiveText: '我确定', negativeText: '取消',
     onPositiveClick: async () => {
       // profile-scope-ok: 「清空所有数据」的语义就是整库重置（含学习包与档案列表本身），跨档案删除是需求
-      await Promise.all([db.packages.clear(), db.progress.clear(), db.mistakes.clear(), db.settings.clear()])
-      message.success('已清空所有数据')
+      const r = await withPreClearSnapshot('清空所有数据（含包）', clearAllUserDataExceptSnapshots)
+      if (!r.ok) { message.error(r.error ?? '清空失败'); return }
+      message.success('已清空所有数据（恢复点已保留，可在自动快照里恢复）')
     },
   })
 }

@@ -196,6 +196,8 @@ export interface FakeTable {
   /** `put` 次数：用来断言"不该落库时一个字节都没写" */
   puts: number
   __reset(): void
+  /** 真 Dexie 的 Table.clear()：整表清空。V3.1.3 清空所有数据的路径需要它 */
+  clear(): Promise<void>
   toArray(): Promise<Row[]>
   get(k: any): Promise<Row | undefined>
   put(r: Row): Promise<any>
@@ -305,6 +307,13 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
         rows.length = 0
         seq = 1
         table.puts = 0
+      },
+
+      async clear() {
+        writes.push(`clear:${name}`)
+        if (failOn.has(`clear:${name}`)) throw new Error(`fake db: ${name}.clear 失败`)
+        rows.length = 0
+        seq = 1
       },
 
       async toArray() {
