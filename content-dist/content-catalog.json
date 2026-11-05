@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-04",
+  "updatedAt": "2026-11-05",
   "packages": [
     {
       "packageId": "special-chinese-2-up-kantu",
@@ -141,9 +141,9 @@
     },
     {
       "packageId": "special-english-7-up-phrases",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": "七年级上册核心短语专项测验",
-      "sha256": "ad6234307591198ffe60300734dc10128fad33132864df4740b019a011a95d15"
+      "sha256": "c6a1275998a7b05ca584bf06806583d1ecc3215f1aa6f6372e72f67e53551bd2"
     },
     {
       "packageId": "special-english-7-up-school",
@@ -231,21 +231,21 @@
     },
     {
       "packageId": "special-english-movers-mock",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": "剑桥 Movers · 全真模拟（阅读写作 33 题）",
-      "sha256": "a00318a8b5e1e9ffdb2fb2de128b2fb3ee698b1cc0f52f55d96a6ceef221378e"
+      "sha256": "529bd641fabd277fd1eb9578ce3c05ec0905f7a38dda360fa9f6cd3a92506953"
     },
     {
       "packageId": "special-english-movers-review",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": "剑桥 Movers · 三套复习测试（阅读写作）",
-      "sha256": "eb6e58bfdac5b65682b528a36dffac4086493334e41013b83d77fe7443337370"
+      "sha256": "ea7c5b180d7c07928fb8d86f87a118de6520c7a66d0c34fea236576077e7cdb1"
     },
     {
       "packageId": "special-english-movers-unit",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": "剑桥 Movers · 单元阅读写作精练",
-      "sha256": "7cd8612baa4a378e6e312ec282ccb744e609f1d85895eb3ca7f97a8dd50f8c68"
+      "sha256": "c1b6fcd44b6f574790ddfb01e6bce4dc612884d254f2721f95f7a07985c805a7"
     },
     {
       "packageId": "daily-math-2-up-rjb-45d",
@@ -315,9 +315,9 @@
     },
     {
       "packageId": "daily-math-4-up-rjb-45d",
-      "version": "1.0.0",
-      "title": "数学每日一练 45 天（四年级上·人教版）",
-      "sha256": "56afb251453dc3e4a0dfab43fd5a3493fe77645afd153de23219465a8b03d75b"
+      "version": "1.1.0",
+      "title": "数学期中冲刺 7 天打卡（四年级上·北师版）",
+      "sha256": "fecc8fa518313699b3101047ada6ae3b76837f1dfc7578074dec13bf26a67b2d"
     },
     {
       "packageId": "special-math-4-up-jiajiancheng",
