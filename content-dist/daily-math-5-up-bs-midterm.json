@@ -1,0 +1,2048 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "daily-math-5-up-bs-midterm",
+    "type": "daily",
+    "isInternal": false,
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 5,
+    "term": "up",
+    "edition": "北师版",
+    "title": "数学期中冲刺 打卡（五年级上·北师版）",
+    "version": "1.0.0",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "daily-math-5-up-bs-midterm::kp-d1",
+      "type": "concept",
+      "title": "小数的意义、性质与单位换算",
+      "content": "小数的数位、计数单位、改写与长度质量单位换算。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 12,
+        "cognitiveLevel": "理解",
+        "ability": "数感"
+      },
+      "exerciseIds": [
+        "daily-math-5-up-bs-midterm::d1-01-01",
+        "daily-math-5-up-bs-midterm::d1-01-02",
+        "daily-math-5-up-bs-midterm::d1-01-03",
+        "daily-math-5-up-bs-midterm::d1-01-04",
+        "daily-math-5-up-bs-midterm::d1-01-05",
+        "daily-math-5-up-bs-midterm::d1-01-06a",
+        "daily-math-5-up-bs-midterm::d1-01-06b",
+        "daily-math-5-up-bs-midterm::d1-01-08",
+        "daily-math-5-up-bs-midterm::d1-01-09",
+        "daily-math-5-up-bs-midterm::d1-01-10"
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::kp-d2",
+      "type": "concept",
+      "title": "三角形分类、角度与等量代换",
+      "content": "按角分类三角形、等腰三角形角与周长、天平等量关系。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 12,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念"
+      },
+      "exerciseIds": [
+        "daily-math-5-up-bs-midterm::d2-01-01",
+        "daily-math-5-up-bs-midterm::d2-01-02",
+        "daily-math-5-up-bs-midterm::d2-01-03",
+        "daily-math-5-up-bs-midterm::d2-01-04",
+        "daily-math-5-up-bs-midterm::d2-01-05a",
+        "daily-math-5-up-bs-midterm::d2-01-05b",
+        "daily-math-5-up-bs-midterm::d2-01-06",
+        "daily-math-5-up-bs-midterm::d2-01-07"
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::kp-d3",
+      "type": "concept",
+      "title": "小数计算规律与选择题",
+      "content": "积的变化规律、字母表示数、选择与说理。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 12,
+        "cognitiveLevel": "理解",
+        "ability": "推理能力"
+      },
+      "exerciseIds": [
+        "daily-math-5-up-bs-midterm::d3-01-01",
+        "daily-math-5-up-bs-midterm::d3-01-02",
+        "daily-math-5-up-bs-midterm::d3-01-03",
+        "daily-math-5-up-bs-midterm::d3-01-04",
+        "daily-math-5-up-bs-midterm::d3-01-05",
+        "daily-math-5-up-bs-midterm::d3-02-01",
+        "daily-math-5-up-bs-midterm::d3-02-02",
+        "daily-math-5-up-bs-midterm::d3-02-03",
+        "daily-math-5-up-bs-midterm::d3-02-04",
+        "daily-math-5-up-bs-midterm::d3-02-05",
+        "daily-math-5-up-bs-midterm::d3-02-06"
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::kp-d4",
+      "type": "concept",
+      "title": "小数四则计算",
+      "content": "口算、竖式计算与简便运算。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "掌握",
+        "ability": "运算能力"
+      },
+      "exerciseIds": [
+        "daily-math-5-up-bs-midterm::d4-01-01",
+        "daily-math-5-up-bs-midterm::d4-01-02",
+        "daily-math-5-up-bs-midterm::d4-01-03",
+        "daily-math-5-up-bs-midterm::d4-01-04",
+        "daily-math-5-up-bs-midterm::d4-01-05",
+        "daily-math-5-up-bs-midterm::d4-01-06",
+        "daily-math-5-up-bs-midterm::d4-01-07",
+        "daily-math-5-up-bs-midterm::d4-01-08",
+        "daily-math-5-up-bs-midterm::d4-02-01",
+        "daily-math-5-up-bs-midterm::d4-02-02",
+        "daily-math-5-up-bs-midterm::d4-02-03",
+        "daily-math-5-up-bs-midterm::d4-02-04",
+        "daily-math-5-up-bs-midterm::d4-03-01",
+        "daily-math-5-up-bs-midterm::d4-03-02",
+        "daily-math-5-up-bs-midterm::d4-03-03"
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::kp-d5",
+      "type": "concept",
+      "title": "小数意义表达与应用题（估算）",
+      "content": "解释小数含义、尺规作图、用小数解决生活问题。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 14,
+        "cognitiveLevel": "应用",
+        "ability": "应用意识"
+      },
+      "exerciseIds": [
+        "daily-math-5-up-bs-midterm::d5-01-01",
+        "daily-math-5-up-bs-midterm::d5-01-02",
+        "daily-math-5-up-bs-midterm::d5-02-01",
+        "daily-math-5-up-bs-midterm::d5-02-02",
+        "daily-math-5-up-bs-midterm::d5-02-03"
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::kp-d6",
+      "type": "concept",
+      "title": "字母表示与综合应用、拓展",
+      "content": "用字母表示数量关系、开放题与三角形外角和拓展。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 14,
+        "cognitiveLevel": "应用",
+        "ability": "推理能力"
+      },
+      "exerciseIds": [
+        "daily-math-5-up-bs-midterm::d6-01-01",
+        "daily-math-5-up-bs-midterm::d6-01-02",
+        "daily-math-5-up-bs-midterm::d6-02-01",
+        "daily-math-5-up-bs-midterm::d6-02-02",
+        "daily-math-5-up-bs-midterm::d6-02-03",
+        "daily-math-5-up-bs-midterm::d6-03-01"
+      ]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-01",
+      "type": "blank",
+      "question": "7.68 中的“6”在（　）位上。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "十分",
+      "explanation": "小数点后第一位是十分位。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-02",
+      "type": "blank",
+      "question": "7.68 中的“6”表示（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 2
+      },
+      "answer": "6个0.1",
+      "explanation": "十分位上的 6 表示 6 个 0.1（或 6 个十分之一）。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-03",
+      "type": "blank",
+      "question": "7.68 这个小数的计数单位是（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 3
+      },
+      "answer": "0.01",
+      "explanation": "两位小数，计数单位是百分之一，即 0.01。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-04",
+      "type": "blank",
+      "question": "不改变大小，把 7.68 改写成计数单位为千分之一的小数是（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 4
+      },
+      "answer": "7.680",
+      "explanation": "在末尾添 0，7.68 = 7.680，计数单位变为 0.001。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-05",
+      "type": "blank",
+      "question": "16米6分米 =（　）米。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 5
+      },
+      "answer": "16.6",
+      "explanation": "6 分米 = 0.6 米，16 + 0.6 = 16.6 米。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-06a",
+      "type": "blank",
+      "question": "22.5 吨 =（　）吨（填整数部分）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 6
+      },
+      "answer": "22",
+      "explanation": "22.5 吨 = 22 吨 + 0.5 吨。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-06b",
+      "type": "blank",
+      "question": "22.5 吨 = 22 吨（　）千克。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 7
+      },
+      "answer": "500",
+      "explanation": "0.5 吨 = 500 千克。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-08",
+      "type": "blank",
+      "question": "在○里填上 >、< 或 =：3.98+2.65 ○ 7。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 8
+      },
+      "answer": "<",
+      "explanation": "3.98+2.65=6.63 < 7。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-09",
+      "type": "blank",
+      "question": "在○里填上 >、< 或 =：3.6×1.2 ○ 0.36×12。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 9
+      },
+      "answer": "=",
+      "explanation": "3.6×1.2=4.32，0.36×12=4.32，相等。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d1-01-10",
+      "type": "blank",
+      "question": "在○里填上 >、< 或 =：520×1.01 ○ 520。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 10
+      },
+      "answer": ">",
+      "explanation": "乘比 1 大的数结果变大，525.2 > 520。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-01",
+      "type": "blank",
+      "question": "碎片显示两个角分别为 50°、30°，原三角形是（　）角三角形。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "钝",
+      "explanation": "第三角 = 180°−50°−30° = 100° > 90°，是钝角三角形。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-02",
+      "type": "blank",
+      "question": "碎片显示两个角分别为 36°、54°，原三角形是（　）角三角形。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 2
+      },
+      "answer": "直",
+      "explanation": "第三角 = 180°−36°−54° = 90°，是直角三角形。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-03",
+      "type": "blank",
+      "question": "碎片显示两个角分别为 60°、65°，原三角形是（　）角三角形。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 3
+      },
+      "answer": "锐",
+      "explanation": "第三角 = 180°−60°−65° = 55°，三角均 < 90°，是锐角三角形。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-04",
+      "type": "blank",
+      "question": "踏步高度 17.5 cm，踏步宽度比高度至少多 8.5 cm，每级台阶侧面至少要贴（　）cm² 的瓷砖。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 4
+      },
+      "answer": "455",
+      "explanation": "宽 = 17.5+8.5 = 26 cm；侧面积 = 17.5×26 = 455 cm²。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-05a",
+      "type": "blank",
+      "question": "等腰三角形一个内角是 40°，若 40° 是顶角，则每个底角是（　）°。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 5
+      },
+      "answer": "70",
+      "explanation": "(180°−40°)÷2 = 70°。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-05b",
+      "type": "blank",
+      "question": "等腰三角形一个内角是 40°，若 40° 是底角，则顶角是（　）°。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 6
+      },
+      "answer": "100",
+      "explanation": "180°−40°−40° = 100°。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-06",
+      "type": "blank",
+      "question": "等腰三角形两条边分别长 7 cm 和 15 cm，这个等腰三角形的周长是（　）cm。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 7
+      },
+      "answer": "37",
+      "explanation": "7+7<15 不能成三角形；只能是 15、15、7，周长 15+15+7=37。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d2-01-07",
+      "type": "blank",
+      "question": "天平左盘 2 个圆柱木块 = 右盘 42.8 g 盐。若左盘再放 4 个同样的圆柱木块，右盘需再增加（　）g 盐才平衡。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 8
+      },
+      "answer": "85.6",
+      "explanation": "1 个木块 = 21.4 g；4 个 = 4×21.4 = 85.6 g。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-01-01",
+      "type": "blank",
+      "question": "根据 28×11=308，0.28×11=（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "3.08",
+      "explanation": "两个因数共缩小 100 倍，积也缩小 100 倍。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-01-02",
+      "type": "blank",
+      "question": "根据 28×11=308，（　）×0.11=3.08。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 2
+      },
+      "answer": "28",
+      "explanation": "3.08÷0.11 = 28。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-01-03",
+      "type": "blank",
+      "question": "根据 28×11=308，2.8×（　）=308。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 3
+      },
+      "answer": "110",
+      "explanation": "308÷2.8 = 110。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-01-04",
+      "type": "blank",
+      "question": "根据 28×11=308，0.28×0.11=（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 4
+      },
+      "answer": "0.0308",
+      "explanation": "共缩小 10000 倍，308→0.0308。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-01-05",
+      "type": "blank",
+      "question": "一个直角三角形，其中一个锐角是 a°，另一个锐角是（　）°。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 5
+      },
+      "answer": "90-a",
+      "explanation": "直角三角形两锐角互余：90°−a°。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-02-01",
+      "type": "single",
+      "question": "同学们用不同的方式表示 0.13，其中不正确的是（　）。\nA. 方格图：10×10 网格中涂色 13 格\nB. 计数器：个位 0、十分位 1、百分位 3 各 1 颗珠\nC. 数轴：0 到 0.2 之间标出 0.13\nD. 0.13 由 13 个 0.1 组成",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 6
+      },
+      "answer": "D",
+      "options": [
+        "A. 方格图：10×10 网格中涂色 13 格",
+        "B. 计数器：个位 0、十分位 1、百分位 3 各 1 颗珠",
+        "C. 数轴：0 到 0.2 之间标出 0.13",
+        "D. 0.13 由 13 个 0.1 组成"
+      ],
+      "explanation": "13 个 0.1 是 1.3；0.13 应由 13 个 0.01 组成。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-02-02",
+      "type": "single",
+      "question": "如图，在池塘一侧取点 O，OA=6 m，OB=12 m。A、B 两点之间的距离可能是（　）。\nA. 6 m\nB. 15 m\nC. 20 m\nD. 25 m",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 7
+      },
+      "answer": "B",
+      "options": [
+        "A. 6 m",
+        "B. 15 m",
+        "C. 20 m",
+        "D. 25 m"
+      ],
+      "explanation": "三角形三边：6 < AB < 18，只有 15 m 符合。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-02-03",
+      "type": "single",
+      "question": "下列选项中，能用 2(a+4) 表示的是（　）。\nA. 线段 a、a、4 求和\nB. 男生 a 人、女生 a 人、4 人求和\nC. 长方形（宽 a、高 4）的周长\nD. 等腰三角形（底 a、腰 4）的周长",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 8
+      },
+      "answer": "C",
+      "options": [
+        "A. 线段 a、a、4 求和",
+        "B. 男生 a 人、女生 a 人、4 人求和",
+        "C. 长方形（宽 a、高 4）的周长",
+        "D. 等腰三角形（底 a、腰 4）的周长"
+      ],
+      "explanation": "长方形周长 = 2×(宽+高) = 2(a+4)。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-02-04",
+      "type": "single",
+      "question": "瓷砖厂出品 4 款瓷砖，可以单独密铺的有（　）。\nA. ①②③\nB. ①②④\nC. ②③④\nD. ①③④",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 9
+      },
+      "answer": "B",
+      "options": [
+        "A. ①②③",
+        "B. ①②④",
+        "C. ②③④",
+        "D. ①③④"
+      ],
+      "explanation": "能单独密铺的图形内角可拼成 360°；①②④ 符合。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-02-05",
+      "type": "single",
+      "question": "1 支铅笔 0.85 元，买 15 支需要多少元？竖式中框出的数表示（　）。\nA. 买 1 支铅笔需要 8.5 元\nB. 买 5 支铅笔需要 8.5 元\nC. 买 10 支铅笔需要 8.5 元\nD. 买 10 支铅笔需要 85 元",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 10
+      },
+      "answer": "C",
+      "options": [
+        "A. 买 1 支铅笔需要 8.5 元",
+        "B. 买 5 支铅笔需要 8.5 元",
+        "C. 买 10 支铅笔需要 8.5 元",
+        "D. 买 10 支铅笔需要 85 元"
+      ],
+      "explanation": "框中 85 在十分位，表示 0.85×10 = 8.5，即买 10 支的钱。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d3-02-06",
+      "type": "single",
+      "question": "按规律摆 n 个铜钱纹需要（　）片落叶。\nA. 3n+1\nB. 3n\nC. 3n−1\nD. 4n",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d3"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 11
+      },
+      "answer": "A",
+      "options": [
+        "A. 3n+1",
+        "B. 3n",
+        "C. 3n−1",
+        "D. 4n"
+      ],
+      "explanation": "1 个用 4 片，之后每加 1 个多用 3 片：4+3(n−1)=3n+1。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-01",
+      "type": "blank",
+      "question": "直接写出得数：0.8+0.2 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "1",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-02",
+      "type": "blank",
+      "question": "直接写出得数：1−0.99 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 2
+      },
+      "answer": "0.01",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-03",
+      "type": "blank",
+      "question": "直接写出得数：0.35−0.3 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 3
+      },
+      "answer": "0.05",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-04",
+      "type": "blank",
+      "question": "直接写出得数：1+9.24 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 4
+      },
+      "answer": "10.24",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-05",
+      "type": "blank",
+      "question": "直接写出得数：7.05×100 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 5
+      },
+      "answer": "705",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-06",
+      "type": "blank",
+      "question": "直接写出得数：0.5×0.9 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 6
+      },
+      "answer": "0.45",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-07",
+      "type": "blank",
+      "question": "直接写出得数：0.45×2 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 7
+      },
+      "answer": "0.9",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-01-08",
+      "type": "blank",
+      "question": "直接写出得数：4×0.25 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 8
+      },
+      "answer": "1",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-02-01",
+      "type": "blank",
+      "question": "用竖式计算：62.4−12.53 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 9
+      },
+      "answer": "49.87",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-02-02",
+      "type": "blank",
+      "question": "用竖式计算：3.7×2.06 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 10
+      },
+      "answer": "7.622",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-02-03",
+      "type": "blank",
+      "question": "用竖式计算：38.26+14.4 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 11
+      },
+      "answer": "52.66",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-02-04",
+      "type": "blank",
+      "question": "用竖式计算：1.25×1.2 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 12
+      },
+      "answer": "1.5",
+      "explanation": "",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-03-01",
+      "type": "blank",
+      "question": "用简便方法计算：70.8−7.25−1.75 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 13
+      },
+      "answer": "61.8",
+      "explanation": "70.8−(7.25+1.75)=70.8−9=61.8。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-03-02",
+      "type": "blank",
+      "question": "用简便方法计算：15.6×6.4+3.6×15.6 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 14
+      },
+      "answer": "156",
+      "explanation": "15.6×(6.4+3.6)=15.6×10=156。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d4-03-03",
+      "type": "blank",
+      "question": "用简便方法计算：6.95×101−6.95 =（　）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d4"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 15
+      },
+      "answer": "695",
+      "explanation": "6.95×(101−1)=6.95×100=695。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d5-01-01",
+      "type": "essay",
+      "question": "请你用自己喜欢的方式，解释 0.4 的含义。（4 分）",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d5"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "例如：把一个整体平均分成 10 份，取其中的 4 份，就表示 0.4；也可以说 4 个 0.1 是 0.4。",
+      "keyPoints": [
+        "平均分成10份",
+        "取其中4份",
+        "表示0.4或4个0.1"
+      ],
+      "explanation": "只要能体现“十等分取四份”即可。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d5-01-02",
+      "type": "essay",
+      "question": "用尺规作出下面的三角形。（4 分）",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d5"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 2
+      },
+      "answer": "先用圆规量出三条边的长度，分别以两个端点为圆心、对应边长为半径画弧，弧的交点即为第三个顶点，连接三点得到三角形。",
+      "keyPoints": [
+        "圆规截取边长",
+        "画弧找交点",
+        "连接成三角形"
+      ],
+      "explanation": "考查尺规作三角形。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d5-02-01",
+      "type": "blank",
+      "question": "轩轩家日均厨余垃圾 0.65 kg，可回收垃圾 1.43 kg。日均共产生生活垃圾（　）kg。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d5"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 3
+      },
+      "answer": "2.08",
+      "explanation": "0.65+1.43 = 2.08 kg。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d5-02-02",
+      "type": "blank",
+      "question": "变频空调一晚耗电 1.1 千瓦时，普通空调 6.6 千瓦时，电费每千瓦时 0.56 元。变频比普通一晚便宜（　）元。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d5"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 4
+      },
+      "answer": "3.08",
+      "explanation": "(6.6−1.1)×0.56 = 3.08 元。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d5-02-03",
+      "type": "blank",
+      "question": "买骑行雨衣 35.2 元/件、魔术头巾 8.5 元/条、骑行手套 27.7 元/双 各 3 份，估一估，200 元够吗？（　）（填“够”或“不够”）",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d5"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 5
+      },
+      "answer": "不够",
+      "explanation": "往小估：(35+8+27)×3 = 210 > 200，所以 200 元不够。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d6-01-01",
+      "type": "blank",
+      "question": "周六前 3 小时骑行 a km，后 2 小时平均每小时 b km。周六一共骑行（　）km（用含字母的式子表示）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d6"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "a+2b",
+      "explanation": "前段 a km + 后段 2b km。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d6-01-02",
+      "type": "blank",
+      "question": "当 a=42，b=10.5 时，周六一共骑行（　）km。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d6"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 2
+      },
+      "answer": "63",
+      "explanation": "a+2b = 42+2×10.5 = 63 km。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d6-02-01",
+      "type": "essay",
+      "question": "根据信息提出一个至少需要两步解决的数学问题。已知：①周六骑行 65 km；②骑行 1 km 比汽车少 0.224 kg 碳排放；③周日路程比周六的 1.2 倍少 1 km；④周六消耗 1625 卡路里。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d6"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 3
+      },
+      "answer": "示例：轩轩爸爸周六、日两天骑行一共减少多少千克碳排放？先算总路程 65+65×1.2−1=142(km)，再算减排 142×0.224=31.808(kg)。",
+      "keyPoints": [
+        "提出两步以上问题",
+        "先算总路程",
+        "再算碳排放"
+      ],
+      "explanation": "答案不唯一，问题需至少两步。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d6-02-02",
+      "type": "blank",
+      "question": "解决上面的问题需要的信息是（　）（填序号，如①②③）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d6"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 4
+      },
+      "answer": "①②③",
+      "explanation": "需要路程①、减排系数②、周日与周六关系③；④热量无关。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d6-02-03",
+      "type": "essay",
+      "question": "根据你提出的问题，写出解答过程（算式与结果）。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d6"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 5
+      },
+      "answer": "总路程：65+65×1.2−1 = 142(km)；减少碳排放：142×0.224 = 31.808(kg)。",
+      "keyPoints": [
+        "算出总路程142km",
+        "乘减排系数0.224",
+        "得到31.808kg"
+      ],
+      "explanation": "按你自己的问题合理计算即可。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::d6-03-01",
+      "type": "essay",
+      "question": "如图，将三角形 ABC 的三边 AB、BC、CA 分别延长，得到外角 ∠4、∠5、∠6。不测量，推理 ∠4+∠5+∠6 的度数和，并写出思考过程。",
+      "knowledgePointIds": [
+        "daily-math-5-up-bs-midterm::kp-d6"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 6
+      },
+      "answer": "∠4+∠5+∠6 = 360°。因为三个内角与三个外角之和为 3×180° = 540°，而三角形内角和 = 180°，所以外角和 = 540°−180° = 360°。",
+      "keyPoints": [
+        "三角与外角共540°",
+        "内角和180°",
+        "相减得外角和360°"
+      ],
+      "explanation": "多边形外角和恒为 360°。",
+      "packageId": "daily-math-5-up-bs-midterm"
+    }
+  ],
+  "units": [
+    {
+      "id": "daily-math-5-up-bs-midterm::u01",
+      "name": "每日一练",
+      "title": "Day 01 · 小数的意义与性质（填空 1、2）",
+      "desc": "小数数位、计数单位、改写与单位换算、大小比较",
+      "topics": [
+        {
+          "id": "daily-math-5-up-bs-midterm::t-d1",
+          "title": "小数基础（10 题）",
+          "board": "填空",
+          "knowledgePointIds": [
+            "daily-math-5-up-bs-midterm::kp-d1"
+          ],
+          "exercises": [
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-01",
+              "type": "blank",
+              "question": "7.68 中的“6”在（　）位上。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "十分",
+              "explanation": "小数点后第一位是十分位。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-02",
+              "type": "blank",
+              "question": "7.68 中的“6”表示（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "6个0.1",
+              "explanation": "十分位上的 6 表示 6 个 0.1（或 6 个十分之一）。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-03",
+              "type": "blank",
+              "question": "7.68 这个小数的计数单位是（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "0.01",
+              "explanation": "两位小数，计数单位是百分之一，即 0.01。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-04",
+              "type": "blank",
+              "question": "不改变大小，把 7.68 改写成计数单位为千分之一的小数是（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "7.680",
+              "explanation": "在末尾添 0，7.68 = 7.680，计数单位变为 0.001。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-05",
+              "type": "blank",
+              "question": "16米6分米 =（　）米。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "16.6",
+              "explanation": "6 分米 = 0.6 米，16 + 0.6 = 16.6 米。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-06a",
+              "type": "blank",
+              "question": "22.5 吨 =（　）吨（填整数部分）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "22",
+              "explanation": "22.5 吨 = 22 吨 + 0.5 吨。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-06b",
+              "type": "blank",
+              "question": "22.5 吨 = 22 吨（　）千克。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "500",
+              "explanation": "0.5 吨 = 500 千克。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-08",
+              "type": "blank",
+              "question": "在○里填上 >、< 或 =：3.98+2.65 ○ 7。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "<",
+              "explanation": "3.98+2.65=6.63 < 7。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-09",
+              "type": "blank",
+              "question": "在○里填上 >、< 或 =：3.6×1.2 ○ 0.36×12。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 9
+              },
+              "answer": "=",
+              "explanation": "3.6×1.2=4.32，0.36×12=4.32，相等。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d1-01-10",
+              "type": "blank",
+              "question": "在○里填上 >、< 或 =：520×1.01 ○ 520。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 10
+              },
+              "answer": ">",
+              "explanation": "乘比 1 大的数结果变大，525.2 > 520。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::u02",
+      "name": "每日一练",
+      "title": "Day 02 · 三角形与等量代换（填空 3、6、7、8）",
+      "desc": "按角分类、等腰三角、台阶面积、天平比例",
+      "topics": [
+        {
+          "id": "daily-math-5-up-bs-midterm::t-d2",
+          "title": "图形与代换（8 题）",
+          "board": "填空",
+          "knowledgePointIds": [
+            "daily-math-5-up-bs-midterm::kp-d2"
+          ],
+          "exercises": [
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-01",
+              "type": "blank",
+              "question": "碎片显示两个角分别为 50°、30°，原三角形是（　）角三角形。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "钝",
+              "explanation": "第三角 = 180°−50°−30° = 100° > 90°，是钝角三角形。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-02",
+              "type": "blank",
+              "question": "碎片显示两个角分别为 36°、54°，原三角形是（　）角三角形。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "直",
+              "explanation": "第三角 = 180°−36°−54° = 90°，是直角三角形。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-03",
+              "type": "blank",
+              "question": "碎片显示两个角分别为 60°、65°，原三角形是（　）角三角形。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "锐",
+              "explanation": "第三角 = 180°−60°−65° = 55°，三角均 < 90°，是锐角三角形。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-04",
+              "type": "blank",
+              "question": "踏步高度 17.5 cm，踏步宽度比高度至少多 8.5 cm，每级台阶侧面至少要贴（　）cm² 的瓷砖。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "455",
+              "explanation": "宽 = 17.5+8.5 = 26 cm；侧面积 = 17.5×26 = 455 cm²。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-05a",
+              "type": "blank",
+              "question": "等腰三角形一个内角是 40°，若 40° 是顶角，则每个底角是（　）°。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "70",
+              "explanation": "(180°−40°)÷2 = 70°。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-05b",
+              "type": "blank",
+              "question": "等腰三角形一个内角是 40°，若 40° 是底角，则顶角是（　）°。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "100",
+              "explanation": "180°−40°−40° = 100°。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-06",
+              "type": "blank",
+              "question": "等腰三角形两条边分别长 7 cm 和 15 cm，这个等腰三角形的周长是（　）cm。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "37",
+              "explanation": "7+7<15 不能成三角形；只能是 15、15、7，周长 15+15+7=37。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d2-01-07",
+              "type": "blank",
+              "question": "天平左盘 2 个圆柱木块 = 右盘 42.8 g 盐。若左盘再放 4 个同样的圆柱木块，右盘需再增加（　）g 盐才平衡。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "85.6",
+              "explanation": "1 个木块 = 21.4 g；4 个 = 4×21.4 = 85.6 g。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::u03",
+      "name": "每日一练",
+      "title": "Day 03 · 计算规律与选择题（填空 4、5 + 选择）",
+      "desc": "积的变化规律、字母表示、说理选择",
+      "topics": [
+        {
+          "id": "daily-math-5-up-bs-midterm::t-d3",
+          "title": "规律与选择（11 题）",
+          "board": "填空+选择",
+          "knowledgePointIds": [
+            "daily-math-5-up-bs-midterm::kp-d3"
+          ],
+          "exercises": [
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-01-01",
+              "type": "blank",
+              "question": "根据 28×11=308，0.28×11=（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "3.08",
+              "explanation": "两个因数共缩小 100 倍，积也缩小 100 倍。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-01-02",
+              "type": "blank",
+              "question": "根据 28×11=308，（　）×0.11=3.08。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "28",
+              "explanation": "3.08÷0.11 = 28。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-01-03",
+              "type": "blank",
+              "question": "根据 28×11=308，2.8×（　）=308。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "110",
+              "explanation": "308÷2.8 = 110。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-01-04",
+              "type": "blank",
+              "question": "根据 28×11=308，0.28×0.11=（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "0.0308",
+              "explanation": "共缩小 10000 倍，308→0.0308。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-01-05",
+              "type": "blank",
+              "question": "一个直角三角形，其中一个锐角是 a°，另一个锐角是（　）°。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "90-a",
+              "explanation": "直角三角形两锐角互余：90°−a°。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-02-01",
+              "type": "single",
+              "question": "同学们用不同的方式表示 0.13，其中不正确的是（　）。\nA. 方格图：10×10 网格中涂色 13 格\nB. 计数器：个位 0、十分位 1、百分位 3 各 1 颗珠\nC. 数轴：0 到 0.2 之间标出 0.13\nD. 0.13 由 13 个 0.1 组成",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "D",
+              "options": [
+                "A. 方格图：10×10 网格中涂色 13 格",
+                "B. 计数器：个位 0、十分位 1、百分位 3 各 1 颗珠",
+                "C. 数轴：0 到 0.2 之间标出 0.13",
+                "D. 0.13 由 13 个 0.1 组成"
+              ],
+              "explanation": "13 个 0.1 是 1.3；0.13 应由 13 个 0.01 组成。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-02-02",
+              "type": "single",
+              "question": "如图，在池塘一侧取点 O，OA=6 m，OB=12 m。A、B 两点之间的距离可能是（　）。\nA. 6 m\nB. 15 m\nC. 20 m\nD. 25 m",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "B",
+              "options": [
+                "A. 6 m",
+                "B. 15 m",
+                "C. 20 m",
+                "D. 25 m"
+              ],
+              "explanation": "三角形三边：6 < AB < 18，只有 15 m 符合。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-02-03",
+              "type": "single",
+              "question": "下列选项中，能用 2(a+4) 表示的是（　）。\nA. 线段 a、a、4 求和\nB. 男生 a 人、女生 a 人、4 人求和\nC. 长方形（宽 a、高 4）的周长\nD. 等腰三角形（底 a、腰 4）的周长",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "C",
+              "options": [
+                "A. 线段 a、a、4 求和",
+                "B. 男生 a 人、女生 a 人、4 人求和",
+                "C. 长方形（宽 a、高 4）的周长",
+                "D. 等腰三角形（底 a、腰 4）的周长"
+              ],
+              "explanation": "长方形周长 = 2×(宽+高) = 2(a+4)。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-02-04",
+              "type": "single",
+              "question": "瓷砖厂出品 4 款瓷砖，可以单独密铺的有（　）。\nA. ①②③\nB. ①②④\nC. ②③④\nD. ①③④",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 9
+              },
+              "answer": "B",
+              "options": [
+                "A. ①②③",
+                "B. ①②④",
+                "C. ②③④",
+                "D. ①③④"
+              ],
+              "explanation": "能单独密铺的图形内角可拼成 360°；①②④ 符合。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-02-05",
+              "type": "single",
+              "question": "1 支铅笔 0.85 元，买 15 支需要多少元？竖式中框出的数表示（　）。\nA. 买 1 支铅笔需要 8.5 元\nB. 买 5 支铅笔需要 8.5 元\nC. 买 10 支铅笔需要 8.5 元\nD. 买 10 支铅笔需要 85 元",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 10
+              },
+              "answer": "C",
+              "options": [
+                "A. 买 1 支铅笔需要 8.5 元",
+                "B. 买 5 支铅笔需要 8.5 元",
+                "C. 买 10 支铅笔需要 8.5 元",
+                "D. 买 10 支铅笔需要 85 元"
+              ],
+              "explanation": "框中 85 在十分位，表示 0.85×10 = 8.5，即买 10 支的钱。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d3-02-06",
+              "type": "single",
+              "question": "按规律摆 n 个铜钱纹需要（　）片落叶。\nA. 3n+1\nB. 3n\nC. 3n−1\nD. 4n",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 11
+              },
+              "answer": "A",
+              "options": [
+                "A. 3n+1",
+                "B. 3n",
+                "C. 3n−1",
+                "D. 4n"
+              ],
+              "explanation": "1 个用 4 片，之后每加 1 个多用 3 片：4+3(n−1)=3n+1。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::u04",
+      "name": "每日一练",
+      "title": "Day 04 · 计算过关（口算+竖式+简便）",
+      "desc": "小数四则计算全过关",
+      "topics": [
+        {
+          "id": "daily-math-5-up-bs-midterm::t-d4",
+          "title": "计算（15 题）",
+          "board": "计算",
+          "knowledgePointIds": [
+            "daily-math-5-up-bs-midterm::kp-d4"
+          ],
+          "exercises": [
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-01",
+              "type": "blank",
+              "question": "直接写出得数：0.8+0.2 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "1",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-02",
+              "type": "blank",
+              "question": "直接写出得数：1−0.99 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "0.01",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-03",
+              "type": "blank",
+              "question": "直接写出得数：0.35−0.3 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "0.05",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-04",
+              "type": "blank",
+              "question": "直接写出得数：1+9.24 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "10.24",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-05",
+              "type": "blank",
+              "question": "直接写出得数：7.05×100 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "705",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-06",
+              "type": "blank",
+              "question": "直接写出得数：0.5×0.9 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "0.45",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-07",
+              "type": "blank",
+              "question": "直接写出得数：0.45×2 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "0.9",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-01-08",
+              "type": "blank",
+              "question": "直接写出得数：4×0.25 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "1",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-02-01",
+              "type": "blank",
+              "question": "用竖式计算：62.4−12.53 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 9
+              },
+              "answer": "49.87",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-02-02",
+              "type": "blank",
+              "question": "用竖式计算：3.7×2.06 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 10
+              },
+              "answer": "7.622",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-02-03",
+              "type": "blank",
+              "question": "用竖式计算：38.26+14.4 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 11
+              },
+              "answer": "52.66",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-02-04",
+              "type": "blank",
+              "question": "用竖式计算：1.25×1.2 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 12
+              },
+              "answer": "1.5",
+              "explanation": "",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-03-01",
+              "type": "blank",
+              "question": "用简便方法计算：70.8−7.25−1.75 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 13
+              },
+              "answer": "61.8",
+              "explanation": "70.8−(7.25+1.75)=70.8−9=61.8。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-03-02",
+              "type": "blank",
+              "question": "用简便方法计算：15.6×6.4+3.6×15.6 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 14
+              },
+              "answer": "156",
+              "explanation": "15.6×(6.4+3.6)=15.6×10=156。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d4-03-03",
+              "type": "blank",
+              "question": "用简便方法计算：6.95×101−6.95 =（　）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 15
+              },
+              "answer": "695",
+              "explanation": "6.95×(101−1)=6.95×100=695。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::u05",
+      "name": "每日一练",
+      "title": "Day 05 · 按要求做题 + 解决问题（1~3）",
+      "desc": "解释小数、尺规作图、生活应用题",
+      "topics": [
+        {
+          "id": "daily-math-5-up-bs-midterm::t-d5",
+          "title": "表达与应用（5 题）",
+          "board": "操作+应用",
+          "knowledgePointIds": [
+            "daily-math-5-up-bs-midterm::kp-d5"
+          ],
+          "exercises": [
+            {
+              "id": "daily-math-5-up-bs-midterm::d5-01-01",
+              "type": "essay",
+              "question": "请你用自己喜欢的方式，解释 0.4 的含义。（4 分）",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "例如：把一个整体平均分成 10 份，取其中的 4 份，就表示 0.4；也可以说 4 个 0.1 是 0.4。",
+              "keyPoints": [
+                "平均分成10份",
+                "取其中4份",
+                "表示0.4或4个0.1"
+              ],
+              "explanation": "只要能体现“十等分取四份”即可。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d5-01-02",
+              "type": "essay",
+              "question": "用尺规作出下面的三角形。（4 分）",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "先用圆规量出三条边的长度，分别以两个端点为圆心、对应边长为半径画弧，弧的交点即为第三个顶点，连接三点得到三角形。",
+              "keyPoints": [
+                "圆规截取边长",
+                "画弧找交点",
+                "连接成三角形"
+              ],
+              "explanation": "考查尺规作三角形。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d5-02-01",
+              "type": "blank",
+              "question": "轩轩家日均厨余垃圾 0.65 kg，可回收垃圾 1.43 kg。日均共产生生活垃圾（　）kg。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "2.08",
+              "explanation": "0.65+1.43 = 2.08 kg。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d5-02-02",
+              "type": "blank",
+              "question": "变频空调一晚耗电 1.1 千瓦时，普通空调 6.6 千瓦时，电费每千瓦时 0.56 元。变频比普通一晚便宜（　）元。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "3.08",
+              "explanation": "(6.6−1.1)×0.56 = 3.08 元。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d5-02-03",
+              "type": "blank",
+              "question": "买骑行雨衣 35.2 元/件、魔术头巾 8.5 元/条、骑行手套 27.7 元/双 各 3 份，估一估，200 元够吗？（　）（填“够”或“不够”）",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "不够",
+              "explanation": "往小估：(35+8+27)×3 = 210 > 200，所以 200 元不够。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-math-5-up-bs-midterm::u06",
+      "name": "每日一练",
+      "title": "Day 06 · 解决问题（4~5）+ 附加题",
+      "desc": "字母表示、开放题、三角形外角和拓展",
+      "topics": [
+        {
+          "id": "daily-math-5-up-bs-midterm::t-d6",
+          "title": "综合与拓展（6 题）",
+          "board": "应用+拓展",
+          "knowledgePointIds": [
+            "daily-math-5-up-bs-midterm::kp-d6"
+          ],
+          "exercises": [
+            {
+              "id": "daily-math-5-up-bs-midterm::d6-01-01",
+              "type": "blank",
+              "question": "周六前 3 小时骑行 a km，后 2 小时平均每小时 b km。周六一共骑行（　）km（用含字母的式子表示）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "a+2b",
+              "explanation": "前段 a km + 后段 2b km。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d6-01-02",
+              "type": "blank",
+              "question": "当 a=42，b=10.5 时，周六一共骑行（　）km。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "63",
+              "explanation": "a+2b = 42+2×10.5 = 63 km。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d6-02-01",
+              "type": "essay",
+              "question": "根据信息提出一个至少需要两步解决的数学问题。已知：①周六骑行 65 km；②骑行 1 km 比汽车少 0.224 kg 碳排放；③周日路程比周六的 1.2 倍少 1 km；④周六消耗 1625 卡路里。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "示例：轩轩爸爸周六、日两天骑行一共减少多少千克碳排放？先算总路程 65+65×1.2−1=142(km)，再算减排 142×0.224=31.808(kg)。",
+              "keyPoints": [
+                "提出两步以上问题",
+                "先算总路程",
+                "再算碳排放"
+              ],
+              "explanation": "答案不唯一，问题需至少两步。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d6-02-02",
+              "type": "blank",
+              "question": "解决上面的问题需要的信息是（　）（填序号，如①②③）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "①②③",
+              "explanation": "需要路程①、减排系数②、周日与周六关系③；④热量无关。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d6-02-03",
+              "type": "essay",
+              "question": "根据你提出的问题，写出解答过程（算式与结果）。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "总路程：65+65×1.2−1 = 142(km)；减少碳排放：142×0.224 = 31.808(kg)。",
+              "keyPoints": [
+                "算出总路程142km",
+                "乘减排系数0.224",
+                "得到31.808kg"
+              ],
+              "explanation": "按你自己的问题合理计算即可。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            },
+            {
+              "id": "daily-math-5-up-bs-midterm::d6-03-01",
+              "type": "essay",
+              "question": "如图，将三角形 ABC 的三边 AB、BC、CA 分别延长，得到外角 ∠4、∠5、∠6。不测量，推理 ∠4+∠5+∠6 的度数和，并写出思考过程。",
+              "knowledgePointIds": [
+                "daily-math-5-up-bs-midterm::kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "∠4+∠5+∠6 = 360°。因为三个内角与三个外角之和为 3×180° = 540°，而三角形内角和 = 180°，所以外角和 = 540°−180° = 360°。",
+              "keyPoints": [
+                "三角与外角共540°",
+                "内角和180°",
+                "相减得外角和360°"
+              ],
+              "explanation": "多边形外角和恒为 360°。",
+              "packageId": "daily-math-5-up-bs-midterm"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "packageId": "daily-math-5-up-bs-midterm"
+}

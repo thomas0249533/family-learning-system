@@ -408,6 +408,12 @@
       "version": "1.0.0",
       "title": "数学4上第6部分",
       "sha256": "b270ed938b84a2ad86ea2ce57db2c811f3d974711c3a647b9ff0ae76f0c0d71c"
+    },
+    {
+      "packageId": "daily-math-5-up-bs-midterm",
+      "version": "1.0.0",
+      "title": "数学期中冲刺 打卡（五年级上·北师版）",
+      "sha256": "6311ceb96ab0e31eae173c76d4d8f7844fd44ce4e627106b58663540344bfa30"
     }
   ]
 }
