@@ -326,6 +326,12 @@
       "sha256": "5cd4d42ad4a9564518aadf7280994399e2b0e24654d0a3246b345e6a1e3aa25f"
     },
     {
+      "packageId": "daily-math-4-up-bs-midterm",
+      "version": "1.0.0",
+      "title": "数学期中冲刺 打卡（四年级上·北师版）",
+      "sha256": "ac6e3f171708db7b3eaecbbdcd003c0de87a6ceff6c238976e15262775915dfa"
+    },
+    {
       "packageId": "daily-math-4-up-rjb-45d",
       "version": "1.1.0",
       "title": "数学期中冲刺 7 天打卡（四年级上·北师版）",

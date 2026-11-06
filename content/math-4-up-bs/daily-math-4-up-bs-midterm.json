@@ -1,0 +1,1078 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "daily-math-4-up-bs-midterm",
+    "type": "daily",
+    "isInternal": false,
+    "subject": "math",
+    "templateId": "math.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "北师版",
+    "title": "数学期中冲刺 打卡（四年级上·北师版）",
+    "version": "1.0.0",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-d1",
+      "type": "concept",
+      "title": "大数的认识与读写",
+      "content": "大数的读、写、大小比较、近似数（四舍五入）、图书编码与组数。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 13,
+        "cognitiveLevel": "理解",
+        "ability": "数感"
+      }
+    },
+    {
+      "id": "kp-d2",
+      "type": "concept",
+      "title": "线与角",
+      "content": "钟面角、平行与垂直、直线/射线/线段的识别与计数。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 13,
+        "cognitiveLevel": "理解",
+        "ability": "空间观念"
+      }
+    },
+    {
+      "id": "kp-d3",
+      "type": "concept",
+      "title": "乘法计算与规律",
+      "content": "算式规律、错中求解、口算与竖式计算。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 13,
+        "cognitiveLevel": "掌握",
+        "ability": "运算能力"
+      }
+    },
+    {
+      "id": "kp-d4",
+      "type": "concept",
+      "title": "选择题解题",
+      "content": "线与角原理、估算、四舍五入、算式意义与规律。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 12,
+        "cognitiveLevel": "理解",
+        "ability": "推理能力"
+      }
+    },
+    {
+      "id": "kp-d5",
+      "type": "concept",
+      "title": "图形操作",
+      "content": "平行线段描线、量角、画角、最短路线作图。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 14,
+        "cognitiveLevel": "应用",
+        "ability": "空间观念"
+      }
+    },
+    {
+      "id": "kp-d6",
+      "type": "concept",
+      "title": "综合应用与拓展",
+      "content": "估算判断、两步应用题、开放题与折叠角拓展。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 14,
+        "cognitiveLevel": "应用",
+        "ability": "应用意识"
+      }
+    }
+  ],
+  "exercises": [],
+  "units": [
+    {
+      "id": "u01",
+      "name": "每日一练",
+      "title": "Day 01 · 大数的认识（填空 1、3、7、9、10）",
+      "desc": "读写、比较、近似数、编码与组数",
+      "topics": [
+        {
+          "id": "t-d1",
+          "title": "大数的认识（15 题）",
+          "board": "填空",
+          "knowledgePointIds": [
+            "kp-d1"
+          ],
+          "exercises": [
+            {
+              "id": "d1-01-01",
+              "type": "blank",
+              "question": "全球人形机器人销量约为 12400 台，横线上的数读作（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "一万二千四百",
+              "explanation": "从高位一级一级读。"
+            },
+            {
+              "id": "d1-01-02",
+              "type": "blank",
+              "question": "12400 的最高位是（　　）位。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "万",
+              "explanation": ""
+            },
+            {
+              "id": "d1-01-03",
+              "type": "blank",
+              "question": "中国市场规模约是八十二亿三千九百万元，波浪线上的数写作（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "8239000000",
+              "explanation": ""
+            },
+            {
+              "id": "d1-01-04",
+              "type": "blank",
+              "question": "把 8239000000 四舍五入到亿位是（　　）亿。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "82",
+              "explanation": "看千万位 2，舍去。"
+            },
+            {
+              "id": "d1-01-05",
+              "type": "blank",
+              "question": "在○里填上 >、< 或 =：400320000 ○ 4亿。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": ">",
+              "explanation": ""
+            },
+            {
+              "id": "d1-01-06",
+              "type": "blank",
+              "question": "在○里填上 >、< 或 =：89200 ○ 89020。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": ">",
+              "explanation": ""
+            },
+            {
+              "id": "d1-01-07",
+              "type": "blank",
+              "question": "在○里填上 >、< 或 =：610000 ○ 61万。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "=",
+              "explanation": ""
+            },
+            {
+              "id": "d1-01-08",
+              "type": "blank",
+              "question": "260□973 ≈ 260万，□里最大填（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "4",
+              "explanation": "≈260万说明千位<5，最大填4。"
+            },
+            {
+              "id": "d1-01-09",
+              "type": "blank",
+              "question": "94□5900000 ≈ 95亿，□里最小填（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 9
+              },
+              "answer": "5",
+              "explanation": "≈95亿需进位，千万位≥5，最小填5。"
+            },
+            {
+              "id": "d1-01-10",
+              "type": "blank",
+              "question": "图书编码 G-9-3-172 表示科学类 9 号书架第 3 层，这本书在科学类（　　）号书架。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 10
+              },
+              "answer": "9",
+              "explanation": ""
+            },
+            {
+              "id": "d1-01-11",
+              "type": "blank",
+              "question": "图书编码 G-9-3-172 表示科学类 9 号书架第（　　）层。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 11
+              },
+              "answer": "3",
+              "explanation": ""
+            },
+            {
+              "id": "d1-01-12",
+              "type": "blank",
+              "question": "用 9、8、6、5 和三个 0 组成七位数，一个零也不读且每级末尾都有 0，最大的数是（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 12
+              },
+              "answer": "9806500",
+              "explanation": "980|6500，读九百八十万六千五百，零不读。"
+            },
+            {
+              "id": "d1-01-13",
+              "type": "blank",
+              "question": "用 9、8、6、5 和三个 0 组成七位数，一个零也不读且每级末尾都有 0，最小的数是（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 13
+              },
+              "answer": "5006890",
+              "explanation": "500|6890，读五百万六千八百九十。"
+            },
+            {
+              "id": "d1-01-14",
+              "type": "blank",
+              "question": "用 9、8、6、5 和三个 0 组成七位数，所有的 0 都要读，最大的数是（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 14
+              },
+              "answer": "9080605",
+              "explanation": "908|0605，读九百零八万零六百零五。"
+            },
+            {
+              "id": "d1-01-15",
+              "type": "blank",
+              "question": "用 9、8、6、5 和三个 0 组成七位数，所有的 0 都要读，最小的数是（　　）。",
+              "knowledgePointIds": [
+                "kp-d1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 15
+              },
+              "answer": "5060809",
+              "explanation": "506|0809，读五百零六万零八百零九。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u02",
+      "name": "每日一练",
+      "title": "Day 02 · 线与角（填空 2、4、5）",
+      "desc": "钟面角、平行与垂直、直线射线线段",
+      "topics": [
+        {
+          "id": "t-d2",
+          "title": "线与角（10 题）",
+          "board": "填空",
+          "knowledgePointIds": [
+            "kp-d2"
+          ],
+          "exercises": [
+            {
+              "id": "d2-01-01",
+              "type": "blank",
+              "question": "纤纤早晨 7:30 出门，时针和分针所形成的角是（　　）角。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "锐",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-02",
+              "type": "blank",
+              "question": "8:00 到校，时针和分针所形成的角是（　　）角。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "钝",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-03",
+              "type": "blank",
+              "question": "12:00 吃午餐，时针和分针所形成的角是（　　）角。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "周",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-04",
+              "type": "blank",
+              "question": "下午 6:00 回到家，时针和分针所形成的角是（　　）角。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "平",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-05",
+              "type": "blank",
+              "question": "大写字母中，（　　　　）有互相平行的线段。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "E、F、H、M、N、W、Z",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-06",
+              "type": "blank",
+              "question": "大写字母中，（　　　　）有互相垂直的线段。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "E、F、H、L、T",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-07",
+              "type": "blank",
+              "question": "大写字母中，（　　　　）既有互相平行也有互相垂直的线段。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "E、F、H",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-08",
+              "type": "blank",
+              "question": "下图中标有点 A、B、C、D、E 的一条直线上，有（　　）条直线。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "1",
+              "explanation": ""
+            },
+            {
+              "id": "d2-01-09",
+              "type": "blank",
+              "question": "标有点 A、B、C、D、E 的直线上，有（　　）条射线。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 9
+              },
+              "answer": "10",
+              "explanation": "每个点向两端各发1条射线，5×2=10。"
+            },
+            {
+              "id": "d2-01-10",
+              "type": "blank",
+              "question": "标有点 A、B、C、D、E 的直线上，有（　　）条线段。",
+              "knowledgePointIds": [
+                "kp-d2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 10
+              },
+              "answer": "10",
+              "explanation": "5个点任取2个，C(5,2)=10。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u03",
+      "name": "每日一练",
+      "title": "Day 03 · 计算与规律（填空 6、8 + 三、计算）",
+      "desc": "算式规律、错中求解、口算与竖式",
+      "topics": [
+        {
+          "id": "t-d3",
+          "title": "计算与规律（9 题）",
+          "board": "计算",
+          "knowledgePointIds": [
+            "kp-d3"
+          ],
+          "exercises": [
+            {
+              "id": "d3-01-01",
+              "type": "blank",
+              "question": "先找规律：2×5=10，22×55=1210，222×555=123210，2222×5555=12343210，则 22222×55555=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "1234543210",
+              "explanation": ""
+            },
+            {
+              "id": "d3-01-02",
+              "type": "blank",
+              "question": "根据规律，222222×555555=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "123456543210",
+              "explanation": ""
+            },
+            {
+              "id": "d3-01-03",
+              "type": "blank",
+              "question": "张萌把乘数 22 看成了 2，得到的积是 576，正确的积是（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "6336",
+              "explanation": "另一乘数=576÷2=288，288×22=6336。"
+            },
+            {
+              "id": "d3-01-04",
+              "type": "blank",
+              "question": "根据 19×3=57，直接写出：19×30=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "570",
+              "explanation": ""
+            },
+            {
+              "id": "d3-01-05",
+              "type": "blank",
+              "question": "根据 19×3=57，直接写出：19×300=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "5700",
+              "explanation": ""
+            },
+            {
+              "id": "d3-01-06",
+              "type": "blank",
+              "question": "根据 19×3=57，直接写出：190×300=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "57000",
+              "explanation": ""
+            },
+            {
+              "id": "d3-01-07",
+              "type": "blank",
+              "question": "列竖式计算：234×25=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "5850",
+              "explanation": ""
+            },
+            {
+              "id": "d3-01-08",
+              "type": "blank",
+              "question": "列竖式计算：34×308=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "10472",
+              "explanation": ""
+            },
+            {
+              "id": "d3-01-09",
+              "type": "blank",
+              "question": "列竖式计算：480×45=（　　）。",
+              "knowledgePointIds": [
+                "kp-d3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 9
+              },
+              "answer": "21600",
+              "explanation": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u04",
+      "name": "每日一练",
+      "title": "Day 04 · 选择题过关（二、选择 1~8）",
+      "desc": "线与角、估算、四舍五入、算式意义",
+      "topics": [
+        {
+          "id": "t-d4",
+          "title": "选择题（8 题）",
+          "board": "选择",
+          "knowledgePointIds": [
+            "kp-d4"
+          ],
+          "exercises": [
+            {
+              "id": "d4-01-01",
+              "type": "single",
+              "question": "【名校期末真题】植树时，先确定两个坑的位置，使其他树坑能和它们排成一行。所含的数学原理是（　　）。\nA. 两点之间线段最短\nB. 直线可以无限延长\nC. 两点确定一条直线\nD. 点到直线的所有线段中，垂直线段最短",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "options": [
+                "A. 两点之间线段最短",
+                "B. 直线可以无限延长",
+                "C. 两点确定一条直线",
+                "D. 点到直线的所有线段中，垂直线段最短"
+              ],
+              "explanation": "两个坑确定一条直线，其余沿此线排列。"
+            },
+            {
+              "id": "d4-01-02",
+              "type": "single",
+              "question": "远古结绳计数，①号绳表示 254，②号绳表示 140，③号绳表示的数是（　　）。\nA. 35\nB. 305\nC. 350\nD. 503",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "B",
+              "options": [
+                "A. 35",
+                "B. 305",
+                "C. 350",
+                "D. 503"
+              ],
+              "explanation": ""
+            },
+            {
+              "id": "d4-01-03",
+              "type": "single",
+              "question": "下面各数中，读出零的个数最多的是（　　）。\nA. 3010504\nB. 3045000007\nC. 9099090\nD. 900900",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "A",
+              "options": [
+                "A. 3010504",
+                "B. 3045000007",
+                "C. 9099090",
+                "D. 900900"
+              ],
+              "explanation": "A 读三百零一万零五百零四，3个零，最多。"
+            },
+            {
+              "id": "d4-01-04",
+              "type": "single",
+              "question": "右图大长方形被分割并标注 100×30、20×30、6×30、6×4、100×4、20×4，可以用算式（　　）表示。\nA. 126×34\nB. 136×24\nC. 134×62\nD. 124×36",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "A",
+              "options": [
+                "A. 126×34",
+                "B. 136×24",
+                "C. 134×62",
+                "D. 124×36"
+              ],
+              "explanation": "(100+20+6)×(30+4)=126×34。"
+            },
+            {
+              "id": "d4-01-05",
+              "type": "single",
+              "question": "地球与火星最近距离约 5460 万公里，图中各点最接近横线上的数的是（　　）。\nA. ①\nB. ②\nC. ③\nD. ④",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "B",
+              "options": [
+                "A. ①",
+                "B. ②",
+                "C. ③",
+                "D. ④"
+              ],
+              "explanation": ""
+            },
+            {
+              "id": "d4-01-06",
+              "type": "single",
+              "question": "下面的角中，只能用量角器来画的是（　　）。\nA. 75°\nB. 100°\nC. 135°\nD. 105°",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "B",
+              "options": [
+                "A. 75°",
+                "B. 100°",
+                "C. 135°",
+                "D. 105°"
+              ],
+              "explanation": "75/105/135 可用三角板拼出，100° 只能量角器。"
+            },
+            {
+              "id": "d4-01-07",
+              "type": "single",
+              "question": "下面各数中，四舍五入到万位后是 6 万且最小的是（　　）。\nA. 64999\nB. 54999\nC. 55000\nD. 65000",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "C",
+              "options": [
+                "A. 64999",
+                "B. 54999",
+                "C. 55000",
+                "D. 65000"
+              ],
+              "explanation": "四舍五入到6万的范围是55000~64999，最小为55000。"
+            },
+            {
+              "id": "d4-01-08",
+              "type": "single",
+              "question": "住宿总费用可用 2□3 × □4 计算，下面可能是住宿总费用的是（　　）。\nA. 2782 元\nB. 28742 元\nC. 3258 元\nD. 3822 元",
+              "knowledgePointIds": [
+                "kp-d4"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "D",
+              "options": [
+                "A. 2782 元",
+                "B. 28742 元",
+                "C. 3258 元",
+                "D. 3822 元"
+              ],
+              "explanation": "273×14=3822，符合 2□3×□4 形式。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u05",
+      "name": "每日一练",
+      "title": "Day 05 · 操作题（四、1~4）",
+      "desc": "平行描线、量角、画角、最短路线",
+      "topics": [
+        {
+          "id": "t-d5",
+          "title": "图形操作（9 题）",
+          "board": "操作",
+          "knowledgePointIds": [
+            "kp-d5"
+          ],
+          "exercises": [
+            {
+              "id": "d5-01-01",
+              "type": "essay",
+              "question": "从图中找出两组互相平行的线段，并用不同的颜色描一描。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "例如：AC 与 A'C' 平行，AO 与 A'O' 平行，BC 与 B'C' 平行，BO 与 B'O' 平行，任选两组描出并标注。",
+              "keyPoints": [
+                "找平行线",
+                "描出两组",
+                "标对应字母"
+              ],
+              "explanation": ""
+            },
+            {
+              "id": "d5-02-01a",
+              "type": "blank",
+              "question": "量一量三种桌面的夹角度数：左数第 1 幅约（　　）°。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "110",
+              "explanation": ""
+            },
+            {
+              "id": "d5-02-01b",
+              "type": "blank",
+              "question": "量一量三种桌面的夹角度数：左数第 2 幅约（　　）°。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "30",
+              "explanation": ""
+            },
+            {
+              "id": "d5-02-01c",
+              "type": "blank",
+              "question": "量一量三种桌面的夹角度数：左数第 3 幅约（　　）°。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "40",
+              "explanation": ""
+            },
+            {
+              "id": "d5-02-02",
+              "type": "blank",
+              "question": "玲玲写作业应选用左数第（　　）幅图中的桌面最合适（填汉字数字，如“一”）。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "一",
+              "explanation": "建议夹角 5°~15°，第1幅约110°不对；按题给数据选最合适的一幅。"
+            },
+            {
+              "id": "d5-02-03",
+              "type": "blank",
+              "question": "写完作业后她想把画，至少应将桌面的夹角调（　　）（填“大”或“小”）。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "大",
+              "explanation": "绘画建议夹角35°~45°，需调大。"
+            },
+            {
+              "id": "d5-02-04",
+              "type": "blank",
+              "question": "至少应将桌面的夹角调大（　　）°。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 7
+              },
+              "answer": "25",
+              "explanation": ""
+            },
+            {
+              "id": "d5-03-01",
+              "type": "essay",
+              "question": "以点 O 为顶点，以射线 OA 为角的一条边，画一个比直角大 50° 的角，并标出角的度数。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 8
+              },
+              "answer": "先画射线 OA，以 O 为顶点、OA 为一边，用量角器画出另一边使夹角为 140°，标 ∠AOB=140°。",
+              "keyPoints": [
+                "顶点O",
+                "一边OA",
+                "140度并标注"
+              ],
+              "explanation": ""
+            },
+            {
+              "id": "d5-04-01",
+              "type": "essay",
+              "question": "离河岸不远处有村庄，村民到岸边取水怎样走最近？到码头乘船怎样走最近？分别在图中画出来。",
+              "knowledgePointIds": [
+                "kp-d5"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 9
+              },
+              "answer": "取水：过村庄向河岸作垂线段（垂线段最短）；到码头：连接村庄与码头成线段（两点之间线段最短）。",
+              "keyPoints": [
+                "取水作垂线",
+                "到码头连线段",
+                "标注最短"
+              ],
+              "explanation": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u06",
+      "name": "每日一练",
+      "title": "Day 06 · 解决问题（五、1~3）+ 附加题",
+      "desc": "估算判断、两步应用、开放题、折叠角",
+      "topics": [
+        {
+          "id": "t-d6",
+          "title": "应用与拓展（6 题）",
+          "board": "应用",
+          "knowledgePointIds": [
+            "kp-d6"
+          ],
+          "exercises": [
+            {
+              "id": "d6-01-01",
+              "type": "blank",
+              "question": "海洋科考队有 18 台采样机器人，每台每次采集 245 千克，一轮后还剩 165 千克待采集。这次作业一共需要采集（　　）千克样本。",
+              "knowledgePointIds": [
+                "kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "4575",
+              "explanation": "245×18+165=4575。"
+            },
+            {
+              "id": "d6-01-02",
+              "type": "blank",
+              "question": "物流站当天快递约 5 万件，22 台机器人每台每时分拣 263 件、充电一次可用 10 时。充电一次（　　）完成当天分拣任务（填“能”或“不能”）。",
+              "knowledgePointIds": [
+                "kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 2
+              },
+              "answer": "能",
+              "explanation": "估算 22×263×10≈57660 > 50000，能完成。"
+            },
+            {
+              "id": "d6-02-01",
+              "type": "blank",
+              "question": "智慧果园信息：①508棵桃树 ②24台机器人 ③每棵产桃65千克 ④每千克6元 ⑤每台每日采450千克。解决“果园今年卖桃能收入多少元”需要信息（　　）（填序号）。",
+              "knowledgePointIds": [
+                "kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 3
+              },
+              "answer": "①③④",
+              "explanation": ""
+            },
+            {
+              "id": "d6-02-02",
+              "type": "essay",
+              "question": "根据信息解答：果园今年卖桃能收入多少元？",
+              "knowledgePointIds": [
+                "kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 4
+              },
+              "answer": "508×65×6 = 198120（元）。",
+              "keyPoints": [
+                "508棵桃树",
+                "每棵65千克",
+                "每千克6元"
+              ],
+              "explanation": ""
+            },
+            {
+              "id": "d6-02-03",
+              "type": "essay",
+              "question": "根据果园信息，提出一个数学问题并解答。",
+              "knowledgePointIds": [
+                "kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 5
+              },
+              "answer": "示例：所有农业采摘机器人每日可采摘多少千克桃？450×24 = 10800（千克）。",
+              "keyPoints": [
+                "提出合理问题",
+                "基于给定信息",
+                "正确列式计算"
+              ],
+              "explanation": ""
+            },
+            {
+              "id": "d6-03-01",
+              "type": "blank",
+              "question": "将长方形纸折叠，若 ∠1 = 74°，则 ∠2 =（　　）°。",
+              "knowledgePointIds": [
+                "kp-d6"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 6
+              },
+              "answer": "53",
+              "explanation": "∠1+∠2=∠3，∠2+∠3=180°，代入得 ∠1+2∠2=180°，∠2=(180−74)÷2=53。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
