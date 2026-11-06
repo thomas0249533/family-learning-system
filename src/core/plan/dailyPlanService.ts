@@ -362,7 +362,108 @@ export async function buildPlanCandidates(pid: string = currentProfileId()): Pro
     })
   }
 
+  // ⑤ 词语听写（vocab）：每天一批 15 词，独立通道，不挤占习题预算
+  // 见 `buildVocabCandidates`。直接 push（每包最多一项，无需去重）。
+  out.push(...(await buildVocabCandidates(pid, packages)))
+
   return out
+}
+
+/**
+ * 词语 / 单词听写候选。
+ *
+ * 扫描所有「含 `chinese.words` / `english.vocab` 模块」的包，收集该包下全部词语词，
+ * 按掌握情况排序后取前 `VOCAB_PER_DAY` 个，固化成一个 vocab 候选（每天最多一项，
+ * 不挤占习题预算，第四轮独立追加）。
+ *
+ * 为什么这样取词：孩子的痛点不是"没背过"，而是"背得出写不出、错别字多"——
+ * 所以**写过且掌握度低 / 已到期**的词最该反复听写（优先），**从未写过**的词次之
+ * （先建立书写记忆），**已掌握**的词最后（偶尔复习防遗忘）。
+ *
+ * 进度口径与 `VocabDrill.writeProgress` 同源：进度行 `packageId = 包id`、
+ * `knowledgePointId = 词id`（special 包 owner 解析到自身）。
+ */
+const VOCAB_PER_DAY = 15
+
+async function buildVocabCandidates(
+  pid: string,
+  packages: LearningPackageRecord[]
+): Promise<PlanCandidate[]> {
+  const progress = await db.progress.where('profileId').equals(pid).toArray()
+  const progByKp = new Map<string, (typeof progress)[number]>()
+  for (const p of progress) {
+    progByKp.set(`${p.packageId}\u0000${p.knowledgePointId}`, p)
+  }
+
+  const result: PlanCandidate[] = []
+
+  for (const pkg of packages) {
+    const subject = (pkg.manifest as any)?.subject
+    const title = (pkg.manifest as any)?.title ?? pkg.packageId
+    const vocabModuleTypes = ['chinese.words', 'english.vocab']
+
+    // 收集本包全部词语词：遍历 units → topics → modules
+    const locByWord = new Map<string, { unitId: string; topicId: string }>()
+    const wordIds: string[] = []
+    for (const unit of (pkg.units as any[]) ?? []) {
+      if (!unit?.id || !Array.isArray(unit.topics)) continue
+      for (const topic of unit.topics) {
+        if (!topic?.id || !Array.isArray(topic.modules)) continue
+        for (const mod of topic.modules) {
+          if (!vocabModuleTypes.includes(mod?.type)) continue
+          const ids: string[] = Array.isArray(mod.knowledgePointIds)
+            ? mod.knowledgePointIds
+            : Array.isArray(mod.knowledgePoints)
+              ? mod.knowledgePoints
+              : []
+          for (const id of ids) {
+            if (!id || locByWord.has(id)) continue
+            locByWord.set(id, { unitId: unit.id, topicId: topic.id })
+            wordIds.push(id)
+          }
+        }
+      }
+    }
+
+    if (wordIds.length === 0) continue
+
+    // 排序：优先「写过但没掌握 / 到期」，其次「从未写过」，最后「已掌握」
+    const scored = wordIds
+      .map((id) => ({ id, prog: progByKp.get(`${pkg.packageId}\u0000${id}`) }))
+      .map((w) => ({ ...w, score: vocabScore(w.prog), loc: locByWord.get(w.id)! }))
+      .sort((a, b) => {
+        if (a.score !== b.score) return a.score - b.score
+        return a.id.localeCompare(b.id) // 稳定：同档按 id
+      })
+
+    const selected = scored.slice(0, VOCAB_PER_DAY)
+    if (selected.length === 0) continue
+
+    const firstLoc = selected[0].loc
+    const ids = selected.map((s) => s.id)
+    const label = subject === 'english' ? '单词听写' : '词语听写'
+    result.push({
+      kind: 'vocab',
+      packageId: pkg.packageId,
+      unitId: firstLoc.unitId,
+      topicId: firstLoc.topicId,
+      title: `${label}（${selected.length} 词）`,
+      subtitle: `${subjectLabelOf(subject)} · ${title}`,
+      availableQuestions: selected.length,
+      knowledgePointIds: ids,
+      // 稳定键：每天选出的 15 词固定，则 id 固定（同日冻结不抖动）
+      itemId: `vocab\u0000${pkg.packageId}\u0000${[...ids].sort().join(',')}`,
+    })
+  }
+
+  return result
+}
+
+/** 词语听写的优先级评分（越小越优先，见 `buildVocabCandidates`） */
+function vocabScore(prog: { status?: string; masteryProbability?: number; correctCount?: number; wrongCount?: number } | undefined): number {
+  if (!prog || ((prog.correctCount ?? 0) + (prog.wrongCount ?? 0) === 0)) return 1 // 从未写过 → 先建书写记忆
+  const mastered = prog.status === '已掌握' || (prog.masteryProbability ?? 0) >= 0.6
+  return mastered ? 2 : 0 // 写过但未掌握 → 最高优先（写不出/错别字的核心人群）
 }
 
 // ===========================================================================

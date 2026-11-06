@@ -111,7 +111,7 @@
               <span class="item-reason">{{ item.reason }}</span>
             </span>
           </span>
-          <span class="item-cost">{{ item.questions }} 题</span>
+          <span class="item-cost">{{ item.kind === 'vocab' ? `${item.questions} 词` : `${item.questions} 题` }}</span>
         </button>
       </div>
     </AppCard>
@@ -293,6 +293,18 @@ async function switchMode(mode: GoalMode): Promise<void> {
 }
 
 function startItem(item: DailyPlanItem): void {
+  // 词语听写（vocab）：跳到专用听写壳，由它驱动 VocabDrill 连续听写 15 词
+  if (item.kind === 'vocab') {
+    void router.push({
+      path: '/dictation',
+      query: {
+        packageId: item.packageId,
+        item: item.id,
+        kp: (item.knowledgePointIds ?? []).join(','),
+      },
+    })
+    return
+  }
   if (!item.topicId) {
     // 新学项偶尔没有主题（包的单元只有知识点、题在别处）→ 退到单元页
     void router.push({ path: `/learn/${item.packageId}/unit/${item.unitId}` })

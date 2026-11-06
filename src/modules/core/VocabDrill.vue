@@ -257,7 +257,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { NInput } from 'naive-ui'
 import { speak } from '@core/audio/speechService'
 import { gradeDictation } from '@core/quiz/dictationGrade'
@@ -281,12 +281,26 @@ const props = withDefaults(defineProps<{
   lang: 'chinese' | 'english'
   topicTitle?: string
   packageId: string
+  /** 自动开始：跳过入口屏，直接进入指定模式（今日任务的词语听写用） */
+  autoStart?: boolean
+  /** 自动开始的模式，默认 dictation（真听写：听音→写，不给看答案） */
+  autoStartMode?: Mode
+  /** 自动开始的题数（默 15），实际取 min(count, words.length) */
+  autoCount?: number
+  /** 听写时是否隐藏中文提示（默认 true = 真听写） */
+  autoHidePrompt?: boolean
 }>(), {
   topicTitle: '',
+  autoStart: false,
+  autoStartMode: 'dictation',
+  autoCount: 15,
+  autoHidePrompt: true,
 })
 
 const emit = defineEmits<{
   (e: 'close'): void
+  /** 听写完整一轮批改完成时触发（今日任务在此记账，但不跳转，让孩子先看结果） */
+  (e: 'finished', payload: { correctCount: number; total: number; elapsedSeconds: number }): void
 }>()
 
 const userDataStore = useUserDataStore()
@@ -493,6 +507,12 @@ async function finishDictation() {
     const w = sessionWords.value.find(x => x.id === a.wordId)
     if (w) await writeProgress(w, a.correct)
   }
+  // 今日任务听写：完整一轮批改完成即记账（不跳转，让孩子先看对错清单）
+  emit('finished', {
+    correctCount: correctCount.value,
+    total: dictationAnswers.value.length,
+    elapsedSeconds: elapsedSeconds.value,
+  })
   phase.value = 'review'
 }
 
@@ -582,6 +602,16 @@ function playAudio() {
     rate: 0.9,
   })
 }
+
+/** 自动开始（今日任务听写）：跳过入口屏，直接进入听写模式、关提示，立即开一轮 */
+onMounted(() => {
+  if (!props.autoStart) return
+  if (props.words.length === 0) return
+  mode.value = props.autoStartMode
+  countPerSession.value = props.autoCount
+  showPromptInDictation.value = !props.autoHidePrompt
+  startDrill()
+})
 
 onUnmounted(() => {
   stopTimer()

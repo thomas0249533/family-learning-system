@@ -37,7 +37,7 @@
 // ===========================================================================
 
 /** 任务类型：与「为什么排它」一一对应 */
-export type PlanItemKind = 'review' | 'mistake' | 'weak' | 'new'
+export type PlanItemKind = 'review' | 'mistake' | 'weak' | 'new' | 'vocab'
 
 /** 每日目标口径（V3.0 · M1：两种都要，设置里可切换） */
 export type GoalMode = 'questions' | 'minutes'
@@ -71,6 +71,17 @@ export interface PlanCandidate {
   order?: number
   /** 该候选最多能出几道题（题库为空则传 0，会被跳过） */
   availableQuestions: number
+  /**
+   * 词语听写（vocab）专用：这一批要听写的**全部词的知识点 id**（通常 15 个）。
+   * 普通题型用单个 `knowledgePointId`，vocab 用整批列表 —— 听写是一次连续作业，
+   * 不是一道一道的知识点。
+   */
+  knowledgePointIds?: string[]
+  /**
+   * 预计算稳定键。vocab 候选的 id 由这 15 个词组成（不是单个 kp），
+   * 由 IO 层算好后塞进来，本文件直接采用，避免 `planItemId` 用单个 kp 算错键。
+   */
+  itemId?: string
 }
 
 export interface DailyPlanItem {
@@ -89,6 +100,8 @@ export interface DailyPlanItem {
   questions: number
   /** 预计分钟 */
   minutes: number
+  /** 词语听写（vocab）专用：这一批要听写的全部词的知识点 id */
+  knowledgePointIds?: string[]
 }
 
 export interface DailyPlanTotals {
@@ -140,20 +153,28 @@ export const KIND_COST: Record<PlanItemKind, DailyPlanTotals> = {
   mistake: { questions: 3, minutes: 3 },
   weak: { questions: 4, minutes: 3 },
   new: { questions: 6, minutes: 5 },
+  // vocab：每天一批 15 词的听写。它不挤占习题预算（第四轮独立追加），
+  // 这里的题量只是展示用（"15 词"），分钟是 15 次「听→写」的粗略估计。
+  vocab: { questions: 15, minutes: 12 },
 }
 
 /**
  * 第一轮配额：保证四类任务都能"上桌"，不被高优先级的那类独吞。
  * `new` 不设配额 —— 它就是剩下多少拿多少，因为它是唯一"不补会欠账"的一类。
  */
-export const KIND_QUOTA: Record<Exclude<PlanItemKind, 'new'>, number> = {
+export const KIND_QUOTA: Record<PlanItemKind, number> = {
   review: 0.5,
   mistake: 0.25,
   weak: 0.15,
+  new: 0,
+  // vocab 走第四轮独立追加，不进配额分配
+  vocab: 0,
 }
 
-/** 优先级顺序（数组顺序即优先级，不要改成对象字面量遍历 —— 那依赖插入顺序） */
-export const KIND_ORDER: PlanItemKind[] = ['review', 'mistake', 'weak', 'new']
+/** 优先级顺序（数组顺序即优先级，不要改成对象字面量遍历 —— 那依赖插入顺序）
+ * 注意：`vocab` 排在最后，但三大轮（配额/软溢出/新学）都会跳过它，
+ * 它在第四轮单独追加，且不挤占习题预算。 */
+export const KIND_ORDER: PlanItemKind[] = ['review', 'mistake', 'weak', 'new', 'vocab']
 
 /**
  * 第二轮允许的软溢出**只对时长口径生效**：目标 20 分钟时塞到 24 分钟可以接受，
@@ -169,6 +190,7 @@ export const KIND_LABEL: Record<PlanItemKind, string> = {
   mistake: '错题',
   weak: '弱项',
   new: '新学',
+  vocab: '听写',
 }
 
 // ===========================================================================
@@ -244,6 +266,10 @@ function compareCandidate(a: PlanCandidate, b: PlanCandidate): number {
       const d = (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER)
       return d !== 0 ? d : a.title.localeCompare(b.title)
     }
+    case 'vocab': {
+      // 每天最多一项 vocab，排序只在理论上有意义：按标题稳定排
+      return a.title.localeCompare(b.title)
+    }
   }
 }
 
@@ -275,6 +301,8 @@ export function reasonOf(c: PlanCandidate): string {
     case 'new':
     default:
       return '还没学过'
+    case 'vocab':
+      return '每天听写 15 个词语，写不出就重练'
   }
 }
 
@@ -344,7 +372,7 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
   const cursor = new Map<PlanItemKind, number>()
   for (const kind of KIND_ORDER) cursor.set(kind, 0)
   const used: DailyPlanTotals = { questions: 0, minutes: 0 }
-  const kindUsed: Record<PlanItemKind, number> = { review: 0, mistake: 0, weak: 0, new: 0 }
+  const kindUsed: Record<PlanItemKind, number> = { review: 0, mistake: 0, weak: 0, new: 0, vocab: 0 }
 
   const toItem = (c: PlanCandidate): DailyPlanItem => {
     const std = KIND_COST[c.kind]
@@ -355,7 +383,7 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
         ? Math.max(1, Math.round((std.minutes * questions) / std.questions))
         : std.minutes
     return {
-      id: planItemId(c),
+      id: c.itemId ?? planItemId(c),
       kind: c.kind,
       packageId: c.packageId,
       unitId: c.unitId,
@@ -366,6 +394,7 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
       reason: reasonOf(c),
       questions,
       minutes,
+      ...(c.knowledgePointIds ? { knowledgePointIds: c.knowledgePointIds } : {}),
     }
   }
 
@@ -392,6 +421,24 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
     return true
   }
 
+  /**
+   * 词语听写专用追加：**不计预算**（与习题裁剪解耦）。
+   * 只受 `maxItems` 兜底 + 每天一项（候选本来就只生成一项）约束。
+   */
+  const tryPushVocab = (): boolean => {
+    const list = byKind.get('vocab') ?? []
+    const i = cursor.get('vocab') ?? 0
+    if (i >= list.length) return false
+    if (picked.length >= maxItems) return false
+    const item = toItem(list[i])
+    picked.push(item)
+    cursor.set('vocab', i + 1)
+    kindUsed.vocab += 1
+    used.questions += item.questions
+    used.minutes += item.minutes
+    return true
+  }
+
   // ---- 新学预留 ----
   // 只要还有没学过的内容，就从预算里**先划出一项新学的钱**。
   //
@@ -405,7 +452,7 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
 
   // ---- 第一轮：配额（配额基数用 workBudget，不是整份预算） ----
   for (const kind of KIND_ORDER) {
-    if (kind === 'new') continue
+    if (kind === 'new' || kind === 'vocab') continue
     const quota = Math.max(KIND_QUOTA[kind] * workBudget, 0)
     let guard = 0
     // 配额小于一项成本时，允许放**恰好一项**（否则目标小的时候这类永远上不了桌）
@@ -425,7 +472,7 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
   while (progress && picked.length < maxItems) {
     progress = false
     for (const kind of KIND_ORDER) {
-      if (kind === 'new') continue
+      if (kind === 'new' || kind === 'vocab') continue
       while (tryPush(kind, Number.POSITIVE_INFINITY, softLimit)) progress = true
     }
   }
@@ -436,6 +483,17 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
     let guard = 0
     while (guard++ < 50 && tryPush('new', Number.POSITIVE_INFINITY, newLimit)) {
       /* 教材顺序推进，能放几项放几项 */
+    }
+  }
+
+  // ---- 第四轮：词语听写（vocab）独立追加，不挤占习题预算 ----
+  // 为什么是独立一轮、且不算进预算：听写是「每天顺手练 15 个词」的增量习惯，
+  // 不应该把本就紧张的 24 题额度再分走一块；它是"附加项"，做完计入总数但不参与裁剪。
+  // 每天最多一项（候选里本来也只生成一项），即使前面习题已排满，也尽量保留这一项。
+  {
+    let guard = 0
+    while (guard++ < 5 && tryPushVocab()) {
+      /* 每天最多一项 vocab */
     }
   }
 
@@ -547,7 +605,7 @@ export function nextPendingItem(plan: DailyPlan): DailyPlanItem | null {
 
 /** 按类型统计队列构成（首页副标题：「复习 4 · 错题 1 · 新学 1」） */
 export function kindBreakdown(plan: DailyPlan): Record<PlanItemKind, number> {
-  const out: Record<PlanItemKind, number> = { review: 0, mistake: 0, weak: 0, new: 0 }
+  const out: Record<PlanItemKind, number> = { review: 0, mistake: 0, weak: 0, new: 0, vocab: 0 }
   for (const it of plan.items) out[it.kind] += 1
   return out
 }

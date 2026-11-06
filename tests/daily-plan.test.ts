@@ -12,6 +12,7 @@ import {
   DEFAULT_GOAL,
   GOAL_LIMITS,
   KIND_COST,
+  KIND_LABEL,
   type PlanCandidate,
   type PlanItemKind,
 } from '@core/plan/dailyPlan'
@@ -36,6 +37,9 @@ function mk(kind: PlanItemKind, over: Partial<PlanCandidate> = {}): PlanCandidat
     pendingMistakes: over.pendingMistakes,
     mastery: over.mastery,
     order: over.order,
+    // vocab 专用字段透传
+    ...(over.knowledgePointIds ? { knowledgePointIds: over.knowledgePointIds } : {}),
+    ...(over.itemId ? { itemId: over.itemId } : {}),
   }
 }
 
@@ -166,7 +170,7 @@ describe('buildDailyPlan · 优先级与配额', () => {
     ]
     const plan = buildDailyPlan({ date: DATE, candidates })
     const order = kinds(plan)
-    const rank = { review: 0, mistake: 1, weak: 2, new: 3 } as const
+    const rank = { review: 0, mistake: 1, weak: 2, new: 3, vocab: 4 } as const
     const ranks = order.map((k) => rank[k])
     expect(ranks).toEqual([...ranks].sort((x, y) => x - y))
   })
@@ -387,9 +391,66 @@ describe('isPlanStale', () => {
 
 describe('KIND_COST 契约', () => {
   it('每类都有正值成本（0 会让裁剪死循环）', () => {
-    for (const k of ['review', 'mistake', 'weak', 'new'] as PlanItemKind[]) {
+    for (const k of ['review', 'mistake', 'weak', 'new', 'vocab'] as PlanItemKind[]) {
       expect(KIND_COST[k].questions).toBeGreaterThan(0)
       expect(KIND_COST[k].minutes).toBeGreaterThan(0)
     }
+  })
+})
+
+describe('KIND_LABEL / reasonOf · vocab', () => {
+  it('vocab 标签是「听写」且理由可核对', () => {
+    expect(KIND_LABEL.vocab).toBe('听写')
+    expect(reasonOf(mk('vocab', { itemId: 'v', knowledgePointIds: ['a'] }))).toContain('听写')
+  })
+})
+
+describe('buildDailyPlan · 词语听写（vocab 第四轮独立追加）', () => {
+  it('有 vocab 候选时独立追加一项，且不挤占习题预算（24 题仍给满）', () => {
+    const candidates = [
+      ...Array.from({ length: 8 }, (_, i) => mk('review', { overdueDays: i })),
+      mk('vocab', {
+        itemId: 'vocab pkg a,b,c',
+        knowledgePointIds: Array.from({ length: 15 }, (_, i) => `w${i}`),
+        availableQuestions: 15,
+        title: '词语听写（15 词）',
+      }),
+    ]
+    const plan = buildDailyPlan({ date: DATE, candidates })
+    const vocabItems = plan.items.filter((i) => i.kind === 'vocab')
+    expect(vocabItems).toHaveLength(1)
+    expect(vocabItems[0].knowledgePointIds).toHaveLength(15)
+    // 习题预算不被挤占：复习仍按目标排满 24 题
+    expect(plan.totals.questions).toBeGreaterThanOrEqual(24)
+    // 总题数 = 习题(24) + 听写(15)
+    expect(plan.totals.questions).toBe(24 + 15)
+  })
+
+  it('vocab 候选 availableQuestions=0 时被过滤，不进队列', () => {
+    const plan = buildDailyPlan({
+      date: DATE,
+      candidates: [mk('vocab', { itemId: 'v', knowledgePointIds: [], availableQuestions: 0 })],
+    })
+    expect(plan.items).toHaveLength(0)
+  })
+
+  it('只有 vocab 候选（无习题）时仍能生成一项（不空队列）', () => {
+    const plan = buildDailyPlan({
+      date: DATE,
+      candidates: [
+        mk('vocab', { itemId: 'v', knowledgePointIds: ['a', 'b', 'c'], availableQuestions: 3, title: '词语听写（3 词）' }),
+      ],
+    })
+    expect(plan.items).toHaveLength(1)
+    expect(plan.items[0].kind).toBe('vocab')
+  })
+
+  it('vocab 项使用预计算的 itemId（同一批词键稳定）', () => {
+    const id = 'vocab pkg a,b,c'
+    const plan = buildDailyPlan({
+      date: DATE,
+      candidates: [mk('vocab', { itemId: id, knowledgePointIds: ['a'], availableQuestions: 1 })],
+    })
+    expect(plan.items[0].id).toBe(id)
   })
 })

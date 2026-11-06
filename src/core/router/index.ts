@@ -6,6 +6,8 @@ const routes: RouteRecordRaw[] = [
   // 今日任务（V3.0 · M1）：首页的唯一主入口。单独一条路由而不是首页的一个区块，
   // 是因为答题完成后要有个地方"回来"——回首页会让人顺手点别的东西，回今日页才能结算。
   { path: '/today', name: 'TodayPlan', component: () => import('@/views/TodayPlan.vue') },
+  // 词语听写任务（方案 B）：今日任务里点「听写」项进来，连续听写 15 词后回今日页
+  { path: '/dictation', name: 'DictationSession', component: () => import('@/views/dictation/DictationSession.vue') },
   // 技能树（V1.12 · G1）。echarts tree 渲染学科 → 单元 → 知识点，lazy import 同其余条目
   { path: '/graph', name: 'KnowledgeGraph', component: () => import('@/views/KnowledgeGraph.vue') },
   {
