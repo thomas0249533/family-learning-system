@@ -1,0 +1,1446 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "daily-chinese-4-up-rjb-midterm",
+    "type": "daily",
+    "isInternal": false,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版",
+    "title": "语文期中冲刺 打卡（四年级上·部编版）",
+    "version": "1.0.0",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::kp-c4-root",
+      "type": "concept",
+      "title": "词语积累（看拼音写词）",
+      "content": "根据拼音正确书写课内重点词语。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 8,
+        "cognitiveLevel": "识记",
+        "ability": "语言运用"
+      },
+      "exerciseIds": [
+        "daily-chinese-4-up-rjb-midterm::d1-01",
+        "daily-chinese-4-up-rjb-midterm::d1-02",
+        "daily-chinese-4-up-rjb-midterm::d1-03",
+        "daily-chinese-4-up-rjb-midterm::d1-04",
+        "daily-chinese-4-up-rjb-midterm::d1-05",
+        "daily-chinese-4-up-rjb-midterm::d1-06",
+        "daily-chinese-4-up-rjb-midterm::d1-07",
+        "daily-chinese-4-up-rjb-midterm::d1-08",
+        "daily-chinese-4-up-rjb-midterm::d1-09",
+        "daily-chinese-4-up-rjb-midterm::d1-10"
+      ]
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::kp-c4-choice",
+      "type": "concept",
+      "title": "字词句选择",
+      "content": "字音、词义、课文理解、语段概括。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 9,
+        "cognitiveLevel": "理解",
+        "ability": "语言运用"
+      },
+      "exerciseIds": [
+        "daily-chinese-4-up-rjb-midterm::d1-11",
+        "daily-chinese-4-up-rjb-midterm::d1-12",
+        "daily-chinese-4-up-rjb-midterm::d1-13",
+        "daily-chinese-4-up-rjb-midterm::d1-14",
+        "daily-chinese-4-up-rjb-midterm::d1-15"
+      ]
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::kp-c4-research",
+      "type": "concept",
+      "title": "西湖研究性学习",
+      "content": "拼音辨析、成语、词语理解与课文名句盘点。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 10,
+        "cognitiveLevel": "理解",
+        "ability": "思维发展"
+      },
+      "exerciseIds": [
+        "daily-chinese-4-up-rjb-midterm::d2-01",
+        "daily-chinese-4-up-rjb-midterm::d2-02",
+        "daily-chinese-4-up-rjb-midterm::d2-03",
+        "daily-chinese-4-up-rjb-midterm::d2-04",
+        "daily-chinese-4-up-rjb-midterm::d2-05",
+        "daily-chinese-4-up-rjb-midterm::d2-06",
+        "daily-chinese-4-up-rjb-midterm::d2-07",
+        "daily-chinese-4-up-rjb-midterm::d2-08",
+        "daily-chinese-4-up-rjb-midterm::d2-09",
+        "daily-chinese-4-up-rjb-midterm::d2-10"
+      ]
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::kp-c4-read1",
+      "type": "concept",
+      "title": "非连文本·西湖游船与传说",
+      "content": "信息提取、购票计算与传说梳理。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 9,
+        "cognitiveLevel": "分析",
+        "ability": "阅读鉴赏"
+      },
+      "exerciseIds": [
+        "daily-chinese-4-up-rjb-midterm::d3-01",
+        "daily-chinese-4-up-rjb-midterm::d3-02",
+        "daily-chinese-4-up-rjb-midterm::d3-03",
+        "daily-chinese-4-up-rjb-midterm::d3-04",
+        "daily-chinese-4-up-rjb-midterm::d3-05"
+      ]
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::kp-c4-read2",
+      "type": "concept",
+      "title": "文学阅读《西湖漫笔》",
+      "content": "词语理解、内容梳理、语句赏析与诗句印证。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "较难",
+        "estimatedMinutes": 11,
+        "cognitiveLevel": "评价",
+        "ability": "阅读鉴赏"
+      },
+      "exerciseIds": [
+        "daily-chinese-4-up-rjb-midterm::d4-01",
+        "daily-chinese-4-up-rjb-midterm::d4-02",
+        "daily-chinese-4-up-rjb-midterm::d4-03",
+        "daily-chinese-4-up-rjb-midterm::d4-04",
+        "daily-chinese-4-up-rjb-midterm::d4-05",
+        "daily-chinese-4-up-rjb-midterm::d4-06",
+        "daily-chinese-4-up-rjb-midterm::d4-07"
+      ]
+    }
+  ],
+  "units": [
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::u01",
+      "name": "Day 01",
+      "title": "Day 01 · 基础（看拼音写词 + 选择）",
+      "desc": "词语积累与字词句选择",
+      "topics": [
+        {
+          "id": "daily-chinese-4-up-rjb-midterm::t-d1",
+          "title": "基础·词语与选择",
+          "board": "",
+          "knowledgePointIds": [
+            "daily-chinese-4-up-rjb-midterm::kp-c4-root",
+            "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+          ],
+          "exercises": [
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-01",
+              "type": "blank",
+              "question": "看拼音写词语：zhú jiàn（　　）降临",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "逐渐",
+              "explanation": "暮色渐渐降临。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-02",
+              "type": "blank",
+              "question": "看拼音写词语：一片 jìng jì（　　）",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "静寂",
+              "explanation": "林间一片安静。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-03",
+              "type": "blank",
+              "question": "看拼音写词语：夕阳 zhào yào（　　）大地",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "照耀",
+              "explanation": "阳光照射。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-04",
+              "type": "blank",
+              "question": "看拼音写词语：xīn xiān（　　）的草木气息",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "新鲜",
+              "explanation": "清新的气息。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-05",
+              "type": "blank",
+              "question": "看拼音写词语：小路 wān qū（　　）延伸",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "弯曲",
+              "explanation": "弯弯曲曲。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-06",
+              "type": "blank",
+              "question": "看拼音写词语：róu ruò（　　）的花蕾",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "柔弱",
+              "explanation": "柔嫩软弱。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-07",
+              "type": "blank",
+              "question": "看拼音写词语：huā lěi（　　）蓄势待放",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "花蕾",
+              "explanation": "花苞。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-08",
+              "type": "blank",
+              "question": "看拼音写词语：枝叶的 kòng xì（　　）漏下阳光",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "空隙",
+              "explanation": "缝隙。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-09",
+              "type": "blank",
+              "question": "看拼音写词语：印出 hén jì（　　）",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "痕迹",
+              "explanation": "印迹。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-10",
+              "type": "blank",
+              "question": "看拼音写词语：一场 mèng huàn（　　）的秋日盛宴",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "梦幻",
+              "explanation": "如梦如幻。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-11",
+              "type": "single",
+              "question": "下列加点字注音完全正确的一项是（　　）。\nA.踮(diǎn)脚 耙(bā)扫 引荐(jiàn) 惩(chéng)罚\nB.倾(qīng)斜 混(hùn)乱 水笕(jiǎn) 须臾(yú)\nC.屏(píng)幕 稻穗(huì) 慎(shèn)重 黏(nián)稠\nD.霸(bà)占 愚昧(wèi) 叶柄(bǐng) 堙(yān)没",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "A耙应pá；C稻穗应suì；D愚昧应mèi。B全对。",
+              "options": [
+                "A.踮(diǎn)脚 耙(bā)扫 引荐(jiàn) 惩(chéng)罚",
+                "B.倾(qīng)斜 混(hùn)乱 水笕(jiǎn) 须臾(yú)",
+                "C.屏(píng)幕 稻穗(huì) 慎(shèn)重 黏(nián)稠",
+                "D.霸(bà)占 愚昧(wèi) 叶柄(bǐng) 堙(yān)没"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-12",
+              "type": "single",
+              "question": "依次填入最恰当的一项是（　　）。秋日清晨，飞鸟归___，野兔回___。今年夏天雨水偏少，降温早，让人想起谚语“___”。\nA.巢 窝 立了秋，把扇丢 B.窝 巢 夏雨少，秋霜早 C.窝 洞 立了秋，把扇丢 D.巢 窟 夏雨少，秋霜早",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "D",
+              "explanation": "飞鸟归巢、野兔回窟；谚语“夏雨少，秋霜早”。",
+              "options": [
+                "A.巢 窝 立了秋，把扇丢",
+                "B.窝 巢 夏雨少，秋霜早",
+                "C.窝 洞 立了秋，把扇丢",
+                "D.巢 窟 夏雨少，秋霜早"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-13",
+              "type": "single",
+              "question": "下列说法不正确的一项是（　　）。\nA.神话用奇特想象解释世界 B.连续观察比细致观察更重要\nC.阅读可调动多种感官想象画面 D.多角度提问有助于拓宽思考",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "连续观察与细致观察都重要，不能说谁“更重要”。",
+              "options": [
+                "A.神话用奇特想象解释世界",
+                "B.连续观察比细致观察更重要",
+                "C.阅读可调动多种感官想象画面",
+                "D.多角度提问有助于拓宽思考"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-14",
+              "type": "single",
+              "question": "下列句子不能体现神话神奇想象的一项是（　　）。\nA.女娃溺而不返，故为精卫 B.夸父一气饮尽黄河、渭水\nC.女娲炼五色石以补苍天 D.大禹三过家门而不入",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "D",
+              "explanation": "大禹治水属历史传说，非神奇想象。",
+              "options": [
+                "A.女娃溺而不返，故为精卫",
+                "B.夸父一气饮尽黄河、渭水",
+                "C.女娲炼五色石以补苍天",
+                "D.大禹三过家门而不入"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d1-15",
+              "type": "single",
+              "question": "对语段概括最恰当的一项是（　　）。刺猬遇危险收缩肌肉，把身体蜷成圆球，竖起尖刺威慑捕食者。\nA.刺猬长满棘刺 B.刺猬靠棘刺抵御天敌保护自己 C.刺猬遇天敌蜷成球 D.尖刺威慑捕食动物",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "核心：用棘刺保护自己。",
+              "options": [
+                "A.刺猬长满棘刺",
+                "B.刺猬靠棘刺抵御天敌保护自己",
+                "C.刺猬遇天敌蜷成球",
+                "D.尖刺威慑捕食动物"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::u02",
+      "name": "Day 02",
+      "title": "Day 02 · 积累（课文填空 + 表达）",
+      "desc": "拼音、成语、词语与课文名句",
+      "topics": [
+        {
+          "id": "daily-chinese-4-up-rjb-midterm::t-d2",
+          "title": "积累·研究与课文",
+          "board": "",
+          "knowledgePointIds": [
+            "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+          ],
+          "exercises": [
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-01",
+              "type": "blank",
+              "question": "用“√”选正确拼音：薄【báo bó】雾、闷【mēn mèn】热",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "bó；mēn",
+              "explanation": "“薄雾”读bó，“闷热”读mēn。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-02",
+              "type": "blank",
+              "question": "画“——”处可替换成一个成语：人们说话声音嘈杂，像锅里水烧开一样。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "人声鼎沸",
+              "explanation": "形容人声嘈杂喧闹。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-03",
+              "type": "blank",
+              "question": "“窃窃私语”的意思是（　　）；像这种构词方式的词语：___、___。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "私下里小声交谈；欣欣向荣；源源不断",
+              "explanation": "AABC式词语示例。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-04",
+              "type": "essay",
+              "question": "把“阳光慢慢铺洒开来，把湖面的雾气渐渐驱散。”改成“被”字句。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "湖面的雾气被慢慢铺洒开来的阳光渐渐驱散。",
+              "explanation": "宾语提前，加“被”。",
+              "keyPoints": [
+                "“湖面的雾气”作主语",
+                "用“被”字"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-05",
+              "type": "essay",
+              "question": "有人说把文中的“逐渐”去掉句子更简洁，你同意吗？为什么？",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：不同意。“逐渐”写出雾气一点一点、慢慢消散的过程，体现景物变化的层次感；删去后无法体现这种缓慢变化，表达不够准确生动。",
+              "explanation": "要说出“逐渐”的表达作用。",
+              "keyPoints": [
+                "表明态度",
+                "结合语境说理由"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-06",
+              "type": "blank",
+              "question": "谚语：十月杭州依然温暖，正如“（　　），（　　），（　　）。”",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "八月暖；九月温；十月还有小阳春",
+              "explanation": "关于秋温的谚语。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-07",
+              "type": "blank",
+              "question": "钱塘江潮：“浪潮越来越近，犹如千万匹白色战马（　　），（　　）地飞奔而来；那声音如同（　　），好像大地都被震得颤动起来。”",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "齐头并进；浩浩荡荡；山崩地裂",
+              "explanation": "《观潮》名句。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-08",
+              "type": "blank",
+              "question": "《雪梅》：“（　　），（　　）。”说明事物各有长短。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "梅须逊雪三分白；雪却输梅一段香",
+              "explanation": "卢梅坡《雪梅》。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-09",
+              "type": "blank",
+              "question": "韩愈：“（　　），（　　）。”说明人并非生来无所不知。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "人非生而知之者；孰能无惑",
+              "explanation": "《师说》名句。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d2-10",
+              "type": "blank",
+              "question": "《题西林壁》：“（　　），（　　）。”说明“当局者迷，旁观者清”。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "不识庐山真面目；只缘身在此山中",
+              "explanation": "苏轼名句。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::u03",
+      "name": "Day 03",
+      "title": "Day 03 · 阅读一（西湖游船与传说）",
+      "desc": "非连文本阅读",
+      "topics": [
+        {
+          "id": "daily-chinese-4-up-rjb-midterm::t-d3",
+          "title": "阅读一·西湖游船传说",
+          "board": "",
+          "knowledgePointIds": [
+            "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+          ],
+          "exercises": [
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d3-01",
+              "type": "blank",
+              "question": "张老师带3名四年级学生（均未满22周岁、身高1.2-1.5米）坐游船，共需支付___元船票钱。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "175",
+              "explanation": "成人70 + 儿童35×3 = 175。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d3-02",
+              "type": "single",
+              "question": "对西湖游船须知理解正确的一项是（　　）。\nA.临时不去可申请退票 B.可站船头拍照 C.船票含游船与三潭印月登岛票 D.岛上限制游览时长",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "须知明确船票包含登岛票。",
+              "options": [
+                "A.临时不去可申请退票",
+                "B.可站船头拍照",
+                "C.船票含游船与三潭印月登岛票",
+                "D.岛上限制游览时长"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d3-03",
+              "type": "single",
+              "question": "不能作为上岸出口的是（　　）。\nA.湖滨 B.岳庙 C.二公园 D.花港观鱼",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "二公园是上船码头，非指定出口。",
+              "options": [
+                "A.湖滨",
+                "B.岳庙",
+                "C.二公园",
+                "D.花港观鱼"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d3-04",
+              "type": "blank",
+              "question": "梳理《西湖的传说》表格：起因——玉龙和金凤获得明珠；经过——①___②___；结果——③___。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "①王母娘娘派天兵天将抢走明珠；②玉龙金凤赶去索珠、发生争抢；③明珠降落人间变成西湖，玉龙金凤变玉皇山、凤凰山永远守护",
+              "explanation": "按起因-经过-结果梳理。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d3-05",
+              "type": "essay",
+              "question": "围绕西湖的传说，为西湖设计一条宣传语。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：品读西湖传说，浸润江南文脉。",
+              "explanation": "简洁、突出西湖特色即可。",
+              "keyPoints": [
+                "点明西湖",
+                "有吸引力"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::u04",
+      "name": "Day 04",
+      "title": "Day 04 · 阅读二《西湖漫笔》",
+      "desc": "文学类文本阅读",
+      "topics": [
+        {
+          "id": "daily-chinese-4-up-rjb-midterm::t-d4",
+          "title": "阅读二·西湖漫笔",
+          "board": "",
+          "knowledgePointIds": [
+            "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+          ],
+          "exercises": [
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d4-01",
+              "type": "blank",
+              "question": "联系上下文理解：（1）心旷神怡：___ （2）亭亭玉立：___",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "心情舒畅，精神愉快；形容女子或花木挺拔秀丽",
+              "explanation": "结合语境解释。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d4-02",
+              "type": "blank",
+              "question": "《西湖漫笔》表格：灵隐·树木·古木参天苍翠欲滴→①___；苏堤·树木→②___、③___；苏堤·青苔→④___；花港观鱼·新荷→⑤___。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "①浓郁的绿；②莽莽苍苍的绿；③绿得发黑绿得浓郁；④可爱的绿；⑤盎然的绿",
+              "explanation": "围绕“绿”的不同特点填关键词。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d4-03",
+              "type": "essay",
+              "question": "第①段画“——”句“水花飞溅，如飞珠滚玉一般”运用了什么修辞？好处是什么？",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：运用比喻，把水花比作飞珠滚玉，生动形象地写出溪水奔流时水花飞溅、晶莹灵动的样子，富有画面感。",
+              "explanation": "指出比喻+分析效果。",
+              "keyPoints": [
+                "修辞(比喻)",
+                "生动形象"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d4-04",
+              "type": "single",
+              "question": "“绿茸茸”“绿荫荫”能否交换位置（　　）。\nA.可以，意思相近 B.可以，都是ABB式 C.不可以，分别表现青苔、苏堤不同特点 D.不可以，是作者原话",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "两词分别贴合青苔与苏堤的不同绿意。",
+              "options": [
+                "A.可以，意思相近",
+                "B.可以，都是ABB式",
+                "C.不可以，分别表现青苔、苏堤不同特点",
+                "D.不可以，是作者原话"
+              ],
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d4-05",
+              "type": "blank",
+              "question": "第④段省略号省略的内容是（　　），与“（　　）”一词意思相近。",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "黄龙洞绿得幽、屏风山绿得野、九溪十八涧绿得闲；说不尽道不完",
+              "explanation": "列举其余的绿，呼应“说不尽道不完”。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d4-06",
+              "type": "blank",
+              "question": "“欲”字义：（1）苍翠欲滴（　　） （2）欲把西湖比西子（　　）。（①将要 ②想要，希望 ③欲望）",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "①；②",
+              "explanation": "苍翠欲滴=将要；欲把=想要。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            },
+            {
+              "id": "daily-chinese-4-up-rjb-midterm::d4-07",
+              "type": "blank",
+              "question": "《西湖漫笔》多样的绿意，印证了诗句“（　　），（　　）。”",
+              "knowledgePointIds": [
+                "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "欲把西湖比西子；淡妆浓抹总相宜",
+              "explanation": "苏轼《饮湖上初晴后雨》。",
+              "packageId": "daily-chinese-4-up-rjb-midterm"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "packageId": "daily-chinese-4-up-rjb-midterm",
+  "exercises": [
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-01",
+      "type": "blank",
+      "question": "看拼音写词语：zhú jiàn（　　）降临",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "逐渐",
+      "explanation": "暮色渐渐降临。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-02",
+      "type": "blank",
+      "question": "看拼音写词语：一片 jìng jì（　　）",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "静寂",
+      "explanation": "林间一片安静。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-03",
+      "type": "blank",
+      "question": "看拼音写词语：夕阳 zhào yào（　　）大地",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "照耀",
+      "explanation": "阳光照射。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-04",
+      "type": "blank",
+      "question": "看拼音写词语：xīn xiān（　　）的草木气息",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "新鲜",
+      "explanation": "清新的气息。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-05",
+      "type": "blank",
+      "question": "看拼音写词语：小路 wān qū（　　）延伸",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "弯曲",
+      "explanation": "弯弯曲曲。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-06",
+      "type": "blank",
+      "question": "看拼音写词语：róu ruò（　　）的花蕾",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "柔弱",
+      "explanation": "柔嫩软弱。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-07",
+      "type": "blank",
+      "question": "看拼音写词语：huā lěi（　　）蓄势待放",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "花蕾",
+      "explanation": "花苞。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-08",
+      "type": "blank",
+      "question": "看拼音写词语：枝叶的 kòng xì（　　）漏下阳光",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "空隙",
+      "explanation": "缝隙。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-09",
+      "type": "blank",
+      "question": "看拼音写词语：印出 hén jì（　　）",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "痕迹",
+      "explanation": "印迹。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-10",
+      "type": "blank",
+      "question": "看拼音写词语：一场 mèng huàn（　　）的秋日盛宴",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-root"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "梦幻",
+      "explanation": "如梦如幻。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-11",
+      "type": "single",
+      "question": "下列加点字注音完全正确的一项是（　　）。\nA.踮(diǎn)脚 耙(bā)扫 引荐(jiàn) 惩(chéng)罚\nB.倾(qīng)斜 混(hùn)乱 水笕(jiǎn) 须臾(yú)\nC.屏(píng)幕 稻穗(huì) 慎(shèn)重 黏(nián)稠\nD.霸(bà)占 愚昧(wèi) 叶柄(bǐng) 堙(yān)没",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "B",
+      "explanation": "A耙应pá；C稻穗应suì；D愚昧应mèi。B全对。",
+      "options": [
+        "A.踮(diǎn)脚 耙(bā)扫 引荐(jiàn) 惩(chéng)罚",
+        "B.倾(qīng)斜 混(hùn)乱 水笕(jiǎn) 须臾(yú)",
+        "C.屏(píng)幕 稻穗(huì) 慎(shèn)重 黏(nián)稠",
+        "D.霸(bà)占 愚昧(wèi) 叶柄(bǐng) 堙(yān)没"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-12",
+      "type": "single",
+      "question": "依次填入最恰当的一项是（　　）。秋日清晨，飞鸟归___，野兔回___。今年夏天雨水偏少，降温早，让人想起谚语“___”。\nA.巢 窝 立了秋，把扇丢 B.窝 巢 夏雨少，秋霜早 C.窝 洞 立了秋，把扇丢 D.巢 窟 夏雨少，秋霜早",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "D",
+      "explanation": "飞鸟归巢、野兔回窟；谚语“夏雨少，秋霜早”。",
+      "options": [
+        "A.巢 窝 立了秋，把扇丢",
+        "B.窝 巢 夏雨少，秋霜早",
+        "C.窝 洞 立了秋，把扇丢",
+        "D.巢 窟 夏雨少，秋霜早"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-13",
+      "type": "single",
+      "question": "下列说法不正确的一项是（　　）。\nA.神话用奇特想象解释世界 B.连续观察比细致观察更重要\nC.阅读可调动多种感官想象画面 D.多角度提问有助于拓宽思考",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "B",
+      "explanation": "连续观察与细致观察都重要，不能说谁“更重要”。",
+      "options": [
+        "A.神话用奇特想象解释世界",
+        "B.连续观察比细致观察更重要",
+        "C.阅读可调动多种感官想象画面",
+        "D.多角度提问有助于拓宽思考"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-14",
+      "type": "single",
+      "question": "下列句子不能体现神话神奇想象的一项是（　　）。\nA.女娃溺而不返，故为精卫 B.夸父一气饮尽黄河、渭水\nC.女娲炼五色石以补苍天 D.大禹三过家门而不入",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "D",
+      "explanation": "大禹治水属历史传说，非神奇想象。",
+      "options": [
+        "A.女娃溺而不返，故为精卫",
+        "B.夸父一气饮尽黄河、渭水",
+        "C.女娲炼五色石以补苍天",
+        "D.大禹三过家门而不入"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d1-15",
+      "type": "single",
+      "question": "对语段概括最恰当的一项是（　　）。刺猬遇危险收缩肌肉，把身体蜷成圆球，竖起尖刺威慑捕食者。\nA.刺猬长满棘刺 B.刺猬靠棘刺抵御天敌保护自己 C.刺猬遇天敌蜷成球 D.尖刺威慑捕食动物",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-choice"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "B",
+      "explanation": "核心：用棘刺保护自己。",
+      "options": [
+        "A.刺猬长满棘刺",
+        "B.刺猬靠棘刺抵御天敌保护自己",
+        "C.刺猬遇天敌蜷成球",
+        "D.尖刺威慑捕食动物"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-01",
+      "type": "blank",
+      "question": "用“√”选正确拼音：薄【báo bó】雾、闷【mēn mèn】热",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "bó；mēn",
+      "explanation": "“薄雾”读bó，“闷热”读mēn。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-02",
+      "type": "blank",
+      "question": "画“——”处可替换成一个成语：人们说话声音嘈杂，像锅里水烧开一样。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "人声鼎沸",
+      "explanation": "形容人声嘈杂喧闹。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-03",
+      "type": "blank",
+      "question": "“窃窃私语”的意思是（　　）；像这种构词方式的词语：___、___。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "私下里小声交谈；欣欣向荣；源源不断",
+      "explanation": "AABC式词语示例。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-04",
+      "type": "essay",
+      "question": "把“阳光慢慢铺洒开来，把湖面的雾气渐渐驱散。”改成“被”字句。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "湖面的雾气被慢慢铺洒开来的阳光渐渐驱散。",
+      "explanation": "宾语提前，加“被”。",
+      "keyPoints": [
+        "“湖面的雾气”作主语",
+        "用“被”字"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-05",
+      "type": "essay",
+      "question": "有人说把文中的“逐渐”去掉句子更简洁，你同意吗？为什么？",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "示例：不同意。“逐渐”写出雾气一点一点、慢慢消散的过程，体现景物变化的层次感；删去后无法体现这种缓慢变化，表达不够准确生动。",
+      "explanation": "要说出“逐渐”的表达作用。",
+      "keyPoints": [
+        "表明态度",
+        "结合语境说理由"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-06",
+      "type": "blank",
+      "question": "谚语：十月杭州依然温暖，正如“（　　），（　　），（　　）。”",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "八月暖；九月温；十月还有小阳春",
+      "explanation": "关于秋温的谚语。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-07",
+      "type": "blank",
+      "question": "钱塘江潮：“浪潮越来越近，犹如千万匹白色战马（　　），（　　）地飞奔而来；那声音如同（　　），好像大地都被震得颤动起来。”",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "齐头并进；浩浩荡荡；山崩地裂",
+      "explanation": "《观潮》名句。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-08",
+      "type": "blank",
+      "question": "《雪梅》：“（　　），（　　）。”说明事物各有长短。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "梅须逊雪三分白；雪却输梅一段香",
+      "explanation": "卢梅坡《雪梅》。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-09",
+      "type": "blank",
+      "question": "韩愈：“（　　），（　　）。”说明人并非生来无所不知。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "人非生而知之者；孰能无惑",
+      "explanation": "《师说》名句。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d2-10",
+      "type": "blank",
+      "question": "《题西林壁》：“（　　），（　　）。”说明“当局者迷，旁观者清”。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-research"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "不识庐山真面目；只缘身在此山中",
+      "explanation": "苏轼名句。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d3-01",
+      "type": "blank",
+      "question": "张老师带3名四年级学生（均未满22周岁、身高1.2-1.5米）坐游船，共需支付___元船票钱。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "175",
+      "explanation": "成人70 + 儿童35×3 = 175。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d3-02",
+      "type": "single",
+      "question": "对西湖游船须知理解正确的一项是（　　）。\nA.临时不去可申请退票 B.可站船头拍照 C.船票含游船与三潭印月登岛票 D.岛上限制游览时长",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "C",
+      "explanation": "须知明确船票包含登岛票。",
+      "options": [
+        "A.临时不去可申请退票",
+        "B.可站船头拍照",
+        "C.船票含游船与三潭印月登岛票",
+        "D.岛上限制游览时长"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d3-03",
+      "type": "single",
+      "question": "不能作为上岸出口的是（　　）。\nA.湖滨 B.岳庙 C.二公园 D.花港观鱼",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "C",
+      "explanation": "二公园是上船码头，非指定出口。",
+      "options": [
+        "A.湖滨",
+        "B.岳庙",
+        "C.二公园",
+        "D.花港观鱼"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d3-04",
+      "type": "blank",
+      "question": "梳理《西湖的传说》表格：起因——玉龙和金凤获得明珠；经过——①___②___；结果——③___。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "①王母娘娘派天兵天将抢走明珠；②玉龙金凤赶去索珠、发生争抢；③明珠降落人间变成西湖，玉龙金凤变玉皇山、凤凰山永远守护",
+      "explanation": "按起因-经过-结果梳理。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d3-05",
+      "type": "essay",
+      "question": "围绕西湖的传说，为西湖设计一条宣传语。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read1"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "示例：品读西湖传说，浸润江南文脉。",
+      "explanation": "简洁、突出西湖特色即可。",
+      "keyPoints": [
+        "点明西湖",
+        "有吸引力"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d4-01",
+      "type": "blank",
+      "question": "联系上下文理解：（1）心旷神怡：___ （2）亭亭玉立：___",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "心情舒畅，精神愉快；形容女子或花木挺拔秀丽",
+      "explanation": "结合语境解释。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d4-02",
+      "type": "blank",
+      "question": "《西湖漫笔》表格：灵隐·树木·古木参天苍翠欲滴→①___；苏堤·树木→②___、③___；苏堤·青苔→④___；花港观鱼·新荷→⑤___。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "①浓郁的绿；②莽莽苍苍的绿；③绿得发黑绿得浓郁；④可爱的绿；⑤盎然的绿",
+      "explanation": "围绕“绿”的不同特点填关键词。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d4-03",
+      "type": "essay",
+      "question": "第①段画“——”句“水花飞溅，如飞珠滚玉一般”运用了什么修辞？好处是什么？",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "示例：运用比喻，把水花比作飞珠滚玉，生动形象地写出溪水奔流时水花飞溅、晶莹灵动的样子，富有画面感。",
+      "explanation": "指出比喻+分析效果。",
+      "keyPoints": [
+        "修辞(比喻)",
+        "生动形象"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d4-04",
+      "type": "single",
+      "question": "“绿茸茸”“绿荫荫”能否交换位置（　　）。\nA.可以，意思相近 B.可以，都是ABB式 C.不可以，分别表现青苔、苏堤不同特点 D.不可以，是作者原话",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "C",
+      "explanation": "两词分别贴合青苔与苏堤的不同绿意。",
+      "options": [
+        "A.可以，意思相近",
+        "B.可以，都是ABB式",
+        "C.不可以，分别表现青苔、苏堤不同特点",
+        "D.不可以，是作者原话"
+      ],
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d4-05",
+      "type": "blank",
+      "question": "第④段省略号省略的内容是（　　），与“（　　）”一词意思相近。",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "黄龙洞绿得幽、屏风山绿得野、九溪十八涧绿得闲；说不尽道不完",
+      "explanation": "列举其余的绿，呼应“说不尽道不完”。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d4-06",
+      "type": "blank",
+      "question": "“欲”字义：（1）苍翠欲滴（　　） （2）欲把西湖比西子（　　）。（①将要 ②想要，希望 ③欲望）",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "①；②",
+      "explanation": "苍翠欲滴=将要；欲把=想要。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    },
+    {
+      "id": "daily-chinese-4-up-rjb-midterm::d4-07",
+      "type": "blank",
+      "question": "《西湖漫笔》多样的绿意，印证了诗句“（　　），（　　）。”",
+      "knowledgePointIds": [
+        "daily-chinese-4-up-rjb-midterm::kp-c4-read2"
+      ],
+      "metadata": {
+        "difficulty": "基础",
+        "order": 1
+      },
+      "answer": "欲把西湖比西子；淡妆浓抹总相宜",
+      "explanation": "苏轼《饮湖上初晴后雨》。",
+      "packageId": "daily-chinese-4-up-rjb-midterm"
+    }
+  ]
+}

@@ -26,6 +26,12 @@
       "sha256": "7a965a8366ebd01f9101916fc8a340b0c68a4551900fd64714e7b81958698f4b"
     },
     {
+      "packageId": "daily-chinese-4-up-rjb-midterm",
+      "version": "1.0.0",
+      "title": "语文期中冲刺 打卡（四年级上·部编版）",
+      "sha256": "e77245b9ab848cdbb51fe7489bcdbb6086a1c4cf325bb06e7e2d1fe091a2a49b"
+    },
+    {
       "packageId": "special-chinese-4-up-oral",
       "version": "1.0.0",
       "title": "四上语文 · 口语交际专项（4 个话题）",
