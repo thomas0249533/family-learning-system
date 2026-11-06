@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-05",
+  "updatedAt": "2026-11-06",
   "packages": [
     {
       "packageId": "special-chinese-2-up-kantu",
@@ -96,6 +96,12 @@
       "version": "1.0.0",
       "title": "第八单元 家国情怀",
       "sha256": "4f650bfe1a4c4f948933b7e0f8e1ea76d21f172d9526785d3cbb79fb143bd706"
+    },
+    {
+      "packageId": "daily-chinese-5-up-rjb-midterm",
+      "version": "1.0.0",
+      "title": "语文期中冲刺 打卡（五年级上·部编版）",
+      "sha256": "425d4bfa0816add720f423afac619f8ca992f67a0ca76be1476c8df47b55617f"
     },
     {
       "packageId": "special-english-4-down-vocab",

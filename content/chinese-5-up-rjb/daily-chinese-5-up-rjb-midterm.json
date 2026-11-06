@@ -1,0 +1,945 @@
+{
+  "manifest": {
+    "schemaVersion": "1.0",
+    "packageId": "daily-chinese-5-up-rjb-midterm",
+    "type": "daily",
+    "isInternal": false,
+    "subject": "chinese",
+    "templateId": "chinese.primary.v1",
+    "grade": 5,
+    "term": "up",
+    "edition": "人教版",
+    "title": "语文期中冲刺 打卡（五年级上·部编版）",
+    "version": "1.0.0",
+    "dependencies": []
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-ci-root",
+      "type": "concept",
+      "title": "词语积累（看拼音写词）",
+      "content": "根据拼音正确书写课内重点词语。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 8,
+        "cognitiveLevel": "识记",
+        "ability": "语言运用"
+      }
+    },
+    {
+      "id": "kp-ci-choice",
+      "type": "concept",
+      "title": "字词句选择",
+      "content": "字音、字义、课文理解、病句、语境配对。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 10,
+        "cognitiveLevel": "理解",
+        "ability": "语言运用"
+      }
+    },
+    {
+      "id": "kp-ci-recite",
+      "type": "concept",
+      "title": "课文原句填空",
+      "content": "默写并运用课内古诗文与名句。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 10,
+        "cognitiveLevel": "识记",
+        "ability": "语言运用"
+      }
+    },
+    {
+      "id": "kp-ci-folk",
+      "type": "concept",
+      "title": "民间故事综合实践",
+      "content": "民间故事的特点、人物与表达。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 8,
+        "cognitiveLevel": "理解",
+        "ability": "思维发展"
+      }
+    },
+    {
+      "id": "kp-ci-read1",
+      "type": "concept",
+      "title": "文言文阅读《好沤鸟者》",
+      "content": "文言字词解释、虚词、停顿、翻译与道理。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 10,
+        "cognitiveLevel": "理解",
+        "ability": "阅读鉴赏"
+      }
+    },
+    {
+      "id": "kp-ci-read2",
+      "type": "concept",
+      "title": "非连文本·民间故事",
+      "content": "信息提取、材料判断与表达。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "中等",
+        "estimatedMinutes": 10,
+        "cognitiveLevel": "分析",
+        "ability": "阅读鉴赏"
+      }
+    },
+    {
+      "id": "kp-ci-read3",
+      "type": "concept",
+      "title": "文学阅读《春酒》",
+      "content": "词语理解、内容梳理、语句赏析与情感体会。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "较难",
+        "estimatedMinutes": 12,
+        "cognitiveLevel": "评价",
+        "ability": "阅读鉴赏"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "u01",
+      "name": "Day 01",
+      "title": "Day 01 · 基础（看拼音写词 + 选择）",
+      "desc": "词语积累与字词句选择",
+      "topics": [
+        {
+          "id": "t-d1",
+          "title": "基础·词语与选择",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-ci-root",
+            "kp-ci-choice"
+          ],
+          "exercises": [
+            {
+              "id": "d1-01",
+              "type": "blank",
+              "question": "看拼音写词语：xīn shǎng（　　）",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "欣赏",
+              "explanation": "结合语境“静心……千年文明的厚重底蕴”应写“欣赏”。"
+            },
+            {
+              "id": "d1-02",
+              "type": "blank",
+              "question": "看拼音写词语：guī bǎo（　　）",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "瑰宝",
+              "explanation": "指历代文明凝聚的珍宝，写“瑰宝”。"
+            },
+            {
+              "id": "d1-03",
+              "type": "blank",
+              "question": "看拼音写词语：jīng huá（　　）",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "精华",
+              "explanation": "文明的精华。"
+            },
+            {
+              "id": "d1-04",
+              "type": "blank",
+              "question": "看拼音写词语：yóu rú（　　）大江",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "犹如",
+              "explanation": "犹如：好像。"
+            },
+            {
+              "id": "d1-05",
+              "type": "blank",
+              "question": "看拼音写词语：bēn yǒng（　　）向前",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "奔涌",
+              "explanation": "奔涌：波浪等急速翻腾。"
+            },
+            {
+              "id": "d1-06",
+              "type": "blank",
+              "question": "看拼音写词语：xiàng zhēng（　　）",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "象征",
+              "explanation": "象征：用具体事物表现某种意义。"
+            },
+            {
+              "id": "d1-07",
+              "type": "blank",
+              "question": "看拼音写词语：jiǎn pǔ（　　）的古物",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "简朴",
+              "explanation": "简朴：简单朴素。"
+            },
+            {
+              "id": "d1-08",
+              "type": "blank",
+              "question": "看拼音写词语：zhēn guì（　　）的记忆",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "珍贵",
+              "explanation": "珍贵：价值大、意义深。"
+            },
+            {
+              "id": "d1-09",
+              "type": "blank",
+              "question": "看拼音写词语：téng fēi（　　）",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "腾飞",
+              "explanation": "腾飞：迅速崛起、飞升。"
+            },
+            {
+              "id": "d1-10",
+              "type": "blank",
+              "question": "看拼音写词语：hū lüè（　　）根脉",
+              "knowledgePointIds": [
+                "kp-ci-root"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "忽略",
+              "explanation": "忽略：疏忽、不在意。"
+            },
+            {
+              "id": "d1-11",
+              "type": "single",
+              "question": "下列加点字注音完全正确的一项是（　　）。\nA.须臾(yú) 襁(qiáng)褓 侵(qīn)略 姹紫嫣(yān)红\nB.号啕(táo) 牛虻(máng) 击缶(fǒu) 凤毛麟(lín)角\nC.崩塌(tā) 削(xiāo)弱 美哉(zāi) 怒发冲冠(guān)\nD.游隼(sǔn) 湍(tuān)急 强(qiǎng)逼 猝(cù)然而至",
+              "knowledgePointIds": [
+                "kp-ci-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "D",
+              "explanation": "A襁应qiǎng；B牛虻应méng；C削弱应xuē、夺冠应guàn。D全对。",
+              "options": [
+                "A.须臾(yú) 襁(qiáng)褓 侵(qīn)略 姹紫嫣(yān)红",
+                "B.号啕(táo) 牛虻(máng) 击缶(fǒu) 凤毛麟(lín)角",
+                "C.崩塌(tā) 削(xiāo)弱 美哉(zāi) 怒发冲冠(guān)",
+                "D.游隼(sǔn) 湍(tuān)急 强(qiǎng)逼 猝(cù)然而至"
+              ]
+            },
+            {
+              "id": "d1-12",
+              "type": "single",
+              "question": "下列加点字解释不正确的一项是（　　）。\nA.干将发硎：磨刀石 万马齐喑：沉默\nB.完璧归赵：美玉 九州同：代指中国\nC.题临安邸：题目 负荆请罪：背着\nD.伏案写作：桌子 惊慌失措：安排、处置",
+              "knowledgePointIds": [
+                "kp-ci-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "“题临安邸”的“题”是“题写”，不是“题目”。",
+              "options": [
+                "A.干将发硎：磨刀石 万马齐喑：沉默",
+                "B.完璧归赵：美玉 九州同：代指中国",
+                "C.题临安邸：题目 负荆请罪：背着",
+                "D.伏案写作：桌子 惊慌失措：安排、处置"
+              ]
+            },
+            {
+              "id": "d1-13",
+              "type": "single",
+              "question": "下列关于课文内容的理解不正确的一项是（　　）。\nA.《示儿》是陆游绝笔，以“悲”为主旋律，临终仍牵挂中原收复\nB.《落花生》借花生说理，属借物喻人\nC.《己亥杂诗》中“万马齐喑”形容骏马奔腾、场面壮观\nD.《少年中国说》融议论与抒情，赞美少年中国蓬勃朝气",
+              "knowledgePointIds": [
+                "kp-ci-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "“万马齐喑”比喻社会死气沉沉、人们不敢说话，并非形容骏马奔腾。",
+              "options": [
+                "A.《示儿》是陆游绝笔，以“悲”为主旋律，临终仍牵挂中原收复",
+                "B.《落花生》借花生说理，属借物喻人",
+                "C.《己亥杂诗》中“万马齐喑”形容骏马奔腾、场面壮观",
+                "D.《少年中国说》融议论与抒情，赞美少年中国蓬勃朝气"
+              ]
+            },
+            {
+              "id": "d1-14",
+              "type": "single",
+              "question": "下列句子没有语病的一项是（　　）。\nA.讲解员细致地纠正并指出了我对古典诗词理解中的错误\nB.喜爱传统典籍，是能否做好文化传承工作的关键\nC.通过诗词大会的举办，让更多青少年爱上中华经典\nD.我们不仅要研读古籍名篇，还要在实践中弘扬传统文化",
+              "knowledgePointIds": [
+                "kp-ci-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "D",
+              "explanation": "A语序不当（应先“指出”再“纠正”）；B两面对一面；C缺主语。",
+              "options": [
+                "A.讲解员细致地纠正并指出了我对古典诗词理解中的错误",
+                "B.喜爱传统典籍，是能否做好文化传承工作的关键",
+                "C.通过诗词大会的举办，让更多青少年爱上中华经典",
+                "D.我们不仅要研读古籍名篇，还要在实践中弘扬传统文化"
+              ]
+            },
+            {
+              "id": "d1-15",
+              "type": "single",
+              "question": "林诗诗复述《牛郎织女》，下列做法不合适的是（　　）。\nA.开篇设悬念：七月初七喜鹊搭桥，为何分隔两岸\nB.以织女口吻讲天宫织布的苦闷\nC.讲王母划天河时加重语气、配合动作\nD.大胆想象，增加情节：牛郎织女直接冲破天河天天相伴",
+              "knowledgePointIds": [
+                "kp-ci-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "D",
+              "explanation": "原故事结局是隔河相望，增加“冲破天河天天相伴”违背原著。",
+              "options": [
+                "A.开篇设悬念：七月初七喜鹊搭桥，为何分隔两岸",
+                "B.以织女口吻讲天宫织布的苦闷",
+                "C.讲王母划天河时加重语气、配合动作",
+                "D.大胆想象，增加情节：牛郎织女直接冲破天河天天相伴"
+              ]
+            },
+            {
+              "id": "d1-16",
+              "type": "single",
+              "question": "依次填入横线正确的一项是（　　）。梅是冬日风骨，___；竹是君子气节，___；菊是隐士淡然，___；兰是雅士清欢，___。\n①空心谦逊，坚韧不屈 ②凌寒独放，傲骨不屈 ③幽居山谷，淡雅脱俗 ④凌霜盛开，与世无争\nA.③①②④ B.④②①③ C.②①④③ D.①④②③",
+              "knowledgePointIds": [
+                "kp-ci-choice"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "梅—凌寒(②)，竹—空心谦逊(①)，菊—幽居淡雅(③)，兰—凌霜清雅(④)。",
+              "options": [
+                "A.③①②④",
+                "B.④②①③",
+                "C.②①④③",
+                "D.①④②③"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u02",
+      "name": "Day 02",
+      "title": "Day 02 · 积累（课文填空 + 民间故事）",
+      "desc": "课文原句与民间故事实践",
+      "topics": [
+        {
+          "id": "t-d2",
+          "title": "积累·课文与民间故事",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-ci-recite",
+            "kp-ci-folk"
+          ],
+          "exercises": [
+            {
+              "id": "d2-01",
+              "type": "blank",
+              "question": "《落花生》中父亲借花生告诉我们：“人要做（　　），不要做（　　），而对别人没有好处的人。”",
+              "knowledgePointIds": [
+                "kp-ci-recite"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "有用的人；只讲体面",
+              "explanation": "课文原句：人要做有用的人，不要做只讲体面，而对别人没有好处的人。"
+            },
+            {
+              "id": "d2-02",
+              "type": "blank",
+              "question": "《珍珠鸟》中“信赖，（　　）。”",
+              "knowledgePointIds": [
+                "kp-ci-recite"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "往往创造出美好的境界",
+              "explanation": "冯骥才《珍珠鸟》结尾名句。"
+            },
+            {
+              "id": "d2-03",
+              "type": "blank",
+              "question": "陆游《示儿》：“（　　），（　　）。”表达至死不忘收复失地。",
+              "knowledgePointIds": [
+                "kp-ci-recite"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "王师北定中原日；家祭无忘告乃翁",
+              "explanation": "陆游绝笔，盼国家统一。"
+            },
+            {
+              "id": "d2-04",
+              "type": "blank",
+              "question": "林升《题临安邸》：“（　　），直把杭州作汴州。”抒发对偏安的愤怒。",
+              "knowledgePointIds": [
+                "kp-ci-recite"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "暖风熏得游人醉",
+              "explanation": "讽刺南宋统治者醉生梦死。"
+            },
+            {
+              "id": "d2-05",
+              "type": "blank",
+              "question": "龚自珍《己亥杂诗》：“我劝天公重抖擞，（　　）。”",
+              "knowledgePointIds": [
+                "kp-ci-recite"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "不拘一格降人材",
+              "explanation": "期盼人才辈出、社会变革。"
+            },
+            {
+              "id": "d2-06",
+              "type": "blank",
+              "question": "岳飞：“莫等闲，（　　），（　　）。”毛泽东：“一万年太久，（　　）。”",
+              "knowledgePointIds": [
+                "kp-ci-recite"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "白了少年头，空悲切；只争朝夕",
+              "explanation": "均劝人珍惜光阴。"
+            },
+            {
+              "id": "d2-07",
+              "type": "blank",
+              "question": "歌曲《万疆》歌词改编自《（　　）》，原句是“（　　），（　　）”，作者（　　）。",
+              "knowledgePointIds": [
+                "kp-ci-recite"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "少年中国说；红日初升，其道大光；梁启超",
+              "explanation": "《少年中国说》作者梁启超。"
+            },
+            {
+              "id": "d2-08",
+              "type": "single",
+              "question": "关于民间故事特点，说法错误的一项是（　　）。\nA.常期待弱小善良者获幸福 B.相信正义弱小者战胜强大对手\nC.诞生于书面创作，最早靠书本流传 D.寄托安居乐业、美满家庭的期盼",
+              "knowledgePointIds": [
+                "kp-ci-folk"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "民间故事诞生于口头创作，靠口耳相传，非书面。",
+              "options": [
+                "A.常期待弱小善良者获幸福",
+                "B.相信正义弱小者战胜强大对手",
+                "C.诞生于书面创作，最早靠书本流传",
+                "D.寄托安居乐业、美满家庭的期盼"
+              ]
+            },
+            {
+              "id": "d2-09",
+              "type": "blank",
+              "question": "写出民间故事名：①《　　》 ②《　　》",
+              "knowledgePointIds": [
+                "kp-ci-folk"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "牛郎织女；八仙过海",
+              "explanation": "①牛郎织女（鹊桥相会）；②八仙过海（各显神通）。"
+            },
+            {
+              "id": "d2-10",
+              "type": "essay",
+              "question": "上图两个故事中，我最喜欢的是（　　）中的（　　）这一人物，因为（　　）。",
+              "knowledgePointIds": [
+                "kp-ci-folk"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：最喜欢《牛郎织女》中的织女，因为她不畏天规束缚，勇敢追求自由，用勤劳的双手编织美好生活。",
+              "explanation": "能写出人物并说明合理原因即可。",
+              "keyPoints": [
+                "人物明确",
+                "写出合理原因"
+              ]
+            },
+            {
+              "id": "d2-11",
+              "type": "essay",
+              "question": "读句子，将“百折不挠”用具体情境表现出来：孟姜女辞别家乡踏上千里寻夫之路，一路上，她百折不挠，终于来到长城脚下。",
+              "knowledgePointIds": [
+                "kp-ci-folk"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：狂风暴雨阻挡前路，崎岖山路磨破了双脚，饥饿与孤独不断袭来，但孟姜女从未停下脚步，咬牙坚持向前赶路。",
+              "explanation": "用具体动作、困难与坚持表现“百折不挠”。",
+              "keyPoints": [
+                "具体情境",
+                "体现不放弃"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u03",
+      "name": "Day 03",
+      "title": "Day 03 · 阅读一《好沤鸟者》",
+      "desc": "文言文阅读",
+      "topics": [
+        {
+          "id": "t-d3",
+          "title": "阅读一·好沤鸟者",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-ci-read1"
+          ],
+          "exercises": [
+            {
+              "id": "d3-01",
+              "type": "blank",
+              "question": "解释加点字：（1）有好沤鸟者：___ （2）每旦之海上：___",
+              "knowledgePointIds": [
+                "kp-ci-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "喜欢；早晨",
+              "explanation": "好：喜爱；旦：早晨。"
+            },
+            {
+              "id": "d3-02",
+              "type": "single",
+              "question": "下列两句中“之”的用法，判断正确的一项是（　　）。①海上之人有好沤鸟者 ②每旦之海上\nA.两句都是“的” B.①是“的”；②是“到……去” C.①是“到”；②是代词 D.两句都是代词",
+              "knowledgePointIds": [
+                "kp-ci-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "①“之”助词“的”；②“之”动词“到……去”。",
+              "options": [
+                "A.两句都是“的”",
+                "B.①是“的”；②是“到……去”",
+                "C.①是“到”；②是代词",
+                "D.两句都是代词"
+              ]
+            },
+            {
+              "id": "d3-03",
+              "type": "blank",
+              "question": "用“/”标出朗读停顿（限两处）：吾 闻 沤 鸟 皆 从 汝 游",
+              "knowledgePointIds": [
+                "kp-ci-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "吾闻/沤鸟/皆从汝游",
+              "explanation": "主谓与主语内部停顿。"
+            },
+            {
+              "id": "d3-04",
+              "type": "single",
+              "question": "对“沤鸟之至者，百住而不止”翻译正确的一项是（　　）。\nA.飞来的海鸥不足百只 B.飞来的海鸥有百只以上 C.观赏海鸥的人超百人 D.观赏海鸥的人不足百人",
+              "knowledgePointIds": [
+                "kp-ci-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "“百住”即数以百计，指海鸥上百只前来。",
+              "options": [
+                "A.飞来的海鸥不足百只",
+                "B.飞来的海鸥有百只以上",
+                "C.观赏海鸥的人超百人",
+                "D.观赏海鸥的人不足百人"
+              ]
+            },
+            {
+              "id": "d3-05",
+              "type": "essay",
+              "question": "文中海鸥为什么“舞而不下”？联系《珍珠鸟》谈谈你明白的道理。",
+              "knowledgePointIds": [
+                "kp-ci-read1"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "原因：故事主人公想捉海鸥，不再真诚，海鸥感知到危险便不再靠近。道理：“信赖，往往创造出美好的境界”；待人真诚才能换来友谊，背信弃义会失去信任。",
+              "explanation": "结合文本原因+《珍珠鸟》道理。",
+              "keyPoints": [
+                "说明原因",
+                "联系信赖的道理"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u04",
+      "name": "Day 04",
+      "title": "Day 04 · 阅读二（民间故事材料）",
+      "desc": "非连文本阅读",
+      "topics": [
+        {
+          "id": "t-d4",
+          "title": "阅读二·民间故事",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-ci-read2"
+          ],
+          "exercises": [
+            {
+              "id": "d4-01",
+              "type": "blank",
+              "question": "据材料一，民间故事按内容可分幻想故事、（　　）、（　　）、（　　）、民间笑话五类；材料四应属（　　）。",
+              "knowledgePointIds": [
+                "kp-ci-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "动物故事；生活故事；民间寓言；生活故事",
+              "explanation": "材料一明确五类；材料四是生活故事。"
+            },
+            {
+              "id": "d4-02",
+              "type": "blank",
+              "question": "阅读材料二，“这个故事”指的是《（　　）》。",
+              "knowledgePointIds": [
+                "kp-ci-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "梁山伯与祝英台",
+              "explanation": "小提琴协奏曲《梁祝》取材于此。"
+            },
+            {
+              "id": "d4-03",
+              "type": "single",
+              "question": "对民间故事价值与特点的分析，不符合材料的一项是（　　）。\nA.承载传统美德与生活智慧 B.可通过不同艺术形式创新演绎\nC.距当代过远，须大幅改编才能被青少年接受 D.是口头传承艺术，非遗中包含优秀民间故事",
+              "knowledgePointIds": [
+                "kp-ci-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "C",
+              "explanation": "材料强调民间故事是宝贵文化资源，无需“大幅度改编”。",
+              "options": [
+                "A.承载传统美德与生活智慧",
+                "B.可通过不同艺术形式创新演绎",
+                "C.距当代过远，须大幅改编才能被青少年接受",
+                "D.是口头传承艺术，非遗中包含优秀民间故事"
+              ]
+            },
+            {
+              "id": "d4-04",
+              "type": "single",
+              "question": "到杭州雷峰塔参观，导游会讲起（　　）这个故事。\nA.牛郎织女 B.白蛇传 C.孟姜女哭长城 D.哪吒闹海",
+              "knowledgePointIds": [
+                "kp-ci-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "雷峰塔与《白蛇传》“断桥相会”“水漫金山”相关。",
+              "options": [
+                "A.牛郎织女",
+                "B.白蛇传",
+                "C.孟姜女哭长城",
+                "D.哪吒闹海"
+              ]
+            },
+            {
+              "id": "d4-05",
+              "type": "essay",
+              "question": "读材料四父亲作的诗句，说说你懂得了什么道理。",
+              "knowledgePointIds": [
+                "kp-ci-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：父母养育子女十分辛劳，我们应当心怀感恩、孝敬父母。",
+              "explanation": "围绕感恩、孝亲作答。",
+              "keyPoints": [
+                "感恩父母",
+                "孝敬父母"
+              ]
+            },
+            {
+              "id": "d4-06",
+              "type": "essay",
+              "question": "很多同学更爱短视频、动漫，对民间故事了解很少，写一条宣传语呼吁传承民间故事。",
+              "knowledgePointIds": [
+                "kp-ci-read2"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：品读民间故事，传承华夏文脉。",
+              "explanation": "简洁有力、突出传承即可。",
+              "keyPoints": [
+                "点明民间故事",
+                "呼吁传承"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u05",
+      "name": "Day 05",
+      "title": "Day 05 · 阅读三《春酒》",
+      "desc": "文学类文本阅读",
+      "topics": [
+        {
+          "id": "t-d5",
+          "title": "阅读三·春酒",
+          "board": "",
+          "knowledgePointIds": [
+            "kp-ci-read3"
+          ],
+          "exercises": [
+            {
+              "id": "d5-01",
+              "type": "blank",
+              "question": "联系上下文解释：（1）顾名思义：___ （2）如法炮制：___",
+              "knowledgePointIds": [
+                "kp-ci-read3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "看到名称就联想到含义；照着现成的方法去做",
+              "explanation": "①从“八宝酒”之名知含八样原料；②“我”按母亲方法泡酒。"
+            },
+            {
+              "id": "d5-02",
+              "type": "blank",
+              "question": "依据文章内容完成表格：第②-④段——（　　）；第⑤-⑥段——（　　）。",
+              "knowledgePointIds": [
+                "kp-ci-read3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "“我”偷偷品尝母亲泡的八宝酒；母亲借出花厅办会酒，拿出八宝酒招待乡亲",
+              "explanation": "按段落概括主要事件。"
+            },
+            {
+              "id": "d5-03",
+              "type": "single",
+              "question": "第⑤段“讲究的酒席”中“讲究”意思相同的一项是（　　）。\nA.相处要讲究诚信 B.爷爷喝茶很讲究 C.少些不必要的讲究 D.写作文要讲究方法",
+              "knowledgePointIds": [
+                "kp-ci-read3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "均指“讲求、看重、不马虎”。",
+              "options": [
+                "A.相处要讲究诚信",
+                "B.爷爷喝茶很讲究",
+                "C.少些不必要的讲究",
+                "D.写作文要讲究方法"
+              ]
+            },
+            {
+              "id": "d5-04",
+              "type": "single",
+              "question": "第③段写小花猫舔酒喝醉的细节，作用最恰当的是（　　）。\nA.说明猫也爱喝酒 B.侧面烘托八宝酒香甜诱人，添童年趣味 C.突出猫贪吃贪玩 D.表现“我”洒酒愧疚",
+              "knowledgePointIds": [
+                "kp-ci-read3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "B",
+              "explanation": "以猫醉侧面写酒香与童趣。",
+              "options": [
+                "A.说明猫也爱喝酒",
+                "B.侧面烘托八宝酒香甜诱人，添童年趣味",
+                "C.突出猫贪吃贪玩",
+                "D.表现“我”洒酒愧疚"
+              ]
+            },
+            {
+              "id": "d5-05",
+              "type": "essay",
+              "question": "第②段划横线句用相关事物突出主要事物，这样写有什么好处？",
+              "knowledgePointIds": [
+                "kp-ci-read3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：写“我”吃过许多稀罕零食却独钟八宝酒，运用对比，突出八宝酒格外美味，表达“我”对母亲酿的八宝酒深深喜爱。",
+              "explanation": "指出手法+分析效果+情感。",
+              "keyPoints": [
+                "手法(对比)",
+                "突出酒美",
+                "表达喜爱"
+              ]
+            },
+            {
+              "id": "d5-06",
+              "type": "essay",
+              "question": "结合全文，说说母亲是一个怎样的人（至少两点）。",
+              "knowledgePointIds": [
+                "kp-ci-read3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：①勤劳能干，能泡出香甜的八宝酒、做出新鲜别致的食物；②善良大方，热心借出花厅、乐于分享美食给邻里。",
+              "explanation": "结合事例答出两点品质。",
+              "keyPoints": [
+                "勤劳能干",
+                "善良大方"
+              ]
+            },
+            {
+              "id": "d5-07",
+              "type": "essay",
+              "question": "联系资料链接，品读第⑨段，这句话蕴含了怎样的情感？",
+              "knowledgePointIds": [
+                "kp-ci-read3"
+              ],
+              "metadata": {
+                "difficulty": "基础",
+                "order": 1
+              },
+              "answer": "示例：不仅是感慨酒味不同，更是借酒抒情，蕴含对童年时光的怀念、对母亲的思念，以及漂泊在外、无法回到故乡的深切乡愁。",
+              "explanation": "结合身世谈怀念、思母、乡愁。",
+              "keyPoints": [
+                "怀念童年",
+                "思念母亲",
+                "乡愁"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
