@@ -3,8 +3,12 @@
     "packageId": "unit-math-4-up-rjb-p1",
     "type": "unit",
     "title": "数学4上第1部分",
-    "version": "1.0.0",
-    "dependencies": []
+    "version": "1.0.1",
+    "dependencies": [],
+    "subject": "math",
+    "grade": 4,
+    "edition": "人教版",
+    "templateId": "math.primary.v1"
   },
   "knowledgePoints": [
     {

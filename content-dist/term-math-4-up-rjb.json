@@ -3,7 +3,7 @@
     "packageId": "term-math-4-up-rjb",
     "type": "term",
     "title": "四年级上册学期包（自动合成）",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "dependencies": [
       "unit-math-4-up-rjb-p1",
       "unit-math-4-up-rjb-p2",
@@ -11,7 +11,11 @@
       "unit-math-4-up-rjb-p4",
       "unit-math-4-up-rjb-p5",
       "unit-math-4-up-rjb-p6"
-    ]
+    ],
+    "subject": "math",
+    "grade": 4,
+    "edition": "人教版",
+    "templateId": "math.primary.v1"
   },
   "units": [],
   "packageId": "term-math-4-up-rjb",

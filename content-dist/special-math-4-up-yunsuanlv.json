@@ -8,7 +8,11 @@
       "unit-math-4-up-rjb-p4::u5"
     ],
     "title": "运算律专项突破",
-    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "edition": "人教版",
+    "templateId": "math.primary.v1",
+    "version": "1.0.1",
     "dependencies": []
   },
   "knowledgePoints": [],

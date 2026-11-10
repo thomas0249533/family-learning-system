@@ -3,10 +3,14 @@
     "packageId": "unit-math-4-up-rjb-p5",
     "type": "unit",
     "title": "数学4上第5部分",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "dependencies": [
       "unit-math-4-up-rjb-p4"
-    ]
+    ],
+    "subject": "math",
+    "grade": 4,
+    "edition": "人教版",
+    "templateId": "math.primary.v1"
   },
   "knowledgePoints": [
     {
@@ -33,7 +37,7 @@
       "id": "unit-math-4-up-rjb-p5::kp-geo-007",
       "type": "concept",
       "title": "三角形内角和及应用",
-      "content": "1. 三角形内角和：任意三角形的内角和都是180°。\\n2. 三角形分类：\\n- 锐角三角形：三个角都是锐角；\\n- 直角三角形：有一个角是直角；\\n- 钝角三角形：有一个角是钝角。\\n3. 已知两个角的度数，可以用180°减去这两个角求出第三个角。\\n4. 拓展：四边形可以分成两个三角形，所以四边形的内角和是180° \\times 2 = 360°。",
+      "content": "1. 三角形内角和：任意三角形的内角和都是180°。\\n2. 三角形分类：\\n- 锐角三角形：三个角都是锐角；\\n- 直角三角形：有一个角是直角；\\n- 钝角三角形：有一个角是钝角。\\n3. 已知两个角的度数，可以用180°减去这两个角求出第三个角。\\n4. 拓展：四边形可以分成两个三角形，所以四边形的内角和是180° × 2 = 360°。",
       "prerequisites": [
         "unit-math-4-up-rjb-p2::kp-geo-003"
       ],
@@ -186,7 +190,7 @@
               "type": "blank",
               "question": "用一根长20厘米的铁丝围成一个平行四边形，已知相邻两条边的和是（______）厘米。",
               "answer": "10",
-              "explanation": "平行四边形的周长 = (相邻两边之和) \\times 2。20 ÷ 2 = 10（厘米），所以相邻两条边的和是10厘米。",
+              "explanation": "平行四边形的周长 = (相邻两边之和) × 2。20 ÷ 2 = 10（厘米），所以相邻两条边的和是10厘米。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-geo-006"
               ],
@@ -372,7 +376,7 @@
               "type": "blank",
               "question": "一个四边形的内角和是（______）°。",
               "answer": "360",
-              "explanation": "四边形可以分成两个三角形，每个三角形的内角和是180°，所以四边形的内角和 = 180° \\times 2 = 360°。",
+              "explanation": "四边形可以分成两个三角形，每个三角形的内角和是180°，所以四边形的内角和 = 180° × 2 = 360°。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-geo-007"
               ],
@@ -430,7 +434,7 @@
               "type": "blank",
               "question": "一个多边形的内角和是720°，这个多边形是（______）边形。",
               "answer": "六",
-              "explanation": "多边形内角和 = (n - 2) \\times 180°。720° ÷ 180° = 4，n - 2 = 4，n = 6。所以是六边形。",
+              "explanation": "多边形内角和 = (n - 2) × 180°。720° ÷ 180° = 4，n - 2 = 4，n = 6。所以是六边形。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-geo-007"
               ],
@@ -470,7 +474,7 @@
               "type": "blank",
               "question": "一辆汽车每小时行驶80千米，3小时行驶（______）千米。",
               "answer": "240",
-              "explanation": "根据“路程 = 速度 × 时间”，80 \\times 3 = 240（千米）。",
+              "explanation": "根据“路程 = 速度 × 时间”，80 × 3 = 240（千米）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-001"
               ],
@@ -547,7 +551,7 @@
               "type": "blank",
               "question": "一列火车以160千米/时的速度行驶，12小时可以行驶（______）千米。",
               "answer": "1920",
-              "explanation": "路程 = 速度 \\times 时间 = 160 \\times 12 = 1920（千米）。",
+              "explanation": "路程 = 速度 × 时间 = 160 × 12 = 1920（千米）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-001"
               ],
@@ -566,7 +570,7 @@
                 "D. 1250"
               ],
               "answer": "B",
-              "explanation": "路程 = 速度 \\times 时间 = 70 \\times 15 = 1050（米）。",
+              "explanation": "路程 = 速度 × 时间 = 70 × 15 = 1050（米）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-001"
               ],
@@ -579,7 +583,7 @@
               "type": "judge",
               "question": "如果速度不变，时间越长，行驶的路程就越远。",
               "answer": "对",
-              "explanation": "根据路程 = 速度 \\times 时间，当速度一定时，路程与时间成正比。时间越长，路程越远。",
+              "explanation": "根据路程 = 速度 × 时间，当速度一定时，路程与时间成正比。时间越长，路程越远。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-001"
               ],
@@ -611,7 +615,7 @@
                 "D. 20"
               ],
               "answer": "B",
-              "explanation": "两人相对而行，速度和 = 5 + 4 = 9（千米/时）。路程 = 速度和 \\times 相遇时间 = 9 \\times 2 = 18（千米）。",
+              "explanation": "两人相对而行，速度和 = 5 + 4 = 9（千米/时）。路程 = 速度和 × 相遇时间 = 9 × 2 = 18（千米）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-001"
               ],
@@ -643,7 +647,7 @@
               "type": "blank",
               "question": "一支钢笔12元，买5支这样的钢笔需要（______）元。",
               "answer": "60",
-              "explanation": "根据“总价 = 单价 × 数量”，12 \\times 5 = 60（元）。",
+              "explanation": "根据“总价 = 单价 × 数量”，12 × 5 = 60（元）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-002"
               ],
@@ -707,7 +711,7 @@
                 "D. 5960"
               ],
               "answer": "A",
-              "explanation": "总价 = 单价 \\times 数量 = 128 \\times 45 = 5760（元）。",
+              "explanation": "总价 = 单价 × 数量 = 128 × 45 = 5760（元）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-002"
               ],
@@ -739,7 +743,7 @@
                 "D. 600"
               ],
               "answer": "A",
-              "explanation": "先求单价：180 ÷ 3 = 60（元）。再求总价：60 \\times 8 = 480（元）。",
+              "explanation": "先求单价：180 ÷ 3 = 60（元）。再求总价：60 × 8 = 480（元）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-002"
               ],
@@ -752,7 +756,7 @@
               "type": "blank",
               "question": "超市促销，原来每瓶饮料5元，现在买4送1。妈妈买了5瓶，实际花了（______）元。",
               "answer": "20",
-              "explanation": "买4送1，意味着花4瓶的钱可以得到5瓶。妈妈得到5瓶，只需要付4瓶的钱。4 \\times 5 = 20（元）。",
+              "explanation": "买4送1，意味着花4瓶的钱可以得到5瓶。妈妈得到5瓶，只需要付4瓶的钱。4 × 5 = 20（元）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-002"
               ],
@@ -765,7 +769,7 @@
               "type": "judge",
               "question": "单价越高，购买同样数量的商品，总价就越高。",
               "answer": "对",
-              "explanation": "根据总价 = 单价 \\times 数量，当数量一定时，单价越高，总价越高。",
+              "explanation": "根据总价 = 单价 × 数量，当数量一定时，单价越高，总价越高。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-002"
               ],
@@ -778,7 +782,7 @@
               "type": "blank",
               "question": "李老师带了500元去买书，每本书25元。她最多可以买（______）本书，还剩（______）元。",
               "answer": "20,0",
-              "explanation": "数量 = 总价 ÷ 单价 = 500 ÷ 25 = 20（本）。500 - 25 \\times 20 = 0（元），刚好花完。",
+              "explanation": "数量 = 总价 ÷ 单价 = 500 ÷ 25 = 20（本）。500 - 25 × 20 = 0（元），刚好花完。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p5::kp-rel-002"
               ],

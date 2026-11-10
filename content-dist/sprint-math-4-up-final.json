@@ -11,7 +11,11 @@
       "unit-math-4-up-rjb-p5::u7"
     ],
     "title": "期末冲刺模拟卷",
-    "version": "1.0.0",
+    "subject": "math",
+    "grade": 4,
+    "edition": "人教版",
+    "templateId": "math.primary.v1",
+    "version": "1.0.1",
     "dependencies": []
   },
   "knowledgePoints": [],

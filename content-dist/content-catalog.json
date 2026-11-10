@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-06",
+  "updatedAt": "2026-11-10",
   "packages": [
     {
       "packageId": "special-chinese-2-up-kantu",
@@ -363,57 +363,57 @@
     },
     {
       "packageId": "special-math-4-up-yunsuanlv",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "运算律专项突破",
-      "sha256": "7c8fa8c8f264fd466975dce8dc83f6581b9046bd8f5fd02e8401ec9094c0ef34"
+      "sha256": "5f36bc58ded4fdacd3dcd1cf5db5aadf9e18032c599db05f911c59600ceff317"
     },
     {
       "packageId": "sprint-math-4-up-final",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "期末冲刺模拟卷",
-      "sha256": "95f23bdca8d09ace363aa946734e22d7142a07b262b4f9491703ade7e3746c12"
+      "sha256": "ae951f65a5414638aacc7466d4763e9ebe772f35b39f5e5e912f9c468c40ff1c"
     },
     {
       "packageId": "term-math-4-up-rjb",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "四年级上册学期包（自动合成）",
-      "sha256": "ee614e04d68d3cff9ce505668de48924d98d8f3d3b7bf623bc9f5214e145db66"
+      "sha256": "b33a09655bf54570d03a56d878ac02f931be7650182097ad2c3d1eaf1f4f9067"
     },
     {
       "packageId": "unit-math-4-up-rjb-p1",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "数学4上第1部分",
-      "sha256": "9861894c66ecf688d35478d2fdd750fc956d139f7b0cea963b943a80149712ca"
+      "sha256": "3d4a3206d9c024c9322d63e603e13bb7a755a59340a19eff3d2a7ef765bc55fc"
     },
     {
       "packageId": "unit-math-4-up-rjb-p2",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "数学4上第2部分",
-      "sha256": "1fc3a5d07aeae9714647ebf2845e6d45d1f8665769084c8b38b7a79a5c27dd7d"
+      "sha256": "223140ecbf0a3bf615530b0dd47e5c83eff9a2cd1b42d102538faa701f9a4814"
     },
     {
       "packageId": "unit-math-4-up-rjb-p3",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": "数学4上第3部分",
-      "sha256": "7bb0118f4e043a82b52035e6473611374dc8678a41740d44c68324b66a6f8b06"
+      "sha256": "616542f15609319923fe46770ab9bd63d97cae71ca78fc1b947b694810820b6e"
     },
     {
       "packageId": "unit-math-4-up-rjb-p4",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "数学4上第4部分",
-      "sha256": "46643c65f2d9ff5286edf742358790c60e7eb87bee0aceb253a7b013517741fa"
+      "sha256": "5e1b685273742a5b8688b6d834c65c384a8d217757c0601f7e748b659867decf"
     },
     {
       "packageId": "unit-math-4-up-rjb-p5",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "数学4上第5部分",
-      "sha256": "4b708503f6b218fdd66ce949e16f24170bcb865adefb073b27f973644014073d"
+      "sha256": "e1fb191a3a4c7314d9b384cb15c9c2140b97b09730f3ac5790ef67ac3cddb2ea"
     },
     {
       "packageId": "unit-math-4-up-rjb-p6",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "数学4上第6部分",
-      "sha256": "b270ed938b84a2ad86ea2ce57db2c811f3d974711c3a647b9ff0ae76f0c0d71c"
+      "sha256": "6aee9f77b4a9f0ae5da267819bf9eadbc555700979275c5a662d303d3f7284f0"
     },
     {
       "packageId": "daily-math-5-up-bs-midterm",

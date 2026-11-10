@@ -3,10 +3,14 @@
     "packageId": "unit-math-4-up-rjb-p3",
     "type": "unit",
     "title": "数学4上第3部分",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "dependencies": [
       "unit-math-4-up-rjb-p2"
-    ]
+    ],
+    "subject": "math",
+    "grade": 4,
+    "edition": "人教版",
+    "templateId": "math.primary.v1"
   },
   "knowledgePoints": [
     {

@@ -3,10 +3,14 @@
     "packageId": "unit-math-4-up-rjb-p6",
     "type": "unit",
     "title": "数学4上第6部分",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "dependencies": [
       "unit-math-4-up-rjb-p5"
-    ]
+    ],
+    "subject": "math",
+    "grade": 4,
+    "edition": "人教版",
+    "templateId": "math.primary.v1"
   },
   "knowledgePoints": [
     {
@@ -138,7 +142,7 @@
         "D. 30"
       ],
       "answer": "B",
-      "explanation": "每格代表5个单位，直条高4格，则数量 = 5 \\times 4 = 20。",
+      "explanation": "每格代表5个单位，直条高4格，则数量 = 5 × 4 = 20。",
       "knowledgePointIds": [
         "unit-math-4-up-rjb-p6::kp-stat-001"
       ],
@@ -234,7 +238,7 @@
       "type": "blank",
       "question": "小明语文、数学、英语三科的平均分是92分，他的三科总分是（______）分。",
       "answer": "276",
-      "explanation": "总分 = 平均数 \\times 份数 = 92 \\times 3 = 276（分）。",
+      "explanation": "总分 = 平均数 × 份数 = 92 × 3 = 276（分）。",
       "knowledgePointIds": [
         "unit-math-4-up-rjb-p6::kp-stat-002"
       ],
@@ -302,7 +306,7 @@
         "D. 94"
       ],
       "answer": "B",
-      "explanation": "前3次总分 = 88 \\times 3 = 264（分）。4次总分 = 264 + 96 = 360（分）。4次平均分 = 360 ÷ 4 = 90（分）。",
+      "explanation": "前3次总分 = 88 × 3 = 264（分）。4次总分 = 264 + 96 = 360（分）。4次平均分 = 360 ÷ 4 = 90（分）。",
       "knowledgePointIds": [
         "unit-math-4-up-rjb-p6::kp-stat-002"
       ],
@@ -356,7 +360,7 @@
       "type": "blank",
       "question": "5个数的平均数是20。如果其中一个数从20改成了10，那么新的平均数是（______）。",
       "answer": "18",
-      "explanation": "原总和 = 20 \\times 5 = 100。改后总和 = 100 - 20 + 10 = 90。新平均数 = 90 ÷ 5 = 18。",
+      "explanation": "原总和 = 20 × 5 = 100。改后总和 = 100 - 20 + 10 = 90。新平均数 = 90 ÷ 5 = 18。",
       "knowledgePointIds": [
         "unit-math-4-up-rjb-p6::kp-stat-002"
       ],
@@ -539,7 +543,7 @@
                 "D. 30"
               ],
               "answer": "B",
-              "explanation": "每格代表5个单位，直条高4格，则数量 = 5 \\times 4 = 20。",
+              "explanation": "每格代表5个单位，直条高4格，则数量 = 5 × 4 = 20。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p6::kp-stat-001"
               ],
@@ -654,7 +658,7 @@
               "type": "blank",
               "question": "小明语文、数学、英语三科的平均分是92分，他的三科总分是（______）分。",
               "answer": "276",
-              "explanation": "总分 = 平均数 \\times 份数 = 92 \\times 3 = 276（分）。",
+              "explanation": "总分 = 平均数 × 份数 = 92 × 3 = 276（分）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p6::kp-stat-002"
               ],
@@ -722,7 +726,7 @@
                 "D. 94"
               ],
               "answer": "B",
-              "explanation": "前3次总分 = 88 \\times 3 = 264（分）。4次总分 = 264 + 96 = 360（分）。4次平均分 = 360 ÷ 4 = 90（分）。",
+              "explanation": "前3次总分 = 88 × 3 = 264（分）。4次总分 = 264 + 96 = 360（分）。4次平均分 = 360 ÷ 4 = 90（分）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p6::kp-stat-002"
               ],
@@ -776,7 +780,7 @@
               "type": "blank",
               "question": "5个数的平均数是20。如果其中一个数从20改成了10，那么新的平均数是（______）。",
               "answer": "18",
-              "explanation": "原总和 = 20 \\times 5 = 100。改后总和 = 100 - 20 + 10 = 90。新平均数 = 90 ÷ 5 = 18。",
+              "explanation": "原总和 = 20 × 5 = 100。改后总和 = 100 - 20 + 10 = 90。新平均数 = 90 ÷ 5 = 18。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p6::kp-stat-002"
               ],
