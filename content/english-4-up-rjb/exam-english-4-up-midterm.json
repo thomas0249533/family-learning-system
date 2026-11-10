@@ -1,0 +1,983 @@
+{
+  "manifest": {
+    "packageId": "exam-english-4-up-midterm",
+    "type": "special",
+    "title": "英语期中笔试模拟卷（四年级·挑战）",
+    "subject": "english",
+    "grade": 4,
+    "term": "up",
+    "edition": "人教版（七年级期中卷，作四年级挑战）",
+    "examMode": true,
+    "isInternal": false,
+    "schemaVersion": "1.0",
+    "version": "1.0.1",
+    "dependencies": [],
+    "notes": "源为七年级英语期中卷笔试部分(21-75+书面表达)，用户确认作四年级挑战使用；听力1-20已省略。方框词经原图放大核对为 teacher/computer/chair/smart/put/plant/have/study/on 共9词，对应57-65九空；56空填物主代词(原卷方框疑似漏印一词)。开放句子题用斜杠备选承接常见写法。"
+  },
+  "knowledgePoints": [
+    {
+      "id": "kp-read",
+      "type": "concept",
+      "title": "阅读理解",
+      "content": "细节理解、推理判断、词义猜测、篇章顺序与主旨标题；广告/故事/校园说明/说明文四类材料。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 25,
+        "cognitiveLevel": "理解",
+        "ability": "阅读能力"
+      }
+    },
+    {
+      "id": "kp-cloze",
+      "type": "concept",
+      "title": "完形填空",
+      "content": "在语篇中运用名词、动词、介词、冠词、量词、连词与固定搭配，结合上下文逻辑选词。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "语篇理解"
+      }
+    },
+    {
+      "id": "kp-vocab",
+      "type": "concept",
+      "title": "词汇运用",
+      "content": "方框选词并用正确形式填空（名词复数、动词时态/动名词），以及根据语境填介词、连词、名词等。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 15,
+        "cognitiveLevel": "应用",
+        "ability": "词汇语法"
+      }
+    },
+    {
+      "id": "kp-dialog",
+      "type": "concept",
+      "title": "情景交际",
+      "content": "根据上下文补全对话：问候、询问喜好、询问物品、赞同建议、道别等日常功能句。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "基础",
+        "estimatedMinutes": 8,
+        "cognitiveLevel": "应用",
+        "ability": "交际能力"
+      }
+    },
+    {
+      "id": "kp-write",
+      "type": "concept",
+      "title": "书面表达",
+      "content": "按表格要点介绍一位朋友：英文名、年龄、外貌、性格、喜好，语句连贯、约 80 词。",
+      "prerequisites": [],
+      "metadata": {
+        "difficulty": "提高",
+        "estimatedMinutes": 20,
+        "cognitiveLevel": "创造",
+        "ability": "写作表达"
+      }
+    }
+  ],
+  "units": [
+    {
+      "id": "exam-eng4-u1",
+      "name": "exam-eng4-u1",
+      "title": "英语期中笔试模拟卷（七年级难度·四年级挑战）",
+      "desc": "笔试部分：阅读理解 / 完形填空 / 词汇填空 / 补全对话 / 书面表达。听力已省略。",
+      "topics": [
+        {
+          "id": "tp-read",
+          "title": "二、阅读理解（20小题）",
+          "board": "选择",
+          "knowledgePointIds": [
+            "kp-read"
+          ],
+          "exercises": [
+            {
+              "id": "ex-r21",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】The school pickleball court will be open to the public (公众) from November 1st. Come to the pickleball court!\nDaytime: 14:30—15:30 & 16:00—17:00 (Open from November 1st)\nPrice: 10 yuan for school teachers and students; 13 yuan for children; 20 yuan for people from outside the school\nNight-time: 18:00—19:00 & 19:30—20:30 (Open from November 5th)\nPrice: 15 yuan for all\nA pickleball club will begin on November 15th. If you are interested in the pickleball club class, please call Mr Zhang at 0392-3333512. Children must come with at least one adult (成年人).\n\n21. When can you go to play pickleball?",
+              "options": [
+                "A. 10:30—11:30 on November 1st.",
+                "B. 16:00—17:00 on November 3rd.",
+                "C. 18:00—19:00 on November 3rd.",
+                "D. 17:00—18:00 on November 5th."
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 21
+              }
+            },
+            {
+              "id": "ex-r22",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】The school pickleball court will be open to the public (公众) from November 1st. Come to the pickleball court!\nDaytime: 14:30—15:30 & 16:00—17:00 (Open from November 1st)\nPrice: 10 yuan for school teachers and students; 13 yuan for children; 20 yuan for people from outside the school\nNight-time: 18:00—19:00 & 19:30—20:30 (Open from November 5th)\nPrice: 15 yuan for all\nA pickleball club will begin on November 15th. If you are interested in the pickleball club class, please call Mr Zhang at 0392-3333512. Children must come with at least one adult (成年人).\n\n22. Who can NOT play pickleball on the court?",
+              "options": [
+                "A. School teachers.",
+                "B. Only adults.",
+                "C. Children with parents.",
+                "D. Only children."
+              ],
+              "answer": "D",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 22
+              }
+            },
+            {
+              "id": "ex-r23",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】The school pickleball court will be open to the public (公众) from November 1st. Come to the pickleball court!\nDaytime: 14:30—15:30 & 16:00—17:00 (Open from November 1st)\nPrice: 10 yuan for school teachers and students; 13 yuan for children; 20 yuan for people from outside the school\nNight-time: 18:00—19:00 & 19:30—20:30 (Open from November 5th)\nPrice: 15 yuan for all\nA pickleball club will begin on November 15th. If you are interested in the pickleball club class, please call Mr Zhang at 0392-3333512. Children must come with at least one adult (成年人).\n\n23. If Li Hua and you are students of the school and want to play at 18:00, how much do you need to pay?",
+              "options": [
+                "A. 20 yuan.",
+                "B. 30 yuan.",
+                "C. 26 yuan.",
+                "D. 40 yuan."
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 23
+              }
+            },
+            {
+              "id": "ex-r24",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】The school pickleball court will be open to the public (公众) from November 1st. Come to the pickleball court!\nDaytime: 14:30—15:30 & 16:00—17:00 (Open from November 1st)\nPrice: 10 yuan for school teachers and students; 13 yuan for children; 20 yuan for people from outside the school\nNight-time: 18:00—19:00 & 19:30—20:30 (Open from November 5th)\nPrice: 15 yuan for all\nA pickleball club will begin on November 15th. If you are interested in the pickleball club class, please call Mr Zhang at 0392-3333512. Children must come with at least one adult (成年人).\n\n24. How can you know more about the pickleball club?",
+              "options": [
+                "A. Call Mr Zhang.",
+                "B. Send an email to Mr Zhang.",
+                "C. Write a letter to Mr Zhang.",
+                "D. Find Mr Zhang and talk with him."
+              ],
+              "answer": "A",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 24
+              }
+            },
+            {
+              "id": "ex-r25",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】The school pickleball court will be open to the public (公众) from November 1st. Come to the pickleball court!\nDaytime: 14:30—15:30 & 16:00—17:00 (Open from November 1st)\nPrice: 10 yuan for school teachers and students; 13 yuan for children; 20 yuan for people from outside the school\nNight-time: 18:00—19:00 & 19:30—20:30 (Open from November 5th)\nPrice: 15 yuan for all\nA pickleball club will begin on November 15th. If you are interested in the pickleball club class, please call Mr Zhang at 0392-3333512. Children must come with at least one adult (成年人).\n\n25. Where is the text probably from?",
+              "options": [
+                "A. A history book.",
+                "B. A story website.",
+                "C. A sports newspaper.",
+                "D. A science research."
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 25
+              }
+            },
+            {
+              "id": "ex-r26",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Amy is a girl. She is 13. She is tidy but careless (粗心的). Now she is not happy. She can't find her favourite pen! She looks for it all over the house — under the bed, in her desk, in the bookcase and in her schoolbag. But she can't find it. Amy is really sad. She cries to her mother, 'Mum, my pen is lost!' Mum says, 'Don't cry. I will help you look for it.' When Mum goes downstairs, she laughs. 'Why are you laughing, Mum?' Amy asks. Mum says, 'Look for it behind your ear.' Amy looks behind her ear, and she finds her pen. She put it there earlier. Now she is happy.\n\n26. Why is Amy not happy?",
+              "options": [
+                "A. Because she is not tidy.",
+                "B. Because her mum doesn't help her.",
+                "C. Because she can't find her pen.",
+                "D. Because her mum laughs."
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 26
+              }
+            },
+            {
+              "id": "ex-r27",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Amy is a girl. She is 13. She is tidy but careless (粗心的). Now she is not happy. She can't find her favourite pen! She looks for it all over the house — under the bed, in her desk, in the bookcase and in her schoolbag. But she can't find it. Amy is really sad. She cries to her mother, 'Mum, my pen is lost!' Mum says, 'Don't cry. I will help you look for it.' When Mum goes downstairs, she laughs. 'Why are you laughing, Mum?' Amy asks. Mum says, 'Look for it behind your ear.' Amy looks behind her ear, and she finds her pen. She put it there earlier. Now she is happy.\n\n27. Where is Amy's pen?",
+              "options": [
+                "A. In her desk.",
+                "B. In the bookcase.",
+                "C. Behind her ear.",
+                "D. In her schoolbag."
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 27
+              }
+            },
+            {
+              "id": "ex-r28",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Amy is a girl. She is 13. She is tidy but careless (粗心的). Now she is not happy. She can't find her favourite pen! She looks for it all over the house — under the bed, in her desk, in the bookcase and in her schoolbag. But she can't find it. Amy is really sad. She cries to her mother, 'Mum, my pen is lost!' Mum says, 'Don't cry. I will help you look for it.' When Mum goes downstairs, she laughs. 'Why are you laughing, Mum?' Amy asks. Mum says, 'Look for it behind your ear.' Amy looks behind her ear, and she finds her pen. She put it there earlier. Now she is happy.\n\n28. Where did Amy look for her pen before she cried to her mother?",
+              "options": [
+                "A. In the kitchen, in the bookcase and under the chair.",
+                "B. Behind her ear, under the bed and in her schoolbag.",
+                "C. Under the bed, in her desk, in the bookcase and in her schoolbag.",
+                "D. In her desk, on the table and behind the door."
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 28
+              }
+            },
+            {
+              "id": "ex-r29",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Amy is a girl. She is 13. She is tidy but careless (粗心的). Now she is not happy. She can't find her favourite pen! She looks for it all over the house — under the bed, in her desk, in the bookcase and in her schoolbag. But she can't find it. Amy is really sad. She cries to her mother, 'Mum, my pen is lost!' Mum says, 'Don't cry. I will help you look for it.' When Mum goes downstairs, she laughs. 'Why are you laughing, Mum?' Amy asks. Mum says, 'Look for it behind your ear.' Amy looks behind her ear, and she finds her pen. She put it there earlier. Now she is happy.\n\n29. Which is the right order of the following? ①Amy can't find the pen. ②Amy finds her pen. ③Amy cries to her mum. ④Mum goes downstairs.",
+              "options": [
+                "A. ①②③④",
+                "B. ①③②④",
+                "C. ①③④②",
+                "D. ①④③②"
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 29
+              }
+            },
+            {
+              "id": "ex-r30",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Amy is a girl. She is 13. She is tidy but careless (粗心的). Now she is not happy. She can't find her favourite pen! She looks for it all over the house — under the bed, in her desk, in the bookcase and in her schoolbag. But she can't find it. Amy is really sad. She cries to her mother, 'Mum, my pen is lost!' Mum says, 'Don't cry. I will help you look for it.' When Mum goes downstairs, she laughs. 'Why are you laughing, Mum?' Amy asks. Mum says, 'Look for it behind your ear.' Amy looks behind her ear, and she finds her pen. She put it there earlier. Now she is happy.\n\n30. What's the best title for the text?",
+              "options": [
+                "A. Careless Amy",
+                "B. Happy Amy",
+                "C. Amy's favourite pen",
+                "D. Amy's tidy mum"
+              ],
+              "answer": "A",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 30
+              }
+            },
+            {
+              "id": "ex-r31",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Jessie is an eleven-year-old student in Star Primary School. It is a big school with many trees and flowers. There are 3,000 students and 220 teachers in it. There are sixty classrooms in the classroom building. And every class has 50 students. Here is a map of her school:\n① Gym  ② Science building (science labs and computer rooms)  ③ library  ④ Classroom building  ⑤ Office building  ⑥ Art and music building  ⑦ Sports field  ⑧ Dining hall\nJessie likes her school very much. But she likes the music classroom best because it is very special. There are some desks in it, but there aren't any chairs. They sit on yoga balls — red, orange, blue and green, for students. Sitting on yoga balls is so fun. There are many pictures on the wall and many flowers in the front of the classroom. They make her classroom very good-looking.\n\n31. How many dining halls are there in Jessie's school?",
+              "options": [
+                "A. One.",
+                "B. Two.",
+                "C. Three.",
+                "D. Four."
+              ],
+              "answer": "A",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 31
+              }
+            },
+            {
+              "id": "ex-r32",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Jessie is an eleven-year-old student in Star Primary School. It is a big school with many trees and flowers. There are 3,000 students and 220 teachers in it. There are sixty classrooms in the classroom building. And every class has 50 students. Here is a map of her school:\n① Gym  ② Science building (science labs and computer rooms)  ③ library  ④ Classroom building  ⑤ Office building  ⑥ Art and music building  ⑦ Sports field  ⑧ Dining hall\nJessie likes her school very much. But she likes the music classroom best because it is very special. There are some desks in it, but there aren't any chairs. They sit on yoga balls — red, orange, blue and green, for students. Sitting on yoga balls is so fun. There are many pictures on the wall and many flowers in the front of the classroom. They make her classroom very good-looking.\n\n32. Where are the computer rooms?",
+              "options": [
+                "A. In the library.",
+                "B. In the science building.",
+                "C. In the office building.",
+                "D. In the classroom building."
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 32
+              }
+            },
+            {
+              "id": "ex-r33",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Jessie is an eleven-year-old student in Star Primary School. It is a big school with many trees and flowers. There are 3,000 students and 220 teachers in it. There are sixty classrooms in the classroom building. And every class has 50 students. Here is a map of her school:\n① Gym  ② Science building (science labs and computer rooms)  ③ library  ④ Classroom building  ⑤ Office building  ⑥ Art and music building  ⑦ Sports field  ⑧ Dining hall\nJessie likes her school very much. But she likes the music classroom best because it is very special. There are some desks in it, but there aren't any chairs. They sit on yoga balls — red, orange, blue and green, for students. Sitting on yoga balls is so fun. There are many pictures on the wall and many flowers in the front of the classroom. They make her classroom very good-looking.\n\n33. What is between the office building and the sports field?",
+              "options": [
+                "A. The gym.",
+                "B. The science lab.",
+                "C. The school gate.",
+                "D. The art and music building."
+              ],
+              "answer": "D",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 33
+              }
+            },
+            {
+              "id": "ex-r34",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Jessie is an eleven-year-old student in Star Primary School. It is a big school with many trees and flowers. There are 3,000 students and 220 teachers in it. There are sixty classrooms in the classroom building. And every class has 50 students. Here is a map of her school:\n① Gym  ② Science building (science labs and computer rooms)  ③ library  ④ Classroom building  ⑤ Office building  ⑥ Art and music building  ⑦ Sports field  ⑧ Dining hall\nJessie likes her school very much. But she likes the music classroom best because it is very special. There are some desks in it, but there aren't any chairs. They sit on yoga balls — red, orange, blue and green, for students. Sitting on yoga balls is so fun. There are many pictures on the wall and many flowers in the front of the classroom. They make her classroom very good-looking.\n\n34. Why is Jessie's music classroom special?",
+              "options": [
+                "A. Because there are no flowers in it.",
+                "B. Because there aren't any chairs in it.",
+                "C. Because there are many maps in it.",
+                "D. Because there are many computers in it."
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 34
+              }
+            },
+            {
+              "id": "ex-r35",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】Jessie is an eleven-year-old student in Star Primary School. It is a big school with many trees and flowers. There are 3,000 students and 220 teachers in it. There are sixty classrooms in the classroom building. And every class has 50 students. Here is a map of her school:\n① Gym  ② Science building (science labs and computer rooms)  ③ library  ④ Classroom building  ⑤ Office building  ⑥ Art and music building  ⑦ Sports field  ⑧ Dining hall\nJessie likes her school very much. But she likes the music classroom best because it is very special. There are some desks in it, but there aren't any chairs. They sit on yoga balls — red, orange, blue and green, for students. Sitting on yoga balls is so fun. There are many pictures on the wall and many flowers in the front of the classroom. They make her classroom very good-looking.\n\n35. What can we know from the text?",
+              "options": [
+                "A. Jessie likes the dining hall best.",
+                "B. There are 300 students in the school.",
+                "C. Jessie's school is big and nice.",
+                "D. Students sit on the desk in the music classroom."
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 35
+              }
+            },
+            {
+              "id": "ex-r36",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】A tidy desk helps you find things easily and do things well. (36) Doing these can help you with it.\nFirst, (37) For old books, you can put them in the bookcase. Get a box for small things you don't need every day, and you can put your pens and pencils in a pencil box.\nSecond, don't put food or drinks on your desk, because they can make your desk dirty. (38)\nThird, put important things next to you. (39) If you have a drawer under your desk, you can put things there every day.\nFourth, (40) If you do it every day, you can have a new day with a tidy room the next morning.\n选项：A. Go to the kitchen when you want to eat.  B. It is also helpful for your study.  C. Only put things you need on your desk.  D. Clean your desk every day.  E. Don't put things on your desk.\n\n36. Choose the best sentence for (36).",
+              "options": [
+                "A. Go to the kitchen when you want to eat.",
+                "B. It is also helpful for your study.",
+                "C. Only put things you need on your desk.",
+                "D. Clean your desk every day.",
+                "E. Don't put things on your desk."
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 36
+              }
+            },
+            {
+              "id": "ex-r37",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】A tidy desk helps you find things easily and do things well. (36) Doing these can help you with it.\nFirst, (37) For old books, you can put them in the bookcase. Get a box for small things you don't need every day, and you can put your pens and pencils in a pencil box.\nSecond, don't put food or drinks on your desk, because they can make your desk dirty. (38)\nThird, put important things next to you. (39) If you have a drawer under your desk, you can put things there every day.\nFourth, (40) If you do it every day, you can have a new day with a tidy room the next morning.\n选项：A. Go to the kitchen when you want to eat.  B. It is also helpful for your study.  C. Only put things you need on your desk.  D. Clean your desk every day.  E. Don't put things on your desk.\n\n37. Choose the best sentence for (37).",
+              "options": [
+                "A. Go to the kitchen when you want to eat.",
+                "B. It is also helpful for your study.",
+                "C. Only put things you need on your desk.",
+                "D. Clean your desk every day.",
+                "E. Don't put things on your desk."
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 37
+              }
+            },
+            {
+              "id": "ex-r38",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】A tidy desk helps you find things easily and do things well. (36) Doing these can help you with it.\nFirst, (37) For old books, you can put them in the bookcase. Get a box for small things you don't need every day, and you can put your pens and pencils in a pencil box.\nSecond, don't put food or drinks on your desk, because they can make your desk dirty. (38)\nThird, put important things next to you. (39) If you have a drawer under your desk, you can put things there every day.\nFourth, (40) If you do it every day, you can have a new day with a tidy room the next morning.\n选项：A. Go to the kitchen when you want to eat.  B. It is also helpful for your study.  C. Only put things you need on your desk.  D. Clean your desk every day.  E. Don't put things on your desk.\n\n38. Choose the best sentence for (38).",
+              "options": [
+                "A. Go to the kitchen when you want to eat.",
+                "B. It is also helpful for your study.",
+                "C. Only put things you need on your desk.",
+                "D. Clean your desk every day.",
+                "E. Don't put things on your desk."
+              ],
+              "answer": "A",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 38
+              }
+            },
+            {
+              "id": "ex-r39",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】A tidy desk helps you find things easily and do things well. (36) Doing these can help you with it.\nFirst, (37) For old books, you can put them in the bookcase. Get a box for small things you don't need every day, and you can put your pens and pencils in a pencil box.\nSecond, don't put food or drinks on your desk, because they can make your desk dirty. (38)\nThird, put important things next to you. (39) If you have a drawer under your desk, you can put things there every day.\nFourth, (40) If you do it every day, you can have a new day with a tidy room the next morning.\n选项：A. Go to the kitchen when you want to eat.  B. It is also helpful for your study.  C. Only put things you need on your desk.  D. Clean your desk every day.  E. Don't put things on your desk.\n\n39. Choose the best sentence for (39).",
+              "options": [
+                "A. Go to the kitchen when you want to eat.",
+                "B. It is also helpful for your study.",
+                "C. Only put things you need on your desk.",
+                "D. Clean your desk every day.",
+                "E. Don't put things on your desk."
+              ],
+              "answer": "E",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 39
+              }
+            },
+            {
+              "id": "ex-r40",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "【阅读】A tidy desk helps you find things easily and do things well. (36) Doing these can help you with it.\nFirst, (37) For old books, you can put them in the bookcase. Get a box for small things you don't need every day, and you can put your pens and pencils in a pencil box.\nSecond, don't put food or drinks on your desk, because they can make your desk dirty. (38)\nThird, put important things next to you. (39) If you have a drawer under your desk, you can put things there every day.\nFourth, (40) If you do it every day, you can have a new day with a tidy room the next morning.\n选项：A. Go to the kitchen when you want to eat.  B. It is also helpful for your study.  C. Only put things you need on your desk.  D. Clean your desk every day.  E. Don't put things on your desk.\n\n40. Choose the best sentence for (40).",
+              "options": [
+                "A. Go to the kitchen when you want to eat.",
+                "B. It is also helpful for your study.",
+                "C. Only put things you need on your desk.",
+                "D. Clean your desk every day.",
+                "E. Don't put things on your desk."
+              ],
+              "answer": "D",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 40
+              }
+            }
+          ]
+        },
+        {
+          "id": "tp-cloze",
+          "title": "三、完形填空（15小题）",
+          "board": "选择",
+          "knowledgePointIds": [
+            "kp-cloze"
+          ],
+          "exercises": [
+            {
+              "id": "ex-c41",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "41. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n41. She is a ___.",
+              "options": [
+                "A. doctor",
+                "B. driver",
+                "C. farmer",
+                "D. cook"
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 41
+              }
+            },
+            {
+              "id": "ex-c42",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "42. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n42. She ___ on her farm.",
+              "options": [
+                "A. takes",
+                "B. comes",
+                "C. lives",
+                "D. goes"
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 42
+              }
+            },
+            {
+              "id": "ex-c43",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "43. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n43. She has a lot ___ apple trees.",
+              "options": [
+                "A. to",
+                "B. of",
+                "C. on",
+                "D. in"
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 43
+              }
+            },
+            {
+              "id": "ex-c44",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "44. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n44. She ___ pick all the apples.",
+              "options": [
+                "A. does",
+                "B. doesn't",
+                "C. can",
+                "D. can't"
+              ],
+              "answer": "D",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 44
+              }
+            },
+            {
+              "id": "ex-c45",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "45. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n45. Every year my parents and I go to her ___ to help her.",
+              "options": [
+                "A. farm",
+                "B. school",
+                "C. shop",
+                "D. restaurant"
+              ],
+              "answer": "A",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 45
+              }
+            },
+            {
+              "id": "ex-c46",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "46. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n46. my parents don't go to ___ and I don't go to school.",
+              "options": [
+                "A. sing",
+                "B. fly",
+                "C. work",
+                "D. say"
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 46
+              }
+            },
+            {
+              "id": "ex-c47",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "47. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n47. We are ___.",
+              "options": [
+                "A. sure",
+                "B. free",
+                "C. old",
+                "D. new"
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 47
+              }
+            },
+            {
+              "id": "ex-c48",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "48. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n48. at about nine o'clock ___ the morning.",
+              "options": [
+                "A. at",
+                "B. from",
+                "C. on",
+                "D. in"
+              ],
+              "answer": "D",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 48
+              }
+            },
+            {
+              "id": "ex-c49",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "49. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n49. some ___ orange juice.",
+              "options": [
+                "A. some",
+                "B. any",
+                "C. something",
+                "D. anything"
+              ],
+              "answer": "A",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 49
+              }
+            },
+            {
+              "id": "ex-c50",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "50. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n50. two ___ of milk.",
+              "options": [
+                "A. hard",
+                "B. hands",
+                "C. glass",
+                "D. glasses"
+              ],
+              "answer": "D",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 50
+              }
+            },
+            {
+              "id": "ex-c51",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "51. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n51. I ___ apple juice, rice and fish.",
+              "options": [
+                "A. drink",
+                "B. eat",
+                "C. have",
+                "D. has"
+              ],
+              "answer": "C",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 51
+              }
+            },
+            {
+              "id": "ex-c52",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "52. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n52. My aunt likes fish ___ chicken.",
+              "options": [
+                "A. but",
+                "B. and",
+                "C. from",
+                "D. with"
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 52
+              }
+            },
+            {
+              "id": "ex-c53",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "53. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n53. in a ___ shop.",
+              "options": [
+                "A. book",
+                "B. clothes",
+                "C. toy",
+                "D. food"
+              ],
+              "answer": "D",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 53
+              }
+            },
+            {
+              "id": "ex-c54",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "54. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n54. ___ hour later we get to her farm.",
+              "options": [
+                "A. A",
+                "B. An",
+                "C. Two",
+                "D. Three"
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 54
+              }
+            },
+            {
+              "id": "ex-c55",
+              "type": "single",
+              "difficulty": "基础",
+              "question": "55. (41-55) My aunt has a big farm. She is a (41)_____. She is fifty-five years old. She (42)_____ on her farm. She has a lot (43)_____ apple trees. She (44)_____ pick all the apples. Every year my parents and I go to her (45)_____ to help her. Today is Sunday, so my parents don't go to (46)_____ and I don't go to school. We are (47)_____. So we go to her farm to help her. We get up at about nine o'clock (48)_____ the morning. We have breakfast at home. My father has rice with some vegetables and (49)_____ orange juice. My mother has an egg, two hamburgers and two (50)_____ of milk. I (51)_____ apple juice, rice and fish. My aunt likes fish (52)_____ chicken. We go to buy fish and chicken for her in a (53)_____ shop. (54)_____ hour later we get to her farm. When we meet her, we are very happy. We work on her farm for two hours. My father and mother pick many (55)_____. I carry apples.\n\n55. My father and mother pick many ___.",
+              "options": [
+                "A. pears",
+                "B. apples",
+                "C. bananas",
+                "D. oranges"
+              ],
+              "answer": "B",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 55
+              }
+            }
+          ]
+        },
+        {
+          "id": "tp-vocab",
+          "title": "四、词汇填空（15小题）",
+          "board": "填空",
+          "knowledgePointIds": [
+            "kp-vocab"
+          ],
+          "exercises": [
+            {
+              "id": "ex-v56",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n56. (56) ___ classroom is big and nice.（填物主代词）",
+              "answer": "My / Our",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 56
+              }
+            },
+            {
+              "id": "ex-v57",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n57. (57) There are some pictures ___ the wall.",
+              "answer": "on",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 57
+              }
+            },
+            {
+              "id": "ex-v58",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n58. (58) We have thirty desks and ___ in the room.",
+              "answer": "chairs / chair",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 58
+              }
+            },
+            {
+              "id": "ex-v59",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n59. (59) We can ___ our things in the desk drawers.",
+              "answer": "put",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 59
+              }
+            },
+            {
+              "id": "ex-v60",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n60. (60) There is also a ___ desk in front of the blackboard.",
+              "answer": "teacher's / teachers'",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 60
+              }
+            },
+            {
+              "id": "ex-v61",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n61. (61) There is a ___ whiteboard next to the blackboard.",
+              "answer": "smart",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 61
+              }
+            },
+            {
+              "id": "ex-v62",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n62. (62) There are some ___ on the shelf at the reading corner.",
+              "answer": "plants / plant",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 62
+              }
+            },
+            {
+              "id": "ex-v63",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n63. (63) We ___ four lessons in the morning.",
+              "answer": "have",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 63
+              }
+            },
+            {
+              "id": "ex-v64",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n64. (64) I have a ___. I often study on it.",
+              "answer": "computer",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 64
+              }
+            },
+            {
+              "id": "ex-v65",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Hello, everyone. My name is Jim. I'm in Class 8, Grade 7. (56)_____ classroom is big and nice. There are some pictures (57)_____ the wall. We have thirty desks and (58)_____ in the room. We can (59)_____ our things in the desk drawers. There is also a (60)_____ desk in front of the blackboard. There is a (61)_____ whiteboard next to the blackboard. It is very special. There are some (62)_____ on the shelf（架子）at the reading corner. We often read books there. We (63)_____ four lessons in the morning and three in the afternoon. I have a (64)_____. I often study on it. I like English best. I'm good at it. But my good friend Millie's English is not very good. So I often help her with it. We spend a lot of time (65)_____ together.\n方框选词：teacher / computer / chair / smart / put / plant / have / study / on（共 9 词，每词限用一次，用正确形式填空）\n\n65. (65) We spend a lot of time ___ together.",
+              "answer": "studying / study",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 65
+              }
+            },
+            {
+              "id": "ex-v66",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Han Lin's uncle (66)_____ a big farm. He has many (67)_____ of animals. Look at the cows. They are black (68)_____ white. How many (69)_____ do you see? I see seven cows. Look (70)_____ the sheep. What colour are they? They are white.\n\n66. (66) Han Lin's uncle ___ a big farm.",
+              "answer": "has",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 66
+              }
+            },
+            {
+              "id": "ex-v67",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Han Lin's uncle (66)_____ a big farm. He has many (67)_____ of animals. Look at the cows. They are black (68)_____ white. How many (69)_____ do you see? I see seven cows. Look (70)_____ the sheep. What colour are they? They are white.\n\n67. (67) He has many ___ of animals.",
+              "answer": "kinds",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 67
+              }
+            },
+            {
+              "id": "ex-v68",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Han Lin's uncle (66)_____ a big farm. He has many (67)_____ of animals. Look at the cows. They are black (68)_____ white. How many (69)_____ do you see? I see seven cows. Look (70)_____ the sheep. What colour are they? They are white.\n\n68. (68) They are black ___ white.",
+              "answer": "and",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 68
+              }
+            },
+            {
+              "id": "ex-v69",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Han Lin's uncle (66)_____ a big farm. He has many (67)_____ of animals. Look at the cows. They are black (68)_____ white. How many (69)_____ do you see? I see seven cows. Look (70)_____ the sheep. What colour are they? They are white.\n\n69. (69) How many ___ do you see?",
+              "answer": "cows",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 69
+              }
+            },
+            {
+              "id": "ex-v70",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】Han Lin's uncle (66)_____ a big farm. He has many (67)_____ of animals. Look at the cows. They are black (68)_____ white. How many (69)_____ do you see? I see seven cows. Look (70)_____ the sheep. What colour are they? They are white.\n\n70. (70) Look ___ the sheep.",
+              "answer": "at",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 70
+              }
+            }
+          ]
+        },
+        {
+          "id": "tp-dialog",
+          "title": "五、补全对话（5小题）",
+          "board": "填空",
+          "knowledgePointIds": [
+            "kp-dialog"
+          ],
+          "exercises": [
+            {
+              "id": "ex-d71",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】A: Hey, Rose! (71)_____?  B: I'm fine, thanks. Can I ask you some questions?\nA: Yes, you can ask anything you like.\nB: OK. Thank you. (72)_____?  A: My favourite sport is playing ping-pong.\nB: Oh, I like it, too. (73)_____?  A: It is my ping-pong bat.\nB: Well, it's Saturday tomorrow. What about playing ping-pong together?\nA: (74)_____! Let's meet on the sports field tomorrow.\nB: OK. See you tomorrow.\nA: (75)_____.\n\n71. (71) A 的问句（B 回答 I'm fine, thanks.）",
+              "answer": "How are you / How are you doing / How do you do / How is everything",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 71
+              }
+            },
+            {
+              "id": "ex-d72",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】A: Hey, Rose! (71)_____?  B: I'm fine, thanks. Can I ask you some questions?\nA: Yes, you can ask anything you like.\nB: OK. Thank you. (72)_____?  A: My favourite sport is playing ping-pong.\nB: Oh, I like it, too. (73)_____?  A: It is my ping-pong bat.\nB: Well, it's Saturday tomorrow. What about playing ping-pong together?\nA: (74)_____! Let's meet on the sports field tomorrow.\nB: OK. See you tomorrow.\nA: (75)_____.\n\n72. (72) B 的问句（A 回答 My favourite sport is playing ping-pong.）",
+              "answer": "What's your favourite sport / What is your favourite sport / What's your favorite sport / What sport do you like best / What sport do you like",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 72
+              }
+            },
+            {
+              "id": "ex-d73",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】A: Hey, Rose! (71)_____?  B: I'm fine, thanks. Can I ask you some questions?\nA: Yes, you can ask anything you like.\nB: OK. Thank you. (72)_____?  A: My favourite sport is playing ping-pong.\nB: Oh, I like it, too. (73)_____?  A: It is my ping-pong bat.\nB: Well, it's Saturday tomorrow. What about playing ping-pong together?\nA: (74)_____! Let's meet on the sports field tomorrow.\nB: OK. See you tomorrow.\nA: (75)_____.\n\n73. (73) B 的问句（A 回答 It is my ping-pong bat.）",
+              "answer": "What's this / What is this / What's that / What is that / What is it / Whose bat is it",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 73
+              }
+            },
+            {
+              "id": "ex-d74",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】A: Hey, Rose! (71)_____?  B: I'm fine, thanks. Can I ask you some questions?\nA: Yes, you can ask anything you like.\nB: OK. Thank you. (72)_____?  A: My favourite sport is playing ping-pong.\nB: Oh, I like it, too. (73)_____?  A: It is my ping-pong bat.\nB: Well, it's Saturday tomorrow. What about playing ping-pong together?\nA: (74)_____! Let's meet on the sports field tomorrow.\nB: OK. See you tomorrow.\nA: (75)_____.\n\n74. (74) A 的回应（赞同明天一起打球，感叹句）",
+              "answer": "Good idea / Great / Sounds great / That's a good idea / Sounds good / Wonderful",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 74
+              }
+            },
+            {
+              "id": "ex-d75",
+              "type": "blank",
+              "difficulty": "基础",
+              "question": "【填空】A: Hey, Rose! (71)_____?  B: I'm fine, thanks. Can I ask you some questions?\nA: Yes, you can ask anything you like.\nB: OK. Thank you. (72)_____?  A: My favourite sport is playing ping-pong.\nB: Oh, I like it, too. (73)_____?  A: It is my ping-pong bat.\nB: Well, it's Saturday tomorrow. What about playing ping-pong together?\nA: (74)_____! Let's meet on the sports field tomorrow.\nB: OK. See you tomorrow.\nA: (75)_____.\n\n75. (75) A 的结束语（B 说 See you tomorrow.）",
+              "answer": "See you / See you tomorrow / See you then / Bye / Goodbye",
+              "metadata": {
+                "difficulty": "基础",
+                "order": 75
+              }
+            }
+          ]
+        },
+        {
+          "id": "tp-write",
+          "title": "六、书面表达（20分）",
+          "board": "写作",
+          "knowledgePointIds": [
+            "kp-write"
+          ],
+          "exercises": [
+            {
+              "id": "ex-write",
+              "type": "essay",
+              "difficulty": "提高",
+              "question": "六、书面表达（20分）\n进入初中以后，你肯定认识了不少新朋友吧？请根据下面的表格信息，将你的一位朋友介绍给大家吧！\n表格 My Friend：英文名 / 年龄 / 外貌 / 性格 / 喜欢的颜色 / 喜欢的食物 / 喜欢的运动 ……\n要求：1. 包含表格信息，可适当增加细节；2. 文中不得出现真实校名和姓名；3. 词数约 80 词（开头已给，不计入总词数）。\nMy Friend\nThis term is so great. I meet a very good friend. ________________________",
+              "keyPoints": [
+                "English name / name / called",
+                "years old / year old / old / age",
+                "tall / short / thin / hair / eyes / wears",
+                "kind / friendly / helpful / clever / funny",
+                "favourite / favorite / likes / like / loves",
+                "colour / color / food / sport / ping-pong / basketball"
+              ],
+              "answer": "This term is so great. I meet a very good friend. His English name is Tom and he is twelve years old. He is tall and thin, with short black hair and big eyes. He is kind and friendly, so everyone in our class likes him. His favourite colour is blue. He likes noodles and beef best. His favourite sport is ping-pong, and we often play it together after school. I am very happy to have such a good friend.",
+              "metadata": {
+                "difficulty": "提高",
+                "order": 76
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

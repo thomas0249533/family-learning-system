@@ -116,6 +116,12 @@
       "sha256": "b451ef1357444deda0fbcca9e55262567f7d0eb1137d47b4098b622ecb3526c9"
     },
     {
+      "packageId": "exam-english-4-up-midterm",
+      "version": "1.0.1",
+      "title": "英语期中笔试模拟卷（四年级·挑战）",
+      "sha256": "9894408d9078ab1f5716570694474e5c2acd3a1b10ef2c82ddc42a31f9c12e2a"
+    },
+    {
       "packageId": "special-english-4-up-vocab",
       "version": "1.1.1",
       "title": "四上英语 · 词汇（沪教版牛津上海 8 单元 + 附录）",
