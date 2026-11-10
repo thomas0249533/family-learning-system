@@ -23,7 +23,23 @@
       <div class="exam-config">
         <div class="config-row">
           <span class="config-label">每卷题数</span>
-          <n-input-number v-model:value="perSessionCount" :min="5" :max="50" :step="5" style="width: 120px;" />
+          <n-input-number
+            v-model:value="perSessionCount"
+            :min="5"
+            :max="maxSessionCount"
+            :step="5"
+            :disabled="wholeExam"
+            style="width: 120px;"
+          />
+        </div>
+        <div class="config-row">
+          <span class="config-label">整卷模式</span>
+          <n-checkbox v-model:checked="wholeExam">
+            一次做完本卷全部 {{ allQuestions.length }} 题
+          </n-checkbox>
+        </div>
+        <div v-if="wholeExam" class="config-hint">
+          按卷面顺序作答全部 {{ allQuestions.length }} 题，交卷后统一判分（含已做过的题）。
         </div>
         <div class="config-row">
           <span class="config-label">限时（分钟，0=不限）</span>
@@ -33,7 +49,7 @@
 
       <n-space vertical style="margin-top: 20px;">
         <AppButton type="primary" size="large" block @click="startNewSession">
-          ▶ 开始新会话（{{ Math.min(perSessionCount, remainingCount) }} 题）
+          ▶ 开始新会话（{{ newSessionCount }} 题）
         </AppButton>
         <AppButton v-if="ongoingSession" type="warning" size="large" block @click="continueSession">
           🔄 继续上次（{{ Object.keys(ongoingSession.answers).length }} / {{ ongoingSession.totalCount }}）
@@ -215,7 +231,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { NInputNumber, NSpace, useMessage } from 'naive-ui'
+import { NCheckbox, NInputNumber, NSpace, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import QuestionText from '@/components/QuestionText.vue'
 import AppButton from '@/components/ui/AppButton.vue'
@@ -239,6 +255,16 @@ const phase = ref<Phase>('intro')
 
 const perSessionCount = ref(10)
 const timeLimitMinutes = ref(0)
+
+/**
+ * V3.1.5 · 整卷模式
+ * ---------------------------------------------------------------------------
+ * 背景：一份完整试卷（如 56 题的英语期中卷）原先被 `perSessionCount` 硬上限 50
+ * 截断，且 `startNewSession` 会优先捞「未作答」的题，导致一次会话无法覆盖全卷。
+ * 勾选后按 `allQuestions` 的卷面顺序一次发完，交卷统一判分（QuizEngine 已是
+ * examMode 行为，无需改它）。不勾选时下面所有分支保持原逻辑逐字不变。
+ */
+const wholeExam = ref(false)
 
 const currentSession = ref<ExamSessionRecord | null>(null)
 const correctCount = ref(0)
@@ -269,6 +295,16 @@ const answeredCount = computed(() => {
   return ids.size
 })
 const remainingCount = computed(() => Math.max(0, allQuestions.value.length - answeredCount.value))
+
+/** 手动设置题数的上限：至少 50（旧行为），但允许拉到本卷总题数 */
+const maxSessionCount = computed(() => Math.max(50, allQuestions.value.length))
+
+/** 入口按钮展示的本次题数：整卷=全卷，否则沿用「分批 + 未作答」口径 */
+const newSessionCount = computed(() =>
+  wholeExam.value
+    ? allQuestions.value.length
+    : Math.min(perSessionCount.value, remainingCount.value),
+)
 
 const sessions = computed(() => examStore.sessions)
 const ongoingSession = computed(() => sessions.value.find(s => s.status === 'ongoing') ?? null)
@@ -380,12 +416,17 @@ async function startNewSession() {
     return
   }
 
-  const answered = await examStore.getAllAnsweredIds(props.pkg.packageId)
-  const unAnswered = allQuestions.value.filter(q => !answered.has(q.id))
-  const pool = unAnswered.length >= perSessionCount.value ? unAnswered : allQuestions.value
-
-  const count = Math.min(perSessionCount.value, pool.length)
-  const picked = pool.slice(0, count).map(q => q.id)
+  let picked: string[]
+  if (wholeExam.value) {
+    // 整卷：按卷面原题序全量发放，不做「未作答」过滤，也不受 50 题上限截断
+    picked = allQuestions.value.map(q => q.id)
+  } else {
+    const answered = await examStore.getAllAnsweredIds(props.pkg.packageId)
+    const unAnswered = allQuestions.value.filter(q => !answered.has(q.id))
+    const pool = unAnswered.length >= perSessionCount.value ? unAnswered : allQuestions.value
+    const count = Math.min(perSessionCount.value, pool.length)
+    picked = pool.slice(0, count).map(q => q.id)
+  }
 
   const timeLimit = timeLimitMinutes.value > 0 ? timeLimitMinutes.value * 60 : 0
   const id = await examStore.createSession({
@@ -577,6 +618,13 @@ function backToIntro() {
     justify-content: space-between;
     align-items: center;
     .config-label { font-size: 13px; color: $text-main; }
+  }
+
+  .config-hint {
+    font-size: 12px;
+    line-height: 1.6;
+    color: $text-sub;
+    text-align: left;
   }
 }
 

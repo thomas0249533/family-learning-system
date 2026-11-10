@@ -1,11 +1,11 @@
 {
-  "version": "3.1.4",
-  "notes": "V3.1.4 · 每日任务新增「语文词语听写」：每天 15 词，听音写汉字、统一批改，错词自动回炉重练；专治背得出写不出、错别字多、懒得动笔。复用既有 TTS 与中文词语库（350 词），不挤占习题预算。\nV3.1.3：数据安全修复——清空前强制保存「清空前恢复点」，误清空可一键合并恢复。",
-  "pub_date": "2026-11-06T04:25:55.429Z",
+  "version": "3.1.5",
+  "notes": "V3.1.5 · 考试卷新增「整卷模式」：勾选后一次会话按卷面顺序做完全部题目（如 56 题英语期中卷），交卷统一判分；不再被每卷 50 题上限截断。默认不勾选，原分批练习行为不变。\nV3.1.4：每日任务新增「语文词语听写」：每天 15 词，听音写汉字、统一批改，错词自动回炉重练。\nV3.1.3：数据安全修复——清空前强制保存「清空前恢复点」，误清空可一键合并恢复。",
+  "pub_date": "2026-11-10T09:14:11.422Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVktVcWQybWFPSlEzMzVoL0o0NTVIUFZVak0xSU90YlNBMUhrNlVISEZaV1FiTXJ0MHl0V3QwS1VKQUIxNzlZSks2K2lqRUd6TXk3RUxmR3E1ZzBjNlFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzOTM5MTA5CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjRfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS40CkVjNldpbkZZeFRiMm5zMGhaSGY5QWNscWNPK2VBcXVJaGJNMmoyMkNsWWdLVFZsTVhnTC9ud2Vxa1BzRFpwVUFBV1BBVCtLZm1MYzVHa1d4RThMMUJBPT0K",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.4/FamilyLearningSystem_3.1.4_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkUwOGlOenluU0ZOZ0Zlei9lTC92aVFoekd1YUdabjBHVUpmcmdxTXQzSjM1cW9Gd2VyVVAxSERId2trMlNRdm1QMm96Qk5wRDRDV25jelc1U3hNZkFzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0MzAyMDE5CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjVfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS41CkdHaXoxUHlZdWVQZkJkNitCWXZ3THVOUW4vWGFYWDZqalo1ZUNZUGxOVC9DeTkwK2RVZy9nQVh6Q1R4bW1jLzc5dVcvY2p1M2pTVDkyT3RSRXNjR0RRPT0K",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.5/FamilyLearningSystem_3.1.5_x64-setup.exe"
     }
   }
 }
