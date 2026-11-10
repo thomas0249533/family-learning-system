@@ -12,7 +12,8 @@
     "grade": 4,
     "term": "up",
     "edition": "人教版",
-    "isInternal": true
+    "isInternal": true,
+    "templateId": "math.primary.v1"
   },
   "knowledgePoints": [
     {
@@ -37,7 +38,7 @@
       "id": "unit-math-4-up-rjb-p4::kp-formula-002",
       "type": "formula",
       "title": "乘法交换律与结合律",
-      "content": "1. 乘法交换律：两个数相乘，交换因数的位置，积不变。\\n字母表示：a \\times b = b \\times a\\n2. 乘法结合律：三个数相乘，先把前两个数相乘，或者先把后两个数相乘，积不变。\\n字母表示：(a \\times b) \\times c = a \\times (b \\times c)\\n应用：利用乘法运算律可以凑整，简化计算。\\n示例：25 \\times 4 \\times 8 = 25 \\times (4 \\times 8) = 25 \\times 32 = 800",
+      "content": "1. 乘法交换律：两个数相乘，交换因数的位置，积不变。\\n字母表示：a × b = b × a\\n2. 乘法结合律：三个数相乘，先把前两个数相乘，或者先把后两个数相乘，积不变。\\n字母表示：(a × b) × c = a × (b × c)\\n应用：利用乘法运算律可以凑整，简化计算。\\n示例：25 × 4 × 8 = 25 × (4 × 8) = 25 × 32 = 800",
       "prerequisites": [
         "unit-math-4-up-rjb-p4::kp-formula-001"
       ],
@@ -57,7 +58,7 @@
       "id": "unit-math-4-up-rjb-p4::kp-formula-003",
       "type": "formula",
       "title": "乘法分配律",
-      "content": "乘法分配律：两个数的和与一个数相乘，可以先把它们与这个数分别相乘，再相加。\\n字母表示：(a + b) \\times c = a \\times c + b \\times c\\n也可以推广到减法：(a - b) \\times c = a \\times c - b \\times c\\n应用：常用于简便计算，如 102 \\times 45 = (100 + 2) \\times 45 = 100 \\times 45 + 2 \\times 45 = 4500 + 90 = 4590。\\n注意：乘法分配律是四年级最重要的运算律，容易与结合律混淆，需多加练习。",
+      "content": "乘法分配律：两个数的和与一个数相乘，可以先把它们与这个数分别相乘，再相加。\\n字母表示：(a + b) × c = a × c + b × c\\n也可以推广到减法：(a - b) × c = a × c - b × c\\n应用：常用于简便计算，如 102 × 45 = (100 + 2) × 45 = 100 × 45 + 2 × 45 = 4500 + 90 = 4590。\\n注意：乘法分配律是四年级最重要的运算律，容易与结合律混淆，需多加练习。",
       "prerequisites": [
         "unit-math-4-up-rjb-p4::kp-formula-002"
       ],
@@ -77,7 +78,7 @@
       "id": "unit-math-4-up-rjb-p4::kp-geo-005",
       "type": "concept",
       "title": "数线段与图形组合规律",
-      "content": "数图形的学问：\\n1. 数线段：如果有n个点（或n-1条基本线段），线段总数 = 1 + 2 + 3 + ... + (n-1) = n \\times (n-1) / 2。\\n例如：一条直线上有5个点，线段总数 = 5 \\times 4 / 2 = 10条。\\n2. 数角：从一点引出n条射线，角的个数 = n \\times (n-1) / 2。\\n3. 数三角形/长方形：先数基本图形，再数由基本图形组合成的图形，做到不重复、不遗漏。\\n4. 生活应用：握手问题、车票问题（单程/往返）都可以用数线段的规律来解决。",
+      "content": "数图形的学问：\\n1. 数线段：如果有n个点（或n-1条基本线段），线段总数 = 1 + 2 + 3 + ... + (n-1) = n × (n-1) / 2。\\n例如：一条直线上有5个点，线段总数 = 5 × 4 / 2 = 10条。\\n2. 数角：从一点引出n条射线，角的个数 = n × (n-1) / 2。\\n3. 数三角形/长方形：先数基本图形，再数由基本图形组合成的图形，做到不重复、不遗漏。\\n4. 生活应用：握手问题、车票问题（单程/往返）都可以用数线段的规律来解决。",
       "prerequisites": [
         "unit-math-4-up-rjb-p2::kp-geo-001"
       ],
@@ -212,9 +213,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-006",
               "type": "blank",
-              "question": "根据乘法交换律填空：25 \\times 4 = 4 \\times （______）。",
+              "question": "根据乘法交换律填空：25 × 4 = 4 × （______）。",
               "answer": "25",
-              "explanation": "乘法交换律：a \\times b = b \\times a。所以填25。",
+              "explanation": "乘法交换律：a × b = b × a。所以填25。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-002"
               ],
@@ -227,13 +228,13 @@
               "type": "single",
               "question": "下面哪个算式运用了乘法结合律？",
               "options": [
-                "A. 25 \\times 4 = 4 \\times 25",
-                "B. (25 \\times 4) \\times 8 = 25 \\times (4 \\times 8)",
-                "C. 25 \\times 4 + 25 \\times 8 = 25 \\times (4 + 8)",
-                "D. 25 \\times 1 = 25"
+                "A. 25 × 4 = 4 × 25",
+                "B. (25 × 4) × 8 = 25 × (4 × 8)",
+                "C. 25 × 4 + 25 × 8 = 25 × (4 + 8)",
+                "D. 25 × 1 = 25"
               ],
               "answer": "B",
-              "explanation": "乘法结合律是三个数相乘，先把前两个数相乘，或者先把后两个数相乘，积不变。选项B符合(a \\times b) \\times c = a \\times (b \\times c)。选项A是乘法交换律。选项C是乘法分配律。",
+              "explanation": "乘法结合律是三个数相乘，先把前两个数相乘，或者先把后两个数相乘，积不变。选项B符合(a × b) × c = a × (b × c)。选项A是乘法交换律。选项C是乘法分配律。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-002"
               ],
@@ -244,9 +245,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-008",
               "type": "blank",
-              "question": "简便计算：25 \\times 4 \\times 8 = （______）。",
+              "question": "简便计算：25 × 4 × 8 = （______）。",
               "answer": "800",
-              "explanation": "利用乘法结合律，先算25 \\times 4 = 100，再算100 \\times 8 = 800。",
+              "explanation": "利用乘法结合律，先算25 × 4 = 100，再算100 × 8 = 800。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-002"
               ],
@@ -257,9 +258,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-009",
               "type": "blank",
-              "question": "简便计算：125 \\times 8 \\times 5 = （______）。",
+              "question": "简便计算：125 × 8 × 5 = （______）。",
               "answer": "5000",
-              "explanation": "利用乘法结合律，先算125 \\times 8 = 1000，再算1000 \\times 5 = 5000。",
+              "explanation": "利用乘法结合律，先算125 × 8 = 1000，再算1000 × 5 = 5000。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-002"
               ],
@@ -272,7 +273,7 @@
               "type": "judge",
               "question": "乘法交换律和乘法结合律可以同时使用，使计算更简便。",
               "answer": "对",
-              "explanation": "例如：25 \\times 8 \\times 4 = 25 \\times 4 \\times 8 = (25 \\times 4) \\times 8 = 100 \\times 8 = 800。这里同时运用了乘法交换律和结合律。",
+              "explanation": "例如：25 × 8 × 4 = 25 × 4 × 8 = (25 × 4) × 8 = 100 × 8 = 800。这里同时运用了乘法交换律和结合律。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-002"
               ],
@@ -285,13 +286,13 @@
               "type": "single",
               "question": "学校有8个班，每个班有25名男生和15名女生。学校四年级一共有多少名学生？列式正确的是（　　）。",
               "options": [
-                "A. 8 \\times 25 + 15",
-                "B. (25 + 15) \\times 8",
-                "C. 25 \\times 15 \\times 8",
-                "D. 25 + 15 \\times 8"
+                "A. 8 × 25 + 15",
+                "B. (25 + 15) × 8",
+                "C. 25 × 15 × 8",
+                "D. 25 + 15 × 8"
               ],
               "answer": "B",
-              "explanation": "先算每个班的总人数：(25 + 15) = 40人。再算8个班的总人数：40 \\times 8 = 320人。列式为(25 + 15) \\times 8。",
+              "explanation": "先算每个班的总人数：(25 + 15) = 40人。再算8个班的总人数：40 × 8 = 320人。列式为(25 + 15) × 8。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-002"
               ],
@@ -302,9 +303,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-012",
               "type": "blank",
-              "question": "计算 50 \\times 26 \\times 2 时，可以先算（______）\\times （______）= （______），再算（______）\\times （______）= （______）。",
+              "question": "计算 50 × 26 × 2 时，可以先算（______）× （______）= （______），再算（______）× （______）= （______）。",
               "answer": "50,2,100,100,26,2600",
-              "explanation": "利用乘法交换律和结合律，先算50 \\times 2 = 100，再算100 \\times 26 = 2600。",
+              "explanation": "利用乘法交换律和结合律，先算50 × 2 = 100，再算100 × 26 = 2600。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-002"
               ],
@@ -336,13 +337,13 @@
               "type": "single",
               "question": "下面哪个算式运用了乘法分配律？",
               "options": [
-                "A. 25 \\times 4 = 4 \\times 25",
-                "B. (25 + 4) \\times 8 = 25 \\times 8 + 4 \\times 8",
-                "C. (25 \\times 4) \\times 8 = 25 \\times (4 \\times 8)",
-                "D. 25 \\times 1 = 25"
+                "A. 25 × 4 = 4 × 25",
+                "B. (25 + 4) × 8 = 25 × 8 + 4 × 8",
+                "C. (25 × 4) × 8 = 25 × (4 × 8)",
+                "D. 25 × 1 = 25"
               ],
               "answer": "B",
-              "explanation": "乘法分配律是两个数的和与一个数相乘，可以先把它们与这个数分别相乘，再相加。选项B符合(a + b) \\times c = a \\times c + b \\times c。",
+              "explanation": "乘法分配律是两个数的和与一个数相乘，可以先把它们与这个数分别相乘，再相加。选项B符合(a + b) × c = a × c + b × c。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -353,9 +354,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-014",
               "type": "blank",
-              "question": "简便计算：102 \\times 45 = （______）。",
+              "question": "简便计算：102 × 45 = （______）。",
               "answer": "4590",
-              "explanation": "把102拆成100 + 2，利用乘法分配律：(100 + 2) \\times 45 = 100 \\times 45 + 2 \\times 45 = 4500 + 90 = 4590。",
+              "explanation": "把102拆成100 + 2，利用乘法分配律：(100 + 2) × 45 = 100 × 45 + 2 × 45 = 4500 + 90 = 4590。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -366,9 +367,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-015",
               "type": "blank",
-              "question": "简便计算：99 \\times 25 = （______）。",
+              "question": "简便计算：99 × 25 = （______）。",
               "answer": "2475",
-              "explanation": "把99拆成100 - 1，利用乘法分配律：(100 - 1) \\times 25 = 100 \\times 25 - 1 \\times 25 = 2500 - 25 = 2475。",
+              "explanation": "把99拆成100 - 1，利用乘法分配律：(100 - 1) × 25 = 100 × 25 - 1 × 25 = 2500 - 25 = 2475。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -381,7 +382,7 @@
               "type": "blank",
               "question": "一件上衣125元，一条裤子75元。买8套这样的衣服一共需要（______）元。",
               "answer": "1600",
-              "explanation": "一套衣服的价格是125 + 75 = 200元。8套的总价是200 \\times 8 = 1600元。列式：(125 + 75) \\times 8 = 125 \\times 8 + 75 \\times 8 = 1000 + 600 = 1600（元）。",
+              "explanation": "一套衣服的价格是125 + 75 = 200元。8套的总价是200 × 8 = 1600元。列式：(125 + 75) × 8 = 125 × 8 + 75 × 8 = 1000 + 600 = 1600（元）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -394,13 +395,13 @@
               "type": "multiple",
               "question": "下面算式中，运用了乘法分配律的是（　　）。",
               "options": [
-                "A. 25 \\times (40 + 4) = 25 \\times 40 + 25 \\times 4",
-                "B. 25 \\times 40 \\times 4 = 25 \\times 4 \\times 40",
-                "C. 25 \\times 44 = 25 \\times 4 \\times 11",
-                "D. 25 \\times 44 = 25 \\times (40 + 4)"
+                "A. 25 × (40 + 4) = 25 × 40 + 25 × 4",
+                "B. 25 × 40 × 4 = 25 × 4 × 40",
+                "C. 25 × 44 = 25 × 4 × 11",
+                "D. 25 × 44 = 25 × (40 + 4)"
               ],
               "answer": "AD",
-              "explanation": "选项A和D是乘法分配律的典型形式。选项B运用了乘法交换律。选项C是将44拆成4 \\times 11，然后运用乘法结合律。所以选AD。",
+              "explanation": "选项A和D是乘法分配律的典型形式。选项B运用了乘法交换律。选项C是将44拆成4 × 11，然后运用乘法结合律。所以选AD。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -411,9 +412,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-018",
               "type": "judge",
-              "question": "计算 25 \\times 44 时，可以写成 25 \\times 4 \\times 11，也可以写成 25 \\times (40 + 4)，结果都是1100。",
+              "question": "计算 25 × 44 时，可以写成 25 × 4 × 11，也可以写成 25 × (40 + 4)，结果都是1100。",
               "answer": "对",
-              "explanation": "25 \\times 4 \\times 11 = 100 \\times 11 = 1100。25 \\times (40 + 4) = 25 \\times 40 + 25 \\times 4 = 1000 + 100 = 1100。两种方法结果相同。",
+              "explanation": "25 × 4 × 11 = 100 × 11 = 1100。25 × (40 + 4) = 25 × 40 + 25 × 4 = 1000 + 100 = 1100。两种方法结果相同。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -424,15 +425,15 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-019",
               "type": "single",
-              "question": "与 45 \\times 99 + 45 结果相等的算式是（　　）。",
+              "question": "与 45 × 99 + 45 结果相等的算式是（　　）。",
               "options": [
-                "A. 45 \\times 99",
-                "B. 45 \\times 100",
-                "C. 45 \\times 99 + 1",
-                "D. 45 \\times 99 \\times 45"
+                "A. 45 × 99",
+                "B. 45 × 100",
+                "C. 45 × 99 + 1",
+                "D. 45 × 99 × 45"
               ],
               "answer": "B",
-              "explanation": "45 \\times 99 + 45 = 45 \\times 99 + 45 \\times 1 = 45 \\times (99 + 1) = 45 \\times 100 = 4500。所以选B。",
+              "explanation": "45 × 99 + 45 = 45 × 99 + 45 × 1 = 45 × (99 + 1) = 45 × 100 = 4500。所以选B。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -443,9 +444,9 @@
             {
               "id": "unit-math-4-up-rjb-p4::u5-ex-020",
               "type": "blank",
-              "question": "简便计算：78 \\times 102 - 78 \\times 2 = （______）。",
+              "question": "简便计算：78 × 102 - 78 × 2 = （______）。",
               "answer": "7800",
-              "explanation": "利用乘法分配律的逆运算：78 \\times 102 - 78 \\times 2 = 78 \\times (102 - 2) = 78 \\times 100 = 7800。",
+              "explanation": "利用乘法分配律的逆运算：78 × 102 - 78 × 2 = 78 × (102 - 2) = 78 × 100 = 7800。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-formula-003"
               ],
@@ -485,7 +486,7 @@
               "type": "blank",
               "question": "一条直线上有5个点，以这些点为端点的线段一共有（______）条。",
               "answer": "10",
-              "explanation": "根据数线段的规律：n个点的线段总数 = n \\times (n-1) / 2。5 \\times 4 / 2 = 10（条）。也可以这样想：基本线段有4条，由两条基本线段组成的线段有3条，由三条基本线段组成的有2条，由四条基本线段组成的有1条，一共4 + 3 + 2 + 1 = 10条。",
+              "explanation": "根据数线段的规律：n个点的线段总数 = n × (n-1) / 2。5 × 4 / 2 = 10（条）。也可以这样想：基本线段有4条，由两条基本线段组成的线段有3条，由三条基本线段组成的有2条，由四条基本线段组成的有1条，一共4 + 3 + 2 + 1 = 10条。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-geo-005"
               ],
@@ -498,7 +499,7 @@
               "type": "blank",
               "question": "从一点引出6条射线，一共可以组成（______）个角。",
               "answer": "15",
-              "explanation": "从一点引出n条射线，角的个数 = n \\times (n-1) / 2。6 \\times 5 / 2 = 15（个）。",
+              "explanation": "从一点引出n条射线，角的个数 = n × (n-1) / 2。6 × 5 / 2 = 15（个）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-geo-005"
               ],
@@ -530,7 +531,7 @@
               "type": "blank",
               "question": "有4个小朋友，每两人握一次手，一共要握（______）次手。",
               "answer": "6",
-              "explanation": "这是组合问题，相当于4个点之间两两连线。4 \\times 3 / 2 = 6（次）。",
+              "explanation": "这是组合问题，相当于4个点之间两两连线。4 × 3 / 2 = 6（次）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-geo-005"
               ],
@@ -549,7 +550,7 @@
                 "D. 20"
               ],
               "answer": "B",
-              "explanation": "5个车站相当于5个点，单程车票的种类就是线段的条数：5 \\times 4 / 2 = 10（种）。",
+              "explanation": "5个车站相当于5个点，单程车票的种类就是线段的条数：5 × 4 / 2 = 10（种）。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-geo-005"
               ],
@@ -607,7 +608,7 @@
               "type": "blank",
               "question": "往返于A、B两地的列车，中途停靠3个车站。铁路局要为这趟列车准备（______）种不同的车票。",
               "answer": "20",
-              "explanation": "中途停靠3个车站，加上A、B两站，一共5个车站。单程车票有5 \\times 4 / 2 = 10种。因为要准备往返车票，所以10 \\times 2 = 20种。",
+              "explanation": "中途停靠3个车站，加上A、B两站，一共5个车站。单程车票有5 × 4 / 2 = 10种。因为要准备往返车票，所以10 × 2 = 20种。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-geo-005"
               ],
@@ -620,7 +621,7 @@
               "type": "blank",
               "question": "观察规律：1条线段有0个交点，2条线段最多有1个交点，3条线段最多有3个交点，那么5条线段最多有（______）个交点。",
               "answer": "10",
-              "explanation": "n条线段最多交点个数 = n \\times (n-1) / 2。5 \\times 4 / 2 = 10（个）。这实际上与数线段的规律是一样的。",
+              "explanation": "n条线段最多交点个数 = n × (n-1) / 2。5 × 4 / 2 = 10（个）。这实际上与数线段的规律是一样的。",
               "knowledgePointIds": [
                 "unit-math-4-up-rjb-p4::kp-geo-005"
               ],
