@@ -25,18 +25,19 @@
 
         <!-- V3.1 · 题库在线更新：仅手动触发（不打扰孩子做题、启动不多一次网络请求）。
              有更新时红点 + 文案变化；点击后走 checkForUpdates → applyAllUpdates，
-             更新只覆盖 db.packages（进度按 (packageId, kpId) 自动接续）。 -->
+             更新只覆盖 db.packages（进度按 (packageId, kpId) 自动接续）。
+             V3.1.6：目录里未安装的新包由 installable 带出，家长勾选后才安装。 -->
         <button
           class="content-update-btn"
-          :class="{ 'has-update': updatable.length > 0 }"
+          :class="{ 'has-update': updatable.length > 0 || installable.length > 0 }"
           type="button"
           :disabled="contentChecking"
-          :aria-label="contentChecking ? '正在检查题库更新' : updatable.length > 0 ? `有 ${updatable.length} 个题库可更新，点击更新` : '检查题库更新'"
+          :aria-label="contentChecking ? '正在检查题库更新' : (updatable.length > 0 || installable.length > 0) ? `有 ${updatable.length} 个题库可更新、${installable.length} 个新包可安装，点击处理` : '检查题库更新'"
           @click="onCheckContentUpdate"
         >
           <span class="cu-icon" aria-hidden="true" :class="{ spinning: contentChecking }">🔄</span>
           <span class="cu-label">{{ contentUpdateLabel }}</span>
-          <span v-if="updatable.length > 0" class="cu-dot" aria-hidden="true"></span>
+          <span v-if="updatable.length > 0 || installable.length > 0" class="cu-dot" aria-hidden="true"></span>
         </button>
       </div>
 
@@ -159,6 +160,40 @@
       />
     </template>
 
+    <!-- V3.1.6 · 发现新包：目录里有、本机没装。默认一个都不勾，家长确认后才安装 -->
+    <n-modal
+      v-model:show="showNewPackagesModal"
+      preset="card"
+      title="📦 发现新学习包"
+      style="max-width: 480px;"
+    >
+      <div class="new-pkg-body">
+        <p class="new-pkg-hint">
+          题库目录里有 {{ installable.length }} 个本机还没安装的学习包。勾选后点「安装选中」才会下载，
+          不勾选不会改动任何内容。
+        </p>
+        <n-checkbox-group v-model:value="selectedNewPackageIds" class="new-pkg-list">
+          <div v-for="p in installable" :key="p.packageId" class="new-pkg-item">
+            <n-checkbox :value="p.packageId" :label="p.title" />
+            <span class="new-pkg-id">{{ p.packageId }}</span>
+          </div>
+        </n-checkbox-group>
+        <p v-if="installResult" class="new-pkg-result" role="status">{{ installResult }}</p>
+      </div>
+      <template #footer>
+        <n-space justify="end">
+          <AppButton @click="showNewPackagesModal = false">稍后再说</AppButton>
+          <AppButton
+            type="primary"
+            :disabled="selectedNewPackageIds.length === 0 || installing"
+            @click="onInstallSelected"
+          >
+            {{ installing ? '安装中…' : `安装选中（${selectedNewPackageIds.length}）` }}
+          </AppButton>
+        </n-space>
+      </template>
+    </n-modal>
+
     <!-- G3 · 分享弹窗：二维码 + 后缀码（手输兜底） -->
     <n-modal v-model:show="showShareModal" preset="card" title="📤 分享学习包" style="max-width: 420px;">
       <div class="share-body">
@@ -187,8 +222,14 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { NSpin, NModal, NSpace, useMessage } from 'naive-ui'
-import { checkForUpdates, applyAllUpdates, type UpdatablePackage } from '@core/content/contentUpdater'
+import { NCheckbox, NCheckboxGroup, NSpin, NModal, NSpace, useMessage } from 'naive-ui'
+import {
+  checkForUpdates,
+  applyAllUpdates,
+  installNewPackages,
+  type UpdatablePackage,
+  type CatalogPackage,
+} from '@core/content/contentUpdater'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import PackageCard from './PackageCard.vue'
@@ -210,10 +251,18 @@ const message = useMessage()
 const contentChecking = ref(false)
 /** 检查到可更新的包；更新成功后清空（红点消失） */
 const updatable = ref<UpdatablePackage[]>([])
+const installable = ref<CatalogPackage[]>([])
+const showNewPackagesModal = ref(false)
+const selectedNewPackageIds = ref<string[]>([])
+const installing = ref(false)
+const installResult = ref('')
+
 const contentUpdateLabel = computed(() => {
   if (contentChecking.value) return '检查中…'
-  if (updatable.value.length > 0) return `更新 ${updatable.value.length} 个题库`
-  return '检查题库更新'
+  const parts: string[] = []
+  if (updatable.value.length > 0) parts.push(`更新 ${updatable.value.length} 个`)
+  if (installable.value.length > 0) parts.push(`${installable.value.length} 个新包`)
+  return parts.length > 0 ? parts.join(' · ') : '检查题库更新'
 })
 
 /** 注入默认 fetch —— 与镜像链的约定签名一致（只用到 ok/status/text） */
@@ -228,12 +277,20 @@ async function onCheckContentUpdate(): Promise<void> {
       message.error(`检查更新失败：${res.error ?? '网络不可达'}`)
       return
     }
+    // V3.1.6：新包只报告、不自动安装；由家长在弹窗里勾选
+    updatable.value = res.updatable
+    installable.value = res.installable
+    const hasNew = res.installable.length > 0
+    if (hasNew) {
+      selectedNewPackageIds.value = []
+      installResult.value = ''
+      showNewPackagesModal.value = true
+    }
+
     if (res.updatable.length === 0) {
-      updatable.value = []
-      message.success('题库已是最新')
+      if (!hasNew) message.success('题库已是最新')
       return
     }
-    updatable.value = res.updatable
     message.info(`发现 ${res.updatable.length} 个题库有新版本，正在更新…`)
     const done = await applyAllUpdates(res.updatable, defaultFetch)
     if (done.updated.length > 0) {
@@ -250,6 +307,35 @@ async function onCheckContentUpdate(): Promise<void> {
     message.error(`检查更新异常：${e instanceof Error ? e.message : String(e)}`)
   } finally {
     contentChecking.value = false
+  }
+}
+
+/** 家长勾选后才会走到这里：下载 + 校验 + 写入，全过程有 sha256 与包校验兜底 */
+async function onInstallSelected(): Promise<void> {
+  if (installing.value || selectedNewPackageIds.value.length === 0) return
+  installing.value = true
+  installResult.value = ''
+  try {
+    const picked = installable.value.filter((p) => selectedNewPackageIds.value.includes(p.packageId))
+    const done = await installNewPackages(picked, defaultFetch)
+    if (done.updated.length > 0) {
+      await packageStore.loadPackages()
+      installable.value = installable.value.filter((p) => !done.updated.includes(p.packageId))
+      selectedNewPackageIds.value = []
+      message.success(`已安装 ${done.updated.length} 个新学习包`)
+    }
+    const parts: string[] = []
+    if (done.updated.length > 0) parts.push(`成功 ${done.updated.length} 个`)
+    if (done.failed.length > 0) parts.push(`失败 ${done.failed.length} 个：${done.failed[0].reason}`)
+    installResult.value = parts.join('；')
+    for (const f of done.failed) {
+      message.error(`${f.packageId} 安装失败：${f.reason}`)
+    }
+    if (done.failed.length === 0) showNewPackagesModal.value = false
+  } catch (e) {
+    message.error(`安装异常：${e instanceof Error ? e.message : String(e)}`)
+  } finally {
+    installing.value = false
   }
 }
 
@@ -1046,6 +1132,51 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   padding: 60px 20px;
   box-shadow: $shadow-sm;
   border: 1px solid $border-color;
+}
+
+/* ===== V3.1.6 · 发现新包弹窗（样式全部走语义 token）===== */
+.new-pkg-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.new-pkg-hint {
+  margin: 0;
+  font-size: var(--font-xs);
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+.new-pkg-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.new-pkg-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.new-pkg-id {
+  padding-left: 24px;
+  font-size: var(--font-2xs);
+  color: var(--text-sub);
+  word-break: break-all;
+}
+
+.new-pkg-result {
+  margin: 0;
+  font-size: var(--font-xs);
+  line-height: 1.6;
+  color: var(--text-main);
 }
 
 /* ===== G3 · 分享弹窗（样式全部走语义 token）===== */

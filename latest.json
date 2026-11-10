@@ -1,11 +1,11 @@
 {
-  "version": "3.1.5",
-  "notes": "V3.1.5 · 考试卷新增「整卷模式」：勾选后一次会话按卷面顺序做完全部题目（如 56 题英语期中卷），交卷统一判分；不再被每卷 50 题上限截断。默认不勾选，原分批练习行为不变。\nV3.1.4：每日任务新增「语文词语听写」：每天 15 词，听音写汉字、统一批改，错词自动回炉重练。\nV3.1.3：数据安全修复——清空前强制保存「清空前恢复点」，误清空可一键合并恢复。",
-  "pub_date": "2026-11-10T09:14:11.422Z",
+  "version": "3.1.6",
+  "notes": "V3.1.6 · 题库更新新增「发现新包」：检查更新时会列出目录里本机尚未安装的学习包，由家长勾选后才下载安装（含 sha256 与包校验），不再需要手动传 ZIP 导入。\nV3.1.5：考试卷新增「整卷模式」，一次会话按卷面顺序做完全部题目，交卷统一判分。\nV3.1.4：每日任务新增「语文词语听写」，每天 15 词，错词自动回炉重练。",
+  "pub_date": "2026-11-10T11:31:43.262Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkUwOGlOenluU0ZOZ0Zlei9lTC92aVFoekd1YUdabjBHVUpmcmdxTXQzSjM1cW9Gd2VyVVAxSERId2trMlNRdm1QMm96Qk5wRDRDV25jelc1U3hNZkFzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0MzAyMDE5CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjVfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS41CkdHaXoxUHlZdWVQZkJkNitCWXZ3THVOUW4vWGFYWDZqalo1ZUNZUGxOVC9DeTkwK2RVZy9nQVh6Q1R4bW1jLzc5dVcvY2p1M2pTVDkyT3RSRXNjR0RRPT0K",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.5/FamilyLearningSystem_3.1.5_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkF1QjFtbE5RZGcreGxuQUVTREVFb3Q0aWhVVmhXUG1RVi9SV2oyaUpxelVHcUVqWFpITm5ieEROSm1qMG16RWtaRDVicGVuZDZsRHR5cHoxSU11MVFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0MzEwMjk0CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjZfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS42CkFmdlhnSEhvNTJqSVJ3dnBKVmFaYVZpODFKMkJvbko3dVdPM3JaZytQa3BrYVhjb1hPSkJEa3Nlc0lFL25GSGl1dlZaZDl2ODhZbm5UQnFpVXlUT0R3PT0K",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.6/FamilyLearningSystem_3.1.6_x64-setup.exe"
     }
   }
 }

@@ -31,8 +31,10 @@ const {
   checkForUpdates,
   applyUpdate,
   applyAllUpdates,
+  installNewPackages,
 } = await import('@core/content/contentUpdater')
 type UpdatablePackage = import('@core/content/contentUpdater').UpdatablePackage
+type CatalogPackage = import('@core/content/contentUpdater').CatalogPackage
 
 const { initProfile, __resetProfileForTest } = await import('@core/profile/currentProfile')
 const { invalidateOwnerIndex } = await import('@core/progress/ownerIndexCache')
@@ -185,7 +187,7 @@ describe('checkForUpdates（版本比对）', () => {
     expect(CATALOG_FILE).toBe('content-catalog.json')
   })
 
-  it('远端版本更高 → 进可更新列表；未安装的包不进列表', async () => {
+  it('远端版本更高 → 进可更新列表；未安装的包进 installable（V3.1.6）', async () => {
     const catalog = JSON.stringify({
       updatedAt: '2026-11-02',
       packages: [
@@ -198,6 +200,15 @@ describe('checkForUpdates（版本比对）', () => {
     expect(res.total).toBe(2)
     expect(res.updatable.map((u) => u.packageId)).toEqual(['pkg-a'])
     expect(res.updatable[0].remoteVersion).toBe('1.1.0')
+    expect(res.installable.map((p) => p.packageId)).toEqual(['pkg-not-installed'])
+    expect(res.installable[0].title).toBe('没装的包')
+    // 契约：检查只报告，绝不偷偷写入新包
+    expect(await fake.packages.get('pkg-not-installed')).toBeUndefined()
+  })
+
+  it('网络全断 → installable 为空数组（不抛异常、不给脏数据）', async () => {
+    const res = await checkForUpdates(deadFetcher)
+    expect(res.installable).toEqual([])
   })
 
   it('版本相同 → 已是最新', async () => {
@@ -368,5 +379,99 @@ describe('applyAllUpdates（批量串行）', () => {
     expect(out.updated).toEqual(['pkg-a'])
     expect(out.failed).toHaveLength(1)
     expect(out.failed[0].packageId).toBe('pkg-b')
+  })
+})
+
+// ==================== V3.1.6 · 发现并安装新包 ====================
+/** 造一个 packageId 可指定的最小合法包；kpIds 用于构造跨包引用 */
+function makeNamedPackage(packageId: string, kpIds: string[], version = '1.0.0'): any {
+  const base = makePackage(version)
+  return {
+    ...base,
+    packageId,
+    manifest: { ...base.manifest, packageId, title: `${packageId} 标题` },
+    knowledgePoints: [{ id: `${packageId}::kp-own`, name: '自有知识点', prerequisites: [] }],
+    exercises: [{
+      id: `${packageId}::ex-1`,
+      type: 'single',
+      question: '1+1=（　　）',
+      options: ['A. 2', 'B. 3', 'C. 4', 'D. 5'],
+      answer: 'A',
+      explanation: '1+1=2。',
+      knowledgePointIds: kpIds,
+    }],
+  }
+}
+
+async function catalogItem(packageId: string): Promise<{ item: CatalogPackage; text: string }> {
+  const text = JSON.stringify(makeNamedPackage(packageId, [`${packageId}::kp-own`]))
+  return {
+    item: {
+      packageId,
+      version: '1.0.0',
+      title: `${packageId} 标题`,
+      sha256: await sha256Hex(text),
+    },
+    text,
+  }
+}
+
+describe('installNewPackages（家长勾选后才安装）', () => {
+  it('未勾选时不调用安装 → 一个包都不会写入（契约：不替家长做决定）', async () => {
+    const a = await catalogItem('pkg-new-a')
+    const res = await checkForUpdates(fetcherOf({
+      [CATALOG_FILE]: JSON.stringify({ updatedAt: '2026-11-10', packages: [a.item] }),
+    }))
+    expect(res.installable.map((p) => p.packageId)).toEqual(['pkg-new-a'])
+    expect(await fake.packages.get('pkg-new-a')).toBeUndefined()
+  })
+
+  it('勾选后安装成功：包入库、进度原样健在（不洗进度）', async () => {
+    const a = await catalogItem('pkg-new-a')
+    const out = await installNewPackages([a.item], fetcherOf({ 'pkg-new-a.json': a.text }))
+    expect(out.updated).toEqual(['pkg-new-a'])
+    expect(out.failed).toHaveLength(0)
+    const row: any = await fake.packages.get('pkg-new-a')
+    expect(row?.manifest.version).toBe('1.0.0')
+    // beforeEach 播种的进度必须原样健在
+    expect((await fake.progress.toArray()).some((p: any) => p.packageId === 'pkg-a')).toBe(true)
+  })
+
+  it('sha256 不符 → 拒写，且不影响同批其它包', async () => {
+    const a = await catalogItem('pkg-new-a')
+    const b = await catalogItem('pkg-new-b')
+    const bad: CatalogPackage = { ...a.item, sha256: 'f'.repeat(64) }
+    const out = await installNewPackages(
+      [bad, b.item],
+      fetcherOf({ 'pkg-new-a.json': a.text, 'pkg-new-b.json': b.text }),
+    )
+    expect(out.updated).toEqual(['pkg-new-b'])
+    expect(out.failed).toHaveLength(1)
+    expect(out.failed[0].packageId).toBe('pkg-new-a')
+    expect(out.failed[0].reason).toContain('sha256')
+    expect(await fake.packages.get('pkg-new-a')).toBeUndefined()
+  })
+
+  it('同批新包之间的跨包知识点引用不被 E009 误杀', async () => {
+    // pkg-new-a 的题目引用 pkg-new-b 的知识点；两者都还没安装
+    const textA = JSON.stringify(makeNamedPackage('pkg-new-a', ['pkg-new-b::kp-own']))
+    const textB = JSON.stringify(makeNamedPackage('pkg-new-b', ['pkg-new-b::kp-own']))
+    const items: CatalogPackage[] = [
+      { packageId: 'pkg-new-a', version: '1.0.0', title: 'A', sha256: await sha256Hex(textA) },
+      { packageId: 'pkg-new-b', version: '1.0.0', title: 'B', sha256: await sha256Hex(textB) },
+    ]
+    const out = await installNewPackages(items, fetcherOf({
+      'pkg-new-a.json': textA,
+      'pkg-new-b.json': textB,
+    }))
+    expect(out.failed).toEqual([])
+    expect(out.updated).toEqual(['pkg-new-a', 'pkg-new-b'])
+  })
+
+  it('下载失败（镜像全断）→ 只记 failed，不抛异常', async () => {
+    const a = await catalogItem('pkg-new-a')
+    const out = await installNewPackages([a.item], deadFetcher)
+    expect(out.updated).toEqual([])
+    expect(out.failed[0].reason).toContain('下载失败')
   })
 })
