@@ -11,7 +11,9 @@
 // =====================================================================
 
 /** 单张图上限：2MB（300dpi 的线框图形题通常 40~120KB，2MB 已足够宽容） */
-export const MAX_ASSET_BYTES = 2 * 1024 * 1024
+// V3.1.7：图片仍普遍 < 2MB，但离线语音包可能是一段稍长的音频，放宽到 8MB。
+// 上限仍必要 —— 防止一个损坏/恶意资产把 IndexedDB 撑爆。
+export const MAX_ASSET_BYTES = 8 * 1024 * 1024
 /** 单包图片总量上限：8MB（超过这个量级说明该换压缩策略，而不是塞进导入包） */
 export const MAX_ASSETS_TOTAL_BYTES = 8 * 1024 * 1024
 
@@ -29,6 +31,13 @@ export const ASSET_MIME_BY_EXT: Record<string, string> = {
   '.webp': 'image/webp',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
+  // V3.1.7 · 离线语音包兼容：音频与图片共用同一条 Blob 资产通道，
+  // 内容包只要把文件放进 assets/ 并在词上写 audio.path 即可播放，无需改 App。
+  '.mp3': 'audio/mpeg',
+  '.ogg': 'audio/ogg',
+  '.wav': 'audio/wav',
+  '.m4a': 'audio/mp4',
+  '.aac': 'audio/aac',
 }
 
 /** 资产入库前的一道校验结果：拒绝原因；`null` 表示通过 */
@@ -128,8 +137,8 @@ export function validateAsset(input: { path: string; size: number }): AssetRejec
  */
 export const ASSET_REJECT_TEXT: Record<AssetRejectReason, string> = {
   empty: '文件是空的',
-  'too-large': `单张超过 ${formatBytes(MAX_ASSET_BYTES)}`,
-  'unsupported-ext': '格式不支持，只收 png / jpg / jpeg / webp / gif / svg',
+  'too-large': `单个文件超过 ${formatBytes(MAX_ASSET_BYTES)}`,
+  'unsupported-ext': '格式不支持，只收 png / jpg / jpeg / webp / gif / svg / mp3 / ogg / wav / m4a / aac',
   'bad-path': '路径不合法（不能含 .. 或指向目录）',
 }
 

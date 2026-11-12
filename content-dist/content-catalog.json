@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-10",
+  "updatedAt": "2026-11-12",
   "packages": [
     {
       "packageId": "special-chinese-2-up-kantu",
@@ -45,9 +45,9 @@
     },
     {
       "packageId": "special-chinese-4-up-vocab",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "四上语文 · 词汇默写（8 个单元）",
-      "sha256": "ad37a8f3e55ba8febe9c22c057946ef8d671590949f418eb4cf0f26b1263cd1d"
+      "sha256": "a4aa3d48c21402844bbd846fb6f2e2cc637e6b478ca17e0998dda2743346f988"
     },
     {
       "packageId": "term-chinese-4-up-rjb",
@@ -111,9 +111,9 @@
     },
     {
       "packageId": "special-english-4-down-vocab",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "四下英语 · 词汇·单词句型语法（PEP 6 单元）",
-      "sha256": "b451ef1357444deda0fbcca9e55262567f7d0eb1137d47b4098b622ecb3526c9"
+      "sha256": "7da7f1a8a36a5917f258e5690172f1aff9d758e87d340e58bc8862029653f0ce"
     },
     {
       "packageId": "exam-english-4-up-midterm",
@@ -123,9 +123,9 @@
     },
     {
       "packageId": "special-english-4-up-vocab",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "title": "四上英语 · 词汇（沪教版牛津上海 8 单元 + 附录）",
-      "sha256": "8af1728007624d3257f244ba5823975d2dddfa3c623178e67127aeff5b652984"
+      "sha256": "8b43d632c4c3c6c4669be5cfaf0794841c74fc046a4346e2db5964920aa81dd9"
     },
     {
       "packageId": "special-english-7-up-birthday",

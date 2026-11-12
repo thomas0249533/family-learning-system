@@ -267,3 +267,48 @@ export async function applyAllUpdates(
   }
   return out
 }
+
+/**
+ * V3.1.7 · 列出「可强制重拉」的已装包。
+ *
+ * 背景：本地包内容与目录不一致但**版本号相同**时，`checkForUpdates` 的
+ * 版本比较会静默跳过，家长点多少次"检查更新"都修不好（残留 `\times` 就是这么来的）。
+ * 这里只按 packageId 取交集，不看版本，供家长显式勾选后重下覆盖。
+ */
+export async function checkRefreshCandidates(
+  fetcher: FetchLike
+): Promise<{ ok: boolean; items: CatalogPackage[]; error?: string }> {
+  let catalog: ContentCatalog
+  try {
+    catalog = parseCatalog(await fetchTextWithMirrors(CATALOG_FILE, fetcher))
+  } catch (e) {
+    return { ok: false, items: [], error: e instanceof Error ? e.message : String(e) }
+  }
+  const localRows = await db.packages.toArray()
+  const installed = new Set(localRows.map(p => p.packageId))
+  return { ok: true, items: catalog.packages.filter(e => installed.has(e.packageId)) }
+}
+
+/**
+ * 强制重拉：无条件重新下载并覆盖家长勾选的已装包。
+ * 复用 `applyUpdate` 的完整链路（sha256 + normalizePackage + afterPackagesChanged），
+ * 只是不经过版本比较 —— 这正是"修复"与"更新"的唯一区别。
+ */
+export async function refreshInstalledPackages(
+  items: CatalogPackage[],
+  fetcher: FetchLike
+): Promise<ApplyOutcome> {
+  const out: ApplyOutcome = { updated: [], failed: [] }
+  for (const item of items) {
+    const r = await applyUpdate({
+      packageId: item.packageId,
+      title: item.title,
+      localVersion: '',
+      remoteVersion: normalizeVersion(item.version),
+      sha256: item.sha256,
+    }, fetcher)
+    if (r.ok) out.updated.push(r.packageId)
+    else out.failed.push({ packageId: item.packageId, reason: r.reason })
+  }
+  return out
+}

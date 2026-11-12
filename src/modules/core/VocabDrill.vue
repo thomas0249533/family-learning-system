@@ -48,17 +48,30 @@
         </div>
       </div>
 
-      <div class="config-block" v-if="mode === 'dictation'">
+      <div class="config-block" v-if="mode === 'dictation' || mode === 'paper'">
         <div class="config-label">听写设置</div>
         <label class="dictation-toggle">
           <input v-model="showPromptInDictation" type="checkbox" />
           <span>显示中文提示（默认关闭，关闭才是真听写）</span>
         </label>
+        <div v-if="mode === 'paper'" class="mode-note">
+          📝 孩子在纸上书写，写完对照答案自评；无需打字。
+        </div>
+      </div>
+
+      <div class="config-block" v-if="mode === 'chunks'">
+        <div class="mode-note">
+          🧩 本单元有 {{ chunkableWords.length }} 个词可拆成偏旁/字根，点选字块按顺序拼出词语；单字词会自动跳过。
+        </div>
       </div>
 
       <div class="intro-actions">
-        <AppButton type="primary" size="large" block @click="startDrill">
-          ▶ 开始背记（{{ sessionSize }} 题）
+        <AppButton
+          type="primary" size="large" block
+          :disabled="mode === 'chunks' && chunkableWords.length === 0"
+          @click="startDrill"
+        >
+          ▶ 开始背记（{{ mode === 'chunks' ? Math.min(countPerSession, chunkableWords.length) : sessionSize }} 题）
         </AppButton>
         <AppButton block @click="emit('close')">取消</AppButton>
       </div>
@@ -126,6 +139,44 @@
         />
       </div>
 
+      <!-- 纸笔听写：听音 → 纸上写 → 亮答案 → 自评（全程零打字） -->
+      <div v-else-if="mode === 'paper'" class="input-area paper-area">
+        <div class="listen-block">
+          <button class="listen-btn" @click="playAudio">🔊 再听一遍</button>
+          <div class="listen-hint">听音后，在纸上写出{{ lang === 'chinese' ? '词语' : '单词' }}</div>
+        </div>
+        <div v-if="currentPrompt && showPromptInDictation" class="prompt-block">
+          <div class="prompt-label">提示</div>
+          <div class="prompt-content">{{ currentPrompt }}</div>
+        </div>
+        <div v-if="!paperRevealed" class="paper-write-hint">✍️ 写好了再点「看答案」</div>
+        <div v-else class="paper-answer">
+          <div class="prompt-label">正确答案</div>
+          <div class="prompt-content">{{ currentAnswer }}</div>
+        </div>
+      </div>
+
+      <!-- 拼字块：点选偏旁/词根块，按顺序拼出整个词（全程零打字） -->
+      <div v-else-if="mode === 'chunks'" class="input-area chunk-area">
+        <div class="prompt-block">
+          <div class="prompt-label">请拼出「{{ currentPrompt }}」</div>
+          <div class="chunk-slots">
+            <span v-for="(c, i) in selectedChunks" :key="i" class="chunk-slot filled">{{ c }}</span>
+            <span v-if="selectedChunks.length === 0" class="chunk-slot empty">点下方字块开始拼</span>
+          </div>
+        </div>
+        <div class="chunk-choices">
+          <button
+            v-for="(c, i) in chunkChoices"
+            :key="c + '-' + i"
+            class="chunk-choice"
+            :disabled="showFeedback"
+            @click="pickChunk(i)"
+          >{{ c }}</button>
+        </div>
+        <button v-if="selectedChunks.length > 0" class="chunk-undo" type="button" @click="undoChunk">↩ 撤销上一块</button>
+      </div>
+
       <!-- 选择模式 -->
       <div v-else-if="mode === 'choice'" class="choice-area">
         <div class="prompt-block">
@@ -163,6 +214,22 @@
         <!-- 听写模式：提交即进入下一题，全程不给对错，最后统一批改 -->
         <template v-else-if="mode === 'dictation'">
           <AppButton type="primary" size="large" block @click="submitDictation" :disabled="!userInput.trim()">
+            {{ currentIndex === sessionWords.length - 1 ? '🏁 完成并批改' : '提交并下一题 ➡️' }}
+          </AppButton>
+        </template>
+        <!-- 纸笔听写：先亮答案，再由孩子自评（不臆测手写内容） -->
+        <template v-else-if="mode === 'paper'">
+          <AppButton v-if="!paperRevealed" type="primary" size="large" block @click="paperRevealed = true">
+            👀 看答案
+          </AppButton>
+          <template v-else>
+            <AppButton size="large" @click="submitPaper('wrong')">❌ 写错了</AppButton>
+            <AppButton type="success" size="large" @click="submitPaper('correct')">✅ 写对了</AppButton>
+          </template>
+        </template>
+        <!-- 拼字块：拼好后提交 -->
+        <template v-else-if="mode === 'chunks'">
+          <AppButton type="primary" size="large" block @click="submitChunks" :disabled="selectedChunks.length === 0">
             {{ currentIndex === sessionWords.length - 1 ? '🏁 完成并批改' : '提交并下一题 ➡️' }}
           </AppButton>
         </template>
@@ -224,7 +291,9 @@
           <span class="review-mark">{{ a.correct ? '✅' : '❌' }}</span>
           <span class="review-ans">
             <b>{{ a.answer }}</b>
-            <span v-if="!a.correct" class="review-mine">你写的是「{{ a.input || '（空）' }}」</span>
+            <span v-if="!a.correct && a.source === 'typed'" class="review-mine">你写的是「{{ a.input || '（空）' }}」</span>
+            <span v-else-if="!a.correct && a.source === 'chunks'" class="review-mine">你拼的是「{{ a.input || '（空）' }}」</span>
+            <span v-else-if="!a.correct" class="review-mine">纸上写的再对照一遍</span>
           </span>
           <button class="review-speak" type="button" title="朗读" @click="speakWord(a.answer)">
             🔊
@@ -261,11 +330,14 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { NInput } from 'naive-ui'
 import { speak } from '@core/audio/speechService'
 import { gradeDictation } from '@core/quiz/dictationGrade'
+import { chunksOf, buildChunkChoices, joinedChunks, chunksEqual, gradeSelfAssessed } from '@core/quiz/wordChunks'
 import { useUserDataStore } from '@core/stores/userData'
 import AppButton from '@/components/ui/AppButton.vue'
 
-type Mode = 'flip' | 'input' | 'listen' | 'choice' | 'dictation'
+type Mode = 'flip' | 'input' | 'listen' | 'choice' | 'dictation' | 'paper' | 'chunks'
 type Phase = 'intro' | 'drilling' | 'done' | 'review'
+/** 一题的判据来源：键入 / 纸上自评 / 拼字块 */
+type AnswerSource = 'typed' | 'self' | 'chunks'
 
 /** 听写模式下的一题作答记录（统一批改用，作答过程中不判对错） */
 interface DictationAnswer {
@@ -274,6 +346,7 @@ interface DictationAnswer {
   answer: string
   input: string
   correct: boolean
+  source: AnswerSource
 }
 
 const props = withDefaults(defineProps<{
@@ -321,6 +394,11 @@ const elapsedSeconds = ref(0)
 const dictationAnswers = ref<DictationAnswer[]>([])
 /** 听写时是否显示中文提示（默认关，才是真听写） */
 const showPromptInDictation = ref(false)
+/** 纸笔听写：是否已亮出答案（亮出后才允许自评） */
+const paperRevealed = ref(false)
+/** 拼字块模式：当前题的候选块与已选块 */
+const chunkChoices = ref<string[]>([])
+const selectedChunks = ref<string[]>([])
 let timer: number | null = null
 
 const countOptions = computed(() => [
@@ -358,7 +436,14 @@ const modeOptions = [
   { value: 'listen' as Mode, icon: '🔊', label: '听音', desc: '听声音写' },
   { value: 'choice' as Mode, icon: '🔘', label: '选择', desc: '4 选 1' },
   { value: 'dictation' as Mode, icon: '🎧', label: '听写', desc: '连写后批改' },
+  { value: 'paper' as Mode, icon: '📝', label: '纸笔听写', desc: '纸上写·自评' },
+  { value: 'chunks' as Mode, icon: '🧩', label: '拼字块', desc: '点选偏旁/词根' },
 ]
+
+/** 拼字块模式：能拆成 ≥2 块的词才参与，避免单字题硬凑 */
+const chunkableWords = computed(() =>
+  props.words.filter(w => chunksOf(w.metadata?.word ?? w.title ?? '', props.lang, w.metadata?.chunks) !== null)
+)
 
 const currentWord = computed(() => sessionWords.value[currentIndex.value])
 
@@ -414,6 +499,50 @@ const currentModeLabel = computed(() => {
   return m ? `${m.icon} ${m.label}` : ''
 })
 
+/** 当前题的正确拼字块（无数据返回空数组） */
+const currentChunks = computed(() =>
+  chunksOf(currentAnswer.value, props.lang, currentWord.value?.metadata?.chunks) ?? []
+)
+
+/** 拼字块干扰池：同批次其它词的块，避免把正确答案整块喂给孩子 */
+const chunkDistractorPool = computed(() => {
+  const out: string[] = []
+  for (const w of props.words) {
+    if (w === currentWord.value) continue
+    const cs = chunksOf(w.metadata?.word ?? w.title ?? '', props.lang, w.metadata?.chunks)
+    if (cs) out.push(...cs)
+  }
+  return out
+})
+
+/** 当前已选块拼出的词 */
+const joinedSelected = computed(() => joinedChunks(selectedChunks.value))
+
+/** 为一题生成候选块并清空选择 */
+function prepareChunks(): void {
+  const correct = currentChunks.value
+  selectedChunks.value = []
+  chunkChoices.value = correct.length >= 2
+    ? buildChunkChoices(correct, chunkDistractorPool.value, Math.min(4, correct.length + 2))
+    : []
+}
+
+function pickChunk(idx: number): void {
+  if (showFeedback.value) return
+  const c = chunkChoices.value[idx]
+  if (c === undefined) return
+  selectedChunks.value = [...selectedChunks.value, c]
+  // 用过即从候选里摘掉，避免同一个块被无限复用
+  chunkChoices.value = chunkChoices.value.filter((_, i) => i !== idx)
+}
+
+function undoChunk(): void {
+  if (showFeedback.value || selectedChunks.value.length === 0) return
+  const last = selectedChunks.value[selectedChunks.value.length - 1]
+  selectedChunks.value = selectedChunks.value.slice(0, -1)
+  chunkChoices.value = [...chunkChoices.value, last]
+}
+
 /** ✅ 写进度：不熟的词进"需复习"，熟悉的词累积升级 */
 async function writeProgress(word: any, isCorrect: boolean) {
   if (!word?.id || !props.packageId) return
@@ -448,9 +577,11 @@ function formatDuration(sec: number): string {
 }
 
 function startDrill() {
-  if (props.words.length === 0) return
-  const shuffled = [...props.words].sort(() => Math.random() - 0.5)
-  const count = Math.min(countPerSession.value, props.words.length)
+  // 拼字块只从可拆词里抽；若一个都拆不出，给个可读提示而不是空会话
+  const pool = mode.value === 'chunks' ? chunkableWords.value : props.words
+  if (pool.length === 0) return
+  const shuffled = [...pool].sort(() => Math.random() - 0.5)
+  const count = Math.min(countPerSession.value, pool.length)
   beginSession(shuffled.slice(0, count))
 }
 
@@ -464,10 +595,14 @@ function beginSession(words: any[]) {
   flipped.value = false
   showFeedback.value = false
   dictationAnswers.value = []
+  paperRevealed.value = false
+  selectedChunks.value = []
+  chunkChoices.value = []
   phase.value = 'drilling'
   startTimer()
   // 听写是连续作业：进来先把第一个词读出来，不让孩子每题点一次播放
-  if (mode.value === 'dictation') playAudio()
+  if (mode.value === 'dictation' || mode.value === 'paper') playAudio()
+  if (mode.value === 'chunks') prepareChunks()
 }
 
 /**
@@ -485,6 +620,7 @@ async function submitDictation() {
     answer: expected,
     input: typed,
     correct: gradeDictation(typed, expected),
+    source: 'typed',
   })
   userInput.value = ''
   if (currentIndex.value < sessionWords.value.length - 1) {
@@ -516,6 +652,52 @@ async function finishDictation() {
   phase.value = 'review'
 }
 
+/** 连续作业模式的通用推进：记一题 → 下一题（自动播报/备块）或收尾批改 */
+async function advanceContinuous(answer: Omit<DictationAnswer, 'wordId' | 'prompt' | 'answer'>) {
+  const w = currentWord.value
+  if (!w) return
+  dictationAnswers.value.push({
+    wordId: w.id ?? '',
+    prompt: currentPrompt.value,
+    answer: currentAnswer.value.trim(),
+    ...answer,
+  })
+  userInput.value = ''
+  paperRevealed.value = false
+  selectedChunks.value = []
+  if (currentIndex.value < sessionWords.value.length - 1) {
+    currentIndex.value++
+    if (mode.value === 'paper') playAudio()
+    if (mode.value === 'chunks') prepareChunks()
+    else if (mode.value === 'dictation') playAudio()
+  } else {
+    await finishDictation()
+  }
+}
+
+/** 纸笔听写：孩子在纸上写完 → 亮出答案 → 自评对错 */
+async function submitPaper(verdict: 'correct' | 'wrong') {
+  if (!paperRevealed.value) return
+  await advanceContinuous({
+    input: '',
+    correct: gradeSelfAssessed(verdict),
+    source: 'self',
+  })
+}
+
+/**
+ * 拼字块：比较**块序列**（不是拼接字符串）。
+ * 汉字偏旁拆开拼回来是「氵可」而非「河」，按拼接比会永远判错。
+ */
+async function submitChunks() {
+  if (selectedChunks.value.length === 0) return
+  await advanceContinuous({
+    input: joinedSelected.value,
+    correct: chunksEqual(selectedChunks.value, currentChunks.value),
+    source: 'chunks',
+  })
+}
+
 const wrongAnswers = computed(() => dictationAnswers.value.filter(a => !a.correct))
 
 /** 只重练错词：把错的几个词单独再来一轮听写 */
@@ -529,7 +711,7 @@ function retryWrong() {
 /** 批改清单里单个词的朗读 */
 function speakWord(text: string) {
   if (!text) return
-  speak({ text, lang: props.lang === 'chinese' ? 'zh-CN' : 'en-US', rate: 0.9 })
+  void speak({ text, lang: props.lang === 'chinese' ? 'zh-CN' : 'en-US' })
 }
 
 async function submitAnswer() {
@@ -596,10 +778,16 @@ function confirmExit() {
 function playAudio() {
   const text = currentAnswer.value
   if (!text) return
-  speak({
+  const lang = props.lang === 'chinese' ? 'zh-CN' : 'en-US'
+  // 内容包可带 `metadata.audio`（包内相对路径）；有则优先播离线音频，否则系统 TTS。
+  // 不传 rate，让设置页的语速偏好与中文听写默认降速生效。
+  const audioPath = currentWord.value?.metadata?.audio
+  void speak({
     text,
-    lang: props.lang === 'chinese' ? 'zh-CN' : 'en-US',
-    rate: 0.9,
+    lang,
+    ...(typeof audioPath === 'string' && audioPath
+      ? { audio: { packageId: props.packageId, path: audioPath } }
+      : {}),
   })
 }
 
@@ -840,6 +1028,97 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 16px;
   padding: 20px 0;
+}
+
+/* V3.1.7 · 纸笔听写 + 拼字块（零打字） */
+.mode-note {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: $text-sub;
+}
+
+.paper-write-hint {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 15px;
+  color: $text-sub;
+  border: 1px dashed $border-color;
+  border-radius: 12px;
+}
+
+.paper-answer {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+
+  .prompt-content {
+    font-size: 28px;
+    font-weight: 700;
+    color: $text-main;
+  }
+}
+
+.chunk-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 48px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.chunk-slot {
+  min-width: 52px;
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 10px;
+
+  &.filled {
+    color: $on-strong;
+    background: $gradient-primary;
+  }
+
+  &.empty {
+    font-size: 13px;
+    font-weight: 400;
+    color: $text-sub;
+    border: 1px dashed $border-color;
+  }
+}
+
+.chunk-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.chunk-choice {
+  min-width: 56px;
+  padding: 14px 18px;
+  font-size: 20px;
+  font-weight: 700;
+  color: $text-main;
+  background: $bg-color-hover;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  cursor: pointer;
+
+  &:active { transform: translateY(1px); }
+  &:disabled { opacity: 0.5; }
+}
+
+.chunk-undo {
+  align-self: center;
+  font-size: 13px;
+  color: $text-sub;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .listen-block {

@@ -1,11 +1,11 @@
 {
-  "version": "3.1.6",
-  "notes": "V3.1.6 · 题库更新新增「发现新包」：检查更新时会列出目录里本机尚未安装的学习包，由家长勾选后才下载安装（含 sha256 与包校验），不再需要手动传 ZIP 导入。\nV3.1.5：考试卷新增「整卷模式」，一次会话按卷面顺序做完全部题目，交卷统一判分。\nV3.1.4：每日任务新增「语文词语听写」，每天 15 词，错词自动回炉重练。",
-  "pub_date": "2026-11-10T11:31:43.262Z",
+  "version": "3.1.7",
+  "notes": "V3.1.7 · 生字生词新增「纸笔听写+自评」与「拼字块」（汉字偏旁部首 / 英语自然拼读词根，零打字）；语音朗读优化（音色优选、中文听写降速、设置页试听/选声音/语速，并兼容离线语音包）；新增「修复题库」可强制重新下载已装包。\nV3.1.6：题库更新新增「发现新包」，家长勾选后安装。\nV3.1.5：考试卷「整卷模式」，一次做完本卷全部题目。",
+  "pub_date": "2026-11-12T03:19:28.086Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVkF1QjFtbE5RZGcreGxuQUVTREVFb3Q0aWhVVmhXUG1RVi9SV2oyaUpxelVHcUVqWFpITm5ieEROSm1qMG16RWtaRDVicGVuZDZsRHR5cHoxSU11MVFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0MzEwMjk0CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjZfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS42CkFmdlhnSEhvNTJqSVJ3dnBKVmFaYVZpODFKMkJvbko3dVdPM3JaZytQa3BrYVhjb1hPSkJEa3Nlc0lFL25GSGl1dlZaZDl2ODhZbm5UQnFpVXlUT0R3PT0K",
-      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.6/FamilyLearningSystem_3.1.6_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNHE4MURhVk9CVks2TjJKTWlmd3NDU3ZmUXBObHFGcGFEcjBZc3JuaTEyWVdCSllKRG5nSnNxOEhmYndORndoanMwRlVLOFR5QmJKR08yWkExaDNHLzZYcEF0cG0zNmdNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NDUzNTU4CWZpbGU6RmFtaWx5TGVhcm5pbmdTeXN0ZW1fMy4xLjdfeDY0LXNldHVwLmV4ZQl2ZXJzaW9uOjMuMS43ClJJWGt4ZkwvcGw1NFU4TUxGMG96RnJ1M3R3RXptYVJxQ2FuK0xBNkRXRHF3bGRlQnVtWk1JeEJjTEEwY3pRVzBRdWs3bjAvU1BoWVVZaHpCSG1kaUFnPT0K",
+      "url": "https://github.com/thomas0249533/family-learning-system/releases/download/v3.1.7/FamilyLearningSystem_3.1.7_x64-setup.exe"
     }
   }
 }

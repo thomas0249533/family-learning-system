@@ -39,6 +39,17 @@
           <span class="cu-label">{{ contentUpdateLabel }}</span>
           <span v-if="updatable.length > 0 || installable.length > 0" class="cu-dot" aria-hidden="true"></span>
         </button>
+
+        <!-- V3.1.7 · 修复题库：本地包内容与目录不一致但版本号相同时，普通更新会静默跳过 -->
+        <button
+          class="content-repair-btn"
+          type="button"
+          :disabled="contentChecking || refreshing"
+          aria-label="修复题库：重新下载已安装的学习包"
+          @click="onOpenRepair"
+        >
+          🔧 修复题库
+        </button>
       </div>
 
       <!-- V2.12.5 · 按学科筛选：顶部一排学科标签，点了只看那一科；
@@ -160,6 +171,43 @@
       />
     </template>
 
+    <!-- V3.1.7 · 修复题库：重新下载已装包（不看版本号，按目录 sha256 校验后覆盖） -->
+    <n-modal
+      v-model:show="showRepairModal"
+      preset="card"
+      title="🔧 修复题库"
+      style="max-width: 480px;"
+    >
+      <div class="new-pkg-body">
+        <p class="new-pkg-hint">
+          题目显示不对、内容看着旧，可以用这个重新下载一遍已安装的学习包。
+          不会删除做题进度；勾选后点「重新下载」即可，不勾选不会改动任何内容。
+        </p>
+        <n-checkbox-group v-model:value="selectedRepairIds" class="new-pkg-list">
+          <div v-for="p in repairCandidates" :key="p.packageId" class="new-pkg-item">
+            <n-checkbox :value="p.packageId" :label="p.title" />
+            <span class="new-pkg-id">{{ p.packageId }} · v{{ p.version }}</span>
+          </div>
+        </n-checkbox-group>
+        <p v-if="repairCandidates.length === 0 && !repairLoading" class="new-pkg-hint">
+          没有找到可重新下载的学习包（需要能连上题库目录）。
+        </p>
+        <p v-if="repairResult" class="new-pkg-result" role="status">{{ repairResult }}</p>
+      </div>
+      <template #footer>
+        <n-space justify="end">
+          <AppButton @click="showRepairModal = false">取消</AppButton>
+          <AppButton
+            type="primary"
+            :disabled="selectedRepairIds.length === 0 || refreshing"
+            @click="onRepairSelected"
+          >
+            {{ refreshing ? '下载中…' : `重新下载（${selectedRepairIds.length}）` }}
+          </AppButton>
+        </n-space>
+      </template>
+    </n-modal>
+
     <!-- V3.1.6 · 发现新包：目录里有、本机没装。默认一个都不勾，家长确认后才安装 -->
     <n-modal
       v-model:show="showNewPackagesModal"
@@ -227,6 +275,8 @@ import {
   checkForUpdates,
   applyAllUpdates,
   installNewPackages,
+  checkRefreshCandidates,
+  refreshInstalledPackages,
   type UpdatablePackage,
   type CatalogPackage,
 } from '@core/content/contentUpdater'
@@ -256,6 +306,13 @@ const showNewPackagesModal = ref(false)
 const selectedNewPackageIds = ref<string[]>([])
 const installing = ref(false)
 const installResult = ref('')
+// V3.1.7 · 修复题库
+const showRepairModal = ref(false)
+const repairCandidates = ref<CatalogPackage[]>([])
+const selectedRepairIds = ref<string[]>([])
+const repairLoading = ref(false)
+const refreshing = ref(false)
+const repairResult = ref('')
 
 const contentUpdateLabel = computed(() => {
   if (contentChecking.value) return '检查中…'
@@ -307,6 +364,50 @@ async function onCheckContentUpdate(): Promise<void> {
     message.error(`检查更新异常：${e instanceof Error ? e.message : String(e)}`)
   } finally {
     contentChecking.value = false
+  }
+}
+
+/** V3.1.7 · 打开修复弹窗：拉目录，列出本地已装包（不看版本） */
+async function onOpenRepair(): Promise<void> {
+  showRepairModal.value = true
+  repairLoading.value = true
+  repairResult.value = ''
+  selectedRepairIds.value = []
+  try {
+    const res = await checkRefreshCandidates(defaultFetch)
+    if (!res.ok) {
+      repairCandidates.value = []
+      message.error(`读取题库目录失败：${res.error ?? '网络不可达'}`)
+      return
+    }
+    repairCandidates.value = res.items
+  } catch (e) {
+    repairCandidates.value = []
+    message.error(`读取题库目录异常：${e instanceof Error ? e.message : String(e)}`)
+  } finally {
+    repairLoading.value = false
+  }
+}
+
+/** 家长勾选后强制重下覆盖；复用 applyUpdate 的 sha256 + 包校验链，不比版本 */
+async function onRepairSelected(): Promise<void> {
+  if (refreshing.value || selectedRepairIds.value.length === 0) return
+  refreshing.value = true
+  repairResult.value = ''
+  try {
+    const picked = repairCandidates.value.filter(p => selectedRepairIds.value.includes(p.packageId))
+    const done = await refreshInstalledPackages(picked, defaultFetch)
+    if (done.updated.length > 0) {
+      await packageStore.loadPackages()
+      message.success(`已重新下载 ${done.updated.length} 个学习包`)
+    }
+    for (const f of done.failed) message.error(`${f.packageId} 下载失败：${f.reason}`)
+    repairResult.value = `成功 ${done.updated.length} 个${done.failed.length > 0 ? `，失败 ${done.failed.length} 个：${done.failed[0].reason}` : ''}`
+    if (done.failed.length === 0) showRepairModal.value = false
+  } catch (e) {
+    message.error(`修复异常：${e instanceof Error ? e.message : String(e)}`)
+  } finally {
+    refreshing.value = false
   }
 }
 
@@ -789,6 +890,28 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
 }
 
 /* ===== V3.1 · 题库在线更新按钮 ===== */
+/* V3.1.7 · 修复题库按钮：与「检查题库更新」同规格，低调但可发现 */
+.content-repair-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid $border-color;
+  border-radius: $radius-full;
+  background: $card-bg;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $text-sub;
+  cursor: pointer;
+  transition: background $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+  &:disabled { opacity: 0.6; cursor: default; }
+  &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+  &:hover:not(:disabled) { color: $text-main; background: $bg-color-hover; }
+}
+
 .content-update-btn {
   position: relative;
   flex-shrink: 0;

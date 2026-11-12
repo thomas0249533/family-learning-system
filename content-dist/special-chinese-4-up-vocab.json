@@ -13,7 +13,7 @@
     "edition": "人教版",
     "title": "四上语文 · 词汇默写（8 个单元）",
     "dependencies": [],
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "knowledgePoints": [
     {
@@ -23,7 +23,13 @@
       "content": "奇观",
       "metadata": {
         "word": "奇观",
-        "pinyin": "qí guān"
+        "pinyin": "qí guān",
+        "chunks": [
+          "大",
+          "可",
+          "又",
+          "见"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w01"
@@ -37,7 +43,13 @@
       "content": "据说",
       "metadata": {
         "word": "据说",
-        "pinyin": "jù shuō"
+        "pinyin": "jù shuō",
+        "chunks": [
+          "扌",
+          "居",
+          "讠",
+          "兑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w02"
@@ -51,7 +63,13 @@
       "content": "顿时",
       "metadata": {
         "word": "顿时",
-        "pinyin": "dùn shí"
+        "pinyin": "dùn shí",
+        "chunks": [
+          "屯",
+          "页",
+          "日",
+          "寸"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w03"
@@ -65,7 +83,11 @@
       "content": "逐渐",
       "metadata": {
         "word": "逐渐",
-        "pinyin": "zhú jiàn"
+        "pinyin": "zhú jiàn",
+        "chunks": [
+          "逐",
+          "渐"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w04"
@@ -79,7 +101,13 @@
       "content": "霎时",
       "metadata": {
         "word": "霎时",
-        "pinyin": "shà shí"
+        "pinyin": "shà shí",
+        "chunks": [
+          "雨",
+          "妾",
+          "日",
+          "寸"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w05"
@@ -93,7 +121,13 @@
       "content": "余波",
       "metadata": {
         "word": "余波",
-        "pinyin": "yú bō"
+        "pinyin": "yú bō",
+        "chunks": [
+          "人",
+          "于",
+          "氵",
+          "皮"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w06"
@@ -107,7 +141,13 @@
       "content": "繁星",
       "metadata": {
         "word": "繁星",
-        "pinyin": "fán xīng"
+        "pinyin": "fán xīng",
+        "chunks": [
+          "敏",
+          "糸",
+          "日",
+          "生"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w07"
@@ -121,7 +161,12 @@
       "content": "堵车",
       "metadata": {
         "word": "堵车",
-        "pinyin": "dǔ chē"
+        "pinyin": "dǔ chē",
+        "chunks": [
+          "土",
+          "者",
+          "车"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w08"
@@ -135,7 +180,13 @@
       "content": "忘记",
       "metadata": {
         "word": "忘记",
-        "pinyin": "wàng jì"
+        "pinyin": "wàng jì",
+        "chunks": [
+          "亡",
+          "心",
+          "讠",
+          "己"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w09"
@@ -149,7 +200,13 @@
       "content": "谈话",
       "metadata": {
         "word": "谈话",
-        "pinyin": "tán huà"
+        "pinyin": "tán huà",
+        "chunks": [
+          "讠",
+          "炎",
+          "讠",
+          "舌"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w10"
@@ -163,7 +220,13 @@
       "content": "渐渐",
       "metadata": {
         "word": "渐渐",
-        "pinyin": "jiàn jiàn"
+        "pinyin": "jiàn jiàn",
+        "chunks": [
+          "氵",
+          "斩",
+          "氵",
+          "斩"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w11"
@@ -177,7 +240,11 @@
       "content": "模糊",
       "metadata": {
         "word": "模糊",
-        "pinyin": "mó hu"
+        "pinyin": "mó hu",
+        "chunks": [
+          "模",
+          "糊"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w12"
@@ -191,7 +258,11 @@
       "content": "周围",
       "metadata": {
         "word": "周围",
-        "pinyin": "zhōu wéi"
+        "pinyin": "zhōu wéi",
+        "chunks": [
+          "周",
+          "围"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w13"
@@ -205,7 +276,11 @@
       "content": "飞舞",
       "metadata": {
         "word": "飞舞",
-        "pinyin": "fēi wǔ"
+        "pinyin": "fēi wǔ",
+        "chunks": [
+          "飞",
+          "舞"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w14"
@@ -219,7 +294,13 @@
       "content": "柔和",
       "metadata": {
         "word": "柔和",
-        "pinyin": "róu hé"
+        "pinyin": "róu hé",
+        "chunks": [
+          "矛",
+          "木",
+          "禾",
+          "口"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w15"
@@ -233,7 +314,11 @@
       "content": "梦幻",
       "metadata": {
         "word": "梦幻",
-        "pinyin": "mèng huàn"
+        "pinyin": "mèng huàn",
+        "chunks": [
+          "梦",
+          "幻"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w16"
@@ -247,7 +332,13 @@
       "content": "墙壁",
       "metadata": {
         "word": "墙壁",
-        "pinyin": "qiáng bì"
+        "pinyin": "qiáng bì",
+        "chunks": [
+          "土",
+          "啬",
+          "辟",
+          "土"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w17"
@@ -261,7 +352,13 @@
       "content": "怀抱",
       "metadata": {
         "word": "怀抱",
-        "pinyin": "huái bào"
+        "pinyin": "huái bào",
+        "chunks": [
+          "忄",
+          "不",
+          "扌",
+          "包"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w18"
@@ -275,7 +372,13 @@
       "content": "寂静",
       "metadata": {
         "word": "寂静",
-        "pinyin": "jì jìng"
+        "pinyin": "jì jìng",
+        "chunks": [
+          "宀",
+          "叔",
+          "青",
+          "争"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w19"
@@ -289,7 +392,13 @@
       "content": "熟悉",
       "metadata": {
         "word": "熟悉",
-        "pinyin": "shú xi"
+        "pinyin": "shú xi",
+        "chunks": [
+          "孰",
+          "灬",
+          "釆",
+          "心"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w20"
@@ -303,7 +412,11 @@
       "content": "躺下",
       "metadata": {
         "word": "躺下",
-        "pinyin": "tǎng xià"
+        "pinyin": "tǎng xià",
+        "chunks": [
+          "躺",
+          "下"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w21"
@@ -317,7 +430,13 @@
       "content": "沉睡",
       "metadata": {
         "word": "沉睡",
-        "pinyin": "chén shuì"
+        "pinyin": "chén shuì",
+        "chunks": [
+          "氵",
+          "冗",
+          "目",
+          "垂"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w22"
@@ -331,7 +450,13 @@
       "content": "随时",
       "metadata": {
         "word": "随时",
-        "pinyin": "suí shí"
+        "pinyin": "suí shí",
+        "chunks": [
+          "阝",
+          "隋",
+          "日",
+          "寸"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w23"
@@ -345,7 +470,13 @@
       "content": "河堤",
       "metadata": {
         "word": "河堤",
-        "pinyin": "hé dī"
+        "pinyin": "hé dī",
+        "chunks": [
+          "氵",
+          "可",
+          "土",
+          "是"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w24"
@@ -359,7 +490,13 @@
       "content": "人山人海",
       "metadata": {
         "word": "人山人海",
-        "pinyin": "rén shān rén hǎi"
+        "pinyin": "rén shān rén hǎi",
+        "chunks": [
+          "人",
+          "山",
+          "人",
+          "海"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w25"
@@ -373,7 +510,13 @@
       "content": "风平浪静",
       "metadata": {
         "word": "风平浪静",
-        "pinyin": "fēng píng làng jìng"
+        "pinyin": "fēng píng làng jìng",
+        "chunks": [
+          "风",
+          "平",
+          "浪",
+          "静"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w26"
@@ -387,7 +530,13 @@
       "content": "齐头并进",
       "metadata": {
         "word": "齐头并进",
-        "pinyin": "qí tóu bìng jìn"
+        "pinyin": "qí tóu bìng jìn",
+        "chunks": [
+          "齐",
+          "头",
+          "并",
+          "进"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w27"
@@ -401,7 +550,13 @@
       "content": "浩浩荡荡",
       "metadata": {
         "word": "浩浩荡荡",
-        "pinyin": "hào hào dàng dàng"
+        "pinyin": "hào hào dàng dàng",
+        "chunks": [
+          "浩",
+          "浩",
+          "荡",
+          "荡"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w28"
@@ -415,7 +570,13 @@
       "content": "山崩地裂",
       "metadata": {
         "word": "山崩地裂",
-        "pinyin": "shān bēng dì liè"
+        "pinyin": "shān bēng dì liè",
+        "chunks": [
+          "山",
+          "崩",
+          "地",
+          "裂"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w29"
@@ -429,7 +590,17 @@
       "content": "密密麻麻",
       "metadata": {
         "word": "密密麻麻",
-        "pinyin": "mì mì má má"
+        "pinyin": "mì mì má má",
+        "chunks": [
+          "宀",
+          "必",
+          "宀",
+          "必",
+          "广",
+          "林",
+          "广",
+          "林"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u1-w30"
@@ -473,7 +644,13 @@
       "content": "舒适",
       "metadata": {
         "word": "舒适",
-        "pinyin": "shū shì"
+        "pinyin": "shū shì",
+        "chunks": [
+          "舍",
+          "予",
+          "舌",
+          "辶"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w01"
@@ -487,7 +664,13 @@
       "content": "揭晓",
       "metadata": {
         "word": "揭晓",
-        "pinyin": "jiē xiǎo"
+        "pinyin": "jiē xiǎo",
+        "chunks": [
+          "扌",
+          "曷",
+          "日",
+          "尧"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w02"
@@ -501,7 +684,11 @@
       "content": "身份",
       "metadata": {
         "word": "身份",
-        "pinyin": "shēn fèn"
+        "pinyin": "shēn fèn",
+        "chunks": [
+          "身",
+          "份"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w03"
@@ -515,7 +702,13 @@
       "content": "暖和",
       "metadata": {
         "word": "暖和",
-        "pinyin": "nuǎn huo"
+        "pinyin": "nuǎn huo",
+        "chunks": [
+          "日",
+          "爰",
+          "禾",
+          "口"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w04"
@@ -529,7 +722,13 @@
       "content": "的确",
       "metadata": {
         "word": "的确",
-        "pinyin": "dí què"
+        "pinyin": "dí què",
+        "chunks": [
+          "白",
+          "勺",
+          "石",
+          "角"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w05"
@@ -543,7 +742,13 @@
       "content": "曾经",
       "metadata": {
         "word": "曾经",
-        "pinyin": "céng jīng"
+        "pinyin": "céng jīng",
+        "chunks": [
+          "丷",
+          "日",
+          "纟",
+          "巠"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w06"
@@ -557,7 +762,13 @@
       "content": "打滚",
       "metadata": {
         "word": "打滚",
-        "pinyin": "dǎ gǔn"
+        "pinyin": "dǎ gǔn",
+        "chunks": [
+          "扌",
+          "丁",
+          "氵",
+          "衮"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w07"
@@ -571,7 +782,11 @@
       "content": "水沟",
       "metadata": {
         "word": "水沟",
-        "pinyin": "shuǐ gōu"
+        "pinyin": "shuǐ gōu",
+        "chunks": [
+          "水",
+          "沟"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w08"
@@ -585,7 +800,13 @@
       "content": "注视",
       "metadata": {
         "word": "注视",
-        "pinyin": "zhù shì"
+        "pinyin": "zhù shì",
+        "chunks": [
+          "氵",
+          "主",
+          "礻",
+          "见"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w09"
@@ -599,7 +820,11 @@
       "content": "蚊子",
       "metadata": {
         "word": "蚊子",
-        "pinyin": "wén zi"
+        "pinyin": "wén zi",
+        "chunks": [
+          "蚊",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w10"
@@ -613,7 +838,11 @@
       "content": "即使",
       "metadata": {
         "word": "即使",
-        "pinyin": "jí shǐ"
+        "pinyin": "jí shǐ",
+        "chunks": [
+          "即",
+          "使"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w11"
@@ -627,7 +856,11 @@
       "content": "问题",
       "metadata": {
         "word": "问题",
-        "pinyin": "wèn tí"
+        "pinyin": "wèn tí",
+        "chunks": [
+          "问",
+          "题"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w12"
@@ -641,7 +874,11 @@
       "content": "绳子",
       "metadata": {
         "word": "绳子",
-        "pinyin": "shéng zi"
+        "pinyin": "shéng zi",
+        "chunks": [
+          "绳",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w13"
@@ -655,7 +892,11 @@
       "content": "苍蝇",
       "metadata": {
         "word": "苍蝇",
-        "pinyin": "cāng ying"
+        "pinyin": "cāng ying",
+        "chunks": [
+          "苍",
+          "蝇"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w14"
@@ -669,7 +910,11 @@
       "content": "证明",
       "metadata": {
         "word": "证明",
-        "pinyin": "zhèng míng"
+        "pinyin": "zhèng míng",
+        "chunks": [
+          "证",
+          "明"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w15"
@@ -683,7 +928,11 @@
       "content": "相互",
       "metadata": {
         "word": "相互",
-        "pinyin": "xiāng hù"
+        "pinyin": "xiāng hù",
+        "chunks": [
+          "相",
+          "互"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w16"
@@ -697,7 +946,11 @@
       "content": "配合",
       "metadata": {
         "word": "配合",
-        "pinyin": "pèi hé"
+        "pinyin": "pèi hé",
+        "chunks": [
+          "配",
+          "合"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w17"
@@ -711,7 +964,11 @@
       "content": "研究",
       "metadata": {
         "word": "研究",
-        "pinyin": "yán jiū"
+        "pinyin": "yán jiū",
+        "chunks": [
+          "研",
+          "究"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w18"
@@ -725,7 +982,11 @@
       "content": "类似",
       "metadata": {
         "word": "类似",
-        "pinyin": "lèi sì"
+        "pinyin": "lèi sì",
+        "chunks": [
+          "类",
+          "似"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w19"
@@ -739,7 +1000,11 @@
       "content": "能够",
       "metadata": {
         "word": "能够",
-        "pinyin": "néng gòu"
+        "pinyin": "néng gòu",
+        "chunks": [
+          "能",
+          "够"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w20"
@@ -753,7 +1018,11 @@
       "content": "帽子",
       "metadata": {
         "word": "帽子",
-        "pinyin": "mào zi"
+        "pinyin": "mào zi",
+        "chunks": [
+          "帽",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w21"
@@ -767,7 +1036,11 @@
       "content": "脑袋",
       "metadata": {
         "word": "脑袋",
-        "pinyin": "nǎo dai"
+        "pinyin": "nǎo dai",
+        "chunks": [
+          "脑",
+          "袋"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w22"
@@ -781,7 +1054,11 @@
       "content": "假如",
       "metadata": {
         "word": "假如",
-        "pinyin": "jiǎ rú"
+        "pinyin": "jiǎ rú",
+        "chunks": [
+          "假",
+          "如"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w23"
@@ -795,7 +1072,11 @@
       "content": "设法",
       "metadata": {
         "word": "设法",
-        "pinyin": "shè fǎ"
+        "pinyin": "shè fǎ",
+        "chunks": [
+          "设",
+          "法"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w24"
@@ -809,7 +1090,11 @@
       "content": "光滑",
       "metadata": {
         "word": "光滑",
-        "pinyin": "guāng huá"
+        "pinyin": "guāng huá",
+        "chunks": [
+          "光",
+          "滑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w25"
@@ -823,7 +1108,11 @@
       "content": "擦除",
       "metadata": {
         "word": "擦除",
-        "pinyin": "cā chú"
+        "pinyin": "cā chú",
+        "chunks": [
+          "擦",
+          "除"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w26"
@@ -837,7 +1126,11 @@
       "content": "探索",
       "metadata": {
         "word": "探索",
-        "pinyin": "tàn suǒ"
+        "pinyin": "tàn suǒ",
+        "chunks": [
+          "探",
+          "索"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w27"
@@ -851,7 +1144,11 @@
       "content": "嘴巴",
       "metadata": {
         "word": "嘴巴",
-        "pinyin": "zuǐ ba"
+        "pinyin": "zuǐ ba",
+        "chunks": [
+          "嘴",
+          "巴"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w28"
@@ -865,7 +1162,11 @@
       "content": "驾驶",
       "metadata": {
         "word": "驾驶",
-        "pinyin": "jià shǐ"
+        "pinyin": "jià shǐ",
+        "chunks": [
+          "驾",
+          "驶"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w29"
@@ -879,7 +1180,11 @@
       "content": "纽扣",
       "metadata": {
         "word": "纽扣",
-        "pinyin": "niǔ kòu"
+        "pinyin": "niǔ kòu",
+        "chunks": [
+          "纽",
+          "扣"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w30"
@@ -893,7 +1198,11 @@
       "content": "懂事",
       "metadata": {
         "word": "懂事",
-        "pinyin": "dǒng shì"
+        "pinyin": "dǒng shì",
+        "chunks": [
+          "懂",
+          "事"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w31"
@@ -907,7 +1216,11 @@
       "content": "溜冰",
       "metadata": {
         "word": "溜冰",
-        "pinyin": "liū bīng"
+        "pinyin": "liū bīng",
+        "chunks": [
+          "溜",
+          "冰"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w32"
@@ -921,7 +1234,11 @@
       "content": "竹筒",
       "metadata": {
         "word": "竹筒",
-        "pinyin": "zhú tǒng"
+        "pinyin": "zhú tǒng",
+        "chunks": [
+          "竹",
+          "筒"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w33"
@@ -935,7 +1252,11 @@
       "content": "摆放",
       "metadata": {
         "word": "摆放",
-        "pinyin": "bǎi fàng"
+        "pinyin": "bǎi fàng",
+        "chunks": [
+          "摆",
+          "放"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w34"
@@ -949,7 +1270,11 @@
       "content": "玻璃",
       "metadata": {
         "word": "玻璃",
-        "pinyin": "bō li"
+        "pinyin": "bō li",
+        "chunks": [
+          "玻",
+          "璃"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w35"
@@ -963,7 +1288,11 @@
       "content": "舒服",
       "metadata": {
         "word": "舒服",
-        "pinyin": "shū fu"
+        "pinyin": "shū fu",
+        "chunks": [
+          "舒",
+          "服"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w36"
@@ -977,7 +1306,11 @@
       "content": "提纲",
       "metadata": {
         "word": "提纲",
-        "pinyin": "tí gāng"
+        "pinyin": "tí gāng",
+        "chunks": [
+          "提",
+          "纲"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w37"
@@ -991,7 +1324,11 @@
       "content": "挨揍",
       "metadata": {
         "word": "挨揍",
-        "pinyin": "āi zòu"
+        "pinyin": "āi zòu",
+        "chunks": [
+          "挨",
+          "揍"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w38"
@@ -1005,7 +1342,11 @@
       "content": "生锈",
       "metadata": {
         "word": "生锈",
-        "pinyin": "shēng xiù"
+        "pinyin": "shēng xiù",
+        "chunks": [
+          "生",
+          "锈"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w39"
@@ -1019,7 +1360,11 @@
       "content": "泡沫",
       "metadata": {
         "word": "泡沫",
-        "pinyin": "pào mò"
+        "pinyin": "pào mò",
+        "chunks": [
+          "泡",
+          "沫"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w40"
@@ -1033,7 +1378,11 @@
       "content": "综合",
       "metadata": {
         "word": "综合",
-        "pinyin": "zōng hé"
+        "pinyin": "zōng hé",
+        "chunks": [
+          "综",
+          "合"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w41"
@@ -1047,7 +1396,11 @@
       "content": "氧气",
       "metadata": {
         "word": "氧气",
-        "pinyin": "yǎng qì"
+        "pinyin": "yǎng qì",
+        "chunks": [
+          "氧",
+          "气"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w42"
@@ -1061,7 +1414,11 @@
       "content": "结账",
       "metadata": {
         "word": "结账",
-        "pinyin": "jié zhàng"
+        "pinyin": "jié zhàng",
+        "chunks": [
+          "结",
+          "账"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w43"
@@ -1075,7 +1432,11 @@
       "content": "矿物",
       "metadata": {
         "word": "矿物",
-        "pinyin": "kuàng wù"
+        "pinyin": "kuàng wù",
+        "chunks": [
+          "矿",
+          "物"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w44"
@@ -1089,7 +1450,11 @@
       "content": "滚动",
       "metadata": {
         "word": "滚动",
-        "pinyin": "gǔn dòng"
+        "pinyin": "gǔn dòng",
+        "chunks": [
+          "滚",
+          "动"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w45"
@@ -1103,7 +1468,15 @@
       "content": "暖洋洋",
       "metadata": {
         "word": "暖洋洋",
-        "pinyin": "nuǎn yáng yáng"
+        "pinyin": "nuǎn yáng yáng",
+        "chunks": [
+          "日",
+          "爰",
+          "氵",
+          "羊",
+          "氵",
+          "羊"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w46"
@@ -1117,7 +1490,12 @@
       "content": "一溜烟",
       "metadata": {
         "word": "一溜烟",
-        "pinyin": "yī liù yān"
+        "pinyin": "yī liù yān",
+        "chunks": [
+          "一",
+          "溜",
+          "烟"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w47"
@@ -1131,7 +1509,12 @@
       "content": "俱乐部",
       "metadata": {
         "word": "俱乐部",
-        "pinyin": "jù lè bù"
+        "pinyin": "jù lè bù",
+        "chunks": [
+          "俱",
+          "乐",
+          "部"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w48"
@@ -1145,7 +1528,13 @@
       "content": "头昏脑涨",
       "metadata": {
         "word": "头昏脑涨",
-        "pinyin": "tóu hūn nǎo zhàng"
+        "pinyin": "tóu hūn nǎo zhàng",
+        "chunks": [
+          "头",
+          "昏",
+          "脑",
+          "涨"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w49"
@@ -1159,7 +1548,13 @@
       "content": "各式各样",
       "metadata": {
         "word": "各式各样",
-        "pinyin": "gè shì gè yàng"
+        "pinyin": "gè shì gè yàng",
+        "chunks": [
+          "各",
+          "式",
+          "各",
+          "样"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u2-w50"
@@ -1206,7 +1601,11 @@
       "content": "残缺",
       "metadata": {
         "word": "残缺",
-        "pinyin": "cán quē"
+        "pinyin": "cán quē",
+        "chunks": [
+          "残",
+          "缺"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w01"
@@ -1220,7 +1619,11 @@
       "content": "铺开",
       "metadata": {
         "word": "铺开",
-        "pinyin": "pū kāi"
+        "pinyin": "pū kāi",
+        "chunks": [
+          "铺",
+          "开"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w02"
@@ -1234,7 +1637,13 @@
       "content": "墙壁",
       "metadata": {
         "word": "墙壁",
-        "pinyin": "qiáng bì"
+        "pinyin": "qiáng bì",
+        "chunks": [
+          "土",
+          "啬",
+          "辟",
+          "土"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w03"
@@ -1248,7 +1657,11 @@
       "content": "横向",
       "metadata": {
         "word": "横向",
-        "pinyin": "héng xiàng"
+        "pinyin": "héng xiàng",
+        "chunks": [
+          "横",
+          "向"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w04"
@@ -1262,7 +1675,11 @@
       "content": "侧面",
       "metadata": {
         "word": "侧面",
-        "pinyin": "cè miàn"
+        "pinyin": "cè miàn",
+        "chunks": [
+          "侧",
+          "面"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w05"
@@ -1276,7 +1693,11 @@
       "content": "山峰",
       "metadata": {
         "word": "山峰",
-        "pinyin": "shān fēng"
+        "pinyin": "shān fēng",
+        "chunks": [
+          "山",
+          "峰"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w06"
@@ -1290,7 +1711,11 @@
       "content": "庐山",
       "metadata": {
         "word": "庐山",
-        "pinyin": "lú shān"
+        "pinyin": "lú shān",
+        "chunks": [
+          "庐",
+          "山"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w07"
@@ -1304,7 +1729,11 @@
       "content": "缘由",
       "metadata": {
         "word": "缘由",
-        "pinyin": "yuán yóu"
+        "pinyin": "yuán yóu",
+        "chunks": [
+          "缘",
+          "由"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w08"
@@ -1318,7 +1747,11 @@
       "content": "投降",
       "metadata": {
         "word": "投降",
-        "pinyin": "tóu xiáng"
+        "pinyin": "tóu xiáng",
+        "chunks": [
+          "投",
+          "降"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w09"
@@ -1332,7 +1765,11 @@
       "content": "评论",
       "metadata": {
         "word": "评论",
-        "pinyin": "píng lùn"
+        "pinyin": "píng lùn",
+        "chunks": [
+          "评",
+          "论"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w10"
@@ -1346,7 +1783,11 @@
       "content": "文章",
       "metadata": {
         "word": "文章",
-        "pinyin": "wén zhāng"
+        "pinyin": "wén zhāng",
+        "chunks": [
+          "文",
+          "章"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w11"
@@ -1360,7 +1801,11 @@
       "content": "输送",
       "metadata": {
         "word": "输送",
-        "pinyin": "shū sòng"
+        "pinyin": "shū sòng",
+        "chunks": [
+          "输",
+          "送"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w12"
@@ -1374,7 +1819,11 @@
       "content": "脚步",
       "metadata": {
         "word": "脚步",
-        "pinyin": "jiǎo bù"
+        "pinyin": "jiǎo bù",
+        "chunks": [
+          "脚",
+          "步"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w13"
@@ -1388,7 +1837,11 @@
       "content": "操场",
       "metadata": {
         "word": "操场",
-        "pinyin": "cāo chǎng"
+        "pinyin": "cāo chǎng",
+        "chunks": [
+          "操",
+          "场"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w14"
@@ -1402,7 +1855,11 @@
       "content": "嫩绿",
       "metadata": {
         "word": "嫩绿",
-        "pinyin": "nèn lǜ"
+        "pinyin": "nèn lǜ",
+        "chunks": [
+          "嫩",
+          "绿"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w15"
@@ -1416,7 +1873,11 @@
       "content": "空隙",
       "metadata": {
         "word": "空隙",
-        "pinyin": "kòng xì"
+        "pinyin": "kòng xì",
+        "chunks": [
+          "空",
+          "隙"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w16"
@@ -1430,7 +1891,11 @@
       "content": "叶柄",
       "metadata": {
         "word": "叶柄",
-        "pinyin": "yè bǐng"
+        "pinyin": "yè bǐng",
+        "chunks": [
+          "叶",
+          "柄"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w17"
@@ -1444,7 +1909,11 @@
       "content": "触角",
       "metadata": {
         "word": "触角",
-        "pinyin": "chù jiǎo"
+        "pinyin": "chù jiǎo",
+        "chunks": [
+          "触",
+          "角"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w18"
@@ -1458,7 +1927,11 @@
       "content": "痕迹",
       "metadata": {
         "word": "痕迹",
-        "pinyin": "hén jì"
+        "pinyin": "hén jì",
+        "chunks": [
+          "痕",
+          "迹"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w19"
@@ -1472,7 +1945,11 @@
       "content": "新鲜",
       "metadata": {
         "word": "新鲜",
-        "pinyin": "xīn xiān"
+        "pinyin": "xīn xiān",
+        "chunks": [
+          "新",
+          "鲜"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w20"
@@ -1486,7 +1963,11 @@
       "content": "均匀",
       "metadata": {
         "word": "均匀",
-        "pinyin": "jūn yún"
+        "pinyin": "jūn yún",
+        "chunks": [
+          "均",
+          "匀"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w21"
@@ -1500,7 +1981,11 @@
       "content": "弯曲",
       "metadata": {
         "word": "弯曲",
-        "pinyin": "wān qū"
+        "pinyin": "wān qū",
+        "chunks": [
+          "弯",
+          "曲"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w22"
@@ -1514,7 +1999,11 @@
       "content": "牢固",
       "metadata": {
         "word": "牢固",
-        "pinyin": "láo gù"
+        "pinyin": "láo gù",
+        "chunks": [
+          "牢",
+          "固"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w23"
@@ -1528,7 +2017,11 @@
       "content": "住宅",
       "metadata": {
         "word": "住宅",
-        "pinyin": "zhù zhái"
+        "pinyin": "zhù zhái",
+        "chunks": [
+          "住",
+          "宅"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w24"
@@ -1542,7 +2035,11 @@
       "content": "丝毫",
       "metadata": {
         "word": "丝毫",
-        "pinyin": "sī háo"
+        "pinyin": "sī háo",
+        "chunks": [
+          "丝",
+          "毫"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w25"
@@ -1556,7 +2053,11 @@
       "content": "重要",
       "metadata": {
         "word": "重要",
-        "pinyin": "zhòng yào"
+        "pinyin": "zhòng yào",
+        "chunks": [
+          "重",
+          "要"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w26"
@@ -1570,7 +2071,11 @@
       "content": "选择",
       "metadata": {
         "word": "选择",
-        "pinyin": "xuǎn zé"
+        "pinyin": "xuǎn zé",
+        "chunks": [
+          "选",
+          "择"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w27"
@@ -1584,7 +2089,11 @@
       "content": "住址",
       "metadata": {
         "word": "住址",
-        "pinyin": "zhù zhǐ"
+        "pinyin": "zhù zhǐ",
+        "chunks": [
+          "住",
+          "址"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w28"
@@ -1598,7 +2107,11 @@
       "content": "大厅",
       "metadata": {
         "word": "大厅",
-        "pinyin": "dà tīng"
+        "pinyin": "dà tīng",
+        "chunks": [
+          "大",
+          "厅"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w29"
@@ -1612,7 +2125,11 @@
       "content": "专业",
       "metadata": {
         "word": "专业",
-        "pinyin": "zhuān yè"
+        "pinyin": "zhuān yè",
+        "chunks": [
+          "专",
+          "业"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w30"
@@ -1626,7 +2143,11 @@
       "content": "修理",
       "metadata": {
         "word": "修理",
-        "pinyin": "xiū lǐ"
+        "pinyin": "xiū lǐ",
+        "chunks": [
+          "修",
+          "理"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w31"
@@ -1640,7 +2161,11 @@
       "content": "比较",
       "metadata": {
         "word": "比较",
-        "pinyin": "bǐ jiào"
+        "pinyin": "bǐ jiào",
+        "chunks": [
+          "比",
+          "较"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w32"
@@ -1654,7 +2179,11 @@
       "content": "大腿",
       "metadata": {
         "word": "大腿",
-        "pinyin": "dà tuǐ"
+        "pinyin": "dà tuǐ",
+        "chunks": [
+          "大",
+          "腿"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w33"
@@ -1668,7 +2197,11 @@
       "content": "增长",
       "metadata": {
         "word": "增长",
-        "pinyin": "zēng zhǎng"
+        "pinyin": "zēng zhǎng",
+        "chunks": [
+          "增",
+          "长"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w34"
@@ -1682,7 +2215,11 @@
       "content": "柔弱",
       "metadata": {
         "word": "柔弱",
-        "pinyin": "róu ruò"
+        "pinyin": "róu ruò",
+        "chunks": [
+          "柔",
+          "弱"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w35"
@@ -1696,7 +2233,11 @@
       "content": "平坦",
       "metadata": {
         "word": "平坦",
-        "pinyin": "píng tǎn"
+        "pinyin": "píng tǎn",
+        "chunks": [
+          "平",
+          "坦"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w36"
@@ -1710,7 +2251,11 @@
       "content": "光滑",
       "metadata": {
         "word": "光滑",
-        "pinyin": "guāng huá"
+        "pinyin": "guāng huá",
+        "chunks": [
+          "光",
+          "滑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w37"
@@ -1724,7 +2269,11 @@
       "content": "体操",
       "metadata": {
         "word": "体操",
-        "pinyin": "tǐ cāo"
+        "pinyin": "tǐ cāo",
+        "chunks": [
+          "体",
+          "操"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w38"
@@ -1738,7 +2287,11 @@
       "content": "缝隙",
       "metadata": {
         "word": "缝隙",
-        "pinyin": "fèng xì"
+        "pinyin": "fèng xì",
+        "chunks": [
+          "缝",
+          "隙"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w39"
@@ -1752,7 +2305,12 @@
       "content": "爬山虎",
       "metadata": {
         "word": "爬山虎",
-        "pinyin": "pá shān hǔ"
+        "pinyin": "pá shān hǔ",
+        "chunks": [
+          "爬",
+          "山",
+          "虎"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w40"
@@ -1766,7 +2324,12 @@
       "content": "瞧不起",
       "metadata": {
         "word": "瞧不起",
-        "pinyin": "qiáo bù qǐ"
+        "pinyin": "qiáo bù qǐ",
+        "chunks": [
+          "瞧",
+          "不",
+          "起"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u3-w41"
@@ -1812,7 +2375,11 @@
       "content": "宇宙",
       "metadata": {
         "word": "宇宙",
-        "pinyin": "yǔ zhòu"
+        "pinyin": "yǔ zhòu",
+        "chunks": [
+          "宇",
+          "宙"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w01"
@@ -1826,7 +2393,11 @@
       "content": "翻身",
       "metadata": {
         "word": "翻身",
-        "pinyin": "fān shēn"
+        "pinyin": "fān shēn",
+        "chunks": [
+          "翻",
+          "身"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w02"
@@ -1840,7 +2411,11 @@
       "content": "下降",
       "metadata": {
         "word": "下降",
-        "pinyin": "xià jiàng"
+        "pinyin": "xià jiàng",
+        "chunks": [
+          "下",
+          "降"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w03"
@@ -1854,7 +2429,11 @@
       "content": "飘动",
       "metadata": {
         "word": "飘动",
-        "pinyin": "piāo dòng"
+        "pinyin": "piāo dòng",
+        "chunks": [
+          "飘",
+          "动"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w04"
@@ -1868,7 +2447,11 @@
       "content": "照耀",
       "metadata": {
         "word": "照耀",
-        "pinyin": "zhào yào"
+        "pinyin": "zhào yào",
+        "chunks": [
+          "照",
+          "耀"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w05"
@@ -1882,7 +2465,11 @@
       "content": "四肢",
       "metadata": {
         "word": "四肢",
-        "pinyin": "sì zhī"
+        "pinyin": "sì zhī",
+        "chunks": [
+          "四",
+          "肢"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w06"
@@ -1896,7 +2483,11 @@
       "content": "茂盛",
       "metadata": {
         "word": "茂盛",
-        "pinyin": "mào shèng"
+        "pinyin": "mào shèng",
+        "chunks": [
+          "茂",
+          "盛"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w07"
@@ -1910,7 +2501,11 @@
       "content": "整个",
       "metadata": {
         "word": "整个",
-        "pinyin": "zhěng gè"
+        "pinyin": "zhěng gè",
+        "chunks": [
+          "整",
+          "个"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w08"
@@ -1924,7 +2519,11 @@
       "content": "喷射",
       "metadata": {
         "word": "喷射",
-        "pinyin": "pēn shè"
+        "pinyin": "pēn shè",
+        "chunks": [
+          "喷",
+          "射"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w09"
@@ -1938,7 +2537,11 @@
       "content": "严厉",
       "metadata": {
         "word": "严厉",
-        "pinyin": "yán lì"
+        "pinyin": "yán lì",
+        "chunks": [
+          "严",
+          "厉"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w10"
@@ -1952,7 +2555,11 @@
       "content": "立即",
       "metadata": {
         "word": "立即",
-        "pinyin": "lì jí"
+        "pinyin": "lì jí",
+        "chunks": [
+          "立",
+          "即"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w11"
@@ -1966,7 +2573,11 @@
       "content": "执行",
       "metadata": {
         "word": "执行",
-        "pinyin": "zhí xíng"
+        "pinyin": "zhí xíng",
+        "chunks": [
+          "执",
+          "行"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w12"
@@ -1980,7 +2591,11 @@
       "content": "敬佩",
       "metadata": {
         "word": "敬佩",
-        "pinyin": "jìng pèi"
+        "pinyin": "jìng pèi",
+        "chunks": [
+          "敬",
+          "佩"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w13"
@@ -1994,7 +2609,11 @@
       "content": "忍受",
       "metadata": {
         "word": "忍受",
-        "pinyin": "rěn shòu"
+        "pinyin": "rěn shòu",
+        "chunks": [
+          "忍",
+          "受"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w14"
@@ -2008,7 +2627,11 @@
       "content": "遭受",
       "metadata": {
         "word": "遭受",
-        "pinyin": "zāo shòu"
+        "pinyin": "zāo shòu",
+        "chunks": [
+          "遭",
+          "受"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w15"
@@ -2022,7 +2645,11 @@
       "content": "尽管",
       "metadata": {
         "word": "尽管",
-        "pinyin": "jǐn guǎn"
+        "pinyin": "jǐn guǎn",
+        "chunks": [
+          "尽",
+          "管"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w16"
@@ -2036,7 +2663,11 @@
       "content": "屈服",
       "metadata": {
         "word": "屈服",
-        "pinyin": "qū fú"
+        "pinyin": "qū fú",
+        "chunks": [
+          "屈",
+          "服"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w17"
@@ -2050,7 +2681,11 @@
       "content": "肝脏",
       "metadata": {
         "word": "肝脏",
-        "pinyin": "gān zàng"
+        "pinyin": "gān zàng",
+        "chunks": [
+          "肝",
+          "脏"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w18"
@@ -2064,7 +2699,11 @@
       "content": "获得",
       "metadata": {
         "word": "获得",
-        "pinyin": "huò dé"
+        "pinyin": "huò dé",
+        "chunks": [
+          "获",
+          "得"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w19"
@@ -2078,7 +2717,11 @@
       "content": "花卉",
       "metadata": {
         "word": "花卉",
-        "pinyin": "huā huì"
+        "pinyin": "huā huì",
+        "chunks": [
+          "花",
+          "卉"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w20"
@@ -2092,7 +2735,11 @@
       "content": "玫瑰",
       "metadata": {
         "word": "玫瑰",
-        "pinyin": "méi guī"
+        "pinyin": "méi guī",
+        "chunks": [
+          "玫",
+          "瑰"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w21"
@@ -2106,7 +2753,11 @@
       "content": "牡丹",
       "metadata": {
         "word": "牡丹",
-        "pinyin": "mǔ dān"
+        "pinyin": "mǔ dān",
+        "chunks": [
+          "牡",
+          "丹"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w22"
@@ -2120,7 +2771,11 @@
       "content": "花蕾",
       "metadata": {
         "word": "花蕾",
-        "pinyin": "huā lěi"
+        "pinyin": "huā lěi",
+        "chunks": [
+          "花",
+          "蕾"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w23"
@@ -2134,7 +2789,11 @@
       "content": "茉莉",
       "metadata": {
         "word": "茉莉",
-        "pinyin": "mò lì"
+        "pinyin": "mò lì",
+        "chunks": [
+          "茉",
+          "莉"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w24"
@@ -2148,7 +2807,11 @@
       "content": "海棠",
       "metadata": {
         "word": "海棠",
-        "pinyin": "hǎi táng"
+        "pinyin": "hǎi táng",
+        "chunks": [
+          "海",
+          "棠"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w25"
@@ -2162,7 +2825,11 @@
       "content": "清醒",
       "metadata": {
         "word": "清醒",
-        "pinyin": "qīng xǐng"
+        "pinyin": "qīng xǐng",
+        "chunks": [
+          "清",
+          "醒"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w26"
@@ -2176,7 +2843,11 @@
       "content": "缓慢",
       "metadata": {
         "word": "缓慢",
-        "pinyin": "huǎn màn"
+        "pinyin": "huǎn màn",
+        "chunks": [
+          "缓",
+          "慢"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w27"
@@ -2190,7 +2861,11 @@
       "content": "踏步",
       "metadata": {
         "word": "踏步",
-        "pinyin": "tà bù"
+        "pinyin": "tà bù",
+        "chunks": [
+          "踏",
+          "步"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w28"
@@ -2204,7 +2879,11 @@
       "content": "丈量",
       "metadata": {
         "word": "丈量",
-        "pinyin": "zhàng liáng"
+        "pinyin": "zhàng liáng",
+        "chunks": [
+          "丈",
+          "量"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w29"
@@ -2218,7 +2897,11 @@
       "content": "支撑",
       "metadata": {
         "word": "支撑",
-        "pinyin": "zhī chēng"
+        "pinyin": "zhī chēng",
+        "chunks": [
+          "支",
+          "撑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w30"
@@ -2232,7 +2915,11 @@
       "content": "填空",
       "metadata": {
         "word": "填空",
-        "pinyin": "tián kòng"
+        "pinyin": "tián kòng",
+        "chunks": [
+          "填",
+          "空"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w31"
@@ -2246,7 +2933,11 @@
       "content": "帝王",
       "metadata": {
         "word": "帝王",
-        "pinyin": "dì wáng"
+        "pinyin": "dì wáng",
+        "chunks": [
+          "帝",
+          "王"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w32"
@@ -2260,7 +2951,11 @@
       "content": "娃娃",
       "metadata": {
         "word": "娃娃",
-        "pinyin": "wá wa"
+        "pinyin": "wá wa",
+        "chunks": [
+          "娃",
+          "娃"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w33"
@@ -2274,7 +2969,11 @@
       "content": "衔接",
       "metadata": {
         "word": "衔接",
-        "pinyin": "xián jiē"
+        "pinyin": "xián jiē",
+        "chunks": [
+          "衔",
+          "接"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w34"
@@ -2288,7 +2987,11 @@
       "content": "颗粒",
       "metadata": {
         "word": "颗粒",
-        "pinyin": "kē lì"
+        "pinyin": "kē lì",
+        "chunks": [
+          "颗",
+          "粒"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w35"
@@ -2302,7 +3005,11 @@
       "content": "既然",
       "metadata": {
         "word": "既然",
-        "pinyin": "jì rán"
+        "pinyin": "jì rán",
+        "chunks": [
+          "既",
+          "然"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w36"
@@ -2316,7 +3023,11 @@
       "content": "坚定",
       "metadata": {
         "word": "坚定",
-        "pinyin": "jiān dìng"
+        "pinyin": "jiān dìng",
+        "chunks": [
+          "坚",
+          "定"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w37"
@@ -2330,7 +3041,11 @@
       "content": "闪耀",
       "metadata": {
         "word": "闪耀",
-        "pinyin": "shǎn yào"
+        "pinyin": "shǎn yào",
+        "chunks": [
+          "闪",
+          "耀"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w38"
@@ -2344,7 +3059,12 @@
       "content": "黑乎乎",
       "metadata": {
         "word": "黑乎乎",
-        "pinyin": "hēi hū hū"
+        "pinyin": "hēi hū hū",
+        "chunks": [
+          "黑",
+          "乎",
+          "乎"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w39"
@@ -2358,7 +3078,13 @@
       "content": "精疲力竭",
       "metadata": {
         "word": "精疲力竭",
-        "pinyin": "jīng pí lì jié"
+        "pinyin": "jīng pí lì jié",
+        "chunks": [
+          "精",
+          "疲",
+          "力",
+          "竭"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w40"
@@ -2372,7 +3098,13 @@
       "content": "奔流不息",
       "metadata": {
         "word": "奔流不息",
-        "pinyin": "bēn liú bù xī"
+        "pinyin": "bēn liú bù xī",
+        "chunks": [
+          "奔",
+          "流",
+          "不",
+          "息"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w41"
@@ -2386,7 +3118,13 @@
       "content": "气急败坏",
       "metadata": {
         "word": "气急败坏",
-        "pinyin": "qì jí bài huài"
+        "pinyin": "qì jí bài huài",
+        "chunks": [
+          "气",
+          "急",
+          "败",
+          "坏"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u4-w42"
@@ -2434,7 +3172,11 @@
       "content": "麻雀",
       "metadata": {
         "word": "麻雀",
-        "pinyin": "má què"
+        "pinyin": "má què",
+        "chunks": [
+          "麻",
+          "雀"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w01"
@@ -2448,7 +3190,11 @@
       "content": "悄悄",
       "metadata": {
         "word": "悄悄",
-        "pinyin": "qiāo qiāo"
+        "pinyin": "qiāo qiāo",
+        "chunks": [
+          "悄",
+          "悄"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w02"
@@ -2462,7 +3208,11 @@
       "content": "猛烈",
       "metadata": {
         "word": "猛烈",
-        "pinyin": "měng liè"
+        "pinyin": "měng liè",
+        "chunks": [
+          "猛",
+          "烈"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w03"
@@ -2476,7 +3226,11 @@
       "content": "身躯",
       "metadata": {
         "word": "身躯",
-        "pinyin": "shēn qū"
+        "pinyin": "shēn qū",
+        "chunks": [
+          "身",
+          "躯"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w04"
@@ -2490,7 +3244,11 @@
       "content": "掩护",
       "metadata": {
         "word": "掩护",
-        "pinyin": "yǎn hù"
+        "pinyin": "yǎn hù",
+        "chunks": [
+          "掩",
+          "护"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w05"
@@ -2504,7 +3262,11 @@
       "content": "紧张",
       "metadata": {
         "word": "紧张",
-        "pinyin": "jǐn zhāng"
+        "pinyin": "jǐn zhāng",
+        "chunks": [
+          "紧",
+          "张"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w06"
@@ -2518,7 +3280,11 @@
       "content": "浑身",
       "metadata": {
         "word": "浑身",
-        "pinyin": "hún shēn"
+        "pinyin": "hún shēn",
+        "chunks": [
+          "浑",
+          "身"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w07"
@@ -2532,7 +3298,11 @@
       "content": "牺牲",
       "metadata": {
         "word": "牺牲",
-        "pinyin": "xī shēng"
+        "pinyin": "xī shēng",
+        "chunks": [
+          "牺",
+          "牲"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w08"
@@ -2546,7 +3316,11 @@
       "content": "庞大",
       "metadata": {
         "word": "庞大",
-        "pinyin": "páng dà"
+        "pinyin": "páng dà",
+        "chunks": [
+          "庞",
+          "大"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w09"
@@ -2560,7 +3334,11 @@
       "content": "强大",
       "metadata": {
         "word": "强大",
-        "pinyin": "qiáng dà"
+        "pinyin": "qiáng dà",
+        "chunks": [
+          "强",
+          "大"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w10"
@@ -2574,7 +3352,11 @@
       "content": "力量",
       "metadata": {
         "word": "力量",
-        "pinyin": "lì liàng"
+        "pinyin": "lì liàng",
+        "chunks": [
+          "力",
+          "量"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w11"
@@ -2588,7 +3370,11 @@
       "content": "勇气",
       "metadata": {
         "word": "勇气",
-        "pinyin": "yǒng qì"
+        "pinyin": "yǒng qì",
+        "chunks": [
+          "勇",
+          "气"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w12"
@@ -2602,7 +3388,11 @@
       "content": "嗅觉",
       "metadata": {
         "word": "嗅觉",
-        "pinyin": "xiù jué"
+        "pinyin": "xiù jué",
+        "chunks": [
+          "嗅",
+          "觉"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w13"
@@ -2616,7 +3406,11 @@
       "content": "勇猛",
       "metadata": {
         "word": "勇猛",
-        "pinyin": "yǒng měng"
+        "pinyin": "yǒng měng",
+        "chunks": [
+          "勇",
+          "猛"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w14"
@@ -2630,7 +3424,11 @@
       "content": "热烈",
       "metadata": {
         "word": "热烈",
-        "pinyin": "rè liè"
+        "pinyin": "rè liè",
+        "chunks": [
+          "热",
+          "烈"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w15"
@@ -2644,7 +3442,11 @@
       "content": "无奈",
       "metadata": {
         "word": "无奈",
-        "pinyin": "wú nài"
+        "pinyin": "wú nài",
+        "chunks": [
+          "无",
+          "奈"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w16"
@@ -2658,7 +3460,11 @@
       "content": "躯体",
       "metadata": {
         "word": "躯体",
-        "pinyin": "qū tǐ"
+        "pinyin": "qū tǐ",
+        "chunks": [
+          "躯",
+          "体"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w17"
@@ -2672,7 +3478,11 @@
       "content": "掩盖",
       "metadata": {
         "word": "掩盖",
-        "pinyin": "yǎn gài"
+        "pinyin": "yǎn gài",
+        "chunks": [
+          "掩",
+          "盖"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w18"
@@ -2686,7 +3496,11 @@
       "content": "浑浊",
       "metadata": {
         "word": "浑浊",
-        "pinyin": "hún zhuó"
+        "pinyin": "hún zhuó",
+        "chunks": [
+          "浑",
+          "浊"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w19"
@@ -2700,7 +3514,11 @@
       "content": "脸庞",
       "metadata": {
         "word": "脸庞",
-        "pinyin": "liǎn páng"
+        "pinyin": "liǎn páng",
+        "chunks": [
+          "脸",
+          "庞"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w20"
@@ -2714,7 +3532,11 @@
       "content": "坚强",
       "metadata": {
         "word": "坚强",
-        "pinyin": "jiān qiáng"
+        "pinyin": "jiān qiáng",
+        "chunks": [
+          "坚",
+          "强"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w21"
@@ -2728,7 +3550,11 @@
       "content": "重量",
       "metadata": {
         "word": "重量",
-        "pinyin": "zhòng liàng"
+        "pinyin": "zhòng liàng",
+        "chunks": [
+          "重",
+          "量"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w22"
@@ -2742,7 +3568,11 @@
       "content": "陡峭",
       "metadata": {
         "word": "陡峭",
-        "pinyin": "dǒu qiào"
+        "pinyin": "dǒu qiào",
+        "chunks": [
+          "陡",
+          "峭"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w23"
@@ -2756,7 +3586,11 @@
       "content": "等级",
       "metadata": {
         "word": "等级",
-        "pinyin": "děng jí"
+        "pinyin": "děng jí",
+        "chunks": [
+          "等",
+          "级"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w24"
@@ -2770,7 +3604,11 @@
       "content": "铁链",
       "metadata": {
         "word": "铁链",
-        "pinyin": "tiě liàn"
+        "pinyin": "tiě liàn",
+        "chunks": [
+          "铁",
+          "链"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w25"
@@ -2784,7 +3622,11 @@
       "content": "颤抖",
       "metadata": {
         "word": "颤抖",
-        "pinyin": "chàn dǒu"
+        "pinyin": "chàn dǒu",
+        "chunks": [
+          "颤",
+          "抖"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w26"
@@ -2798,7 +3640,11 @@
       "content": "纪律",
       "metadata": {
         "word": "纪律",
-        "pinyin": "jì lǜ"
+        "pinyin": "jì lǜ",
+        "chunks": [
+          "纪",
+          "律"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w27"
@@ -2812,7 +3658,11 @@
       "content": "攀登",
       "metadata": {
         "word": "攀登",
-        "pinyin": "pān dēng"
+        "pinyin": "pān dēng",
+        "chunks": [
+          "攀",
+          "登"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w28"
@@ -2826,7 +3676,11 @@
       "content": "猴子",
       "metadata": {
         "word": "猴子",
-        "pinyin": "hóu zi"
+        "pinyin": "hóu zi",
+        "chunks": [
+          "猴",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w29"
@@ -2840,7 +3694,11 @@
       "content": "呵护",
       "metadata": {
         "word": "呵护",
-        "pinyin": "hē hù"
+        "pinyin": "hē hù",
+        "chunks": [
+          "呵",
+          "护"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w30"
@@ -2854,7 +3712,11 @@
       "content": "鼓掌",
       "metadata": {
         "word": "鼓掌",
-        "pinyin": "gǔ zhǎng"
+        "pinyin": "gǔ zhǎng",
+        "chunks": [
+          "鼓",
+          "掌"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w31"
@@ -2868,7 +3730,11 @@
       "content": "石级",
       "metadata": {
         "word": "石级",
-        "pinyin": "shí jí"
+        "pinyin": "shí jí",
+        "chunks": [
+          "石",
+          "级"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w32"
@@ -2882,7 +3748,11 @@
       "content": "发颤",
       "metadata": {
         "word": "发颤",
-        "pinyin": "fā chàn"
+        "pinyin": "fā chàn",
+        "chunks": [
+          "发",
+          "颤"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w33"
@@ -2896,7 +3766,11 @@
       "content": "年纪",
       "metadata": {
         "word": "年纪",
-        "pinyin": "nián jì"
+        "pinyin": "nián jì",
+        "chunks": [
+          "年",
+          "纪"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w34"
@@ -2910,7 +3784,11 @@
       "content": "奋力",
       "metadata": {
         "word": "奋力",
-        "pinyin": "fèn lì"
+        "pinyin": "fèn lì",
+        "chunks": [
+          "奋",
+          "力"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w35"
@@ -2924,7 +3802,11 @@
       "content": "纪念",
       "metadata": {
         "word": "纪念",
-        "pinyin": "jì niàn"
+        "pinyin": "jì niàn",
+        "chunks": [
+          "纪",
+          "念"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w36"
@@ -2938,7 +3820,11 @@
       "content": "鼓舞",
       "metadata": {
         "word": "鼓舞",
-        "pinyin": "gǔ wǔ"
+        "pinyin": "gǔ wǔ",
+        "chunks": [
+          "鼓",
+          "舞"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w37"
@@ -2952,7 +3838,11 @@
       "content": "年级",
       "metadata": {
         "word": "年级",
-        "pinyin": "nián jí"
+        "pinyin": "nián jí",
+        "chunks": [
+          "年",
+          "级"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w38"
@@ -2966,7 +3856,12 @@
       "content": "笑呵呵",
       "metadata": {
         "word": "笑呵呵",
-        "pinyin": "xiào hē hē"
+        "pinyin": "xiào hē hē",
+        "chunks": [
+          "笑",
+          "呵",
+          "呵"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w39"
@@ -2980,7 +3875,13 @@
       "content": "无可奈何",
       "metadata": {
         "word": "无可奈何",
-        "pinyin": "wú kě nài hé"
+        "pinyin": "wú kě nài hé",
+        "chunks": [
+          "无",
+          "可",
+          "奈",
+          "何"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u5-w40"
@@ -3005,7 +3906,11 @@
       "content": "盘旋",
       "metadata": {
         "word": "盘旋",
-        "pinyin": "pán xuán"
+        "pinyin": "pán xuán",
+        "chunks": [
+          "盘",
+          "旋"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w01"
@@ -3019,7 +3924,11 @@
       "content": "扩建",
       "metadata": {
         "word": "扩建",
-        "pinyin": "kuò jiàn"
+        "pinyin": "kuò jiàn",
+        "chunks": [
+          "扩",
+          "建"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w02"
@@ -3033,7 +3942,11 @@
       "content": "砖头",
       "metadata": {
         "word": "砖头",
-        "pinyin": "zhuān tou"
+        "pinyin": "zhuān tou",
+        "chunks": [
+          "砖",
+          "头"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w03"
@@ -3047,7 +3960,11 @@
       "content": "修筑",
       "metadata": {
         "word": "修筑",
-        "pinyin": "xiū zhù"
+        "pinyin": "xiū zhù",
+        "chunks": [
+          "修",
+          "筑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w04"
@@ -3061,7 +3978,11 @@
       "content": "隔离",
       "metadata": {
         "word": "隔离",
-        "pinyin": "gé lí"
+        "pinyin": "gé lí",
+        "chunks": [
+          "隔",
+          "离"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w05"
@@ -3075,7 +3996,11 @@
       "content": "打仗",
       "metadata": {
         "word": "打仗",
-        "pinyin": "dǎ zhàng"
+        "pinyin": "dǎ zhàng",
+        "chunks": [
+          "打",
+          "仗"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w06"
@@ -3089,7 +4014,11 @@
       "content": "扶手",
       "metadata": {
         "word": "扶手",
-        "pinyin": "fú shǒu"
+        "pinyin": "fú shǒu",
+        "chunks": [
+          "扶",
+          "手"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w07"
@@ -3103,7 +4032,11 @@
       "content": "耗费",
       "metadata": {
         "word": "耗费",
-        "pinyin": "hào fèi"
+        "pinyin": "hào fèi",
+        "chunks": [
+          "耗",
+          "费"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w08"
@@ -3117,7 +4050,11 @@
       "content": "智慧",
       "metadata": {
         "word": "智慧",
-        "pinyin": "zhì huì"
+        "pinyin": "zhì huì",
+        "chunks": [
+          "智",
+          "慧"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w09"
@@ -3131,7 +4068,11 @@
       "content": "平整",
       "metadata": {
         "word": "平整",
-        "pinyin": "píng zhěng"
+        "pinyin": "píng zhěng",
+        "chunks": [
+          "平",
+          "整"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w10"
@@ -3145,7 +4086,11 @@
       "content": "自然",
       "metadata": {
         "word": "自然",
-        "pinyin": "zì rán"
+        "pinyin": "zì rán",
+        "chunks": [
+          "自",
+          "然"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w11"
@@ -3159,7 +4104,11 @@
       "content": "当地",
       "metadata": {
         "word": "当地",
-        "pinyin": "dāng dì"
+        "pinyin": "dāng dì",
+        "chunks": [
+          "当",
+          "地"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w12"
@@ -3173,7 +4122,11 @@
       "content": "大量",
       "metadata": {
         "word": "大量",
-        "pinyin": "dà liàng"
+        "pinyin": "dà liàng",
+        "chunks": [
+          "大",
+          "量"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w13"
@@ -3187,7 +4140,11 @@
       "content": "工程",
       "metadata": {
         "word": "工程",
-        "pinyin": "gōng chéng"
+        "pinyin": "gōng chéng",
+        "chunks": [
+          "工",
+          "程"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w14"
@@ -3201,7 +4158,11 @@
       "content": "奇迹",
       "metadata": {
         "word": "奇迹",
-        "pinyin": "qí jì"
+        "pinyin": "qí jì",
+        "chunks": [
+          "奇",
+          "迹"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w15"
@@ -3215,7 +4176,11 @@
       "content": "环绕",
       "metadata": {
         "word": "环绕",
-        "pinyin": "huán rào"
+        "pinyin": "huán rào",
+        "chunks": [
+          "环",
+          "绕"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w16"
@@ -3229,7 +4194,11 @@
       "content": "条幅",
       "metadata": {
         "word": "条幅",
-        "pinyin": "tiáo fú"
+        "pinyin": "tiáo fú",
+        "chunks": [
+          "条",
+          "幅"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w17"
@@ -3243,7 +4212,11 @@
       "content": "栽树",
       "metadata": {
         "word": "栽树",
-        "pinyin": "zāi shù"
+        "pinyin": "zāi shù",
+        "chunks": [
+          "栽",
+          "树"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w18"
@@ -3257,7 +4230,11 @@
       "content": "耸立",
       "metadata": {
         "word": "耸立",
-        "pinyin": "sǒng lì"
+        "pinyin": "sǒng lì",
+        "chunks": [
+          "耸",
+          "立"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w19"
@@ -3271,7 +4248,11 @@
       "content": "镜子",
       "metadata": {
         "word": "镜子",
-        "pinyin": "jìng zi"
+        "pinyin": "jìng zi",
+        "chunks": [
+          "镜",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w20"
@@ -3285,7 +4266,11 @@
       "content": "狮子",
       "metadata": {
         "word": "狮子",
-        "pinyin": "shī zi"
+        "pinyin": "shī zi",
+        "chunks": [
+          "狮",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w21"
@@ -3299,7 +4284,11 @@
       "content": "柱子",
       "metadata": {
         "word": "柱子",
-        "pinyin": "zhù zi"
+        "pinyin": "zhù zi",
+        "chunks": [
+          "柱",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w22"
@@ -3313,7 +4302,11 @@
       "content": "栏杆",
       "metadata": {
         "word": "栏杆",
-        "pinyin": "lán gān"
+        "pinyin": "lán gān",
+        "chunks": [
+          "栏",
+          "杆"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w23"
@@ -3327,7 +4320,11 @@
       "content": "人物",
       "metadata": {
         "word": "人物",
-        "pinyin": "rén wù"
+        "pinyin": "rén wù",
+        "chunks": [
+          "人",
+          "物"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w24"
@@ -3341,7 +4338,11 @@
       "content": "建筑",
       "metadata": {
         "word": "建筑",
-        "pinyin": "jiàn zhù"
+        "pinyin": "jiàn zhù",
+        "chunks": [
+          "建",
+          "筑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w25"
@@ -3355,7 +4356,11 @@
       "content": "游人",
       "metadata": {
         "word": "游人",
-        "pinyin": "yóu rén"
+        "pinyin": "yóu rén",
+        "chunks": [
+          "游",
+          "人"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w26"
@@ -3369,7 +4374,11 @@
       "content": "姿态",
       "metadata": {
         "word": "姿态",
-        "pinyin": "zī tài"
+        "pinyin": "zī tài",
+        "chunks": [
+          "姿",
+          "态"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w27"
@@ -3383,7 +4392,11 @@
       "content": "拉萨",
       "metadata": {
         "word": "拉萨",
-        "pinyin": "lā sà"
+        "pinyin": "lā sà",
+        "chunks": [
+          "拉",
+          "萨"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w28"
@@ -3397,7 +4410,11 @@
       "content": "昭告",
       "metadata": {
         "word": "昭告",
-        "pinyin": "zhāo gào"
+        "pinyin": "zhāo gào",
+        "chunks": [
+          "昭",
+          "告"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w29"
@@ -3411,7 +4428,11 @@
       "content": "陵寝",
       "metadata": {
         "word": "陵寝",
-        "pinyin": "líng qǐn"
+        "pinyin": "líng qǐn",
+        "chunks": [
+          "陵",
+          "寝"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w30"
@@ -3425,7 +4446,11 @@
       "content": "严峻",
       "metadata": {
         "word": "严峻",
-        "pinyin": "yán jùn"
+        "pinyin": "yán jùn",
+        "chunks": [
+          "严",
+          "峻"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w31"
@@ -3439,7 +4464,11 @@
       "content": "扩大",
       "metadata": {
         "word": "扩大",
-        "pinyin": "kuò dà"
+        "pinyin": "kuò dà",
+        "chunks": [
+          "扩",
+          "大"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w32"
@@ -3453,7 +4482,13 @@
       "content": "隐隐约约",
       "metadata": {
         "word": "隐隐约约",
-        "pinyin": "yǐn yǐn yuē yuē"
+        "pinyin": "yǐn yǐn yuē yuē",
+        "chunks": [
+          "隐",
+          "隐",
+          "约",
+          "约"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w33"
@@ -3467,7 +4502,13 @@
       "content": "神清气爽",
       "metadata": {
         "word": "神清气爽",
-        "pinyin": "shén qīng qì shuǎng"
+        "pinyin": "shén qīng qì shuǎng",
+        "chunks": [
+          "神",
+          "清",
+          "气",
+          "爽"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w34"
@@ -3481,7 +4522,11 @@
       "content": "尼姑",
       "metadata": {
         "word": "尼姑",
-        "pinyin": "ní gū"
+        "pinyin": "ní gū",
+        "chunks": [
+          "尼",
+          "姑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w35"
@@ -3495,7 +4540,11 @@
       "content": "丝绸",
       "metadata": {
         "word": "丝绸",
-        "pinyin": "sī chóu"
+        "pinyin": "sī chóu",
+        "chunks": [
+          "丝",
+          "绸"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w36"
@@ -3509,7 +4558,11 @@
       "content": "走廊",
       "metadata": {
         "word": "走廊",
-        "pinyin": "zǒu láng"
+        "pinyin": "zǒu láng",
+        "chunks": [
+          "走",
+          "廊"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w37"
@@ -3523,7 +4576,11 @@
       "content": "景观",
       "metadata": {
         "word": "景观",
-        "pinyin": "jǐng guān"
+        "pinyin": "jǐng guān",
+        "chunks": [
+          "景",
+          "观"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w38"
@@ -3537,7 +4594,12 @@
       "content": "半山腰",
       "metadata": {
         "word": "半山腰",
-        "pinyin": "bàn shān yāo"
+        "pinyin": "bàn shān yāo",
+        "chunks": [
+          "半",
+          "山",
+          "腰"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w39"
@@ -3551,7 +4613,12 @@
       "content": "都江堰",
       "metadata": {
         "word": "都江堰",
-        "pinyin": "dū jiāng yàn"
+        "pinyin": "dū jiāng yàn",
+        "chunks": [
+          "都",
+          "江",
+          "堰"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w40"
@@ -3565,7 +4632,13 @@
       "content": "崇山峻岭",
       "metadata": {
         "word": "崇山峻岭",
-        "pinyin": "chóng shān jùn lǐng"
+        "pinyin": "chóng shān jùn lǐng",
+        "chunks": [
+          "崇",
+          "山",
+          "峻",
+          "岭"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w41"
@@ -3579,7 +4652,13 @@
       "content": "金碧辉煌",
       "metadata": {
         "word": "金碧辉煌",
-        "pinyin": "jīn bì huī huáng"
+        "pinyin": "jīn bì huī huáng",
+        "chunks": [
+          "金",
+          "碧",
+          "辉",
+          "煌"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u6-w42"
@@ -3622,7 +4701,11 @@
       "content": "虽然",
       "metadata": {
         "word": "虽然",
-        "pinyin": "suī rán"
+        "pinyin": "suī rán",
+        "chunks": [
+          "虽",
+          "然"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w01"
@@ -3636,7 +4719,11 @@
       "content": "拳头",
       "metadata": {
         "word": "拳头",
-        "pinyin": "quán tou"
+        "pinyin": "quán tou",
+        "chunks": [
+          "拳",
+          "头"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w02"
@@ -3650,7 +4737,11 @@
       "content": "故意",
       "metadata": {
         "word": "故意",
-        "pinyin": "gù yì"
+        "pinyin": "gù yì",
+        "chunks": [
+          "故",
+          "意"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w03"
@@ -3664,7 +4755,11 @@
       "content": "神气",
       "metadata": {
         "word": "神气",
-        "pinyin": "shén qì"
+        "pinyin": "shén qì",
+        "chunks": [
+          "神",
+          "气"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w04"
@@ -3678,7 +4773,11 @@
       "content": "忙乱",
       "metadata": {
         "word": "忙乱",
-        "pinyin": "máng luàn"
+        "pinyin": "máng luàn",
+        "chunks": [
+          "忙",
+          "乱"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w05"
@@ -3692,7 +4791,11 @@
       "content": "鞋子",
       "metadata": {
         "word": "鞋子",
-        "pinyin": "xié zi"
+        "pinyin": "xié zi",
+        "chunks": [
+          "鞋",
+          "子"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w06"
@@ -3706,7 +4809,11 @@
       "content": "助威",
       "metadata": {
         "word": "助威",
-        "pinyin": "zhù wēi"
+        "pinyin": "zhù wēi",
+        "chunks": [
+          "助",
+          "威"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w07"
@@ -3720,7 +4827,11 @@
       "content": "胳膊",
       "metadata": {
         "word": "胳膊",
-        "pinyin": "gē bo"
+        "pinyin": "gē bo",
+        "chunks": [
+          "胳",
+          "膊"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w08"
@@ -3734,7 +4845,11 @@
       "content": "纷纷",
       "metadata": {
         "word": "纷纷",
-        "pinyin": "fēn fēn"
+        "pinyin": "fēn fēn",
+        "chunks": [
+          "纷",
+          "纷"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w09"
@@ -3748,7 +4863,11 @@
       "content": "可笑",
       "metadata": {
         "word": "可笑",
-        "pinyin": "kě xiào"
+        "pinyin": "kě xiào",
+        "chunks": [
+          "可",
+          "笑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w10"
@@ -3762,7 +4881,11 @@
       "content": "鹅毛",
       "metadata": {
         "word": "鹅毛",
-        "pinyin": "é máo"
+        "pinyin": "é máo",
+        "chunks": [
+          "鹅",
+          "毛"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w11"
@@ -3776,7 +4899,11 @@
       "content": "骑马",
       "metadata": {
         "word": "骑马",
-        "pinyin": "qí mǎ"
+        "pinyin": "qí mǎ",
+        "chunks": [
+          "骑",
+          "马"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w12"
@@ -3790,7 +4917,11 @@
       "content": "横竖",
       "metadata": {
         "word": "横竖",
-        "pinyin": "héng shù"
+        "pinyin": "héng shù",
+        "chunks": [
+          "横",
+          "竖"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w13"
@@ -3804,7 +4935,11 @@
       "content": "竟然",
       "metadata": {
         "word": "竟然",
-        "pinyin": "jìng rán"
+        "pinyin": "jìng rán",
+        "chunks": [
+          "竟",
+          "然"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w14"
@@ -3818,7 +4953,11 @@
       "content": "胸膛",
       "metadata": {
         "word": "胸膛",
-        "pinyin": "xiōng táng"
+        "pinyin": "xiōng táng",
+        "chunks": [
+          "胸",
+          "膛"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w15"
@@ -3832,7 +4971,11 @@
       "content": "拖拉",
       "metadata": {
         "word": "拖拉",
-        "pinyin": "tuō lā"
+        "pinyin": "tuō lā",
+        "chunks": [
+          "拖",
+          "拉"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w16"
@@ -3846,7 +4989,11 @@
       "content": "把握",
       "metadata": {
         "word": "把握",
-        "pinyin": "bǎ wò"
+        "pinyin": "bǎ wò",
+        "chunks": [
+          "把",
+          "握"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w17"
@@ -3860,7 +5007,11 @@
       "content": "摔跤",
       "metadata": {
         "word": "摔跤",
-        "pinyin": "shuāi jiāo"
+        "pinyin": "shuāi jiāo",
+        "chunks": [
+          "摔",
+          "跤"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w18"
@@ -3874,7 +5025,11 @@
       "content": "文艺",
       "metadata": {
         "word": "文艺",
-        "pinyin": "wén yì"
+        "pinyin": "wén yì",
+        "chunks": [
+          "文",
+          "艺"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w19"
@@ -3888,7 +5043,11 @@
       "content": "表演",
       "metadata": {
         "word": "表演",
-        "pinyin": "biǎo yǎn"
+        "pinyin": "biǎo yǎn",
+        "chunks": [
+          "表",
+          "演"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w20"
@@ -3902,7 +5061,11 @@
       "content": "角色",
       "metadata": {
         "word": "角色",
-        "pinyin": "jué sè"
+        "pinyin": "jué sè",
+        "chunks": [
+          "角",
+          "色"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w21"
@@ -3916,7 +5079,11 @@
       "content": "排练",
       "metadata": {
         "word": "排练",
-        "pinyin": "pái liàn"
+        "pinyin": "pái liàn",
+        "chunks": [
+          "排",
+          "练"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w22"
@@ -3930,7 +5097,11 @@
       "content": "咱俩",
       "metadata": {
         "word": "咱俩",
-        "pinyin": "zán liǎ"
+        "pinyin": "zán liǎ",
+        "chunks": [
+          "咱",
+          "俩"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w23"
@@ -3944,7 +5115,11 @@
       "content": "主意",
       "metadata": {
         "word": "主意",
-        "pinyin": "zhǔ yi"
+        "pinyin": "zhǔ yi",
+        "chunks": [
+          "主",
+          "意"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w24"
@@ -3958,7 +5133,11 @@
       "content": "充分",
       "metadata": {
         "word": "充分",
-        "pinyin": "chōng fèn"
+        "pinyin": "chōng fèn",
+        "chunks": [
+          "充",
+          "分"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w25"
@@ -3972,7 +5151,11 @@
       "content": "捧场",
       "metadata": {
         "word": "捧场",
-        "pinyin": "pěng chǎng"
+        "pinyin": "pěng chǎng",
+        "chunks": [
+          "捧",
+          "场"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w26"
@@ -3986,7 +5169,11 @@
       "content": "提示",
       "metadata": {
         "word": "提示",
-        "pinyin": "tí shì"
+        "pinyin": "tí shì",
+        "chunks": [
+          "提",
+          "示"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w27"
@@ -4000,7 +5187,11 @@
       "content": "演技",
       "metadata": {
         "word": "演技",
-        "pinyin": "yǎn jì"
+        "pinyin": "yǎn jì",
+        "chunks": [
+          "演",
+          "技"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w28"
@@ -4014,7 +5205,11 @@
       "content": "撤换",
       "metadata": {
         "word": "撤换",
-        "pinyin": "chè huàn"
+        "pinyin": "chè huàn",
+        "chunks": [
+          "撤",
+          "换"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w29"
@@ -4028,7 +5223,11 @@
       "content": "推开",
       "metadata": {
         "word": "推开",
-        "pinyin": "tuī kāi"
+        "pinyin": "tuī kāi",
+        "chunks": [
+          "推",
+          "开"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w30"
@@ -4042,7 +5241,11 @@
       "content": "摘抄",
       "metadata": {
         "word": "摘抄",
-        "pinyin": "zhāi chāo"
+        "pinyin": "zhāi chāo",
+        "chunks": [
+          "摘",
+          "抄"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w31"
@@ -4056,7 +5259,11 @@
       "content": "等候",
       "metadata": {
         "word": "等候",
-        "pinyin": "děng hòu"
+        "pinyin": "děng hòu",
+        "chunks": [
+          "等",
+          "候"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w32"
@@ -4070,7 +5277,11 @@
       "content": "戎马",
       "metadata": {
         "word": "戎马",
-        "pinyin": "róng mǎ"
+        "pinyin": "róng mǎ",
+        "chunks": [
+          "戎",
+          "马"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w33"
@@ -4084,7 +5295,11 @@
       "content": "诸位",
       "metadata": {
         "word": "诸位",
-        "pinyin": "zhū wèi"
+        "pinyin": "zhū wèi",
+        "chunks": [
+          "诸",
+          "位"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w34"
@@ -4098,7 +5313,11 @@
       "content": "竞争",
       "metadata": {
         "word": "竞争",
-        "pinyin": "jìng zhēng"
+        "pinyin": "jìng zhēng",
+        "chunks": [
+          "竞",
+          "争"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w35"
@@ -4112,7 +5331,11 @@
       "content": "唯独",
       "metadata": {
         "word": "唯独",
-        "pinyin": "wéi dú"
+        "pinyin": "wéi dú",
+        "chunks": [
+          "唯",
+          "独"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w36"
@@ -4126,7 +5349,11 @@
       "content": "韭菜",
       "metadata": {
         "word": "韭菜",
-        "pinyin": "jiǔ cài"
+        "pinyin": "jiǔ cài",
+        "chunks": [
+          "韭",
+          "菜"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w37"
@@ -4140,7 +5367,11 @@
       "content": "芹菜",
       "metadata": {
         "word": "芹菜",
-        "pinyin": "qín cài"
+        "pinyin": "qín cài",
+        "chunks": [
+          "芹",
+          "菜"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w38"
@@ -4154,7 +5385,11 @@
       "content": "辣椒",
       "metadata": {
         "word": "辣椒",
-        "pinyin": "là jiāo"
+        "pinyin": "là jiāo",
+        "chunks": [
+          "辣",
+          "椒"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w39"
@@ -4168,7 +5403,11 @@
       "content": "大蒜",
       "metadata": {
         "word": "大蒜",
-        "pinyin": "dà suàn"
+        "pinyin": "dà suàn",
+        "chunks": [
+          "大",
+          "蒜"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w40"
@@ -4182,7 +5421,11 @@
       "content": "红薯",
       "metadata": {
         "word": "红薯",
-        "pinyin": "hóng shǔ"
+        "pinyin": "hóng shǔ",
+        "chunks": [
+          "红",
+          "薯"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w41"
@@ -4196,7 +5439,11 @@
       "content": "莲藕",
       "metadata": {
         "word": "莲藕",
-        "pinyin": "lián ǒu"
+        "pinyin": "lián ǒu",
+        "chunks": [
+          "莲",
+          "藕"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w42"
@@ -4210,7 +5457,11 @@
       "content": "芋头",
       "metadata": {
         "word": "芋头",
-        "pinyin": "yù tou"
+        "pinyin": "yù tou",
+        "chunks": [
+          "芋",
+          "头"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w43"
@@ -4224,7 +5475,11 @@
       "content": "生姜",
       "metadata": {
         "word": "生姜",
-        "pinyin": "shēng jiāng"
+        "pinyin": "shēng jiāng",
+        "chunks": [
+          "生",
+          "姜"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w44"
@@ -4238,7 +5493,13 @@
       "content": "无缘无故",
       "metadata": {
         "word": "无缘无故",
-        "pinyin": "wú yuán wú gù"
+        "pinyin": "wú yuán wú gù",
+        "chunks": [
+          "无",
+          "缘",
+          "无",
+          "故"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w45"
@@ -4252,7 +5513,13 @@
       "content": "哄堂大笑",
       "metadata": {
         "word": "哄堂大笑",
-        "pinyin": "hōng táng dà xiào"
+        "pinyin": "hōng táng dà xiào",
+        "chunks": [
+          "哄",
+          "堂",
+          "大",
+          "笑"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w46"
@@ -4266,7 +5533,11 @@
       "content": "布鞋",
       "metadata": {
         "word": "布鞋",
-        "pinyin": "bù xié"
+        "pinyin": "bù xié",
+        "chunks": [
+          "布",
+          "鞋"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w47"
@@ -4280,7 +5551,11 @@
       "content": "表态",
       "metadata": {
         "word": "表态",
-        "pinyin": "biǎo tài"
+        "pinyin": "biǎo tài",
+        "chunks": [
+          "表",
+          "态"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w48"
@@ -4294,7 +5569,13 @@
       "content": "通情达理",
       "metadata": {
         "word": "通情达理",
-        "pinyin": "tōng qíng dá lǐ"
+        "pinyin": "tōng qíng dá lǐ",
+        "chunks": [
+          "通",
+          "情",
+          "达",
+          "理"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w49"
@@ -4308,7 +5589,13 @@
       "content": "垂头丧气",
       "metadata": {
         "word": "垂头丧气",
-        "pinyin": "chuí tóu sàng qì"
+        "pinyin": "chuí tóu sàng qì",
+        "chunks": [
+          "垂",
+          "头",
+          "丧",
+          "气"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u7-w50"
@@ -4351,7 +5638,11 @@
       "content": "主席",
       "metadata": {
         "word": "主席",
-        "pinyin": "zhǔ xí"
+        "pinyin": "zhǔ xí",
+        "chunks": [
+          "主",
+          "席"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w01"
@@ -4365,7 +5656,11 @@
       "content": "举行",
       "metadata": {
         "word": "举行",
-        "pinyin": "jǔ xíng"
+        "pinyin": "jǔ xíng",
+        "chunks": [
+          "举",
+          "行"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w02"
@@ -4379,7 +5674,11 @@
       "content": "心情",
       "metadata": {
         "word": "心情",
-        "pinyin": "xīn qíng"
+        "pinyin": "xīn qíng",
+        "chunks": [
+          "心",
+          "情"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w03"
@@ -4393,7 +5692,11 @@
       "content": "补充",
       "metadata": {
         "word": "补充",
-        "pinyin": "bǔ chōng"
+        "pinyin": "bǔ chōng",
+        "chunks": [
+          "补",
+          "充"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w04"
@@ -4407,7 +5710,11 @@
       "content": "激动",
       "metadata": {
         "word": "激动",
-        "pinyin": "jī dòng"
+        "pinyin": "jī dòng",
+        "chunks": [
+          "激",
+          "动"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w05"
@@ -4421,7 +5728,11 @@
       "content": "状态",
       "metadata": {
         "word": "状态",
-        "pinyin": "zhuàng tài"
+        "pinyin": "zhuàng tài",
+        "chunks": [
+          "状",
+          "态"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w06"
@@ -4435,7 +5746,11 @@
       "content": "奉献",
       "metadata": {
         "word": "奉献",
-        "pinyin": "fèng xiàn"
+        "pinyin": "fèng xiàn",
+        "chunks": [
+          "奉",
+          "献"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w07"
@@ -4449,7 +5764,11 @@
       "content": "训练",
       "metadata": {
         "word": "训练",
-        "pinyin": "xùn liàn"
+        "pinyin": "xùn liàn",
+        "chunks": [
+          "训",
+          "练"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w08"
@@ -4463,7 +5782,11 @@
       "content": "建设",
       "metadata": {
         "word": "建设",
-        "pinyin": "jiàn shè"
+        "pinyin": "jiàn shè",
+        "chunks": [
+          "建",
+          "设"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w09"
@@ -4477,7 +5800,11 @@
       "content": "抛弃",
       "metadata": {
         "word": "抛弃",
-        "pinyin": "pāo qì"
+        "pinyin": "pāo qì",
+        "chunks": [
+          "抛",
+          "弃"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w10"
@@ -4491,7 +5818,11 @@
       "content": "亿万",
       "metadata": {
         "word": "亿万",
-        "pinyin": "yì wàn"
+        "pinyin": "yì wàn",
+        "chunks": [
+          "亿",
+          "万"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w11"
@@ -4505,7 +5836,11 @@
       "content": "勤劳",
       "metadata": {
         "word": "勤劳",
-        "pinyin": "qín láo"
+        "pinyin": "qín láo",
+        "chunks": [
+          "勤",
+          "劳"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w12"
@@ -4519,7 +5854,11 @@
       "content": "邀请",
       "metadata": {
         "word": "邀请",
-        "pinyin": "yāo qǐng"
+        "pinyin": "yāo qǐng",
+        "chunks": [
+          "邀",
+          "请"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w13"
@@ -4533,7 +5872,11 @@
       "content": "崛起",
       "metadata": {
         "word": "崛起",
-        "pinyin": "jué qǐ"
+        "pinyin": "jué qǐ",
+        "chunks": [
+          "崛",
+          "起"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w14"
@@ -4547,7 +5890,11 @@
       "content": "严肃",
       "metadata": {
         "word": "严肃",
-        "pinyin": "yán sù"
+        "pinyin": "yán sù",
+        "chunks": [
+          "严",
+          "肃"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w15"
@@ -4561,7 +5908,11 @@
       "content": "干脆",
       "metadata": {
         "word": "干脆",
-        "pinyin": "gān cuì"
+        "pinyin": "gān cuì",
+        "chunks": [
+          "干",
+          "脆"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w16"
@@ -4575,7 +5926,11 @@
       "content": "默默",
       "metadata": {
         "word": "默默",
-        "pinyin": "mò mò"
+        "pinyin": "mò mò",
+        "chunks": [
+          "默",
+          "默"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w17"
@@ -4589,7 +5944,11 @@
       "content": "清晰",
       "metadata": {
         "word": "清晰",
-        "pinyin": "qīng xī"
+        "pinyin": "qīng xī",
+        "chunks": [
+          "清",
+          "晰"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w18"
@@ -4603,7 +5962,11 @@
       "content": "离开",
       "metadata": {
         "word": "离开",
-        "pinyin": "lí kāi"
+        "pinyin": "lí kāi",
+        "chunks": [
+          "离",
+          "开"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w19"
@@ -4617,7 +5980,11 @@
       "content": "非凡",
       "metadata": {
         "word": "非凡",
-        "pinyin": "fēi fán"
+        "pinyin": "fēi fán",
+        "chunks": [
+          "非",
+          "凡"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w20"
@@ -4631,7 +5998,11 @@
       "content": "惩处",
       "metadata": {
         "word": "惩处",
-        "pinyin": "chéng chǔ"
+        "pinyin": "chéng chǔ",
+        "chunks": [
+          "惩",
+          "处"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w21"
@@ -4645,7 +6016,11 @@
       "content": "训斥",
       "metadata": {
         "word": "训斥",
-        "pinyin": "xùn chì"
+        "pinyin": "xùn chì",
+        "chunks": [
+          "训",
+          "斥"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w22"
@@ -4659,7 +6034,11 @@
       "content": "燃烧",
       "metadata": {
         "word": "燃烧",
-        "pinyin": "rán shāo"
+        "pinyin": "rán shāo",
+        "chunks": [
+          "燃",
+          "烧"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w23"
@@ -4673,7 +6052,11 @@
       "content": "随便",
       "metadata": {
         "word": "随便",
-        "pinyin": "suí biàn"
+        "pinyin": "suí biàn",
+        "chunks": [
+          "随",
+          "便"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w24"
@@ -4687,7 +6070,13 @@
       "content": "忘怀",
       "metadata": {
         "word": "忘怀",
-        "pinyin": "wàng huái"
+        "pinyin": "wàng huái",
+        "chunks": [
+          "亡",
+          "心",
+          "忄",
+          "不"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w25"
@@ -4701,7 +6090,11 @@
       "content": "响亮",
       "metadata": {
         "word": "响亮",
-        "pinyin": "xiǎng liàng"
+        "pinyin": "xiǎng liàng",
+        "chunks": [
+          "响",
+          "亮"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w26"
@@ -4715,7 +6108,11 @@
       "content": "词语",
       "metadata": {
         "word": "词语",
-        "pinyin": "cí yǔ"
+        "pinyin": "cí yǔ",
+        "chunks": [
+          "词",
+          "语"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w27"
@@ -4729,7 +6126,13 @@
       "content": "葡萄",
       "metadata": {
         "word": "葡萄",
-        "pinyin": "pú tao"
+        "pinyin": "pú tao",
+        "chunks": [
+          "艹",
+          "匍",
+          "艹",
+          "匋"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w28"
@@ -4743,7 +6146,11 @@
       "content": "水杯",
       "metadata": {
         "word": "水杯",
-        "pinyin": "shuǐ bēi"
+        "pinyin": "shuǐ bēi",
+        "chunks": [
+          "水",
+          "杯"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w29"
@@ -4757,7 +6164,11 @@
       "content": "塞外",
       "metadata": {
         "word": "塞外",
-        "pinyin": "sài wài"
+        "pinyin": "sài wài",
+        "chunks": [
+          "塞",
+          "外"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w30"
@@ -4771,7 +6182,11 @@
       "content": "秦朝",
       "metadata": {
         "word": "秦朝",
-        "pinyin": "qín cháo"
+        "pinyin": "qín cháo",
+        "chunks": [
+          "秦",
+          "朝"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w31"
@@ -4785,7 +6200,11 @@
       "content": "将领",
       "metadata": {
         "word": "将领",
-        "pinyin": "jiàng lǐng"
+        "pinyin": "jiàng lǐng",
+        "chunks": [
+          "将",
+          "领"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w32"
@@ -4799,7 +6218,11 @@
       "content": "杰出",
       "metadata": {
         "word": "杰出",
-        "pinyin": "jié chū"
+        "pinyin": "jié chū",
+        "chunks": [
+          "杰",
+          "出"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w33"
@@ -4813,7 +6236,11 @@
       "content": "鬼怪",
       "metadata": {
         "word": "鬼怪",
-        "pinyin": "guǐ guài"
+        "pinyin": "guǐ guài",
+        "chunks": [
+          "鬼",
+          "怪"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w34"
@@ -4827,7 +6254,11 @@
       "content": "英雄",
       "metadata": {
         "word": "英雄",
-        "pinyin": "yīng xióng"
+        "pinyin": "yīng xióng",
+        "chunks": [
+          "英",
+          "雄"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w35"
@@ -4841,7 +6272,11 @@
       "content": "项目",
       "metadata": {
         "word": "项目",
-        "pinyin": "xiàng mù"
+        "pinyin": "xiàng mù",
+        "chunks": [
+          "项",
+          "目"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w36"
@@ -4855,7 +6290,11 @@
       "content": "出席",
       "metadata": {
         "word": "出席",
-        "pinyin": "chū xí"
+        "pinyin": "chū xí",
+        "chunks": [
+          "出",
+          "席"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w37"
@@ -4869,7 +6308,11 @@
       "content": "教练",
       "metadata": {
         "word": "教练",
-        "pinyin": "jiào liàn"
+        "pinyin": "jiào liàn",
+        "chunks": [
+          "教",
+          "练"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w38"
@@ -4883,7 +6326,12 @@
       "content": "运动员",
       "metadata": {
         "word": "运动员",
-        "pinyin": "yùn dòng yuán"
+        "pinyin": "yùn dòng yuán",
+        "chunks": [
+          "运",
+          "动",
+          "员"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w39"
@@ -4897,7 +6345,13 @@
       "content": "若有所思",
       "metadata": {
         "word": "若有所思",
-        "pinyin": "ruò yǒu suǒ sī"
+        "pinyin": "ruò yǒu suǒ sī",
+        "chunks": [
+          "若",
+          "有",
+          "所",
+          "思"
+        ]
       },
       "exerciseIds": [
         "special-chinese-4-up-vocab::cn4-u8-w40"

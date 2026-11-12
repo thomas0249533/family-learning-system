@@ -75,10 +75,9 @@ function toggleSpeak(kp: any) {
     return
   }
   speakingId.value = kp.id
-  speak({
+  void speak({
     text: word,
     lang: 'en-US',
-    rate: 0.85,
     onEnd: () => { speakingId.value = null },
     onError: () => { speakingId.value = null },
   })
@@ -87,7 +86,7 @@ function toggleSpeak(kp: any) {
 function speakText(text: string, lang = 'en-US') {
   if (!isSpeechAvailable()) return
   stop()
-  speak({ text, lang, rate: 0.9 })
+  void speak({ text, lang })
 }
 
 onUnmounted(() => { stop() })

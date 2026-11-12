@@ -150,6 +150,8 @@
         </div>
       </n-space>
     </AppCard>
+    <!-- V3.1.7 · 朗读音色/语速/试听（自治组件） -->
+    <VoiceSettings />
     </section>
 
     <section id="settings-ai" class="settings-panel" data-section="ai">
@@ -327,6 +329,7 @@ import EmptyState from '@/components/ui/EmptyState.vue'
 import ImportPreview from '@/views/settings/ImportPreview.vue'
 import AutoSnapshotPanel from '@/components/AutoSnapshotPanel.vue'
 import SyncSettings from '@/views/settings/SyncSettings.vue'
+import VoiceSettings from '@/views/settings/VoiceSettings.vue'
 import LocalAiCard from '@/views/settings/LocalAiCard.vue'
 import { useThemeStore } from '@core/stores/theme'
 // V2.11 · 音效/震动开关：内存镜像 + 落库，答题反馈走同步路径读镜像

@@ -32,6 +32,8 @@ const {
   applyUpdate,
   applyAllUpdates,
   installNewPackages,
+  checkRefreshCandidates,
+  refreshInstalledPackages,
 } = await import('@core/content/contentUpdater')
 type UpdatablePackage = import('@core/content/contentUpdater').UpdatablePackage
 type CatalogPackage = import('@core/content/contentUpdater').CatalogPackage
@@ -473,5 +475,69 @@ describe('installNewPackages（家长勾选后才安装）', () => {
     const out = await installNewPackages([a.item], deadFetcher)
     expect(out.updated).toEqual([])
     expect(out.failed[0].reason).toContain('下载失败')
+  })
+})
+
+// ==================== V3.1.7 · 强制重拉已装包（修复版本撞车） ====================
+describe('checkRefreshCandidates / refreshInstalledPackages', () => {
+  /** 目录里同时有「已装的 pkg-a」与「没装的 pkg-new-a」 */
+  async function catalogWithBoth() {
+    const a = await catalogItem('pkg-new-a')
+    const textA = JSON.stringify(makePackage('1.0.0')) // 本地已装的 pkg-a
+    const cat = {
+      updatedAt: '2026-11-12',
+      packages: [
+        { packageId: 'pkg-a', version: '1.0.0', title: '测试包', sha256: await sha256Hex(textA) },
+        a.item,
+      ],
+    }
+    return { cat: JSON.stringify(cat), textA, a }
+  }
+
+  it('只列出本地已装包，且不看版本（版本相同也列）', async () => {
+    const { cat } = await catalogWithBoth()
+    const res = await checkRefreshCandidates(fetcherOf({ [CATALOG_FILE]: cat }))
+    expect(res.ok).toBe(true)
+    expect(res.items.map(p => p.packageId)).toEqual(['pkg-a'])
+  })
+
+  it('目录不可达 → ok:false + 可读原因，不抛异常', async () => {
+    const res = await checkRefreshCandidates(deadFetcher)
+    expect(res.ok).toBe(false)
+    expect(res.items).toEqual([])
+    expect(res.error).toBeTruthy()
+  })
+
+  it('版本号相同也能覆盖写入（这正是普通更新修不了的场景），进度不丢', async () => {
+    const { cat, textA } = await catalogWithBoth()
+    // 目录登记的是 1.1.0 内容，但本地 pkg-a 已是 1.1.0 版本号的旧内容
+    const fresh = JSON.stringify(makePackage('1.1.0'))
+    const cat2 = JSON.stringify({
+      updatedAt: '2026-11-12',
+      packages: [{ packageId: 'pkg-a', version: '1.0.0', title: '测试包', sha256: await sha256Hex(fresh) }],
+    })
+    void cat; void textA
+    await fake.packages.put(makePackage('1.0.0'))
+    const out = await refreshInstalledPackages(
+      [{ packageId: 'pkg-a', version: '1.0.0', title: '测试包', sha256: await sha256Hex(fresh) }],
+      fetcherOf({ 'pkg-a.json': fresh, [CATALOG_FILE]: cat2 }),
+    )
+    expect(out.updated).toEqual(['pkg-a'])
+    expect(out.failed).toEqual([])
+    const row: any = await fake.packages.get('pkg-a')
+    expect(row?.manifest.version).toBe('1.1.0')
+    expect((await fake.progress.toArray()).some((p: any) => p.packageId === 'pkg-a')).toBe(true)
+  })
+
+  it('sha256 不符 → 拒写，旧包保持原样', async () => {
+    const fresh = JSON.stringify(makePackage('1.1.0'))
+    await fake.packages.put(makePackage('1.0.0'))
+    const out = await refreshInstalledPackages(
+      [{ packageId: 'pkg-a', version: '1.1.0', title: '测试包', sha256: 'f'.repeat(64) }],
+      fetcherOf({ 'pkg-a.json': fresh }),
+    )
+    expect(out.updated).toEqual([])
+    expect(out.failed[0].reason).toContain('sha256')
+    expect((await fake.packages.get('pkg-a') as any)?.manifest.version).toBe('1.0.0')
   })
 })

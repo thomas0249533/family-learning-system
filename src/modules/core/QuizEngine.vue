@@ -663,8 +663,8 @@ function speakAnswer() {
     (typeof q.dictationText === 'string' && q.dictationText.trim()) ||
     (Array.isArray(q.answer) ? String(q.answer[0]) : String(q.answer || ''))
   if (!text) return
-  // 0.9 倍速：比默认慢一点，孩子听音写词跟得上
-  speakText({ text, rate: 0.9 })
+  // 语速交给设置页统一控制（中文听写默认 0.82 倍速）
+  void speakText({ text })
 }
 const isLastQuestion = computed(() => currentIndex.value === props.questions.length - 1)
 const localAnsweredCount = computed(() => Object.keys(examAnswers.value).length)

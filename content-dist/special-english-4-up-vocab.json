@@ -13,7 +13,7 @@
     "edition": "沪教版",
     "title": "四上英语 · 词汇（沪教版牛津上海 8 单元 + 附录）",
     "dependencies": [],
-    "version": "1.1.1"
+    "version": "1.1.2"
   },
   "knowledgePoints": [
     {
@@ -37,7 +37,11 @@
       "content": "建筑物；楼房",
       "metadata": {
         "word": "building",
-        "meaning": "建筑物；楼房"
+        "meaning": "建筑物；楼房",
+        "chunks": [
+          "build",
+          "ing"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u1-w02"
@@ -79,7 +83,11 @@
       "content": "乡村",
       "metadata": {
         "word": "country",
-        "meaning": "乡村"
+        "meaning": "乡村",
+        "chunks": [
+          "count",
+          "ry"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u1-w05"
@@ -247,7 +255,11 @@
       "content": "蜜蜂",
       "metadata": {
         "word": "honeybee",
-        "meaning": "蜜蜂"
+        "meaning": "蜜蜂",
+        "chunks": [
+          "honey",
+          "bee"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u2-w03"
@@ -359,7 +371,11 @@
       "content": "在……下面；小于；少于",
       "metadata": {
         "word": "under",
-        "meaning": "在……下面；小于；少于"
+        "meaning": "在……下面；小于；少于",
+        "chunks": [
+          "und",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u2-w11"
@@ -415,7 +431,11 @@
       "content": "等于",
       "metadata": {
         "word": "equal",
-        "meaning": "等于"
+        "meaning": "等于",
+        "chunks": [
+          "equ",
+          "al"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u3-w02"
@@ -429,7 +449,11 @@
       "content": "答案；回答",
       "metadata": {
         "word": "answer",
-        "meaning": "答案；回答"
+        "meaning": "答案；回答",
+        "chunks": [
+          "answ",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u3-w03"
@@ -443,7 +467,11 @@
       "content": "减；减号",
       "metadata": {
         "word": "minus",
-        "meaning": "减；减号"
+        "meaning": "减；减号",
+        "chunks": [
+          "min",
+          "us"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u3-w04"
@@ -583,7 +611,11 @@
       "content": "超市",
       "metadata": {
         "word": "supermarket",
-        "meaning": "超市"
+        "meaning": "超市",
+        "chunks": [
+          "super",
+          "market"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u4-w01"
@@ -723,7 +755,11 @@
       "content": "更快的",
       "metadata": {
         "word": "faster",
-        "meaning": "更快的"
+        "meaning": "更快的",
+        "chunks": [
+          "fast",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u4-w11"
@@ -737,7 +773,11 @@
       "content": "糖果；巧克力",
       "metadata": {
         "word": "candy",
-        "meaning": "糖果；巧克力"
+        "meaning": "糖果；巧克力",
+        "chunks": [
+          "can",
+          "dy"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u4-w12"
@@ -793,7 +833,11 @@
       "content": "春天",
       "metadata": {
         "word": "spring",
-        "meaning": "春天"
+        "meaning": "春天",
+        "chunks": [
+          "spr",
+          "ing"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w01"
@@ -821,7 +865,11 @@
       "content": "夏天",
       "metadata": {
         "word": "summer",
-        "meaning": "夏天"
+        "meaning": "夏天",
+        "chunks": [
+          "summ",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w03"
@@ -849,7 +897,11 @@
       "content": "秋天",
       "metadata": {
         "word": "autumn",
-        "meaning": "秋天"
+        "meaning": "秋天",
+        "chunks": [
+          "aut",
+          "umn"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w05"
@@ -877,7 +929,11 @@
       "content": "冬天",
       "metadata": {
         "word": "winter",
-        "meaning": "冬天"
+        "meaning": "冬天",
+        "chunks": [
+          "wint",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w07"
@@ -905,7 +961,11 @@
       "content": "父亲（或母亲）",
       "metadata": {
         "word": "parent",
-        "meaning": "父亲（或母亲）"
+        "meaning": "父亲（或母亲）",
+        "chunks": [
+          "par",
+          "ent"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w09"
@@ -919,7 +979,11 @@
       "content": "季节",
       "metadata": {
         "word": "season",
-        "meaning": "季节"
+        "meaning": "季节",
+        "chunks": [
+          "seas",
+          "on"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w10"
@@ -975,7 +1039,11 @@
       "content": "通常",
       "metadata": {
         "word": "usually",
-        "meaning": "通常"
+        "meaning": "通常",
+        "chunks": [
+          "usual",
+          "ly"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w14"
@@ -989,7 +1057,11 @@
       "content": "在……之后",
       "metadata": {
         "word": "after",
-        "meaning": "在……之后"
+        "meaning": "在……之后",
+        "chunks": [
+          "aft",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w15"
@@ -1031,7 +1103,11 @@
       "content": "经常",
       "metadata": {
         "word": "often",
-        "meaning": "经常"
+        "meaning": "经常",
+        "chunks": [
+          "of",
+          "ten"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w18"
@@ -1073,7 +1149,11 @@
       "content": "开始",
       "metadata": {
         "word": "begin",
-        "meaning": "开始"
+        "meaning": "开始",
+        "chunks": [
+          "beg",
+          "in"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u5-w21"
@@ -1087,7 +1167,11 @@
       "content": "花",
       "metadata": {
         "word": "flower",
-        "meaning": "花"
+        "meaning": "花",
+        "chunks": [
+          "flow",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u6-w01"
@@ -1143,7 +1227,11 @@
       "content": "水；给……浇水",
       "metadata": {
         "word": "water",
-        "meaning": "水；给……浇水"
+        "meaning": "水；给……浇水",
+        "chunks": [
+          "wat",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u6-w05"
@@ -1241,7 +1329,11 @@
       "content": "向日葵",
       "metadata": {
         "word": "sunflower",
-        "meaning": "向日葵"
+        "meaning": "向日葵",
+        "chunks": [
+          "sunflow",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u6-w12"
@@ -1353,7 +1445,11 @@
       "content": "令人惊叹的",
       "metadata": {
         "word": "amazing",
-        "meaning": "令人惊叹的"
+        "meaning": "令人惊叹的",
+        "chunks": [
+          "amaz",
+          "ing"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u6-w20"
@@ -1549,7 +1645,11 @@
       "content": "对不起",
       "metadata": {
         "word": "sorry",
-        "meaning": "对不起"
+        "meaning": "对不起",
+        "chunks": [
+          "sor",
+          "ry"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u7-w14"
@@ -1703,7 +1803,11 @@
       "content": "祖父（母）；外祖父（母）",
       "metadata": {
         "word": "grandparent",
-        "meaning": "祖父（母）；外祖父（母）"
+        "meaning": "祖父（母）；外祖父（母）",
+        "chunks": [
+          "grand",
+          "parent"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u8-w07"
@@ -1745,7 +1849,11 @@
       "content": "总是",
       "metadata": {
         "word": "always",
-        "meaning": "总是"
+        "meaning": "总是",
+        "chunks": [
+          "al",
+          "ways"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-u8-w10"
@@ -2151,7 +2259,11 @@
       "content": "七",
       "metadata": {
         "word": "seven",
-        "meaning": "七"
+        "meaning": "七",
+        "chunks": [
+          "sev",
+          "en"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e07"
@@ -2207,7 +2319,11 @@
       "content": "十一",
       "metadata": {
         "word": "eleven",
-        "meaning": "十一"
+        "meaning": "十一",
+        "chunks": [
+          "el",
+          "even"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e11"
@@ -2235,7 +2351,11 @@
       "content": "十三",
       "metadata": {
         "word": "thirteen",
-        "meaning": "十三"
+        "meaning": "十三",
+        "chunks": [
+          "thir",
+          "teen"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e13"
@@ -2249,7 +2369,11 @@
       "content": "十四",
       "metadata": {
         "word": "fourteen",
-        "meaning": "十四"
+        "meaning": "十四",
+        "chunks": [
+          "four",
+          "teen"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e14"
@@ -2263,7 +2387,11 @@
       "content": "十五",
       "metadata": {
         "word": "fifteen",
-        "meaning": "十五"
+        "meaning": "十五",
+        "chunks": [
+          "fif",
+          "teen"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e15"
@@ -2277,7 +2405,11 @@
       "content": "十六",
       "metadata": {
         "word": "sixteen",
-        "meaning": "十六"
+        "meaning": "十六",
+        "chunks": [
+          "six",
+          "teen"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e16"
@@ -2291,7 +2423,11 @@
       "content": "十七",
       "metadata": {
         "word": "seventeen",
-        "meaning": "十七"
+        "meaning": "十七",
+        "chunks": [
+          "sev",
+          "enteen"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e17"
@@ -2305,7 +2441,11 @@
       "content": "十八",
       "metadata": {
         "word": "eighteen",
-        "meaning": "十八"
+        "meaning": "十八",
+        "chunks": [
+          "eigh",
+          "teen"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e18"
@@ -2319,7 +2459,11 @@
       "content": "十九",
       "metadata": {
         "word": "nineteen",
-        "meaning": "十九"
+        "meaning": "十九",
+        "chunks": [
+          "nin",
+          "eteen"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e19"
@@ -2333,7 +2477,11 @@
       "content": "二十",
       "metadata": {
         "word": "twenty",
-        "meaning": "二十"
+        "meaning": "二十",
+        "chunks": [
+          "twen",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e20"
@@ -2389,7 +2537,11 @@
       "content": "三十",
       "metadata": {
         "word": "thirty",
-        "meaning": "三十"
+        "meaning": "三十",
+        "chunks": [
+          "thir",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e24"
@@ -2403,7 +2555,11 @@
       "content": "四十",
       "metadata": {
         "word": "forty",
-        "meaning": "四十"
+        "meaning": "四十",
+        "chunks": [
+          "for",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e25"
@@ -2417,7 +2573,11 @@
       "content": "五十",
       "metadata": {
         "word": "fifty",
-        "meaning": "五十"
+        "meaning": "五十",
+        "chunks": [
+          "fif",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e26"
@@ -2431,7 +2591,11 @@
       "content": "六十",
       "metadata": {
         "word": "sixty",
-        "meaning": "六十"
+        "meaning": "六十",
+        "chunks": [
+          "six",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e27"
@@ -2445,7 +2609,11 @@
       "content": "七十",
       "metadata": {
         "word": "seventy",
-        "meaning": "七十"
+        "meaning": "七十",
+        "chunks": [
+          "seven",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e28"
@@ -2459,7 +2627,11 @@
       "content": "八十",
       "metadata": {
         "word": "eighty",
-        "meaning": "八十"
+        "meaning": "八十",
+        "chunks": [
+          "eigh",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e29"
@@ -2473,7 +2645,11 @@
       "content": "九十",
       "metadata": {
         "word": "ninety",
-        "meaning": "九十"
+        "meaning": "九十",
+        "chunks": [
+          "nine",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t3-e30"
@@ -2515,7 +2691,11 @@
       "content": "第二",
       "metadata": {
         "word": "second",
-        "meaning": "第二"
+        "meaning": "第二",
+        "chunks": [
+          "sec",
+          "ond"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e02"
@@ -2585,7 +2765,11 @@
       "content": "第七",
       "metadata": {
         "word": "seventh",
-        "meaning": "第七"
+        "meaning": "第七",
+        "chunks": [
+          "sev",
+          "enth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e07"
@@ -2641,7 +2825,11 @@
       "content": "第十一",
       "metadata": {
         "word": "eleventh",
-        "meaning": "第十一"
+        "meaning": "第十一",
+        "chunks": [
+          "el",
+          "eventh"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e11"
@@ -2669,7 +2857,11 @@
       "content": "第十三",
       "metadata": {
         "word": "thirteenth",
-        "meaning": "第十三"
+        "meaning": "第十三",
+        "chunks": [
+          "thir",
+          "teenth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e13"
@@ -2683,7 +2875,11 @@
       "content": "第十四",
       "metadata": {
         "word": "fourteenth",
-        "meaning": "第十四"
+        "meaning": "第十四",
+        "chunks": [
+          "four",
+          "teenth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e14"
@@ -2697,7 +2893,11 @@
       "content": "第十五",
       "metadata": {
         "word": "fifteenth",
-        "meaning": "第十五"
+        "meaning": "第十五",
+        "chunks": [
+          "fif",
+          "teenth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e15"
@@ -2711,7 +2911,11 @@
       "content": "第十六",
       "metadata": {
         "word": "sixteenth",
-        "meaning": "第十六"
+        "meaning": "第十六",
+        "chunks": [
+          "six",
+          "teenth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e16"
@@ -2725,7 +2929,11 @@
       "content": "第十七",
       "metadata": {
         "word": "seventeenth",
-        "meaning": "第十七"
+        "meaning": "第十七",
+        "chunks": [
+          "sev",
+          "enteenth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e17"
@@ -2739,7 +2947,11 @@
       "content": "第十八",
       "metadata": {
         "word": "eighteenth",
-        "meaning": "第十八"
+        "meaning": "第十八",
+        "chunks": [
+          "eigh",
+          "teenth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e18"
@@ -2753,7 +2965,11 @@
       "content": "第十九",
       "metadata": {
         "word": "nineteenth",
-        "meaning": "第十九"
+        "meaning": "第十九",
+        "chunks": [
+          "nin",
+          "eteenth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e19"
@@ -2767,7 +2983,11 @@
       "content": "第二十",
       "metadata": {
         "word": "twentieth",
-        "meaning": "第二十"
+        "meaning": "第二十",
+        "chunks": [
+          "twen",
+          "tieth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e20"
@@ -2907,7 +3127,11 @@
       "content": "第三十",
       "metadata": {
         "word": "thirtieth",
-        "meaning": "第三十"
+        "meaning": "第三十",
+        "chunks": [
+          "thir",
+          "tieth"
+        ]
       },
       "exerciseIds": [
         "special-english-4-up-vocab::en4-appendix-t4-e30"

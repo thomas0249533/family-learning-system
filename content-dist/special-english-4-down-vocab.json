@@ -13,7 +13,7 @@
     "edition": "人教版",
     "title": "四下英语 · 词汇·单词句型语法（PEP 6 单元）",
     "dependencies": [],
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "knowledgePoints": [
     {
@@ -65,7 +65,11 @@
       "content": "图书馆",
       "metadata": {
         "word": "library",
-        "meaning": "图书馆"
+        "meaning": "图书馆",
+        "chunks": [
+          "lib",
+          "rary"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w04"
@@ -79,7 +83,11 @@
       "content": "操场",
       "metadata": {
         "word": "playground",
-        "meaning": "操场"
+        "meaning": "操场",
+        "chunks": [
+          "play",
+          "ground"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w05"
@@ -93,7 +101,11 @@
       "content": "花园",
       "metadata": {
         "word": "garden",
-        "meaning": "花园"
+        "meaning": "花园",
+        "chunks": [
+          "gar",
+          "den"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w06"
@@ -177,7 +189,11 @@
       "content": "作业",
       "metadata": {
         "word": "homework",
-        "meaning": "作业"
+        "meaning": "作业",
+        "chunks": [
+          "home",
+          "work"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w12"
@@ -205,7 +221,11 @@
       "content": "四十",
       "metadata": {
         "word": "forty",
-        "meaning": "四十"
+        "meaning": "四十",
+        "chunks": [
+          "for",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w14"
@@ -233,7 +253,11 @@
       "content": "早餐",
       "metadata": {
         "word": "breakfast",
-        "meaning": "早餐"
+        "meaning": "早餐",
+        "chunks": [
+          "break",
+          "fast"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w01"
@@ -261,7 +285,11 @@
       "content": "晚餐",
       "metadata": {
         "word": "dinner",
-        "meaning": "晚餐"
+        "meaning": "晚餐",
+        "chunks": [
+          "dinn",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w03"
@@ -415,7 +443,11 @@
       "content": "赶快",
       "metadata": {
         "word": "hurry",
-        "meaning": "赶快"
+        "meaning": "赶快",
+        "chunks": [
+          "hur",
+          "ry"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w14"
@@ -513,7 +545,11 @@
       "content": "晴朗的",
       "metadata": {
         "word": "sunny",
-        "meaning": "晴朗的"
+        "meaning": "晴朗的",
+        "chunks": [
+          "sun",
+          "ny"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w05"
@@ -527,7 +563,11 @@
       "content": "有风的",
       "metadata": {
         "word": "windy",
-        "meaning": "有风的"
+        "meaning": "有风的",
+        "chunks": [
+          "win",
+          "dy"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w06"
@@ -583,7 +623,11 @@
       "content": "天气",
       "metadata": {
         "word": "weather",
-        "meaning": "天气"
+        "meaning": "天气",
+        "chunks": [
+          "weath",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w10"
@@ -597,7 +641,11 @@
       "content": "度；度数",
       "metadata": {
         "word": "degree",
-        "meaning": "度；度数"
+        "meaning": "度；度数",
+        "chunks": [
+          "deg",
+          "ree"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w11"
@@ -611,7 +659,11 @@
       "content": "在外面",
       "metadata": {
         "word": "outside",
-        "meaning": "在外面"
+        "meaning": "在外面",
+        "chunks": [
+          "out",
+          "side"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w12"
@@ -639,7 +691,11 @@
       "content": "西红柿",
       "metadata": {
         "word": "tomato",
-        "meaning": "西红柿"
+        "meaning": "西红柿",
+        "chunks": [
+          "tom",
+          "ato"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w01"
@@ -653,7 +709,11 @@
       "content": "土豆",
       "metadata": {
         "word": "potato",
-        "meaning": "土豆"
+        "meaning": "土豆",
+        "chunks": [
+          "pot",
+          "ato"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w02"
@@ -681,7 +741,11 @@
       "content": "胡萝卜",
       "metadata": {
         "word": "carrot",
-        "meaning": "胡萝卜"
+        "meaning": "胡萝卜",
+        "chunks": [
+          "car",
+          "rot"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w04"
@@ -793,7 +857,11 @@
       "content": "黄色的",
       "metadata": {
         "word": "yellow",
-        "meaning": "黄色的"
+        "meaning": "黄色的",
+        "chunks": [
+          "yel",
+          "low"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w12"
@@ -821,7 +889,11 @@
       "content": "衣服",
       "metadata": {
         "word": "clothes",
-        "meaning": "衣服"
+        "meaning": "衣服",
+        "chunks": [
+          "cloth",
+          "es"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w01"
@@ -863,7 +935,11 @@
       "content": "鞋",
       "metadata": {
         "word": "shoes",
-        "meaning": "鞋"
+        "meaning": "鞋",
+        "chunks": [
+          "sho",
+          "es"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w04"
@@ -877,7 +953,11 @@
       "content": "夹克衫",
       "metadata": {
         "word": "jacket",
-        "meaning": "夹克衫"
+        "meaning": "夹克衫",
+        "chunks": [
+          "jac",
+          "ket"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w05"
@@ -933,7 +1013,11 @@
       "content": "毛衣",
       "metadata": {
         "word": "sweater",
-        "meaning": "毛衣"
+        "meaning": "毛衣",
+        "chunks": [
+          "sweat",
+          "er"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w09"
@@ -1003,7 +1087,11 @@
       "content": "色彩丰富的",
       "metadata": {
         "word": "colourful",
-        "meaning": "色彩丰富的"
+        "meaning": "色彩丰富的",
+        "chunks": [
+          "colour",
+          "ful"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w14"
@@ -1017,7 +1105,11 @@
       "content": "漂亮的",
       "metadata": {
         "word": "pretty",
-        "meaning": "漂亮的"
+        "meaning": "漂亮的",
+        "chunks": [
+          "pret",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w15"
@@ -1045,7 +1137,11 @@
       "content": "手套",
       "metadata": {
         "word": "gloves",
-        "meaning": "手套"
+        "meaning": "手套",
+        "chunks": [
+          "glov",
+          "es"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w01"
@@ -1073,7 +1169,11 @@
       "content": "雨伞",
       "metadata": {
         "word": "umbrella",
-        "meaning": "雨伞"
+        "meaning": "雨伞",
+        "chunks": [
+          "umb",
+          "rella"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w03"
@@ -1087,7 +1187,11 @@
       "content": "太阳镜",
       "metadata": {
         "word": "sunglasses",
-        "meaning": "太阳镜"
+        "meaning": "太阳镜",
+        "chunks": [
+          "sunglass",
+          "es"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w04"
@@ -1129,7 +1233,11 @@
       "content": "昂贵的",
       "metadata": {
         "word": "expensive",
-        "meaning": "昂贵的"
+        "meaning": "昂贵的",
+        "chunks": [
+          "expens",
+          "ive"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w07"
@@ -1185,7 +1293,11 @@
       "content": "八十",
       "metadata": {
         "word": "eighty",
-        "meaning": "八十"
+        "meaning": "八十",
+        "chunks": [
+          "eigh",
+          "ty"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w11"
@@ -1199,7 +1311,11 @@
       "content": "美元",
       "metadata": {
         "word": "dollar",
-        "meaning": "美元"
+        "meaning": "美元",
+        "chunks": [
+          "dol",
+          "lar"
+        ]
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w12"
