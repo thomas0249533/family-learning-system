@@ -12,6 +12,7 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { zipSync } from 'fflate'
 import { createPinia, setActivePinia } from 'pinia'
 
 const fake = createFakeDexie()
@@ -23,7 +24,7 @@ import { createFakeDexie } from './helpers/fakeDexie'
 // 动态 import：vi.mock 的工厂在模块加载时才执行，静态 import 会被提升到
 // `fake` 初始化之前（既有 backup 系测试同款写法）。
 const { compareVersions, normalizeVersion } = await import('@core/content/version')
-const { contentMirrorUrls, sha256Hex, CATALOG_FILE, CONTENT_DIST_DIR } = await import(
+const { contentMirrorUrls, sha256Hex, sha256HexBytes, CATALOG_FILE, CONTENT_DIST_DIR } = await import(
   '@core/content/mirrors'
 )
 const {
@@ -539,5 +540,111 @@ describe('checkRefreshCandidates / refreshInstalledPackages', () => {
     expect(out.updated).toEqual([])
     expect(out.failed[0].reason).toContain('sha256')
     expect((await fake.packages.get('pkg-a') as any)?.manifest.version).toBe('1.0.0')
+  })
+})
+
+// ==================== V3.1.8 · 更新顺带分发离线资产（音频/图片） ====================
+/**
+ * 造一个带 `metadata.audio` 引用的包；update 通道会把 `assets.zip` 解压写进
+ * `packageAssets`，让孩子端朗读时优先用离线音频、不再退化成机械 TTS。
+ */
+function makeAudioPackage(version: string): any {
+  return {
+    packageId: 'pkg-a',
+    manifest: {
+      packageId: 'pkg-a',
+      title: '音频包',
+      subject: 'english',
+      grade: 4,
+      term: 'up',
+      version,
+    },
+    knowledgePoints: [
+      { id: 'kp-1', name: 'word1', prerequisites: [], metadata: { audio: 'assets/word-1.mp3' } },
+    ],
+    exercises: [
+      {
+        id: 'ex-1',
+        type: 'single',
+        question: '选 word1',
+        options: ['A. word1', 'B. word2'],
+        answer: 'A',
+        explanation: 'e',
+        knowledgePointIds: ['kp-1'],
+      },
+    ],
+  }
+}
+
+/** 既能回文本又能回二进制的 mock fetcher（音频归档走 arrayBuffer 通道） */
+function fetcherWithAssets(routes: Record<string, { text?: string; bytes?: Uint8Array }>) {
+  return async (url: string) => {
+    for (const [needle, payload] of Object.entries(routes)) {
+      if (url.includes(needle)) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () => payload.text ?? '',
+          ...(payload.bytes ? { arrayBuffer: async () => payload.bytes!.buffer } : {}),
+        }
+      }
+    }
+    return { ok: false, status: 404, text: async () => 'not found' }
+  }
+}
+
+describe('applyUpdate 分发离线资产（V3.1.8）', () => {
+  it('有 assets 声明 → 包更新后把归档解压写进 packageAssets', async () => {
+    const text = JSON.stringify(makeAudioPackage('1.1.0'))
+    const assetBytes = zipSync({ 'assets/word-1.mp3': new Uint8Array([1, 2, 3, 4]) })
+    const item: UpdatablePackage = {
+      packageId: 'pkg-a',
+      title: '音频包',
+      localVersion: '1.0.0',
+      remoteVersion: '1.1.0',
+      sha256: await sha256Hex(text),
+      assets: { file: 'assets/pkg-a/assets.zip', sha256: await sha256HexBytes(assetBytes) },
+    }
+    const res = await applyUpdate(
+      item,
+      fetcherWithAssets({ 'pkg-a.json': { text }, 'assets/pkg-a/assets.zip': { bytes: assetBytes } }),
+    )
+
+    expect(res.ok).toBe(true)
+    const assets = await fake.db.packageAssets.where('packageId').equals('pkg-a').toArray()
+    expect(assets).toHaveLength(1)
+    expect(assets[0].path).toBe('assets/word-1.mp3')
+    expect(assets[0].packageId).toBe('pkg-a')
+  })
+
+  it('归档 sha256 不符 → 包仍更新成功，但资产写不进（warning，不回滚包）', async () => {
+    const text = JSON.stringify(makeAudioPackage('1.1.0'))
+    const assetBytes = zipSync({ 'assets/word-1.mp3': new Uint8Array([1, 2, 3, 4]) })
+    const item: UpdatablePackage = {
+      packageId: 'pkg-a',
+      title: '音频包',
+      localVersion: '1.0.0',
+      remoteVersion: '1.1.0',
+      sha256: await sha256Hex(text),
+      assets: { file: 'assets/pkg-a/assets.zip', sha256: '0'.repeat(64) }, // 故意错
+    }
+    const res = await applyUpdate(
+      item,
+      fetcherWithAssets({ 'pkg-a.json': { text }, 'assets/pkg-a/assets.zip': { bytes: assetBytes } }),
+    )
+    // 包本身更新成功，资产问题只是 warning（不回滚包更新、不用失败形态）
+    expect(res.ok).toBe(true)
+    if (!res.ok) throw new Error('预期 ok:true')
+    expect(res.warning).toContain('离线资产')
+    const assets = await fake.db.packageAssets.where('packageId').equals('pkg-a').toArray()
+    expect(assets).toHaveLength(0) // 没写进去
+  })
+
+  it('无 assets 声明 → 不碰 packageAssets（契约：没音频的包不受影响）', async () => {
+    const text = JSON.stringify(makePackage('1.1.0'))
+    const item = await makeUpdatable()
+    const res = await applyUpdate(item, fetcherOf({ 'pkg-a.json': text }))
+    expect(res.ok).toBe(true)
+    expect(await fake.db.packageAssets.where('packageId').equals('pkg-a').toArray()).toHaveLength(0)
   })
 })

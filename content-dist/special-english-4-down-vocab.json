@@ -13,7 +13,7 @@
     "edition": "人教版",
     "title": "四下英语 · 词汇·单词句型语法（PEP 6 单元）",
     "dependencies": [],
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "knowledgePoints": [
     {
@@ -23,7 +23,8 @@
       "content": "一楼",
       "metadata": {
         "word": "first floor",
-        "meaning": "一楼"
+        "meaning": "一楼",
+        "audio": "assets/kp-en4d-u1-w01.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w01"
@@ -37,7 +38,8 @@
       "content": "二楼",
       "metadata": {
         "word": "second floor",
-        "meaning": "二楼"
+        "meaning": "二楼",
+        "audio": "assets/kp-en4d-u1-w02.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w02"
@@ -51,7 +53,8 @@
       "content": "教师办公室",
       "metadata": {
         "word": "teachers' office",
-        "meaning": "教师办公室"
+        "meaning": "教师办公室",
+        "audio": "assets/kp-en4d-u1-w03.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w03"
@@ -69,7 +72,8 @@
         "chunks": [
           "lib",
           "rary"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u1-w04.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w04"
@@ -87,7 +91,8 @@
         "chunks": [
           "play",
           "ground"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u1-w05.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w05"
@@ -105,7 +110,8 @@
         "chunks": [
           "gar",
           "den"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u1-w06.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w06"
@@ -119,7 +125,8 @@
       "content": "美术室",
       "metadata": {
         "word": "art room",
-        "meaning": "美术室"
+        "meaning": "美术室",
+        "audio": "assets/kp-en4d-u1-w07.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w07"
@@ -133,7 +140,8 @@
       "content": "计算机房",
       "metadata": {
         "word": "computer room",
-        "meaning": "计算机房"
+        "meaning": "计算机房",
+        "audio": "assets/kp-en4d-u1-w08.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w08"
@@ -147,7 +155,8 @@
       "content": "音乐室",
       "metadata": {
         "word": "music room",
-        "meaning": "音乐室"
+        "meaning": "音乐室",
+        "audio": "assets/kp-en4d-u1-w09.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w09"
@@ -161,7 +170,8 @@
       "content": "体育馆",
       "metadata": {
         "word": "gym",
-        "meaning": "体育馆"
+        "meaning": "体育馆",
+        "audio": "assets/kp-en4d-u1-w10.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w10"
@@ -175,7 +185,8 @@
       "content": "在……旁边",
       "metadata": {
         "word": "next to",
-        "meaning": "在……旁边"
+        "meaning": "在……旁边",
+        "audio": "assets/kp-en4d-u1-w11.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w11"
@@ -193,7 +204,8 @@
         "chunks": [
           "home",
           "work"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u1-w12.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w12"
@@ -207,7 +219,8 @@
       "content": "班级；课",
       "metadata": {
         "word": "class",
-        "meaning": "班级；课"
+        "meaning": "班级；课",
+        "audio": "assets/kp-en4d-u1-w13.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w13"
@@ -225,7 +238,8 @@
         "chunks": [
           "for",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u1-w14.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u1-w14"
@@ -257,7 +271,8 @@
         "chunks": [
           "break",
           "fast"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u2-w01.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w01"
@@ -271,7 +286,8 @@
       "content": "午餐",
       "metadata": {
         "word": "lunch",
-        "meaning": "午餐"
+        "meaning": "午餐",
+        "audio": "assets/kp-en4d-u2-w02.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w02"
@@ -289,7 +305,8 @@
         "chunks": [
           "dinn",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u2-w03.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w03"
@@ -303,7 +320,8 @@
       "content": "英语课",
       "metadata": {
         "word": "English class",
-        "meaning": "英语课"
+        "meaning": "英语课",
+        "audio": "assets/kp-en4d-u2-w04.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w04"
@@ -317,7 +335,8 @@
       "content": "音乐课",
       "metadata": {
         "word": "music class",
-        "meaning": "音乐课"
+        "meaning": "音乐课",
+        "audio": "assets/kp-en4d-u2-w05.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w05"
@@ -331,7 +350,8 @@
       "content": "体育课",
       "metadata": {
         "word": "PE class",
-        "meaning": "体育课"
+        "meaning": "体育课",
+        "audio": "assets/kp-en4d-u2-w06.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w06"
@@ -345,7 +365,8 @@
       "content": "起床",
       "metadata": {
         "word": "get up",
-        "meaning": "起床"
+        "meaning": "起床",
+        "audio": "assets/kp-en4d-u2-w07.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w07"
@@ -359,7 +380,8 @@
       "content": "去上学",
       "metadata": {
         "word": "go to school",
-        "meaning": "去上学"
+        "meaning": "去上学",
+        "audio": "assets/kp-en4d-u2-w08.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w08"
@@ -373,7 +395,8 @@
       "content": "回家",
       "metadata": {
         "word": "go home",
-        "meaning": "回家"
+        "meaning": "回家",
+        "audio": "assets/kp-en4d-u2-w09.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w09"
@@ -387,7 +410,8 @@
       "content": "上床睡觉",
       "metadata": {
         "word": "go to bed",
-        "meaning": "上床睡觉"
+        "meaning": "上床睡觉",
+        "audio": "assets/kp-en4d-u2-w10.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w10"
@@ -401,7 +425,8 @@
       "content": "……点钟",
       "metadata": {
         "word": "o'clock",
-        "meaning": "……点钟"
+        "meaning": "……点钟",
+        "audio": "assets/kp-en4d-u2-w11.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w11"
@@ -415,7 +440,8 @@
       "content": "时间",
       "metadata": {
         "word": "time",
-        "meaning": "时间"
+        "meaning": "时间",
+        "audio": "assets/kp-en4d-u2-w12.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w12"
@@ -429,7 +455,8 @@
       "content": "小孩",
       "metadata": {
         "word": "kid",
-        "meaning": "小孩"
+        "meaning": "小孩",
+        "audio": "assets/kp-en4d-u2-w13.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w13"
@@ -447,7 +474,8 @@
         "chunks": [
           "hur",
           "ry"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u2-w14.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w14"
@@ -461,7 +489,8 @@
       "content": "现在",
       "metadata": {
         "word": "now",
-        "meaning": "现在"
+        "meaning": "现在",
+        "audio": "assets/kp-en4d-u2-w15.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u2-w15"
@@ -489,7 +518,8 @@
       "content": "寒冷的",
       "metadata": {
         "word": "cold",
-        "meaning": "寒冷的"
+        "meaning": "寒冷的",
+        "audio": "assets/kp-en4d-u3-w01.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w01"
@@ -503,7 +533,8 @@
       "content": "凉爽的",
       "metadata": {
         "word": "cool",
-        "meaning": "凉爽的"
+        "meaning": "凉爽的",
+        "audio": "assets/kp-en4d-u3-w02.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w02"
@@ -517,7 +548,8 @@
       "content": "温暖的",
       "metadata": {
         "word": "warm",
-        "meaning": "温暖的"
+        "meaning": "温暖的",
+        "audio": "assets/kp-en4d-u3-w03.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w03"
@@ -531,7 +563,8 @@
       "content": "炎热的",
       "metadata": {
         "word": "hot",
-        "meaning": "炎热的"
+        "meaning": "炎热的",
+        "audio": "assets/kp-en4d-u3-w04.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w04"
@@ -549,7 +582,8 @@
         "chunks": [
           "sun",
           "ny"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u3-w05.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w05"
@@ -567,7 +601,8 @@
         "chunks": [
           "win",
           "dy"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u3-w06.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w06"
@@ -581,7 +616,8 @@
       "content": "多云的",
       "metadata": {
         "word": "cloudy",
-        "meaning": "多云的"
+        "meaning": "多云的",
+        "audio": "assets/kp-en4d-u3-w07.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w07"
@@ -595,7 +631,8 @@
       "content": "下雪的",
       "metadata": {
         "word": "snowy",
-        "meaning": "下雪的"
+        "meaning": "下雪的",
+        "audio": "assets/kp-en4d-u3-w08.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w08"
@@ -609,7 +646,8 @@
       "content": "下雨的",
       "metadata": {
         "word": "rainy",
-        "meaning": "下雨的"
+        "meaning": "下雨的",
+        "audio": "assets/kp-en4d-u3-w09.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w09"
@@ -627,7 +665,8 @@
         "chunks": [
           "weath",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u3-w10.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w10"
@@ -645,7 +684,8 @@
         "chunks": [
           "deg",
           "ree"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u3-w11.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w11"
@@ -663,7 +703,8 @@
         "chunks": [
           "out",
           "side"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u3-w12.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u3-w12"
@@ -695,7 +736,8 @@
         "chunks": [
           "tom",
           "ato"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u4-w01.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w01"
@@ -713,7 +755,8 @@
         "chunks": [
           "pot",
           "ato"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u4-w02.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w02"
@@ -727,7 +770,8 @@
       "content": "青豆",
       "metadata": {
         "word": "green beans",
-        "meaning": "青豆"
+        "meaning": "青豆",
+        "audio": "assets/kp-en4d-u4-w03.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w03"
@@ -745,7 +789,8 @@
         "chunks": [
           "car",
           "rot"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u4-w04.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w04"
@@ -759,7 +804,8 @@
       "content": "马",
       "metadata": {
         "word": "horse",
-        "meaning": "马"
+        "meaning": "马",
+        "audio": "assets/kp-en4d-u4-w05.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w05"
@@ -773,7 +819,8 @@
       "content": "奶牛",
       "metadata": {
         "word": "cow",
-        "meaning": "奶牛"
+        "meaning": "奶牛",
+        "audio": "assets/kp-en4d-u4-w06.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w06"
@@ -787,7 +834,8 @@
       "content": "绵羊",
       "metadata": {
         "word": "sheep",
-        "meaning": "绵羊"
+        "meaning": "绵羊",
+        "audio": "assets/kp-en4d-u4-w07.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w07"
@@ -801,7 +849,8 @@
       "content": "母鸡",
       "metadata": {
         "word": "hen",
-        "meaning": "母鸡"
+        "meaning": "母鸡",
+        "audio": "assets/kp-en4d-u4-w08.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w08"
@@ -815,7 +864,8 @@
       "content": "农场",
       "metadata": {
         "word": "farm",
-        "meaning": "农场"
+        "meaning": "农场",
+        "audio": "assets/kp-en4d-u4-w09.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w09"
@@ -829,7 +879,8 @@
       "content": "这些",
       "metadata": {
         "word": "these",
-        "meaning": "这些"
+        "meaning": "这些",
+        "audio": "assets/kp-en4d-u4-w10.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w10"
@@ -843,7 +894,8 @@
       "content": "那些",
       "metadata": {
         "word": "those",
-        "meaning": "那些"
+        "meaning": "那些",
+        "audio": "assets/kp-en4d-u4-w11.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w11"
@@ -861,7 +913,8 @@
         "chunks": [
           "yel",
           "low"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u4-w12.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u4-w12"
@@ -893,7 +946,8 @@
         "chunks": [
           "cloth",
           "es"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u5-w01.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w01"
@@ -907,7 +961,8 @@
       "content": "裤子",
       "metadata": {
         "word": "pants",
-        "meaning": "裤子"
+        "meaning": "裤子",
+        "audio": "assets/kp-en4d-u5-w02.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w02"
@@ -921,7 +976,8 @@
       "content": "袜子",
       "metadata": {
         "word": "socks",
-        "meaning": "袜子"
+        "meaning": "袜子",
+        "audio": "assets/kp-en4d-u5-w03.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w03"
@@ -939,7 +995,8 @@
         "chunks": [
           "sho",
           "es"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u5-w04.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w04"
@@ -957,7 +1014,8 @@
         "chunks": [
           "jac",
           "ket"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u5-w05.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w05"
@@ -971,7 +1029,8 @@
       "content": "衬衫",
       "metadata": {
         "word": "shirt",
-        "meaning": "衬衫"
+        "meaning": "衬衫",
+        "audio": "assets/kp-en4d-u5-w06.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w06"
@@ -985,7 +1044,8 @@
       "content": "短裙",
       "metadata": {
         "word": "skirt",
-        "meaning": "短裙"
+        "meaning": "短裙",
+        "audio": "assets/kp-en4d-u5-w07.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w07"
@@ -999,7 +1059,8 @@
       "content": "连衣裙",
       "metadata": {
         "word": "dress",
-        "meaning": "连衣裙"
+        "meaning": "连衣裙",
+        "audio": "assets/kp-en4d-u5-w08.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w08"
@@ -1017,7 +1078,8 @@
         "chunks": [
           "sweat",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u5-w09.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w09"
@@ -1031,7 +1093,8 @@
       "content": "帽子",
       "metadata": {
         "word": "hat",
-        "meaning": "帽子"
+        "meaning": "帽子",
+        "audio": "assets/kp-en4d-u5-w10.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w10"
@@ -1045,7 +1108,8 @@
       "content": "谁的",
       "metadata": {
         "word": "whose",
-        "meaning": "谁的"
+        "meaning": "谁的",
+        "audio": "assets/kp-en4d-u5-w11.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w11"
@@ -1059,7 +1123,8 @@
       "content": "我的",
       "metadata": {
         "word": "mine",
-        "meaning": "我的"
+        "meaning": "我的",
+        "audio": "assets/kp-en4d-u5-w12.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w12"
@@ -1073,7 +1138,8 @@
       "content": "你的",
       "metadata": {
         "word": "yours",
-        "meaning": "你的"
+        "meaning": "你的",
+        "audio": "assets/kp-en4d-u5-w13.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w13"
@@ -1091,7 +1157,8 @@
         "chunks": [
           "colour",
           "ful"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u5-w14.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w14"
@@ -1109,7 +1176,8 @@
         "chunks": [
           "pret",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u5-w15.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u5-w15"
@@ -1141,7 +1209,8 @@
         "chunks": [
           "glov",
           "es"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u6-w01.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w01"
@@ -1155,7 +1224,8 @@
       "content": "围巾",
       "metadata": {
         "word": "scarf",
-        "meaning": "围巾"
+        "meaning": "围巾",
+        "audio": "assets/kp-en4d-u6-w02.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w02"
@@ -1173,7 +1243,8 @@
         "chunks": [
           "umb",
           "rella"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u6-w03.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w03"
@@ -1191,7 +1262,8 @@
         "chunks": [
           "sunglass",
           "es"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u6-w04.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w04"
@@ -1205,7 +1277,8 @@
       "content": "大的",
       "metadata": {
         "word": "big",
-        "meaning": "大的"
+        "meaning": "大的",
+        "audio": "assets/kp-en4d-u6-w05.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w05"
@@ -1219,7 +1292,8 @@
       "content": "小的",
       "metadata": {
         "word": "small",
-        "meaning": "小的"
+        "meaning": "小的",
+        "audio": "assets/kp-en4d-u6-w06.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w06"
@@ -1237,7 +1311,8 @@
         "chunks": [
           "expens",
           "ive"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u6-w07.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w07"
@@ -1251,7 +1326,8 @@
       "content": "便宜的",
       "metadata": {
         "word": "cheap",
-        "meaning": "便宜的"
+        "meaning": "便宜的",
+        "audio": "assets/kp-en4d-u6-w08.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w08"
@@ -1265,7 +1341,8 @@
       "content": "好的；漂亮的",
       "metadata": {
         "word": "nice",
-        "meaning": "好的；漂亮的"
+        "meaning": "好的；漂亮的",
+        "audio": "assets/kp-en4d-u6-w09.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w09"
@@ -1279,7 +1356,8 @@
       "content": "尺码",
       "metadata": {
         "word": "size",
-        "meaning": "尺码"
+        "meaning": "尺码",
+        "audio": "assets/kp-en4d-u6-w10.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w10"
@@ -1297,7 +1375,8 @@
         "chunks": [
           "eigh",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u6-w11.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w11"
@@ -1315,7 +1394,8 @@
         "chunks": [
           "dol",
           "lar"
-        ]
+        ],
+        "audio": "assets/kp-en4d-u6-w12.mp3"
       },
       "exerciseIds": [
         "special-english-4-down-vocab::kp-en4d-u6-w12"

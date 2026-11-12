@@ -13,7 +13,7 @@
     "edition": "人教版",
     "title": "四上语文 · 词汇默写（8 个单元）",
     "dependencies": [],
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "knowledgePoints": [
     {
@@ -29,7 +29,8 @@
           "可",
           "又",
           "见"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w01.mp3"
       }
     },
     {
@@ -45,7 +46,8 @@
           "居",
           "讠",
           "兑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w02.mp3"
       }
     },
     {
@@ -61,7 +63,8 @@
           "页",
           "日",
           "寸"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w03.mp3"
       }
     },
     {
@@ -75,7 +78,8 @@
         "chunks": [
           "逐",
           "渐"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w04.mp3"
       }
     },
     {
@@ -91,7 +95,8 @@
           "妾",
           "日",
           "寸"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w05.mp3"
       }
     },
     {
@@ -107,7 +112,8 @@
           "于",
           "氵",
           "皮"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w06.mp3"
       }
     },
     {
@@ -123,7 +129,8 @@
           "糸",
           "日",
           "生"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w07.mp3"
       }
     },
     {
@@ -138,7 +145,8 @@
           "土",
           "者",
           "车"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w08.mp3"
       }
     },
     {
@@ -154,7 +162,8 @@
           "心",
           "讠",
           "己"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w09.mp3"
       }
     },
     {
@@ -170,7 +179,8 @@
           "炎",
           "讠",
           "舌"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w10.mp3"
       }
     },
     {
@@ -186,7 +196,8 @@
           "斩",
           "氵",
           "斩"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w11.mp3"
       }
     },
     {
@@ -200,7 +211,8 @@
         "chunks": [
           "模",
           "糊"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w12.mp3"
       }
     },
     {
@@ -214,7 +226,8 @@
         "chunks": [
           "周",
           "围"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w13.mp3"
       }
     },
     {
@@ -228,7 +241,8 @@
         "chunks": [
           "飞",
           "舞"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w14.mp3"
       }
     },
     {
@@ -244,7 +258,8 @@
           "木",
           "禾",
           "口"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w15.mp3"
       }
     },
     {
@@ -258,7 +273,8 @@
         "chunks": [
           "梦",
           "幻"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w16.mp3"
       }
     },
     {
@@ -274,7 +290,8 @@
           "啬",
           "辟",
           "土"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w17.mp3"
       }
     },
     {
@@ -290,7 +307,8 @@
           "不",
           "扌",
           "包"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w18.mp3"
       }
     },
     {
@@ -306,7 +324,8 @@
           "叔",
           "青",
           "争"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w19.mp3"
       }
     },
     {
@@ -322,7 +341,8 @@
           "灬",
           "釆",
           "心"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w20.mp3"
       }
     },
     {
@@ -336,7 +356,8 @@
         "chunks": [
           "躺",
           "下"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w21.mp3"
       }
     },
     {
@@ -352,7 +373,8 @@
           "冗",
           "目",
           "垂"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w22.mp3"
       }
     },
     {
@@ -368,7 +390,8 @@
           "隋",
           "日",
           "寸"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w23.mp3"
       }
     },
     {
@@ -384,7 +407,8 @@
           "可",
           "土",
           "是"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w24.mp3"
       }
     },
     {
@@ -400,7 +424,8 @@
           "山",
           "人",
           "海"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w25.mp3"
       }
     },
     {
@@ -416,7 +441,8 @@
           "平",
           "浪",
           "静"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w26.mp3"
       }
     },
     {
@@ -432,7 +458,8 @@
           "头",
           "并",
           "进"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w27.mp3"
       }
     },
     {
@@ -448,7 +475,8 @@
           "浩",
           "荡",
           "荡"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w28.mp3"
       }
     },
     {
@@ -464,7 +492,8 @@
           "崩",
           "地",
           "裂"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w29.mp3"
       }
     },
     {
@@ -484,7 +513,8 @@
           "林",
           "广",
           "林"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u1-w30.mp3"
       }
     },
     {
@@ -514,7 +544,8 @@
           "予",
           "舌",
           "辶"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w01.mp3"
       }
     },
     {
@@ -530,7 +561,8 @@
           "曷",
           "日",
           "尧"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w02.mp3"
       }
     },
     {
@@ -544,7 +576,8 @@
         "chunks": [
           "身",
           "份"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w03.mp3"
       }
     },
     {
@@ -560,7 +593,8 @@
           "爰",
           "禾",
           "口"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w04.mp3"
       }
     },
     {
@@ -576,7 +610,8 @@
           "勺",
           "石",
           "角"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w05.mp3"
       }
     },
     {
@@ -592,7 +627,8 @@
           "日",
           "纟",
           "巠"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w06.mp3"
       }
     },
     {
@@ -608,7 +644,8 @@
           "丁",
           "氵",
           "衮"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w07.mp3"
       }
     },
     {
@@ -622,7 +659,8 @@
         "chunks": [
           "水",
           "沟"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w08.mp3"
       }
     },
     {
@@ -638,7 +676,8 @@
           "主",
           "礻",
           "见"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w09.mp3"
       }
     },
     {
@@ -652,7 +691,8 @@
         "chunks": [
           "蚊",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w10.mp3"
       }
     },
     {
@@ -666,7 +706,8 @@
         "chunks": [
           "即",
           "使"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w11.mp3"
       }
     },
     {
@@ -680,7 +721,8 @@
         "chunks": [
           "问",
           "题"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w12.mp3"
       }
     },
     {
@@ -694,7 +736,8 @@
         "chunks": [
           "绳",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w13.mp3"
       }
     },
     {
@@ -708,7 +751,8 @@
         "chunks": [
           "苍",
           "蝇"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w14.mp3"
       }
     },
     {
@@ -722,7 +766,8 @@
         "chunks": [
           "证",
           "明"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w15.mp3"
       }
     },
     {
@@ -736,7 +781,8 @@
         "chunks": [
           "相",
           "互"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w16.mp3"
       }
     },
     {
@@ -750,7 +796,8 @@
         "chunks": [
           "配",
           "合"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w17.mp3"
       }
     },
     {
@@ -764,7 +811,8 @@
         "chunks": [
           "研",
           "究"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w18.mp3"
       }
     },
     {
@@ -778,7 +826,8 @@
         "chunks": [
           "类",
           "似"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w19.mp3"
       }
     },
     {
@@ -792,7 +841,8 @@
         "chunks": [
           "能",
           "够"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w20.mp3"
       }
     },
     {
@@ -806,7 +856,8 @@
         "chunks": [
           "帽",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w21.mp3"
       }
     },
     {
@@ -820,7 +871,8 @@
         "chunks": [
           "脑",
           "袋"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w22.mp3"
       }
     },
     {
@@ -834,7 +886,8 @@
         "chunks": [
           "假",
           "如"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w23.mp3"
       }
     },
     {
@@ -848,7 +901,8 @@
         "chunks": [
           "设",
           "法"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w24.mp3"
       }
     },
     {
@@ -862,7 +916,8 @@
         "chunks": [
           "光",
           "滑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w25.mp3"
       }
     },
     {
@@ -876,7 +931,8 @@
         "chunks": [
           "擦",
           "除"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w26.mp3"
       }
     },
     {
@@ -890,7 +946,8 @@
         "chunks": [
           "探",
           "索"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w27.mp3"
       }
     },
     {
@@ -904,7 +961,8 @@
         "chunks": [
           "嘴",
           "巴"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w28.mp3"
       }
     },
     {
@@ -918,7 +976,8 @@
         "chunks": [
           "驾",
           "驶"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w29.mp3"
       }
     },
     {
@@ -932,7 +991,8 @@
         "chunks": [
           "纽",
           "扣"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w30.mp3"
       }
     },
     {
@@ -946,7 +1006,8 @@
         "chunks": [
           "懂",
           "事"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w31.mp3"
       }
     },
     {
@@ -960,7 +1021,8 @@
         "chunks": [
           "溜",
           "冰"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w32.mp3"
       }
     },
     {
@@ -974,7 +1036,8 @@
         "chunks": [
           "竹",
           "筒"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w33.mp3"
       }
     },
     {
@@ -988,7 +1051,8 @@
         "chunks": [
           "摆",
           "放"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w34.mp3"
       }
     },
     {
@@ -1002,7 +1066,8 @@
         "chunks": [
           "玻",
           "璃"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w35.mp3"
       }
     },
     {
@@ -1016,7 +1081,8 @@
         "chunks": [
           "舒",
           "服"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w36.mp3"
       }
     },
     {
@@ -1030,7 +1096,8 @@
         "chunks": [
           "提",
           "纲"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w37.mp3"
       }
     },
     {
@@ -1044,7 +1111,8 @@
         "chunks": [
           "挨",
           "揍"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w38.mp3"
       }
     },
     {
@@ -1058,7 +1126,8 @@
         "chunks": [
           "生",
           "锈"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w39.mp3"
       }
     },
     {
@@ -1072,7 +1141,8 @@
         "chunks": [
           "泡",
           "沫"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w40.mp3"
       }
     },
     {
@@ -1086,7 +1156,8 @@
         "chunks": [
           "综",
           "合"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w41.mp3"
       }
     },
     {
@@ -1100,7 +1171,8 @@
         "chunks": [
           "氧",
           "气"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w42.mp3"
       }
     },
     {
@@ -1114,7 +1186,8 @@
         "chunks": [
           "结",
           "账"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w43.mp3"
       }
     },
     {
@@ -1128,7 +1201,8 @@
         "chunks": [
           "矿",
           "物"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w44.mp3"
       }
     },
     {
@@ -1142,7 +1216,8 @@
         "chunks": [
           "滚",
           "动"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w45.mp3"
       }
     },
     {
@@ -1160,7 +1235,8 @@
           "羊",
           "氵",
           "羊"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w46.mp3"
       }
     },
     {
@@ -1175,7 +1251,8 @@
           "一",
           "溜",
           "烟"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w47.mp3"
       }
     },
     {
@@ -1190,7 +1267,8 @@
           "俱",
           "乐",
           "部"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w48.mp3"
       }
     },
     {
@@ -1206,7 +1284,8 @@
           "昏",
           "脑",
           "涨"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w49.mp3"
       }
     },
     {
@@ -1222,7 +1301,8 @@
           "式",
           "各",
           "样"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u2-w50.mp3"
       }
     },
     {
@@ -1250,7 +1330,8 @@
         "chunks": [
           "残",
           "缺"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w01.mp3"
       }
     },
     {
@@ -1264,7 +1345,8 @@
         "chunks": [
           "铺",
           "开"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w02.mp3"
       }
     },
     {
@@ -1280,7 +1362,8 @@
           "啬",
           "辟",
           "土"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w03.mp3"
       }
     },
     {
@@ -1294,7 +1377,8 @@
         "chunks": [
           "横",
           "向"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w04.mp3"
       }
     },
     {
@@ -1308,7 +1392,8 @@
         "chunks": [
           "侧",
           "面"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w05.mp3"
       }
     },
     {
@@ -1322,7 +1407,8 @@
         "chunks": [
           "山",
           "峰"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w06.mp3"
       }
     },
     {
@@ -1336,7 +1422,8 @@
         "chunks": [
           "庐",
           "山"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w07.mp3"
       }
     },
     {
@@ -1350,7 +1437,8 @@
         "chunks": [
           "缘",
           "由"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w08.mp3"
       }
     },
     {
@@ -1364,7 +1452,8 @@
         "chunks": [
           "投",
           "降"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w09.mp3"
       }
     },
     {
@@ -1378,7 +1467,8 @@
         "chunks": [
           "评",
           "论"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w10.mp3"
       }
     },
     {
@@ -1392,7 +1482,8 @@
         "chunks": [
           "文",
           "章"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w11.mp3"
       }
     },
     {
@@ -1406,7 +1497,8 @@
         "chunks": [
           "输",
           "送"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w12.mp3"
       }
     },
     {
@@ -1420,7 +1512,8 @@
         "chunks": [
           "脚",
           "步"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w13.mp3"
       }
     },
     {
@@ -1434,7 +1527,8 @@
         "chunks": [
           "操",
           "场"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w14.mp3"
       }
     },
     {
@@ -1448,7 +1542,8 @@
         "chunks": [
           "嫩",
           "绿"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w15.mp3"
       }
     },
     {
@@ -1462,7 +1557,8 @@
         "chunks": [
           "空",
           "隙"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w16.mp3"
       }
     },
     {
@@ -1476,7 +1572,8 @@
         "chunks": [
           "叶",
           "柄"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w17.mp3"
       }
     },
     {
@@ -1490,7 +1587,8 @@
         "chunks": [
           "触",
           "角"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w18.mp3"
       }
     },
     {
@@ -1504,7 +1602,8 @@
         "chunks": [
           "痕",
           "迹"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w19.mp3"
       }
     },
     {
@@ -1518,7 +1617,8 @@
         "chunks": [
           "新",
           "鲜"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w20.mp3"
       }
     },
     {
@@ -1532,7 +1632,8 @@
         "chunks": [
           "均",
           "匀"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w21.mp3"
       }
     },
     {
@@ -1546,7 +1647,8 @@
         "chunks": [
           "弯",
           "曲"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w22.mp3"
       }
     },
     {
@@ -1560,7 +1662,8 @@
         "chunks": [
           "牢",
           "固"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w23.mp3"
       }
     },
     {
@@ -1574,7 +1677,8 @@
         "chunks": [
           "住",
           "宅"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w24.mp3"
       }
     },
     {
@@ -1588,7 +1692,8 @@
         "chunks": [
           "丝",
           "毫"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w25.mp3"
       }
     },
     {
@@ -1602,7 +1707,8 @@
         "chunks": [
           "重",
           "要"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w26.mp3"
       }
     },
     {
@@ -1616,7 +1722,8 @@
         "chunks": [
           "选",
           "择"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w27.mp3"
       }
     },
     {
@@ -1630,7 +1737,8 @@
         "chunks": [
           "住",
           "址"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w28.mp3"
       }
     },
     {
@@ -1644,7 +1752,8 @@
         "chunks": [
           "大",
           "厅"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w29.mp3"
       }
     },
     {
@@ -1658,7 +1767,8 @@
         "chunks": [
           "专",
           "业"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w30.mp3"
       }
     },
     {
@@ -1672,7 +1782,8 @@
         "chunks": [
           "修",
           "理"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w31.mp3"
       }
     },
     {
@@ -1686,7 +1797,8 @@
         "chunks": [
           "比",
           "较"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w32.mp3"
       }
     },
     {
@@ -1700,7 +1812,8 @@
         "chunks": [
           "大",
           "腿"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w33.mp3"
       }
     },
     {
@@ -1714,7 +1827,8 @@
         "chunks": [
           "增",
           "长"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w34.mp3"
       }
     },
     {
@@ -1728,7 +1842,8 @@
         "chunks": [
           "柔",
           "弱"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w35.mp3"
       }
     },
     {
@@ -1742,7 +1857,8 @@
         "chunks": [
           "平",
           "坦"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w36.mp3"
       }
     },
     {
@@ -1756,7 +1872,8 @@
         "chunks": [
           "光",
           "滑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w37.mp3"
       }
     },
     {
@@ -1770,7 +1887,8 @@
         "chunks": [
           "体",
           "操"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w38.mp3"
       }
     },
     {
@@ -1784,7 +1902,8 @@
         "chunks": [
           "缝",
           "隙"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w39.mp3"
       }
     },
     {
@@ -1799,7 +1918,8 @@
           "爬",
           "山",
           "虎"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w40.mp3"
       }
     },
     {
@@ -1814,7 +1934,8 @@
           "瞧",
           "不",
           "起"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u3-w41.mp3"
       }
     },
     {
@@ -1842,7 +1963,8 @@
         "chunks": [
           "宇",
           "宙"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w01.mp3"
       }
     },
     {
@@ -1856,7 +1978,8 @@
         "chunks": [
           "翻",
           "身"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w02.mp3"
       }
     },
     {
@@ -1870,7 +1993,8 @@
         "chunks": [
           "下",
           "降"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w03.mp3"
       }
     },
     {
@@ -1884,7 +2008,8 @@
         "chunks": [
           "飘",
           "动"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w04.mp3"
       }
     },
     {
@@ -1898,7 +2023,8 @@
         "chunks": [
           "照",
           "耀"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w05.mp3"
       }
     },
     {
@@ -1912,7 +2038,8 @@
         "chunks": [
           "四",
           "肢"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w06.mp3"
       }
     },
     {
@@ -1926,7 +2053,8 @@
         "chunks": [
           "茂",
           "盛"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w07.mp3"
       }
     },
     {
@@ -1940,7 +2068,8 @@
         "chunks": [
           "整",
           "个"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w08.mp3"
       }
     },
     {
@@ -1954,7 +2083,8 @@
         "chunks": [
           "喷",
           "射"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w09.mp3"
       }
     },
     {
@@ -1968,7 +2098,8 @@
         "chunks": [
           "严",
           "厉"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w10.mp3"
       }
     },
     {
@@ -1982,7 +2113,8 @@
         "chunks": [
           "立",
           "即"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w11.mp3"
       }
     },
     {
@@ -1996,7 +2128,8 @@
         "chunks": [
           "执",
           "行"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w12.mp3"
       }
     },
     {
@@ -2010,7 +2143,8 @@
         "chunks": [
           "敬",
           "佩"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w13.mp3"
       }
     },
     {
@@ -2024,7 +2158,8 @@
         "chunks": [
           "忍",
           "受"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w14.mp3"
       }
     },
     {
@@ -2038,7 +2173,8 @@
         "chunks": [
           "遭",
           "受"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w15.mp3"
       }
     },
     {
@@ -2052,7 +2188,8 @@
         "chunks": [
           "尽",
           "管"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w16.mp3"
       }
     },
     {
@@ -2066,7 +2203,8 @@
         "chunks": [
           "屈",
           "服"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w17.mp3"
       }
     },
     {
@@ -2080,7 +2218,8 @@
         "chunks": [
           "肝",
           "脏"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w18.mp3"
       }
     },
     {
@@ -2094,7 +2233,8 @@
         "chunks": [
           "获",
           "得"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w19.mp3"
       }
     },
     {
@@ -2108,7 +2248,8 @@
         "chunks": [
           "花",
           "卉"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w20.mp3"
       }
     },
     {
@@ -2122,7 +2263,8 @@
         "chunks": [
           "玫",
           "瑰"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w21.mp3"
       }
     },
     {
@@ -2136,7 +2278,8 @@
         "chunks": [
           "牡",
           "丹"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w22.mp3"
       }
     },
     {
@@ -2150,7 +2293,8 @@
         "chunks": [
           "花",
           "蕾"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w23.mp3"
       }
     },
     {
@@ -2164,7 +2308,8 @@
         "chunks": [
           "茉",
           "莉"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w24.mp3"
       }
     },
     {
@@ -2178,7 +2323,8 @@
         "chunks": [
           "海",
           "棠"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w25.mp3"
       }
     },
     {
@@ -2192,7 +2338,8 @@
         "chunks": [
           "清",
           "醒"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w26.mp3"
       }
     },
     {
@@ -2206,7 +2353,8 @@
         "chunks": [
           "缓",
           "慢"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w27.mp3"
       }
     },
     {
@@ -2220,7 +2368,8 @@
         "chunks": [
           "踏",
           "步"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w28.mp3"
       }
     },
     {
@@ -2234,7 +2383,8 @@
         "chunks": [
           "丈",
           "量"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w29.mp3"
       }
     },
     {
@@ -2248,7 +2398,8 @@
         "chunks": [
           "支",
           "撑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w30.mp3"
       }
     },
     {
@@ -2262,7 +2413,8 @@
         "chunks": [
           "填",
           "空"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w31.mp3"
       }
     },
     {
@@ -2276,7 +2428,8 @@
         "chunks": [
           "帝",
           "王"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w32.mp3"
       }
     },
     {
@@ -2290,7 +2443,8 @@
         "chunks": [
           "娃",
           "娃"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w33.mp3"
       }
     },
     {
@@ -2304,7 +2458,8 @@
         "chunks": [
           "衔",
           "接"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w34.mp3"
       }
     },
     {
@@ -2318,7 +2473,8 @@
         "chunks": [
           "颗",
           "粒"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w35.mp3"
       }
     },
     {
@@ -2332,7 +2488,8 @@
         "chunks": [
           "既",
           "然"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w36.mp3"
       }
     },
     {
@@ -2346,7 +2503,8 @@
         "chunks": [
           "坚",
           "定"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w37.mp3"
       }
     },
     {
@@ -2360,7 +2518,8 @@
         "chunks": [
           "闪",
           "耀"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w38.mp3"
       }
     },
     {
@@ -2375,7 +2534,8 @@
           "黑",
           "乎",
           "乎"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w39.mp3"
       }
     },
     {
@@ -2391,7 +2551,8 @@
           "疲",
           "力",
           "竭"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w40.mp3"
       }
     },
     {
@@ -2407,7 +2568,8 @@
           "流",
           "不",
           "息"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w41.mp3"
       }
     },
     {
@@ -2423,7 +2585,8 @@
           "急",
           "败",
           "坏"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u4-w42.mp3"
       }
     },
     {
@@ -2451,7 +2614,8 @@
         "chunks": [
           "麻",
           "雀"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w01.mp3"
       }
     },
     {
@@ -2465,7 +2629,8 @@
         "chunks": [
           "悄",
           "悄"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w02.mp3"
       }
     },
     {
@@ -2479,7 +2644,8 @@
         "chunks": [
           "猛",
           "烈"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w03.mp3"
       }
     },
     {
@@ -2493,7 +2659,8 @@
         "chunks": [
           "身",
           "躯"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w04.mp3"
       }
     },
     {
@@ -2507,7 +2674,8 @@
         "chunks": [
           "掩",
           "护"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w05.mp3"
       }
     },
     {
@@ -2521,7 +2689,8 @@
         "chunks": [
           "紧",
           "张"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w06.mp3"
       }
     },
     {
@@ -2535,7 +2704,8 @@
         "chunks": [
           "浑",
           "身"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w07.mp3"
       }
     },
     {
@@ -2549,7 +2719,8 @@
         "chunks": [
           "牺",
           "牲"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w08.mp3"
       }
     },
     {
@@ -2563,7 +2734,8 @@
         "chunks": [
           "庞",
           "大"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w09.mp3"
       }
     },
     {
@@ -2577,7 +2749,8 @@
         "chunks": [
           "强",
           "大"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w10.mp3"
       }
     },
     {
@@ -2591,7 +2764,8 @@
         "chunks": [
           "力",
           "量"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w11.mp3"
       }
     },
     {
@@ -2605,7 +2779,8 @@
         "chunks": [
           "勇",
           "气"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w12.mp3"
       }
     },
     {
@@ -2619,7 +2794,8 @@
         "chunks": [
           "嗅",
           "觉"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w13.mp3"
       }
     },
     {
@@ -2633,7 +2809,8 @@
         "chunks": [
           "勇",
           "猛"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w14.mp3"
       }
     },
     {
@@ -2647,7 +2824,8 @@
         "chunks": [
           "热",
           "烈"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w15.mp3"
       }
     },
     {
@@ -2661,7 +2839,8 @@
         "chunks": [
           "无",
           "奈"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w16.mp3"
       }
     },
     {
@@ -2675,7 +2854,8 @@
         "chunks": [
           "躯",
           "体"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w17.mp3"
       }
     },
     {
@@ -2689,7 +2869,8 @@
         "chunks": [
           "掩",
           "盖"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w18.mp3"
       }
     },
     {
@@ -2703,7 +2884,8 @@
         "chunks": [
           "浑",
           "浊"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w19.mp3"
       }
     },
     {
@@ -2717,7 +2899,8 @@
         "chunks": [
           "脸",
           "庞"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w20.mp3"
       }
     },
     {
@@ -2731,7 +2914,8 @@
         "chunks": [
           "坚",
           "强"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w21.mp3"
       }
     },
     {
@@ -2745,7 +2929,8 @@
         "chunks": [
           "重",
           "量"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w22.mp3"
       }
     },
     {
@@ -2759,7 +2944,8 @@
         "chunks": [
           "陡",
           "峭"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w23.mp3"
       }
     },
     {
@@ -2773,7 +2959,8 @@
         "chunks": [
           "等",
           "级"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w24.mp3"
       }
     },
     {
@@ -2787,7 +2974,8 @@
         "chunks": [
           "铁",
           "链"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w25.mp3"
       }
     },
     {
@@ -2801,7 +2989,8 @@
         "chunks": [
           "颤",
           "抖"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w26.mp3"
       }
     },
     {
@@ -2815,7 +3004,8 @@
         "chunks": [
           "纪",
           "律"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w27.mp3"
       }
     },
     {
@@ -2829,7 +3019,8 @@
         "chunks": [
           "攀",
           "登"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w28.mp3"
       }
     },
     {
@@ -2843,7 +3034,8 @@
         "chunks": [
           "猴",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w29.mp3"
       }
     },
     {
@@ -2857,7 +3049,8 @@
         "chunks": [
           "呵",
           "护"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w30.mp3"
       }
     },
     {
@@ -2871,7 +3064,8 @@
         "chunks": [
           "鼓",
           "掌"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w31.mp3"
       }
     },
     {
@@ -2885,7 +3079,8 @@
         "chunks": [
           "石",
           "级"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w32.mp3"
       }
     },
     {
@@ -2899,7 +3094,8 @@
         "chunks": [
           "发",
           "颤"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w33.mp3"
       }
     },
     {
@@ -2913,7 +3109,8 @@
         "chunks": [
           "年",
           "纪"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w34.mp3"
       }
     },
     {
@@ -2927,7 +3124,8 @@
         "chunks": [
           "奋",
           "力"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w35.mp3"
       }
     },
     {
@@ -2941,7 +3139,8 @@
         "chunks": [
           "纪",
           "念"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w36.mp3"
       }
     },
     {
@@ -2955,7 +3154,8 @@
         "chunks": [
           "鼓",
           "舞"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w37.mp3"
       }
     },
     {
@@ -2969,7 +3169,8 @@
         "chunks": [
           "年",
           "级"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w38.mp3"
       }
     },
     {
@@ -2984,7 +3185,8 @@
           "笑",
           "呵",
           "呵"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w39.mp3"
       }
     },
     {
@@ -3000,7 +3202,8 @@
           "可",
           "奈",
           "何"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u5-w40.mp3"
       }
     },
     {
@@ -3021,7 +3224,8 @@
         "chunks": [
           "盘",
           "旋"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w01.mp3"
       }
     },
     {
@@ -3035,7 +3239,8 @@
         "chunks": [
           "扩",
           "建"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w02.mp3"
       }
     },
     {
@@ -3049,7 +3254,8 @@
         "chunks": [
           "砖",
           "头"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w03.mp3"
       }
     },
     {
@@ -3063,7 +3269,8 @@
         "chunks": [
           "修",
           "筑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w04.mp3"
       }
     },
     {
@@ -3077,7 +3284,8 @@
         "chunks": [
           "隔",
           "离"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w05.mp3"
       }
     },
     {
@@ -3091,7 +3299,8 @@
         "chunks": [
           "打",
           "仗"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w06.mp3"
       }
     },
     {
@@ -3105,7 +3314,8 @@
         "chunks": [
           "扶",
           "手"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w07.mp3"
       }
     },
     {
@@ -3119,7 +3329,8 @@
         "chunks": [
           "耗",
           "费"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w08.mp3"
       }
     },
     {
@@ -3133,7 +3344,8 @@
         "chunks": [
           "智",
           "慧"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w09.mp3"
       }
     },
     {
@@ -3147,7 +3359,8 @@
         "chunks": [
           "平",
           "整"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w10.mp3"
       }
     },
     {
@@ -3161,7 +3374,8 @@
         "chunks": [
           "自",
           "然"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w11.mp3"
       }
     },
     {
@@ -3175,7 +3389,8 @@
         "chunks": [
           "当",
           "地"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w12.mp3"
       }
     },
     {
@@ -3189,7 +3404,8 @@
         "chunks": [
           "大",
           "量"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w13.mp3"
       }
     },
     {
@@ -3203,7 +3419,8 @@
         "chunks": [
           "工",
           "程"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w14.mp3"
       }
     },
     {
@@ -3217,7 +3434,8 @@
         "chunks": [
           "奇",
           "迹"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w15.mp3"
       }
     },
     {
@@ -3231,7 +3449,8 @@
         "chunks": [
           "环",
           "绕"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w16.mp3"
       }
     },
     {
@@ -3245,7 +3464,8 @@
         "chunks": [
           "条",
           "幅"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w17.mp3"
       }
     },
     {
@@ -3259,7 +3479,8 @@
         "chunks": [
           "栽",
           "树"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w18.mp3"
       }
     },
     {
@@ -3273,7 +3494,8 @@
         "chunks": [
           "耸",
           "立"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w19.mp3"
       }
     },
     {
@@ -3287,7 +3509,8 @@
         "chunks": [
           "镜",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w20.mp3"
       }
     },
     {
@@ -3301,7 +3524,8 @@
         "chunks": [
           "狮",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w21.mp3"
       }
     },
     {
@@ -3315,7 +3539,8 @@
         "chunks": [
           "柱",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w22.mp3"
       }
     },
     {
@@ -3329,7 +3554,8 @@
         "chunks": [
           "栏",
           "杆"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w23.mp3"
       }
     },
     {
@@ -3343,7 +3569,8 @@
         "chunks": [
           "人",
           "物"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w24.mp3"
       }
     },
     {
@@ -3357,7 +3584,8 @@
         "chunks": [
           "建",
           "筑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w25.mp3"
       }
     },
     {
@@ -3371,7 +3599,8 @@
         "chunks": [
           "游",
           "人"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w26.mp3"
       }
     },
     {
@@ -3385,7 +3614,8 @@
         "chunks": [
           "姿",
           "态"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w27.mp3"
       }
     },
     {
@@ -3399,7 +3629,8 @@
         "chunks": [
           "拉",
           "萨"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w28.mp3"
       }
     },
     {
@@ -3413,7 +3644,8 @@
         "chunks": [
           "昭",
           "告"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w29.mp3"
       }
     },
     {
@@ -3427,7 +3659,8 @@
         "chunks": [
           "陵",
           "寝"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w30.mp3"
       }
     },
     {
@@ -3441,7 +3674,8 @@
         "chunks": [
           "严",
           "峻"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w31.mp3"
       }
     },
     {
@@ -3455,7 +3689,8 @@
         "chunks": [
           "扩",
           "大"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w32.mp3"
       }
     },
     {
@@ -3471,7 +3706,8 @@
           "隐",
           "约",
           "约"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w33.mp3"
       }
     },
     {
@@ -3487,7 +3723,8 @@
           "清",
           "气",
           "爽"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w34.mp3"
       }
     },
     {
@@ -3501,7 +3738,8 @@
         "chunks": [
           "尼",
           "姑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w35.mp3"
       }
     },
     {
@@ -3515,7 +3753,8 @@
         "chunks": [
           "丝",
           "绸"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w36.mp3"
       }
     },
     {
@@ -3529,7 +3768,8 @@
         "chunks": [
           "走",
           "廊"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w37.mp3"
       }
     },
     {
@@ -3543,7 +3783,8 @@
         "chunks": [
           "景",
           "观"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w38.mp3"
       }
     },
     {
@@ -3558,7 +3799,8 @@
           "半",
           "山",
           "腰"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w39.mp3"
       }
     },
     {
@@ -3573,7 +3815,8 @@
           "都",
           "江",
           "堰"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w40.mp3"
       }
     },
     {
@@ -3589,7 +3832,8 @@
           "山",
           "峻",
           "岭"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w41.mp3"
       }
     },
     {
@@ -3605,7 +3849,8 @@
           "碧",
           "辉",
           "煌"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u6-w42.mp3"
       }
     },
     {
@@ -3633,7 +3878,8 @@
         "chunks": [
           "虽",
           "然"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w01.mp3"
       }
     },
     {
@@ -3647,7 +3893,8 @@
         "chunks": [
           "拳",
           "头"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w02.mp3"
       }
     },
     {
@@ -3661,7 +3908,8 @@
         "chunks": [
           "故",
           "意"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w03.mp3"
       }
     },
     {
@@ -3675,7 +3923,8 @@
         "chunks": [
           "神",
           "气"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w04.mp3"
       }
     },
     {
@@ -3689,7 +3938,8 @@
         "chunks": [
           "忙",
           "乱"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w05.mp3"
       }
     },
     {
@@ -3703,7 +3953,8 @@
         "chunks": [
           "鞋",
           "子"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w06.mp3"
       }
     },
     {
@@ -3717,7 +3968,8 @@
         "chunks": [
           "助",
           "威"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w07.mp3"
       }
     },
     {
@@ -3731,7 +3983,8 @@
         "chunks": [
           "胳",
           "膊"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w08.mp3"
       }
     },
     {
@@ -3745,7 +3998,8 @@
         "chunks": [
           "纷",
           "纷"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w09.mp3"
       }
     },
     {
@@ -3759,7 +4013,8 @@
         "chunks": [
           "可",
           "笑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w10.mp3"
       }
     },
     {
@@ -3773,7 +4028,8 @@
         "chunks": [
           "鹅",
           "毛"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w11.mp3"
       }
     },
     {
@@ -3787,7 +4043,8 @@
         "chunks": [
           "骑",
           "马"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w12.mp3"
       }
     },
     {
@@ -3801,7 +4058,8 @@
         "chunks": [
           "横",
           "竖"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w13.mp3"
       }
     },
     {
@@ -3815,7 +4073,8 @@
         "chunks": [
           "竟",
           "然"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w14.mp3"
       }
     },
     {
@@ -3829,7 +4088,8 @@
         "chunks": [
           "胸",
           "膛"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w15.mp3"
       }
     },
     {
@@ -3843,7 +4103,8 @@
         "chunks": [
           "拖",
           "拉"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w16.mp3"
       }
     },
     {
@@ -3857,7 +4118,8 @@
         "chunks": [
           "把",
           "握"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w17.mp3"
       }
     },
     {
@@ -3871,7 +4133,8 @@
         "chunks": [
           "摔",
           "跤"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w18.mp3"
       }
     },
     {
@@ -3885,7 +4148,8 @@
         "chunks": [
           "文",
           "艺"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w19.mp3"
       }
     },
     {
@@ -3899,7 +4163,8 @@
         "chunks": [
           "表",
           "演"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w20.mp3"
       }
     },
     {
@@ -3913,7 +4178,8 @@
         "chunks": [
           "角",
           "色"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w21.mp3"
       }
     },
     {
@@ -3927,7 +4193,8 @@
         "chunks": [
           "排",
           "练"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w22.mp3"
       }
     },
     {
@@ -3941,7 +4208,8 @@
         "chunks": [
           "咱",
           "俩"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w23.mp3"
       }
     },
     {
@@ -3955,7 +4223,8 @@
         "chunks": [
           "主",
           "意"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w24.mp3"
       }
     },
     {
@@ -3969,7 +4238,8 @@
         "chunks": [
           "充",
           "分"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w25.mp3"
       }
     },
     {
@@ -3983,7 +4253,8 @@
         "chunks": [
           "捧",
           "场"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w26.mp3"
       }
     },
     {
@@ -3997,7 +4268,8 @@
         "chunks": [
           "提",
           "示"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w27.mp3"
       }
     },
     {
@@ -4011,7 +4283,8 @@
         "chunks": [
           "演",
           "技"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w28.mp3"
       }
     },
     {
@@ -4025,7 +4298,8 @@
         "chunks": [
           "撤",
           "换"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w29.mp3"
       }
     },
     {
@@ -4039,7 +4313,8 @@
         "chunks": [
           "推",
           "开"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w30.mp3"
       }
     },
     {
@@ -4053,7 +4328,8 @@
         "chunks": [
           "摘",
           "抄"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w31.mp3"
       }
     },
     {
@@ -4067,7 +4343,8 @@
         "chunks": [
           "等",
           "候"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w32.mp3"
       }
     },
     {
@@ -4081,7 +4358,8 @@
         "chunks": [
           "戎",
           "马"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w33.mp3"
       }
     },
     {
@@ -4095,7 +4373,8 @@
         "chunks": [
           "诸",
           "位"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w34.mp3"
       }
     },
     {
@@ -4109,7 +4388,8 @@
         "chunks": [
           "竞",
           "争"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w35.mp3"
       }
     },
     {
@@ -4123,7 +4403,8 @@
         "chunks": [
           "唯",
           "独"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w36.mp3"
       }
     },
     {
@@ -4137,7 +4418,8 @@
         "chunks": [
           "韭",
           "菜"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w37.mp3"
       }
     },
     {
@@ -4151,7 +4433,8 @@
         "chunks": [
           "芹",
           "菜"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w38.mp3"
       }
     },
     {
@@ -4165,7 +4448,8 @@
         "chunks": [
           "辣",
           "椒"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w39.mp3"
       }
     },
     {
@@ -4179,7 +4463,8 @@
         "chunks": [
           "大",
           "蒜"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w40.mp3"
       }
     },
     {
@@ -4193,7 +4478,8 @@
         "chunks": [
           "红",
           "薯"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w41.mp3"
       }
     },
     {
@@ -4207,7 +4493,8 @@
         "chunks": [
           "莲",
           "藕"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w42.mp3"
       }
     },
     {
@@ -4221,7 +4508,8 @@
         "chunks": [
           "芋",
           "头"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w43.mp3"
       }
     },
     {
@@ -4235,7 +4523,8 @@
         "chunks": [
           "生",
           "姜"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w44.mp3"
       }
     },
     {
@@ -4251,7 +4540,8 @@
           "缘",
           "无",
           "故"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w45.mp3"
       }
     },
     {
@@ -4267,7 +4557,8 @@
           "堂",
           "大",
           "笑"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w46.mp3"
       }
     },
     {
@@ -4281,7 +4572,8 @@
         "chunks": [
           "布",
           "鞋"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w47.mp3"
       }
     },
     {
@@ -4295,7 +4587,8 @@
         "chunks": [
           "表",
           "态"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w48.mp3"
       }
     },
     {
@@ -4311,7 +4604,8 @@
           "情",
           "达",
           "理"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w49.mp3"
       }
     },
     {
@@ -4327,7 +4621,8 @@
           "头",
           "丧",
           "气"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u7-w50.mp3"
       }
     },
     {
@@ -4355,7 +4650,8 @@
         "chunks": [
           "主",
           "席"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w01.mp3"
       }
     },
     {
@@ -4369,7 +4665,8 @@
         "chunks": [
           "举",
           "行"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w02.mp3"
       }
     },
     {
@@ -4383,7 +4680,8 @@
         "chunks": [
           "心",
           "情"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w03.mp3"
       }
     },
     {
@@ -4397,7 +4695,8 @@
         "chunks": [
           "补",
           "充"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w04.mp3"
       }
     },
     {
@@ -4411,7 +4710,8 @@
         "chunks": [
           "激",
           "动"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w05.mp3"
       }
     },
     {
@@ -4425,7 +4725,8 @@
         "chunks": [
           "状",
           "态"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w06.mp3"
       }
     },
     {
@@ -4439,7 +4740,8 @@
         "chunks": [
           "奉",
           "献"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w07.mp3"
       }
     },
     {
@@ -4453,7 +4755,8 @@
         "chunks": [
           "训",
           "练"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w08.mp3"
       }
     },
     {
@@ -4467,7 +4770,8 @@
         "chunks": [
           "建",
           "设"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w09.mp3"
       }
     },
     {
@@ -4481,7 +4785,8 @@
         "chunks": [
           "抛",
           "弃"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w10.mp3"
       }
     },
     {
@@ -4495,7 +4800,8 @@
         "chunks": [
           "亿",
           "万"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w11.mp3"
       }
     },
     {
@@ -4509,7 +4815,8 @@
         "chunks": [
           "勤",
           "劳"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w12.mp3"
       }
     },
     {
@@ -4523,7 +4830,8 @@
         "chunks": [
           "邀",
           "请"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w13.mp3"
       }
     },
     {
@@ -4537,7 +4845,8 @@
         "chunks": [
           "崛",
           "起"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w14.mp3"
       }
     },
     {
@@ -4551,7 +4860,8 @@
         "chunks": [
           "严",
           "肃"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w15.mp3"
       }
     },
     {
@@ -4565,7 +4875,8 @@
         "chunks": [
           "干",
           "脆"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w16.mp3"
       }
     },
     {
@@ -4579,7 +4890,8 @@
         "chunks": [
           "默",
           "默"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w17.mp3"
       }
     },
     {
@@ -4593,7 +4905,8 @@
         "chunks": [
           "清",
           "晰"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w18.mp3"
       }
     },
     {
@@ -4607,7 +4920,8 @@
         "chunks": [
           "离",
           "开"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w19.mp3"
       }
     },
     {
@@ -4621,7 +4935,8 @@
         "chunks": [
           "非",
           "凡"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w20.mp3"
       }
     },
     {
@@ -4635,7 +4950,8 @@
         "chunks": [
           "惩",
           "处"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w21.mp3"
       }
     },
     {
@@ -4649,7 +4965,8 @@
         "chunks": [
           "训",
           "斥"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w22.mp3"
       }
     },
     {
@@ -4663,7 +4980,8 @@
         "chunks": [
           "燃",
           "烧"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w23.mp3"
       }
     },
     {
@@ -4677,7 +4995,8 @@
         "chunks": [
           "随",
           "便"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w24.mp3"
       }
     },
     {
@@ -4693,7 +5012,8 @@
           "心",
           "忄",
           "不"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w25.mp3"
       }
     },
     {
@@ -4707,7 +5027,8 @@
         "chunks": [
           "响",
           "亮"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w26.mp3"
       }
     },
     {
@@ -4721,7 +5042,8 @@
         "chunks": [
           "词",
           "语"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w27.mp3"
       }
     },
     {
@@ -4737,7 +5059,8 @@
           "匍",
           "艹",
           "匋"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w28.mp3"
       }
     },
     {
@@ -4751,7 +5074,8 @@
         "chunks": [
           "水",
           "杯"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w29.mp3"
       }
     },
     {
@@ -4765,7 +5089,8 @@
         "chunks": [
           "塞",
           "外"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w30.mp3"
       }
     },
     {
@@ -4779,7 +5104,8 @@
         "chunks": [
           "秦",
           "朝"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w31.mp3"
       }
     },
     {
@@ -4793,7 +5119,8 @@
         "chunks": [
           "将",
           "领"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w32.mp3"
       }
     },
     {
@@ -4807,7 +5134,8 @@
         "chunks": [
           "杰",
           "出"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w33.mp3"
       }
     },
     {
@@ -4821,7 +5149,8 @@
         "chunks": [
           "鬼",
           "怪"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w34.mp3"
       }
     },
     {
@@ -4835,7 +5164,8 @@
         "chunks": [
           "英",
           "雄"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w35.mp3"
       }
     },
     {
@@ -4849,7 +5179,8 @@
         "chunks": [
           "项",
           "目"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w36.mp3"
       }
     },
     {
@@ -4863,7 +5194,8 @@
         "chunks": [
           "出",
           "席"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w37.mp3"
       }
     },
     {
@@ -4877,7 +5209,8 @@
         "chunks": [
           "教",
           "练"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w38.mp3"
       }
     },
     {
@@ -4892,7 +5225,8 @@
           "运",
           "动",
           "员"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w39.mp3"
       }
     },
     {
@@ -4908,7 +5242,8 @@
           "有",
           "所",
           "思"
-        ]
+        ],
+        "audio": "assets/kp-cn4-u8-w40.mp3"
       }
     },
     {

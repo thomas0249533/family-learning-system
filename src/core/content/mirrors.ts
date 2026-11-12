@@ -23,9 +23,18 @@ export const CONTENT_DIST_DIR = 'content-dist'
 
 export const CATALOG_FILE = 'content-catalog.json'
 
-/** 最小 fetch 接口：只用到 ok / status / text()，测试的 mock 不用抬整个 Response */
+/**
+ * 最小 fetch 接口：文本类请求只用到 ok / status / text()；
+ * V3.1.8 起音频/图片资产归档走二进制通道，可选提供 arrayBuffer()。
+ * 测试的 mock 不用抬整个 Response —— 不下载资产的用例根本不会调到 arrayBuffer。
+ */
 export interface FetchLike {
-  (url: string): Promise<{ ok: boolean; status?: number; text(): Promise<string> }>
+  (url: string): Promise<{
+    ok: boolean
+    status?: number
+    text(): Promise<string>
+    arrayBuffer?: () => Promise<ArrayBuffer>
+  }>
 }
 
 /** 单个分发文件的候选地址（顺序即优先级） */
@@ -55,10 +64,39 @@ export async function fetchTextWithMirrors(relPath: string, fetcher: FetchLike):
 }
 
 /** SHA-256 十六进制摘要（小写），用于目录与文件内容的一致性核对 */
-export async function sha256Hex(text: string): Promise<string> {
-  const data = new TextEncoder().encode(text)
-  const digest = await crypto.subtle.digest('SHA-256', data)
+export async function sha256HexBytes(bytes: Uint8Array): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', bytes)
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('')
+}
+
+/** 文本版：字符串先编码成字节再过摘要（与 sha256HexBytes 同一条实现） */
+export async function sha256Hex(text: string): Promise<string> {
+  return sha256HexBytes(new TextEncoder().encode(text))
+}
+
+/**
+ * V3.1.8 · 按镜像顺序拉二进制（音频/图片资产归档）。
+ * 与 fetchTextWithMirrors 同源同序：某个源网络层失败或 HTTP 非 2xx 就换下一个，
+ * 全部失败抛错并带上每个源的具体原因。
+ */
+export async function fetchArrayBufferWithMirrors(
+  relPath: string,
+  fetcher: FetchLike,
+): Promise<Uint8Array> {
+  const urls = contentMirrorUrls(relPath)
+  const errors: string[] = []
+  for (const url of urls) {
+    try {
+      const res = await fetcher(url)
+      if (!res.ok) throw new Error(`HTTP ${res.status ?? '?'}`)
+      if (!res.arrayBuffer) throw new Error('fetcher 未提供 arrayBuffer 能力')
+      const buf = await res.arrayBuffer()
+      return new Uint8Array(buf)
+    } catch (e) {
+      errors.push(`${new URL(url).host}: ${e instanceof Error ? e.message : String(e)}`)
+    }
+  }
+  throw new Error(`所有镜像均不可达 —— ${errors.join('；')}`)
 }

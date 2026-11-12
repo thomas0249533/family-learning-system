@@ -19,14 +19,16 @@
  */
 
 import { createHash } from 'crypto'
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'fs'
-import { join, relative } from 'path'
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync, statSync } from 'fs'
+import { join, relative, dirname } from 'path'
+import { zipSync } from 'fflate'
 import { normalizePackage } from '../src/core/importer/normalizePackage'
 import { rewriteIdsInPackage } from './lib/idRewrite'
 
 const ROOT = join(__dirname, '..')
 const CONTENT_DIR = join(ROOT, 'content')
 const DIST_DIR = join(ROOT, 'content-dist')
+const ASSETS_DIR = join(DIST_DIR, 'assets')
 const CATALOG_FILE = join(DIST_DIR, 'content-catalog.json')
 
 const force = process.argv.includes('--force')
@@ -37,6 +39,12 @@ interface DistEntry {
   title: string
   sha256: string
   size: number
+  /** 内容源目录（含 assets/ 的相对位置） */
+  pkgDir: string
+  /** V3.1.8 · 本包内容里实际引用到的资产文件名（assets/ 之后那段），用于精准打包 */
+  assetRefs: string[]
+  /** V3.1.8 · 离线资产归档（音频/图片），若有 */
+  assets?: { file: string; sha256: string }
 }
 
 /** 本地日期 YYYY-MM-DD（不许 toISOString —— 那是 UTC 口径，日期会漂） */
@@ -140,6 +148,8 @@ for (const file of packageFiles) {
     title: String(raw.manifest.title ?? packageId),
     sha256: sha256(text),
     size: Buffer.byteLength(text, 'utf8'),
+    pkgDir: dirname(file),
+    assetRefs: collectReferencedAssets(raw),
   })
   // 记下内容，等 stale 检查全部通过后再统一写盘
   ;(entries[entries.length - 1] as DistEntry & { _text: string })._text = text
@@ -153,10 +163,129 @@ if (stale.length > 0 && !force) {
   process.exit(1)
 }
 
+/**
+ * 收集一个包内容里**实际引用**的资产文件名（assets/ 之后的那一段）。
+ *
+ * 为什么按引用收集而不是把整个 assets/ 目录打包：同一个内容源目录（如
+ * `content/chinese-4-up-rjb/`）下往往躺着好几个独立包（unit-u1…u8、base、daily…），
+ * 它们共享一个 `assets/` 文件夹。若整目录打包，每个包都会背走别人的几百个文件、
+ * 还产生一堆引用不到的孤儿资产。只有「本包真正引用到的」才该进本包的归档。
+ *
+ * 覆盖三处引用点：知识点 `metadata.audio`、知识点 `image`、题目 `image`。
+ */
+function collectReferencedAssets(raw: any): string[] {
+  const refs = new Set<string>()
+  const push = (v: unknown) => {
+    if (typeof v === 'string' && v.startsWith('assets/')) refs.add(v.slice('assets/'.length))
+  }
+  for (const kp of raw?.knowledgePoints ?? []) {
+    push(kp?.metadata?.audio)
+    push(kp?.image)
+  }
+  const scanExercises = (list: any[]) => {
+    for (const ex of list ?? []) push(ex?.image)
+  }
+  for (const u of raw?.units ?? []) {
+    for (const t of u?.topics ?? []) scanExercises(t?.exercises)
+  }
+  scanExercises(raw?.exercises)
+  return [...refs]
+}
+
+/**
+ * V3.1.8 · 把某个学习包「实际引用到的」离线资产（音频/图片）打包成单个 assets.zip，
+ * 落到 content-dist/assets/<packageId>/assets.zip。
+ *
+ * 查找策略：先在本包内容源目录的 `assets/` **直接子文件**里找（词汇包音频就在根下，
+ * 如 `assets/<kpId>.mp3`）；找不到时**递归兜底**到 `assets/` 的二级子目录
+ * （少数图片包把图错放在 `assets/<pkg>/x.svg`，而内容引用的是扁平的 `assets/x.svg`，
+ * 递归兜底恰好能把路径对上，顺手修掉「图永远显示不出来」的旧问题）。
+ * 无论哪种来源，归档里一律存成 `assets/<name>`，与内容引用路径严格一致。
+ *
+ * 返回归档相对分发目录的 relPath 与 sha256；没有可打包资产时返回 null。
+ */
+function bundleAssets(
+  pkgDir: string,
+  packageId: string,
+  refs: string[],
+): { file: string; sha256: string } | null {
+  if (!refs || refs.length === 0) return null
+  const assetsDir = join(pkgDir, 'assets')
+  if (!existsSync(assetsDir)) return null
+
+  // 平铺层：assets/ 直接子文件（name → 物理路径）
+  const flat = new Map<string, string>()
+  for (const name of readdirSync(assetsDir)) {
+    const full = join(assetsDir, name)
+    let st: ReturnType<typeof statSync>
+    try {
+      st = statSync(full)
+    } catch {
+      continue
+    }
+    if (st.isFile()) flat.set(name, full)
+  }
+  // 递归层：assets/ 下所有子目录里的文件（name → 物理路径，取首个命中，去重）
+  const nested = new Map<string, string>()
+  const walk = (dir: string) => {
+    for (const name of readdirSync(dir)) {
+      const full = join(dir, name)
+      let st: ReturnType<typeof statSync>
+      try {
+        st = statSync(full)
+      } catch {
+        continue
+      }
+      if (st.isDirectory()) walk(full)
+      else if (!nested.has(name)) nested.set(name, full)
+    }
+  }
+  for (const name of readdirSync(assetsDir)) {
+    const full = join(assetsDir, name)
+    let st: ReturnType<typeof statSync>
+    try {
+      st = statSync(full)
+    } catch {
+      continue
+    }
+    if (st.isDirectory()) walk(full)
+  }
+
+  const files: Record<string, Uint8Array> = {}
+  for (const ref of refs) {
+    const name = ref.startsWith('assets/') ? ref.slice('assets/'.length) : ref
+    const full = flat.get(name) ?? nested.get(name)
+    if (!full) continue // 源里没有这个文件（如放错位置的图），跳过、不阻断其它资产
+    try {
+      files[`assets/${name}`] = new Uint8Array(readFileSync(full))
+    } catch {
+      continue
+    }
+  }
+  if (Object.keys(files).length === 0) return null
+  const zip = zipSync(files, { level: 6 })
+  const outDir = join(ASSETS_DIR, packageId)
+  mkdirSync(outDir, { recursive: true })
+  writeFileSync(join(outDir, 'assets.zip'), zip)
+  return { file: `assets/${packageId}/assets.zip`, sha256: createHash('sha256').update(zip).digest('hex') }
+}
+
 mkdirSync(DIST_DIR, { recursive: true })
+mkdirSync(ASSETS_DIR, { recursive: true })
 const catalog = {
   updatedAt: localDate(),
-  packages: entries.map(({ packageId, version, title, sha256: h }) => ({ packageId, version, title, sha256: h })),
+  packages: entries.map((e) => {
+    // 资产归档与包 JSON 同源同步：先打 zip 再写 catalog，保证 sha256 一致
+    const assets = bundleAssets(e.pkgDir, e.packageId, e.assetRefs)
+    if (assets) e.assets = assets
+    return {
+      packageId: e.packageId,
+      version: e.version,
+      title: e.title,
+      sha256: e.sha256,
+      ...(e.assets ? { assets: e.assets } : {}),
+    }
+  }),
 }
 
 for (const e of entries) {
@@ -164,8 +293,9 @@ for (const e of entries) {
 }
 writeFileSync(CATALOG_FILE, JSON.stringify(catalog, null, 2) + '\n')
 
+const assetPkgs = entries.filter((e) => e.assets).length
 console.log(`✅ content-dist 生成完毕：${entries.length} 个包${skipped ? `（另跳过 ${skipped} 个非包文件）` : ''}`)
-console.log(`   目录 updatedAt: ${catalog.updatedAt}`)
+console.log(`   目录 updatedAt: ${catalog.updatedAt}${assetPkgs ? `，其中 ${assetPkgs} 个包带离线资产归档` : ''}`)
 if (force && stale.length > 0) {
   console.warn(`⚠️ --force 越过了 ${stale.length} 个"内容变了版本没升"的包（本次不会推给家庭端）`)
 }

@@ -129,6 +129,9 @@ const TABLE_NAMES = [
   // 表在 db v8 才有，但它不属于 v3/v4/v5 任何一个历史形态的索引清单，
   // 所以索引单独放在 POST_V5_INDICES（见下），不污染那三份预设。
   'cardCompletions',
+  // V2.12 · 学习包图片/音频资产（db v7 才有）。与 cardCompletions 同理：历史预设里没有，
+  // 索引放 POST_V5_INDICES；contentUpdater 的「更新顺带分发离线资产」路径要读写它。
+  'packageAssets',
 ] as const
 export type TableName = (typeof TABLE_NAMES)[number]
 
@@ -142,6 +145,7 @@ export type TableName = (typeof TABLE_NAMES)[number]
  */
 const POST_V5_INDICES: Record<string, readonly string[]> = {
   cardCompletions: ['[profileId+kind+targetId]', 'profileId', 'kind'],
+  packageAssets: ['[packageId+path]', 'packageId'],
 }
 
 /** 每张表的默认主键（与 schema 的 `++id` / `key` 对应） */
@@ -153,6 +157,7 @@ const DEFAULT_KEY: Record<TableName, (r: Row) => any> = {
   examSessions: (r) => r.id,
   topicSessions: (r) => r.id,
   cardCompletions: (r) => r.id,
+  packageAssets: (r) => r.id,
 }
 
 /** 哪些表是自增主键 */
@@ -164,6 +169,7 @@ const AUTO_ID: Record<TableName, boolean> = {
   examSessions: true,
   topicSessions: true,
   cardCompletions: true,
+  packageAssets: true,
 }
 
 export interface TableOpts {
@@ -187,6 +193,7 @@ export interface WhereChain {
   equals(value: any): {
     first(): Promise<Row | undefined>
     toArray(): Promise<Row[]>
+    delete(): Promise<void>
   }
 }
 
@@ -217,6 +224,7 @@ export interface FakeDexie {
   examSessions: FakeTable
   topicSessions: FakeTable
   cardCompletions: FakeTable
+  packageAssets: FakeTable
   /** 喂给 `vi.mock('@/db', () => ({ db: fake.db }))` 的对象 */
   db: {
     packages: FakeTable
@@ -226,6 +234,7 @@ export interface FakeDexie {
     examSessions: FakeTable
     topicSessions: FakeTable
     cardCompletions: FakeTable
+    packageAssets: FakeTable
     transaction(mode: any, ...args: any[]): Promise<any>
   }
   /**
@@ -441,6 +450,14 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
               async toArray() {
                 return rows.filter((r) => matches(r, value)).map((r) => ({ ...r }))
               },
+              async delete() {
+                // 真 Dexie 的 Collection.delete()：删掉所有命中的行
+                const matched = rows.filter((r) => matches(r, value))
+                for (const r of matched) {
+                  const i = rows.indexOf(r)
+                  if (i >= 0) rows.splice(i, 1)
+                }
+              },
             }
           },
         }
@@ -462,6 +479,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     examSessions: tables.examSessions,
     topicSessions: tables.topicSessions,
     cardCompletions: tables.cardCompletions,
+    packageAssets: tables.packageAssets,
 
     /**
      * 手写事务：提交前快照涉及的表，抛错时整张还原。
@@ -496,6 +514,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     examSessions: tables.examSessions,
     topicSessions: tables.topicSessions,
     cardCompletions: tables.cardCompletions,
+    packageAssets: tables.packageAssets,
     db,
     failOn,
     writes,

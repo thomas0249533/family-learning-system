@@ -359,6 +359,9 @@ async function onCheckContentUpdate(): Promise<void> {
     for (const f of done.failed) {
       message.error(`${f.packageId} 更新失败：${f.reason}`)
     }
+    for (const w of done.warnings ?? []) {
+      message.warning(`${w.packageId}：${w.message}`)
+    }
   } catch (e) {
     // checkForUpdates 内部已把网络失败折进 ok:false；走到这里属于意外异常，兜住别白屏
     message.error(`检查更新异常：${e instanceof Error ? e.message : String(e)}`)
@@ -402,6 +405,7 @@ async function onRepairSelected(): Promise<void> {
       message.success(`已重新下载 ${done.updated.length} 个学习包`)
     }
     for (const f of done.failed) message.error(`${f.packageId} 下载失败：${f.reason}`)
+    for (const w of done.warnings ?? []) message.warning(`${w.packageId}：${w.message}`)
     repairResult.value = `成功 ${done.updated.length} 个${done.failed.length > 0 ? `，失败 ${done.failed.length} 个：${done.failed[0].reason}` : ''}`
     if (done.failed.length === 0) showRepairModal.value = false
   } catch (e) {
@@ -427,6 +431,7 @@ async function onInstallSelected(): Promise<void> {
     }
     const parts: string[] = []
     if (done.updated.length > 0) parts.push(`成功 ${done.updated.length} 个`)
+    for (const w of done.warnings ?? []) message.warning(`${w.packageId}：${w.message}`)
     if (done.failed.length > 0) parts.push(`失败 ${done.failed.length} 个：${done.failed[0].reason}`)
     installResult.value = parts.join('；')
     for (const f of done.failed) {

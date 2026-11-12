@@ -13,7 +13,7 @@
     "edition": "沪教版",
     "title": "四上英语 · 词汇（沪教版牛津上海 8 单元 + 附录）",
     "dependencies": [],
-    "version": "1.1.2"
+    "version": "1.1.3"
   },
   "knowledgePoints": [
     {
@@ -23,7 +23,8 @@
       "content": "城市",
       "metadata": {
         "word": "city",
-        "meaning": "城市"
+        "meaning": "城市",
+        "audio": "assets/kp-sh4en-u1-w01.mp3"
       }
     },
     {
@@ -37,7 +38,8 @@
         "chunks": [
           "build",
           "ing"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u1-w02.mp3"
       }
     },
     {
@@ -47,7 +49,8 @@
       "content": "公寓",
       "metadata": {
         "word": "flat",
-        "meaning": "公寓"
+        "meaning": "公寓",
+        "audio": "assets/kp-sh4en-u1-w03.mp3"
       }
     },
     {
@@ -57,7 +60,8 @@
       "content": "大街；街道",
       "metadata": {
         "word": "street",
-        "meaning": "大街；街道"
+        "meaning": "大街；街道",
+        "audio": "assets/kp-sh4en-u1-w04.mp3"
       }
     },
     {
@@ -71,7 +75,8 @@
         "chunks": [
           "count",
           "ry"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u1-w05.mp3"
       }
     },
     {
@@ -81,7 +86,8 @@
       "content": "农场",
       "metadata": {
         "word": "farm",
-        "meaning": "农场"
+        "meaning": "农场",
+        "audio": "assets/kp-sh4en-u1-w06.mp3"
       }
     },
     {
@@ -91,7 +97,8 @@
       "content": "房屋；房子",
       "metadata": {
         "word": "house",
-        "meaning": "房屋；房子"
+        "meaning": "房屋；房子",
+        "audio": "assets/kp-sh4en-u1-w07.mp3"
       }
     },
     {
@@ -101,7 +108,8 @@
       "content": "人；人们",
       "metadata": {
         "word": "people",
-        "meaning": "人；人们"
+        "meaning": "人；人们",
+        "audio": "assets/kp-sh4en-u1-w08.mp3"
       }
     },
     {
@@ -111,7 +119,8 @@
       "content": "住；居住",
       "metadata": {
         "word": "live",
-        "meaning": "住；居住"
+        "meaning": "住；居住",
+        "audio": "assets/kp-sh4en-u1-w09.mp3"
       }
     },
     {
@@ -121,7 +130,8 @@
       "content": "许多",
       "metadata": {
         "word": "many",
-        "meaning": "许多"
+        "meaning": "许多",
+        "audio": "assets/kp-sh4en-u1-w10.mp3"
       }
     },
     {
@@ -131,7 +141,8 @@
       "content": "地方",
       "metadata": {
         "word": "place",
-        "meaning": "地方"
+        "meaning": "地方",
+        "audio": "assets/kp-sh4en-u1-w11.mp3"
       }
     },
     {
@@ -141,7 +152,8 @@
       "content": "安静的",
       "metadata": {
         "word": "quiet",
-        "meaning": "安静的"
+        "meaning": "安静的",
+        "audio": "assets/kp-sh4en-u1-w12.mp3"
       }
     },
     {
@@ -151,7 +163,8 @@
       "content": "各种各样的",
       "metadata": {
         "word": "all kinds of",
-        "meaning": "各种各样的"
+        "meaning": "各种各样的",
+        "audio": "assets/kp-sh4en-u1-w13.mp3"
       }
     },
     {
@@ -161,7 +174,8 @@
       "content": "许多",
       "metadata": {
         "word": "a lot of",
-        "meaning": "许多"
+        "meaning": "许多",
+        "audio": "assets/kp-sh4en-u1-w14.mp3"
       }
     },
     {
@@ -171,7 +185,8 @@
       "content": "老鹰",
       "metadata": {
         "word": "eagle",
-        "meaning": "老鹰"
+        "meaning": "老鹰",
+        "audio": "assets/kp-sh4en-u2-w01.mp3"
       }
     },
     {
@@ -181,7 +196,8 @@
       "content": "猫头鹰",
       "metadata": {
         "word": "owl",
-        "meaning": "猫头鹰"
+        "meaning": "猫头鹰",
+        "audio": "assets/kp-sh4en-u2-w02.mp3"
       }
     },
     {
@@ -195,7 +211,8 @@
         "chunks": [
           "honey",
           "bee"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u2-w03.mp3"
       }
     },
     {
@@ -205,7 +222,8 @@
       "content": "巢穴",
       "metadata": {
         "word": "nest",
-        "meaning": "巢穴"
+        "meaning": "巢穴",
+        "audio": "assets/kp-sh4en-u2-w04.mp3"
       }
     },
     {
@@ -215,7 +233,8 @@
       "content": "他的；她们的；它们的",
       "metadata": {
         "word": "their",
-        "meaning": "他的；她们的；它们的"
+        "meaning": "他的；她们的；它们的",
+        "audio": "assets/kp-sh4en-u2-w05.mp3"
       }
     },
     {
@@ -225,7 +244,8 @@
       "content": "树洞",
       "metadata": {
         "word": "tree hole",
-        "meaning": "树洞"
+        "meaning": "树洞",
+        "audio": "assets/kp-sh4en-u2-w06.mp3"
       }
     },
     {
@@ -235,7 +255,8 @@
       "content": "安全的",
       "metadata": {
         "word": "safe",
-        "meaning": "安全的"
+        "meaning": "安全的",
+        "audio": "assets/kp-sh4en-u2-w07.mp3"
       }
     },
     {
@@ -245,7 +266,8 @@
       "content": "那里；在那里",
       "metadata": {
         "word": "there",
-        "meaning": "那里；在那里"
+        "meaning": "那里；在那里",
+        "audio": "assets/kp-sh4en-u2-w08.mp3"
       }
     },
     {
@@ -255,7 +277,8 @@
       "content": "蛇",
       "metadata": {
         "word": "snake",
-        "meaning": "蛇"
+        "meaning": "蛇",
+        "audio": "assets/kp-sh4en-u2-w09.mp3"
       }
     },
     {
@@ -265,7 +288,8 @@
       "content": "蜂巢",
       "metadata": {
         "word": "hive",
-        "meaning": "蜂巢"
+        "meaning": "蜂巢",
+        "audio": "assets/kp-sh4en-u2-w10.mp3"
       }
     },
     {
@@ -279,7 +303,8 @@
         "chunks": [
           "und",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u2-w11.mp3"
       }
     },
     {
@@ -289,7 +314,8 @@
       "content": "晚上",
       "metadata": {
         "word": "at night",
-        "meaning": "晚上"
+        "meaning": "晚上",
+        "audio": "assets/kp-sh4en-u2-w12.mp3"
       }
     },
     {
@@ -299,7 +325,8 @@
       "content": "酿蜜",
       "metadata": {
         "word": "make honey",
-        "meaning": "酿蜜"
+        "meaning": "酿蜜",
+        "audio": "assets/kp-sh4en-u2-w13.mp3"
       }
     },
     {
@@ -309,7 +336,8 @@
       "content": "加；加号",
       "metadata": {
         "word": "plus",
-        "meaning": "加；加号"
+        "meaning": "加；加号",
+        "audio": "assets/kp-sh4en-u3-w01.mp3"
       }
     },
     {
@@ -323,7 +351,8 @@
         "chunks": [
           "equ",
           "al"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u3-w02.mp3"
       }
     },
     {
@@ -337,7 +366,8 @@
         "chunks": [
           "answ",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u3-w03.mp3"
       }
     },
     {
@@ -351,7 +381,8 @@
         "chunks": [
           "min",
           "us"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u3-w04.mp3"
       }
     },
     {
@@ -361,7 +392,8 @@
       "content": "奇数",
       "metadata": {
         "word": "odd numbers",
-        "meaning": "奇数"
+        "meaning": "奇数",
+        "audio": "assets/kp-sh4en-u3-w05.mp3"
       }
     },
     {
@@ -371,7 +403,8 @@
       "content": "偶数",
       "metadata": {
         "word": "even numbers",
-        "meaning": "偶数"
+        "meaning": "偶数",
+        "audio": "assets/kp-sh4en-u3-w06.mp3"
       }
     },
     {
@@ -381,7 +414,8 @@
       "content": "使用",
       "metadata": {
         "word": "use",
-        "meaning": "使用"
+        "meaning": "使用",
+        "audio": "assets/kp-sh4en-u3-w07.mp3"
       }
     },
     {
@@ -391,7 +425,8 @@
       "content": "帮助",
       "metadata": {
         "word": "help",
-        "meaning": "帮助"
+        "meaning": "帮助",
+        "audio": "assets/kp-sh4en-u3-w08.mp3"
       }
     },
     {
@@ -401,7 +436,8 @@
       "content": "（按顺序）数数",
       "metadata": {
         "word": "count",
-        "meaning": "（按顺序）数数"
+        "meaning": "（按顺序）数数",
+        "audio": "assets/kp-sh4en-u3-w09.mp3"
       }
     },
     {
@@ -411,7 +447,8 @@
       "content": "东西；事物",
       "metadata": {
         "word": "thing",
-        "meaning": "东西；事物"
+        "meaning": "东西；事物",
+        "audio": "assets/kp-sh4en-u3-w10.mp3"
       }
     },
     {
@@ -421,7 +458,8 @@
       "content": "说",
       "metadata": {
         "word": "say",
-        "meaning": "说"
+        "meaning": "说",
+        "audio": "assets/kp-sh4en-u3-w11.mp3"
       }
     },
     {
@@ -431,7 +469,8 @@
       "content": "每天",
       "metadata": {
         "word": "every day",
-        "meaning": "每天"
+        "meaning": "每天",
+        "audio": "assets/kp-sh4en-u3-w12.mp3"
       }
     },
     {
@@ -441,7 +480,8 @@
       "content": "（用于问数量）多少",
       "metadata": {
         "word": "how many",
-        "meaning": "（用于问数量）多少"
+        "meaning": "（用于问数量）多少",
+        "audio": "assets/kp-sh4en-u3-w13.mp3"
       }
     },
     {
@@ -455,7 +495,8 @@
         "chunks": [
           "super",
           "market"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u4-w01.mp3"
       }
     },
     {
@@ -465,7 +506,8 @@
       "content": "一袋米",
       "metadata": {
         "word": "a bag of rice",
-        "meaning": "一袋米"
+        "meaning": "一袋米",
+        "audio": "assets/kp-sh4en-u4-w02.mp3"
       }
     },
     {
@@ -475,7 +517,8 @@
       "content": "一盒鸡蛋",
       "metadata": {
         "word": "a box of eggs",
-        "meaning": "一盒鸡蛋"
+        "meaning": "一盒鸡蛋",
+        "audio": "assets/kp-sh4en-u4-w03.mp3"
       }
     },
     {
@@ -485,7 +528,8 @@
       "content": "一瓶果汁",
       "metadata": {
         "word": "a bottle of juice",
-        "meaning": "一瓶果汁"
+        "meaning": "一瓶果汁",
+        "audio": "assets/kp-sh4en-u4-w04.mp3"
       }
     },
     {
@@ -495,7 +539,8 @@
       "content": "购买",
       "metadata": {
         "word": "buy",
-        "meaning": "购买"
+        "meaning": "购买",
+        "audio": "assets/kp-sh4en-u4-w05.mp3"
       }
     },
     {
@@ -505,7 +550,8 @@
       "content": "出售",
       "metadata": {
         "word": "sell",
-        "meaning": "出售"
+        "meaning": "出售",
+        "audio": "assets/kp-sh4en-u4-w06.mp3"
       }
     },
     {
@@ -515,7 +561,8 @@
       "content": "需要",
       "metadata": {
         "word": "need",
-        "meaning": "需要"
+        "meaning": "需要",
+        "audio": "assets/kp-sh4en-u4-w07.mp3"
       }
     },
     {
@@ -525,7 +572,8 @@
       "content": "购物单",
       "metadata": {
         "word": "shopping list",
-        "meaning": "购物单"
+        "meaning": "购物单",
+        "audio": "assets/kp-sh4en-u4-w08.mp3"
       }
     },
     {
@@ -535,7 +583,8 @@
       "content": "每个",
       "metadata": {
         "word": "each",
-        "meaning": "每个"
+        "meaning": "每个",
+        "audio": "assets/kp-sh4en-u4-w09.mp3"
       }
     },
     {
@@ -545,7 +594,8 @@
       "content": "队；组",
       "metadata": {
         "word": "team",
-        "meaning": "队；组"
+        "meaning": "队；组",
+        "audio": "assets/kp-sh4en-u4-w10.mp3"
       }
     },
     {
@@ -559,7 +609,8 @@
         "chunks": [
           "fast",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u4-w11.mp3"
       }
     },
     {
@@ -573,7 +624,8 @@
         "chunks": [
           "can",
           "dy"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u4-w12.mp3"
       }
     },
     {
@@ -583,7 +635,8 @@
       "content": "面包",
       "metadata": {
         "word": "bread",
-        "meaning": "面包"
+        "meaning": "面包",
+        "audio": "assets/kp-sh4en-u4-w13.mp3"
       }
     },
     {
@@ -593,7 +646,8 @@
       "content": "获胜",
       "metadata": {
         "word": "win",
-        "meaning": "获胜"
+        "meaning": "获胜",
+        "audio": "assets/kp-sh4en-u4-w14.mp3"
       }
     },
     {
@@ -603,7 +657,8 @@
       "content": "还；仍然",
       "metadata": {
         "word": "still",
-        "meaning": "还；仍然"
+        "meaning": "还；仍然",
+        "audio": "assets/kp-sh4en-u4-w15.mp3"
       }
     },
     {
@@ -617,7 +672,8 @@
         "chunks": [
           "spr",
           "ing"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w01.mp3"
       }
     },
     {
@@ -627,7 +683,8 @@
       "content": "温暖的",
       "metadata": {
         "word": "warm",
-        "meaning": "温暖的"
+        "meaning": "温暖的",
+        "audio": "assets/kp-sh4en-u5-w02.mp3"
       }
     },
     {
@@ -641,7 +698,8 @@
         "chunks": [
           "summ",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w03.mp3"
       }
     },
     {
@@ -651,7 +709,8 @@
       "content": "炎热的",
       "metadata": {
         "word": "hot",
-        "meaning": "炎热的"
+        "meaning": "炎热的",
+        "audio": "assets/kp-sh4en-u5-w04.mp3"
       }
     },
     {
@@ -665,7 +724,8 @@
         "chunks": [
           "aut",
           "umn"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w05.mp3"
       }
     },
     {
@@ -675,7 +735,8 @@
       "content": "凉爽的",
       "metadata": {
         "word": "cool",
-        "meaning": "凉爽的"
+        "meaning": "凉爽的",
+        "audio": "assets/kp-sh4en-u5-w06.mp3"
       }
     },
     {
@@ -689,7 +750,8 @@
         "chunks": [
           "wint",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w07.mp3"
       }
     },
     {
@@ -699,7 +761,8 @@
       "content": "寒冷的",
       "metadata": {
         "word": "cold",
-        "meaning": "寒冷的"
+        "meaning": "寒冷的",
+        "audio": "assets/kp-sh4en-u5-w08.mp3"
       }
     },
     {
@@ -713,7 +776,8 @@
         "chunks": [
           "par",
           "ent"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w09.mp3"
       }
     },
     {
@@ -727,7 +791,8 @@
         "chunks": [
           "seas",
           "on"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w10.mp3"
       }
     },
     {
@@ -737,7 +802,8 @@
       "content": "年",
       "metadata": {
         "word": "year",
-        "meaning": "年"
+        "meaning": "年",
+        "audio": "assets/kp-sh4en-u5-w11.mp3"
       }
     },
     {
@@ -747,7 +813,8 @@
       "content": "（使）生长",
       "metadata": {
         "word": "grow",
-        "meaning": "（使）生长"
+        "meaning": "（使）生长",
+        "audio": "assets/kp-sh4en-u5-w12.mp3"
       }
     },
     {
@@ -757,7 +824,8 @@
       "content": "变得",
       "metadata": {
         "word": "get",
-        "meaning": "变得"
+        "meaning": "变得",
+        "audio": "assets/kp-sh4en-u5-w13.mp3"
       }
     },
     {
@@ -771,7 +839,8 @@
         "chunks": [
           "usual",
           "ly"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w14.mp3"
       }
     },
     {
@@ -785,7 +854,8 @@
         "chunks": [
           "aft",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w15.mp3"
       }
     },
     {
@@ -795,7 +865,8 @@
       "content": "落下",
       "metadata": {
         "word": "fall",
-        "meaning": "落下"
+        "meaning": "落下",
+        "audio": "assets/kp-sh4en-u5-w16.mp3"
       }
     },
     {
@@ -805,7 +876,8 @@
       "content": "（使）变成",
       "metadata": {
         "word": "turn",
-        "meaning": "（使）变成"
+        "meaning": "（使）变成",
+        "audio": "assets/kp-sh4en-u5-w17.mp3"
       }
     },
     {
@@ -819,7 +891,8 @@
         "chunks": [
           "of",
           "ten"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w18.mp3"
       }
     },
     {
@@ -829,7 +902,8 @@
       "content": "下雪；雪",
       "metadata": {
         "word": "snow",
-        "meaning": "下雪；雪"
+        "meaning": "下雪；雪",
+        "audio": "assets/kp-sh4en-u5-w19.mp3"
       }
     },
     {
@@ -839,7 +913,8 @@
       "content": "然后",
       "metadata": {
         "word": "then",
-        "meaning": "然后"
+        "meaning": "然后",
+        "audio": "assets/kp-sh4en-u5-w20.mp3"
       }
     },
     {
@@ -853,7 +928,8 @@
         "chunks": [
           "beg",
           "in"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u5-w21.mp3"
       }
     },
     {
@@ -867,7 +943,8 @@
         "chunks": [
           "flow",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u6-w01.mp3"
       }
     },
     {
@@ -877,7 +954,8 @@
       "content": "果实；水果",
       "metadata": {
         "word": "fruit",
-        "meaning": "果实；水果"
+        "meaning": "果实；水果",
+        "audio": "assets/kp-sh4en-u6-w02.mp3"
       }
     },
     {
@@ -887,7 +965,8 @@
       "content": "叶子",
       "metadata": {
         "word": "leaf",
-        "meaning": "叶子"
+        "meaning": "叶子",
+        "audio": "assets/kp-sh4en-u6-w03.mp3"
       }
     },
     {
@@ -897,7 +976,8 @@
       "content": "分享",
       "metadata": {
         "word": "share",
-        "meaning": "分享"
+        "meaning": "分享",
+        "audio": "assets/kp-sh4en-u6-w04.mp3"
       }
     },
     {
@@ -911,7 +991,8 @@
         "chunks": [
           "wat",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u6-w05.mp3"
       }
     },
     {
@@ -921,7 +1002,8 @@
       "content": "多少钱；多少",
       "metadata": {
         "word": "how much",
-        "meaning": "多少钱；多少"
+        "meaning": "多少钱；多少",
+        "audio": "assets/kp-sh4en-u6-w06.mp3"
       }
     },
     {
@@ -931,7 +1013,8 @@
       "content": "一块巧克力",
       "metadata": {
         "word": "a bar of chocolate",
-        "meaning": "一块巧克力"
+        "meaning": "一块巧克力",
+        "audio": "assets/kp-sh4en-u6-w07.mp3"
       }
     },
     {
@@ -941,7 +1024,8 @@
       "content": "它们在这里。",
       "metadata": {
         "word": "Here they are",
-        "meaning": "它们在这里。"
+        "meaning": "它们在这里。",
+        "audio": "assets/kp-sh4en-u6-w08.mp3"
       }
     },
     {
@@ -951,7 +1035,8 @@
       "content": "好的。",
       "metadata": {
         "word": "All right",
-        "meaning": "好的。"
+        "meaning": "好的。",
+        "audio": "assets/kp-sh4en-u6-w09.mp3"
       }
     },
     {
@@ -961,7 +1046,8 @@
       "content": "你想要什么？",
       "metadata": {
         "word": "What would you like",
-        "meaning": "你想要什么？"
+        "meaning": "你想要什么？",
+        "audio": "assets/kp-sh4en-u6-w10.mp3"
       }
     },
     {
@@ -971,7 +1057,8 @@
       "content": "土壤",
       "metadata": {
         "word": "soil",
-        "meaning": "土壤"
+        "meaning": "土壤",
+        "audio": "assets/kp-sh4en-u6-w11.mp3"
       }
     },
     {
@@ -985,7 +1072,8 @@
         "chunks": [
           "sunflow",
           "er"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u6-w12.mp3"
       }
     },
     {
@@ -995,7 +1083,8 @@
       "content": "种子",
       "metadata": {
         "word": "seed",
-        "meaning": "种子"
+        "meaning": "种子",
+        "audio": "assets/kp-sh4en-u6-w13.mp3"
       }
     },
     {
@@ -1005,7 +1094,8 @@
       "content": "放",
       "metadata": {
         "word": "put",
-        "meaning": "放"
+        "meaning": "放",
+        "audio": "assets/kp-sh4en-u6-w14.mp3"
       }
     },
     {
@@ -1015,7 +1105,8 @@
       "content": "植物",
       "metadata": {
         "word": "plant",
-        "meaning": "植物"
+        "meaning": "植物",
+        "audio": "assets/kp-sh4en-u6-w15.mp3"
       }
     },
     {
@@ -1025,7 +1116,8 @@
       "content": "根",
       "metadata": {
         "word": "root",
-        "meaning": "根"
+        "meaning": "根",
+        "audio": "assets/kp-sh4en-u6-w16.mp3"
       }
     },
     {
@@ -1035,7 +1127,8 @@
       "content": "高的",
       "metadata": {
         "word": "tall",
-        "meaning": "高的"
+        "meaning": "高的",
+        "audio": "assets/kp-sh4en-u6-w17.mp3"
       }
     },
     {
@@ -1045,7 +1138,8 @@
       "content": "圆形的",
       "metadata": {
         "word": "round",
-        "meaning": "圆形的"
+        "meaning": "圆形的",
+        "audio": "assets/kp-sh4en-u6-w18.mp3"
       }
     },
     {
@@ -1055,7 +1149,8 @@
       "content": "食用油",
       "metadata": {
         "word": "oil",
-        "meaning": "食用油"
+        "meaning": "食用油",
+        "audio": "assets/kp-sh4en-u6-w19.mp3"
       }
     },
     {
@@ -1069,7 +1164,8 @@
         "chunks": [
           "amaz",
           "ing"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u6-w20.mp3"
       }
     },
     {
@@ -1079,7 +1175,8 @@
       "content": "绿灯",
       "metadata": {
         "word": "green light",
-        "meaning": "绿灯"
+        "meaning": "绿灯",
+        "audio": "assets/kp-sh4en-u7-w01.mp3"
       }
     },
     {
@@ -1089,7 +1186,8 @@
       "content": "红灯",
       "metadata": {
         "word": "red light",
-        "meaning": "红灯"
+        "meaning": "红灯",
+        "audio": "assets/kp-sh4en-u7-w02.mp3"
       }
     },
     {
@@ -1099,7 +1197,8 @@
       "content": "等待",
       "metadata": {
         "word": "wait",
-        "meaning": "等待"
+        "meaning": "等待",
+        "audio": "assets/kp-sh4en-u7-w03.mp3"
       }
     },
     {
@@ -1109,7 +1208,8 @@
       "content": "穿越；越过",
       "metadata": {
         "word": "cross",
-        "meaning": "穿越；越过"
+        "meaning": "穿越；越过",
+        "audio": "assets/kp-sh4en-u7-w04.mp3"
       }
     },
     {
@@ -1119,7 +1219,8 @@
       "content": "先生",
       "metadata": {
         "word": "Mr",
-        "meaning": "先生"
+        "meaning": "先生",
+        "audio": "assets/kp-sh4en-u7-w05.mp3"
       }
     },
     {
@@ -1129,7 +1230,8 @@
       "content": "路线；道路",
       "metadata": {
         "word": "way",
-        "meaning": "路线；道路"
+        "meaning": "路线；道路",
+        "audio": "assets/kp-sh4en-u7-w06.mp3"
       }
     },
     {
@@ -1139,7 +1241,8 @@
       "content": "路；马路",
       "metadata": {
         "word": "road",
-        "meaning": "路；马路"
+        "meaning": "路；马路",
+        "audio": "assets/kp-sh4en-u7-w07.mp3"
       }
     },
     {
@@ -1149,7 +1252,8 @@
       "content": "应该",
       "metadata": {
         "word": "should",
-        "meaning": "应该"
+        "meaning": "应该",
+        "audio": "assets/kp-sh4en-u7-w08.mp3"
       }
     },
     {
@@ -1159,7 +1263,8 @@
       "content": "首先",
       "metadata": {
         "word": "first",
-        "meaning": "首先"
+        "meaning": "首先",
+        "audio": "assets/kp-sh4en-u7-w09.mp3"
       }
     },
     {
@@ -1169,7 +1274,8 @@
       "content": "左边",
       "metadata": {
         "word": "left",
-        "meaning": "左边"
+        "meaning": "左边",
+        "audio": "assets/kp-sh4en-u7-w10.mp3"
       }
     },
     {
@@ -1179,7 +1285,8 @@
       "content": "小汽车",
       "metadata": {
         "word": "car",
-        "meaning": "小汽车"
+        "meaning": "小汽车",
+        "audio": "assets/kp-sh4en-u7-w11.mp3"
       }
     },
     {
@@ -1189,7 +1296,8 @@
       "content": "右边",
       "metadata": {
         "word": "right",
-        "meaning": "右边"
+        "meaning": "右边",
+        "audio": "assets/kp-sh4en-u7-w12.mp3"
       }
     },
     {
@@ -1199,7 +1307,8 @@
       "content": "滑（滑板）",
       "metadata": {
         "word": "skate",
-        "meaning": "滑（滑板）"
+        "meaning": "滑（滑板）",
+        "audio": "assets/kp-sh4en-u7-w13.mp3"
       }
     },
     {
@@ -1213,7 +1322,8 @@
         "chunks": [
           "sor",
           "ry"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u7-w14.mp3"
       }
     },
     {
@@ -1223,7 +1333,8 @@
       "content": "小孩；孩子",
       "metadata": {
         "word": "kid",
-        "meaning": "小孩；孩子"
+        "meaning": "小孩；孩子",
+        "audio": "assets/kp-sh4en-u7-w15.mp3"
       }
     },
     {
@@ -1233,7 +1344,8 @@
       "content": "迟到",
       "metadata": {
         "word": "late",
-        "meaning": "迟到"
+        "meaning": "迟到",
+        "audio": "assets/kp-sh4en-u7-w16.mp3"
       }
     },
     {
@@ -1243,7 +1355,8 @@
       "content": "做得好！",
       "metadata": {
         "word": "Good job",
-        "meaning": "做得好！"
+        "meaning": "做得好！",
+        "audio": "assets/kp-sh4en-u7-w17.mp3"
       }
     },
     {
@@ -1253,7 +1366,8 @@
       "content": "快点！",
       "metadata": {
         "word": "Hurry up",
-        "meaning": "快点！"
+        "meaning": "快点！",
+        "audio": "assets/kp-sh4en-u7-w18.mp3"
       }
     },
     {
@@ -1263,7 +1377,8 @@
       "content": "购物",
       "metadata": {
         "word": "go shopping",
-        "meaning": "购物"
+        "meaning": "购物",
+        "audio": "assets/kp-sh4en-u8-w01.mp3"
       }
     },
     {
@@ -1273,7 +1388,8 @@
       "content": "去散步",
       "metadata": {
         "word": "go for a walk",
-        "meaning": "去散步"
+        "meaning": "去散步",
+        "audio": "assets/kp-sh4en-u8-w02.mp3"
       }
     },
     {
@@ -1283,7 +1399,8 @@
       "content": "使用互联网",
       "metadata": {
         "word": "use the internet",
-        "meaning": "使用互联网"
+        "meaning": "使用互联网",
+        "audio": "assets/kp-sh4en-u8-w03.mp3"
       }
     },
     {
@@ -1293,7 +1410,8 @@
       "content": "锻炼",
       "metadata": {
         "word": "do exercise",
-        "meaning": "锻炼"
+        "meaning": "锻炼",
+        "audio": "assets/kp-sh4en-u8-w04.mp3"
       }
     },
     {
@@ -1303,7 +1421,8 @@
       "content": "做家务",
       "metadata": {
         "word": "do housework",
-        "meaning": "做家务"
+        "meaning": "做家务",
+        "audio": "assets/kp-sh4en-u8-w05.mp3"
       }
     },
     {
@@ -1313,7 +1432,8 @@
       "content": "做园艺",
       "metadata": {
         "word": "do gardening",
-        "meaning": "做园艺"
+        "meaning": "做园艺",
+        "audio": "assets/kp-sh4en-u8-w06.mp3"
       }
     },
     {
@@ -1327,7 +1447,8 @@
         "chunks": [
           "grand",
           "parent"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u8-w07.mp3"
       }
     },
     {
@@ -1337,7 +1458,8 @@
       "content": "星期；周",
       "metadata": {
         "word": "week",
-        "meaning": "星期；周"
+        "meaning": "星期；周",
+        "audio": "assets/kp-sh4en-u8-w08.mp3"
       }
     },
     {
@@ -1347,7 +1469,8 @@
       "content": "工作",
       "metadata": {
         "word": "work",
-        "meaning": "工作"
+        "meaning": "工作",
+        "audio": "assets/kp-sh4en-u8-w09.mp3"
       }
     },
     {
@@ -1361,7 +1484,8 @@
         "chunks": [
           "al",
           "ways"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-u8-w10.mp3"
       }
     },
     {
@@ -1371,7 +1495,8 @@
       "content": "视频博客",
       "metadata": {
         "word": "vlog",
-        "meaning": "视频博客"
+        "meaning": "视频博客",
+        "audio": "assets/kp-sh4en-u8-w11.mp3"
       }
     },
     {
@@ -1381,7 +1506,8 @@
       "content": "看；观看",
       "metadata": {
         "word": "watch",
-        "meaning": "看；观看"
+        "meaning": "看；观看",
+        "audio": "assets/kp-sh4en-u8-w12.mp3"
       }
     },
     {
@@ -1391,7 +1517,8 @@
       "content": "打太极拳",
       "metadata": {
         "word": "do tai chi",
-        "meaning": "打太极拳"
+        "meaning": "打太极拳",
+        "audio": "assets/kp-sh4en-u8-w13.mp3"
       }
     },
     {
@@ -1401,7 +1528,8 @@
       "content": "收拾；整理",
       "metadata": {
         "word": "tidy up",
-        "meaning": "收拾；整理"
+        "meaning": "收拾；整理",
+        "audio": "assets/kp-sh4en-u8-w14.mp3"
       }
     },
     {
@@ -1411,7 +1539,8 @@
       "content": "深圳",
       "metadata": {
         "word": "Shenzhen",
-        "meaning": "深圳"
+        "meaning": "深圳",
+        "audio": "assets/kp-sh4en-app-prop-w01.mp3"
       }
     },
     {
@@ -1421,7 +1550,8 @@
       "content": "星星村",
       "metadata": {
         "word": "Star Village",
-        "meaning": "星星村"
+        "meaning": "星星村",
+        "audio": "assets/kp-sh4en-app-prop-w02.mp3"
       }
     },
     {
@@ -1431,7 +1561,8 @@
       "content": "绿色农场",
       "metadata": {
         "word": "Green Farm",
-        "meaning": "绿色农场"
+        "meaning": "绿色农场",
+        "audio": "assets/kp-sh4en-app-prop-w03.mp3"
       }
     },
     {
@@ -1441,7 +1572,8 @@
       "content": "纽约市",
       "metadata": {
         "word": "New York",
-        "meaning": "纽约市"
+        "meaning": "纽约市",
+        "audio": "assets/kp-sh4en-app-prop-w04.mp3"
       }
     },
     {
@@ -1451,7 +1583,8 @@
       "content": "新加坡市",
       "metadata": {
         "word": "Singapore",
-        "meaning": "新加坡市"
+        "meaning": "新加坡市",
+        "audio": "assets/kp-sh4en-app-prop-w05.mp3"
       }
     },
     {
@@ -1461,7 +1594,8 @@
       "content": "重阳节",
       "metadata": {
         "word": "the Double Ninth Festival",
-        "meaning": "重阳节"
+        "meaning": "重阳节",
+        "audio": "assets/kp-sh4en-app-prop-w06.mp3"
       }
     },
     {
@@ -1471,7 +1605,8 @@
       "content": "一月",
       "metadata": {
         "word": "January",
-        "meaning": "一月"
+        "meaning": "一月",
+        "audio": "assets/kp-sh4en-app-mon-w01.mp3"
       }
     },
     {
@@ -1481,7 +1616,8 @@
       "content": "二月",
       "metadata": {
         "word": "February",
-        "meaning": "二月"
+        "meaning": "二月",
+        "audio": "assets/kp-sh4en-app-mon-w02.mp3"
       }
     },
     {
@@ -1491,7 +1627,8 @@
       "content": "三月",
       "metadata": {
         "word": "March",
-        "meaning": "三月"
+        "meaning": "三月",
+        "audio": "assets/kp-sh4en-app-mon-w03.mp3"
       }
     },
     {
@@ -1501,7 +1638,8 @@
       "content": "四月",
       "metadata": {
         "word": "April",
-        "meaning": "四月"
+        "meaning": "四月",
+        "audio": "assets/kp-sh4en-app-mon-w04.mp3"
       }
     },
     {
@@ -1511,7 +1649,8 @@
       "content": "五月",
       "metadata": {
         "word": "May",
-        "meaning": "五月"
+        "meaning": "五月",
+        "audio": "assets/kp-sh4en-app-mon-w05.mp3"
       }
     },
     {
@@ -1521,7 +1660,8 @@
       "content": "六月",
       "metadata": {
         "word": "June",
-        "meaning": "六月"
+        "meaning": "六月",
+        "audio": "assets/kp-sh4en-app-mon-w06.mp3"
       }
     },
     {
@@ -1531,7 +1671,8 @@
       "content": "七月",
       "metadata": {
         "word": "July",
-        "meaning": "七月"
+        "meaning": "七月",
+        "audio": "assets/kp-sh4en-app-mon-w07.mp3"
       }
     },
     {
@@ -1541,7 +1682,8 @@
       "content": "八月",
       "metadata": {
         "word": "August",
-        "meaning": "八月"
+        "meaning": "八月",
+        "audio": "assets/kp-sh4en-app-mon-w08.mp3"
       }
     },
     {
@@ -1551,7 +1693,8 @@
       "content": "九月",
       "metadata": {
         "word": "September",
-        "meaning": "九月"
+        "meaning": "九月",
+        "audio": "assets/kp-sh4en-app-mon-w09.mp3"
       }
     },
     {
@@ -1561,7 +1704,8 @@
       "content": "十月",
       "metadata": {
         "word": "October",
-        "meaning": "十月"
+        "meaning": "十月",
+        "audio": "assets/kp-sh4en-app-mon-w10.mp3"
       }
     },
     {
@@ -1571,7 +1715,8 @@
       "content": "十一月",
       "metadata": {
         "word": "November",
-        "meaning": "十一月"
+        "meaning": "十一月",
+        "audio": "assets/kp-sh4en-app-mon-w11.mp3"
       }
     },
     {
@@ -1581,7 +1726,8 @@
       "content": "十二月",
       "metadata": {
         "word": "December",
-        "meaning": "十二月"
+        "meaning": "十二月",
+        "audio": "assets/kp-sh4en-app-mon-w12.mp3"
       }
     },
     {
@@ -1591,7 +1737,8 @@
       "content": "一",
       "metadata": {
         "word": "one",
-        "meaning": "一"
+        "meaning": "一",
+        "audio": "assets/kp-sh4en-app-card-w01.mp3"
       }
     },
     {
@@ -1601,7 +1748,8 @@
       "content": "二",
       "metadata": {
         "word": "two",
-        "meaning": "二"
+        "meaning": "二",
+        "audio": "assets/kp-sh4en-app-card-w02.mp3"
       }
     },
     {
@@ -1611,7 +1759,8 @@
       "content": "三",
       "metadata": {
         "word": "three",
-        "meaning": "三"
+        "meaning": "三",
+        "audio": "assets/kp-sh4en-app-card-w03.mp3"
       }
     },
     {
@@ -1621,7 +1770,8 @@
       "content": "四",
       "metadata": {
         "word": "four",
-        "meaning": "四"
+        "meaning": "四",
+        "audio": "assets/kp-sh4en-app-card-w04.mp3"
       }
     },
     {
@@ -1631,7 +1781,8 @@
       "content": "五",
       "metadata": {
         "word": "five",
-        "meaning": "五"
+        "meaning": "五",
+        "audio": "assets/kp-sh4en-app-card-w05.mp3"
       }
     },
     {
@@ -1641,7 +1792,8 @@
       "content": "六",
       "metadata": {
         "word": "six",
-        "meaning": "六"
+        "meaning": "六",
+        "audio": "assets/kp-sh4en-app-card-w06.mp3"
       }
     },
     {
@@ -1655,7 +1807,8 @@
         "chunks": [
           "sev",
           "en"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w07.mp3"
       }
     },
     {
@@ -1665,7 +1818,8 @@
       "content": "八",
       "metadata": {
         "word": "eight",
-        "meaning": "八"
+        "meaning": "八",
+        "audio": "assets/kp-sh4en-app-card-w08.mp3"
       }
     },
     {
@@ -1675,7 +1829,8 @@
       "content": "九",
       "metadata": {
         "word": "nine",
-        "meaning": "九"
+        "meaning": "九",
+        "audio": "assets/kp-sh4en-app-card-w09.mp3"
       }
     },
     {
@@ -1685,7 +1840,8 @@
       "content": "十",
       "metadata": {
         "word": "ten",
-        "meaning": "十"
+        "meaning": "十",
+        "audio": "assets/kp-sh4en-app-card-w10.mp3"
       }
     },
     {
@@ -1699,7 +1855,8 @@
         "chunks": [
           "el",
           "even"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w11.mp3"
       }
     },
     {
@@ -1709,7 +1866,8 @@
       "content": "十二",
       "metadata": {
         "word": "twelve",
-        "meaning": "十二"
+        "meaning": "十二",
+        "audio": "assets/kp-sh4en-app-card-w12.mp3"
       }
     },
     {
@@ -1723,7 +1881,8 @@
         "chunks": [
           "thir",
           "teen"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w13.mp3"
       }
     },
     {
@@ -1737,7 +1896,8 @@
         "chunks": [
           "four",
           "teen"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w14.mp3"
       }
     },
     {
@@ -1751,7 +1911,8 @@
         "chunks": [
           "fif",
           "teen"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w15.mp3"
       }
     },
     {
@@ -1765,7 +1926,8 @@
         "chunks": [
           "six",
           "teen"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w16.mp3"
       }
     },
     {
@@ -1779,7 +1941,8 @@
         "chunks": [
           "sev",
           "enteen"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w17.mp3"
       }
     },
     {
@@ -1793,7 +1956,8 @@
         "chunks": [
           "eigh",
           "teen"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w18.mp3"
       }
     },
     {
@@ -1807,7 +1971,8 @@
         "chunks": [
           "nin",
           "eteen"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w19.mp3"
       }
     },
     {
@@ -1821,7 +1986,8 @@
         "chunks": [
           "twen",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w20.mp3"
       }
     },
     {
@@ -1831,7 +1997,8 @@
       "content": "二十一",
       "metadata": {
         "word": "twenty-one",
-        "meaning": "二十一"
+        "meaning": "二十一",
+        "audio": "assets/kp-sh4en-app-card-w21.mp3"
       }
     },
     {
@@ -1841,7 +2008,8 @@
       "content": "二十二",
       "metadata": {
         "word": "twenty-two",
-        "meaning": "二十二"
+        "meaning": "二十二",
+        "audio": "assets/kp-sh4en-app-card-w22.mp3"
       }
     },
     {
@@ -1851,7 +2019,8 @@
       "content": "二十三",
       "metadata": {
         "word": "twenty-three",
-        "meaning": "二十三"
+        "meaning": "二十三",
+        "audio": "assets/kp-sh4en-app-card-w23.mp3"
       }
     },
     {
@@ -1865,7 +2034,8 @@
         "chunks": [
           "thir",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w24.mp3"
       }
     },
     {
@@ -1879,7 +2049,8 @@
         "chunks": [
           "for",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w25.mp3"
       }
     },
     {
@@ -1893,7 +2064,8 @@
         "chunks": [
           "fif",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w26.mp3"
       }
     },
     {
@@ -1907,7 +2079,8 @@
         "chunks": [
           "six",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w27.mp3"
       }
     },
     {
@@ -1921,7 +2094,8 @@
         "chunks": [
           "seven",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w28.mp3"
       }
     },
     {
@@ -1935,7 +2109,8 @@
         "chunks": [
           "eigh",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w29.mp3"
       }
     },
     {
@@ -1949,7 +2124,8 @@
         "chunks": [
           "nine",
           "ty"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-card-w30.mp3"
       }
     },
     {
@@ -1959,7 +2135,8 @@
       "content": "一百",
       "metadata": {
         "word": "one hundred",
-        "meaning": "一百"
+        "meaning": "一百",
+        "audio": "assets/kp-sh4en-app-card-w31.mp3"
       }
     },
     {
@@ -1969,7 +2146,8 @@
       "content": "第一",
       "metadata": {
         "word": "first",
-        "meaning": "第一"
+        "meaning": "第一",
+        "audio": "assets/kp-sh4en-app-ord-w01.mp3"
       }
     },
     {
@@ -1983,7 +2161,8 @@
         "chunks": [
           "sec",
           "ond"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w02.mp3"
       }
     },
     {
@@ -1993,7 +2172,8 @@
       "content": "第三",
       "metadata": {
         "word": "third",
-        "meaning": "第三"
+        "meaning": "第三",
+        "audio": "assets/kp-sh4en-app-ord-w03.mp3"
       }
     },
     {
@@ -2003,7 +2183,8 @@
       "content": "第四",
       "metadata": {
         "word": "fourth",
-        "meaning": "第四"
+        "meaning": "第四",
+        "audio": "assets/kp-sh4en-app-ord-w04.mp3"
       }
     },
     {
@@ -2013,7 +2194,8 @@
       "content": "第五",
       "metadata": {
         "word": "fifth",
-        "meaning": "第五"
+        "meaning": "第五",
+        "audio": "assets/kp-sh4en-app-ord-w05.mp3"
       }
     },
     {
@@ -2023,7 +2205,8 @@
       "content": "第六",
       "metadata": {
         "word": "sixth",
-        "meaning": "第六"
+        "meaning": "第六",
+        "audio": "assets/kp-sh4en-app-ord-w06.mp3"
       }
     },
     {
@@ -2037,7 +2220,8 @@
         "chunks": [
           "sev",
           "enth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w07.mp3"
       }
     },
     {
@@ -2047,7 +2231,8 @@
       "content": "第八",
       "metadata": {
         "word": "eighth",
-        "meaning": "第八"
+        "meaning": "第八",
+        "audio": "assets/kp-sh4en-app-ord-w08.mp3"
       }
     },
     {
@@ -2057,7 +2242,8 @@
       "content": "第九",
       "metadata": {
         "word": "ninth",
-        "meaning": "第九"
+        "meaning": "第九",
+        "audio": "assets/kp-sh4en-app-ord-w09.mp3"
       }
     },
     {
@@ -2067,7 +2253,8 @@
       "content": "第十",
       "metadata": {
         "word": "tenth",
-        "meaning": "第十"
+        "meaning": "第十",
+        "audio": "assets/kp-sh4en-app-ord-w10.mp3"
       }
     },
     {
@@ -2081,7 +2268,8 @@
         "chunks": [
           "el",
           "eventh"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w11.mp3"
       }
     },
     {
@@ -2091,7 +2279,8 @@
       "content": "第十二",
       "metadata": {
         "word": "twelfth",
-        "meaning": "第十二"
+        "meaning": "第十二",
+        "audio": "assets/kp-sh4en-app-ord-w12.mp3"
       }
     },
     {
@@ -2105,7 +2294,8 @@
         "chunks": [
           "thir",
           "teenth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w13.mp3"
       }
     },
     {
@@ -2119,7 +2309,8 @@
         "chunks": [
           "four",
           "teenth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w14.mp3"
       }
     },
     {
@@ -2133,7 +2324,8 @@
         "chunks": [
           "fif",
           "teenth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w15.mp3"
       }
     },
     {
@@ -2147,7 +2339,8 @@
         "chunks": [
           "six",
           "teenth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w16.mp3"
       }
     },
     {
@@ -2161,7 +2354,8 @@
         "chunks": [
           "sev",
           "enteenth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w17.mp3"
       }
     },
     {
@@ -2175,7 +2369,8 @@
         "chunks": [
           "eigh",
           "teenth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w18.mp3"
       }
     },
     {
@@ -2189,7 +2384,8 @@
         "chunks": [
           "nin",
           "eteenth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w19.mp3"
       }
     },
     {
@@ -2203,7 +2399,8 @@
         "chunks": [
           "twen",
           "tieth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w20.mp3"
       }
     },
     {
@@ -2213,7 +2410,8 @@
       "content": "第二十一",
       "metadata": {
         "word": "twenty-first",
-        "meaning": "第二十一"
+        "meaning": "第二十一",
+        "audio": "assets/kp-sh4en-app-ord-w21.mp3"
       }
     },
     {
@@ -2223,7 +2421,8 @@
       "content": "第二十二",
       "metadata": {
         "word": "twenty-second",
-        "meaning": "第二十二"
+        "meaning": "第二十二",
+        "audio": "assets/kp-sh4en-app-ord-w22.mp3"
       }
     },
     {
@@ -2233,7 +2432,8 @@
       "content": "第二十三",
       "metadata": {
         "word": "twenty-third",
-        "meaning": "第二十三"
+        "meaning": "第二十三",
+        "audio": "assets/kp-sh4en-app-ord-w23.mp3"
       }
     },
     {
@@ -2243,7 +2443,8 @@
       "content": "第二十四",
       "metadata": {
         "word": "twenty-fourth",
-        "meaning": "第二十四"
+        "meaning": "第二十四",
+        "audio": "assets/kp-sh4en-app-ord-w24.mp3"
       }
     },
     {
@@ -2253,7 +2454,8 @@
       "content": "第二十五",
       "metadata": {
         "word": "twenty-fifth",
-        "meaning": "第二十五"
+        "meaning": "第二十五",
+        "audio": "assets/kp-sh4en-app-ord-w25.mp3"
       }
     },
     {
@@ -2263,7 +2465,8 @@
       "content": "第二十六",
       "metadata": {
         "word": "twenty-sixth",
-        "meaning": "第二十六"
+        "meaning": "第二十六",
+        "audio": "assets/kp-sh4en-app-ord-w26.mp3"
       }
     },
     {
@@ -2273,7 +2476,8 @@
       "content": "第二十七",
       "metadata": {
         "word": "twenty-seventh",
-        "meaning": "第二十七"
+        "meaning": "第二十七",
+        "audio": "assets/kp-sh4en-app-ord-w27.mp3"
       }
     },
     {
@@ -2283,7 +2487,8 @@
       "content": "第二十八",
       "metadata": {
         "word": "twenty-eighth",
-        "meaning": "第二十八"
+        "meaning": "第二十八",
+        "audio": "assets/kp-sh4en-app-ord-w28.mp3"
       }
     },
     {
@@ -2293,7 +2498,8 @@
       "content": "第二十九",
       "metadata": {
         "word": "twenty-ninth",
-        "meaning": "第二十九"
+        "meaning": "第二十九",
+        "audio": "assets/kp-sh4en-app-ord-w29.mp3"
       }
     },
     {
@@ -2307,7 +2513,8 @@
         "chunks": [
           "thir",
           "tieth"
-        ]
+        ],
+        "audio": "assets/kp-sh4en-app-ord-w30.mp3"
       }
     },
     {
@@ -2317,7 +2524,8 @@
       "content": "第三十一",
       "metadata": {
         "word": "thirty-first",
-        "meaning": "第三十一"
+        "meaning": "第三十一",
+        "audio": "assets/kp-sh4en-app-ord-w31.mp3"
       }
     },
     {

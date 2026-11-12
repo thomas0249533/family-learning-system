@@ -20,13 +20,24 @@ import { db } from '@/db'
 import { normalizePackage } from '@core/importer/normalizePackage'
 import { afterPackagesChanged } from '@core/importer/importService'
 import { compareVersions, normalizeVersion } from './version'
-import { CATALOG_FILE, fetchTextWithMirrors, sha256Hex, type FetchLike } from './mirrors'
+import {
+  CATALOG_FILE,
+  fetchTextWithMirrors,
+  fetchArrayBufferWithMirrors,
+  sha256Hex,
+  sha256HexBytes,
+  type FetchLike,
+} from './mirrors'
+import { replacePackageAssets, type IncomingAsset } from '@core/package-manager/packageAssetStore'
+import { unzipSync } from 'fflate'
 
 export interface CatalogPackage {
   packageId: string
   version: string
   title: string
   sha256: string
+  /** V3.1.8 · 该包的离线资产归档（音频/图片），随更新一并分发 */
+  assets?: { file: string; sha256: string }
 }
 
 export interface ContentCatalog {
@@ -40,6 +51,8 @@ export interface UpdatablePackage {
   localVersion: string
   remoteVersion: string
   sha256: string
+  /** V3.1.8 · 随包分发的离线资产归档（若有） */
+  assets?: { file: string; sha256: string }
 }
 
 export interface CheckOutcome {
@@ -56,6 +69,8 @@ export interface CheckOutcome {
 export interface ApplyOutcome {
   updated: string[]
   failed: { packageId: string; reason: string }[]
+  /** V3.1.8 · 包本身更新成功、但离线资产未同步（网络/校验失败）的非阻断告警 */
+  warnings?: { packageId: string; message: string }[]
 }
 
 /** 解析目录文本 → 结构化目录；形状不对一律抛错（拒收脏目录） */
@@ -86,11 +101,19 @@ export function parseCatalog(text: string): ContentCatalog {
     }
     if (seen.has(pkg.packageId)) throw new Error(`目录里 packageId 重复: ${pkg.packageId}`)
     seen.add(pkg.packageId)
+    // V3.1.8 · 资产归档是可选字段：形状不对一律忽略，绝不把脏数据带进校验池
+    const rawAssets = (pkg as Record<string, unknown>).assets
+    const assets =
+      rawAssets && typeof rawAssets === 'object' &&
+      typeof (rawAssets as any).file === 'string' && typeof (rawAssets as any).sha256 === 'string'
+        ? { file: (rawAssets as any).file as string, sha256: (rawAssets as any).sha256 as string }
+        : undefined
     return {
       packageId: pkg.packageId,
       version: pkg.version,
       title: typeof pkg.title === 'string' ? pkg.title : pkg.packageId,
       sha256: pkg.sha256,
+      assets,
     }
   })
   return { updatedAt: String((raw as { updatedAt?: unknown }).updatedAt ?? ''), packages: list }
@@ -128,13 +151,14 @@ export async function checkForUpdates(fetcher: FetchLike): Promise<CheckOutcome>
         localVersion,
         remoteVersion: normalizeVersion(entry.version),
         sha256: entry.sha256,
+        assets: entry.assets,
       })
     }
   }
   return { ok: true, total: catalog.packages.length, updatable, installable }
 }
 
-type WriteResult = { ok: true; packageId: string } | { ok: false; reason: string }
+type WriteResult = { ok: true; packageId: string; warning?: string } | { ok: false; reason: string }
 
 /** 下载 → sha256 核对 → JSON 解析（不写库）。单包更新与批量安装共用 */
 async function fetchVerified(
@@ -211,14 +235,76 @@ async function normalizeAndWrite(
   return { ok: true, packageId: expectedId }
 }
 
-/** 单包更新：下载 → sha256 核对 → 校验 → 覆盖写入 → 统一收尾 */
+/**
+ * V3.1.8 · 把目录声明的离线资产归档（音频/图片）下载、校验、解压并写入 db.packageAssets。
+ *
+ * 为什么是「每包一个 zip」而不是把几百个 mp3 逐个放进分发目录：逐文件下载会产生
+ * 600+ 次 HTTP 请求，任一抖动都难收敛；打成单归档后每包只下 1 个文件，镜像链重试
+ * 也只针对这一个文件。解压复用 importService 已验证过的 fflate 路径；写入走
+ * `replacePackageAssets`（先删后写，以目录为准，孤儿资产自动清除）。
+ *
+ * 资产是「加分项」：包 JSON 本身已写入成功，即使资产分发失败也只告警不回滚包更新
+ * （孩子退化为机械 TTS，与 3.1.7 行为一致，不会比不更新更糟）。
+ */
+async function applyPackageAssets(
+  item: { packageId: string; assets?: { file: string; sha256: string } },
+  fetcher: FetchLike,
+): Promise<{ ok: true } | { ok: false; reason: string }> {
+  if (!item.assets) return { ok: true }
+  let bytes: Uint8Array
+  try {
+    bytes = await fetchArrayBufferWithMirrors(item.assets.file, fetcher)
+  } catch (e) {
+    return { ok: false, reason: `离线资产下载失败：${e instanceof Error ? e.message : String(e)}` }
+  }
+
+  // 完整性：归档 sha256 与目录登记不符 → 拒写入（防损坏/被篡改）
+  const actual = await sha256HexBytes(bytes)
+  if (actual !== item.assets.sha256) {
+    return { ok: false, reason: '离线资产校验失败（sha256 不符），已放弃写入' }
+  }
+
+  let files: Record<string, Uint8Array>
+  try {
+    files = unzipSync(bytes)
+  } catch (e) {
+    return { ok: false, reason: `离线资产解压失败：${e instanceof Error ? e.message : String(e)}` }
+  }
+
+  const incoming: IncomingAsset[] = []
+  for (const [path, data] of Object.entries(files)) {
+    if (!path.startsWith('assets/')) continue // 只收 assets/ 前缀，归档里的目录条目等一律跳过
+    if (!data || data.byteLength === 0) continue
+    incoming.push({ path, bytes: data })
+  }
+  if (incoming.length === 0) return { ok: false, reason: '离线资产归档为空' }
+
+  const result = await replacePackageAssets(item.packageId, incoming)
+  if (result.rejected.length > 0) {
+    return { ok: false, reason: `有 ${result.rejected.length} 个离线资产被拒（如超过单文件 8MB 上限）` }
+  }
+  return { ok: true }
+}
+
+/** 单包更新：下载 → sha256 核对 → 校验 → 覆盖写入 → 统一收尾 → V3.1.8 同步离线资产 */
 export async function applyUpdate(
   item: UpdatablePackage,
   fetcher: FetchLike
 ): Promise<WriteResult> {
   const verified = await fetchVerified(item, fetcher)
   if (!verified.ok) return { ok: false, reason: verified.reason }
-  return normalizeAndWrite(verified.raw, item.packageId)
+  const written = await normalizeAndWrite(verified.raw, item.packageId)
+  if (!written.ok) return written
+  // V3.1.8 · 包 JSON 已写入，再尝试把离线音频/图片资产一并分发下去
+  if (item.assets) {
+    const a = await applyPackageAssets(item, fetcher)
+    if (!a.ok) {
+      // 资产失败不回滚包更新（孩子退化为机械 TTS），但把原因带回，UI 可提示
+      console.warn(`[content-updater] ${item.packageId} 包已更新，但离线资产未同步：${a.reason}`)
+      return { ok: true, packageId: item.packageId, warning: `包已更新，但离线资产未同步：${a.reason}` }
+    }
+  }
+  return { ok: true, packageId: item.packageId }
 }
 
 /**
@@ -248,8 +334,19 @@ export async function installNewPackages(
 
   for (const { item, raw } of ready) {
     const r = await normalizeAndWrite(raw, item.packageId, batchKpIds)
-    if (r.ok) out.updated.push(r.packageId)
-    else out.failed.push({ packageId: item.packageId, reason: r.reason })
+    if (!r.ok) {
+      out.failed.push({ packageId: item.packageId, reason: r.reason })
+      continue
+    }
+    // V3.1.8 · 新包也可能带离线资产（音频/图片），写入后一并分发
+    if (item.assets) {
+      const a = await applyPackageAssets(item, fetcher)
+      if (!a.ok) {
+        out.warnings = out.warnings ?? []
+        out.warnings.push({ packageId: item.packageId, message: a.reason })
+      }
+    }
+    out.updated.push(item.packageId)
   }
   return out
 }
@@ -262,8 +359,15 @@ export async function applyAllUpdates(
   const out: ApplyOutcome = { updated: [], failed: [] }
   for (const item of items) {
     const r = await applyUpdate(item, fetcher)
-    if (r.ok) out.updated.push(r.packageId)
-    else out.failed.push({ packageId: item.packageId, reason: r.reason })
+    if (r.ok) {
+      out.updated.push(r.packageId)
+      if (r.warning) {
+        out.warnings = out.warnings ?? []
+        out.warnings.push({ packageId: item.packageId, message: r.warning })
+      }
+    } else {
+      out.failed.push({ packageId: item.packageId, reason: r.reason })
+    }
   }
   return out
 }
@@ -306,9 +410,17 @@ export async function refreshInstalledPackages(
       localVersion: '',
       remoteVersion: normalizeVersion(item.version),
       sha256: item.sha256,
+      assets: item.assets,
     }, fetcher)
-    if (r.ok) out.updated.push(r.packageId)
-    else out.failed.push({ packageId: item.packageId, reason: r.reason })
+    if (r.ok) {
+      out.updated.push(r.packageId)
+      if (r.warning) {
+        out.warnings = out.warnings ?? []
+        out.warnings.push({ packageId: item.packageId, message: r.warning })
+      }
+    } else {
+      out.failed.push({ packageId: item.packageId, reason: r.reason })
+    }
   }
   return out
 }

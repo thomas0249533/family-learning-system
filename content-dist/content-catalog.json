@@ -5,7 +5,11 @@
       "packageId": "special-chinese-2-up-kantu",
       "version": "1.0.0",
       "title": "二上语文 · 看图写话专项（12 篇）",
-      "sha256": "19f292614d67a6d8321a3eb5c59a72dadccf5ee401f889941f9e9ae54faf7718"
+      "sha256": "19f292614d67a6d8321a3eb5c59a72dadccf5ee401f889941f9e9ae54faf7718",
+      "assets": {
+        "file": "assets/special-chinese-2-up-kantu/assets.zip",
+        "sha256": "d9e98fef5e8bd41aea3cc5425cec28d20b8ccab1d93a40507fce512bdd4e956e"
+      }
     },
     {
       "packageId": "special-chinese-2-up-oral",
@@ -45,9 +49,13 @@
     },
     {
       "packageId": "special-chinese-4-up-vocab",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": "四上语文 · 词汇默写（8 个单元）",
-      "sha256": "a4aa3d48c21402844bbd846fb6f2e2cc637e6b478ca17e0998dda2743346f988"
+      "sha256": "fd76adcb5a79d40e5800cf57ab9f19190e759d73a7487ebe450c2379f5f720f4",
+      "assets": {
+        "file": "assets/special-chinese-4-up-vocab/assets.zip",
+        "sha256": "10a810da7c5befd24dc4d8cc9a0c6875aa3380569693b85351b47b0f47f1a76d"
+      }
     },
     {
       "packageId": "term-chinese-4-up-rjb",
@@ -111,9 +119,13 @@
     },
     {
       "packageId": "special-english-4-down-vocab",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": "四下英语 · 词汇·单词句型语法（PEP 6 单元）",
-      "sha256": "7da7f1a8a36a5917f258e5690172f1aff9d758e87d340e58bc8862029653f0ce"
+      "sha256": "2699d8be3eca94ab1d042fdda9b23fda99353052a32df62ad2d05a453152f945",
+      "assets": {
+        "file": "assets/special-english-4-down-vocab/assets.zip",
+        "sha256": "db528509b8dbbcf3301c3e619dd94b068d254144312ad63e0cb75be41602874c"
+      }
     },
     {
       "packageId": "exam-english-4-up-midterm",
@@ -123,9 +135,13 @@
     },
     {
       "packageId": "special-english-4-up-vocab",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "title": "四上英语 · 词汇（沪教版牛津上海 8 单元 + 附录）",
-      "sha256": "8b43d632c4c3c6c4669be5cfaf0794841c74fc046a4346e2db5964920aa81dd9"
+      "sha256": "46200ff12d64fce6d693fd0d3e63f4f7b1fb5bb9df5d2b4f71177efec08c5979",
+      "assets": {
+        "file": "assets/special-english-4-up-vocab/assets.zip",
+        "sha256": "97f2722c6e07d5c30dee266a4f13799ac372c5cffc2bee811872deb9812f3708"
+      }
     },
     {
       "packageId": "special-english-7-up-birthday",
@@ -251,7 +267,11 @@
       "packageId": "special-english-movers-mock",
       "version": "1.0.2",
       "title": "剑桥 Movers · 全真模拟（阅读写作 33 题）",
-      "sha256": "529bd641fabd277fd1eb9578ce3c05ec0905f7a38dda360fa9f6cd3a92506953"
+      "sha256": "529bd641fabd277fd1eb9578ce3c05ec0905f7a38dda360fa9f6cd3a92506953",
+      "assets": {
+        "file": "assets/special-english-movers-mock/assets.zip",
+        "sha256": "bedd2b4083f4efd8ec49d02bac82c29584bae7acf21a7fbaa628f8b4297e3798"
+      }
     },
     {
       "packageId": "special-english-movers-review",
@@ -263,7 +283,11 @@
       "packageId": "special-english-movers-unit",
       "version": "1.0.2",
       "title": "剑桥 Movers · 单元阅读写作精练",
-      "sha256": "c1b6fcd44b6f574790ddfb01e6bce4dc612884d254f2721f95f7a07985c805a7"
+      "sha256": "c1b6fcd44b6f574790ddfb01e6bce4dc612884d254f2721f95f7a07985c805a7",
+      "assets": {
+        "file": "assets/special-english-movers-unit/assets.zip",
+        "sha256": "b438e33b1b4e4584296855f61da4a873a1938d671061399376762e081d82e110"
+      }
     },
     {
       "packageId": "daily-math-2-up-rjb-45d",
@@ -359,7 +383,11 @@
       "packageId": "special-math-4-up-shape",
       "version": "1.0.0",
       "title": "四年级思维训练 · 巧数图形",
-      "sha256": "ed68ae4f2778513c55c3b93436331e9b7dcee31f26f0c9efea78bc6d72be8038"
+      "sha256": "ed68ae4f2778513c55c3b93436331e9b7dcee31f26f0c9efea78bc6d72be8038",
+      "assets": {
+        "file": "assets/special-math-4-up-shape/assets.zip",
+        "sha256": "64324b04d138a5a94e59144f67969c4aa175ff9b02803fed3ac0863f30025da5"
+      }
     },
     {
       "packageId": "special-math-4-up-u3",
