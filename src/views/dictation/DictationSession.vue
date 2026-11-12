@@ -13,10 +13,7 @@
       :words="words"
       :package-id="packageId"
       :lang="lang"
-      :auto-start="true"
-      :auto-start-mode="'dictation'"
-      :auto-count="words.length"
-      :auto-hide-prompt="true"
+      :initial-count="words.length"
       @finished="onFinished"
       @close="onClose"
     />
@@ -27,17 +24,17 @@
 
 <script setup lang="ts">
 // =====================================================================
-// 词语听写任务（方案 B · 接入每日任务队列）
+// 每日词语背记任务（方案 B · 接入每日任务队列）
 // ---------------------------------------------------------------------
-// 今日任务里点「听写」项 → 跳到这里。它只做一件事：把那 15 个词交给
-// VocabDrill 进入 dictation 模式、关掉中文提示（真听写），孩子听完音写汉字，
-// 一轮写完后 VocabDrill 统一批改。
+// 今日任务里点「背记」项 → 跳到这里。它把这批词交给 VocabDrill 的**入口屏**，
+// 由孩子自己选背记方式（翻面/听音/选择/纸笔听写/拼字块/输入/听写）——
+// 不再像 3.1.8 之前那样硬锁「键入听写」。默认预置整批词数，孩子可自行减少。
 //
-// 完成记账的时机：VocabDrill 批改完一轮会 emit `finished` —— 这里据此把
-// 今日队列项标完成（写的是实际词数与真实耗时），但**不跳转**，让孩子先看到
-// 哪几个词写错了。之后他点「返回词汇表 / ✕」才回今日页结算。
+// 完成记账的时机：VocabDrill 一轮做完（单题模式到 done / 连续模式到 review）都会
+// emit `finished` —— 这里据此把今日队列项标完成（写实际词数与真实耗时）但**不跳转**，
+// 让孩子先看对错。之后点「返回词汇表 / ✕」才回今日页结算。
 //
-// 中途退出（✕ 放弃）不会记账：听写任务要"做完一轮"才算数，半途而废不该点亮。
+// 中途退出（✕ 放弃）不记账：要"做完一轮"才算数，半途而废不该点亮。
 // =====================================================================
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -68,7 +65,7 @@ const lang = computed<'chinese' | 'english'>(() => {
   return subject === 'english' ? 'english' : 'chinese'
 })
 
-const title = computed(() => (lang.value === 'english' ? '单词听写' : '词语听写'))
+const title = computed(() => (lang.value === 'english' ? '单词背记' : '词语背记'))
 
 /** 完整一轮批改后只记账一次（idempotent 兜底） */
 let marked = false

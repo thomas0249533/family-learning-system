@@ -362,7 +362,7 @@ export async function buildPlanCandidates(pid: string = currentProfileId()): Pro
     })
   }
 
-  // ⑤ 词语听写（vocab）：每天一批 15 词，独立通道，不挤占习题预算
+  // ⑤ 词语背记（vocab）：每天一批（约 10 词），独立通道，不挤占习题预算
   // 见 `buildVocabCandidates`。直接 push（每包最多一项，无需去重）。
   out.push(...(await buildVocabCandidates(pid, packages)))
 
@@ -383,7 +383,7 @@ export async function buildPlanCandidates(pid: string = currentProfileId()): Pro
  * 进度口径与 `VocabDrill.writeProgress` 同源：进度行 `packageId = 包id`、
  * `knowledgePointId = 词id`（special 包 owner 解析到自身）。
  */
-const VOCAB_PER_DAY = 15
+const VOCAB_PER_DAY = 10
 
 async function buildVocabCandidates(
   pid: string,
@@ -441,7 +441,7 @@ async function buildVocabCandidates(
 
     const firstLoc = selected[0].loc
     const ids = selected.map((s) => s.id)
-    const label = subject === 'english' ? '单词听写' : '词语听写'
+    const label = subject === 'english' ? '单词背记' : '词语背记'
     result.push({
       kind: 'vocab',
       packageId: pkg.packageId,

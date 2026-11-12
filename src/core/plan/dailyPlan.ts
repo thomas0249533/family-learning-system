@@ -131,8 +131,8 @@ export interface DailyPlan {
 // 常量
 // ===========================================================================
 
-/** 默认目标：24 题 / 20 分钟。双口径都存，切换时不用重算另一个。 */
-export const DEFAULT_GOAL: DailyGoal = { mode: 'questions', questions: 24, minutes: 20 }
+/** 默认目标：15 题 / 15 分钟（小学生单次专注友好；家长端可在 5–120 题间调）。双口径都存，切换时不用重算另一个。 */
+export const DEFAULT_GOAL: DailyGoal = { mode: 'questions', questions: 15, minutes: 15 }
 
 /** 目标上下界（防止设置页填出 0 或 999） */
 export const GOAL_LIMITS = {
@@ -153,9 +153,9 @@ export const KIND_COST: Record<PlanItemKind, DailyPlanTotals> = {
   mistake: { questions: 3, minutes: 3 },
   weak: { questions: 4, minutes: 3 },
   new: { questions: 6, minutes: 5 },
-  // vocab：每天一批 15 词的听写。它不挤占习题预算（第四轮独立追加），
-  // 这里的题量只是展示用（"15 词"），分钟是 15 次「听→写」的粗略估计。
-  vocab: { questions: 15, minutes: 12 },
+  // vocab：每天一批词语背记（约 10 词，见 VOCAB_PER_DAY）。它不挤占习题预算
+  // （第四轮独立追加），这里的题量只是展示上限，实际取 min(15, 该批词数)。
+  vocab: { questions: 15, minutes: 8 },
 }
 
 /**
@@ -190,7 +190,7 @@ export const KIND_LABEL: Record<PlanItemKind, string> = {
   mistake: '错题',
   weak: '弱项',
   new: '新学',
-  vocab: '听写',
+  vocab: '背记',
 }
 
 // ===========================================================================
@@ -302,7 +302,7 @@ export function reasonOf(c: PlanCandidate): string {
     default:
       return '还没学过'
     case 'vocab':
-      return '每天听写 15 个词语，写不出就重练'
+      return `每天背记 ${c.availableQuestions || 10} 个词语，写不出就重练`
   }
 }
 

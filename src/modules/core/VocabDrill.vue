@@ -362,12 +362,18 @@ const props = withDefaults(defineProps<{
   autoCount?: number
   /** 听写时是否隐藏中文提示（默认 true = 真听写） */
   autoHidePrompt?: boolean
+  /**
+   * 入口屏（非 autoStart）预置的每次题数。今日任务传整批词数，
+   * 让孩子不必手动点「全部」；背记模式仍由孩子在入口屏自选。
+   */
+  initialCount?: number
 }>(), {
   topicTitle: '',
   autoStart: false,
   autoStartMode: 'dictation',
   autoCount: 15,
   autoHidePrompt: true,
+  initialCount: 0,
 })
 
 const emit = defineEmits<{
@@ -767,6 +773,13 @@ function nextWord() {
 function finishDrill() {
   stopTimer()
   phase.value = 'done'
+  // 一轮做完（单题模式：翻面/输入/听音/选择）也要通知外层记账 ——
+  // 今日任务靠 `finished` 标记完成；不 emit 会导致这些模式永远不被记完成。
+  emit('finished', {
+    correctCount: correctCount.value,
+    total: sessionWords.value.length,
+    elapsedSeconds: elapsedSeconds.value,
+  })
 }
 
 function confirmExit() {
@@ -793,12 +806,19 @@ function playAudio() {
 
 /** 自动开始（今日任务听写）：跳过入口屏，直接进入听写模式、关提示，立即开一轮 */
 onMounted(() => {
-  if (!props.autoStart) return
   if (props.words.length === 0) return
-  mode.value = props.autoStartMode
-  countPerSession.value = props.autoCount
-  showPromptInDictation.value = !props.autoHidePrompt
-  startDrill()
+  if (props.autoStart) {
+    // 自动开始（旧入口，例如直达听写）：跳过入口屏
+    mode.value = props.autoStartMode
+    countPerSession.value = props.autoCount
+    showPromptInDictation.value = !props.autoHidePrompt
+    startDrill()
+    return
+  }
+  // 入口屏：预置整批题数（今日任务传整批词数），背记模式仍由孩子自选
+  if (props.initialCount > 0) {
+    countPerSession.value = Math.min(props.initialCount, props.words.length)
+  }
 })
 
 onUnmounted(() => {

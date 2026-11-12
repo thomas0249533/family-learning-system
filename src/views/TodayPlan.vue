@@ -214,7 +214,7 @@ const goalMode = computed<GoalMode>(() => plan.value?.goal.mode ?? 'questions')
 const nextItem = computed<DailyPlanItem | null>(() =>
   plan.value ? nextPendingItem(plan.value) : null
 )
-const emptyHint = computed(() => emptyPlanHint(plan.value?.goal ?? { mode: 'questions', questions: 24, minutes: 20 }))
+const emptyHint = computed(() => emptyPlanHint(plan.value?.goal ?? { mode: 'questions', questions: 15, minutes: 15 }))
 
 const percent = computed(() => Math.round((progress.value?.ratio ?? 0) * 100))
 const ringLabel = computed(() => `今日进度 ${percent.value}%`)

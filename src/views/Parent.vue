@@ -504,7 +504,7 @@ const goalModes: Array<{ value: GoalMode; label: string }> = [
   { value: 'questions', label: '按题量' },
   { value: 'minutes', label: '按时长' },
 ]
-const goalForm = ref<DailyGoal>({ mode: 'questions', questions: 24, minutes: 20 })
+const goalForm = ref<DailyGoal>({ mode: 'questions', questions: 15, minutes: 15 })
 const goalMode = computed(() => goalForm.value.mode)
 const todayDoneItems = ref(0)
 const todayTotalItems = ref(0)

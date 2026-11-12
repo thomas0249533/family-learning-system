@@ -52,7 +52,7 @@ function kinds(plan: ReturnType<typeof buildDailyPlan>): PlanItemKind[] {
 // ---------------------------------------------------------------------------
 
 describe('normalizeGoal', () => {
-  it('缺省值 = 24 题 / 20 分钟 / 题量口径', () => {
+  it('缺省值 = 15 题 / 15 分钟 / 题量口径', () => {
     expect(normalizeGoal(null)).toEqual(DEFAULT_GOAL)
     expect(normalizeGoal(undefined)).toEqual(DEFAULT_GOAL)
   })
@@ -121,14 +121,14 @@ describe('buildDailyPlan · 题量口径裁剪', () => {
     const candidates = Array.from({ length: 8 }, (_, i) =>
       mk('review', { overdueDays: i, title: `卡 ${i}` })
     )
-    const plan = buildDailyPlan({ date: DATE, candidates })
+    const plan = buildDailyPlan({ date: DATE, goal: { questions: 24, minutes: 20, mode: 'questions' }, candidates })
     expect(plan.totals.questions).toBe(24)
     expect(plan.items).toHaveLength(8)
   })
 
   it('30 张到期卡 → 按目标截断，不是全塞（防劝退）', () => {
     const candidates = Array.from({ length: 30 }, () => mk('review'))
-    const plan = buildDailyPlan({ date: DATE, candidates })
+    const plan = buildDailyPlan({ date: DATE, goal: { questions: 24, minutes: 20, mode: 'questions' }, candidates })
     expect(plan.totals.questions).toBeLessThanOrEqual(24)
     expect(plan.items.length).toBeLessThan(30)
   })
@@ -187,7 +187,7 @@ describe('buildDailyPlan · 优先级与配额', () => {
 
   it('没有新学候选时，复习可以吃满预算', () => {
     const candidates = Array.from({ length: 20 }, () => mk('review'))
-    const plan = buildDailyPlan({ date: DATE, candidates })
+    const plan = buildDailyPlan({ date: DATE, goal: { questions: 24, minutes: 20, mode: 'questions' }, candidates })
     expect(plan.totals.questions).toBe(24)
     expect(kinds(plan).every((k) => k === 'review')).toBe(true)
   })
@@ -399,9 +399,9 @@ describe('KIND_COST 契约', () => {
 })
 
 describe('KIND_LABEL / reasonOf · vocab', () => {
-  it('vocab 标签是「听写」且理由可核对', () => {
-    expect(KIND_LABEL.vocab).toBe('听写')
-    expect(reasonOf(mk('vocab', { itemId: 'v', knowledgePointIds: ['a'] }))).toContain('听写')
+  it('vocab 标签是「背记」且理由可核对', () => {
+    expect(KIND_LABEL.vocab).toBe('背记')
+    expect(reasonOf(mk('vocab', { itemId: 'v', knowledgePointIds: ['a'] }))).toContain('背记')
   })
 })
 
@@ -416,7 +416,7 @@ describe('buildDailyPlan · 词语听写（vocab 第四轮独立追加）', () =
         title: '词语听写（15 词）',
       }),
     ]
-    const plan = buildDailyPlan({ date: DATE, candidates })
+    const plan = buildDailyPlan({ date: DATE, goal: { questions: 24, minutes: 20, mode: 'questions' }, candidates })
     const vocabItems = plan.items.filter((i) => i.kind === 'vocab')
     expect(vocabItems).toHaveLength(1)
     expect(vocabItems[0].knowledgePointIds).toHaveLength(15)
