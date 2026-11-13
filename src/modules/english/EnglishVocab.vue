@@ -1,9 +1,9 @@
 <template>
   <AppCard class="english-vocab-card">
     <div class="card-header">
-      <span class="header-title">📖 词汇</span>
+      <span class="header-title"><IconBase name="book-open" size="1em" /> 词汇</span>
       <AppButton v-if="!drilling && kps.length > 0" size="small" type="primary" @click="drilling = true">
-        🎴 开始背记
+        <IconBase name="card" size="1em" /> 开始背记
       </AppButton>
     </div>
 
@@ -23,9 +23,10 @@
             class="speak-btn"
             :class="{ speaking: speakingId === kp.id }"
             @click="toggleSpeak(kp)"
+            :aria-label="speakingId === kp.id ? '停止朗读' : '朗读单词'"
             :title="speakingId === kp.id ? '停止朗读' : '朗读单词'"
           >
-            {{ speakingId === kp.id ? '⏸' : '🔊' }}
+            <IconBase :name="speakingId === kp.id ? 'pause' : 'volume'" size="1em" />
           </button>
           <span class="phonetic" v-if="kp.metadata?.phonetic">{{ kp.metadata.phonetic }}</span>
           <span class="pos" v-if="kp.metadata?.partOfSpeech">{{ kp.metadata.partOfSpeech }}</span>
@@ -33,9 +34,14 @@
         <div class="meaning" v-if="kp.content">{{ kp.content }}</div>
         <div v-if="kp.metadata?.example" class="example">
           <div class="example-en">
-            📝 {{ kp.metadata.example }}
-            <button class="speak-btn tiny" @click="speakText(kp.metadata.example, 'en-US')">
-              🔊
+            <IconBase name="pen" size="1em" /> {{ kp.metadata.example }}
+            <button
+              type="button"
+              class="speak-btn tiny"
+              aria-label="朗读例句"
+              @click="speakText(kp.metadata.example, 'en-US')"
+            >
+              <IconBase name="volume" size="1em" />
             </button>
           </div>
           <div class="example-cn" v-if="kp.metadata?.exampleCn">{{ kp.metadata.exampleCn }}</div>
@@ -105,7 +111,7 @@ onUnmounted(() => { stop() })
   border-bottom: 1px dashed $border-light;
 
   .header-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 800;
     color: $text-main;
   }
@@ -127,18 +133,18 @@ onUnmounted(() => { stop() })
     flex-wrap: wrap;
 
     .word {
-      font-size: 20px;
+      font-size: var(--font-2xl);
       font-weight: 700;
       color: $subject-english;
       font-family: 'Times New Roman', serif;
     }
     .phonetic {
-      font-size: 13px;
+      font-size: var(--font-sm);
       color: $subject-english-light;
       font-family: 'Times New Roman', serif;
     }
     .pos {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       background: $subject-english-soft;
       color: $subject-english;
       padding: 1px 6px;
@@ -148,7 +154,7 @@ onUnmounted(() => { stop() })
   }
 
   .meaning {
-    font-size: 14px;
+    font-size: var(--font-base);
     line-height: 1.7;
     color: $text-main;
     margin-bottom: 8px;
@@ -163,13 +169,13 @@ onUnmounted(() => { stop() })
     .example-en {
       display: flex;
       align-items: center;
-      font-size: 13px;
+      font-size: var(--font-sm);
       color: $subject-english;
       font-family: 'Times New Roman', serif;
       margin-bottom: 2px;
     }
     .example-cn {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $text-sub;
     }
   }
@@ -182,11 +188,11 @@ onUnmounted(() => { stop() })
   border: 1px solid $border-color;
   background: $card-bg;
   cursor: pointer;
-  font-size: 13px;
+  font-size: var(--font-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
   flex-shrink: 0;
 
   &:hover {
@@ -195,15 +201,17 @@ onUnmounted(() => { stop() })
     transform: scale(1.05);
   }
   &.speaking {
-    background: $primary-color;
+    /* V4.0 · D6：同 ChinesePoem —— 实心底 `-color` 上压 text-on-primary 只有 2.85:1，
+       喇叭图标是「正在朗读」的唯一信号。改 `-text` → 5.12:1。 */
+    background: var(--primary-text);
     border-color: $primary-color;
     color: var(--text-on-primary);
-    animation: pulse-speaking 1.2s infinite;
+    animation: pulse-speaking 1.2s var(--ease-standard) infinite; /* check-motion-allow: 朗读脉冲循环 */
   }
   &.tiny {
     width: 22px;
     height: 22px;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     margin-left: 6px;
   }
 }

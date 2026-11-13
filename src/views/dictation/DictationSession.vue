@@ -124,12 +124,12 @@ onMounted(async () => {
     border: 1px solid $border-color;
     background: $card-bg;
     color: $text-sub;
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     padding: 6px 14px;
     border-radius: 999px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
 
     &:hover {
       border-color: $primary-color;
@@ -140,13 +140,13 @@ onMounted(async () => {
 
   .dictation-title {
     flex: 1;
-    font-size: 17px;
+    font-size: var(--font-xl);
     font-weight: 800;
     color: $text-main;
   }
 
   .dictation-meta {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     color: $text-muted;
   }
@@ -156,6 +156,6 @@ onMounted(async () => {
   padding: 40px 16px;
   text-align: center;
   color: $text-sub;
-  font-size: 14px;
+  font-size: var(--font-base);
 }
 </style>

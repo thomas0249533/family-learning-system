@@ -6,7 +6,7 @@
 
     <div class="page-header__row">
       <component :is="level" class="page-header__title">
-        <span v-if="icon" class="page-header__icon" aria-hidden="true">{{ icon }}</span>
+        <span v-if="icon" class="page-header__icon" aria-hidden="true"><IconBase :name="icon" :size="24" /></span>
         <span class="page-header__text">{{ title }}</span>
       </component>
       <div v-if="$slots.actions" class="page-header__actions">
@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import IconBase from './IconBase.vue'
 // =====================================================================
 // PageHeader · 自建页头（统一 `.page-title`）
 // ---------------------------------------------------------------------

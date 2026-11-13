@@ -20,6 +20,7 @@ import {
   FONT,
   LEADING,
   MOTION,
+  FONT_ROLES,
   SUBJECTS,
   buildSemantic,
   type SemanticTokens,
@@ -102,6 +103,9 @@ function themeRootPrimitives(): string[] {
   L.push('  /* 字号阶梯 */')
   for (const [k, v] of Object.entries(FONT)) L.push(vline(`font-${k}`, v))
   L.push('')
+  L.push('  /* 排版角色（语义映射，引用上面的字号阶梯 · V4.0） */')
+  for (const [k, v] of Object.entries(FONT_ROLES)) L.push(vline(`font-${k}`, v))
+  L.push('')
   L.push('  /* 行高 */')
   for (const [k, v] of Object.entries(LEADING)) L.push(vline(`leading-${k}`, v))
   L.push('')
@@ -116,6 +120,7 @@ function themeRootPrimitives(): string[] {
   L.push(vline('duration-base', MOTION.durationBase))
   L.push(vline('duration-slow', MOTION.durationSlow))
   L.push(vline('duration-slower', MOTION.durationSlower))
+  L.push(vline('duration-slowest', MOTION.durationSlowest))
   L.push('}')
   return L
 }

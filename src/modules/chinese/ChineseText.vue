@@ -63,8 +63,8 @@ function cardDocKey(index: number): string {
 <style scoped lang="scss">
 /* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
 .chinese-text-card { margin-bottom: 12px; }
-.text-title { font-size: 18px; font-weight: 700; color: $subject-chinese-deep; margin-bottom: 4px; }
-.text-meta { font-size: 12px; color: $subject-chinese; margin-bottom: 14px; }
+.text-title { font-size: var(--font-xl); font-weight: 700; color: $subject-chinese-deep; margin-bottom: 4px; }
+.text-meta { font-size: var(--font-xs); color: $subject-chinese; margin-bottom: 14px; }
 /* 画笔层的定位宿主（子组件里 absolute; inset: 0 以它为参照） */
 .text-host { position: relative; }
 /**
@@ -78,7 +78,7 @@ function cardDocKey(index: number): string {
   -webkit-user-select: none;
 }
 .text-body {
-  font-size: 15px;
+  font-size: var(--font-md);
   line-height: 1.9;
   color: $text-main;
 

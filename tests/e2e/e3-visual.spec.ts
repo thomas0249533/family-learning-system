@@ -487,7 +487,9 @@ const SHOTS: ShotSpec[] = [
       await expect(tops.nth(0)).toContainText('两位数乘法')
       await expect(tops.nth(0)).toContainText('错 3 次')
       // 2 / 37：27 是 V1.6 的数，V2.8 · C1 加了 10 枚习惯成就
-      await expect(card.locator('.weekly-card__ach')).toHaveText('🏅 成就 2 / 37')
+      // V4.0 · D1：'🏅' 已换成 <IconBase name="medal">，svg 无 textContent，故用 containText
+      await expect(card.locator('.weekly-card__ach')).toContainText('成就 2 / 37')
+      await expect(card.locator('.weekly-card__ach svg')).toHaveCount(1)
       // 遮罩不入境：截图时 exporting 必须是 false（没有 fixed 浮层）
       await expect(page.locator('.export-overlay')).toHaveCount(0)
       // 页面其它区也随播种渲染（家长端总览六卡 / 学科分布 / Top5）

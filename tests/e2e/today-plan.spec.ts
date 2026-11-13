@@ -207,7 +207,7 @@ test.describe('今日任务', () => {
       await page.getByRole('button', { name: '提交答案' }).click()
 
       const last = i === answers.length - 1
-      await page.getByRole('button', { name: last ? '🏁 完成练习' : '下一题 ➡️' }).click()
+      await page.getByRole('button', { name: last ? /完成练习/ : /下一题/ }).click()
     }
 
     // 队列记账 + 自动回到今日页（`finishSessionItem`）

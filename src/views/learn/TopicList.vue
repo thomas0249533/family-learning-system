@@ -1,6 +1,15 @@
 <template>
   <div class="topic-list-page">
-    <n-spin v-if="loading" size="large" class="loading-spin" />
+    <!-- 加载态：与专题卡同高的骨架网格，避免转圈造成的整页等待感 -->
+    <div v-if="loading" class="topic-skeleton" aria-busy="true">
+      <Skeleton
+        v-for="n in 4"
+        :key="n"
+        variant="rect"
+        height="104px"
+        :label="n === 1 ? '正在加载专题' : undefined"
+      />
+    </div>
 
     <template v-else>
       <div v-if="currentUnit" class="unit-header">
@@ -12,6 +21,7 @@
         <div
           v-for="(topic, idx) in currentUnit.topics"
           :key="topic.id"
+          v-clickable:link
           class="topic-card"
           :class="[topic.board ? 'board-' + boardKey(topic.board) : '', cardStatusClass(topicStatus(topic))]"
           @click="selectTopic(topic)"
@@ -28,8 +38,8 @@
           <p v-if="topic.desc" class="topic-card-desc">{{ topic.desc }}</p>
           <div class="topic-card-foot">
             <span class="topic-card-meta">
-              <span class="meta-item">📝 {{ topic.knowledgePointIds?.length ?? 0 }} 个知识点</span>
-              <span class="meta-item">✏️ {{ topic.exercises?.length ?? 0 }} 道题</span>
+              <span class="meta-item"><IconBase name="pen" size="1em" /> {{ topic.knowledgePointIds?.length ?? 0 }} 个知识点</span>
+              <span class="meta-item"><IconBase name="pen" size="1em" /> {{ topic.exercises?.length ?? 0 }} 道题</span>
               <span v-if="difficultyOf(topic)" class="meta-item meta-chip">{{ difficultyOf(topic) }}</span>
             </span>
             <span class="topic-card-cta">
@@ -40,7 +50,9 @@
         </div>
       </div>
 
-      <EmptyState v-else description="该单元暂无主题数据" class="empty-card" />
+      <AppCard v-else paddingless class="empty-card">
+        <EmptyState description="该单元暂无主题数据" />
+      </AppCard>
     </template>
   </div>
 </template>
@@ -48,8 +60,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { NSpin } from 'naive-ui'
+
+import AppCard from '@/components/ui/AppCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
 import {
@@ -155,17 +169,18 @@ function selectTopic(topic: any) {
   gap: 20px;
 }
 
-.loading-spin {
+.topic-skeleton {
   display: flex;
-  justify-content: center;
-  margin-top: 40px;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
 }
 
 .unit-header {
   padding: 4px 0;
 
   .unit-header-title {
-    font-size: 20px;
+    font-size: var(--font-2xl);
     font-weight: 800;
     color: $text-main;
     margin: 0 0 6px;
@@ -173,7 +188,7 @@ function selectTopic(topic: any) {
   }
 
   .unit-header-desc {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
     line-height: 1.6;
     margin: 0;
@@ -197,7 +212,7 @@ function selectTopic(topic: any) {
   box-shadow: $shadow-sm;
   padding: 16px 18px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-base) var(--ease-standard);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -256,7 +271,7 @@ function selectTopic(topic: any) {
 
   .topic-card-emoji {
     margin-right: 6px;
-    font-size: 16px;
+    font-size: var(--font-lg);
   }
 
   .topic-card-head {
@@ -283,14 +298,14 @@ function selectTopic(topic: any) {
     justify-content: center;
     background: var(--badge-neutral-bg);
     color: $text-main;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 800;
     border-radius: 8px;
-    transition: all 0.2s;
+    transition: all var(--duration-base) var(--ease-standard);
   }
 
   .topic-card-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 700;
     color: $text-main;
     margin: 0;
@@ -299,7 +314,7 @@ function selectTopic(topic: any) {
   }
 
   .topic-card-desc {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     line-height: 1.55;
     margin: 0;
@@ -319,7 +334,7 @@ function selectTopic(topic: any) {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     color: $text-muted;
     flex: 1;
     min-width: 0;
@@ -349,22 +364,19 @@ function selectTopic(topic: any) {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     color: $primary-text;
 
     .cta-arrow {
-      font-size: 13px;
-      transition: transform 0.2s;
+      font-size: var(--font-sm);
+      transition: transform var(--duration-base) var(--ease-standard);
     }
   }
 }
 
 .empty-card {
-  background: $card-bg;
-  border-radius: $radius-lg;
+  /* V4.0 · D7：卡片外观交给 AppCard，这里只剩「空态的留白」 */
   padding: 60px 20px;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-color;
 }
 </style>

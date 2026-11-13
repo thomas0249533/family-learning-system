@@ -1,9 +1,9 @@
 <template>
   <div class="ds-page">
     <PageHeader
-      icon="🎨"
+      icon="palette"
       title="设计系统基元预览"
-      subtitle="开发专用页（仅 DEV 注册）。8 个 UI 基元 × 浅/深 × 各状态。"
+      subtitle="开发专用页（仅 DEV 注册）。9 个 UI 基元 × 浅/深 × 各状态。"
     />
 
     <p class="ds-note">
@@ -34,7 +34,7 @@
         <AppButton quaternary type="primary">quaternary</AppButton>
         <AppButton type="primary" loading>loading</AppButton>
         <AppButton type="primary" disabled>disabled</AppButton>
-        <AppButton type="primary" icon="🔍">带图标</AppButton>
+        <AppButton type="primary" icon="search">带图标</AppButton>
       </div>
     </section>
 
@@ -42,9 +42,9 @@
     <section class="ds-block" data-ds="app-card">
       <SectionTitle title="AppCard" count="包 n-card" accent />
       <div class="ds-grid">
-        <AppCard title="默认卡片" icon="📘">卡片内容区。标题栏带底色。</AppCard>
-        <AppCard title="危险卡片" icon="⚠️" variant="danger">危险变体边框取 danger-light。</AppCard>
-        <AppCard title="可交互" icon="👆" hoverable>
+        <AppCard title="默认卡片" icon="book">卡片内容区。标题栏带底色。</AppCard>
+        <AppCard title="危险卡片" icon="warning" variant="danger">危险变体边框取 danger-light。</AppCard>
+        <AppCard title="可交互" icon="hand" hoverable>
           hover 抬升 + 阴影加深
         </AppCard>
         <AppCard paddingless>
@@ -59,9 +59,9 @@
       <div class="ds-row">
         <AppBadge>中性</AppBadge>
         <AppBadge tone="primary">主色</AppBadge>
-        <AppBadge tone="success" icon="✓">已掌握</AppBadge>
-        <AppBadge tone="warning" icon="!">待复习</AppBadge>
-        <AppBadge tone="danger" icon="✕">易错</AppBadge>
+        <AppBadge tone="success" icon="check">已掌握</AppBadge>
+        <AppBadge tone="warning" icon="warning">待复习</AppBadge>
+        <AppBadge tone="danger" icon="close">易错</AppBadge>
         <AppBadge tone="info">信息</AppBadge>
       </div>
       <div class="ds-row">
@@ -76,12 +76,12 @@
     <section class="ds-block" data-ds="stat-card">
       <SectionTitle title="StatCard" count="自建" accent />
       <div class="ds-grid">
-        <StatCard icon="📚" :value="12" label="已完成单元" />
-        <StatCard icon="🎯" :value="86" label="正确率" tone="success" />
-        <StatCard icon="🔥" :value="7" label="连续打卡" tone="warning" />
-        <StatCard icon="⚠️" :value="3" label="待复习错题" tone="danger" />
-        <StatCard icon="📈" value="92%" label="掌握度" tone="primary" layout="horizontal" interactive />
-        <StatCard icon="🧮" :value="45" label="今日题量" tone="neutral">
+        <StatCard icon="books" :value="12" label="已完成单元" />
+        <StatCard icon="target" :value="86" label="正确率" tone="success" />
+        <StatCard icon="fire" :value="7" label="连续打卡" tone="warning" />
+        <StatCard icon="warning" :value="3" label="待复习错题" tone="danger" />
+        <StatCard icon="chart" value="92%" label="掌握度" tone="primary" layout="horizontal" interactive />
+        <StatCard icon="abacus" :value="45" label="今日题量" tone="neutral">
           <template #footer>较昨日 +8</template>
         </StatCard>
       </div>
@@ -90,8 +90,8 @@
     <!-- ============ SectionTitle ============ -->
     <section class="ds-block" data-ds="section-title">
       <SectionTitle title="SectionTitle（h2，accent）" count="6" accent />
-      <SectionTitle level="h3" title="SectionTitle（h3，无 accent）" icon="📗" count="3" />
-      <SectionTitle title="带右侧扩展" icon="⭐">
+      <SectionTitle level="h3" title="SectionTitle（h3，无 accent）" icon="book" count="3" />
+      <SectionTitle title="带右侧扩展" icon="star">
         <AppBadge tone="primary" size="sm">新</AppBadge>
       </SectionTitle>
     </section>
@@ -113,25 +113,74 @@
     <section class="ds-block" data-ds="empty-state">
       <SectionTitle title="EmptyState" count="包 n-empty" accent />
       <div class="ds-grid ds-grid--2">
-        <EmptyState description="暂无数据" icon="📭" />
+        <EmptyState description="暂无数据" icon="mailbox" />
         <EmptyState
           description="还没有错题，继续保持！"
-          icon="✅"
+          icon="check-circle"
           action-text="去练习"
         />
+      </div>
+    </section>
+
+    <!-- ============ Skeleton ============ -->
+    <section class="ds-block" data-ds="skeleton">
+      <SectionTitle title="Skeleton" count="自建" accent />
+      <div class="ds-grid ds-grid--2">
+        <div class="ds-skeleton-card">
+          <Skeleton variant="circle" />
+          <div class="ds-skeleton-lines">
+            <Skeleton width="70%" />
+            <Skeleton width="90%" />
+            <Skeleton width="45%" />
+          </div>
+        </div>
+        <div class="ds-skeleton-card ds-skeleton-card--stack">
+          <Skeleton variant="rect" height="56px" :animated="false" />
+          <Skeleton variant="text" width="60%" :animated="false" />
+        </div>
       </div>
     </section>
 
     <!-- ============ PageHeader ============ -->
     <section class="ds-block" data-ds="page-header">
       <SectionTitle title="PageHeader" count="自建" accent />
-      <PageHeader title="学习报告" subtitle="统计你的练习进度与掌握情况" icon="📊">
+      <PageHeader title="学习报告" subtitle="统计你的练习进度与掌握情况" icon="chart-bar">
         <template #breadcrumb>首页 / 报告</template>
         <template #actions>
           <AppButton size="small">导出</AppButton>
           <AppButton size="small" type="primary">刷新</AppButton>
         </template>
       </PageHeader>
+    </section>
+
+    <!-- ============ IconBase ============ -->
+    <section class="ds-block" data-ds="icon-base">
+      <SectionTitle title="IconBase" count="自建 SVG" accent />
+      <p class="ds-note">
+        V4.0 统一图标系统（取代 emoji 当图标）。24×24 描边风格，<code>currentColor</code> 染色，
+        随主题 / 激活态 / 深浅色自动跟随；<code>name</code> 不在白名单时降级为空 svg。
+      </p>
+      <div class="ds-row">
+        <IconBase name="home" :size="28" />
+        <IconBase name="target" :size="28" />
+        <IconBase name="book" :size="28" />
+        <IconBase name="mistake" :size="28" />
+        <IconBase name="pen" :size="28" />
+        <IconBase name="search" :size="28" />
+        <IconBase name="doc" :size="28" />
+        <IconBase name="people" :size="28" />
+        <IconBase name="wand" :size="28" />
+        <IconBase name="gear" :size="28" />
+      </div>
+      <div class="ds-row">
+        <IconBase name="card" :size="28" />
+        <IconBase name="speaker" :size="28" />
+        <IconBase name="list" :size="28" />
+        <IconBase name="headphones" :size="28" />
+        <IconBase name="paper" :size="28" />
+        <IconBase name="puzzle" :size="28" />
+        <IconBase name="book-brand" :size="28" />
+      </div>
     </section>
 
     <!-- ============ 交互演示（只给 e2e 用）============ -->
@@ -179,7 +228,7 @@
 
 <script setup lang="ts">
 // =====================================================================
-// DesignSystem.vue · 8 基元开发预览页（**仅 DEV 注册**，§7）
+// DesignSystem.vue · 9 基元开发预览页（**仅 DEV 注册**，§7）
 // ---------------------------------------------------------------------
 // 不参与生产路由（router 用 `import.meta.env.DEV` 条件注册 → 生产 DCE）。
 // 页面零硬编码色；纯 layout。截图目标为 `.ds-block[data-ds=...]`。
@@ -193,6 +242,8 @@ import AppBadge from '@/components/ui/AppBadge.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
+import IconBase from '@/components/ui/IconBase.vue'
 
 // ---- 交互演示状态（见模板 data-ds="interaction-demo"）----
 const clickCount = ref(0)
@@ -257,6 +308,28 @@ function removeBadge(index: number): void {
   padding: var(--space-4);
   font-size: var(--font-sm);
   color: var(--text-sub);
+}
+
+/* Skeleton 展示区：只做排版，不引入任何新色值 */
+.ds-skeleton-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.ds-skeleton-lines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* 竖排示例：块在上、说明行在下（横排时 rect 会把行挤到右侧） */
+.ds-skeleton-card--stack {
+  flex-direction: column;
 }
 
 /* 交互演示里的可见读数（数字变了 = 事件被消费了） */

@@ -69,7 +69,7 @@
 
         <!-- ① 拒绝：版本太新 / 结构损坏 / 行归属不符 / 档案超限 -->
         <div v-if="outcome === 'reject'" class="import-reject">
-          <AppBadge tone="danger" size="sm" icon="⛔">无法导入</AppBadge>
+          <AppBadge tone="danger" size="sm" icon="noentry">无法导入</AppBadge>
           <div class="import-reject-text">{{ rejectMessage }}</div>
           <!-- B4：唯一"有明确下一步"的拒绝就是档案超限。原实现只给一句话，
                家长知道"不行"，但不知道该去哪儿腾出位置。 -->
@@ -88,7 +88,7 @@
 
         <!-- ② 无变化：本机已包含这份备份的全部数据 -->
         <div v-else-if="outcome === 'noop'" class="import-noop">
-          <AppBadge tone="info" size="sm" icon="✅">无需导入</AppBadge>
+          <AppBadge tone="info" size="sm" icon="check-circle">无需导入</AppBadge>
           <div class="import-noop-text">没有需要导入的新内容</div>
           <div class="import-noop-note">
             这份备份里的数据本机都已经有了，导入不会产生任何改动。
@@ -97,7 +97,7 @@
 
         <!-- ③ 可以导入 / 已导入 -->
         <div v-else class="import-ready">
-          <AppBadge tone="success" size="sm" :icon="applied ? '✅' : '📋'">
+          <AppBadge tone="success" size="sm" :icon="applied ? 'check-circle' : 'clipboard'">
             {{ applied ? '已导入' : '可以导入' }}
           </AppBadge>
 
@@ -121,7 +121,7 @@
             :class="{ 'migration-check--bad': !migrationReport.ok }"
           >
             <div class="migration-check-title">
-              {{ migrationReport.ok ? '✅ 数据自检通过' : '⚠️ 数据自检有异常' }}
+              <IconBase :name="migrationReport.ok ? 'check-circle' : 'warning'" size="1em" /> {{ migrationReport.ok ? '数据自检通过' : '数据自检有异常' }}
             </div>
             <div class="migration-check-summary">{{ migrationSummary }}</div>
             <ul class="migration-check-rows">
@@ -147,7 +147,7 @@
             class="import-missing"
             :title="missingTitle"
           >
-            ⚠️ 备份里有 {{ missingPackageRows }} 条学习记录属于本机还没有的学习包（{{
+            <IconBase name="warning" size="1em" /> 备份里有 {{ missingPackageRows }} 条学习记录属于本机还没有的学习包（{{
               missingShownText
             }}）。导入后这些记录会保存在本机，但要先到「学习 → 导入学习包」导入对应的包，才能在列表里看到它们。
           </div>
@@ -165,7 +165,7 @@
           <!-- A6-L1：导入期拦截提示。放在 .import-ready 最后（最贴近操作区），
                预览态与失败重试态常驻；成功导入后 `applied` 非空即消失。 -->
           <div v-if="!applied" class="import-warning">
-            ⚠️ 导入期间请不要在学习页答题。若刚答过题，请返回首页同步后再导入。
+            <IconBase name="warning" size="1em" /> 导入期间请不要在学习页答题。若刚答过题，请返回首页同步后再导入。
           </div>
         </div>
 

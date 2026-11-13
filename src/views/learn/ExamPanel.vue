@@ -2,7 +2,7 @@
   <AppCard class="exam-panel">
     <!-- 入口屏 -->
     <div v-if="phase === 'intro'" class="exam-intro">
-      <div class="exam-badge">🎯 {{ examTypeLabel }}</div>
+      <div class="exam-badge"><IconBase name="target" size="1em" /> {{ examTypeLabel }}</div>
       <h2 class="exam-title">{{ pkg.manifest.title }}</h2>
 
       <div class="exam-meta">
@@ -49,15 +49,15 @@
 
       <n-space vertical style="margin-top: 20px;">
         <AppButton type="primary" size="large" block @click="startNewSession">
-          ▶ 开始新会话（{{ newSessionCount }} 题）
+          <IconBase name="play" size="1em" /> 开始新会话（{{ newSessionCount }} 题）
         </AppButton>
         <AppButton v-if="ongoingSession" type="warning" size="large" block @click="continueSession">
-          🔄 继续上次（{{ Object.keys(ongoingSession.answers).length }} / {{ ongoingSession.totalCount }}）
+          <IconBase name="refresh" size="1em" /> 继续上次（{{ Object.keys(ongoingSession.answers).length }} / {{ ongoingSession.totalCount }}）
         </AppButton>
       </n-space>
 
       <div v-if="sessions.length > 0" class="session-history">
-        <div class="history-title">📋 历史会话（{{ sessions.length }}）</div>
+        <div class="history-title"><IconBase name="clipboard" size="1em" /> 历史会话（{{ sessions.length }}）</div>
         <div v-for="s in sessions" :key="s.id" class="history-item">
           <div class="history-info">
             <span class="history-index">第 {{ s.sessionIndex }} 卷</span>
@@ -96,7 +96,7 @@
     <!-- 完成 -->
     <div v-else-if="phase === 'done'" class="exam-result">
       <div class="result-header">
-        <div class="result-icon">{{ scoreLevel.icon }}</div>
+        <div class="result-icon"><IconBase :name="scoreLevel.icon" size="1em" /></div>
         <div class="result-title">{{ scoreLevel.title }}</div>
         <div class="result-score">
           <span class="score-num">{{ correctCount }}</span>
@@ -110,7 +110,7 @@
       <!-- V2.9 · 答题卡回放（借鉴参考图3 左栏答题卡）：对错双色总览，点击跳解析 -->
       <div v-if="examDetailItems.length > 0" class="replay-card">
         <div class="replay-head">
-          <span class="replay-title">📇 本卷答题卡</span>
+          <span class="replay-title"><IconBase name="clipboard" size="1em" /> 本卷答题卡</span>
           <span class="replay-legend" aria-hidden="true">
             <i class="replay-swatch swatch-right" />答对 {{ examCorrectItems.length }}
             <i class="replay-swatch swatch-wrong" />答错 {{ examWrongItems.length }}
@@ -134,7 +134,7 @@
       <!-- ✅ 错题清单（默认展开） -->
       <div v-if="examWrongItems.length > 0" class="result-section">
         <div class="section-head">
-          <span class="section-title wrong-title">❌ 错题清单（{{ examWrongItems.length }} 题）</span>
+          <span class="section-title wrong-title"><IconBase name="x-circle" size="1em" /> 错题清单（{{ examWrongItems.length }} 题）</span>
           <AppButton size="tiny" text @click="showWrong = !showWrong">
             {{ showWrong ? '收起' : '展开' }}
           </AppButton>
@@ -183,7 +183,7 @@
             </div>
 
             <div v-if="item.explanation" class="detail-explain">
-              💡 {{ item.explanation }}
+              <IconBase name="bulb" size="1em" /> {{ item.explanation }}
             </div>
           </div>
         </div>
@@ -192,7 +192,7 @@
       <!-- ✅ 正确题目（默认折叠） -->
       <div v-if="examCorrectItems.length > 0" class="result-section">
         <div class="section-head">
-          <span class="section-title correct-title">✅ 答对题目（{{ examCorrectItems.length }} 题）</span>
+          <span class="section-title correct-title"><IconBase name="check-circle" size="1em" /> 答对题目（{{ examCorrectItems.length }} 题）</span>
           <AppButton size="tiny" text @click="showCorrect = !showCorrect">
             {{ showCorrect ? '收起' : '展开' }}
           </AppButton>
@@ -220,7 +220,7 @@
       </div>
 
       <AppButton v-if="remainingCount > 0" type="primary" size="large" block style="margin-top: 24px;" @click="startNewSession">
-        ▶ 继续下一卷（剩 {{ remainingCount }} 题）
+        <IconBase name="play" size="1em" /> 继续下一卷（剩 {{ remainingCount }} 题）
       </AppButton>
       <AppButton block style="margin-top: 10px;" @click="backToIntro">
         ← 返回列表
@@ -326,12 +326,12 @@ const accuracyPercent = computed(() => {
 
 const scoreLevel = computed(() => {
   const p = accuracyPercent.value
-  if (p >= 90) return { icon: '🏆', title: '出色表现！' }
-  if (p >= 75) return { icon: '🎉', title: '表现良好！' }
-  if (p >= 60) return { icon: '💪', title: '稳扎稳打，进步看得见' }
+  if (p >= 90) return { icon: 'trophy', title: '出色表现！' }
+  if (p >= 75) return { icon: 'celebrate', title: '表现良好！' }
+  if (p >= 60) return { icon: 'bolt', title: '稳扎稳打，进步看得见' }
   // 措辞刻意落在"题目有挑战"上，不落在"你不行"上
-  if (p > 0) return { icon: '🌱', title: '这套题有点挑战，一起看解析' }
-  return { icon: '🤝', title: '别急，先理一理思路' }
+  if (p > 0) return { icon: 'seedling', title: '这套题有点挑战，一起看解析' }
+  return { icon: 'handshake', title: '别急，先理一理思路' }
 })
 
 const examTypeLabel = computed(() =>
@@ -573,7 +573,7 @@ function backToIntro() {
 
   .exam-badge {
     display: inline-block;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     padding: 4px 12px;
     border-radius: 20px;
@@ -582,7 +582,7 @@ function backToIntro() {
     margin-bottom: 16px;
   }
   .exam-title {
-    font-size: 22px;
+    font-size: var(--font-3xl);
     font-weight: 800;
     color: $text-main;
     margin: 0 0 24px;
@@ -599,8 +599,8 @@ function backToIntro() {
 
   .meta-item {
     text-align: center;
-    .meta-value { font-size: 24px; font-weight: 800; color: $primary-text; }
-    .meta-label { font-size: 12px; color: $text-sub; margin-top: 4px; }
+    .meta-value { font-size: var(--font-4xl); font-weight: 800; color: $primary-text; }
+    .meta-label { font-size: var(--font-xs); color: $text-sub; margin-top: 4px; }
   }
 }
 
@@ -617,11 +617,11 @@ function backToIntro() {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .config-label { font-size: 13px; color: $text-main; }
+    .config-label { font-size: var(--font-sm); color: $text-main; }
   }
 
   .config-hint {
-    font-size: 12px;
+    font-size: var(--font-xs);
     line-height: 1.6;
     color: $text-sub;
     text-align: left;
@@ -635,7 +635,7 @@ function backToIntro() {
   text-align: left;
 
   .history-title {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-main;
     margin-bottom: 10px;
@@ -649,7 +649,7 @@ function backToIntro() {
     border-radius: 8px;
     background: $bg-color-hover;
     margin-bottom: 6px;
-    font-size: 13px;
+    font-size: var(--font-sm);
 
     .history-info {
       display: flex;
@@ -664,7 +664,7 @@ function backToIntro() {
         &.rate-mid { color: $warning-text; }
         &.rate-bad { color: $danger-text; }
       }
-      .history-status { color: $warning-text; font-size: 12px; }
+      .history-status { color: $warning-text; font-size: var(--font-xs); }
     }
   }
 }
@@ -673,19 +673,19 @@ function backToIntro() {
   text-align: center;
   padding: 20px 0;
 
-  .result-icon { font-size: 56px; margin-bottom: 8px; }
-  .result-title { font-size: 18px; font-weight: 700; color: $text-main; margin-bottom: 20px; }
+  .result-icon { font-size: var(--font-9xl); margin-bottom: 8px; }
+  .result-title { font-size: var(--font-xl); font-weight: 700; color: $text-main; margin-bottom: 20px; }
 
   .result-score {
     display: inline-flex;
     align-items: baseline;
     gap: 4px;
-    .score-num { font-size: 48px; font-weight: 900; color: $primary-text; }
-    .score-div { font-size: 28px; color: $text-muted; }
-    .score-total { font-size: 28px; font-weight: 700; color: $text-sub; }
+    .score-num { font-size: var(--font-8xl); font-weight: 900; color: $primary-text; }
+    .score-div { font-size: var(--font-5xl); color: $text-muted; }
+    .score-total { font-size: var(--font-5xl); font-weight: 700; color: $text-sub; }
   }
-  .result-rate { font-size: 13px; color: $text-sub; margin-top: 8px; }
-  .result-time { font-size: 12px; color: $text-muted; margin-top: 4px; }
+  .result-rate { font-size: var(--font-sm); color: $text-sub; margin-top: 8px; }
+  .result-time { font-size: var(--font-xs); color: $text-muted; margin-top: 4px; }
 }
 
 /* V2.9 · 答题卡回放：对错双色数字格（与 QuizEngine 题号条同一份造型语言） */
@@ -703,7 +703,7 @@ function backToIntro() {
     margin-bottom: $space-3;
 
     .replay-title {
-      font-size: 13px;
+      font-size: var(--font-sm);
       font-weight: 800;
       color: $text-main;
     }
@@ -712,7 +712,7 @@ function backToIntro() {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-size: 12px;
+      font-size: var(--font-xs);
       font-weight: 600;
       color: $text-sub;
 
@@ -739,7 +739,7 @@ function backToIntro() {
     height: 34px;
     border-radius: 10px;
     border: none;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 800;
     font-family: inherit;
     cursor: pointer;
@@ -764,7 +764,7 @@ function backToIntro() {
 
   .replay-hint {
     margin: $space-3 0 0;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
   }
 }
@@ -782,7 +782,7 @@ function backToIntro() {
   margin-bottom: 12px;
 
   .section-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 800;
     &.wrong-title { color: $danger-text; }
     &.correct-title { color: $success-text; }
@@ -818,7 +818,7 @@ function backToIntro() {
 
   .detail-badge {
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 700;
     padding: 2px 8px;
     border-radius: 12px;
@@ -827,7 +827,7 @@ function backToIntro() {
   }
 
   .detail-question {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
     color: $text-main;
     line-height: 1.5;
@@ -842,7 +842,7 @@ function backToIntro() {
   margin-bottom: 8px;
 
   .detail-opt {
-    font-size: 13px;
+    font-size: var(--font-sm);
     padding: 6px 10px;
     border-radius: 6px;
     background: $bg-color-hover;
@@ -863,7 +863,7 @@ function backToIntro() {
     }
 
     .opt-mark {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-muted;
       font-weight: 500;
     }
@@ -876,7 +876,7 @@ function backToIntro() {
   gap: 4px;
 
   .answer-row {
-    font-size: 13px;
+    font-size: var(--font-sm);
     padding: 6px 10px;
     border-radius: 6px;
 
@@ -901,7 +901,7 @@ function backToIntro() {
   padding: 8px 12px;
   background: $bg-color-hover;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.6;
   color: $text-sub;
 }

@@ -1,5 +1,5 @@
 <template>
-  <AppCard title="📥 导入学习包" class="wizard-card">
+  <AppCard title="导入学习包" class="wizard-card">
     <n-space vertical>
       <n-upload :custom-request="handleUploadJson" :show-file-list="false" accept=".json">
         <AppButton type="primary" dashed>选择单个 JSON 学习包</AppButton>
@@ -10,11 +10,11 @@
       </n-upload>
 
       <!-- G3 · 跨设备扫码导入入口 -->
-      <AppButton type="info" dashed @click="openScanModal">📷 扫码导入</AppButton>
+      <AppButton type="info" dashed @click="openScanModal"><IconBase name="camera" size="1em" /> 扫码导入</AppButton>
     </n-space>
 
     <!-- G3 · 扫码导入弹窗：摄像头扫码 / 后缀码手输（同一 parser） -->
-    <n-modal v-model:show="showScanModal" preset="card" title="📷 扫码导入" style="max-width: 480px;" @after-leave="stopCamera">
+    <n-modal v-model:show="showScanModal" preset="card" title="扫码导入" style="max-width: 480px;" @after-leave="stopCamera">
       <div class="scan-body">
         <template v-if="scanSupported">
           <div class="scan-video-wrap">
@@ -44,12 +44,12 @@
 
         <!-- 解析结果：只走文本插值，绝不 v-html -->
         <div v-if="parseError" class="scan-result scan-result-error" role="alert">
-          <div class="scan-result-title">❌ 分享码无效</div>
+          <div class="scan-result-title"><IconBase name="x-circle" size="1em" /> 分享码无效</div>
           <div class="scan-result-msg">{{ parseError.message }}</div>
           <div class="scan-result-code">错误码：{{ parseError.code }}</div>
         </div>
         <div v-else-if="parsedPayload" class="scan-result scan-result-ok">
-          <div class="scan-result-title">✅ 分享码有效</div>
+          <div class="scan-result-title"><IconBase name="check-circle" size="1em" /> 分享码有效</div>
           <div class="scan-result-msg">学习包：<code>{{ parsedPayload.packageId }}</code></div>
           <div class="scan-result-msg">校验和已通过（{{ parsedPayload.checksum }}）</div>
           <div v-if="parsedPayload.url" class="scan-result-msg">包文件地址：{{ parsedPayload.url }}</div>
@@ -90,7 +90,7 @@
     <!-- 批量结果弹窗 -->
     <n-modal v-model:show="showSetResultModal" preset="card" :title="setResultTitle" style="max-width: 680px;">
       <div v-if="setResultSuccess" class="set-result">
-        <div class="result-summary">✅ 已成功导入 <b>{{ setImported }}</b> 个学习包</div>
+        <div class="result-summary"><IconBase name="check-circle" size="1em" /> 已成功导入 <b>{{ setImported }}</b> 个学习包</div>
         <!--
           配图入库数量（V2.12.3）。为什么必须显示：
           「题在、图没了」是这条链路唯一的静默失败形态 —— ZIP 里的图没进
@@ -99,7 +99,7 @@
           还是「图没入库」，只能靠猜。
         -->
         <div class="result-assets" :class="{ 'result-assets--zero': setAssetsImported === 0 }">
-          <template v-if="setAssetsImported > 0">🖼️ 其中配图 <b>{{ setAssetsImported }}</b> 张已入库</template>
+          <template v-if="setAssetsImported > 0"><IconBase name="image" size="1em" /> 其中配图 <b>{{ setAssetsImported }}</b> 张已入库</template>
           <template v-else>本批 ZIP 内没有配图文件（有插图的包这里会显示张数）</template>
         </div>
         <div class="pkg-list">
@@ -108,14 +108,14 @@
           </n-tag>
         </div>
         <div v-if="setWarnings.length > 0" class="warn-list">
-          <div class="warn-title">⚠️ {{ setWarnings.length }} 条警告：</div>
+          <div class="warn-title"><IconBase name="warning" size="1em" /> {{ setWarnings.length }} 条警告：</div>
           <div v-for="(w, i) in setWarnings" :key="i" class="warn-item">
             [{{ w.code }}] {{ w.message }}
           </div>
         </div>
       </div>
       <div v-else>
-        <div class="result-summary error">❌ 导入失败</div>
+        <div class="result-summary error"><IconBase name="x-circle" size="1em" /> 导入失败</div>
         <div v-if="setFailedPackageId" class="failed-pkg">
           失败于：<code>{{ setFailedPackageId }}</code>
         </div>
@@ -126,7 +126,7 @@
               <span class="error-path">{{ e.path }}</span>
             </div>
             <div class="error-msg">{{ e.message }}</div>
-            <div v-if="e.hint" class="error-hint">💡 {{ e.hint }}</div>
+            <div v-if="e.hint" class="error-hint"><IconBase name="bulb" size="1em" /> {{ e.hint }}</div>
           </div>
         </div>
       </div>
@@ -302,7 +302,7 @@ async function submitJsonImport() {
   })
   showConfirmModal.value = false
   if (result.success) {
-    message.success('🎉 学习包导入成功！')
+    message.success('学习包导入成功！')
     if (result.warnings?.length) {
       result.warnings.forEach(w => message.warning(w.message, { duration: 6000 }))
     }
@@ -442,9 +442,9 @@ async function handleUploadZip({ file, onFinish }: any) {
 }
 
 .set-result .result-summary {
-  font-size: 15px;
+  font-size: var(--font-md);
   margin-bottom: 12px;
-  b { color: $primary-text; font-size: 20px; }
+  b { color: $primary-text; font-size: var(--font-2xl); }
   &.error { color: $danger-text; }
 }
 /* 配图数量：有数字时是"确认图进来了"，0 时降成淡字说明，不制造焦虑 */
@@ -460,11 +460,11 @@ async function handleUploadZip({ file, onFinish }: any) {
   background: $warning-light;
   padding: 10px 12px;
   border-radius: 6px;
-  .warn-title { font-size: 13px; font-weight: 700; color: $warning-text; margin-bottom: 6px; }
-  .warn-item { font-size: 12px; color: $text-sub; line-height: 1.6; }
+  .warn-title { font-size: var(--font-sm); font-weight: 700; color: $warning-text; margin-bottom: 6px; }
+  .warn-item { font-size: var(--font-xs); color: $text-sub; line-height: 1.6; }
 }
 .failed-pkg {
-  font-size: 13px;
+  font-size: var(--font-sm);
   margin-bottom: 10px;
   code { background: $danger-light; color: $danger-text; padding: 2px 6px; border-radius: 4px; }
 }
@@ -485,9 +485,9 @@ async function handleUploadZip({ file, onFinish }: any) {
     align-items: center;
     gap: 8px;
     margin-bottom: 6px;
-    .error-path { font-family: monospace; font-size: 12px; color: $text-sub; }
+    .error-path { font-family: monospace; font-size: var(--font-xs); color: $text-sub; }
   }
-  .error-msg { font-size: 13px; font-weight: 600; }
-  .error-hint { margin-top: 6px; font-size: 12px; color: $text-sub; }
+  .error-msg { font-size: var(--font-sm); font-weight: 600; }
+  .error-hint { margin-top: 6px; font-size: var(--font-xs); color: $text-sub; }
 }
 </style>

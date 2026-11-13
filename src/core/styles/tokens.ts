@@ -301,23 +301,51 @@ export const SPACE = {
 
 /** 字号阶梯（不随主题变；naive 覆盖为唯一缩放源，勿引入 rem）。 */
 export const FONT = {
-  '2xs': '11px', xs: '12px', sm: '13px', base: '14px', md: '15px', lg: '16px',
-  xl: '18px', '2xl': '20px', '3xl': '22px', '4xl': '24px', '5xl': '32px',
+  '3xs': '10px', '2xs': '11px', xs: '12px', sm: '13px', base: '14px', md: '15px', lg: '16px',
+  xl: '18px', '2xl': '20px', '3xl': '22px', '4xl': '24px', '5xl': '28px',
+  // 展示级（hero 数字 / 大图标）：UI 文案不鼓励用，仅结果页大数字使用
+  '6xl': '32px', '7xl': '40px', '8xl': '48px', '9xl': '56px',
+} as const
+
+/**
+ * 排版角色（V4.0 · 语义映射）：把上面的「尺寸阶梯」绑定到「语义角色」，
+ * 让标题/正文/辅助文字统一引用、消除各页字号漂移。组件用 `var(--font-<role>)`。
+ */
+export const FONT_ROLES = {
+  /** 大标题：页头、完成分数 */
+  display: '24px',
+  /** 区块标题 */
+  title: '20px',
+  /** 正文 */
+  body: '14px',
+  /** 辅助说明 / 徽标 */
+  caption: '12px',
 } as const
 
 /** 行高（不随主题变）。 */
 export const LEADING = { tight: '1.25', snug: '1.4', normal: '1.55', relaxed: '1.7' } as const
 
-/** 动效（曲线 + 时长，不随主题变）。 */
+/**
+ * 动效（曲线 + 时长，不随主题变）。
+ *
+ * 刻度纪律（V4.0 · D3）：
+ *   · 时长只允许 5 档：fast / base / slow / slower / slowest，
+ *     覆盖 150–600ms 的**交互反馈**区间；组件禁写 `0.2s` 之类裸数字。
+ *   · 超过 600ms 的**一次性编排**（彩带、呼吸光晕、引导动画）不属于
+ *     交互反馈，允许就地写值并在同行标注 check-motion-allow 例外说明。
+ *   · 缓动分四类：standard（默认）/ emphasized（大位移强调）/ spring（回弹）/
+ *     decelerate（入场减速）。`linear` 仅用于进度条等线性量，直接写关键字。
+ */
 export const MOTION = {
   easeStandard: 'cubic-bezier(0.2, 0, 0, 1)',
-  easeEmphasized: 'cubic-bezier(0.2, 0, 0, 1)',
+  easeEmphasized: 'cubic-bezier(0.05, 0.7, 0.1, 1)',
   easeSpring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
   easeDecelerate: 'cubic-bezier(0, 0, 0.2, 1)',
-  durationFast: '120ms',
+  durationFast: '150ms',
   durationBase: '200ms',
   durationSlow: '300ms',
   durationSlower: '450ms',
+  durationSlowest: '600ms',
 } as const
 
 /** 学科色（主题无关常量，与 variables.scss 一致）。 */
@@ -472,7 +500,11 @@ export const COMPONENT_TOKENS: Record<string, string> = {
   // 页头
   'page-header-border': 'var(--border-light)',
   // 焦点环（§6.4）
-  'focus-ring': 'rgba(var(--primary-rgb), 0.55)',
+  // `focus-ring` 曾是 `rgba(--primary-rgb, 0.55)`：压在浅底上只有 ~2.4:1，不达
+  // WCAG 1.4.11 对非文本对比度的 3:1。V4.0 · D5 改为不透明 `--primary-text`（~6.4:1）。
+  'focus-ring': 'var(--primary-text)',
+  'focus-ring-on-strong': 'var(--on-strong)',
   'focus-ring-w': '2px',
   'focus-ring-offset': '2px',
+  'focus-ring-offset-inset': '-2px',
 }

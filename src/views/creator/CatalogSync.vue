@@ -1,6 +1,6 @@
 <template>
   <div class="catalog-sync">
-    <n-card title="🌐 联网校验与库同步" :bordered="false" class="block">
+    <AppCard title="联网校验与库同步">
       <n-space vertical size="medium">
         <div class="field">
           <label>catalog 地址（GitHub Raw / 坚果云 / WebDAV 分享链接等）</label>
@@ -60,13 +60,14 @@
         <n-alert v-if="updateMsg" :type="updateOk ? 'success' : 'error'" :title="updateOk ? '更新完成' : '更新失败'" />
         <div v-if="updateMsg" class="update-msg">{{ updateMsg }}</div>
       </n-space>
-    </n-card>
+    </AppCard>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { NCard, NSpace, NInput, NButton, NTag, NAlert } from 'naive-ui'
+import { NSpace, NInput, NButton, NTag, NAlert } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
 import { usePackageStore } from '@core/stores/package'
 import {
   fetchCatalog,
@@ -192,22 +193,18 @@ defineExpose({ checkUpdatesWith })
 .catalog-sync {
   padding: 4px;
 }
-.block {
-  background: $card-bg;
-  border: 1px solid $border-color;
-}
 .field {
   display: flex;
   flex-direction: column;
   gap: 4px;
   label {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
   }
 }
 .cors-hint {
   margin-top: 6px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   code {
     background: $bg-color;
@@ -224,7 +221,7 @@ defineExpose({ checkUpdatesWith })
 .results-head {
   padding: 8px 12px;
   background: $bg-color;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   border-bottom: 1px solid $border-light;
 }
@@ -250,11 +247,11 @@ defineExpose({ checkUpdatesWith })
   color: $text-main;
 }
 .ver {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-muted;
 }
 .update-msg {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
 }
 </style>

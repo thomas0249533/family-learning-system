@@ -31,13 +31,13 @@
             :class="[`tier-${item.tier}`, { 'is-earned': item.earned }]"
           >
             <div class="print-card-top">
-              <span class="print-icon" aria-hidden="true">{{ item.icon }}</span>
+              <span class="print-icon" aria-hidden="true"><IconBase :name="item.icon" size="1em" /></span>
               <span class="print-title">{{ item.title }}</span>
             </div>
 
             <!-- 颜色的替代编码之一：层级文字 + 星标数量（AC-P2-10） -->
             <div class="print-tier">
-              <span v-if="item.stars > 0" class="print-stars" aria-hidden="true">{{ '★'.repeat(item.stars) }}</span>
+              <span v-if="item.stars > 0" class="print-stars" aria-hidden="true"><IconBase v-for="n in item.stars" :key="n" name="star" size="1em" /></span>
               <span>{{ TIER_META[item.tier].label }}</span>
             </div>
 

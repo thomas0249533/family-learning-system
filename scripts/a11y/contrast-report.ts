@@ -26,6 +26,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { buildSemantic, FONT, PRESETS, MODES, type ThemePreset, type ThemeMode } from '../../src/core/styles/tokens'
+import { ICON_SPOTS } from '../../src/core/a11y/icon-spots'
 
 /**
  * `--check` / `CI=true` → 只校验不写盘（见文件头「两种运行模式」）。
@@ -428,6 +429,74 @@ md.push('')
 md.push('> 说明：hero / 品牌渐变白字为**品牌视觉**，team-lead 明确「不要动」；此处如实给出实测（浅端 primary.light 最低 1.97），供记录。')
 md.push('')
 
+/* ---------------------- §图标对比度（WCAG 1.4.11） ---------------------- */
+
+/**
+ * 图标不是文字，1.4.11 给它的是 **3:1**；而图标是 `currentColor` 染色的，
+ * 「落在什么底上」在 token 表里根本看不见 —— 文字全绿、图标看不见是完全可能的。
+ * 登记表在 `src/core/a11y/icon-spots.ts`（有发现门禁，新增彩色图标 chip 必须登记）。
+ *
+ * `brand` 档不是「放过」：它把实测值 + 不得变差的下限写进表里，
+ * 让「品牌渐变过不了 3:1」这件事**有账可查**，而不是消失在「不适用」里。
+ */
+interface IconRow { where: string; fgLabel: string; bgLabel: string; group: string; value: number; kind: 'must' | 'brand'; floor: number }
+const iconRows: IconRow[] = []
+for (const [preset, mode, label] of GROUPS) {
+  const sem = buildSemantic(preset, mode) as unknown as Sem
+  for (const spot of ICON_SPOTS) {
+    const fgVal = spot.fg(sem, mode)
+    const bgVals = spot.bg(sem, mode)
+    if (bgVals.length === 0) continue
+    // 渐变 / 玻璃底给的是**两端点**：取最差的一处判定（保守）
+    const value = Math.min(...bgVals.map((b) => contrast(fgVal, b) ?? 0))
+    iconRows.push({
+      where: spot.where,
+      fgLabel: spot.fgLabel,
+      bgLabel: spot.bgLabel,
+      group: label,
+      value,
+      kind: spot.kind,
+      floor: spot.kind === 'brand' ? (spot.floor ?? 0) : BG_LARGE,
+    })
+  }
+}
+
+md.push('## §图标对比度（WCAG 1.4.11 非文本对比度 ≥3:1）')
+md.push('')
+md.push('图标用 `currentColor` 染色，颜色是**继承**来的 —— 它落在什么底上，在 token 表里看不出来。')
+md.push('下表按「真实渲染的 图标 × 彩色面」逐处实测（6 组取最差），登记表见 `src/core/a11y/icon-spots.ts`。')
+md.push('')
+md.push('| 位置 | 图标色 | 底色 | 最差组 | 实测 | 阈值 | 判定 |')
+md.push('|---|---|---|---|---|---|---|')
+for (const spot of ICON_SPOTS) {
+  const rows = iconRows.filter((r) => r.where === spot.where && r.bgLabel === spot.bgLabel)
+  if (rows.length === 0) {
+    md.push(`| ${spot.where} | \`${spot.fgLabel}\` | \`${spot.bgLabel}\` | — | n/a | — | ⚠️ 无配对 |`)
+    continue
+  }
+  const worst = rows.reduce((a, b) => (b.value < a.value ? b : a))
+  const threshold = spot.kind === 'brand' ? `≥${(spot.floor ?? 0).toFixed(2)}（品牌）` : '3.0'
+  md.push(
+    `| ${spot.where} | \`${spot.fgLabel}\` | \`${spot.bgLabel}\` | ${worst.group} | ${worst.value.toFixed(2)} | ${threshold} | ${worst.value + 0.005 >= worst.floor ? '✅' : '❌'} |`,
+  )
+}
+md.push('')
+md.push('### 两种判定档')
+md.push('')
+md.push('- **must（阈值 3.0）**：图标承载信息，或它本身就是控件（关闭 ×、选中勾、模式选中态、朗读中喇叭）。')
+md.push('  6 组 × 3:1 必过 —— 其中多数实际也过了 4.5，因为它们与同排文字同源。')
+md.push('- **brand（阈值 = 登记下限）**：品牌渐变 hero 上的白字/白图标。`gradient-primary` 两端跨度大，')
+md.push('  **不存在**任何单色前景能同时压过两端（白压浅端 1.97、深字压深端 1.70），而渐变已定为品牌视觉不动。')
+md.push('  所以不假装达标，改为把实测值钉成下限：**只能变好，不能变差**。')
+md.push('  这些位置的图标一律是装饰件（`aria-hidden`）或与文字标签同排出现，含义不靠图标单独承载。')
+md.push('')
+md.push('> **D6 修掉了 7 处真问题**：`-color`（图形色）当实心底、上面压 `text-on-primary` 白图标/白字，')
+md.push('> 实测 primary.light 只有 **2.85:1** —— 低于 3.0 这条「非文本」底线。')
+md.push('> 涉及大图关闭 ×、两处朗读按钮的播放中态、词语背记模式选中态、盲盒「？」、首页快捷胶囊、成就墙印章。')
+md.push('> 全部改为 `-text` 底（→ 5.12:1）。**这条约定此前只写在报告里，没有任何机器门禁**，')
+md.push('> 现在由 `npm run check:icon-contrast` 拦住回潮。')
+md.push('')
+
 /* ---------------------- 各组全表 ---------------------- */
 for (const [preset, mode, label] of GROUPS) {
   md.push(`## ${label}`)
@@ -532,6 +601,17 @@ for (const ex of EXCEPTIONS) {
 const unclassified = allRows.filter((r) => !r.pass && r.class === '未分类')
 const totalFails = allRows.filter((r) => !r.pass).length
 
+/**
+ * 图标门禁（D6）：
+ *   · `must` 档 —— 6 组都必须 ≥3.0（1.4.11 非文本底线）；
+ *   · `brand` 档 —— 复算不得低于登记下限（「不得变差」）；
+ *   · 陈旧登记 —— `file` 指向的文件不存在 = 登记表在说谎（改了路径没改表）。
+ */
+const iconMustFails = iconRows.filter((r) => r.kind === 'must' && r.value + 0.005 < BG_LARGE)
+const iconBrandFails = iconRows.filter((r) => r.kind === 'brand' && r.value + 0.005 < r.floor)
+const iconStale = ICON_SPOTS.filter((s) => !existsSync(resolve(process.cwd(), s.file)))
+const iconNoPair = ICON_SPOTS.filter((s) => !iconRows.some((r) => r.where === s.where && r.bgLabel === s.bgLabel))
+
 if (CHECK_MODE) {
   console.log(`${TAG} 只校验模式：未写盘，逐字节比对 ${outPath} → ${docDrift ? '漂移' : '一致'}`)
 } else {
@@ -539,6 +619,7 @@ if (CHECK_MODE) {
 }
 console.log(`${TAG} 配对总数 ${allRows.length}；非通过 ${totalFails}（例外 ${EXCEPTIONS.length}；其余均已判不适用）`)
 console.log(`${TAG} MUST_PASS 失败 ${mustFails.length}；例外「不得变差」失败 ${exceptionFails.length}；未分类失败 ${unclassified.length}；死键 ${deadKeys.length}`)
+console.log(`${TAG} 图标对 ${iconRows.length}（${ICON_SPOTS.length} 处登记 × ${GROUPS.length} 组）；must 失败 ${iconMustFails.length}；brand 变差 ${iconBrandFails.length}；无配对 ${iconNoPair.length}；陈旧登记 ${iconStale.length}`)
 
 let bad = false
 if (docDrift) {
@@ -566,5 +647,27 @@ if (unclassified.length > 0) {
   console.error(`${TAG} ✗ 存在未分类的失败项（须登记例外或判定不适用）：`)
   for (const r of unclassified) console.error(`  - [${r.group}] ${r.key} = ${r.value?.toFixed(2)}`)
 }
+if (iconMustFails.length > 0) {
+  bad = true
+  console.error(`${TAG} ✗ 图标（must 档）跌破 3:1 —— WCAG 1.4.11：`)
+  for (const r of iconMustFails) console.error(`  - [${r.group}] ${r.where}：${r.fgLabel} on ${r.bgLabel} = ${r.value.toFixed(2)}`)
+  console.error('  修法：把实心底从 `-color`（图形色）换成 `-text`，或把图标色换成与底同源的 `-text`。')
+}
+if (iconBrandFails.length > 0) {
+  bad = true
+  console.error(`${TAG} ✗ 图标（brand 档）比登记下限更差 —— 品牌渐变豁免只保「不变差」：`)
+  for (const r of iconBrandFails) console.error(`  - [${r.group}] ${r.where} = ${r.value.toFixed(2)} < 下限 ${r.floor.toFixed(2)}`)
+}
+if (iconNoPair.length > 0) {
+  bad = true
+  console.error(`${TAG} ✗ 图标登记取不到配对（解析器返回空 → 该登记静默失效）：`)
+  for (const s of iconNoPair) console.error(`  - ${s.where}（${s.file}#${s.cls}）`)
+}
+if (iconStale.length > 0) {
+  bad = true
+  console.error(`${TAG} ✗ 图标登记指向不存在的文件（登记表陈旧）：`)
+  for (const s of iconStale) console.error(`  - ${s.file}#${s.cls}`)
+}
 if (bad) process.exit(1)
 console.log(`${TAG} ✓ MUST_PASS 全达标 + 例外表未变差 + 无未分类失败项 + 无死键` + (CHECK_MODE ? ' + 文档无漂移' : ''))
+console.log(`${TAG} ✓ 图标 must 档全 ≥3:1 + brand 档未变差 + 无无配对/陈旧登记`)

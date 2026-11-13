@@ -227,7 +227,7 @@ test.describe('V3.0 主闭环', () => {
       await page.getByRole('button', { name: '提交答案' }).click()
       const last = i === 2
       await page
-        .getByRole('button', { name: last ? '🏁 完成练习' : '下一题 ➡️' })
+        .getByRole('button', { name: last ? /完成练习/ : /下一题/ })
         .click()
     }
 

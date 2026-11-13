@@ -4,7 +4,7 @@
     class="section-title"
     :class="{ 'section-title--accent': accent, 'section-title--gradient': gradient }"
   >
-    <span v-if="icon" class="section-title__icon" aria-hidden="true">{{ icon }}</span>
+    <span v-if="icon" class="section-title__icon" aria-hidden="true"><IconBase :name="icon" :size="20" /></span>
     <span class="section-title__text">{{ title }}</span>
     <span v-if="count !== undefined || $slots.count" class="section-title__count">
       <slot name="count">{{ count }}</slot>
@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+import IconBase from './IconBase.vue'
 // =====================================================================
 // SectionTitle · 自建小节标题（统一 `.section-header` / `.section-title`）
 // ---------------------------------------------------------------------

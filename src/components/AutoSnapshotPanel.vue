@@ -1,5 +1,5 @@
 <template>
-  <AppCard title="🛟 自动快照" class="card">
+  <AppCard title="自动快照" class="card">
     <div v-if="loading" class="snap-hint">正在读取快照…</div>
 
     <template v-else>
@@ -10,7 +10,7 @@
         「清空每日快照」误删。
       -->
       <div v-if="protectedItems.length > 0" class="snap-group">
-        <div class="snap-group-title is-protected">🛡️ 清空前恢复点（{{ protectedItems.length }}）</div>
+        <div class="snap-group-title is-protected"><IconBase name="shield" size="1em" /> 清空前恢复点（{{ protectedItems.length }}）</div>
         <div class="snap-list">
           <div v-for="it in protectedItems" :key="it.id" class="snap-row is-protected">
             <div class="snap-main">
@@ -192,7 +192,7 @@ onMounted(reload)
 }
 
 .snap-group-title {
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 700;
   color: $text-sub;
   margin-bottom: 6px;
@@ -232,7 +232,7 @@ onMounted(reload)
 }
 
 .snap-reason {
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   color: $danger-text;
 }
@@ -246,13 +246,13 @@ onMounted(reload)
 }
 
 .snap-date {
-  font-size: 14px;
+  font-size: var(--font-base);
   font-weight: 700;
   color: $text-main;
 }
 
 .snap-today {
-  font-size: 11px;
+  font-size: var(--font-2xs);
   font-weight: 700;
   color: $primary-text;
   background: $primary-light;
@@ -261,13 +261,13 @@ onMounted(reload)
 }
 
 .snap-meta {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
 }
 
 .snap-btn {
   flex-shrink: 0;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   padding: 5px 12px;
   border-radius: $radius-sm;
@@ -303,7 +303,7 @@ onMounted(reload)
 }
 
 .snap-hint {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   line-height: $leading-normal;
 }

@@ -18,7 +18,7 @@
       <!-- 一枚都没解锁：给引导，不给零分成绩单 -->
       <EmptyState
         v-if="recent.length === 0"
-        icon="🌱"
+        icon="seedling"
         :description="`${name}还没有解锁成就，做几道题就会亮起来。`"
       />
 
@@ -32,7 +32,7 @@
           :class="`tier-${item.tier}`"
           :aria-label="chipLabel(item)"
         >
-          <span class="wall-chip-icon" aria-hidden="true">{{ item.icon }}</span>
+          <span class="wall-chip-icon" aria-hidden="true"><IconBase :name="item.icon" size="1em" /></span>
           <span class="wall-chip-title">{{ item.title }}</span>
           <!-- 重复印记（B6）：紧凑形态不铺"第 N 次"整句，只给 ×N 角标，
                读屏文本里仍是完整的"第 N 次达成"（见 chipLabel） -->
@@ -191,7 +191,7 @@ function chipLabel(item: AchievementItem): string {
   height: 12px;
   border-radius: $radius-sm;
   background: $bg-color-hover;
-  animation: wall-pulse 1.2s ease-in-out infinite;
+  animation: wall-pulse 1.2s var(--ease-standard) infinite; /* check-motion-allow: 墙面脉冲为装饰循环，1.2s 属编排节奏而非交互反馈 */
 
   &--short {
     width: 60%;

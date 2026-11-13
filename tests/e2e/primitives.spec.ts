@@ -2,13 +2,13 @@ import { test } from '@playwright/test'
 import { freezeSmil } from './freeze-smil'
 
 /**
- * 8 UI 基元 · 截图矩阵（浅/深 × 基元 × 状态）。
+ * 10 UI 基元 · 截图矩阵（浅/深 × 基元 × 状态）。
  * · 沿用 visual.spec.ts 的「冻结时钟 + 预置 localStorage['fls:theme']」范式（防 FOUC + 确定化）。
  * · 目标：`.ds-block[data-ds=...]`（展示页 src/views/DesignSystem.vue，仅 DEV 注册）。
  * · 截图前把区块滚到视口居中，避开 sticky 顶栏（z-index 50）遮挡。
- * 输出：docs/screenshots/ds/{block}-{light|dark}.png  —— 16 张
+ * 输出：docs/screenshots/ds/{block}-{light|dark}.png  —— 20 张
  *       docs/screenshots/ds/{block}-hover-{light|dark}.png —— 3×2 = 6 张
- * 合计 22 张（≤ 任务书 40 张上限）。
+ * 合计 26 张（≤ 任务书 40 张上限）。
  */
 const BLOCKS = [
   'app-button',
@@ -19,6 +19,8 @@ const BLOCKS = [
   'progress-bar',
   'empty-state',
   'page-header',
+  'icon-base',
+  'skeleton',
 ] as const
 
 /** 需额外补 hover 态截图的基元（可交互）：选择块内 hover 目标 */

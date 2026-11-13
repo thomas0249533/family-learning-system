@@ -1,5 +1,6 @@
 <template>
   <div
+    v-clickable:link
     class="pkg-card"
     :class="[cardStatusClass(status), { exam: modeMeta.exam }]"
     @click="selectPackage(pkg)"
@@ -17,7 +18,7 @@
           aria-label="分享此学习包"
           title="分享此学习包"
           @click.stop="$emit('share', pkg)"
-        >📤</button>
+        ><IconBase name="upload" size="1em" /></button>
       </div>
 
       <div class="pkg-card-meta">
@@ -160,7 +161,7 @@ function selectPackage(pkg: LearningPackageRecord) {
   box-shadow: $shadow-sm;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.2s ease;
+  transition: all var(--duration-base) var(--ease-standard);
   min-height: 84px;
 
   &:hover {
@@ -228,7 +229,7 @@ function selectPackage(pkg: LearningPackageRecord) {
   }
 
   .pkg-card-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 700;
     color: $text-main;
     margin: 0;
@@ -243,7 +244,7 @@ function selectPackage(pkg: LearningPackageRecord) {
 
   .pkg-card-tag {
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 700;
     padding: 2px 8px;
     border-radius: 12px;
@@ -259,7 +260,7 @@ function selectPackage(pkg: LearningPackageRecord) {
     align-items: center;
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     line-height: 1.5;
 
@@ -267,7 +268,7 @@ function selectPackage(pkg: LearningPackageRecord) {
        册别/版本降为普通文本，信息层级更清楚 */
     .subject-chip {
       flex-shrink: 0;
-      font-size: 11px;
+      font-size: var(--font-2xs);
       font-weight: 700;
       padding: 2px 9px;
       border-radius: 10px;
@@ -287,8 +288,8 @@ function selectPackage(pkg: LearningPackageRecord) {
     align-items: center;
     padding: 0 16px;
     color: $text-muted;
-    font-size: 18px;
-    transition: all 0.2s;
+    font-size: var(--font-xl);
+    transition: all var(--duration-base) var(--ease-standard);
   }
 }
 
@@ -303,11 +304,11 @@ function selectPackage(pkg: LearningPackageRecord) {
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
-  font-size: 14px;
+  font-size: var(--font-base);
   line-height: 1;
   cursor: pointer;
   color: var(--text-muted);
-  transition: all 0.2s;
+  transition: all var(--duration-base) var(--ease-standard);
 
   &:hover {
     background: var(--bg-color-hover);

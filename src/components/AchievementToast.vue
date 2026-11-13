@@ -11,9 +11,9 @@
         @click="goDetail"
       >
         <span class="toast-glow" aria-hidden="true"></span>
-        <span class="toast-icon">{{ current.icon }}</span>
+        <span class="toast-icon"><IconBase :name="current.icon" size="1em" /></span>
         <div class="toast-body">
-          <div class="toast-tag">🎉 {{ current.hidden ? '隐藏成就已解锁！' : '解锁新成就' }}</div>
+          <div class="toast-tag"><IconBase name="celebrate" size="1em" /> {{ current.hidden ? '隐藏成就已解锁！' : '解锁新成就' }}</div>
           <div class="toast-title">{{ current.title }}</div>
           <div class="toast-desc">{{ current.desc }}</div>
           <div class="toast-hint">点击查看详情 →</div>
@@ -141,8 +141,8 @@ defineExpose({ enqueue })
     border-color: $primary-text;
   }
   &:focus-visible {
-    outline: 3px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   .toast-glow {
@@ -154,7 +154,7 @@ defineExpose({ enqueue })
 
   .toast-icon {
     position: relative;
-    font-size: 40px;
+    font-size: var(--font-7xl);
     line-height: 1;
     z-index: 1;
   }
@@ -165,24 +165,24 @@ defineExpose({ enqueue })
     min-width: 0;
 
     .toast-tag {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       font-weight: 800;
       color: $primary-text;
       letter-spacing: 0.3px;
     }
     .toast-title {
-      font-size: 16px;
+      font-size: var(--font-lg);
       font-weight: 800;
       color: $text-main;
       margin-top: 2px;
     }
     .toast-desc {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $text-sub;
       margin-top: 2px;
     }
     .toast-hint {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       font-weight: 700;
       color: $primary-text;
       margin-top: 4px;
@@ -199,7 +199,7 @@ defineExpose({ enqueue })
   animation: achPopDown var(--duration-slower) var(--ease-spring) both;
 }
 .ach-pop-leave-active {
-  animation: achPopUp var(--duration-base) ease both;
+  animation: achPopUp var(--duration-base) var(--ease-standard) both;
 }
 
 @keyframes achPopDown {

@@ -7,7 +7,7 @@
       { 'app-badge--solid': !soft, 'app-badge--closable': closable },
     ]"
   >
-    <span v-if="icon" class="app-badge__icon" aria-hidden="true">{{ icon }}</span>
+    <span v-if="icon" class="app-badge__icon" aria-hidden="true"><IconBase :name="icon" :size="14" /></span>
     <span v-else-if="$slots.icon" class="app-badge__icon" aria-hidden="true">
       <slot name="icon" />
     </span>
@@ -19,12 +19,13 @@
       aria-label="移除"
       @click="onClose"
     >
-      <span aria-hidden="true">✕</span>
+      <span aria-hidden="true"><IconBase name="close" size="1em" /></span>
     </button>
   </span>
 </template>
 
 <script setup lang="ts">
+import IconBase from './IconBase.vue'
 // =====================================================================
 // AppBadge · 自建 span（软色 pill）—— 计数 / 状态标签
 // ---------------------------------------------------------------------

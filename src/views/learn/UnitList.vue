@@ -3,7 +3,16 @@
     <ExamPanel v-if="isExamMode && currentPackage" :pkg="currentPackage" />
 
     <template v-else>
-      <n-spin v-if="loading" size="large" class="loading-spin" />
+      <!-- 加载态：与单元卡同高的骨架，替代页面级转圈 -->
+      <div v-if="loading" class="unit-skeleton" aria-busy="true">
+        <Skeleton
+          v-for="n in 3"
+          :key="n"
+          variant="rect"
+          height="96px"
+          :label="n === 1 ? '正在加载单元' : undefined"
+        />
+      </div>
 
       <template v-else>
         <n-alert
@@ -15,7 +24,7 @@
         </n-alert>
 
         <div v-if="suggestedUnit && !isExamMode" class="path-tip">
-          <span class="path-tip__icon">💡</span>
+          <span class="path-tip__icon"><IconBase name="bulb" size="1em" /></span>
           <span class="path-tip__text">建议先学：<b>{{ suggestedUnit.unit.title }}</b>（还没掌握，先把它啃下来）</span>
           <button class="path-tip__btn" type="button" @click="selectUnit(suggestedUnit)">去学 →</button>
         </div>
@@ -24,6 +33,7 @@
           <div
             v-for="(ru, idx) in resolvedUnits"
             :key="ru.unit.id"
+            v-clickable:link
             class="unit-card"
             :class="cardStatusClass(unitStatus(ru))"
             @click="selectUnit(ru)"
@@ -34,7 +44,7 @@
               <p v-if="ru.unit.desc" class="unit-card-desc">{{ ru.unit.desc }}</p>
               <div class="unit-card-foot">
                 <span v-if="isAggregate" class="unit-card-source">
-                  📚 {{ ru.sourcePackageTitle }}
+                  <IconBase name="books" size="1em" /> {{ ru.sourcePackageTitle }}
                 </span>
                 <span class="unit-card-meta">
                   {{ ru.unit.topics?.length ?? 0 }} 个主题
@@ -45,7 +55,7 @@
                 </span>
                 <!-- P2 · 学习路径建议：标出最该先学的一单元 -->
                 <span v-if="ru.unit.id === suggestedUnitId" class="unit-card-suggest">
-                  ⭐ 建议优先
+                  <IconBase name="star" size="1em" /> 建议优先
                 </span>
                 <!-- V2.12.3 · 手动「全部完成」：自动判定覆盖不到时的兜底（可撤销） -->
                 <button
@@ -56,7 +66,7 @@
                   :title="isManualComplete(ru) ? '取消「全部完成」标记' : '标记为已全部掌握'"
                   @click.stop="toggleComplete(ru)"
                 >
-                  {{ isManualComplete(ru) ? '✓ 已标记' : '✓ 全完成' }}
+                  <IconBase name="check" size="1em" /> {{ isManualComplete(ru) ? '已标记' : '全完成' }}
                 </button>
               </div>
             </div>
@@ -67,7 +77,9 @@
           </div>
         </div>
 
-        <EmptyState v-else description="该学习包内暂无单元数据" class="empty-card" />
+        <AppCard v-else paddingless class="empty-card">
+          <EmptyState description="该学习包内暂无单元数据" />
+        </AppCard>
       </template>
     </template>
   </div>
@@ -76,8 +88,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { NSpin, NAlert } from 'naive-ui'
+import { NAlert } from 'naive-ui'
+import AppCard from '@/components/ui/AppCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
 import { resolvePackageUnits, type ResolvedUnit } from '@core/importer/resolvePackageUnits'
@@ -248,10 +262,11 @@ function selectUnit(ru: ResolvedUnit) {
   gap: 16px;
 }
 
-.loading-spin {
+.unit-skeleton {
   display: flex;
-  justify-content: center;
-  margin-top: 40px;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
 }
 
 .unit-grid {
@@ -274,7 +289,7 @@ function selectUnit(ru: ResolvedUnit) {
   box-shadow: $shadow-sm;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.2s ease;
+  transition: all var(--duration-base) var(--ease-standard);
   min-height: 96px;
 
   /* ===== D1 · 掌握状态：底色只用 --badge-{tone}-bg（= -light），
@@ -339,9 +354,9 @@ function selectUnit(ru: ResolvedUnit) {
     justify-content: center;
     background: var(--badge-neutral-bg);
     color: $text-main;
-    font-size: 18px;
+    font-size: var(--font-xl);
     font-weight: 800;
-    transition: all 0.2s;
+    transition: all var(--duration-base) var(--ease-standard);
   }
 
   .unit-card-body {
@@ -355,7 +370,7 @@ function selectUnit(ru: ResolvedUnit) {
   }
 
   .unit-card-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 700;
     color: $text-main;
     margin: 0;
@@ -363,7 +378,7 @@ function selectUnit(ru: ResolvedUnit) {
   }
 
   .unit-card-desc {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     line-height: 1.5;
     margin: 0;
@@ -378,7 +393,7 @@ function selectUnit(ru: ResolvedUnit) {
     align-items: center;
     flex-wrap: wrap;
     gap: 8px;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     color: $text-muted;
     margin-top: 2px;
 
@@ -413,10 +428,10 @@ function selectUnit(ru: ResolvedUnit) {
       border-radius: var(--radius-sm);
       background: transparent;
       color: $text-muted;
-      font-size: 11px;
+      font-size: var(--font-2xs);
       line-height: 1.6;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all var(--duration-base) var(--ease-standard);
 
       &:hover {
         background: var(--bg-color-hover);
@@ -441,17 +456,14 @@ function selectUnit(ru: ResolvedUnit) {
     align-items: center;
     padding: 0 16px;
     color: $text-muted;
-    font-size: 18px;
-    transition: all 0.2s;
+    font-size: var(--font-xl);
+    transition: all var(--duration-base) var(--ease-standard);
   }
 }
 
 .empty-card {
-  background: $card-bg;
-  border-radius: $radius-lg;
+  /* V4.0 · D7：卡片外观交给 AppCard，这里只剩「空态的留白」 */
   padding: 60px 20px;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-color;
 }
 
 /* P2 · 学习路径建议横幅：与「学习小贴士」同一语言（主色软底 + 左侧图标） */
@@ -465,8 +477,8 @@ function selectUnit(ru: ResolvedUnit) {
   border: 1px solid $primary-color;
   border-radius: $radius-lg;
 
-  &__icon { font-size: 18px; flex-shrink: 0; }
-  &__text { flex: 1; font-size: 13px; color: $text-main; line-height: 1.5; }
+  &__icon { font-size: var(--font-xl); flex-shrink: 0; }
+  &__text { flex: 1; font-size: var(--font-sm); color: $text-main; line-height: 1.5; }
   &__btn {
     flex-shrink: 0;
     padding: 5px 14px;
@@ -474,11 +486,11 @@ function selectUnit(ru: ResolvedUnit) {
     border-radius: 8px;
     background: var(--primary-text);
     color: var(--text-on-primary);
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
-    transition: filter 0.15s;
+    transition: filter var(--duration-fast) var(--ease-standard);
     &:hover { filter: brightness(1.06); }
   }
 }

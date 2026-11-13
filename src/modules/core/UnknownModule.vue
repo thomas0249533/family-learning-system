@@ -1,7 +1,7 @@
 <template>
   <EmptyState
     class="unknown-module"
-    icon="🧩"
+    icon="puzzle"
     :description="`模块类型 ${type} 在当前模板中尚未实现，敬请期待！`"
   />
 </template>

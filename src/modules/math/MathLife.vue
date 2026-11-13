@@ -1,5 +1,5 @@
 <template>
-  <AppCard class="math-module-card" title="🏠 生活应用">
+  <AppCard class="math-module-card" title="生活应用">
     <div class="life-box">
       <p>这里将展示数学知识在生活中的应用实例。</p>
     </div>

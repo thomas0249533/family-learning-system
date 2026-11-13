@@ -2,7 +2,7 @@
   <AppCard class="english-sentence-card">
     <template v-for="(kp, i) in kps" :key="i">
       <div class="pattern-block" v-if="kp.metadata?.pattern">
-        <div class="pattern-label">📐 句型</div>
+        <div class="pattern-label"><IconBase name="ruler" size="1em" /> 句型</div>
         <div class="pattern-text">{{ kp.metadata.pattern }}</div>
       </div>
 
@@ -12,7 +12,7 @@
       </div>
 
       <div class="usage-block" v-if="kp.metadata?.usage">
-        <div class="usage-label">💡 用法</div>
+        <div class="usage-label"><IconBase name="bulb" size="1em" /> 用法</div>
         <div class="usage-text">{{ kp.metadata.usage }}</div>
       </div>
     </template>
@@ -45,9 +45,9 @@ const kps = useKnowledgePoints(computed(() => props.knowledgePointIds))
   border-radius: 8px;
   margin-bottom: 14px;
 
-  .pattern-label { font-size: 12px; color: $subject-english-light; font-weight: 700; margin-bottom: 4px; }
+  .pattern-label { font-size: var(--font-xs); color: $subject-english-light; font-weight: 700; margin-bottom: 4px; }
   .pattern-text {
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-weight: 700;
     color: $subject-english;
     font-family: 'Times New Roman', serif;
@@ -58,14 +58,14 @@ const kps = useKnowledgePoints(computed(() => props.knowledgePointIds))
   margin-bottom: 14px;
 
   .example-en {
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-family: 'Times New Roman', serif;
     color: $text-main;
     line-height: 1.6;
     margin-bottom: 4px;
   }
   .example-cn {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
   }
 }
@@ -75,7 +75,7 @@ const kps = useKnowledgePoints(computed(() => props.knowledgePointIds))
   padding: 10px 12px;
   border-radius: 6px;
 
-  .usage-label { font-size: 12px; color: $subject-chinese; font-weight: 700; margin-bottom: 4px; }
-  .usage-text { font-size: 13px; color: $text-main; line-height: 1.7; }
+  .usage-label { font-size: var(--font-xs); color: $subject-chinese; font-weight: 700; margin-bottom: 4px; }
+  .usage-text { font-size: var(--font-sm); color: $text-main; line-height: 1.7; }
 }
 </style>

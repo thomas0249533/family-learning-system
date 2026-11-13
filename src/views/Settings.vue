@@ -19,7 +19,7 @@
         :aria-current="activeSection === s.key ? 'true' : undefined"
         @click="goSection(s.key)"
       >
-        <span class="nav-icon" aria-hidden="true">{{ s.icon }}</span>
+        <span class="nav-icon" aria-hidden="true"><IconBase :name="s.icon" size="1em" /></span>
         <span class="nav-label">{{ s.label }}</span>
       </button>
     </nav>
@@ -27,7 +27,7 @@
     <div ref="contentRef" class="settings-content">
     <section id="settings-appearance" class="settings-panel" data-section="appearance">
     <!-- 外观设置 -->
-    <AppCard title="🎨 外观设置" class="card">
+    <AppCard title="外观设置" class="card">
       <n-space vertical size="large">
         <!-- 学习阶段主题（preset 卡片单选） -->
         <div>
@@ -47,27 +47,27 @@
                 <span class="band-swatch" :style="{ background: presetPreview(p.value).card }"></span>
               </span>
               <span class="preset-body">
-                <span class="preset-name">{{ p.icon }} {{ p.name }}</span>
+                <span class="preset-name"><IconBase :name="p.icon" size="1em" /> {{ p.name }}</span>
                 <span class="preset-tagline">{{ p.tagline }}</span>
               </span>
-              <span v-if="themeStore.preset === p.value" class="preset-check">✓</span>
+              <span v-if="themeStore.preset === p.value" class="preset-check"><IconBase name="check" size="1em" /></span>
             </button>
           </div>
 
           <!-- 推荐提示条（文本统一为 AppBadge 软色 pill，§5.1） -->
           <div class="preset-advice">
             <template v-if="themeStore.presetManual">
-              <AppBadge tone="neutral" size="sm" icon="🔒">已手动选择，不再自动推荐</AppBadge>
+              <AppBadge tone="neutral" size="sm" icon="lock">已手动选择，不再自动推荐</AppBadge>
               <AppButton size="tiny" quaternary type="primary" @click="handleRestoreAuto">恢复自动</AppButton>
             </template>
             <template v-else-if="recommended.grade !== null">
-              <AppBadge tone="warning" size="sm" icon="💡">
+              <AppBadge tone="warning" size="sm" icon="bulb">
                 检测到孩子 {{ recommended.grade }} 年级，推荐「{{ presetName(recommended.preset) }}」主题
               </AppBadge>
               <AppButton size="tiny" quaternary type="primary" @click="applyRecommended">一键切换</AppButton>
             </template>
             <template v-else>
-              <AppBadge tone="info" size="sm" icon="📥">导入学习包后，将按孩子年级自动推荐主题</AppBadge>
+              <AppBadge tone="info" size="sm" icon="inbox">导入学习包后，将按孩子年级自动推荐主题</AppBadge>
             </template>
           </div>
         </div>
@@ -132,7 +132,7 @@
          「音效」是仓库内 Web Audio 实时合成（零音频文件），关掉即整个静音；
          「震动」在桌面端（Windows WebView2）没有 Vibration API，恒为静默——
          文案必须如实说明，不能让家长以为开了却没生效。 -->
-    <AppCard title="🔊 声音与反馈" class="card">
+    <AppCard title="声音与反馈" class="card">
       <n-space vertical size="large">
         <div class="feedback-row">
           <div class="feedback-text">
@@ -161,7 +161,7 @@
          （PBKDF2 → AES-GCM）加密后落本机，**口令本身绝不保存**。
          不是系统 Keychain 的原因：本仓 Tauri 侧没有 keychain 插件，需要新增
          Rust 插件 + 重新打包，已单开任务。这里不做"假加密"。 -->
-    <AppCard title="🤖 AI 助手设置" class="card">
+    <AppCard title="AI 助手设置" class="card">
       <n-space vertical size="large">
         <div>
           <h4 class="setting-label">API Key</h4>
@@ -224,10 +224,10 @@
 
     <section id="settings-packages" class="settings-panel" data-section="packages">
     <!-- 学习包管理 -->
-    <AppCard title="📦 学习包管理" class="card">
+    <AppCard title="学习包管理" class="card">
       <n-space vertical>
         <AppButton type="primary" block size="large" @click="$router.push('/settings/import')">
-          📥 导入新的学习包
+          <IconBase name="inbox" size="1em" /> 导入新的学习包
         </AppButton>
       </n-space>
     </AppCard>
@@ -238,7 +238,7 @@
     <!-- 导出 -->
     <!-- id="family-backup" 是 B4 的落地锚点：「导出并删除旧档案」按钮会带着它跳过来，
          指向的正是家长唯一能"把数据先存下来"的那一行（见下方 scrollToHash） -->
-    <AppCard id="family-backup" title="📤 导出" class="card">
+    <AppCard id="family-backup" title="导出" class="card">
       <n-space vertical>
         <div class="export-row">
           <div class="export-info">
@@ -270,7 +270,7 @@
 
     <section id="settings-backup" class="settings-panel" data-section="backup">
     <!-- 从备份导入（两步向导：先预览，确认后才写入） -->
-    <AppCard title="📥 从备份导入" class="card">
+    <AppCard title="从备份导入" class="card">
       <ImportPreview />
       <div class="hint">来自另一台设备的备份可以合并进来；本机已有的较新记录不会被覆盖</div>
     </AppCard>
@@ -287,7 +287,7 @@
 
     <section id="settings-search" class="settings-panel" data-section="search">
     <!-- 搜索历史 -->
-    <AppCard title="🔍 搜索历史" class="card">
+    <AppCard title="搜索历史" class="card">
       <EmptyState v-if="searchHistory.length === 0" size="small" description="暂无搜索历史" />
       <template v-else>
         <div class="history-list">
@@ -303,7 +303,7 @@
 
     <section id="settings-danger" class="settings-panel" data-section="danger">
     <!-- 危险操作 -->
-    <AppCard title="🗑️ 危险操作" class="card" variant="danger">
+    <AppCard title="危险操作" class="card" variant="danger">
       <n-space vertical>
         <AppButton type="error" ghost @click="doClearMistakes">清空所有错题</AppButton>
         <AppButton type="error" ghost @click="doClearProgress">清空学习进度</AppButton>
@@ -389,15 +389,15 @@ interface SettingsSection {
 
 /** 分区表：顺序必须与模板里的 section 顺序一致（滚动高亮依赖这个顺序） */
 const SECTIONS: SettingsSection[] = [
-  { key: 'appearance', icon: '🎨', label: '外观设置' },
-  { key: 'feedback', icon: '🔊', label: '声音与反馈' },
-  { key: 'ai', icon: '🤖', label: 'AI 助手' },
-  { key: 'packages', icon: '📦', label: '学习包' },
-  { key: 'export', icon: '📤', label: '导出' },
-  { key: 'backup', icon: '📥', label: '备份导入' },
-  { key: 'sync', icon: '🔄', label: '同步' },
-  { key: 'search', icon: '🔍', label: '搜索历史' },
-  { key: 'danger', icon: '🗑️', label: '危险操作' },
+  { key: 'appearance', icon: 'palette', label: '外观设置' },
+  { key: 'feedback', icon: 'volume', label: '声音与反馈' },
+  { key: 'ai', icon: 'robot', label: 'AI 助手' },
+  { key: 'packages', icon: 'package', label: '学习包' },
+  { key: 'export', icon: 'upload', label: '导出' },
+  { key: 'backup', icon: 'inbox', label: '备份导入' },
+  { key: 'sync', icon: 'refresh', label: '同步' },
+  { key: 'search', icon: 'search', label: '搜索历史' },
+  { key: 'danger', icon: 'trash', label: '危险操作' },
 ]
 
 const activeSection = ref<string>(SECTIONS[0].key)
@@ -819,7 +819,7 @@ function clearAllData() {
     border-radius: $radius-md;
     background: transparent;
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-sub;
     text-align: left;
@@ -838,19 +838,19 @@ function clearAllData() {
     }
 
     &:focus-visible {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
 
     .nav-icon {
-      font-size: 15px;
+      font-size: var(--font-md);
       line-height: 1;
       flex-shrink: 0;
     }
 
     @media (max-width: 900px) {
       padding: 7px 12px;
-      font-size: 12.5px;
+      font-size: var(--font-sm);
     }
   }
 }
@@ -873,7 +873,7 @@ function clearAllData() {
 }
 
 /* `.card` 的圆角/阴影已由 AppCard 基元统一提供（radius-lg + shadow-sm）；危险卡走 variant="danger"。 */
-.setting-label { font-size: 14px; font-weight: 700; color: $text-main; margin-bottom: 10px; }
+.setting-label { font-size: var(--font-base); font-weight: 700; color: $text-main; margin-bottom: 10px; }
 
 /* ========== 学段预设卡片 ========== */
 .preset-grid {
@@ -898,7 +898,7 @@ function clearAllData() {
   cursor: pointer;
   font-family: inherit;
   text-align: left;
-  transition: all 0.15s ease;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &:hover {
     border-color: $primary-color;
@@ -929,12 +929,12 @@ function clearAllData() {
     gap: 2px;
 
     .preset-name {
-      font-size: 14px;
+      font-size: var(--font-base);
       font-weight: 800;
       color: $text-main;
     }
     .preset-tagline {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-muted;
     }
   }
@@ -951,7 +951,7 @@ function clearAllData() {
     border-radius: $radius-full;
     background: var(--primary-text);
     color: var(--text-on-primary);
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 800;
   }
 }
@@ -970,11 +970,11 @@ function clearAllData() {
   padding: 10px 0; border-bottom: 1px dashed $border-color;
   &:last-child { border-bottom: none; }
   .export-info { flex: 1; }
-  .export-title { font-size: 14px; font-weight: 700; color: $text-main; }
-  .export-desc { font-size: 12px; color: $text-sub; margin-top: 2px; }
+  .export-title { font-size: var(--font-base); font-weight: 700; color: $text-main; }
+  .export-desc { font-size: var(--font-xs); color: $text-sub; margin-top: 2px; }
 }
 
-.hint { font-size: 12px; color: $text-sub; margin-top: 8px; }
+.hint { font-size: var(--font-xs); color: $text-sub; margin-top: 8px; }
 
 /* V2.11 · 声音与反馈行：左文右开关 */
 .feedback-row {
@@ -986,7 +986,7 @@ function clearAllData() {
 .feedback-text { min-width: 0; }
 .feedback-row .setting-label { margin-bottom: 4px; }
 .feedback-desc {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   line-height: 1.5;
   margin: 0;
@@ -1017,7 +1017,7 @@ function clearAllData() {
   border: 2px solid $border-color;
   padding: 0;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: transform var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 
   &:hover { transform: scale(1.08); }
   &.selected {
@@ -1030,7 +1030,7 @@ function clearAllData() {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   cursor: pointer;
 

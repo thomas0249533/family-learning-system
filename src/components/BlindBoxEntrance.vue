@@ -7,7 +7,7 @@
     :aria-label="`有神秘盲盒（${ownedCount}/${BLIND_BOX_TOTAL}）`"
     @click="startOpen"
   >
-    <span class="blind-box-fab__icon" aria-hidden="true">🎁</span>
+    <span class="blind-box-fab__icon" aria-hidden="true"><IconBase name="gift" size="1em" /></span>
     <span class="blind-box-fab__text">有惊喜</span>
   </button>
 
@@ -23,7 +23,7 @@
     <!-- 开箱舞台：盒子（摇晃 → 盖子飞起 → 金光） -->
     <div v-if="stage !== 'done'" class="blind-box-stage" :class="{ 'is-shaking': stage === 'shake' }">
       <div class="blind-box" :class="{ 'is-open': stage === 'open' }" aria-hidden="true">
-        <div class="blind-box__lid"><span class="blind-box__bow">🎀</span></div>
+        <div class="blind-box__lid"><span class="blind-box__bow"><IconBase name="ribbon" size="1em" /></span></div>
         <div class="blind-box__body"><span class="blind-box__q">？</span></div>
         <div class="blind-box__burst" aria-hidden="true"></div>
       </div>
@@ -38,8 +38,8 @@
 
     <!-- 结果卡：3D 翻转登场（reduced-motion 时淡入） -->
     <div v-else class="blind-box-reward" :class="{ 'is-flipped': flipped }">
-      <p class="blind-box-reward__label">🎉 恭喜开出</p>
-      <div class="blind-box-reward__icon" aria-hidden="true">{{ reward?.icon }}</div>
+      <p class="blind-box-reward__label"><IconBase name="celebrate" size="1em" /> 恭喜开出</p>
+      <div class="blind-box-reward__icon" aria-hidden="true"><IconBase v-if="reward" :name="reward.icon" size="1em" /></div>
       <h2 class="blind-box-reward__title">{{ reward?.title }}</h2>
       <p class="blind-box-reward__desc">{{ reward?.desc }}</p>
       <p class="blind-box-reward__collect">盲盒收藏 {{ ownedCount }} / {{ BLIND_BOX_TOTAL }}</p>
@@ -60,7 +60,7 @@
 //     时全部跳过、直接淡入结果卡（动效是增强，不是依赖）。
 // 数据源复用 achievement store 的 records / buildContext（与结算同一份口径）。
 // =====================================================================
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import { useAchievementStore } from '@core/stores/achievement'
 import {
@@ -164,6 +164,28 @@ onMounted(() => {
   void evaluate()
 })
 
+/**
+ * Esc 关闭弹层（V4.0 · D5）
+ *
+ * 遮罩上的 `@click.self` 只有鼠标能用：键盘用户开箱后**没有出口**。
+ * 结算态（stage === 'done'）监听 Esc 关闭；开箱动画进行中（shake/open）不响应，
+ * 否则动画半途被打断会留下半开的盒子。
+ */
+function onKeydown(e: KeyboardEvent): void {
+  if (e.key !== 'Escape') return
+  if (stage.value === 'done') close()
+}
+
+watch(
+  () => stage.value === 'done',
+  (isDone) => {
+    if (isDone) window.addEventListener('keydown', onKeydown)
+    else window.removeEventListener('keydown', onKeydown)
+  },
+)
+
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
+
 // 结算可能刚解锁 3 枚（今天第 3 枚到手）→ 盒子要立刻出现，不等下一次挂载
 watch(
   () => achievementStore.records.length,
@@ -193,12 +215,12 @@ watch(
   background: $card-bg;
   cursor: pointer;
   box-shadow: 0 0 0 0 rgba(var(--warning-rgb), 0.5);
-  animation: blind-box-glow 2s ease-in-out infinite;
+  animation: blind-box-glow 2s var(--ease-standard) infinite; /* check-motion-allow: 盲盒呼吸光晕，装饰循环 */
 
   .blind-box-fab__icon {
     display: inline-block;
-    font-size: 26px;
-    animation: blind-box-float 2.4s ease-in-out infinite;
+    font-size: var(--font-5xl);
+    animation: blind-box-float 2.4s var(--ease-standard) infinite; /* check-motion-allow: 盲盒漂浮，装饰循环 */
   }
   .blind-box-fab__text {
     font-size: $font-xs;
@@ -207,8 +229,8 @@ watch(
   }
 
   &:focus-visible {
-    outline: 3px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
@@ -252,7 +274,7 @@ watch(
   gap: $space-4;
 
   &.is-shaking .blind-box {
-    animation: blind-box-shake 0.45s ease-in-out infinite;
+    animation: blind-box-shake var(--duration-slower) var(--ease-standard) infinite;
   }
 }
 
@@ -273,10 +295,10 @@ watch(
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.4), opacity 0.6s;
+    transition: transform var(--duration-slowest) var(--ease-spring), opacity var(--duration-slowest) var(--ease-standard);
   }
   &__bow {
-    font-size: 22px;
+    font-size: var(--font-3xl);
     transform: translateY(-18px);
   }
   &__body {
@@ -286,14 +308,17 @@ watch(
     width: 150px;
     height: 92px;
     border-radius: 0 0 12px 12px;
-    background: $primary-color;
+    /* V4.0 · D6：盒身原先用 `$primary-color`，上面的「？」(text-on-primary) 只有 2.85:1。
+       改用 `-text` 后 5.12:1；盒盖仍是 `$gradient-primary`（品牌渐变），
+       深盒身 + 亮盒盖反而把「盖/身」的层次拉开了。 */
+    background: var(--primary-text);
     display: flex;
     align-items: center;
     justify-content: center;
   }
   &__q {
     color: var(--text-on-primary);
-    font-size: 34px;
+    font-size: var(--font-6xl);
     font-weight: 800;
   }
 
@@ -317,7 +342,7 @@ watch(
       opacity: 0;
     }
     .blind-box__burst {
-      animation: blind-box-burst 0.9s ease-out forwards;
+      animation: blind-box-burst 0.9s var(--ease-standard) forwards; /* check-motion-allow: 开箱爆闪为一次性编排 */
     }
   }
 }
@@ -368,8 +393,8 @@ watch(
   cursor: pointer;
 
   &:focus-visible {
-    outline: 3px solid $warning;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
@@ -387,7 +412,7 @@ watch(
   text-align: center;
   opacity: 0;
   transform: perspective(600px) rotateY(90deg);
-  transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  transition: opacity var(--duration-slower) var(--ease-standard), transform var(--duration-slowest) var(--ease-spring);
 
   &.is-flipped {
     opacity: 1;
@@ -400,7 +425,7 @@ watch(
     color: $text-sub;
   }
   &__icon {
-    font-size: 52px;
+    font-size: var(--font-9xl);
   }
   &__title {
     font-size: $font-lg;
@@ -432,7 +457,7 @@ watch(
   }
   .blind-box-reward {
     transform: none;
-    transition: opacity 0.3s ease-out;
+    transition: opacity var(--duration-slow) var(--ease-standard);
   }
 }
 </style>

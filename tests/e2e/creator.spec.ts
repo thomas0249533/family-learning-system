@@ -136,8 +136,9 @@ test('创作者中心：不可达 catalog URL 优雅报错、不白屏', async (
   await seedAll(page, buildSeed())
   await page.goto('/creator')
 
-  // 切到「库同步」标签页（用标签文本定位，不依赖 naive-ui 的 ARIA role/class）
-  await page.getByText('🌐 库同步').click()
+  // 切到「库同步」标签页。V4.0 · D1 起 tab 文本不再带 emoji；'库同步' 也出现在
+  // 卡片标题「联网校验与库同步」里，故限定在 .n-tabs-tab 内定位（naive 的 tab 不带 role=tab）。
+  await page.locator('.n-tabs-tab', { hasText: '库同步' }).click()
   await expect(page.getByText('联网校验与库同步')).toBeVisible()
 
   // 填入一个不可达 URL（离线环境必失败，测的就是失败分支）

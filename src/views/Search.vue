@@ -9,11 +9,11 @@
           clearable
           @keyup.enter="doSearch"
         />
-        <AppButton type="primary" size="large" @click="doSearch">🔍 搜索</AppButton>
+        <AppButton type="primary" size="large" @click="doSearch"><IconBase name="search" size="1em" /> 搜索</AppButton>
       </n-input-group>
 
       <div class="scope-hint" v-if="currentPackage">
-        📦 范围：{{ currentPackage.manifest.title }}
+        <IconBase name="package" size="1em" /> 范围：{{ currentPackage.manifest.title }}
       </div>
       <div class="scope-hint empty" v-else>
         尚未选择学习包
@@ -21,7 +21,11 @@
     </AppCard>
 
     <AppCard v-if="hasSearched" class="card result-card">
-      <n-empty v-if="groups.length === 0" description="没有找到相关内容，试试换个关键词？" />
+      <EmptyState
+        v-if="groups.length === 0"
+        icon="search"
+        description="没有找到相关内容，试试换个关键词或学科？"
+      />
 
       <div v-else class="result-list">
         <div class="result-summary">
@@ -34,7 +38,7 @@
           class="kp-group"
         >
           <div class="kp-header">
-            <span class="kp-icon">📚</span>
+            <span class="kp-icon"><IconBase name="books" size="1em" /></span>
             <span class="kp-title">{{ group.knowledgePointTitle }}</span>
             <span class="kp-count">{{ group.items.length }} 条</span>
           </div>
@@ -43,6 +47,7 @@
             <div
               v-for="(item, idx) in group.items"
               :key="idx"
+              v-clickable:link
               class="item"
               @click="openItem(item)"
             >
@@ -84,9 +89,9 @@
         <div v-if="detailRaw?.options" class="detail-options">
           <div v-for="opt in detailRaw.options" :key="opt">{{ opt }}</div>
         </div>
-        <div class="detail-answer">✅ 正确答案：{{ detailRaw?.answer }}</div>
+        <div class="detail-answer"><IconBase name="check-circle" size="1em" /> 正确答案：{{ detailRaw?.answer }}</div>
         <div v-if="detailRaw?.explanation" class="detail-explain">
-          💡 {{ detailRaw.explanation }}
+          <IconBase name="bulb" size="1em" /> {{ detailRaw.explanation }}
         </div>
       </div>
 
@@ -95,9 +100,9 @@
         <div v-if="detailRaw?.questionData?.options" class="detail-options">
           <div v-for="opt in detailRaw.questionData.options" :key="opt">{{ opt }}</div>
         </div>
-        <div class="detail-answer">✅ 正确答案：{{ detailRaw?.questionData?.answer }}</div>
+        <div class="detail-answer"><IconBase name="check-circle" size="1em" /> 正确答案：{{ detailRaw?.questionData?.answer }}</div>
         <div class="detail-explain">
-          ❌ 已错 {{ detailRaw?.wrongCount }} 次 · 状态：{{ detailRaw?.mastered ? '已掌握' : '未掌握' }}
+          <IconBase name="x-circle" size="1em" /> 已错 {{ detailRaw?.wrongCount }} 次 · 状态：{{ detailRaw?.mastered ? '已掌握' : '未掌握' }}
         </div>
       </div>
     </n-modal>
@@ -107,10 +112,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import {
-  NInput, NInputGroup, NEmpty, NModal
+  NInput, NInputGroup, NModal
 } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
 import {
@@ -200,14 +206,14 @@ function openItem(item: SearchResultItem) {
 
 .scope-hint {
   margin-top: 12px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   &.empty { color: $danger-text; }
 }
 
 .result-card { min-height: 200px; }
 .result-list { display: flex; flex-direction: column; gap: 20px; }
-.result-summary { font-size: 13px; color: $text-sub; }
+.result-summary { font-size: var(--font-sm); color: $text-sub; }
 
 .kp-group {
   .kp-header {
@@ -220,9 +226,9 @@ function openItem(item: SearchResultItem) {
     border-radius: 6px;
     margin-bottom: 8px;
 
-    .kp-icon { font-size: 16px; }
+    .kp-icon { font-size: var(--font-lg); }
     .kp-title { font-weight: 700; color: $text-main; flex: 1; }
-    .kp-count { font-size: 12px; color: $text-sub; }
+    .kp-count { font-size: var(--font-xs); color: $text-sub; }
   }
 
   .kp-items { display: flex; flex-direction: column; gap: 6px; }
@@ -236,13 +242,13 @@ function openItem(item: SearchResultItem) {
   background: $surface-2;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background var(--duration-fast) var(--ease-standard);
 
   &:hover { background: $bg-color-hover; }
 
   .item-type {
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 700;
     padding: 2px 6px;
     border-radius: 4px;
@@ -255,14 +261,14 @@ function openItem(item: SearchResultItem) {
 
   .item-body { flex: 1; min-width: 0; }
   .item-title {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
     color: $text-main;
     line-height: 1.5;
     word-break: break-word;
   }
   .item-snippet {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     margin-top: 4px;
     line-height: 1.5;
@@ -280,7 +286,7 @@ function openItem(item: SearchResultItem) {
 .detail-body { line-height: 1.7; }
 .detail-content {
   white-space: pre-wrap;
-  font-size: 15px;
+  font-size: var(--font-md);
   color: $text-main;
 }
 .detail-meta {
@@ -288,13 +294,13 @@ function openItem(item: SearchResultItem) {
   padding: 10px 12px;
   background: $bg-color-hover;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
 
   > div { margin-bottom: 4px; }
 }
 .detail-question {
-  font-size: 16px;
+  font-size: var(--font-lg);
   font-weight: 700;
   margin-bottom: 12px;
 }
@@ -304,7 +310,7 @@ function openItem(item: SearchResultItem) {
   gap: 4px;
   margin-bottom: 12px;
 
-  > div { padding: 6px 10px; background: $bg-color-hover; border-radius: 4px; font-size: 14px; }
+  > div { padding: 6px 10px; background: $bg-color-hover; border-radius: 4px; font-size: var(--font-base); }
 }
 .detail-answer {
   font-weight: 700;
@@ -312,7 +318,7 @@ function openItem(item: SearchResultItem) {
   margin-bottom: 8px;
 }
 .detail-explain {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   padding: 10px 12px;
   background: $bg-color-hover;

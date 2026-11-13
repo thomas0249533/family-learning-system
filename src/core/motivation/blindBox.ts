@@ -36,7 +36,7 @@ import { effectiveCurrent, localDayKey } from './streak'
 export const BLIND_BOX_POOL: AchievementDef[] = [
   {
     id: 'bb-lucky-star',
-    icon: '⭐',
+    icon: 'star',
     title: '幸运星',
     desc: '从盲盒中开出的惊喜',
     category: 'E',
@@ -44,7 +44,7 @@ export const BLIND_BOX_POOL: AchievementDef[] = [
   },
   {
     id: 'bb-moon',
-    icon: '🌛',
+    icon: 'moon',
     title: '月夜奇遇',
     desc: '从盲盒中开出的惊喜',
     category: 'E',
@@ -52,7 +52,7 @@ export const BLIND_BOX_POOL: AchievementDef[] = [
   },
   {
     id: 'bb-rainbow',
-    icon: '🌈',
+    icon: 'rainbow',
     title: '彩虹瓶',
     desc: '从盲盒中开出的惊喜',
     category: 'E',

@@ -1,7 +1,7 @@
 <template>
   <AppCard class="english-grammar-card">
     <template v-for="(kp, i) in kps" :key="i">
-      <h3 class="grammar-title">📐 {{ kp.title }}</h3>
+      <h3 class="grammar-title"><IconBase name="ruler" size="1em" /> {{ kp.title }}</h3>
       <div class="grammar-body" v-html="renderMarkdown(kp.content)"></div>
     </template>
     <EmptyState v-if="kps.length === 0" description="暂无语法内容" />
@@ -29,9 +29,9 @@ function renderMarkdown(s: string) { return md.render(s ?? '') }
 <style scoped lang="scss">
 /* radius-lg + shadow-sm 已由 AppCard 承载；此处仅保留卡片间距 */
 .english-grammar-card { margin-bottom: 12px; }
-.grammar-title { font-size: 16px; font-weight: 700; color: $subject-english; margin-bottom: 12px; }
+.grammar-title { font-size: var(--font-lg); font-weight: 700; color: $subject-english; margin-bottom: 12px; }
 .grammar-body {
-  font-size: 14px;
+  font-size: var(--font-base);
   line-height: 1.9;
   color: $text-main;
   font-family: 'Times New Roman', serif;

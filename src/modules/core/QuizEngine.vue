@@ -24,10 +24,10 @@
           <span class="progress-text">第 {{ currentIndex + 1 }} / {{ questions.length }} 题</span>
           <div class="header-right">
             <span v-if="timeLimit > 0" class="timer" :class="timerTone">
-              ⏱ {{ formatTime(remainingSeconds) }}
+              <IconBase name="clock" size="1em" /> {{ formatTime(remainingSeconds) }}
             </span>
             <span v-else class="timer">
-              ⏱ {{ formatTime(elapsedSeconds) }}
+              <IconBase name="clock" size="1em" /> {{ formatTime(elapsedSeconds) }}
             </span>
             <span class="level-tag" :class="'level-' + (currentQuestion.metadata?.difficulty || '基础')">
               {{ currentQuestion.metadata?.difficulty || '基础' }}
@@ -42,15 +42,15 @@
               data-testid="focus-toggle"
               :aria-pressed="uiStore.isFocusMode"
               @click="toggleFocusMode"
-            >{{ uiStore.isFocusMode ? '✕ 退出专注' : '⛶ 专注模式' }}</button>
+            ><IconBase :name="uiStore.isFocusMode ? 'close' : 'expand'" size="1em" /> {{ uiStore.isFocusMode ? '退出专注' : '专注模式' }}</button>
             <!--
               V2.0 · 答题卡入口。考试模式不显示：那里已经有常驻的 `.question-nav`
               题号条（ExamPanel 的布局不能动），再放一个入口只会多一层弹窗。
             -->
             <button v-if="!examMode" class="sheet-btn" type="button" @click="sheetOpen = true">
-              📇 答题卡
+              <IconBase name="clipboard" size="1em" /> 答题卡
             </button>
-            <button v-if="examMode" class="exit-btn" aria-label="退出练习" @click="handleExit">✕</button>
+            <button v-if="examMode" class="exit-btn" aria-label="退出练习" @click="handleExit"><IconBase name="close" size="1em" /></button>
           </div>
         </div>
 
@@ -113,7 +113,7 @@
               </n-checkbox>
             </n-space>
           </n-checkbox-group>
-          <div class="multi-hint">💡 多选题：请选择所有正确答案</div>
+          <div class="multi-hint"><IconBase name="bulb" size="1em" /> 多选题：请选择所有正确答案</div>
         </div>
 
         <div v-else-if="currentQuestion.type === 'blank'" class="fill-blank">
@@ -132,7 +132,7 @@
               secondary
               type="primary"
               @click="speakAnswer"
-            >🔊 听发音</n-button>
+            ><IconBase name="volume" size="1em" /> 听发音</n-button>
           </div>
         </div>
 
@@ -148,13 +148,13 @@
                   :disabled="showFeedback"
                   :type="userAnswer[i] === '对' ? 'success' : 'default'"
                   @click="setJudgeAt(i, '对')"
-                >✅ {{ judgeLabel.t }}</n-button>
+                ><IconBase name="check-circle" size="1em" /> {{ judgeLabel.t }}</n-button>
                 <n-button
                   size="small"
                   :disabled="showFeedback"
                   :type="userAnswer[i] === '错' ? 'error' : 'default'"
                   @click="setJudgeAt(i, '错')"
-                >❌ {{ judgeLabel.f }}</n-button>
+                ><IconBase name="x-circle" size="1em" /> {{ judgeLabel.f }}</n-button>
               </n-button-group>
             </li>
           </ol>
@@ -163,8 +163,8 @@
                画面成了 你的答案:错 / 正确答案:错 / 红色警示 的自相矛盾现场，
                家长误以为判分有 bug。其他题型提交后输入即锁定，judge 补齐同一语义。 -->
           <n-button-group v-else>
-            <n-button :disabled="showFeedback" :type="userAnswer === '对' ? 'success' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '对'">✅ {{ judgeLabel.t }}</n-button>
-            <n-button :disabled="showFeedback" :type="userAnswer === '错' ? 'error' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '错'">❌ {{ judgeLabel.f }}</n-button>
+            <n-button :disabled="showFeedback" :type="userAnswer === '对' ? 'success' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '对'"><IconBase name="check-circle" size="1em" /> {{ judgeLabel.t }}</n-button>
+            <n-button :disabled="showFeedback" :type="userAnswer === '错' ? 'error' : 'default'" size="large" style="min-width: 120px;" @click="userAnswer = '错'"><IconBase name="x-circle" size="1em" /> {{ judgeLabel.f }}</n-button>
           </n-button-group>
         </div>
 
@@ -193,13 +193,13 @@
               secondary
               type="primary"
               @click="speakAnswer"
-            >🔊 听发音</n-button>
+            ><IconBase name="volume" size="1em" /> 听发音</n-button>
           </div>
         </div>
 
         <div v-else-if="currentQuestion.type === 'essay'" class="essay-group">
           <div class="essay-hint">
-            ✍️ 主观题：请先写下你的答案，提交后系统会按得分点自动判分，并展示参考答案供对照
+            <IconBase name="pen" size="1em" /> 主观题：请先写下你的答案，提交后系统会按得分点自动判分，并展示参考答案供对照
             <!-- 主观题用 Ctrl/Cmd + Enter 提交：普通 Enter 必须留给换行 -->
             <span class="essay-kbd-hint">（写完按 Ctrl / ⌘ + Enter 提交）</span>
           </div>
@@ -228,20 +228,20 @@
 
             <!-- 主观题：得分点清单 + 系统判定 + 手动纠错 -->
             <div v-if="isSubjectiveQ && displayGrade" class="keypoints">
-              <p class="keypoints-title">🎯 得分点（命中 {{ displayGrade.covered }}/{{ displayGrade.total }}）</p>
+              <p class="keypoints-title"><IconBase name="target" size="1em" /> 得分点（命中 {{ displayGrade.covered }}/{{ displayGrade.total }}）</p>
               <ul>
                 <li
                   v-for="(kp, i) in displayGrade.keyPoints"
                   :key="i"
                   :class="displayGrade.missing.includes(kp) ? 'kp-miss' : 'kp-hit'"
                 >
-                  {{ displayGrade.missing.includes(kp) ? '✗' : '✓' }} {{ kp }}
+                  <IconBase :name="displayGrade.missing.includes(kp) ? 'close' : 'check'" size="1em" /> {{ kp }}
                 </li>
               </ul>
             </div>
 
             <p v-if="isSubjectiveQ" class="grade-verdict">
-              系统判定：{{ displayGrade && displayGrade.correct ? '✅ 答对了' : '📖 还需努力' }}
+              系统判定：<IconBase :name="displayGrade && displayGrade.correct ? 'check-circle' : 'book-open'" size="1em" /> {{ displayGrade && displayGrade.correct ? '答对了' : '还需努力' }}
             </p>
             <div v-if="isSubjectiveQ" class="override-btns">
               <span class="override-tip">判错了？可手动纠正：</span>
@@ -249,7 +249,7 @@
               <n-button size="small" @click="overrideGrade(false)">实际还需复习</n-button>
             </div>
 
-            <p v-if="currentQuestion.explanation" class="explanation">💡 解析：{{ currentQuestion.explanation }}</p>
+            <p v-if="currentQuestion.explanation" class="explanation"><IconBase name="bulb" size="1em" /> 解析：{{ currentQuestion.explanation }}</p>
           </div>
         </div>
 
@@ -262,14 +262,14 @@
       <n-modal
         v-model:show="sheetOpen"
         preset="card"
-        title="📇 答题卡"
+        title="答题卡"
         class="sheet-modal"
         style="max-width: 460px;"
       >
         <div class="sheet-legend">
-          <span class="legend-item legend-correct">✅ 正确 {{ sheetStats.correct }}</span>
-          <span class="legend-item legend-wrong">❌ 错误 {{ sheetStats.wrong }}</span>
-          <span class="legend-item legend-todo">⬜ 未做 {{ sheetStats.todo }}</span>
+          <span class="legend-item legend-correct"><IconBase name="check-circle" size="1em" /> 正确 {{ sheetStats.correct }}</span>
+          <span class="legend-item legend-wrong"><IconBase name="x-circle" size="1em" /> 错误 {{ sheetStats.wrong }}</span>
+          <span class="legend-item legend-todo"> 未做 {{ sheetStats.todo }}</span>
         </div>
         <div class="sheet-grid">
           <button
@@ -293,13 +293,13 @@
             提交答案
           </AppButton>
           <AppButton v-else type="success" block size="large" @click="nextQuestion">
-            {{ currentIndex === questions.length - 1 ? '🏁 完成练习' : '下一题 ➡️' }}
+            <IconBase :name="currentIndex === questions.length - 1 ? 'flag' : 'target'" size="1em" /> {{ currentIndex === questions.length - 1 ? '完成练习' : '下一题' }}
           </AppButton>
         </template>
 
         <template v-else>
           <AppButton type="primary" block size="large" @click="examNext" :disabled="!canSubmit">
-            {{ isLastQuestion ? '🏁 提交试卷' : '下一题 ➡️' }}
+            <IconBase :name="isLastQuestion ? 'flag' : 'target'" size="1em" /> {{ isLastQuestion ? '提交试卷' : '下一题' }}
           </AppButton>
         </template>
       </div>
@@ -1378,7 +1378,7 @@ function handleExit() {
   align-items: center;
   margin-bottom: 12px;
 }
-.progress-text { color: $text-sub; font-size: 14px; font-weight: 600; }
+.progress-text { color: $text-sub; font-size: var(--font-base); font-weight: 600; }
 
 .header-right {
   display: flex;
@@ -1386,7 +1386,7 @@ function handleExit() {
   gap: 8px;
   .timer {
     font-family: 'Consolas', monospace;
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: $primary-text;
     padding: 3px 10px;
@@ -1399,7 +1399,7 @@ function handleExit() {
     &.timer-critical {
       color: $danger-text;
       background: $danger-light;
-      animation: pulse 1s infinite;
+      animation: pulse 1s var(--ease-standard) infinite; /* check-motion-allow: 录音脉冲循环 */
     }
   }
   .exit-btn {
@@ -1409,9 +1409,9 @@ function handleExit() {
     border: none;
     background: $bg-color-hover;
     color: $text-sub;
-    font-size: 14px;
+    font-size: var(--font-base);
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
     &:hover { background: $danger-light; color: $danger-text; }
   }
 }
@@ -1434,7 +1434,7 @@ function handleExit() {
     margin-bottom: 10px;
   }
   .nav-caption {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 800;
     color: $text-sub;
     letter-spacing: 0.05em;
@@ -1443,7 +1443,7 @@ function handleExit() {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
 
     .legend-swatch {
@@ -1469,7 +1469,7 @@ function handleExit() {
     border: 1.5px solid $border-color;
     background: $card-bg;
     color: $text-sub;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 800;
     font-family: inherit;
     cursor: pointer;
@@ -1528,7 +1528,7 @@ function handleExit() {
 }
 
 .level-tag {
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 20px;
@@ -1543,12 +1543,12 @@ function handleExit() {
   border: none;
   background: $bg-color-hover;
   color: $text-sub;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
   white-space: nowrap;
 
   &:hover { background: $primary-light; color: $primary-text; }
@@ -1566,14 +1566,14 @@ function handleExit() {
   border: 1px solid $border-color;
   background: $card-bg;
   color: $text-main;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   font-family: inherit;
   padding: 4px 10px;
   border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &:hover { background: $bg-color-hover; border-color: $primary-color; }
   &:active { transform: scale(0.97); }
@@ -1588,7 +1588,7 @@ function handleExit() {
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: $space-3;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
 
   /* 三态文字色只走 -text（`--{tone}-color` 是图形色，check:text-color 会抓） */
@@ -1610,10 +1610,10 @@ function handleExit() {
   border: 1.5px solid $border-color;
   background: $card-bg;
   color: $text-muted;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 800;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &:hover { border-color: $primary-color; }
   &:focus-visible {
@@ -1637,15 +1637,15 @@ function handleExit() {
 
 .sheet-hint {
   margin-top: $space-3;
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: $leading-normal;
   color: $text-sub;
 }
 
-.judge-hint { font-size: 14px; color: $text-sub; margin-bottom: 6px; }
+.judge-hint { font-size: var(--font-base); color: $text-sub; margin-bottom: 6px; }
 
 .question-text {
-  font-size: 18px;
+  font-size: var(--font-xl);
   font-weight: 700;
   margin-bottom: 16px;
   line-height: 1.55;
@@ -1658,8 +1658,8 @@ function handleExit() {
   width: 100%;
   border: 2px solid $border-color;
   border-radius: var(--radius-lg);
-  transition: all 0.15s;
-  font-size: 15px;
+  transition: all var(--duration-fast) var(--ease-standard);
+  font-size: var(--font-md);
   line-height: 1.5;
   min-height: 52px;
   display: flex;
@@ -1682,7 +1682,7 @@ function handleExit() {
 .opt-item.opt-item--wrong {
   border-color: var(--danger-color);
   background: var(--danger-light);
-  animation: opt-shake 320ms var(--ease-standard);
+  animation: opt-shake var(--duration-slow) var(--ease-standard);
 }
 
 /* 答对：弹性放大再回弹（多邻国式"奖励"） */
@@ -1707,7 +1707,7 @@ function handleExit() {
 }
 
 .multi-hint {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $warning-text;
   margin-top: 8px;
   font-weight: 600;
@@ -1745,7 +1745,7 @@ function handleExit() {
   /* 实心语义底统一走 -text + text-on-primary（批 6a-2 约定） */
   background: var(--primary-text);
   color: var(--text-on-primary);
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -1754,7 +1754,7 @@ function handleExit() {
 
 .judge-stmt__text {
   flex: 1;
-  font-size: 15px;
+  font-size: var(--font-md);
   line-height: 1.6;
   color: $text-main;
 }
@@ -1766,10 +1766,10 @@ function handleExit() {
   .matching-row {
     display: flex; align-items: center; gap: 12px;
     .matching-left {
-      flex: 1; font-size: 15px; font-weight: 600; color: $text-main;
+      flex: 1; font-size: var(--font-md); font-weight: 600; color: $text-main;
       padding: 10px 14px; background: $bg-color-hover; border-radius: 6px;
     }
-    .matching-arrow { color: $text-sub; font-size: 16px; }
+    .matching-arrow { color: $text-sub; font-size: var(--font-lg); }
     /*
      * 选择框宽度自适应，不再写死 200px。
      * 语文「按顺序排步骤」这类连线题的右项是一整句话（如"沿画好的线剪出半边蝴蝶的形状"），
@@ -1781,7 +1781,7 @@ function handleExit() {
 
 .spelling-group {
   .spelling-hint {
-    font-size: 15px; color: $primary-text; background: $primary-light;
+    font-size: var(--font-md); color: $primary-text; background: $primary-light;
     padding: 8px 14px; border-radius: 6px; margin-bottom: 12px;
     font-family: 'Times New Roman', monospace; letter-spacing: 2px;
   }
@@ -1802,22 +1802,22 @@ function handleExit() {
 
 .essay-group {
   .essay-hint {
-    font-size: 13px; color: $primary-text; background: $primary-light;
+    font-size: var(--font-sm); color: $primary-text; background: $primary-light;
     padding: 8px 14px; border-radius: 6px; margin-bottom: 10px;
   }
   .essay-kbd-hint {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     margin-left: 4px;
   }
-  :deep(.n-input) { font-size: 15px; line-height: 1.8; }
+  :deep(.n-input) { font-size: var(--font-md); line-height: 1.8; }
 }
 
 .feedback-box {
   margin-top: 16px;
   padding: 14px 18px;
   border-radius: var(--radius-lg);
-  font-size: 14px;
+  font-size: var(--font-base);
   line-height: 1.65;
   /* V2.11：判定结果要"浮"在页面上（多邻国的高调奖励），不能只靠换底色 */
   box-shadow: var(--shadow-sm);
@@ -1848,7 +1848,7 @@ function handleExit() {
   border-radius: 8px;
 
   .keypoints-title {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-main;
     margin-bottom: 6px;
@@ -1862,7 +1862,7 @@ function handleExit() {
     gap: 4px;
   }
   li {
-    font-size: 14px;
+    font-size: var(--font-base);
     line-height: 1.5;
     color: $text-sub;
   }
@@ -1872,7 +1872,7 @@ function handleExit() {
 
 .grade-verdict {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: var(--font-base);
   font-weight: 700;
   color: $text-main;
 }
@@ -1885,18 +1885,18 @@ function handleExit() {
   flex-wrap: wrap;
 
   .override-tip {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
   }
 }
 
 .feedback-title {
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--font-md);
   margin-bottom: 8px;
 }
 .user-answer {
-  font-size: 14px;
+  font-size: var(--font-base);
   color: $text-sub;
   margin-bottom: 4px;
 }
@@ -1904,11 +1904,11 @@ function handleExit() {
   font-weight: 700;
   color: $danger-text;
   margin-bottom: 8px;
-  font-size: 15px;
+  font-size: var(--font-md);
 }
 
 .explanation {
-  font-size: 14px;
+  font-size: var(--font-base);
   color: $text-main;
   line-height: 1.7;
   background: rgba(var(--on-strong-rgb), 0.65);
@@ -1919,7 +1919,7 @@ function handleExit() {
 
 .exam-progress-hint {
   text-align: center;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   margin-top: 12px;
 }

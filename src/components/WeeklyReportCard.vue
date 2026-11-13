@@ -17,7 +17,7 @@
     <header class="weekly-card__head">
       <div class="weekly-card__title">学习周报</div>
       <div class="weekly-card__meta">
-        <span class="weekly-card__profile">👧 {{ data.profileName }}</span>
+        <span class="weekly-card__profile"><IconBase name="people" size="1em" /> {{ data.profileName }}</span>
         <span class="weekly-card__range">{{ data.rangeLabel }} · {{ data.generatedAt }}</span>
       </div>
     </header>
@@ -86,7 +86,7 @@
 
     <!-- 卡脚：成就 + 错题存量 + 一句原则性文案 -->
     <footer class="weekly-card__foot">
-      <div class="weekly-card__ach">🏅 成就 {{ data.achievements.unlocked }} / {{ data.achievements.total }}</div>
+      <div class="weekly-card__ach"><IconBase name="medal" size="1em" /> 成就 {{ data.achievements.unlocked }} / {{ data.achievements.total }}</div>
       <div class="weekly-card__motto">成就只记录自己做过的事，不和别人比。</div>
     </footer>
   </div>
@@ -255,19 +255,19 @@ defineProps<{ data: WeeklyCardData }>()
     width: 100%;
     background: $bg-color-hover;
     border-radius: 4px 4px 0 0;
-    transition: height 0.4s;
+    transition: height var(--duration-slower) var(--ease-standard);
 
     &.active { background: $gradient-primary; }
   }
   .weekly-day-count {
-    font-size: 10px;
+    font-size: var(--font-3xs);
     color: $primary-text;
     font-weight: 700;
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
   .weekly-day-label {
-    font-size: 10px;
+    font-size: var(--font-3xs);
     color: $text-sub;
     font-weight: 600;
   }

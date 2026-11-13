@@ -1,7 +1,7 @@
 {
   "name": "family-learning-system",
   "private": true,
-  "version": "3.1.9",
+  "version": "4.0.0",
   "type": "module",
   "scripts": {
     "pretest": "npm run tokens:build",
@@ -15,13 +15,18 @@
     "typecheck": "vue-tsc --noEmit",
     "typecheck:test": "vue-tsc --noEmit -p tsconfig.test.json",
     "hooks:install": "node scripts/git-hooks/install.mjs",
-    "verify": "npm run check:version && npm run tokens:check && npm run typecheck && npm run typecheck:test && npm run lint:styles && npm run check:hex && npm run check:text-color && npm run a11y:contrast:check && npm run check:profile-scope && npm run check:settings-keys && npm run test",
+    "verify": "npm run check:version && npm run tokens:check && npm run typecheck && npm run typecheck:test && npm run lint:styles && npm run check:hex && npm run check:text-color && npm run check:font-size && npm run check:motion && npm run check:a11y && npm run check:icon-contrast && npm run check:primitives && npm run a11y:contrast:check && npm run check:profile-scope && npm run check:settings-keys && npm run test",
     "validate": "vite-node scripts/validate.ts --",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "check:hex": "node scripts/check-hex.mjs",
     "check:text-color": "node scripts/check-semantic-text.mjs",
+    "check:font-size": "node scripts/check-font-size.mjs",
+    "check:motion": "node scripts/check-motion.mjs",
+    "check:a11y": "node scripts/check-a11y.mjs",
+    "check:icon-contrast": "node scripts/check-icon-contrast.mjs",
+    "check:primitives": "node scripts/check-primitives.mjs",
     "check:profile-scope": "node scripts/check-profile-scope.mjs",
     "check:settings-keys": "vitest run tests/settings-keys.test.ts",
     "a11y:contrast": "vite-node scripts/a11y/contrast-report.ts",
@@ -31,7 +36,9 @@
     "build:lpkgset": "vite-node scripts/build-lpkgset.ts --",
     "build:set": "vite-node scripts/build-lpkgset-auto.ts --",
     "build:csv": "vite-node scripts/build-from-csv.ts --",
-    "check:version": "node scripts/check-version.mjs"
+    "check:version": "node scripts/check-version.mjs",
+    "build:all": "vite-node scripts/build-all-lpkgset.ts --",
+    "check:lpkg": "vite-node scripts/verify-lpkgset-zip.ts --"
   },
   "dependencies": {
     "@tauri-apps/api": "2.12.4",

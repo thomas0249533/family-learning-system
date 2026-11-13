@@ -1,15 +1,15 @@
 <template>
   <div class="achievements-page">
-    <PageHeader icon="🏅" title="我的成就" :subtitle="subtitle" />
+    <PageHeader icon="medal" title="我的成就" :subtitle="subtitle" />
 
     <template v-if="view">
       <!-- 整体进度：图鉴完成度 + 枚数。
            ★ 分母一律取 `view.total` = **可收集口径**（27 + 自定义），
            绝不是定义总数 28（`night-owl` 不参与收集，见 PRD §11.2 / C6）。 -->
       <div class="overview">
-        <StatCard tone="primary" icon="🏅" :value="`${view.percent}%`" label="图鉴完成度" />
-        <StatCard icon="✅" :value="`${view.earned} / ${view.total}`" label="已获得" />
-        <StatCard icon="🔒" :value="view.total - view.earned" label="待解锁" />
+        <StatCard tone="primary" icon="medal" :value="`${view.percent}%`" label="图鉴完成度" />
+        <StatCard icon="check-circle" :value="`${view.earned} / ${view.total}`" label="已获得" />
+        <StatCard icon="lock" :value="view.total - view.earned" label="待解锁" />
       </div>
 
       <!-- 分类进度（V2.8.1 · E2）：来源维度（core/subject/habit/hidden）各一条。
@@ -51,7 +51,7 @@
             class="recent-row"
             @click="openRecent(r)"
           >
-            <span class="recent-row__icon" aria-hidden="true">{{ r.icon }}</span>
+            <span class="recent-row__icon" aria-hidden="true"><IconBase :name="r.icon" size="1em" /></span>
             <span class="recent-row__name">{{ r.title }}</span>
             <span class="recent-row__date">{{ r.unlockedAt || '较早解锁' }}</span>
           </button>
@@ -61,7 +61,7 @@
       <!-- 发现机制：一天一次机会，抽到的是**线索**不是成就；家长可关 -->
       <AppCard v-if="discoveryEnabled" class="discovery-card">
         <div class="discovery-body">
-          <div class="discovery-emoji" aria-hidden="true">🔍</div>
+          <div class="discovery-emoji" aria-hidden="true"><IconBase name="search" size="1em" /></div>
           <div class="discovery-text">
             <h2 class="discovery-title">{{ discoveryTitle }}</h2>
             <p class="discovery-desc">{{ discoveryDesc }}</p>
@@ -81,7 +81,7 @@
            （因为还有一枚不参与收集的定义存在，说"共 27 枚"是既不准也泄底的）。 -->
       <AppCard v-if="showCollection" class="collection-card">
         <div class="collection-body">
-          <div class="collection-emoji" aria-hidden="true">🏆</div>
+          <div class="collection-emoji" aria-hidden="true"><IconBase name="trophy" size="1em" /></div>
           <div class="collection-text">
             <h2 class="collection-title">可收集的 {{ view.total }} 枚成就已全部收集</h2>
             <p class="collection-desc">
@@ -132,7 +132,7 @@
       <EmptyState
         v-if="view.filteredTotal === 0"
         size="large"
-        icon="🔍"
+        icon="search"
         :description="view.emptyHint"
       />
 
@@ -142,7 +142,7 @@
 
       <!-- 打印与导出（V1.4 · B5）。放在图鉴页而不是设置页：
            "把这张墙打出来贴墙上"是看到成就之后的下一个念头。 -->
-      <AppCard title="🖨️ 打印与导出">
+      <AppCard title="打印与导出">
         <div class="export-actions">
           <AppButton size="small" :loading="printing" @click="goPrint">打印 / 存成 PDF</AppButton>
           <AppButton size="small" :loading="exportingImage" @click="exportImages">导出图片（按小组 4 张）</AppButton>
@@ -155,7 +155,7 @@
       </AppCard>
     </template>
 
-    <EmptyState v-else size="large" icon="🏅" description="正在加载成就…" />
+    <EmptyState v-else size="large" icon="medal" description="正在加载成就…" />
   </div>
 </template>
 
@@ -455,7 +455,7 @@ onMounted(async () => {
 }
 
 .discovery-emoji {
-  font-size: 28px;
+  font-size: var(--font-5xl);
   line-height: 1;
   flex-shrink: 0;
 }
@@ -527,8 +527,8 @@ onMounted(async () => {
     color: $text-muted;
   }
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 1px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
@@ -561,8 +561,8 @@ onMounted(async () => {
     border-color: $border-color;
   }
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
   &.active {
     color: $primary-text;
@@ -578,7 +578,7 @@ onMounted(async () => {
 }
 
 .collection-emoji {
-  font-size: 32px;
+  font-size: var(--font-6xl);
   line-height: 1;
   flex-shrink: 0;
 }
@@ -708,8 +708,8 @@ onMounted(async () => {
     border-color: $primary-color;
   }
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 1px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 

@@ -50,10 +50,18 @@ body {
   /* 页头 */
   --page-header-border: var(--border-light);
 
-  /* 焦点环（§6.4，AA）：宽 / 色 / 偏移 */
-  --focus-ring: rgba(var(--primary-rgb), 0.55);
+  /* 焦点环（§6.4，AA）：宽 / 色 / 偏移
+     - `--focus-ring`：通用环，**不透明**主色。早先是 `rgba(--primary-rgb, 0.55)`，
+       压在浅底上实测只有 ~2.4:1，达不到 WCAG 1.4.11 对非文本对比度的 3:1；
+       换成 `--primary-text`（对比度 ~6.4:1）后两套主题、6 组预设都稳过。
+     - `--focus-ring-on-strong`：落在**主色/深色面**上的环用不透明前景色，
+       主色环压在同类底色上会「消失」。
+     - `--focus-ring-offset-inset`：带 `overflow: hidden` 的容器用内嵌环，避免被裁 */
+  --focus-ring: var(--primary-text);
+  --focus-ring-on-strong: var(--on-strong);
   --focus-ring-w: 2px;
   --focus-ring-offset: 2px;
+  --focus-ring-offset-inset: -2px;
 }
 
 /* ==================== 全局焦点可见（§6.4）==================== */

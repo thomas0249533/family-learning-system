@@ -1,7 +1,7 @@
 <template>
   <!-- V3.1.7 · 语音朗读设置：音色 / 语速 / 试听。
        自治组件（与 LocalAiCard / SyncSettings 同约定），状态自己管，避免被 Tab 卸载重建。 -->
-  <AppCard title="🗣️ 语音朗读" class="card voice-card">
+  <AppCard title="语音朗读" class="card voice-card">
     <n-space vertical size="large">
       <p class="voice-desc">
         用于生字生词听写、课文朗读。孩子听不清时可以换一个声音、把语速调慢。
@@ -35,13 +35,13 @@
       </div>
 
       <div class="voice-actions">
-        <n-button type="primary" @click="preview">🔊 试听中文</n-button>
-        <n-button @click="previewEn">🔊 试听英文</n-button>
+        <n-button type="primary" @click="preview"><IconBase name="volume" size="1em" /> 试听中文</n-button>
+        <n-button @click="previewEn"><IconBase name="volume" size="1em" /> 试听英文</n-button>
         <n-button quaternary @click="resetToDefault">恢复默认</n-button>
       </div>
 
       <p class="voice-hint voice-note">
-        📦 已兼容离线语音包：学习包内若带有词的音频文件，会优先播放该音频；没有则使用上面的系统声音。
+        <IconBase name="package" size="1em" /> 已兼容离线语音包：学习包内若带有词的音频文件，会优先播放该音频；没有则使用上面的系统声音。
       </p>
     </n-space>
   </AppCard>
@@ -134,7 +134,7 @@ onMounted(async () => {
 .voice-desc,
 .voice-hint {
   margin: 0;
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.7;
   color: $text-sub;
 }

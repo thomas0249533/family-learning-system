@@ -1,6 +1,6 @@
 <template>
   <div class="family-wall">
-    <PageHeader icon="🏠" title="家庭成就墙" subtitle="每个孩子一列，各自看自己的进度" />
+    <PageHeader icon="home" title="家庭成就墙" subtitle="每个孩子一列，各自看自己的进度" />
 
     <!-- 一句话说明"这里不是排行榜"。它同时是 AC-P2-8 的产品承诺：
          页面上不出现任何比较级，说明里也不出现 —— 用"各自看自己的"这种中性表述。
@@ -24,11 +24,11 @@
     </div>
 
     <div v-else-if="loadError" class="wall-scroll">
-      <EmptyState icon="⚠️" description="读取失败，稍后重新进这一页试试。数据没有被改动。" />
+      <EmptyState icon="warning" description="读取失败，稍后重新进这一页试试。数据没有被改动。" />
     </div>
 
     <div v-else-if="columns.length === 0" class="wall-scroll">
-      <EmptyState icon="🏠" description="还没有档案。先到家长页建一个孩子的档案。" />
+      <EmptyState icon="home" description="还没有档案。先到家长页建一个孩子的档案。" />
     </div>
 
     <!-- 横向滚动：4 列 × 320px 在窄屏放不下，宁可横向滚也不压缩成两列

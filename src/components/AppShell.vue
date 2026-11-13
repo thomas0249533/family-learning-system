@@ -2,7 +2,7 @@
   <div class="app-shell" :class="{ 'is-focus': uiStore.isFocusMode }">
     <aside class="app-sidebar">
       <div class="sidebar-logo">
-        <span class="logo-icon">📘</span>
+        <IconBase name="book-brand" :size="26" class="logo-icon" />
         <div class="logo-text">
           <div class="logo-title">家庭学习系统</div>
           <div class="logo-sub">Family Learning</div>
@@ -15,7 +15,7 @@
           :to="item.path"
           class="sidebar-item"
         >
-          <span class="sidebar-icon">{{ item.icon }}</span>
+          <span class="sidebar-icon"><IconBase :name="item.icon" :size="18" /></span>
           <span class="sidebar-label">{{ item.label }}</span>
         </router-link>
       </nav>
@@ -36,7 +36,7 @@
           </button>
           <div class="page-title-desktop">{{ pageTitle }}</div>
           <div class="mobile-logo">
-            <span class="logo-icon">📘</span>
+            <IconBase name="book-brand" :size="22" class="logo-icon" />
             <span class="logo-title">家庭学习系统</span>
           </div>
         </div>
@@ -113,7 +113,7 @@
             <template v-else>检查更新失败：{{ autoState.fallback.message }}</template>
           </template>
         </span>
-        <button class="update-banner__close" type="button" aria-label="关闭提示" @click="dismissUpdate">✕</button>
+        <button class="update-banner__close" type="button" aria-label="关闭提示" @click="dismissUpdate"><IconBase name="close" size="1em" /></button>
       </div>
 
       <main class="app-main">
@@ -142,7 +142,7 @@
           :to="item.path"
           class="nav-item"
         >
-          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-icon"><IconBase :name="item.icon" :size="22" /></span>
           <span class="nav-label">{{ item.label }}</span>
         </router-link>
       </nav>
@@ -158,7 +158,7 @@
       type="button"
       aria-label="退出专注模式"
       @click="uiStore.exitFocus()"
-    >✕ 退出专注</button>
+    ><IconBase name="close" size="1em" /> 退出专注</button>
 
     <!-- V2.2 · 轨道 H：专注模式下挂载沉浸心流舱（白噪音 & 番茄钟）。仅改动此块。 -->
     <FocusMode v-if="uiStore.isFocusMode" />
@@ -185,6 +185,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AchievementToast from './AchievementToast.vue'
 import FocusMode from './FocusMode.vue'
+import IconBase from '@/components/ui/IconBase.vue'
 import { NDropdown } from 'naive-ui'
 import { onProfileChange, profilesState, type ProfilesState } from '@core/profile/currentProfile'
 import { switchProfileAndReload } from '@core/profile/switchProfileService'
@@ -324,17 +325,20 @@ watch(
 )
 
 /** 导航项：mobile=true 时同时出现在底部 tab */
+// V4.0 · 底栏收敛为 5：首页 / 今日 / 学习 / 错题本 / 设置。
+// 报告·搜索·笔顺下沉为 desktop 侧栏入口（mobile:false），并在「学习中心」页
+// 提供快捷入口，确保手机端收敛后仍能访问（避免"减负"变成"够不着"）。
 const navItems = [
-  { path: '/home', icon: '🏠', label: '首页', mobile: true },
-  { path: '/today', icon: '🎯', label: '今日', mobile: true },
-  { path: '/learn', icon: '📚', label: '学习', mobile: true },
-  { path: '/mistakes', icon: '📕', label: '错题本', mobile: true },
-  { path: '/stroke', icon: '✍️', label: '笔顺', mobile: true },
-  { path: '/search', icon: '🔍', label: '搜索', mobile: true },
-  { path: '/report', icon: '📄', label: '报告', mobile: true },
-  { path: '/parent', icon: '👨‍👩‍👧', label: '家长', mobile: false },
-  { path: '/creator', icon: '🛠️', label: '创作者', mobile: false },
-  { path: '/settings', icon: '⚙️', label: '设置', mobile: true },
+  { path: '/home', icon: 'home', label: '首页', mobile: true },
+  { path: '/today', icon: 'target', label: '今日', mobile: true },
+  { path: '/learn', icon: 'book', label: '学习', mobile: true },
+  { path: '/mistakes', icon: 'mistake', label: '错题本', mobile: true },
+  { path: '/stroke', icon: 'pen', label: '笔顺', mobile: false },
+  { path: '/search', icon: 'search', label: '搜索', mobile: false },
+  { path: '/report', icon: 'doc', label: '报告', mobile: false },
+  { path: '/parent', icon: 'people', label: '家长', mobile: false },
+  { path: '/creator', icon: 'wand', label: '创作者', mobile: false },
+  { path: '/settings', icon: 'gear', label: '设置', mobile: true },
 ]
 
 const mobileNavItems = computed(() => navItems.filter((i) => i.mobile))
@@ -416,9 +420,9 @@ const bannerClass = computed(() => {
 })
 const bannerIcon = computed(() => {
   const p = autoState.value?.phase
-  if (p === 'error') return '⚠️'
-  if (p === 'latest' || p === 'done') return '✓'
-  return '🎉'
+  if (p === 'error') return 'warning'
+  if (p === 'latest' || p === 'done') return 'check'
+  return 'celebrate'
 })
 const progressText = computed(() => {
   const pr = autoState.value?.progress
@@ -461,15 +465,15 @@ const progressPercent = computed(() => {
     border-bottom: 1px solid $border-light;
     margin-bottom: 16px;
 
-    .logo-icon { font-size: 28px; }
+    .logo-icon { font-size: var(--font-5xl); }
     .logo-title {
-      font-size: 15px;
+      font-size: var(--font-md);
       font-weight: 800;
       color: $text-main;
       letter-spacing: 0.3px;
     }
     .logo-sub {
-      font-size: 10px;
+      font-size: var(--font-3xs);
       color: $text-muted;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -492,9 +496,9 @@ const progressPercent = computed(() => {
     border-radius: 12px;
     text-decoration: none;
     color: $text-sub;
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 600;
-    transition: all 0.18s ease;
+    transition: all var(--duration-base) var(--ease-standard);
     position: relative;
 
     .sidebar-icon {
@@ -504,8 +508,8 @@ const progressPercent = computed(() => {
       width: 28px;
       height: 28px;
       border-radius: 8px;
-      font-size: 16px;
-      transition: all 0.18s ease;
+      font-size: var(--font-lg);
+      transition: all var(--duration-base) var(--ease-standard);
       background: transparent;
     }
     .sidebar-label { flex: 1; }
@@ -541,7 +545,7 @@ const progressPercent = computed(() => {
       display: inline-block;
       background: $bg-color-hover;
       color: $text-sub;
-      font-size: 11px;
+      font-size: var(--font-caption);
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 20px;
@@ -571,13 +575,13 @@ const progressPercent = computed(() => {
   border-radius: 20px;
   background: $card-bg;
   color: $text-sub;
-  font-size: 11px;
+  font-size: var(--font-2xs);
   font-weight: 700;
   font-family: inherit;
   line-height: 1.4;
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &:hover:not(:disabled) {
     background: $bg-color-hover;
@@ -585,8 +589,8 @@ const progressPercent = computed(() => {
     border-color: $primary-text;
   }
   &:focus-visible {
-    outline: 2px solid var(--primary-text);
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
   &:disabled {
     opacity: 0.6;
@@ -600,13 +604,13 @@ const progressPercent = computed(() => {
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 600;
   border-bottom: 1px solid $border-light;
   flex-shrink: 0;
 
   &__icon {
-    font-size: 16px;
+    font-size: var(--font-lg);
     line-height: 1;
     flex-shrink: 0;
   }
@@ -629,12 +633,12 @@ const progressPercent = computed(() => {
     border: none;
     background: transparent;
     color: inherit;
-    font-size: 14px;
+    font-size: var(--font-base);
     line-height: 1;
     padding: 4px 6px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: background-color var(--duration-fast) var(--ease-standard);
 
     &:hover { background: $bg-color-hover; }
   }
@@ -658,7 +662,7 @@ const progressPercent = computed(() => {
       height: 100%;
       border-radius: 3px;
       background: currentColor;
-      transition: width 0.25s ease;
+      transition: width var(--duration-base) var(--ease-standard);
     }
   }
 
@@ -725,18 +729,18 @@ const progressPercent = computed(() => {
       border-radius: 999px;
       background: $card-bg;
       color: $text-main;
-      font-size: 13px;
+      font-size: var(--font-sm);
       font-weight: 700;
       cursor: pointer;
-      transition: background-color 0.15s ease;
+      transition: background-color var(--duration-fast) var(--ease-standard);
 
       &:hover {
         background: $bg-color-hover;
       }
 
       &:focus-visible {
-        outline: 2px solid var(--primary-text);
-        outline-offset: 2px;
+        outline: var(--focus-ring-w) solid var(--focus-ring);
+        outline-offset: var(--focus-ring-offset);
       }
 
       &__avatar {
@@ -748,7 +752,7 @@ const progressPercent = computed(() => {
         border-radius: 50%;
         background: $primary-light;
         color: $primary-text;
-        font-size: 12px;
+        font-size: var(--font-xs);
         flex-shrink: 0;
       }
 
@@ -761,7 +765,7 @@ const progressPercent = computed(() => {
 
     .today-text {
       display: none;
-      font-size: 13px;
+      font-size: var(--font-sm);
       color: $text-sub;
       font-weight: 600;
     }
@@ -769,7 +773,7 @@ const progressPercent = computed(() => {
     .version-badge {
       background: $primary-light;
       color: $primary-text;
-      font-size: 11px;
+      font-size: var(--font-2xs);
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 20px;
@@ -785,10 +789,10 @@ const progressPercent = computed(() => {
     border: 1px solid $border-color;
     border-radius: 10px;
     color: $text-main;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
     font-family: inherit;
     flex-shrink: 0;
 
@@ -797,12 +801,12 @@ const progressPercent = computed(() => {
       border-color: $text-muted;
     }
     &:active { transform: scale(0.97); }
-    .back-icon { font-size: 16px; line-height: 1; }
+    .back-icon { font-size: var(--font-lg); line-height: 1; }
   }
 
   .page-title-desktop {
     display: none;
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-weight: 700;
     color: $text-main;
     letter-spacing: 0.2px;
@@ -816,9 +820,9 @@ const progressPercent = computed(() => {
     align-items: center;
     gap: 8px;
 
-    .logo-icon { font-size: 22px; }
+    .logo-icon { font-size: var(--font-3xl); }
     .logo-title {
-      font-size: 15px;
+      font-size: var(--font-md);
       font-weight: 800;
       color: $text-main;
       letter-spacing: 0.3px;
@@ -858,14 +862,14 @@ const progressPercent = computed(() => {
     gap: 2px;
     text-decoration: none;
     color: $text-sub;
-    font-size: 11px;
-    transition: all 0.2s;
+    font-size: var(--font-2xs);
+    transition: all var(--duration-base) var(--ease-standard);
     padding: 4px 8px;
     border-radius: 12px;
     flex: 1;
     max-width: 80px;
 
-    .nav-icon { font-size: 20px; transition: transform 0.2s; }
+    .nav-icon { font-size: var(--font-2xl); transition: transform var(--duration-base) var(--ease-standard); }
     .nav-label { font-weight: 600; }
 
     &.router-link-active {
@@ -880,13 +884,13 @@ const progressPercent = computed(() => {
   /* 平滑收起的过渡（尊重 prefers-reduced-motion：reduced 时不声明 transition → 瞬时切换） */
   @media (prefers-reduced-motion: no-preference) {
     .app-sidebar {
-      transition: width 0.28s var(--motion-ease, ease), opacity 0.28s ease, transform 0.28s ease;
+      transition: width var(--duration-slow) var(--ease-standard), opacity var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard);
     }
     .app-header {
-      transition: height 0.28s var(--motion-ease, ease), opacity 0.28s ease, transform 0.28s ease;
+      transition: height var(--duration-slow) var(--ease-standard), opacity var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard);
     }
     .app-nav {
-      transition: transform 0.28s var(--motion-ease, ease), opacity 0.28s ease, visibility 0s linear 0.28s;
+      transition: transform var(--duration-slow) var(--ease-standard), opacity var(--duration-slow) var(--ease-standard), visibility 0s linear var(--duration-slow);
     }
   }
 
@@ -939,20 +943,20 @@ const progressPercent = computed(() => {
     border-radius: 999px;
     background: var(--primary-text);
     color: var(--text-on-primary);
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
     box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.12));
-    transition: transform 0.15s ease, opacity 0.15s ease;
+    transition: transform var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
 
     &:hover { transform: translateY(-1px); opacity: 0.94; }
     &:active { transform: scale(0.97); }
-    &:focus-visible { outline: 2px solid var(--on-strong); outline-offset: 2px; }
+    &:focus-visible { outline: var(--focus-ring-w) solid var(--focus-ring-on-strong); outline-offset: var(--focus-ring-offset); }
   }
 
   .fade-enter-active, .fade-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
 }
 .fade-enter-from {
   opacity: 0;

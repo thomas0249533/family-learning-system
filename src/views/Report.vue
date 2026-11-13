@@ -3,22 +3,37 @@
     <AppCard class="card">
       <template #header>
         <div class="header-row">
-          <span>📄 学习报告</span>
+          <span><IconBase name="doc" size="1em" /> 学习报告</span>
           <div class="header-actions">
-            <AppButton size="small" @click="loadData" :loading="loading">🔄 刷新</AppButton>
+            <AppButton size="small" @click="loadData" :loading="loading"><IconBase name="refresh" size="1em" /> 刷新</AppButton>
             <AppButton type="primary" size="small" @click="exportPDF" :disabled="loading || !report">
-              📥 导出 PDF
+              <IconBase name="inbox" size="1em" /> 导出 PDF
             </AppButton>
           </div>
         </div>
       </template>
 
-      <div v-if="loading" class="loading">正在生成报告...</div>
+      <!-- 加载态：用与报告同构的骨架，避免"文字加载中"造成的布局跳变 -->
+      <div v-if="loading" class="report-skeleton" aria-busy="true">
+        <div class="report-skeleton__head">
+          <Skeleton width="42%" height="24px" label="正在生成学习报告" />
+          <Skeleton width="24%" />
+        </div>
+        <Skeleton variant="rect" height="132px" />
+        <div class="report-skeleton__row">
+          <Skeleton v-for="n in 3" :key="n" variant="rect" height="84px" />
+        </div>
+        <div class="report-skeleton__lines">
+          <Skeleton width="72%" />
+          <Skeleton width="94%" />
+          <Skeleton width="58%" />
+        </div>
+      </div>
 
       <div v-else-if="report" ref="reportRef" class="report-body">
         <!-- 报告头部 -->
         <div class="report-header">
-          <h1 class="report-title">📘 家庭学习报告</h1>
+          <h1 class="report-title"><IconBase name="book" size="1em" /> 家庭学习报告</h1>
           <div class="report-sub">{{ report.rangeLabel }}</div>
           <div class="report-date">生成于 {{ formatDate(report.generatedAt) }}</div>
         </div>
@@ -45,23 +60,23 @@
               </div>
             </div>
             <div class="report-hero__grade">
-              {{ masteryGrade.emoji }} {{ masteryGrade.label }}
+              <IconBase :name="masteryGrade.icon" size="1em" /> {{ masteryGrade.label }}
             </div>
             <div class="report-hero__total">
               已掌握 {{ report.stats.mastered }} / {{ report.stats.totalKnowledgePoints }} 个知识点
             </div>
           </div>
           <div class="report-hero__meta">
-            <div class="report-hero__pill"><span>📖</span>学习中 {{ report.stats.learning }}</div>
-            <div class="report-hero__pill"><span>🔁</span>需复习 {{ report.stats.needReview }}</div>
-            <div class="report-hero__pill"><span>⏱️</span>累计 {{ report.stats.totalStudyMinutes }} 分钟</div>
-            <div class="report-hero__pill"><span>🔥</span>连续 {{ report.stats.continuousDays }} 天</div>
+            <div class="report-hero__pill"><span><IconBase name="book-open" size="1em" /></span>学习中 {{ report.stats.learning }}</div>
+            <div class="report-hero__pill"><span><IconBase name="repeat" size="1em" /></span>需复习 {{ report.stats.needReview }}</div>
+            <div class="report-hero__pill"><span><IconBase name="clock" size="1em" /></span>累计 {{ report.stats.totalStudyMinutes }} 分钟</div>
+            <div class="report-hero__pill"><span><IconBase name="fire" size="1em" /></span>连续 {{ report.stats.continuousDays }} 天</div>
           </div>
         </div>
 
         <!-- V2.9 · 学习小贴士：模板化行动建议（借鉴参考图3「AI 智能点评」的零 AI 版） -->
         <div v-if="report.studyTip" class="study-tip" role="note">
-          <span class="study-tip__icon" aria-hidden="true">💡</span>
+          <span class="study-tip__icon" aria-hidden="true"><IconBase name="bulb" size="1em" /></span>
           <div class="study-tip__body">
             <div class="study-tip__title">学习小贴士</div>
             <p class="study-tip__text">{{ report.studyTip }}</p>
@@ -70,7 +85,7 @@
 
         <!-- 学科分布 -->
         <div class="section" v-if="report.subjectBreakdown.length > 0">
-          <SectionTitle title="📚 学科分布" accent />
+          <SectionTitle title="学科分布" accent />
           <div class="subject-list">
             <div v-for="s in report.subjectBreakdown" :key="s.subject" class="subject-row">
               <div class="subject-name">{{ s.label }}</div>
@@ -87,7 +102,7 @@
 
         <!-- 错题统计 -->
         <div class="section">
-          <SectionTitle title="📕 错题情况" accent />
+          <SectionTitle title="错题情况" accent />
           <div class="mistake-summary">
             <StatCard :value="report.mistakeStats.total" label="错题总数" />
             <StatCard tone="danger" :value="report.mistakeStats.unmastered" label="未掌握" />
@@ -105,7 +120,7 @@
 
         <!-- 复习安排 -->
         <div class="section">
-          <SectionTitle title="🔄 复习安排" accent />
+          <SectionTitle title="复习安排" accent />
           <div class="review-row">
             <StatCard tone="danger" :value="report.reviewStats.dueToday" label="今天待复习" />
             <StatCard tone="warning" :value="report.reviewStats.dueThisWeek" label="本周待复习" />
@@ -114,7 +129,7 @@
 
         <!-- 近 7 天学习 -->
         <div class="section">
-          <SectionTitle title="📅 近 7 天学习" accent />
+          <SectionTitle title="近 7 天学习" accent />
           <div class="week-chart">
             <div v-for="d in report.recent7Days" :key="d.date" class="day-col">
               <div class="day-bar-wrap">
@@ -147,6 +162,7 @@ import AppButton from '@/components/ui/AppButton.vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
 import LearningVisuals from '@/components/LearningVisuals.vue'
 import { generateReportData, type ReportData } from '@core/report/reportGenerator'
 import { exportReportAsPDF } from '@core/report/pdfExporter'
@@ -195,11 +211,11 @@ const ringOffset = computed(() => {
 /** 掌握率 → 等级评语（英雄横幅展示）。 */
 const masteryGrade = computed(() => {
   const r = report.value?.stats.masteryRate ?? 0
-  if (r >= 90) return { emoji: '🏆', label: '卓越' }
-  if (r >= 75) return { emoji: '🌟', label: '优秀' }
-  if (r >= 60) return { emoji: '💪', label: '良好' }
-  if (r >= 40) return { emoji: '🚀', label: '继续加油' }
-  return { emoji: '🌱', label: '稳步启程' }
+  if (r >= 90) return { icon: 'trophy', label: '卓越' }
+  if (r >= 75) return { icon: 'sparkle', label: '优秀' }
+  if (r >= 60) return { icon: 'bolt', label: '良好' }
+  if (r >= 40) return { icon: 'rocket', label: '继续加油' }
+  return { icon: 'seedling', label: '稳步启程' }
 })
 
 function dayLabel(dateStr: string): string {
@@ -227,7 +243,32 @@ onMounted(loadData)
 }
 .header-actions { display: flex; gap: 8px; }
 
-.loading { text-align: center; color: $text-sub; padding: 40px; }
+/* 加载骨架：与报告正文同构（头部 / 英雄条 / 三张统计卡 / 段落），
+   故意不复用 .report-body 的间距，避免加载完成后整页跳动 */
+.report-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-2) 0 var(--space-5);
+}
+
+.report-skeleton__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.report-skeleton__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.report-skeleton__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
 
 .report-body {
   background: $card-bg;
@@ -242,13 +283,13 @@ onMounted(loadData)
   margin-bottom: 24px;
 
   .report-title {
-    font-size: 24px;
+    font-size: var(--font-4xl);
     font-weight: 800;
     color: $text-main;
     margin-bottom: 8px;
   }
-  .report-sub { font-size: 14px; color: $text-sub; }
-  .report-date { font-size: 12px; color: $text-sub; margin-top: 4px; }
+  .report-sub { font-size: var(--font-base); color: $text-sub; }
+  .report-date { font-size: var(--font-xs); color: $text-sub; margin-top: 4px; }
 }
 
 /* ---- 成绩英雄横幅：渐变底 + 大数字 + 信息胶囊（对标参考报告首屏层级）---- */
@@ -324,12 +365,12 @@ onMounted(loadData)
 
   .report-hero__value {
     /* 48px：收进 148px 圆环内（§8.4 不变量 7 常量尺寸）。 */
-    font-size: 48px;
+    font-size: var(--font-8xl);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.02em;
 
-    .report-hero__unit { font-size: 24px; font-weight: 700; margin-left: 2px; opacity: 0.9; }
+    .report-hero__unit { font-size: var(--font-4xl); font-weight: 700; margin-left: 2px; opacity: 0.9; }
   }
   .report-hero__grade {
     display: inline-flex;
@@ -397,7 +438,7 @@ onMounted(loadData)
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: var(--font-2xl);
     background: var(--card-bg);
     border-radius: $radius-full;
   }
@@ -433,12 +474,12 @@ onMounted(loadData)
 }
 .subject-row {
   .subject-name {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: $text-main;
     margin-bottom: 6px;
   }
-  .subject-stats { font-size: 12px; color: $text-sub; margin-top: 4px; }
+  .subject-stats { font-size: var(--font-xs); color: $text-sub; margin-top: 4px; }
 }
 
 .mistake-summary {
@@ -453,7 +494,7 @@ onMounted(loadData)
   border-radius: 8px;
 
   .top-kps-label {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     margin-bottom: 8px;
     font-weight: 700;
@@ -463,7 +504,7 @@ onMounted(loadData)
     align-items: center;
     gap: 8px;
     padding: 4px 0;
-    font-size: 13px;
+    font-size: var(--font-sm);
 
     .top-kp-rank { color: $text-sub; font-weight: 700; width: 20px; }
     .top-kp-title { flex: 1; color: $text-main; }
@@ -504,7 +545,7 @@ onMounted(loadData)
         width: 100%;
         background: $surface-2;
         border-radius: $radius-xs $radius-xs 2px 2px;
-        transition: height 0.4s;
+        transition: height var(--duration-slower) var(--ease-standard);
 
         &.active {
           background: $gradient-primary;
@@ -515,13 +556,13 @@ onMounted(loadData)
       }
     }
     .day-count {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-main;
       font-weight: 700;
       margin-top: 2px;
     }
     .day-label {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-sub;
       margin-top: 2px;
     }
@@ -530,7 +571,7 @@ onMounted(loadData)
 
 .report-footer {
   text-align: center;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   padding-top: 20px;
   border-top: 1px dashed $border-color;

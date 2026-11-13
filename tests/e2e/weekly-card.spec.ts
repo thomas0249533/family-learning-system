@@ -347,7 +347,9 @@ test.describe('E3 · 周报卡片（生成快照 + 导出 PNG）', () => {
     await expect(tops.nth(1)).toContainText('错 1 次')
 
     // 成就：2 / 37（27 是 V1.6 的数，V2.8 · C1 加了 10 枚习惯成就）
-    await expect(card.locator('.weekly-card__ach')).toHaveText('🏅 成就 2 / 37')
+    // V4.0 · D1：'🏅' 已换成 <IconBase name="medal">，svg 无 textContent，故用 containText
+    await expect(card.locator('.weekly-card__ach')).toContainText('成就 2 / 37')
+    await expect(card.locator('.weekly-card__ach svg')).toHaveCount(1)
   })
 
   test('导出图片 → 产出 download 事件，文件名带本地日期', async ({ page }) => {

@@ -1,0 +1,21 @@
+{
+  "setId": "ket-pu3-58d-set",
+  "title": "KET 备考 · PU3 58 天打卡（单词 + 句型）",
+  "subject": "english",
+  "grade": 5,
+  "term": "up",
+  "edition": "剑桥 Power Up Level 3",
+  "importOrder": [
+    "daily-english-ket-pu3"
+  ],
+  "packages": [
+    {
+      "file": "daily-english-ket-pu3.json",
+      "packageId": "daily-english-ket-pu3",
+      "type": "daily",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    }
+  ]
+}

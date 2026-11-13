@@ -1,9 +1,9 @@
 <template>
   <AppCard class="chinese-words-card">
     <div class="card-header">
-      <span class="header-title">📖 字词积累</span>
+      <span class="header-title"><IconBase name="book-open" size="1em" /> 字词积累</span>
       <AppButton v-if="!drilling && kps.length > 0" size="small" type="primary" @click="drilling = true">
-        🎴 开始背记
+        <IconBase name="card" size="1em" /> 开始背记
       </AppButton>
     </div>
 
@@ -27,7 +27,7 @@
     <!-- V2.6 · 任务1：词语明细默认折叠，让「开始背记」第一屏可见 -->
     <details v-else-if="kps.length > 0" class="words-details">
       <summary class="words-summary">
-        <span class="words-summary__text">📋 查看全部 {{ kps.length }} 个词语</span>
+        <span class="words-summary__text"><IconBase name="clipboard" size="1em" /> 查看全部 {{ kps.length }} 个词语</span>
       </summary>
       <div class="words-list">
         <div v-for="(kp, i) in kps" :key="i" class="word-item">
@@ -112,7 +112,7 @@ const drilling = ref(false)
   border-bottom: 1px dashed $border-light;
 
   .header-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 800;
     color: $text-main;
   }
@@ -126,7 +126,7 @@ const drilling = ref(false)
   margin-bottom: 12px;
 
   &__label {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-sub;
     flex-shrink: 0;
@@ -141,22 +141,22 @@ const drilling = ref(false)
     border-radius: 10px;
     background: $card-bg;
     color: $text-main;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
-    transition: border-color 0.15s ease;
+    transition: border-color var(--duration-fast) var(--ease-standard);
 
     &:hover { border-color: $primary-color; }
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
   }
 
   &__meta {
     flex-shrink: 0;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
   }
 }
@@ -170,7 +170,7 @@ const drilling = ref(false)
   .words-summary {
     cursor: pointer;
     padding: 10px 0;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $primary-text;
     list-style: none;
@@ -182,11 +182,11 @@ const drilling = ref(false)
     &::before {
       content: '▸';
       display: inline-block;
-      transition: transform 0.15s ease;
+      transition: transform var(--duration-fast) var(--ease-standard);
     }
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
       border-radius: 6px;
     }
   }
@@ -215,19 +215,19 @@ const drilling = ref(false)
     margin-bottom: 4px;
 
     .word-text {
-      font-size: 18px;
+      font-size: var(--font-xl);
       font-weight: 700;
       color: $subject-chinese-deep;
     }
     .word-pinyin {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $subject-chinese;
       font-family: 'Times New Roman', serif;
     }
   }
 
   .word-meaning {
-    font-size: 13px;
+    font-size: var(--font-sm);
     line-height: 1.6;
     color: $text-main;
   }

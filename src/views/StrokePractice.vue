@@ -3,7 +3,7 @@
     <AppCard class="card">
       <template #header>
         <div class="header-row">
-          <span>✍️ 笔顺描红</span>
+          <span><IconBase name="pen" size="1em" /> 笔顺描红</span>
           <span class="header-sub">跟着虚线大字练写，巩固生字书写</span>
         </div>
       </template>
@@ -12,7 +12,7 @@
         <!-- 左：汉字选择 -->
         <div class="char-picker">
           <div class="picker-filter">
-            <n-input v-model:value="keyword" placeholder="🔍 搜索汉字 / 拼音" size="small" clearable />
+            <n-input v-model:value="keyword" placeholder="搜索汉字 / 拼音" size="small" clearable />
           </div>
           <div class="char-grid">
             <button
@@ -110,11 +110,11 @@ onMounted(async () => {
   display: flex;
   align-items: baseline;
   gap: 12px;
-  font-size: 16px;
+  font-size: var(--font-lg);
   font-weight: 800;
   color: $text-main;
 }
-.header-sub { font-size: 12px; font-weight: 500; color: $text-sub; }
+.header-sub { font-size: var(--font-xs); font-weight: 500; color: $text-sub; }
 
 .stroke-body {
   display: grid;
@@ -147,17 +147,17 @@ onMounted(async () => {
   border-radius: 10px;
   background: $card-bg;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &__glyph {
-    font-size: 24px;
+    font-size: var(--font-4xl);
     font-weight: 700;
     color: $text-main;
     font-family: "KaiTi", "STKaiti", "楷体", serif;
     line-height: 1.1;
   }
   &__py {
-    font-size: 10px;
+    font-size: var(--font-3xs);
     color: $text-muted;
     max-width: 100%;
     overflow: hidden;
@@ -184,7 +184,7 @@ onMounted(async () => {
 
 .trace-meta {
   text-align: center;
-  &__title { font-size: 15px; font-weight: 700; color: $text-main; }
-  &__src { font-size: 12px; color: $text-sub; margin-top: 2px; }
+  &__title { font-size: var(--font-md); font-weight: 700; color: $text-main; }
+  &__src { font-size: var(--font-xs); color: $text-sub; margin-top: 2px; }
 }
 </style>

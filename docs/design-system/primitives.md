@@ -1,6 +1,6 @@
 # UI 基元
 
-> 源码：`src/components/ui/`（8 个文件，**本文标题集合与目录文件名由测试双向锁定**）
+> 源码：`src/components/ui/`（9 个文件，**本文标题集合与目录文件名由测试双向锁定**）
 > 展示页：`src/views/DesignSystem.vue`（`/design-system`，仅 DEV）
 > token 定义见 [`tokens.md`](./tokens.md)；对比度实测见 [`a11y.md`](./a11y.md)
 
@@ -19,11 +19,27 @@
      outline-offset: var(--focus-ring-offset);
    }
    ```
-   例外：`AppButton` 用 `--btn-focus-ring`（按钮专用环，语义上区分主按钮）。
-3. **动效降级**：每个带 `transition`/`transform` 的基元都有
+   变体只有两种，且都有明确理由：
+   - 环落在**主色/深色面**上（悬浮按钮、彩色遮罩内）→ 用 `--focus-ring-on-strong`，
+     主色环会与同类底色撞色；
+   - 容器有 `overflow: hidden`（会裁掉外描边）→ `outline-offset: var(--focus-ring-offset-inset)`。
+   `AppButton` 用 `--btn-focus-ring`（按钮专用环，当前等于通用环）。
+
+   **环的颜色必须不透明。** 早先是 `rgba(var(--primary-rgb), 0.55)`，压在浅底上实测
+   只有 ~2.4:1，达不到 WCAG 1.4.11 对非文本对比度的 3:1 —— 环"在"，但看不见。
+   现在指向 `--primary-text`（6 组预设 × 浅深均 ≥3:1，由 `tests/a11y-adoption.test.ts` 锁死）。
+   由 `npm run check:a11y` 强制：写 `2px solid $primary-color` 会直接红。
+
+3. **非 button 容器要能 Tab 到**：卡片/行这类 `div + @click` 一律加 `v-clickable`
+   （全局指令，自动补 `role` / `tabindex` / 键盘激活）。跳转语义用 `v-clickable:link`
+   —— 读屏念「链接」，Space 留给页面滚动；动作语义用默认的 `v-clickable`，Enter 与 Space 都激活。
+   遮罩上的 `@click.self` 不算控件，不需要指令（键盘出口是 Esc）。
+4. **动效降级**：每个带 `transition`/`transform` 的基元都有
    `@media (prefers-reduced-motion: reduce)` 分支，把 `transition` 置 `none`
    （`hover` 抬升同时把 `transform` 置 `none`）。
-4. **attrs 透传**：所有基元都是**单根节点**，未声明的 attrs 自动落到根元素。
+   这是**静态降级**，与 `motion.scss` 的全局「压时长」兜底是两层：
+   全局网只让动画近乎瞬时，「位移带来的空间感变化」必须由组件显式取消。
+5. **attrs 透传**：所有基元都是**单根节点**，未声明的 attrs 自动落到根元素。
    一旦某个事件被 `defineEmits` 声明（如 `AppButton` 的 `click`），它就不再作为原生监听透传，
    而是由组件显式 `emit`——两者不会重复触发。
 5. **图标**：`icon` prop 接受 emoji / 字符，统一渲染在 `aria-hidden="true"` 的 span 里。
@@ -527,9 +543,128 @@ pct     = max <= 0 || clamped === 0 ? 0 : Math.round(clamped / max * 100)
   **没有 `click` emit，也没有 Enter/Space 键处理**。`@click` 能通过 attrs 透传到根 `div` 而工作，
   **键盘激活不能**。真需要可点击卡片时，请在调用处包真实的 `<button>`/`<a>`，
   或先补 `@keydown.enter` / `@keydown.space` 再标 `interactive`。
-- 数值字号 `26px` 是**文档化例外**：字号阶梯里没有 26px，源码按「常量尺寸」保留精确值以复刻
-  Parent `.ov-value` / Report `.stat-value` 的既有观感。不要"顺手"换成 `--font-4xl`（24px）。
+- 数值字号走阶梯的**展示级** token：`--font-6xl`(32) / `--font-5xl`(28)，不再保留硬编码
+  `26px` / `30px` 例外（V4.0 字号全量 token 化，由 `npm run check:font-size` 把关）。
+  不要用 `--font-4xl`(24) —— 结果页大数字比正文标题大一档才够读。
 - `tone` 不影响背景与边框；想要带色底的卡片请用 `AppCard variant="danger"` 或自行组合。
+
+---
+
+## IconBase
+
+**定位**：全站统一图标（V4.0 新增，**取代 emoji 当图标**）。**关系**：自建 `svg`，24×24 描边风格（Feather 系），`currentColor` 染色。
+
+### Props
+
+| prop | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `name` | `string` | **必填** | 图标键，须落在内部 `ICONS` 白名单（`home`/`target`/`book`/`mistake`/`pen`/`search`/`doc`/`people`/`wand`/`gear`/`book-brand` 导航；`card`/`speaker`/`list`/`headphones`/`paper`/`puzzle` 背记模式）。未知键 → 渲染空 svg（降级，不报错） |
+| `size` | `number \| string` | `22` | 像素数（`28`）或尺寸字符串（`'1.5em'`），直接落到 `width`/`height` |
+| `strokeWidth` | `number` | `2` | 描边粗细 |
+| `label` | `string` | `''` | 有值 → `role="img"` + `aria-label`；留空 → `role="presentation"` + `aria-hidden`（纯装饰） |
+
+### Slots / Events
+
+无 slots、无 events。
+
+### 消费的 token
+
+| token | 用途 |
+|---|---|
+| （无私有 token） | 描边用 `currentColor`，**跟随父级 `color`**（如 `--text-main` / `--primary-text`）——深色、激活态、禁用态自动正确，无需单独维护图标色 |
+| `--focus-ring` 等 | 不消费：图标本身非可聚焦元素 |
+
+### a11y
+
+- 有 `label` 时 `role="img"` + `aria-label`，读屏念标签；
+- 纯装饰（默认）`role="presentation"` + `aria-hidden="true"`，**语义必须同时由相邻文字承载**（§6.5 色盲 / 读屏要求）；
+- 静态 svg，无需 `prefers-reduced-motion` 分支。
+- **对比度按 WCAG 1.4.11 判 3:1**（非文本），不是 1.4.3 的 4.5。因为图标是 `currentColor`、
+  颜色**继承**自父级，光看 token 表看不出它落在什么底上 —— 所以「彩色底的图标 chip」要在
+  `src/core/a11y/icon-spots.ts` 登记一行，由 `npm run check:icon-contrast` +
+  `tests/icon-contrast.test.ts` 双重把关（细则见 [`tokens.md`](./tokens.md) §12）。
+
+### 示例
+
+```vue
+<!-- 纯装饰：留空 label，靠旁边文字表达语义 -->
+<IconBase name="home" :size="28" />
+
+<!-- 独立语义图标：带无障碍标签 -->
+<IconBase name="speaker" :size="22" label="播放读音" />
+```
+
+### 坑（源码约定）
+
+- `name` 必须落在 `ICONS` 白名单；未知名**不会报错**，但渲染空 svg（看不见图标），别依赖它抛错来发现拼写错误；
+- **emoji 只作迁移兜底**：内部 `EMOJI_ALIAS` 能把历史数据里的 emoji 解析成对应图标（所以传 emoji 不会白屏），但**新代码不要再用 emoji 当图标**——需要新图标请在 `ICONS` 里补一组节点，别往数据层塞 emoji；
+- 不接收 `icon` slot / 不 dye 独立色：染色完全靠父级 `color`，调用处想换色就改父级文字色，别在 IconBase 上写死 `color`。
+
+## Skeleton
+
+**定位**：加载中的占位骨架（正文行 / 卡片块 / 圆形头像）。**关系**：**自建**，不包 naive——
+`n-skeleton` 只有单一 rect 形态，表达不了「圆形 + 多行 + 卡片」的组合。
+
+### Props
+
+| prop | 类型 | 默认 | 说明 |
+|---|---|---|---|
+| `variant` | `'text' \| 'rect' \| 'circle'` | `'text'` | text=正文细线（高度跟随 `--font-base`）/ rect=卡片块 / circle=头像 |
+| `width` | `string` | — | CSS 长度（`'60%'`、`'120px'`）；不给则撑满父级 |
+| `height` | `string` | — | 覆盖 variant 的默认高度 |
+| `animated` | `boolean` | `true` | 透明度脉冲；`prefers-reduced-motion` 下自动关闭 |
+| `label` | `string` | — | 给读屏的加载文案；不传则整体 `aria-hidden`（纯装饰） |
+
+### Slots / Events
+
+无。纯展示基元。
+
+### 消费的 token
+
+| token | 用途 |
+|---|---|
+| `--bg-color-hover` | 骨架底色（浅色）；暗色下改用 `--border-color`（见下方「暗色微调」） |
+| `--radius-xs` / `--radius-sm` / `--radius-md` / `--radius-full` | 各 variant 圆角 |
+| `--font-base` | text 变体的默认高度（**行高跟着字号走**，不是写死 14px） |
+| `--ease-standard` / 1.4s | 脉冲节奏（装饰循环，`check-motion-allow` 豁免） |
+
+### 暗色微调
+
+`--bg-color-hover` 在暗色下是 `#1b2a24`，卡片底色 `#15211c`——两者几乎同色，骨架会「消失」。
+所以组件里带一条 `body.dark-mode .skeleton { background: var(--border-color) }`，
+与 `PageHeader` / `SectionTitle` 的暗色微调是同一种做法。
+
+**为什么不新增 `--skeleton-bg` token**：`tokens.md` §5 的 semantic 白名单是封闭的，
+白名单外新增 = 改设计。骨架用现有「中性色一档」组合即可满足，不值得开口子。
+
+### 为什么是「脉冲」不是「扫光」
+
+本仓禁写字面量色、也不允许 `color-mix`（见 `tokens.md` §6），而扫光需要一层
+比底色更亮的渐变——`--surface-2` 在暗色主题下与 `--bg-color-hover` 几乎同色，
+扫光根本看不见。脉冲只动 `opacity`，浅色/深色都可读，且走合成层、无重绘。
+
+### a11y
+
+- 默认 `aria-hidden="true"`：骨架是**视觉占位**，读屏用户不需要知道"有 5 个空块"；
+- 需要播报时给 `label`，元素变 `role="status"`，读出「正在加载…」。
+  **一屏多处骨架只给一处传 `label`**，否则会重复播报；
+- 加载区的容器应同时写 `aria-busy="true"`，加载结束后自然消失；
+- `prefers-reduced-motion: reduce` 下停止脉冲（静态灰块仍有"占位"语义）。
+
+### 示例
+
+```vue
+<!-- 列表加载态：一屏只给第一块传 label -->
+<div v-if="loading" aria-busy="true" class="list-skeleton">
+  <Skeleton v-for="n in 4" :key="n" variant="rect" height="88px" :label="n === 1 ? '正在加载列表' : undefined" />
+</div>
+
+<!-- 头像 + 三行文字 -->
+<Skeleton variant="circle" />
+<Skeleton width="70%" />
+<Skeleton width="90%" />
+<Skeleton width="45%" />
+```
 
 ---
 
@@ -542,3 +677,39 @@ pct     = max <= 0 || clamped === 0 ? 0 : Math.round(clamped / max * 100)
 | 1 | AppBadge 软底文字用 `var(--{tone}-color)` | 用 `var(--{tone}-text)`（批 6a-2 修正；`-color` 会过不了 `check:text-color` 且对比度不足） |
 | 2 | AppCard 用 `$radius-lg + $shadow-sm + var(--card-header-bg)`，`danger` 用 `$danger-light` 边框 | 前两项一致；`--card-header-bg` **未使用**（且刻意不覆盖 naive 默认边框/标题栏底色），`danger` 用的确实是 `--danger-light` |
 | 3 | "所有可交互基元（AppButton/AppCard(hoverable)/AppBadge(closable)/ProgressBar(无)）内建焦点环" | 一致；但 `AppCard(hoverable)` 根元素默认不可聚焦（无 `tabindex`），焦点环实际只在内部子元素聚焦时命中自身——见 AppCard 的 a11y 段 |
+
+## 什么算「绕过基元」（V4.0 · D7 门禁）
+
+`npm run check:primitives` 有两条**可机器判定**的规则。它不是"风格建议"——判据写死在
+`scripts/check-primitives.mjs` 里，误报就改判据，而不是加豁免。
+
+### R1 · 自绘卡片外观
+
+同一个叶子规则块里同时出现 `background: card-bg` + `border-radius` + `box-shadow`
+——这三件套就是 `AppCard` 的全部外观。视图里再写一遍，等于出现「第二种卡片」：
+换圆角/阴影/描边时要改 N 个地方，而且必然走样。
+
+**D7 审计的真实现状**：`.empty-card` 在 5 个视图里被复制了 5 份（`border` 还各写各的），
+`.block`（`card-bg` + `border`）在两个 creator 页各有一份。全部改成
+`<AppCard paddingless>` 包 `EmptyState` / 页面块，本地只留「留白」。
+
+### R2 · 直引 naive 原语
+
+`src/{views,modules}` 里不得出现 `NCard` / `NBadge` / `NEmpty` / `NSkeleton`
+（import 与模板标签都算）——对应基元 `AppCard` / `AppBadge` / `EmptyState` / `Skeleton`
+就是它们的等价替换，直引等于把 token 与 a11y 处置权让回 naive 默认值。
+
+**`NButton` 刻意不在禁列**：`AppButton` 不是 `n-button` 的 drop-in——naive 的
+`type="tertiary"/"quartiary"`、`loading`、`bordered` 都没有对应物，硬禁只会逼人写
+`AppButton + !important` 这种更糟的东西。这是一条**写明的边界**，不是遗漏。
+
+### 豁免：必须说清「基元为什么表达不了」
+
+块内写 `/* check-primitives-allow: 理由 */`，理由 ≥12 字；`ALLOWLIST` 里的每条也要带理由，
+并有**陈旧检查**（`tests/primitives-adoption.test.ts`）：文件不存在或选择器已改名 → 红。
+
+> ⚠️ 现有 8 条豁免的病根只有一个：**`AppCard` 只提供一种圆角与内边距**
+> （`--radius-2xl` + 固定 padding），于是「想用 16px 圆角」或「需要把 flex/gap 放在卡片根节点」
+> 的容器只能自绘（`n-card__content` 会插一层，gap 落到错误层级）。
+> 要把这批收干净，不是加豁免，而是先给 `AppCard` 加 `radius` / `padding` 变体 ——
+> 那是一次**视觉变更**，得单独一批做。

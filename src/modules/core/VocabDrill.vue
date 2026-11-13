@@ -2,7 +2,7 @@
   <div class="vocab-drill">
     <!-- ============ 入口屏 ============ -->
     <div v-if="phase === 'intro'" class="intro-screen">
-      <div class="intro-badge">🎴 词汇背记</div>
+      <div class="intro-badge">词汇背记</div>
       <h2 class="intro-title">{{ topicTitle || '词汇背记' }}</h2>
       <div class="intro-count">共 {{ words.length }} 个词</div>
 
@@ -18,18 +18,24 @@
 
       <div class="config-block">
         <div class="config-label">背记模式</div>
-        <div class="mode-grid">
-          <button
-            v-for="m in modeOptions"
-            :key="m.value"
-            class="mode-btn"
-            :class="{ active: mode === m.value }"
-            @click="mode = m.value"
-          >
-            <div class="mode-icon">{{ m.icon }}</div>
-            <div class="mode-name">{{ m.label }}</div>
-            <div class="mode-desc">{{ m.desc }}</div>
-          </button>
+        <div class="mode-groups">
+          <div v-for="grp in modeGroups" :key="grp.title" class="mode-group">
+            <div class="mode-group-title">{{ grp.title }}</div>
+            <div class="mode-grid">
+              <button
+                v-for="m in grp.items"
+                :key="m.value"
+                class="mode-btn"
+                :class="{ active: mode === m.value, recommended: m.value === recommendedMode }"
+                @click="mode = m.value"
+              >
+                <div class="mode-icon"><IconBase :name="m.icon" :size="22" /></div>
+                <div class="mode-name">{{ m.label }}</div>
+                <div class="mode-desc">{{ m.desc }}</div>
+                <span v-if="m.value === recommendedMode" class="mode-recommend">推荐</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -55,13 +61,13 @@
           <span>显示中文提示（默认关闭，关闭才是真听写）</span>
         </label>
         <div v-if="mode === 'paper'" class="mode-note">
-          📝 孩子在纸上书写，写完对照答案自评；无需打字。
+          <IconBase name="pen" size="1em" /> 孩子在纸上书写，写完对照答案自评；无需打字。
         </div>
       </div>
 
       <div class="config-block" v-if="mode === 'chunks'">
         <div class="mode-note">
-          🧩 本单元有 {{ chunkableWords.length }} 个词可拆成偏旁/字根，点选字块按顺序拼出词语；单字词会自动跳过。
+          <IconBase name="puzzle" size="1em" /> 本单元有 {{ chunkableWords.length }} 个词可拆成偏旁/字根，点选字块按顺序拼出词语；单字词会自动跳过。
         </div>
       </div>
 
@@ -71,7 +77,7 @@
           :disabled="mode === 'chunks' && chunkableWords.length === 0"
           @click="startDrill"
         >
-          ▶ 开始背记（{{ mode === 'chunks' ? Math.min(countPerSession, chunkableWords.length) : sessionSize }} 题）
+          <IconBase name="play" size="1em" /> 开始背记（{{ mode === 'chunks' ? Math.min(countPerSession, chunkableWords.length) : sessionSize }} 题）
         </AppButton>
         <AppButton block @click="emit('close')">取消</AppButton>
       </div>
@@ -82,15 +88,25 @@
       <div class="drill-header">
         <span class="drill-progress">第 {{ currentIndex + 1 }} / {{ sessionWords.length }}</span>
         <span class="drill-mode">{{ currentModeLabel }}</span>
-        <button class="drill-exit" @click="confirmExit">✕</button>
+        <button type="button" class="drill-exit" aria-label="退出练习" @click="confirmExit">
+          <IconBase name="close" size="1em" />
+        </button>
       </div>
 
       <!-- 翻面模式 -->
       <div v-if="mode === 'flip'" class="flip-area">
-        <div class="flip-card" :class="{ flipped }" @click="flipped = !flipped">
+        <!-- 翻面卡是 div + @click：v-clickable 补 role=button / tabindex / Enter+Space，
+             否则键盘用户根本翻不开。aria-pressed 让读屏说清「已翻面 / 未翻面」。 -->
+        <div
+          v-clickable
+          class="flip-card"
+          :class="{ flipped }"
+          :aria-pressed="flipped"
+          @click="flipped = !flipped"
+        >
           <div v-if="!flipped" class="flip-content front">
             <div class="flip-text">{{ currentPrompt }}</div>
-            <div class="flip-hint">点击卡片翻面</div>
+            <div class="flip-hint">点击卡片或按 Enter 翻面</div>
           </div>
           <div v-else class="flip-content back">
             <div class="flip-text big">{{ currentAnswer }}</div>
@@ -102,7 +118,7 @@
       <div v-else-if="mode === 'input' || mode === 'listen'" class="input-area">
         <div v-if="mode === 'listen'" class="listen-block">
           <button class="listen-btn" @click="playAudio">
-            🔊 点击播放
+            <IconBase name="speaker" :size="18" /> 点击播放
           </button>
           <div class="listen-hint">听音后，写出{{ lang === 'chinese' ? '汉字' : '单词' }}</div>
         </div>
@@ -122,7 +138,7 @@
       <!-- 听写模式：连续作答，作答过程中不判对错，最后统一批改 -->
       <div v-else-if="mode === 'dictation'" class="input-area">
         <div class="listen-block">
-          <button class="listen-btn" @click="playAudio">🔊 再听一遍</button>
+          <button class="listen-btn" @click="playAudio"><IconBase name="speaker" :size="18" /> 再听一遍</button>
           <div class="listen-hint">
             听音写出{{ lang === 'chinese' ? '汉字' : '单词' }}，写完一起批改
           </div>
@@ -142,14 +158,14 @@
       <!-- 纸笔听写：听音 → 纸上写 → 亮答案 → 自评（全程零打字） -->
       <div v-else-if="mode === 'paper'" class="input-area paper-area">
         <div class="listen-block">
-          <button class="listen-btn" @click="playAudio">🔊 再听一遍</button>
+          <button class="listen-btn" @click="playAudio"><IconBase name="speaker" :size="18" /> 再听一遍</button>
           <div class="listen-hint">听音后，在纸上写出{{ lang === 'chinese' ? '词语' : '单词' }}</div>
         </div>
         <div v-if="currentPrompt && showPromptInDictation" class="prompt-block">
           <div class="prompt-label">提示</div>
           <div class="prompt-content">{{ currentPrompt }}</div>
         </div>
-        <div v-if="!paperRevealed" class="paper-write-hint">✍️ 写好了再点「看答案」</div>
+        <div v-if="!paperRevealed" class="paper-write-hint"><IconBase name="pen" size="1em" /> 写好了再点「看答案」</div>
         <div v-else class="paper-answer">
           <div class="prompt-label">正确答案</div>
           <div class="prompt-content">{{ currentAnswer }}</div>
@@ -174,7 +190,7 @@
             @click="pickChunk(i)"
           >{{ c }}</button>
         </div>
-        <button v-if="selectedChunks.length > 0" class="chunk-undo" type="button" @click="undoChunk">↩ 撤销上一块</button>
+        <button v-if="selectedChunks.length > 0" class="chunk-undo" type="button" @click="undoChunk"><IconBase name="undo" size="1em" /> 撤销上一块</button>
       </div>
 
       <!-- 选择模式 -->
@@ -199,38 +215,38 @@
 
       <!-- 反馈 -->
       <div v-if="showFeedback" class="drill-feedback" :class="lastCorrect ? 'ok' : 'no'">
-        <template v-if="lastCorrect">✅ 正确！</template>
+        <template v-if="lastCorrect"><IconBase name="check-circle" size="1em" /> 正确！</template>
         <template v-else>
-          ❌ 答错了。正确答案：<b>{{ currentAnswer }}</b>
+          <IconBase name="x-circle" size="1em" /> 答错了。正确答案：<b>{{ currentAnswer }}</b>
         </template>
       </div>
 
       <!-- 底部按钮 -->
       <div class="drill-actions">
         <template v-if="mode === 'flip'">
-          <AppButton size="large" @click="markWrong">🔄 再练练</AppButton>
-          <AppButton type="success" size="large" @click="markCorrect">✅ 我记住了</AppButton>
+          <AppButton size="large" @click="markWrong"><IconBase name="refresh" size="1em" /> 再练练</AppButton>
+          <AppButton type="success" size="large" @click="markCorrect"><IconBase name="check-circle" size="1em" /> 我记住了</AppButton>
         </template>
         <!-- 听写模式：提交即进入下一题，全程不给对错，最后统一批改 -->
         <template v-else-if="mode === 'dictation'">
           <AppButton type="primary" size="large" block @click="submitDictation" :disabled="!userInput.trim()">
-            {{ currentIndex === sessionWords.length - 1 ? '🏁 完成并批改' : '提交并下一题 ➡️' }}
+            <IconBase :name="currentIndex === sessionWords.length - 1 ? 'flag' : 'target'" size="1em" /> {{ currentIndex === sessionWords.length - 1 ? '完成并批改' : '提交并下一题' }}
           </AppButton>
         </template>
         <!-- 纸笔听写：先亮答案，再由孩子自评（不臆测手写内容） -->
         <template v-else-if="mode === 'paper'">
           <AppButton v-if="!paperRevealed" type="primary" size="large" block @click="paperRevealed = true">
-            👀 看答案
+            <IconBase name="eye" size="1em" /> 看答案
           </AppButton>
           <template v-else>
-            <AppButton size="large" @click="submitPaper('wrong')">❌ 写错了</AppButton>
-            <AppButton type="success" size="large" @click="submitPaper('correct')">✅ 写对了</AppButton>
+            <AppButton size="large" @click="submitPaper('wrong')"><IconBase name="x-circle" size="1em" /> 写错了</AppButton>
+            <AppButton type="success" size="large" @click="submitPaper('correct')"><IconBase name="check-circle" size="1em" /> 写对了</AppButton>
           </template>
         </template>
         <!-- 拼字块：拼好后提交 -->
         <template v-else-if="mode === 'chunks'">
           <AppButton type="primary" size="large" block @click="submitChunks" :disabled="selectedChunks.length === 0">
-            {{ currentIndex === sessionWords.length - 1 ? '🏁 完成并批改' : '提交并下一题 ➡️' }}
+            <IconBase :name="currentIndex === sessionWords.length - 1 ? 'flag' : 'target'" size="1em" /> {{ currentIndex === sessionWords.length - 1 ? '完成并批改' : '提交并下一题' }}
           </AppButton>
         </template>
         <template v-else-if="!showFeedback">
@@ -240,7 +256,7 @@
         </template>
         <template v-else>
           <AppButton type="primary" size="large" block @click="nextWord">
-            {{ currentIndex === sessionWords.length - 1 ? '🏁 完成' : '下一题 ➡️' }}
+            <IconBase :name="currentIndex === sessionWords.length - 1 ? 'flag' : 'target'" size="1em" /> {{ currentIndex === sessionWords.length - 1 ? '完成' : '下一题' }}
           </AppButton>
         </template>
       </div>
@@ -260,7 +276,7 @@
       <div class="done-time">用时 {{ formatDuration(elapsedSeconds) }}</div>
 
       <div class="done-actions">
-        <AppButton type="primary" size="large" block @click="startDrill">🔁 再来一遍</AppButton>
+        <AppButton type="primary" size="large" block @click="startDrill"><IconBase name="repeat" size="1em" /> 再来一遍</AppButton>
         <AppButton block @click="emit('close')">← 返回词汇表</AppButton>
       </div>
     </div>
@@ -288,15 +304,21 @@
           :class="a.correct ? 'ok' : 'no'"
         >
           <span class="review-idx">{{ i + 1 }}</span>
-          <span class="review-mark">{{ a.correct ? '✅' : '❌' }}</span>
+          <span class="review-mark"><IconBase :name="a.correct ? 'check-circle' : 'x-circle'" size="1em" /></span>
           <span class="review-ans">
             <b>{{ a.answer }}</b>
             <span v-if="!a.correct && a.source === 'typed'" class="review-mine">你写的是「{{ a.input || '（空）' }}」</span>
             <span v-else-if="!a.correct && a.source === 'chunks'" class="review-mine">你拼的是「{{ a.input || '（空）' }}」</span>
             <span v-else-if="!a.correct" class="review-mine">纸上写的再对照一遍</span>
           </span>
-          <button class="review-speak" type="button" title="朗读" @click="speakWord(a.answer)">
-            🔊
+          <button
+            class="review-speak"
+            type="button"
+            aria-label="朗读答案"
+            title="朗读"
+            @click="speakWord(a.answer)"
+          >
+            <IconBase name="speaker" :size="16" />
           </button>
         </div>
       </div>
@@ -309,7 +331,7 @@
           block
           @click="retryWrong"
         >
-          🔁 只重练这 {{ wrongAnswers.length }} 个
+          <IconBase name="repeat" size="1em" /> 只重练这 {{ wrongAnswers.length }} 个
         </AppButton>
         <AppButton
           :type="wrongAnswers.length > 0 ? 'default' : 'primary'"
@@ -317,7 +339,7 @@
           block
           @click="startDrill"
         >
-          🔁 整轮再来一遍
+          <IconBase name="repeat" size="1em" /> 整轮再来一遍
         </AppButton>
         <AppButton block @click="emit('close')">← 返回词汇表</AppButton>
       </div>
@@ -333,6 +355,7 @@ import { gradeDictation } from '@core/quiz/dictationGrade'
 import { chunksOf, buildChunkChoices, joinedChunks, chunksEqual, gradeSelfAssessed } from '@core/quiz/wordChunks'
 import { useUserDataStore } from '@core/stores/userData'
 import AppButton from '@/components/ui/AppButton.vue'
+import IconBase from '@/components/ui/IconBase.vue'
 
 type Mode = 'flip' | 'input' | 'listen' | 'choice' | 'dictation' | 'paper' | 'chunks'
 type Phase = 'intro' | 'drilling' | 'done' | 'review'
@@ -436,15 +459,36 @@ const masteredPercent = computed(() =>
   totalCount.value === 0 ? 0 : Math.round((masteredCount.value / totalCount.value) * 100)
 )
 
-const modeOptions = [
-  { value: 'flip' as Mode, icon: '🎴', label: '翻面', desc: '提示→答案' },
-  { value: 'input' as Mode, icon: '✍️', label: '输入', desc: '看中文写' },
-  { value: 'listen' as Mode, icon: '🔊', label: '听音', desc: '听声音写' },
-  { value: 'choice' as Mode, icon: '🔘', label: '选择', desc: '4 选 1' },
-  { value: 'dictation' as Mode, icon: '🎧', label: '听写', desc: '连写后批改' },
-  { value: 'paper' as Mode, icon: '📝', label: '纸笔听写', desc: '纸上写·自评' },
-  { value: 'chunks' as Mode, icon: '🧩', label: '拼字块', desc: '点选偏旁/词根' },
+/**
+ * V4.0 · 背记模式定义（emoji → SVG 图标） + 分组。
+ * 按「快速认读 / 练习书写」两个意图分组，减少孩子进屏后的"选哪个"选择悖论。
+ */
+const MODE_DEFS: ReadonlyArray<{ value: Mode; icon: string; label: string; desc: string; group: 'read' | 'write' }> = [
+  { value: 'flip', icon: 'card', label: '翻面', desc: '提示→答案', group: 'read' },
+  { value: 'listen', icon: 'speaker', label: '听音', desc: '听声音写', group: 'read' },
+  { value: 'choice', icon: 'list', label: '选择', desc: '4 选 1', group: 'read' },
+  { value: 'input', icon: 'pen', label: '输入', desc: '看中文写', group: 'write' },
+  { value: 'dictation', icon: 'headphones', label: '听写', desc: '连写后批改', group: 'write' },
+  { value: 'paper', icon: 'paper', label: '纸笔听写', desc: '纸上写·自评', group: 'write' },
+  { value: 'chunks', icon: 'puzzle', label: '拼字块', desc: '点选偏旁/词根', group: 'write' },
 ]
+
+/** 入口屏按意图分组渲染 */
+const modeGroups = computed(() => [
+  { title: '快速认读', items: MODE_DEFS.filter((m) => m.group === 'read') },
+  { title: '练习书写', items: MODE_DEFS.filter((m) => m.group === 'write') },
+])
+
+/** 标签/图标查找兼容性别名（currentModeLabel 等仍用扁平数组） */
+const modeOptions = MODE_DEFS
+
+/** 推荐模式：掌握度低先听音打底，较高则翻面自测 */
+const recommendedMode = computed<Mode>(() =>
+  masteredPercent.value < 50 ? 'listen' : 'flip',
+)
+
+/** 记忆上次选择（localStorage），下次进背记页直接沿用，减少重复决策 */
+const LS_LAST_MODE = 'vocabDrill.lastMode'
 
 /** 拼字块模式：能拆成 ≥2 块的词才参与，避免单字题硬凑 */
 const chunkableWords = computed(() =>
@@ -486,10 +530,10 @@ const doneRate = computed(() => {
 
 const doneIcon = computed(() => {
   const r = doneRate.value
-  if (r >= 90) return '🏆'
-  if (r >= 75) return '🎉'
-  if (r >= 60) return '💪'
-  return '📚'
+  if (r >= 90) return 'trophy'
+  if (r >= 75) return 'celebrate'
+  if (r >= 60) return 'bolt'
+  return 'books'
 })
 
 const doneTitle = computed(() => {
@@ -502,7 +546,7 @@ const doneTitle = computed(() => {
 
 const currentModeLabel = computed(() => {
   const m = modeOptions.find(x => x.value === mode.value)
-  return m ? `${m.icon} ${m.label}` : ''
+  return m ? m.label : ''
 })
 
 /** 当前题的正确拼字块（无数据返回空数组） */
@@ -583,6 +627,8 @@ function formatDuration(sec: number): string {
 }
 
 function startDrill() {
+  // V4.0 · 记住本次模式，下次进背记页默认沿用
+  try { localStorage.setItem(LS_LAST_MODE, mode.value) } catch { /* 隐私模式忽略 */ }
   // 拼字块只从可拆词里抽；若一个都拆不出，给个可读提示而不是空会话
   const pool = mode.value === 'chunks' ? chunkableWords.value : props.words
   if (pool.length === 0) return
@@ -819,6 +865,14 @@ onMounted(() => {
   if (props.initialCount > 0) {
     countPerSession.value = Math.min(props.initialCount, props.words.length)
   }
+  // V4.0 · 记忆上次选择：有记录沿用，否则用推荐模式（减少重复决策）
+  let saved: string | null = null
+  try { saved = localStorage.getItem(LS_LAST_MODE) } catch { saved = null }
+  if (saved && MODE_DEFS.some((m) => m.value === saved)) {
+    mode.value = saved as Mode
+  } else {
+    mode.value = recommendedMode.value
+  }
 })
 
 onUnmounted(() => {
@@ -838,7 +892,7 @@ onUnmounted(() => {
 
   .intro-badge {
     display: inline-block;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     padding: 4px 12px;
     border-radius: 20px;
@@ -848,14 +902,14 @@ onUnmounted(() => {
   }
 
   .intro-title {
-    font-size: 20px;
+    font-size: var(--font-2xl);
     font-weight: 800;
     color: $text-main;
     margin: 0 0 6px;
   }
 
   .intro-count {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
     margin-bottom: 24px;
   }
@@ -866,11 +920,25 @@ onUnmounted(() => {
   margin-bottom: 20px;
 
   .config-label {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-main;
     margin-bottom: 10px;
   }
+}
+
+.mode-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mode-group-title {
+  font-size: var(--font-xs);
+  font-weight: 800;
+  color: $text-sub;
+  margin-bottom: 8px;
+  padding-left: 2px;
 }
 
 .mode-grid {
@@ -885,12 +953,13 @@ onUnmounted(() => {
 }
 
 .mode-btn {
+  position: relative;
   padding: 12px 8px;
   border: 1.5px solid $border-color;
   border-radius: 10px;
   background: $card-bg;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
   text-align: center;
 
   &:hover {
@@ -904,9 +973,22 @@ onUnmounted(() => {
     box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.15);
   }
 
-  .mode-icon { font-size: 20px; margin-bottom: 4px; }
-  .mode-name { font-size: 13px; font-weight: 700; color: $text-main; }
-  .mode-desc { font-size: 11px; color: $text-sub; margin-top: 2px; }
+  .mode-icon { display: flex; justify-content: center; align-items: center; margin-bottom: 4px; }
+  .mode-name { font-size: var(--font-sm); font-weight: 700; color: $text-main; }
+  .mode-desc { font-size: var(--font-2xs); color: $text-sub; margin-top: 2px; }
+
+  .mode-recommend {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    background: var(--gradient-primary);
+    color: var(--text-on-primary);
+    font-size: var(--font-3xs);
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(var(--primary-rgb), 0.35);
+  }
 }
 
 .count-chips {
@@ -919,15 +1001,18 @@ onUnmounted(() => {
     border-radius: 20px;
     background: $card-bg;
     color: $text-sub;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
 
     &:hover { border-color: $primary-color; color: $primary-text; }
 
     &.active {
-      background: $primary-color;
+      /* V4.0 · D6：模式切换的选中态实心底原为 `-color`，白字只有 2.85:1。
+         它是「当前选了哪个模式」的唯一视觉信号（另有 aria-pressed），必须 ≥4.5/3.0。
+         改 `-text` → 5.12:1。 */
+      background: var(--primary-text);
       border-color: $primary-color;
       color: var(--text-on-primary);
     }
@@ -956,12 +1041,12 @@ onUnmounted(() => {
   margin-bottom: 16px;
 
   .drill-progress {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: $text-main;
   }
   .drill-mode {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     background: $bg-color-hover;
     padding: 3px 10px;
@@ -974,9 +1059,9 @@ onUnmounted(() => {
     border: none;
     background: $bg-color-hover;
     color: $text-sub;
-    font-size: 14px;
+    font-size: var(--font-base);
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
 
     &:hover { background: $danger-light; color: $danger-text; }
   }
@@ -996,7 +1081,7 @@ onUnmounted(() => {
   min-height: 220px;
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--duration-base) var(--ease-standard);
   border: 2px solid $border-color;
   background: $card-bg;
   display: flex;
@@ -1025,19 +1110,19 @@ onUnmounted(() => {
   }
 
   .flip-text {
-    font-size: 32px;
+    font-size: var(--font-6xl);
     font-weight: 700;
     color: $text-main;
     line-height: 1.4;
 
     &.big {
-      font-size: 40px;
+      font-size: var(--font-7xl);
       color: $primary-text;
     }
   }
 
   .flip-hint {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
   }
 }
@@ -1053,7 +1138,7 @@ onUnmounted(() => {
 /* V3.1.7 · 纸笔听写 + 拼字块（零打字） */
 .mode-note {
   margin-top: 8px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.6;
   color: $text-sub;
 }
@@ -1061,7 +1146,7 @@ onUnmounted(() => {
 .paper-write-hint {
   padding: 24px 16px;
   text-align: center;
-  font-size: 15px;
+  font-size: var(--font-md);
   color: $text-sub;
   border: 1px dashed $border-color;
   border-radius: 12px;
@@ -1074,7 +1159,7 @@ onUnmounted(() => {
   border-radius: 12px;
 
   .prompt-content {
-    font-size: 28px;
+    font-size: var(--font-5xl);
     font-weight: 700;
     color: $text-main;
   }
@@ -1093,7 +1178,7 @@ onUnmounted(() => {
   min-width: 52px;
   padding: 10px 14px;
   text-align: center;
-  font-size: 18px;
+  font-size: var(--font-xl);
   font-weight: 700;
   border-radius: 10px;
 
@@ -1103,7 +1188,7 @@ onUnmounted(() => {
   }
 
   &.empty {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 400;
     color: $text-sub;
     border: 1px dashed $border-color;
@@ -1120,7 +1205,7 @@ onUnmounted(() => {
 .chunk-choice {
   min-width: 56px;
   padding: 14px 18px;
-  font-size: 20px;
+  font-size: var(--font-2xl);
   font-weight: 700;
   color: $text-main;
   background: $bg-color-hover;
@@ -1134,7 +1219,7 @@ onUnmounted(() => {
 
 .chunk-undo {
   align-self: center;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   background: transparent;
   border: none;
@@ -1146,7 +1231,7 @@ onUnmounted(() => {
   padding: 20px 0;
 
   .listen-btn {
-    font-size: 18px;
+    font-size: var(--font-xl);
     font-weight: 700;
     color: $on-strong;
     background: $gradient-primary;
@@ -1154,7 +1239,7 @@ onUnmounted(() => {
     border-radius: 12px;
     padding: 16px 32px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
     box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
 
     &:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.4); }
@@ -1162,7 +1247,7 @@ onUnmounted(() => {
   }
   .listen-hint {
     margin-top: 12px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
   }
 }
@@ -1172,12 +1257,12 @@ onUnmounted(() => {
   padding: 16px 0;
 
   .prompt-label {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     margin-bottom: 8px;
   }
   .prompt-content {
-    font-size: 32px;
+    font-size: var(--font-6xl);
     font-weight: 700;
     color: $text-main;
     line-height: 1.3;
@@ -1204,10 +1289,10 @@ onUnmounted(() => {
   border-radius: 10px;
   background: $card-bg;
   color: $text-main;
-  font-size: 16px;
+  font-size: var(--font-lg);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
   text-align: left;
 
   &:hover:not(:disabled) {
@@ -1233,7 +1318,7 @@ onUnmounted(() => {
   margin-top: 12px;
   padding: 12px 16px;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: var(--font-md);
   font-weight: 600;
   text-align: center;
 
@@ -1265,9 +1350,9 @@ onUnmounted(() => {
   text-align: center;
   padding: 24px 8px;
 
-  .done-icon { font-size: 56px; margin-bottom: 8px; }
+  .done-icon { font-size: var(--font-9xl); margin-bottom: 8px; }
   .done-title {
-    font-size: 20px;
+    font-size: var(--font-2xl);
     font-weight: 800;
     color: $text-main;
     margin-bottom: 20px;
@@ -1277,19 +1362,19 @@ onUnmounted(() => {
     align-items: baseline;
     gap: 4px;
 
-    .done-num { font-size: 48px; font-weight: 900; color: $primary-text; }
-    .done-div { font-size: 28px; color: $text-muted; }
-    .done-total { font-size: 28px; font-weight: 700; color: $text-sub; }
+    .done-num { font-size: var(--font-8xl); font-weight: 900; color: $primary-text; }
+    .done-div { font-size: var(--font-5xl); color: $text-muted; }
+    .done-total { font-size: var(--font-5xl); font-weight: 700; color: $text-sub; }
   }
-  .done-rate { font-size: 14px; color: $text-sub; margin-top: 8px; }
-  .done-time { font-size: 12px; color: $text-muted; margin-top: 4px; }
+  .done-rate { font-size: var(--font-base); color: $text-sub; margin-top: 8px; }
+  .done-time { font-size: var(--font-xs); color: $text-muted; margin-top: 4px; }
 }
 
 .dictation-toggle {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   cursor: pointer;
 
@@ -1310,9 +1395,9 @@ onUnmounted(() => {
   text-align: center;
   padding: 8px 0 16px;
 
-  .review-icon { font-size: 48px; }
+  .review-icon { font-size: var(--font-8xl); }
   .review-title {
-    font-size: 18px;
+    font-size: var(--font-xl);
     font-weight: 800;
     color: $text-main;
     margin: 4px 0 8px;
@@ -1322,13 +1407,13 @@ onUnmounted(() => {
     align-items: baseline;
     gap: 4px;
 
-    .review-num { font-size: 40px; font-weight: 900; color: $primary-text; }
-    .review-div { font-size: 24px; color: $text-muted; }
-    .review-total { font-size: 24px; font-weight: 700; color: $text-sub; }
+    .review-num { font-size: var(--font-7xl); font-weight: 900; color: $primary-text; }
+    .review-div { font-size: var(--font-4xl); color: $text-muted; }
+    .review-total { font-size: var(--font-4xl); font-weight: 700; color: $text-sub; }
   }
   .review-rate {
     margin-top: 6px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
   }
 }
@@ -1362,11 +1447,11 @@ onUnmounted(() => {
 
   .review-idx {
     min-width: 20px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     color: $text-muted;
   }
-  .review-mark { font-size: 14px; }
+  .review-mark { font-size: var(--font-base); }
   .review-ans {
     flex: 1;
     display: flex;
@@ -1375,12 +1460,12 @@ onUnmounted(() => {
     min-width: 0;
 
     b {
-      font-size: 16px;
+      font-size: var(--font-lg);
       color: $text-main;
       word-break: break-word;
     }
     .review-mine {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $danger-text;
       word-break: break-word;
     }
@@ -1392,9 +1477,9 @@ onUnmounted(() => {
     border: none;
     border-radius: 50%;
     background: $bg-color-hover;
-    font-size: 14px;
+    font-size: var(--font-base);
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background var(--duration-fast) var(--ease-standard);
 
     &:hover { background: $primary-light; }
   }
@@ -1434,11 +1519,11 @@ body.dark-mode {
     height: 100%;
     border-radius: 999px;
     background: $gradient-primary;
-    transition: width 0.4s ease;
+    transition: width var(--duration-slower) var(--ease-standard);
   }
   .unit-progress-text {
     margin-top: 8px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     b { color: $primary-text; }
   }
@@ -1446,7 +1531,7 @@ body.dark-mode {
 
 /* 完成页也给出本单元掌握口径，闭环反馈 */
 .done-unit {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   margin-top: 4px;
   b { color: $primary-text; }

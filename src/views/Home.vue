@@ -3,19 +3,19 @@
     <!-- ========== 欢迎横幅 ========== -->
     <div class="welcome-banner">
       <div class="welcome-content">
-        <h1 class="welcome-hi">👋 欢迎回来！</h1>
+        <h1 class="welcome-hi"><IconBase name="hand" size="1em" /> 欢迎回来！</h1>
         <p class="welcome-sub">今天也要元气满满地学习哦～</p>
         <div class="streak-pill" :class="{ active: studiedTodayFlag }">
-          <span class="streak-flame">🔥</span>
+          <span class="streak-flame"><IconBase name="fire" size="1em" /></span>
           <span class="streak-text">{{ streakLabel }}</span>
         </div>
         <!-- 技能树入口（V1.12 · G1）：跳 /graph 看学科 → 单元 → 知识点全景 -->
         <div class="graph-entry">
-          <AppButton size="small" icon="🌳" @click="goToGraph">技能树</AppButton>
+          <AppButton size="small" icon="tree" @click="goToGraph">技能树</AppButton>
         </div>
       </div>
       <div class="welcome-decor">
-        <span class="decor-emoji">📚</span>
+        <span class="decor-emoji"><IconBase name="books" size="1em" /></span>
       </div>
     </div>
 
@@ -24,31 +24,48 @@
          理由很具体：并列的列表让人选择困难，孩子会点第一个顺眼的做两题就退，
          系统于是永远不知道"今天完成了多少"。一条队列 + 一个目标才有节奏。 ========== -->
     <section class="section">
-      <SectionTitle title="今天的学习" icon="🎯" accent gradient />
-      <div class="today-card" @click="goToday">
-        <div class="today-head">
-          <div class="today-title">{{ todayTitle }}</div>
-          <div class="today-sub">{{ todaySub }}</div>
-        </div>
-        <!-- 自建细进度条：共享 ProgressBar 的轨道色是 `--surface-2`，与卡片底色几乎同色，
-             0% 时整条「消失」。这里用 `--border-color` 作轨道，任何主题下都看得见。 -->
-        <div
-          class="today-bar"
-          role="progressbar"
-          :aria-valuenow="todayPercent"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-label="今日任务进度"
-        >
-          <div class="today-bar__fill" :style="{ width: `${todayPercent}%` }" />
-        </div>
-        <div class="today-foot">
-          <span class="today-count">{{ todayCountText }}</span>
-          <span class="action-pill primary">
-            {{ todayActionText }}
-            <span class="action-arrow">→</span>
-          </span>
-        </div>
+      <SectionTitle title="今天的学习" icon="target" accent gradient />
+      <div
+        v-clickable:link
+        class="today-card"
+        :class="{ 'today-card--booting': booting }"
+        :aria-busy="booting || undefined"
+        @click="goToday"
+      >
+        <!-- 冷启动骨架：只占位「今天的学习」这一张主入口卡，
+             其余区块依赖同一批数据，单独做骨架反而更乱 -->
+        <template v-if="booting">
+          <div class="today-head">
+            <Skeleton width="46%" height="20px" label="正在加载今天的学习安排" />
+            <Skeleton width="72%" />
+          </div>
+          <Skeleton variant="rect" height="8px" :animated="false" />
+        </template>
+        <template v-else>
+          <div class="today-head">
+            <div class="today-title">{{ todayTitle }}</div>
+            <div class="today-sub">{{ todaySub }}</div>
+          </div>
+          <!-- 自建细进度条：共享 ProgressBar 的轨道色是 `--surface-2`，与卡片底色几乎同色，
+               0% 时整条「消失」。这里用 `--border-color` 作轨道，任何主题下都看得见。 -->
+          <div
+            class="today-bar"
+            role="progressbar"
+            :aria-valuenow="todayPercent"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="今日任务进度"
+          >
+            <div class="today-bar__fill" :style="{ width: `${todayPercent}%` }" />
+          </div>
+          <div class="today-foot">
+            <span class="today-count">{{ todayCountText }}</span>
+            <span class="action-pill primary">
+              {{ todayActionText }}
+              <span class="action-arrow">→</span>
+            </span>
+          </div>
+        </template>
       </div>
     </section>
 
@@ -66,7 +83,7 @@
 
           <div class="review-card" :class="{ 'has-due': dueCount > 0 }" @click="goToReview">
             <div class="review-icon-wrap">
-              <span class="review-icon">{{ dueCount > 0 ? '🔥' : '✅' }}</span>
+              <span class="review-icon"><IconBase :name="dueCount > 0 ? 'fire' : 'check-circle'" size="1em" /></span>
             </div>
             <div class="review-body">
               <div class="review-main">
@@ -79,7 +96,7 @@
               </div>
               <div class="review-sub">
                 <span v-if="nextUpText">{{ nextUpText }}</span>
-                <span v-else>继续保持，稳扎稳打 ✨</span>
+                <span v-else>继续保持，稳扎稳打</span>
               </div>
             </div>
             <div class="review-action">
@@ -100,6 +117,7 @@
             <div
               v-for="wp in weakPoints"
               :key="wp.knowledgePointId"
+              v-clickable:link
               class="weak-row"
               @click="goToWeakPoint(wp)"
             >
@@ -123,16 +141,15 @@
             </AppBadge>
           </SectionTitle>
 
-          <EmptyState
-            v-if="recommendations.length === 0"
-            description="暂无推荐，去导入学习包并开始学习吧！"
-            class="empty-card"
-          />
+          <AppCard v-if="recommendations.length === 0" paddingless class="empty-card">
+            <EmptyState description="暂无推荐，去导入学习包并开始学习吧！" />
+          </AppCard>
 
           <div v-else class="rec-grid">
             <div
               v-for="rec in recommendations"
               :key="rec.knowledgePointId"
+              v-clickable:link
               class="rec-card"
               :class="'rec-' + rec.type"
               @click="goToRecommendation(rec)"
@@ -146,7 +163,7 @@
                 <p class="rec-reason">{{ rec.reason }}</p>
                 <div class="rec-footer">
                   <span class="rec-source">
-                    <span class="source-icon">📖</span>
+                    <span class="source-icon"><IconBase name="book-open" size="1em" /></span>
                     <span class="source-text">{{ rec.sourcePkgTitle }}</span>
                   </span>
                   <span class="rec-cta">
@@ -176,7 +193,7 @@
 
     <!-- ========== 学习进度 ========== -->
     <section class="section">
-      <SectionTitle title="学习进度" icon="📊" accent gradient />
+      <SectionTitle title="学习进度" icon="chart-bar" accent gradient />
 
       <div class="progress-card">
         <div class="chart-wrap">
@@ -211,8 +228,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watchEffect, nextTick } from 'vue'
 import SectionTitle from '@/components/ui/SectionTitle.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import AppCard from '@/components/ui/AppCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import { useRouter } from 'vue-router'
@@ -255,6 +274,8 @@ const chartRef = ref<HTMLElement | null>(null)
  */
 const dailyPlan = ref<DailyPlan | null>(null)
 const showMore = ref(false)
+/** 冷启动首屏骨架态（见 onMounted 里的判定理由） */
+const booting = ref(false)
 
 const todayProgress = computed(() => (dailyPlan.value ? planProgress(dailyPlan.value) : null))
 const todayPercent = computed(() => Math.round((todayProgress.value?.ratio ?? 0) * 100))
@@ -263,7 +284,7 @@ const todayTitle = computed(() => {
   const p = todayProgress.value
   if (!dailyPlan.value) return '正在安排今天的学习'
   if (dailyPlan.value.items.length === 0) return '今天没有排任务'
-  if (p?.finished) return '今天的任务全部完成 🎉'
+  if (p?.finished) return '今天的任务全部完成'
   if (!p || p.doneItems === 0) {
     return `今天有 ${p?.totalItems ?? 0} 项，约 ${dailyPlan.value.totals.minutes} 分钟`
   }
@@ -491,7 +512,12 @@ watchEffect(async () => {
   if (chart) renderChart()
 })
 
-onMounted(async () => {
+/**
+ * 首页数据水合（原 onMounted 体，抽出以便包一层 `booting` 结算）。
+ * 注意：**不要**在这里加 `booting = false`——结算统一放在调用处的 finally，
+ * 否则中间任何一步抛错都会把骨架永久留在屏幕上。
+ */
+async function hydrate(): Promise<void> {
   await userDataStore.loadUserData()
   await packageStore.loadPackages()
 
@@ -537,6 +563,17 @@ onMounted(async () => {
     renderChart()
     window.addEventListener('resize', onResize)
   }
+}
+
+onMounted(async () => {
+  // 只有「冷启动且库里还没有任何数据」才进骨架态。
+  // 反过来（从其它页面返回首页）store 里已有数据，骨架会白闪一下——那比没有骨架更糟。
+  booting.value = userDataStore.progress.length === 0 && packageStore.packages.length === 0
+  try {
+    await hydrate()
+  } finally {
+    booting.value = false
+  }
 })
 
 onUnmounted(() => {
@@ -558,7 +595,7 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 12px;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
 
   &:hover {
     transform: translateY(-2px);
@@ -573,13 +610,13 @@ onUnmounted(() => {
 }
 
 .today-title {
-  font-size: 17px;
+  font-size: var(--font-xl);
   font-weight: 800;
   color: $text-main;
 }
 
 .today-sub {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
 }
 
@@ -594,7 +631,7 @@ onUnmounted(() => {
   height: 100%;
   border-radius: 999px;
   background: $gradient-primary;
-  transition: width 0.3s ease;
+  transition: width var(--duration-slow) var(--ease-standard);
 }
 
 .today-foot {
@@ -603,7 +640,7 @@ onUnmounted(() => {
   justify-content: space-between;
 
   .today-count {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-sub;
   }
@@ -612,7 +649,7 @@ onUnmounted(() => {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-sub;
     padding: 8px 14px;
@@ -620,7 +657,12 @@ onUnmounted(() => {
     background: $bg-color-hover;
 
     &.primary {
-      background: $primary-color;
+      /* V4.0 · D6：原先用 `$primary-color`（图形色）作实心底 + `text-on-primary` 白字，
+         实测 primary.light 只有 2.85:1 —— 13px/700 的胶囊不算大号文本，2.85 连**大号**
+         的 3.0 都不到。实心底一律用 `-text`（`--primary-text`），白字 5.12:1。
+         这条不是审美选择：`-color` 是图形色（边框/描边/背景装饰），`-text` 才是
+         「能承载前景」的实心面。见 docs/design-system/tokens.md §12。 */
+      background: var(--primary-text);
       color: var(--text-on-primary);
     }
   }
@@ -638,7 +680,7 @@ onUnmounted(() => {
   border-radius: $radius-md;
   background: transparent;
   color: $text-sub;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   cursor: pointer;
 
@@ -648,7 +690,7 @@ onUnmounted(() => {
   }
 
   .more-arrow {
-    transition: transform 0.2s;
+    transition: transform var(--duration-base) var(--ease-standard);
 
     &.open {
       transform: rotate(180deg);
@@ -674,6 +716,10 @@ onUnmounted(() => {
   align-items: center;
   box-shadow: 0 12px 32px rgba(var(--primary-rgb), 0.25);
   overflow: hidden;
+
+  /* 横幅是**主色面**：落在上面的控件一律改用 on-strong，
+     焦点环也不例外 —— 深绿环压深绿底等于没有焦点态。 */
+  --btn-focus-ring: var(--focus-ring-on-strong);
 
   &::before {
     content: '';
@@ -702,19 +748,19 @@ onUnmounted(() => {
   }
   .welcome-hi {
     color: $on-strong;
-    font-size: 22px;
+    font-size: var(--font-3xl);
     font-weight: 800;
     margin: 0 0 6px;
     letter-spacing: 0.3px;
     /* V2.9 · 欢迎语入场：低速淡入上浮（一次性，非循环；豆包方案「焦点柔显」轻量版） */
-    animation: welcome-rise 0.9s var(--ease-standard) both;
+    animation: welcome-rise 0.9s var(--ease-standard) both; /* check-motion-allow: 首屏欢迎语入场编排 */
   }
   .welcome-sub {
     color: rgba(var(--on-strong-rgb), 0.92);
-    font-size: 13px;
+    font-size: var(--font-sm);
     margin: 0;
     font-weight: 500;
-    animation: welcome-rise 0.9s var(--ease-standard) 0.12s both;
+    animation: welcome-rise 0.9s var(--ease-standard) 0.12s both; /* check-motion-allow: 入场编排 + 0.12s 错峰延迟 */
   }
 
   .welcome-decor {
@@ -731,8 +777,8 @@ onUnmounted(() => {
       background: rgba(var(--on-strong-rgb), 0.14);
       border: 1px solid rgba(var(--on-strong-rgb), 0.22);
       backdrop-filter: blur(4px);
-      font-size: 48px;
-      animation: decor-bob 4.5s $ease-standard infinite;
+      font-size: var(--font-8xl);
+      animation: decor-bob 4.5s $ease-standard infinite; /* check-motion-allow: 装饰元素缓慢摆动，装饰循环 */
       /* check-hex-allow: 渐变横幅装饰 emoji 的纯黑投影，浅深同值、无主题价值 */
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
     }
@@ -768,9 +814,9 @@ onUnmounted(() => {
     border: 1px solid rgba(var(--on-strong-rgb), 0.28);
     backdrop-filter: blur(4px);
 
-    .streak-flame { font-size: 15px; line-height: 1; }
+    .streak-flame { font-size: var(--font-md); line-height: 1; }
     .streak-text {
-      font-size: 12.5px;
+      font-size: var(--font-sm);
       font-weight: 700;
       color: $on-strong;
       letter-spacing: 0.2px;
@@ -787,6 +833,21 @@ onUnmounted(() => {
     position: relative;
     z-index: 1;
     margin-top: 12px;
+
+    /* 主色面上的次级按钮：默认的深色字压在深绿底上只有 ~1.5:1（WCAG 1.4.3 不达标），
+       必须切到 on-strong 系。
+       注意 naive 把 `--n-*` 写在按钮的**行内 style** 上 —— 行内样式优先级高于类选择器，
+       只有 !important 能盖住。这是与 naive 打交道的固定代价，不是偷懒。 */
+    :deep(.n-button) {
+      --n-text-color: var(--on-strong) !important;
+      --n-text-color-hover: var(--on-strong) !important;
+      --n-text-color-pressed: var(--on-strong) !important;
+      --n-text-color-focus: var(--on-strong) !important;
+      --n-border: 1px solid rgba(var(--on-strong-rgb), 0.45) !important;
+      --n-border-hover: 1px solid var(--on-strong) !important;
+      --n-border-pressed: 1px solid var(--on-strong) !important;
+      --n-border-focus: 1px solid var(--on-strong) !important;
+    }
 
     /* V2.9 · hover 流光扫过文字/按钮（豆包方案：hover 触发、离开重置，禁自动循环）。
        一道柔和白色光泽从左滑过；reduced-motion 下整段禁用。 */
@@ -810,7 +871,7 @@ onUnmounted(() => {
           transparent
         );
         transform: skewX(-18deg);
-        transition: left 0.65s var(--ease-standard);
+        transition: left var(--duration-slowest) var(--ease-standard);
       }
 
       &:hover::after {
@@ -958,7 +1019,7 @@ onUnmounted(() => {
   padding: 18px 20px;
   box-shadow: $shadow-sm;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-base) var(--ease-standard);
   border: 1px solid $border-color;
   border-left: 4px solid $success-color;
   position: relative;
@@ -985,7 +1046,7 @@ onUnmounted(() => {
     border-radius: 12px;
 
     .review-icon {
-      font-size: 24px;
+      font-size: var(--font-4xl);
       line-height: 1;
     }
   }
@@ -1000,7 +1061,7 @@ onUnmounted(() => {
   }
 
   .review-main {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 600;
     color: $text-main;
     margin-bottom: 4px;
@@ -1008,14 +1069,14 @@ onUnmounted(() => {
 
     strong {
       color: $warning-text;
-      font-size: 20px;
+      font-size: var(--font-2xl);
       font-weight: 800;
       margin: 0 3px;
       vertical-align: -2px;
     }
   }
   .review-sub {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     line-height: 1.4;
   }
@@ -1028,13 +1089,13 @@ onUnmounted(() => {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 600;
     color: $text-sub;
     padding: 8px 14px;
     border-radius: 20px;
     background: $bg-color-hover;
-    transition: all 0.2s;
+    transition: all var(--duration-base) var(--ease-standard);
 
     &.primary {
       background: $gradient-primary;
@@ -1043,8 +1104,8 @@ onUnmounted(() => {
     }
 
     .action-arrow {
-      font-size: 14px;
-      transition: transform 0.2s;
+      font-size: var(--font-base);
+      transition: transform var(--duration-base) var(--ease-standard);
     }
   }
 
@@ -1067,7 +1128,7 @@ onUnmounted(() => {
   border-radius: $radius-lg;
   box-shadow: $shadow-sm;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-base) var(--ease-standard);
   overflow: hidden;
   border: 1px solid $border-color;
   min-height: 170px;
@@ -1103,7 +1164,7 @@ onUnmounted(() => {
 
   .rec-badge {
     display: inline-block;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 700;
     padding: 3px 10px;
     border-radius: 20px;
@@ -1118,7 +1179,7 @@ onUnmounted(() => {
   &.rec-prerequisite .rec-badge { background: var(--badge-primary-bg); color: $primary-text; }
 
   .rec-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 700;
     color: $text-main;
     margin: 0 0 8px;
@@ -1130,7 +1191,7 @@ onUnmounted(() => {
   }
 
   .rec-reason {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
     line-height: 1.55;
     margin: 0 0 12px;
@@ -1158,11 +1219,11 @@ onUnmounted(() => {
     flex: 1;
 
     .source-icon {
-      font-size: 12px;
+      font-size: var(--font-xs);
       flex-shrink: 0;
     }
     .source-text {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-muted;
       white-space: nowrap;
       overflow: hidden;
@@ -1175,14 +1236,14 @@ onUnmounted(() => {
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     color: $primary-text;
-    transition: all 0.2s;
+    transition: all var(--duration-base) var(--ease-standard);
 
     .cta-arrow {
-      font-size: 13px;
-      transition: transform 0.2s;
+      font-size: var(--font-sm);
+      transition: transform var(--duration-base) var(--ease-standard);
     }
   }
 
@@ -1192,11 +1253,8 @@ onUnmounted(() => {
 }
 
 .empty-card {
-  background: $card-bg;
-  border-radius: $radius-lg;
+  /* V4.0 · D7：卡片外观交给 AppCard，这里只剩「空态的留白」 */
   padding: 40px 20px;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-color;
 }
 
 /* ========== 学习进度卡片 ========== */
@@ -1237,14 +1295,14 @@ onUnmounted(() => {
     }
 
     .chart-rate {
-      font-size: 32px;
+      font-size: var(--font-6xl);
       font-weight: 800;
       color: $primary-text;
       line-height: 1;
       letter-spacing: -0.5px;
 
       .rate-unit {
-        font-size: 16px;
+        font-size: var(--font-lg);
         font-weight: 700;
         margin-left: 2px;
         vertical-align: top;
@@ -1252,7 +1310,7 @@ onUnmounted(() => {
     }
 
     .chart-rate-label {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-sub;
       margin-top: 6px;
       font-weight: 600;

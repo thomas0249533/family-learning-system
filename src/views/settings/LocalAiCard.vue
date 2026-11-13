@@ -1,5 +1,5 @@
 <template>
-  <AppCard title="🧠 本地离线 AI" class="card">
+  <AppCard title="本地离线 AI" class="card">
     <n-space vertical size="large">
       <!-- 现实提醒：先把"为什么它值得装"和"它不是什么"讲清楚，再给按钮 -->
       <div class="local-note">
@@ -78,7 +78,7 @@
           具体哪一档在你这台机器上够用，需要装了试一次才知道。
         </div>
         <div class="advice-text">
-          装好后可以到「错题本」点一次「💡 启发一下」，看讲评上方是否标着「本地离线 AI」。
+          装好后可以到「错题本」点一次「 启发一下」，看讲评上方是否标着「本地离线 AI」。
         </div>
       </div>
     </n-space>
@@ -138,8 +138,8 @@ const statusTone = computed<'neutral' | 'success' | 'danger'>(() => {
 })
 
 const statusIcon = computed<string>(() => {
-  if (!status.value?.installed) return '○'
-  return status.value.available ? '✓' : '!'
+  if (!status.value?.installed) return 'noentry'
+  return status.value.available ? 'check' : 'warning'
 })
 
 const statusLabel = computed<string>(() => {

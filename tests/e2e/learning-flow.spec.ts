@@ -121,7 +121,7 @@ test.describe('学习主流程（导入 → 做题 → 判题 → 模拟考）',
       await chooseOption(page, answers[i])
       const isLast = i === answers.length - 1
       await page
-        .getByRole('button', { name: isLast ? '🏁 提交试卷' : /下一题/ })
+        .getByRole('button', { name: isLast ? /提交试卷/ : /下一题/ })
         .click()
     }
 
@@ -145,7 +145,7 @@ test.describe('学习主流程（导入 → 做题 → 判题 → 模拟考）',
     for (let i = 0; i < answers.length; i++) {
       await chooseOption(page, answers[i])
       await page
-        .getByRole('button', { name: i === answers.length - 1 ? '🏁 提交试卷' : /下一题/ })
+        .getByRole('button', { name: i === answers.length - 1 ? /提交试卷/ : /下一题/ })
         .click()
       // 作答过程中不该弹任何成就提示（PRD §6.1 / AC-06）
       await expect(page.locator('.ach-toast')).toHaveCount(0)

@@ -13,7 +13,7 @@
   <section class="hall">
     <header class="hall-head">
       <div class="hall-head-left">
-        <span class="hall-head-icon" aria-hidden="true">🏅</span>
+        <span class="hall-head-icon" aria-hidden="true"><IconBase name="medal" size="1em" /></span>
         <h2 class="hall-head-title">荣誉勋章墙</h2>
         <span class="hall-head-count" :class="{ done: view.complete }">{{ overallText }}</span>
       </div>
@@ -46,7 +46,7 @@
         :aria-selected="active === t.key"
         @click="active = t.key"
       >
-        <span class="tab-icon" aria-hidden="true">{{ t.icon }}</span>
+        <span class="tab-icon" aria-hidden="true"><IconBase :name="t.icon" size="1em" /></span>
         <span class="tab-label">{{ t.label }}</span>
         <span class="tab-count">{{ t.earned }}/{{ t.count }}</span>
       </button>
@@ -66,10 +66,10 @@
           @click="open(item)"
         >
           <span class="tile-medal">
-            <span class="tile-icon" aria-hidden="true">{{ item.silhouetted ? '?' : item.icon }}</span>
-            <span v-if="item.earned" class="tile-seal" aria-hidden="true">✓</span>
+            <span class="tile-icon" aria-hidden="true"><IconBase v-if="!item.silhouetted" :name="item.icon" size="1em" /><template v-else>?</template></span>
+            <span v-if="item.earned" class="tile-seal" aria-hidden="true"><IconBase name="check" size="1em" /></span>
             <span v-if="item.stars > 0" class="tile-stars" aria-hidden="true">
-              <span v-for="n in item.stars" :key="n">★</span>
+              <span v-for="n in item.stars" :key="n"><IconBase name="star" size="1em" /></span>
             </span>
           </span>
           <span class="tile-title">{{ item.silhouetted ? '？？？' : item.title }}</span>
@@ -133,7 +133,7 @@ const allItems = computed<AchievementItem[]>(() => {
  */
 const tabs = computed(() => {
   const list = [
-    { key: 'all', label: '全部', icon: '✨', count: allItems.value.length, earned: props.view.earned },
+    { key: 'all', label: '全部', icon: 'sparkle', count: allItems.value.length, earned: props.view.earned },
   ]
   for (const cat of CATEGORY_ORDER) {
     const items = allItems.value.filter((i) => i.category === cat)
@@ -255,8 +255,8 @@ function open(item: AchievementItem): void {
 
     &:hover { text-decoration: underline; }
     &:focus-visible {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
   }
 }
@@ -325,8 +325,8 @@ function open(item: AchievementItem): void {
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   .tab-icon {
@@ -384,8 +384,8 @@ function open(item: AchievementItem): void {
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   /* 未解锁：整体降饱和 + 虚线边框，绝不靠"只是颜色浅一点"来表达 */
@@ -418,7 +418,7 @@ function open(item: AchievementItem): void {
   }
 
   .tile-icon {
-    font-size: 30px;
+    font-size: var(--font-6xl);
     line-height: 1;
   }
 
@@ -433,9 +433,11 @@ function open(item: AchievementItem): void {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: $success-color;
+    /* V4.0 · D6：实心底原为 `$success-color`（图形色），白勾 3.30:1 —— 过 3.0 但没过
+       4.5，且与 `-text` 实心底的既定约定不一致。改 `-text` → 4.51:1。 */
+    background: var(--success-text);
     color: var(--text-on-primary);
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 800;
     border: 2px solid $card-bg;
   }
@@ -445,7 +447,7 @@ function open(item: AchievementItem): void {
     top: -8px;
     display: inline-flex;
     gap: 1px;
-    font-size: 9px;
+    font-size: var(--font-3xs);
     color: $warning-text;
     background: $card-bg;
     border-radius: $radius-full;

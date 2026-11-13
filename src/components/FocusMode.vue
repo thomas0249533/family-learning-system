@@ -50,13 +50,13 @@
               :aria-pressed="source === 'file' && activeSoundId === s.soundId"
               :title="`${s.name} · ${formatBytes(s.size)}`"
               @click="selectSound(s.soundId)"
-            >🎵 {{ s.name }}</button>
+            ><IconBase name="music" size="1em" /> {{ s.name }}</button>
             <button
               type="button"
               class="sound-chip__del"
               :aria-label="`删除 ${s.name}`"
               @click="removeSound(s.soundId)"
-            >✕</button>
+            ><IconBase name="close" size="1em" /></button>
           </span>
         </div>
 
@@ -448,8 +448,8 @@ onUnmounted(() => {
       color: $text-main;
     }
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
     &--active {
       background: var(--primary-text);
@@ -508,8 +508,8 @@ onUnmounted(() => {
       cursor: default;
     }
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
   }
 
@@ -565,8 +565,8 @@ onUnmounted(() => {
     cursor: pointer;
 
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: -2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset-inset);
     }
   }
 
@@ -579,7 +579,7 @@ onUnmounted(() => {
     border-radius: $radius-full;
     background: transparent;
     color: $text-muted;
-    font-size: 10px;
+    font-size: var(--font-3xs);
     line-height: 1;
     cursor: pointer;
 
@@ -588,8 +588,8 @@ onUnmounted(() => {
       color: $danger-text;
     }
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: 1px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
   }
 
@@ -677,8 +677,8 @@ onUnmounted(() => {
       background: $bg-color-hover;
     }
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
     &--primary {
       background: var(--primary-text);
@@ -706,7 +706,7 @@ onUnmounted(() => {
   }
   .noise-btn,
   .pomo-btn {
-    transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+    transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard), opacity var(--duration-fast) var(--ease-standard);
   }
   .ring__fg {
     transition: stroke-dashoffset $duration-base linear;

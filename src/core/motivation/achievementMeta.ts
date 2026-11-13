@@ -53,10 +53,10 @@ export interface CategoryMeta {
 export const CATEGORY_ORDER: AchievementCategory[] = ['M', 'G', 'B', 'E']
 
 export const CATEGORY_META: Record<AchievementCategory, CategoryMeta> = {
-  M: { category: 'M', label: '精熟目标', desc: '把知识点真正学懂、学牢', icon: '🎯' },
-  G: { category: 'G', label: '成长型思维', desc: '从错误里学，越挫越勇', icon: '🌱' },
-  B: { category: 'B', label: '行为塑造', desc: '让坚持变成习惯', icon: '⏱️' },
-  E: { category: 'E', label: '探索发现', desc: '多走走，看看还有什么', icon: '🧭' },
+  M: { category: 'M', label: '精熟目标', desc: '把知识点真正学懂、学牢', icon: 'target' },
+  G: { category: 'G', label: '成长型思维', desc: '从错误里学，越挫越勇', icon: 'seedling' },
+  B: { category: 'B', label: '行为塑造', desc: '让坚持变成习惯', icon: 'clock' },
+  E: { category: 'E', label: '探索发现', desc: '多走走，看看还有什么', icon: 'compass' },
 }
 
 // ==================== 视图类型 ====================
@@ -222,7 +222,7 @@ function toItem(
   if (silhouetted) {
     return {
       ...base,
-      icon: '🔒',
+      icon: 'lock',
       title: '？？？',
       desc: '达成后揭晓',
       evidence: '',

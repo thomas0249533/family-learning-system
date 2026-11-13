@@ -51,7 +51,7 @@
       <footer class="ach-detail__footer">
         <AppBadge
           :tone="item.earned ? 'success' : 'primary'"
-          :icon="item.earned ? '✓' : '🎯'"
+          :icon="item.earned ? 'check' : 'target'"
         >{{ detail.cta }}</AppBadge>
         <AppButton size="small" @click="visible = false">关闭</AppButton>
       </footer>

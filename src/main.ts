@@ -14,6 +14,8 @@ import { registerMathTemplate } from '@templates/math/index'
 import { registerChineseTemplate } from '@templates/chinese/index'
 import { registerEnglishTemplate } from '@templates/english/index'
 import { registerAllModules } from '@core/registry/registerAll'
+import IconBase from './components/ui/IconBase.vue'
+import { vClickable } from '@core/a11y/clickable'
 
 // 顺序：先注册各学科模板，最后统一注册所有模块（幂等）
 registerMathTemplate()
@@ -25,6 +27,10 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(naive)
+// V4.0 · 设计系统：图标基元全局注册，所有模板可直接用 <IconBase> 而无需逐文件 import
+app.component('IconBase', IconBase)
+// V4.0 · 可访问性：非 button 容器（卡片/行）用 v-clickable 补齐 role + tabindex + 键盘激活
+app.directive('clickable', vClickable)
 
 ;(window as any).db = db
 

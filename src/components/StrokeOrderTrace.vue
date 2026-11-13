@@ -169,7 +169,7 @@ watch(() => props.char, () => drawGuide())
     justify-content: space-between;
   }
   &__pinyin {
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-weight: 700;
     color: $primary-text;
     letter-spacing: 0.5px;
@@ -180,10 +180,10 @@ watch(() => props.char, () => drawGuide())
     border-radius: 8px;
     background: $card-bg;
     color: $text-sub;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-family: inherit;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
     &:hover { border-color: $primary-color; color: $primary-text; }
   }
   &__board {
@@ -206,7 +206,7 @@ watch(() => props.char, () => drawGuide())
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
   }
   &__coverage {

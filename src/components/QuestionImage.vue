@@ -48,7 +48,7 @@
     >
       <img class="qimage-lb__img" :src="objectUrl" :alt="alt || '题目配图'" />
       <button class="qimage-lb__close" type="button" aria-label="关闭大图" @click.stop="zoomed = false">
-        ✕
+        <IconBase name="close" size="1em" />
       </button>
     </div>
   </Teleport>
@@ -189,8 +189,8 @@ onBeforeUnmount(() => {
   border-radius: $radius-md;
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
@@ -233,11 +233,12 @@ onBeforeUnmount(() => {
   justify-content: center;
   border: none;
   border-radius: 50%;
-  /* 用主色 + text-on-primary 配对：主题切到深色时这对值会一起翻转，
-     对比度由设计系统保证，不在这里写死黑白 */
-  background: var(--primary-color);
+  /* 用 `-text` 作实心底 + text-on-primary：`-color`（图形色）当底只有 2.85:1，
+     而这个按钮的 × 是**关闭控件唯一的信息载体**（WCAG 1.4.11 要求 ≥3:1）。
+     `-text` 底 5.12:1；深浅主题一起翻转，不在这里写死黑白。 */
+  background: var(--primary-text);
   color: var(--text-on-primary);
-  font-size: 16px;
+  font-size: var(--font-lg);
   line-height: 1;
   cursor: pointer;
 }

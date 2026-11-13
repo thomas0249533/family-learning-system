@@ -3,19 +3,28 @@
     <AppCard class="card">
       <template #header>
         <div class="header-row">
-          <span>🔄 今日复习计划</span>
+          <span><IconBase name="refresh" size="1em" /> 今日复习计划</span>
           <span class="due-badge" v-if="dueItems.length > 0">{{ dueItems.length }} 个待复习</span>
         </div>
       </template>
 
-      <div v-if="loading" class="loading">正在加载...</div>
+      <!-- 加载态：与待复习卡片同高的骨架，避免"正在加载..."文字造成的跳动 -->
+      <div v-if="loading" class="review-skeleton" aria-busy="true">
+        <Skeleton
+          v-for="n in 3"
+          :key="n"
+          variant="rect"
+          height="96px"
+          :label="n === 1 ? '正在加载今日复习计划' : undefined"
+        />
+      </div>
 
       <div v-else-if="droppedCount > 0" class="dropped-hint">
         有 {{ droppedCount }} 条学习记录无法定位到单元（对应学习包可能已删除或重新导入）
       </div>
       <template v-if="!loading">
 
-        <n-empty v-if="dueItems.length === 0" description="太棒了！今天没有需要复习的知识点 🎉" />
+        <EmptyState v-if="dueItems.length === 0" description="太棒了！今天没有需要复习的知识点" icon="check" />
 
         <div v-else class="review-list">
           <div
@@ -49,7 +58,7 @@
                 type="button"
                 @click="attackMistakes(item)"
               >
-                🎯 去攻克错题
+                <IconBase name="target" size="1em" /> 去攻克错题
               </button>
               <button
                 v-else
@@ -57,7 +66,7 @@
                 type="button"
                 @click="markReviewed(item)"
               >
-                ✅ 标记已复习
+                <IconBase name="check-circle" size="1em" /> 标记已复习
               </button>
             </div>
           </div>
@@ -65,7 +74,7 @@
       </template>
     </AppCard>
 
-    <AppCard title="📅 未来 7 天复习安排" class="card" v-if="upcomingItems.length > 0">
+    <AppCard title="未来 7 天复习安排" class="card" v-if="upcomingItems.length > 0">
       <div v-for="day in upcomingDays" :key="day.date" class="upcoming-day">
         <div class="upcoming-date">{{ day.label }}</div>
         <div class="upcoming-chips">
@@ -86,8 +95,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { NEmpty, NTag, useMessage } from 'naive-ui'
+import { NTag, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
 import { db, type ProgressRecord, type LearningPackageRecord } from '@/db'
 import { useUserDataStore } from '@core/stores/userData'
 import { isDueForReview, humanizeNextReview, memoryStrengthLabel, retrievabilityPercent, stageLabel } from '@core/review/reviewScheduler'
@@ -286,7 +297,7 @@ onMounted(async () => {
   align-items: center;
 
   .due-badge {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     background: $warning-light;
     color: $warning-text;
@@ -295,7 +306,12 @@ onMounted(async () => {
   }
 }
 
-.loading { text-align: center; color: $text-sub; padding: 20px; }
+.review-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
 
 .review-list { display: flex; flex-direction: column; gap: 10px; }
 
@@ -305,7 +321,7 @@ onMounted(async () => {
   padding: 12px 14px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &:hover { background: $primary-light; transform: translateX(2px); }
 
@@ -322,13 +338,13 @@ onMounted(async () => {
     margin-bottom: 6px;
 
     .kp-title {
-      font-size: 15px;
+      font-size: var(--font-md);
       font-weight: 700;
       color: $text-main;
       flex: 1;
     }
     .stage-tag {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       background: $primary-light;
       color: $primary-text;
       padding: 2px 8px;
@@ -340,7 +356,7 @@ onMounted(async () => {
   .item-meta {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     margin-bottom: 4px;
 
@@ -348,7 +364,7 @@ onMounted(async () => {
   }
 
   .item-stats {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     display: flex;
     flex-wrap: wrap;
@@ -367,17 +383,18 @@ onMounted(async () => {
   .review-btn {
     padding: 6px 14px;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     cursor: pointer;
     border: 1.5px solid transparent;
-    transition: all 0.15s;
+    transition: all var(--duration-fast) var(--ease-standard);
 
     &--attack {
       background: $primary-light;
       color: $primary-text;
       border-color: $primary-color;
-      &:hover { background: $primary-color; color: var(--text-on-primary); }
+      /* V4.0 · D6：同上，-color 底 + 白字 2.85:1 → -text 底 5.12:1 */
+      &:hover { background: var(--primary-text); color: var(--text-on-primary); }
     }
     &--done {
       background: $bg-color-hover;
@@ -394,7 +411,7 @@ onMounted(async () => {
   &:last-child { border-bottom: none; }
 
   .upcoming-date {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-main;
     margin-bottom: 6px;

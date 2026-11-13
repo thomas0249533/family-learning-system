@@ -79,7 +79,7 @@ V1.2 允许新增的 semantic token 就这些，**在白名单外新增 = 改设
 
 | token | 维度 | 声明位置 | 用途 |
 |---|---|---|---|
-| `--primary-rgb` | A（派生） | 6 组全量 | `rgba(var(--primary-rgb), α)` 的唯一入口（焦点环、柔光） |
+| `--primary-rgb` | A（派生） | 6 组全量 | `rgba(var(--primary-rgb), α)` 的唯一入口（柔光、渐变、阴影） |
 | `--success-rgb` | A（派生） | 6 组全量 | 同上 |
 | `--warning-rgb` | A（派生） | 6 组全量 | 同上 |
 | `--danger-rgb` | A（派生） | 6 组全量 | 同上 |
@@ -155,9 +155,11 @@ V1.2 允许新增的 semantic token 就这些，**在白名单外新增 = 改设
 | 10 | `--progress-fill-bg` | `var(--gradient-primary)` | ProgressBar `gradient` 填充 |
 | 11 | `--empty-icon-fg` | `var(--text-muted)` | EmptyState 大图标 |
 | 12 | `--page-header-border` | `var(--border-light)` | PageHeader 底边 |
-| 13 | `--focus-ring` | `rgba(var(--primary-rgb), 0.55)` | 全站 `:focus-visible` 环 |
+| 13 | `--focus-ring` | `var(--primary-text)` | 全站 `:focus-visible` 环 |
 | 14 | `--focus-ring-w` | `2px` | 焦点环宽度 |
 | 15 | `--focus-ring-offset` | `2px` | 焦点环偏移（避免贴边裁切） |
+| 16 | `--focus-ring-on-strong` | `var(--on-strong)` | 落在主色/深色面上的焦点环（主色环会与之撞色） |
+| 17 | `--focus-ring-offset-inset` | `-2px` | `overflow: hidden` 容器的内嵌焦点环 |
 
 > 本表由 `tests/design-system-docs.test.ts` 与 `COMPONENT_TOKENS` 双向锁定：
 > 少一行 → 红；多一行（写了不存在的 token）→ 红。
@@ -183,3 +185,142 @@ V1.2 允许新增的 semantic token 就这些，**在白名单外新增 = 改设
 | 徽章文字对比度不够 | 用了 `--{tone}-color` 当文字色 | 改 `--{tone}-text` |
 | 加了个 `--foo-color` 但没人能解释属于哪层 | 白名单外新增 | 先评审：语义 or 组件别名 |
 | 组件里 `import { palette }` 取色 | 越界（颜色只经 CSS 变量/服务层） | `useThemeTokens` / `useChartTheme` / `presetPreview` |
+
+## 10. 字号阶梯（`FONT` · V4.0）
+
+**唯一源**：`src/core/styles/tokens.ts` 的 `FONT`；产物是 `theme.scss` 的 `--font-*`，
+SCSS 门面在 `variables.scss` 的 `$font-*`。**组件一律写 `font-size: var(--font-*)`**，
+禁写像素值 —— 由 `npm run check:font-size` 强制（`theme.scss` 与 `print.scss` 豁免：
+前者是定义处，后者按打印物理尺寸排版）。
+
+| token | 值 | 用途 |
+|---|---|---|
+| `--font-3xs` | 10px | 极小标注（角标、单位） |
+| `--font-2xs` | 11px | 辅助说明、表格脚注 |
+| `--font-xs` | 12px | 次要文字、徽章 |
+| `--font-sm` | 13px | 密集列表正文 |
+| `--font-base` | 14px | **正文默认** |
+| `--font-md` | 15px | 正文强调 |
+| `--font-lg` | 16px | 小标题 |
+| `--font-xl` | 18px | 区块标题 |
+| `--font-2xl` | 20px | 卡片主标题 |
+| `--font-3xl` | 22px | 页面副标题 |
+| `--font-4xl` | 24px | 页面标题 |
+| `--font-5xl` | 28px | 展示级数字（结果页总分小数） |
+| `--font-6xl` | 32px | 展示级数字（统计卡数值） |
+| `--font-7xl` | 40px | 英雄数字 |
+| `--font-8xl` | 48px | 英雄数字（分数） |
+| `--font-9xl` | 56px | 英雄数字 / 结果页图标 |
+
+另有 4 个**语义角色**（引用同一阶梯）：`--font-display`(24) / `--font-title`(20) /
+`--font-body`(14) / `--font-caption`(12)，用于「说角色不说尺寸」的场景。
+
+> 新增尺寸请先加 token 再用。若确属一次性排版（如打印页），在该行加
+> `/* check-font-size-allow */` 并写明理由。
+
+## 11. 动效刻度（`MOTION` · V4.0）
+
+**唯一源**：`src/core/styles/tokens.ts` 的 `MOTION`。产物 `--duration-*` / `--ease-*`，
+SCSS 门面 `$duration-*` / `$ease-*`。组件**一律**写 `var(--duration-*)` + `var(--ease-*)`，
+由 `npm run check:motion` 强制。
+
+### 11.1 时长：只服务「交互反馈」
+
+| token | 值 | 用途 |
+|---|---|---|
+| `--duration-fast` | 150ms | hover / focus / 颜色变化（最高频） |
+| `--duration-base` | 200ms | 位移、展开、卡片抬升 |
+| `--duration-slow` | 300ms | 抽屉、面板、进度条 |
+| `--duration-slower` | 450ms | 大面积遮罩、结果页数字 |
+| `--duration-slowest` | 600ms | 一次性入场（上限） |
+
+**超过 600ms 的动画不属于交互反馈**（彩带、呼吸光晕、骨架微光、光标闪烁），
+它们是一次性编排或装饰循环，就地在同行写值并加例外说明：
+
+```scss
+animation: blind-box-glow 2s var(--ease-standard) infinite; /* check-motion-allow: 盲盒呼吸光晕，装饰循环 */
+```
+
+同理，**延迟偏移**（错峰入场的 `0.12s`、抽屉收尾的 `0.28s`）描述的是编排节奏而非
+交互时长，允许字面值并加同样的注释。
+
+### 11.2 缓动：四类曲线，各司其职
+
+| token | 曲线 | 用途 |
+|---|---|---|
+| `--ease-standard` | `cubic-bezier(0.2, 0, 0, 1)` | **默认**，绝大多数过渡 |
+| `--ease-emphasized` | `cubic-bezier(0.05, 0.7, 0.1, 1)` | 大位移 / 需要「落定感」的强调动作 |
+| `--ease-spring` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | 回弹：选项弹入、徽章弹出 |
+| `--ease-decelerate` | `cubic-bezier(0, 0, 0.2, 1)` | 纯入场（进度条增长、列表渐入） |
+
+`linear` 与 `steps()` 是**线性量**专用（进度环、光标闪烁、loading 旋转），直接写关键字，
+不需要包 token。
+
+### 11.3 无障碍：全局兜底 + 组件静态降级
+
+两层：
+
+1. **全局网**（`src/core/styles/motion.scss`）：`prefers-reduced-motion: reduce` 时，
+   所有元素时长压到 `0.01ms`、循环动画只跑一次。兜住没写降级分支的视图。
+   压到 0.01ms 而非 0：0 会让浏览器跳过 `transitionend`，依赖它收尾的抽屉会卡住。
+2. **组件静态降级**：基元各自在 `@media (prefers-reduced-motion: reduce)` 里
+   取消位移（`transform: none`）、去掉 hover 抬起。这不是重复劳动——全局网只压时长，
+   「位移造成的空间感变化」必须由组件显式取消。
+
+> 新写带位移的交互时：先在基元层加静态降级，再依赖全局网兜底。
+
+## 12. 图标对比度（`ICON_SPOTS` · V4.0 · D6）
+
+**这一节回答一个 token 表回答不了的问题：图标落在什么底上。**
+
+图标是 `currentColor` 染色的，颜色**继承**自父级 —— `.stat-card__icon` 里只写了
+`background: var(--badge-primary-bg)`，至于图标本身是什么色，在样式里根本看不出来。
+于是同一份 token 表可以既「文字全绿」又让某个喇叭、关闭 ×、选中勾低到看不见。
+
+### 12.1 阈值：3:1，不是 4.5
+
+WCAG **1.4.11 非文本对比度**管的是图形与界面控件，要求 **3:1**；
+正文才是 1.4.3 的 4.5。图标既要按 1.4.11 判（3.0），
+在它旁边还有文字标签时，那段文字仍按 1.4.3 判（4.5）。
+
+### 12.2 登记表：`src/core/a11y/icon-spots.ts`
+
+一处「彩色底的图标」= 一行登记：`file` + `cls`（模板里直接包裹 `<IconBase>` 的类名）
++ 前景/背景解析器 + 判定档。全部 6 组主题逐格实算，结果写进
+[`a11y.md`](./a11y.md) 的 §图标对比度。
+
+两档，**没有第三档**：
+
+| 档 | 阈值 | 适用 |
+|---|---|---|
+| `must` | 3.0 × 6 组 | 图标承载信息，或它本身就是控件（关闭 ×、选中勾、模式选中态、朗读中喇叭） |
+| `brand` | 登记下限（「不得变差」） | 品牌渐变 hero 上的白图标：渐变两端跨度大到不存在单色能压过两端，已定档不动 |
+
+`brand` 档**不是放过**：它把实测值和下限写进表里，让「过不了 3:1」这件事有账可查，
+而不是沉进「不适用」里。这些图标一律是 `aria-hidden` 装饰件，或与文字标签同排出现。
+
+### 12.3 两条硬规则
+
+**① 实心底只准 `-text`，不准 `-color`。**
+`--{tone}-color` 是图形色，压 `--text-on-primary` 实测 `primary.light` **2.85:1**
+—— 比非文本的 3.0 还低。`-text` 底同组 **5.12:1**。
+由 `npm run check:icon-contrast` 强制（只查叶子规则块，避免 SCSS 嵌套误报）。
+
+**② 新增彩色图标 chip 必须登记。**
+`tests/icon-contrast.test.ts` 会扫模板：`<IconBase>` 的直接包裹元素若在样式里带彩色底
+（`badge-*` / `-light` / `-color` / `gradient*` / `rgba(var(--*-rgb)`），
+该类名就必须在 `ICON_SPOTS` 里出现过，否则测试红。
+**这是 D6 唯一一件「必须做」的事** —— 没有它，登记表会随着新页面一起变旧。
+
+### 12.4 中性底不必登记
+
+`card-bg` / `bg-color` / `bg-color-hover` / `surface-2` 上的图标不进表：
+那一维已被正文配对（`text-main` / `-sub` / `-muted` × 三种表面）覆盖且都 ≥4.5，
+重复登记只会让表变长、判断变弱。
+
+### 12.5 已知遗留（有账，不再是暗账）
+
+品牌渐变 `--gradient-primary` 的浅端太亮，**白字压浅端只有 1.97、深字压深端只有 1.70**
+—— 端点跨度决定了「不存在一个前景色能同时过 3:1」。目前按品牌视觉保留，`brand` 档守住不退化。
+若将来允许动渐变，把浅端调深（对白字 ≥3:1）可一次性解决 hero 的白字与白图标，
+届时 `brand` 档的 5 条登记应该降级成 `must`。

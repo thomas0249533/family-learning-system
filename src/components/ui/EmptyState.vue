@@ -6,7 +6,7 @@
   >
     <template v-if="icon || $slots.default" #icon>
       <span class="empty-state__icon" aria-hidden="true">
-        <slot>{{ icon }}</slot>
+        <slot><IconBase v-if="icon" :name="icon" :size="44" /></slot>
       </span>
     </template>
     <template v-if="actionText || $slots.action" #extra>
@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import IconBase from './IconBase.vue'
 // =====================================================================
 // EmptyState · 包 naive `n-empty` + token 容器 + 可选动作
 // ---------------------------------------------------------------------

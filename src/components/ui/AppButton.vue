@@ -13,7 +13,7 @@
     @click="onClick"
   >
     <template v-if="icon" #icon>
-      <span class="app-button__icon">{{ icon }}</span>
+      <span class="app-button__icon"><IconBase :name="icon" :size="16" /></span>
     </template>
     <template v-else-if="$slots.icon" #icon>
       <slot name="icon" />
@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import IconBase from './IconBase.vue'
 // =====================================================================
 // AppButton · 包 naive `n-button`（继承键盘/焦点/a11y），行为透传
 // ---------------------------------------------------------------------

@@ -1,5 +1,5 @@
 <template>
-  <AppCard class="math-module-card" title="📐 公式速查">
+  <AppCard class="math-module-card" title="公式速查">
     <div v-for="kp in knowledgePoints" :key="kp.id" class="formula-item">
       <h4>{{ kp.title }}</h4>
       <div class="latex-content" v-html="renderLatex(kp.content)"></div>
@@ -40,5 +40,5 @@ function renderLatex(text: string) {
 .math-module-card { margin-bottom: 16px; }
 .formula-item { padding: 12px 0; border-bottom: 1px dashed $border-light; }
 .formula-item:last-child { border-bottom: none; }
-.latex-content { font-size: 18px; padding: 8px 0; color: $danger-text; }
+.latex-content { font-size: var(--font-xl); padding: 8px 0; color: $danger-text; }
 </style>

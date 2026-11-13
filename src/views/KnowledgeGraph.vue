@@ -2,7 +2,7 @@
   <div class="page-container graph-page">
     <PageHeader
       title="技能树"
-      icon="🌳"
+      icon="tree"
       subtitle="学科 → 单元 → 知识点，颜色代表掌握状态；滚轮缩放、拖拽平移"
     >
       <template #actions>
@@ -14,7 +14,7 @@
       <EmptyState
         v-if="!hasData"
         class="graph-empty"
-        icon="🌳"
+        icon="tree"
         description="还没有学习包，先去导入一个，再回来看你的技能树吧！"
       />
 

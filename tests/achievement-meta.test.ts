@@ -181,7 +181,8 @@ describe('三类卡片（PRD §5.3）', () => {
     for (const s of silhouette) {
       expect(s.title).toBe('？？？')
       expect(s.desc).toBe('达成后揭晓')
-      expect(s.icon).toBe('🔒')
+      // V4.0：icon 统一为图标名（IconBase 渲染），剪影固定为 lock
+      expect(s.icon).toBe('lock')
       expect(s.metered).toBe(false)
       expect(s.hint).toBe('达成后揭晓')
       // 关键：真实文案不得以任何形式残留在对象里

@@ -1,12 +1,21 @@
 <template>
   <div class="package-list-page">
-    <n-spin v-if="loading" size="large" class="loading-spin" />
+    <!-- 加载态：与卡片网格同构的骨架（3 列 × 2 行），替代居中转圈 -->
+    <div v-if="loading" class="package-skeleton" aria-busy="true">
+      <Skeleton
+        v-for="n in 6"
+        :key="n"
+        variant="rect"
+        height="156px"
+        :label="n === 1 ? '正在加载学习包' : undefined"
+      />
+    </div>
 
     <template v-else>
       <!-- V2.7 · 轨道 A3：顶部搜索（标题 / 学科 / 年级 / 版本 / 类型） -->
       <div class="list-toolbar">
         <label class="search-box">
-          <span class="search-icon" aria-hidden="true">🔍</span>
+          <span class="search-icon" aria-hidden="true"><IconBase name="search" size="1em" /></span>
           <input
             v-model="search"
             class="search-input"
@@ -35,7 +44,7 @@
           :aria-label="contentChecking ? '正在检查题库更新' : (updatable.length > 0 || installable.length > 0) ? `有 ${updatable.length} 个题库可更新、${installable.length} 个新包可安装，点击处理` : '检查题库更新'"
           @click="onCheckContentUpdate"
         >
-          <span class="cu-icon" aria-hidden="true" :class="{ spinning: contentChecking }">🔄</span>
+          <span class="cu-icon" aria-hidden="true" :class="{ spinning: contentChecking }"><IconBase name="refresh" size="1em" /></span>
           <span class="cu-label">{{ contentUpdateLabel }}</span>
           <span v-if="updatable.length > 0 || installable.length > 0" class="cu-dot" aria-hidden="true"></span>
         </button>
@@ -48,7 +57,7 @@
           aria-label="修复题库：重新下载已安装的学习包"
           @click="onOpenRepair"
         >
-          🔧 修复题库
+          <IconBase name="wrench" size="1em" /> 修复题库
         </button>
       </div>
 
@@ -65,16 +74,33 @@
           :aria-selected="subjectFilter === opt.value"
           @click="subjectFilter = opt.value"
         >
-          <span class="sf-icon" aria-hidden="true">{{ opt.icon }}</span>
+          <span class="sf-icon" aria-hidden="true"><IconBase :name="opt.icon" size="1em" /></span>
           <span class="sf-label">{{ opt.label }}</span>
           <span class="sf-count">{{ subjectCounts[opt.value] ?? 0 }}</span>
         </button>
       </div>
 
+      <!-- V4.0 · 工具快捷入口：底栏收敛为 5 后，搜索/笔顺/报告在此保留可达 -->
+      <div class="tool-links">
+        <router-link class="tool-link" to="/search">
+          <IconBase name="search" :size="16" />
+          <span>全站搜索</span>
+        </router-link>
+        <router-link class="tool-link" to="/stroke">
+          <IconBase name="pen" :size="16" />
+          <span>笔顺描红</span>
+        </router-link>
+        <router-link class="tool-link" to="/report">
+          <IconBase name="doc" :size="16" />
+          <span>学习报告</span>
+        </router-link>
+      </div>
+
       <!-- 按学科分区：每个学科一个面板，面板内再按「教材 / 每日一练 / 专项 / 冲刺」折叠 -->
-      <div
+      <AppCard
         v-for="g in visibleSubjects"
         :key="g.subject"
+        paddingless
         class="subject-panel"
         :class="`panel-${g.subject}`"
       >
@@ -109,7 +135,7 @@
               @keydown.space.prevent="toggleSection(g.subject, blk.type)"
             >
               <span class="type-title">
-                <span class="type-icon" aria-hidden="true">{{ blk.icon }}</span>
+                <span class="type-icon" aria-hidden="true"><IconBase :name="blk.icon" size="1em" /></span>
                 {{ blk.title }}
               </span>
               <span class="type-count">{{ blk.items.length }}</span>
@@ -162,20 +188,20 @@
             </div>
           </section>
         </div>
-      </div>
+      </AppCard>
 
-      <EmptyState
-        v-if="totalVisible === 0"
-        :description="searching ? `没有匹配「${search.trim()}」的学习包` : '暂无学习包，请先导入'"
-        class="empty-card"
-      />
+      <AppCard v-if="totalVisible === 0" paddingless class="empty-card">
+        <EmptyState
+          :description="searching ? `没有匹配「${search.trim()}」的学习包` : '暂无学习包，请先导入'"
+        />
+      </AppCard>
     </template>
 
     <!-- V3.1.7 · 修复题库：重新下载已装包（不看版本号，按目录 sha256 校验后覆盖） -->
     <n-modal
       v-model:show="showRepairModal"
       preset="card"
-      title="🔧 修复题库"
+      title="修复题库"
       style="max-width: 480px;"
     >
       <div class="new-pkg-body">
@@ -183,6 +209,16 @@
           题目显示不对、内容看着旧，可以用这个重新下载一遍已安装的学习包。
           不会删除做题进度；勾选后点「重新下载」即可，不勾选不会改动任何内容。
         </p>
+        <!-- V4.0 · 包一多逐个勾太麻烦：给一个全选开关（默认仍是不勾，安全性不变） -->
+        <div v-if="repairCandidates.length > 1" class="pick-all">
+          <n-checkbox
+            :checked="allRepairSelected"
+            :indeterminate="selectedRepairIds.length > 0 && !allRepairSelected"
+            @update:checked="toggleAllRepair"
+          >
+            全选（{{ repairCandidates.length }} 个）
+          </n-checkbox>
+        </div>
         <n-checkbox-group v-model:value="selectedRepairIds" class="new-pkg-list">
           <div v-for="p in repairCandidates" :key="p.packageId" class="new-pkg-item">
             <n-checkbox :value="p.packageId" :label="p.title" />
@@ -212,7 +248,7 @@
     <n-modal
       v-model:show="showNewPackagesModal"
       preset="card"
-      title="📦 发现新学习包"
+      title="发现新学习包"
       style="max-width: 480px;"
     >
       <div class="new-pkg-body">
@@ -220,6 +256,16 @@
           题库目录里有 {{ installable.length }} 个本机还没安装的学习包。勾选后点「安装选中」才会下载，
           不勾选不会改动任何内容。
         </p>
+        <!-- V4.0 · 新包一多逐个勾太麻烦：一键全选（默认仍是不勾，避免误装一堆） -->
+        <div v-if="installable.length > 1" class="pick-all">
+          <n-checkbox
+            :checked="allNewSelected"
+            :indeterminate="selectedNewPackageIds.length > 0 && !allNewSelected"
+            @update:checked="toggleAllNew"
+          >
+            全选（{{ installable.length }} 个）
+          </n-checkbox>
+        </div>
         <n-checkbox-group v-model:value="selectedNewPackageIds" class="new-pkg-list">
           <div v-for="p in installable" :key="p.packageId" class="new-pkg-item">
             <n-checkbox :value="p.packageId" :label="p.title" />
@@ -243,7 +289,7 @@
     </n-modal>
 
     <!-- G3 · 分享弹窗：二维码 + 后缀码（手输兜底） -->
-    <n-modal v-model:show="showShareModal" preset="card" title="📤 分享学习包" style="max-width: 420px;">
+    <n-modal v-model:show="showShareModal" preset="card" title="分享学习包" style="max-width: 420px;">
       <div class="share-body">
         <p class="share-hint">
           在另一台设备上打开「导入学习包 → 扫码导入」扫描此二维码；
@@ -270,7 +316,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { NCheckbox, NCheckboxGroup, NSpin, NModal, NSpace, useMessage } from 'naive-ui'
+import { NCheckbox, NCheckboxGroup, NModal, NSpace, useMessage } from 'naive-ui'
 import {
   checkForUpdates,
   applyAllUpdates,
@@ -280,9 +326,12 @@ import {
   type UpdatablePackage,
   type CatalogPackage,
 } from '@core/content/contentUpdater'
+import AppCard from '@/components/ui/AppCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import PackageCard from './PackageCard.vue'
+import IconBase from '@/components/ui/IconBase.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
 import { type CardStatus } from '@core/learning/cardStatus'
@@ -313,6 +362,20 @@ const selectedRepairIds = ref<string[]>([])
 const repairLoading = ref(false)
 const refreshing = ref(false)
 const repairResult = ref('')
+
+/** 全选开关：两个批量弹窗各一个（默认一个都不勾，只把「逐个点」变成「一次点」） */
+const allNewSelected = computed(
+  () => installable.value.length > 0 && selectedNewPackageIds.value.length === installable.value.length
+)
+const allRepairSelected = computed(
+  () => repairCandidates.value.length > 0 && selectedRepairIds.value.length === repairCandidates.value.length
+)
+function toggleAllNew(on: boolean) {
+  selectedNewPackageIds.value = on ? installable.value.map((p) => p.packageId) : []
+}
+function toggleAllRepair(on: boolean) {
+  selectedRepairIds.value = on ? repairCandidates.value.map((p) => p.packageId) : []
+}
 
 const contentUpdateLabel = computed(() => {
   if (contentChecking.value) return '检查中…'
@@ -544,11 +607,11 @@ const subjectFilter = ref<string>('all')
 
 /** 顶部筛选条选项（含数量徽标）。顺序：全部 → 数学 → 语文 → 英语 → 其他 */
 const subjectFilterOptions = [
-  { value: 'all', label: '全部', icon: '🗂️' },
-  { value: 'math', label: '数学', icon: '📐' },
-  { value: 'chinese', label: '语文', icon: '📖' },
-  { value: 'english', label: '英语', icon: '🔤' },
-  { value: 'other', label: '其他', icon: '📦' },
+  { value: 'all', label: '全部', icon: 'folder' },
+  { value: 'math', label: '数学', icon: 'ruler' },
+  { value: 'chinese', label: '语文', icon: 'book-open' },
+  { value: 'english', label: '英语', icon: 'abc' },
+  { value: 'other', label: '其他', icon: 'package' },
 ] as const
 
 function subjectLabel(subject: string): string {
@@ -766,10 +829,10 @@ const visibleSubjects = computed<SubjectGroup[]>(() => {
 /** 学科面板内要渲染的类型小节（过滤掉空档） */
 function subjectBlocks(g: SubjectGroup) {
   return [
-    { type: 'textbook', mode: 'textbook' as const, icon: '📚', title: '教材', items: g.textbook },
-    { type: 'daily', mode: 'daily' as const, icon: '📅', title: '每日一练', items: g.daily },
-    { type: 'special', mode: 'special' as const, icon: '🎯', title: '专项突破', items: g.special },
-    { type: 'sprint', mode: 'sprint' as const, icon: '🏁', title: '冲刺模拟', items: g.sprint },
+    { type: 'textbook', mode: 'textbook' as const, icon: 'books', title: '教材', items: g.textbook },
+    { type: 'daily', mode: 'daily' as const, icon: 'calendar', title: '每日一练', items: g.daily },
+    { type: 'special', mode: 'special' as const, icon: 'target', title: '专项突破', items: g.special },
+    { type: 'sprint', mode: 'sprint' as const, icon: 'flag', title: '冲刺模拟', items: g.sprint },
   ].filter((b) => b.items.length)
 }
 
@@ -807,10 +870,15 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   padding-bottom: 16px;
 }
 
-.loading-spin {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
+/* 加载骨架：沿用 .package-grid 的列宽节奏，加载完成后不会换栏 */
+.package-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ===== V2.7 · 轨道 A3：顶部搜索 ===== */
@@ -840,7 +908,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
 
   .search-icon {
     flex-shrink: 0;
-    font-size: 14px;
+    font-size: var(--font-base);
     line-height: 1;
   }
 
@@ -852,7 +920,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
     outline: none;
     background: transparent;
     font-family: inherit;
-    font-size: 13.5px;
+    font-size: var(--font-base);
     color: $text-main;
 
     &::placeholder { color: $text-muted; }
@@ -869,7 +937,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   border-radius: $radius-full;
   background: $card-bg;
   font-family: inherit;
-  font-size: 12.5px;
+  font-size: var(--font-sm);
   font-weight: 700;
   color: $text-sub;
   cursor: pointer;
@@ -881,14 +949,14 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
 .search-count {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 700;
   color: $text-sub;
   white-space: nowrap;
@@ -906,14 +974,14 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   border-radius: $radius-full;
   background: $card-bg;
   font-family: inherit;
-  font-size: 12.5px;
+  font-size: var(--font-sm);
   font-weight: 700;
   color: $text-sub;
   cursor: pointer;
   transition: background $duration-fast $ease-standard, color $duration-fast $ease-standard;
 
   &:disabled { opacity: 0.6; cursor: default; }
-  &:focus-visible { outline: 2px solid $primary-color; outline-offset: 2px; }
+  &:focus-visible { outline: var(--focus-ring-w) solid var(--focus-ring); outline-offset: var(--focus-ring-offset); }
   &:hover:not(:disabled) { color: $text-main; background: $bg-color-hover; }
 }
 
@@ -929,7 +997,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   border-radius: $radius-full;
   background: $card-bg;
   font-family: inherit;
-  font-size: 12.5px;
+  font-size: var(--font-sm);
   font-weight: 700;
   color: $text-sub;
   cursor: pointer;
@@ -942,8 +1010,8 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   /* 有更新时升级为警示语义：红点 + 主色描边，扫一眼就能看见 */
@@ -953,11 +1021,11 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 
   .cu-icon {
-    font-size: 13px;
+    font-size: var(--font-sm);
     line-height: 1;
 
     &.spinning {
-      animation: content-check-spin 1s linear infinite;
+      animation: content-check-spin 1s linear infinite; /* check-motion-allow: 加载指示器匀速旋转，线性量用 linear */
     }
   }
 
@@ -997,6 +1065,35 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   &::-webkit-scrollbar-thumb { background: $border-color; border-radius: 999px; }
 }
 
+/* V4.0 · 工具快捷入口（底栏收敛后的兜底可达） */
+.tool-links {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 4px;
+  flex-wrap: wrap;
+}
+
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: $card-bg;
+  color: $text-sub;
+  font-size: var(--font-caption);
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease-standard);
+
+  &:hover {
+    border-color: var(--primary-color);
+    color: $primary-text;
+    background: $primary-light;
+  }
+}
+
 .subject-chip-btn {
   flex-shrink: 0;
   display: inline-flex;
@@ -1008,16 +1105,16 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   border-radius: $radius-full;
   background: $card-bg;
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   color: $text-sub;
   cursor: pointer;
   transition: all $duration-fast $ease-standard;
 
-  .sf-icon { font-size: 14px; line-height: 1; }
+  .sf-icon { font-size: var(--font-base); line-height: 1; }
   .sf-label { white-space: nowrap; }
   .sf-count {
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 700;
     min-width: 18px;
     padding: 1px 6px;
@@ -1033,8 +1130,8 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   /* 选中态：主色渐变填充，文字反白，计数徽标反白 */
@@ -1051,12 +1148,10 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 }
 
-/* ===== V2.12.5 · 学科分区面板 ===== */
+/* ===== V2.12.5 · 学科分区面板 =====
+   V4.0 · D7：底色/描边/圆角/阴影一律由 AppCard 提供（此前是本文件自绘的一套，
+   实测成了「卡片外观的第四种写法」）。这里只留 AppCard 表达不了的部分。 */
 .subject-panel {
-  background: $card-bg;
-  border: 1px solid $border-color;
-  border-radius: $radius-xl;
-  box-shadow: $shadow-sm;
   overflow: hidden;
 }
 
@@ -1070,7 +1165,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   transition: background $duration-fast $ease-standard;
 
   &:hover { background: $bg-color-hover; }
-  &:focus-visible { outline: 2px solid $primary-color; outline-offset: -2px; }
+  &:focus-visible { outline: var(--focus-ring-w) solid var(--focus-ring); outline-offset: var(--focus-ring-offset-inset); }
 
   /* 学科主题色竖条（与卡片 accent 同语汇，但更粗，作分区标识） */
   .subject-bar {
@@ -1081,20 +1176,20 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 
   .subject-icon {
-    font-size: 20px;
+    font-size: var(--font-2xl);
     line-height: 1;
     flex-shrink: 0;
   }
 
   .subject-name {
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-weight: 800;
     color: $text-main;
     letter-spacing: 0.2px;
   }
 
   .subject-count {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     color: $text-sub;
     background: $bg-color-hover;
@@ -1114,7 +1209,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
     border-radius: $radius-full;
     background: $card-bg;
     color: $text-sub;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     line-height: 1;
     cursor: pointer;
     transition: transform $duration-fast $ease-standard, background $duration-fast $ease-standard, color $duration-fast $ease-standard;
@@ -1127,8 +1222,8 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
     }
 
     &:focus-visible {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
   }
 }
@@ -1169,16 +1264,16 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13.5px;
+    font-size: var(--font-base);
     font-weight: 800;
     color: $text-main;
     transition: color $duration-fast $ease-standard;
   }
 
-  .type-icon { font-size: 14px; line-height: 1; }
+  .type-icon { font-size: var(--font-base); line-height: 1; }
 
   .type-count {
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 700;
     color: $text-muted;
     background: $bg-color-hover;
@@ -1188,7 +1283,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
 
   .type-chevron {
     margin-left: auto;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     color: $text-muted;
     transition: transform $duration-fast $ease-standard;
 
@@ -1215,7 +1310,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   border-radius: $radius-full;
   background: transparent;
   font-family: inherit;
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 700;
   color: $text-sub;
   cursor: pointer;
@@ -1227,8 +1322,8 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   .week-count {
@@ -1237,7 +1332,7 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   }
 
   .week-chevron {
-    font-size: 10px;
+    font-size: var(--font-3xs);
     transition: transform $duration-fast $ease-standard;
   }
 
@@ -1255,11 +1350,8 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
 }
 
 .empty-card {
-  background: $card-bg;
-  border-radius: $radius-lg;
+  /* V4.0 · D7：卡片外观交给 AppCard，这里只剩「空态的留白」 */
   padding: 60px 20px;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-color;
 }
 
 /* ===== V3.1.6 · 发现新包弹窗（样式全部走语义 token）===== */
@@ -1282,6 +1374,14 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
   gap: var(--space-2);
   max-height: 260px;
   overflow-y: auto;
+}
+
+/* 全选行：与列表之间留一条分隔线，避免看着像列表里的一项 */
+.pick-all {
+  display: flex;
+  align-items: center;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px dashed var(--border-color);
 }
 
 .new-pkg-item {

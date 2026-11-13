@@ -58,6 +58,7 @@
   --space-16: 64px;
 
   /* 字号阶梯 */
+  --font-3xs: 10px;
   --font-2xs: 11px;
   --font-xs: 12px;
   --font-sm: 13px;
@@ -68,7 +69,17 @@
   --font-2xl: 20px;
   --font-3xl: 22px;
   --font-4xl: 24px;
-  --font-5xl: 32px;
+  --font-5xl: 28px;
+  --font-6xl: 32px;
+  --font-7xl: 40px;
+  --font-8xl: 48px;
+  --font-9xl: 56px;
+
+  /* 排版角色（语义映射，引用上面的字号阶梯 · V4.0） */
+  --font-display: 24px;
+  --font-title: 20px;
+  --font-body: 14px;
+  --font-caption: 12px;
 
   /* 行高 */
   --leading-tight: 1.25;
@@ -78,15 +89,16 @@
 
   /* 动效曲线 */
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
 
   /* 动效时长 */
-  --duration-fast: 120ms;
+  --duration-fast: 150ms;
   --duration-base: 200ms;
   --duration-slow: 300ms;
   --duration-slower: 450ms;
+  --duration-slowest: 600ms;
 }
 
 /* ==================== 初中·浅（默认 · 现状原值 · 零回归）==================== */

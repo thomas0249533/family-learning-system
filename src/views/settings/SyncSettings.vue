@@ -1,5 +1,5 @@
 <template>
-  <AppCard title="☁️ 同步（WebDAV）" class="card">
+  <AppCard title="同步（WebDAV）" class="card">
     <n-space vertical size="large">
       <!-- 现实提醒：桌面端已可由本机进程直连网盘；网页版仍受 CORS 限制。 -->
       <div class="sync-note">
@@ -71,22 +71,22 @@
           v-if="isIntercept"
           tone="danger"
           size="sm"
-          icon="⛔"
+          icon="noentry"
         >发现另一个孩子的数据，已为您拦截</AppBadge>
-        <AppBadge v-else tone="danger" size="sm" icon="⛔">无法同步</AppBadge>
+        <AppBadge v-else tone="danger" size="sm" icon="noentry">无法同步</AppBadge>
         <div class="sync-reject-text">{{ rejectText }}</div>
         <div class="sync-reject-note">本机数据一个字节都没有改动。</div>
       </div>
 
       <!-- 下载：无变化 -->
       <div v-else-if="preview && preview.outcome === 'noop'" class="sync-noop">
-        <AppBadge tone="info" size="sm" icon="✅">无需同步</AppBadge>
+        <AppBadge tone="info" size="sm" icon="check-circle">无需同步</AppBadge>
         <div class="sync-noop-text">网盘上的备份和本机已经一致，没有需要写入的变化。</div>
       </div>
 
       <!-- 下载：可以同步 -->
       <div v-else-if="preview && preview.outcome === 'ready'" class="sync-ready">
-        <AppBadge tone="success" size="sm" icon="📋">可以同步</AppBadge>
+        <AppBadge tone="success" size="sm" icon="clipboard">可以同步</AppBadge>
 
         <div v-if="conflict" class="sync-conflict">
           <div class="sync-conflict-title">{{ conflictLabel }}</div>

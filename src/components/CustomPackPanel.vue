@@ -48,7 +48,7 @@
           <AppBadge
             :tone="hasConflicts ? 'warning' : 'success'"
             size="sm"
-            :icon="hasConflicts ? '⚠️' : '📋'"
+            :icon="hasConflicts ? 'warning' : 'clipboard'"
           >
             {{ hasConflicts ? '有冲突，先改文件' : '导入前确认' }}
           </AppBadge>
@@ -73,7 +73,7 @@
             <span class="cp-added-title">{{ added.title }}</span>
             <!-- 可重复（V1.5）：这是家长唯一能在导入**之前**看到它的地方。
                  导入后再发现，图鉴上已经多了枚会一直计次数的卡。 -->
-            <AppBadge v-if="added.repeat === 'weekly'" tone="info" size="sm" icon="🔁">
+            <AppBadge v-if="added.repeat === 'weekly'" tone="info" size="sm" icon="repeat">
               每周可重复
             </AppBadge>
             <span class="cp-added-category">{{ categoryLabel(added.category) }}</span>
@@ -149,7 +149,7 @@
       <!-- 空态引导：这里就是家长第一次进来的落地页，不要只留一片空白 -->
       <EmptyState
         v-if="loaded && state.packs.length === 0"
-        icon="🧩"
+        icon="puzzle"
         description="导入一份 achievements.json，就能给孩子加上你们自己定的成就。"
       />
 
@@ -163,7 +163,7 @@
               <AppBadge
                 :tone="pack.enabled ? 'success' : 'neutral'"
                 size="sm"
-                :icon="pack.enabled ? '✅' : '⏸️'"
+                :icon="pack.enabled ? 'check-circle' : 'pause'"
               >
                 {{ pack.enabled ? '已启用' : '已停用' }}
               </AppBadge>

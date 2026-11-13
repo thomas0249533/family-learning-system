@@ -20,9 +20,9 @@ export interface PresetMeta {
 }
 
 export const PRESET_META: PresetMeta[] = [
-  { value: 'primary', name: '小学', tagline: '暖亮活泼', icon: '🌞' },
-  { value: 'junior', name: '初中', tagline: '清新松绿', icon: '🌿' },
-  { value: 'senior', name: '高中', tagline: '沉静蓝灰', icon: '🏔️' },
+  { value: 'primary', name: '小学', tagline: '暖亮活泼', icon: 'sun' },
+  { value: 'junior', name: '初中', tagline: '清新松绿', icon: 'leaf' },
+  { value: 'senior', name: '高中', tagline: '沉静蓝灰', icon: 'mountain' },
 ]
 
 export interface PresetPreview {

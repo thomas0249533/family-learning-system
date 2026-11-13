@@ -31,17 +31,17 @@
           :disabled="generating || totalCount === 0"
           @click="handleGenerate"
         >
-          🎯 一键生成练习卷
+          <IconBase name="target" size="1em" /> 一键生成练习卷
         </AppButton>
         <AppButton size="small" :disabled="totalCount === 0" @click="handleExport">
-          📤 导出
+          <IconBase name="upload" size="1em" /> 导出
         </AppButton>
       </div>
     </div>
 
     <!-- V2.4 · 任务1 · 深链过滤横幅：从复习页「去攻克错题」跳来时只显示该知识点错题 -->
     <div v-if="kpFilter" class="kp-filter-banner">
-      <span>🔍 正在查看单个知识点的错题</span>
+      <span><IconBase name="search" size="1em" /> 正在查看单个知识点的错题</span>
       <button class="kp-filter-clear" type="button" @click="clearKpFilter">查看全部错题</button>
     </div>
 
@@ -83,25 +83,23 @@
       <div class="filter-group search-group">
         <n-input
           v-model:value="keyword"
-          placeholder="🔍 搜索题干 / 答案"
+          placeholder="搜索题干 / 答案"
           size="small"
           clearable
         />
       </div>
     </div>
 
-    <EmptyState
-      v-if="mistakesForView.length === 0"
-      :description="emptyText"
-      class="empty-card"
-    />
+    <AppCard v-if="mistakesForView.length === 0" paddingless class="empty-card">
+      <EmptyState :description="emptyText" />
+    </AppCard>
 
     <!-- 按知识点视图 -->
     <div v-else-if="viewMode === 'knowledge'" class="group-list">
       <section v-for="group in groupedMistakes" :key="group.kpId" class="kp-group">
         <header class="kp-group-header">
           <div class="kp-group-title-wrap">
-            <span class="kp-group-icon">{{ group.kpId === '__uncategorized__' ? '❓' : '📚' }}</span>
+            <span class="kp-group-icon"><IconBase :name="group.kpId === '__uncategorized__' ? 'search' : 'books'" size="1em" /></span>
             <h2 class="kp-group-title">{{ group.kpTitle }}</h2>
           </div>
           <span class="kp-group-count">{{ group.items.length }} 题</span>
@@ -114,7 +112,7 @@
             <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
               <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
             </div>
-            <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
+            <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)"><IconBase name="package" size="1em" /> {{ pkgLabel(m) }}</div>
             <!-- C1 · 错因归因（手动打标）。4 个原生 radio。
                  name 必须按**渲染实例**唯一（group.kpId + m.id）：同一道错题会按
                  knowledgePointIds 被 push 进多个分组，而 radio 的 name 在整份文档内
@@ -179,7 +177,7 @@
             </div>
 
             <div v-if="m.questionData?.explanation" class="explanation">
-              <span class="explain-label">💡 解析</span>
+              <span class="explain-label"><IconBase name="bulb" size="1em" /> 解析</span>
               <span class="explain-text">{{ m.questionData.explanation }}</span>
             </div>
 
@@ -194,10 +192,10 @@
                   :disabled="hintLoading && hintingId !== m.id"
                   @click="handleHint(m)"
                 >
-                  💡 启发一下
+                  <IconBase name="bulb" size="1em" /> 启发一下
                 </AppButton>
                 <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
-                  ✅ 我已掌握
+                  <IconBase name="check-circle" size="1em" /> 我已掌握
                 </AppButton>
               </div>
             </div>
@@ -213,7 +211,7 @@
           <span class="level-badge" :class="'lb-' + levelOf(m)">{{ levelBadge(m) }}</span>
           <span class="mistake-date">{{ formatDate(m.wrongAt) }}</span>
         </div>
-        <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)">📦 {{ pkgLabel(m) }}</div>
+        <div v-if="pkgLabel(m)" class="mistake-pkg" :title="pkgLabel(m)"><IconBase name="package" size="1em" /> {{ pkgLabel(m) }}</div>
         <!-- C1 · 错因归因（手动打标）。与知识点视图同源；本视图每道题只渲染一次，
              name 按 mistake 即可（且与分组视图的 name 生成式不同，不会互串）。 -->
         <div class="mistake-cause" role="radiogroup" aria-label="错题原因">
@@ -275,7 +273,7 @@
         </div>
 
         <div v-if="m.questionData?.explanation" class="explanation">
-          <span class="explain-label">💡 解析</span>
+          <span class="explain-label"><IconBase name="bulb" size="1em" /> 解析</span>
           <span class="explain-text">{{ m.questionData.explanation }}</span>
         </div>
 
@@ -290,10 +288,10 @@
               :disabled="hintLoading && hintingId !== m.id"
               @click="handleHint(m)"
             >
-              💡 启发一下
+              <IconBase name="bulb" size="1em" /> 启发一下
             </AppButton>
             <AppButton size="small" type="success" ghost @click="markMastered(m.id!)">
-              ✅ 我已掌握
+              <IconBase name="check-circle" size="1em" /> 我已掌握
             </AppButton>
           </div>
         </div>
@@ -305,7 +303,7 @@
          故按 naive 官方范式写：v-model:show 控制开关，closable 交给组件）。
          关闭即中断（见 watch(hintOpen)）—— 抽屉被关掉后还在往里吐字是明显的 bug。 -->
     <n-drawer v-model:show="hintOpen" :width="440" placement="right">
-      <n-drawer-content title="💡 启发一下" closable>
+      <n-drawer-content title="启发一下" closable>
         <div class="ai-hint">
           <div class="ai-hint-question">{{ hintQuestion || '题目数据已过期' }}</div>
 
@@ -325,7 +323,7 @@
           <div class="ai-hint-foot">
             <span class="ai-hint-tip">启发只给思路，不给答案——看懂了就回卡片上再做一遍。</span>
             <AppButton v-if="hintLoading" size="small" type="error" ghost @click="stopHint">
-              ⏹ 停止
+              <IconBase name="stop" size="1em" /> 停止
             </AppButton>
             <AppButton v-else size="small" @click="hintOpen = false">关闭</AppButton>
           </div>
@@ -341,6 +339,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { NInput, NDrawer, NDrawerContent, useDialog, useMessage } from 'naive-ui'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuestionText from '@/components/QuestionText.vue'
+import AppCard from '@/components/ui/AppCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import { useUserDataStore } from '@core/stores/userData'
 import { usePackageStore } from '@core/stores/package'
@@ -563,7 +562,7 @@ const groupedMistakes = computed(() => {
 const emptyText = computed(() => {
   if (keyword.value.trim()) return `没有找到与"${keyword.value}"相关的错题`
   if (timeFilter.value !== 'all') return '当前时间段内没有错题'
-  return '太棒了！当前没有未掌握的错题 🎉'
+  return '太棒了！当前没有未掌握的错题'
 })
 
 onMounted(async () => {
@@ -887,7 +886,7 @@ function formatDate(iso: string): string {
     text-align: center;
     min-width: 72px;
     .stat-num {
-      font-size: 26px;
+      font-size: var(--font-5xl);
       font-weight: 800;
       color: $text-main;
       line-height: 1.1;
@@ -897,7 +896,7 @@ function formatDate(iso: string): string {
       &.success { color: $success-text; }
     }
     .stat-label {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $text-sub;
       margin-top: 6px;
       font-weight: 600;
@@ -929,7 +928,7 @@ function formatDate(iso: string): string {
   border-radius: $radius-lg;
   padding: 10px 16px;
 
-  span { font-size: 13px; font-weight: 700; color: $primary-text; }
+  span { font-size: var(--font-sm); font-weight: 700; color: $primary-text; }
 
   .kp-filter-clear {
     padding: 4px 12px;
@@ -937,11 +936,12 @@ function formatDate(iso: string): string {
     border: 1px solid $primary-color;
     background: $card-bg;
     color: $primary-text;
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.15s;
-    &:hover { background: $primary-color; color: var(--text-on-primary); }
+    transition: all var(--duration-fast) var(--ease-standard);
+    /* V4.0 · D6：hover 用 -color 当底 + 白字只有 2.85:1；改 -text → 5.12:1 */
+    &:hover { background: var(--primary-text); color: var(--text-on-primary); }
   }
 }
 
@@ -963,7 +963,7 @@ function formatDate(iso: string): string {
     gap: 8px;
 
     .filter-label {
-      font-size: 13px;
+      font-size: var(--font-sm);
       color: $text-sub;
       font-weight: 600;
       white-space: nowrap;
@@ -988,11 +988,11 @@ function formatDate(iso: string): string {
       border: none;
       background: transparent;
       color: $text-sub;
-      font-size: 12px;
+      font-size: var(--font-xs);
       font-weight: 600;
       cursor: pointer;
       border-radius: 6px;
-      transition: all 0.15s;
+      transition: all var(--duration-fast) var(--ease-standard);
 
       &:hover { color: $text-main; }
 
@@ -1012,11 +1012,8 @@ function formatDate(iso: string): string {
 }
 
 .empty-card {
-  background: $card-bg;
-  border-radius: $radius-lg;
+  /* V4.0 · D7：卡片外观交给 AppCard，这里只剩「空态的留白」 */
   padding: 60px 20px;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-color;
 }
 
 .group-list {
@@ -1046,15 +1043,15 @@ function formatDate(iso: string): string {
     align-items: center;
     gap: 8px;
   }
-  .kp-group-icon { font-size: 16px; }
+  .kp-group-icon { font-size: var(--font-lg); }
   .kp-group-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 800;
     color: $text-main;
     margin: 0;
   }
   .kp-group-count {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     color: $primary-text;
     background: $primary-light;
@@ -1079,7 +1076,7 @@ function formatDate(iso: string): string {
   border-radius: $radius-md;
   padding: 16px 18px;
   box-shadow: $shadow-sm;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &:hover { box-shadow: $shadow-md; }
 
@@ -1095,7 +1092,7 @@ function formatDate(iso: string): string {
     margin-bottom: 10px;
 
     .level-badge {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       font-weight: 700;
       padding: 3px 10px;
       border-radius: 20px;
@@ -1112,7 +1109,7 @@ function formatDate(iso: string): string {
       }
     }
     .mistake-date {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-muted;
     }
   }
@@ -1120,7 +1117,7 @@ function formatDate(iso: string): string {
   /* V1.6 · A4 · 「学科 · 归属包标题」。放在卡片头与题干之间：
      家长一眼能看出这道错题属于哪本书，专项包删掉之后也不会变成悬空行。*/
   .mistake-pkg {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
     margin: -2px 0 10px;
     /* V1.6 · 方案对齐：归属包标题可能很长（跨包 + 长标题）。
@@ -1141,7 +1138,7 @@ function formatDate(iso: string): string {
     margin: 0 0 $space-2;
 
     .cause-title {
-      font-size: 12px;
+      font-size: var(--font-xs);
       font-weight: 600;
       color: $text-sub;
     }
@@ -1149,7 +1146,7 @@ function formatDate(iso: string): string {
       display: inline-flex;
       align-items: center;
       gap: $space-1;
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $text-sub;
       cursor: pointer;
       padding: 2px $space-2;
@@ -1178,14 +1175,15 @@ function formatDate(iso: string): string {
       cursor: pointer;
 
       &:hover {
-        background: $primary-color;
+        /* V4.0 · D6：同上，-color 底 + 白字 2.85:1 → -text 底 5.12:1 */
+        background: var(--primary-text);
         color: var(--text-on-primary);
       }
     }
   }
 
   .question-text {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: $text-main;
     margin: 0 0 10px;
@@ -1199,7 +1197,7 @@ function formatDate(iso: string): string {
     gap: 4px;
 
     .opt-line {
-      font-size: 13px;
+      font-size: var(--font-sm);
       padding: 6px 10px;
       border-radius: 6px;
       background: $bg-color-hover;
@@ -1213,7 +1211,7 @@ function formatDate(iso: string): string {
       background: var(--badge-success-bg);
       color: $success-text;
       font-weight: 700;
-      font-size: 13px;
+      font-size: var(--font-sm);
       padding: 6px 10px;
       border-radius: 6px;
     }
@@ -1221,12 +1219,12 @@ function formatDate(iso: string): string {
       background: var(--badge-danger-bg);
       color: $danger-text;
       font-weight: 700;
-      font-size: 13px;
+      font-size: var(--font-sm);
       padding: 6px 10px;
       border-radius: 6px;
     }
     .user-mark {
-      font-size: 11px;
+      font-size: var(--font-2xs);
       color: $text-muted;
       font-weight: 500;
     }
@@ -1237,7 +1235,7 @@ function formatDate(iso: string): string {
     padding: 10px 12px;
     background: $bg-color-hover;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     line-height: 1.6;
 
     .explain-label {
@@ -1256,7 +1254,7 @@ function formatDate(iso: string): string {
     gap: 10px;
 
     .partial-hint {
-      font-size: 11.5px;
+      font-size: var(--font-xs);
       color: $warning-text;
       font-weight: 700;
       line-height: 1.4;
@@ -1281,7 +1279,7 @@ function formatDate(iso: string): string {
   gap: $space-3;
 
   .ai-hint-question {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: $text-main;
     line-height: 1.6;
@@ -1309,7 +1307,7 @@ function formatDate(iso: string): string {
   }
 
   .ai-hint-text {
-    font-size: 14px;
+    font-size: var(--font-base);
     line-height: 1.8;
     color: $text-main;
     white-space: pre-wrap;
@@ -1328,7 +1326,7 @@ function formatDate(iso: string): string {
       margin-left: 2px;
       vertical-align: text-bottom;
       background: $primary-color;
-      animation: ai-caret-blink 1s steps(2, start) infinite;
+      animation: ai-caret-blink 1s steps(2, start) infinite; /* check-motion-allow: 打字光标闪烁 */
     }
   }
 

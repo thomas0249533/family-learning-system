@@ -11,7 +11,7 @@
       @keydown.enter.prevent="onActivate"
       @keydown.space.prevent="onActivate"
     >
-      <span class="ach-icon" aria-hidden="true">{{ item.icon }}</span>
+      <span class="ach-icon" aria-hidden="true"><IconBase :name="item.icon" size="1em" /></span>
 
       <!-- 内层一律 span：<button> 的合法内容只有 phrasing content，塞 div 会被严格校验判违规。
            视觉上用 display:block 还原块级排布（见样式里逐条说明）。 -->
@@ -19,7 +19,7 @@
         <span class="ach-title-row">
           <span class="ach-title">{{ item.title }}</span>
           <!-- 层级用星标数量表达（色觉冗余），不是唯一编码 -->
-          <span v-if="item.stars > 0" class="ach-stars" aria-hidden="true">{{ stars }}</span>
+          <span v-if="item.stars > 0" class="ach-stars" aria-hidden="true"><IconBase v-for="n in item.stars" :key="n" name="star" size="1em" /></span>
           <span v-if="item.earned && item.tier === 'hidden'" class="ach-hidden-tag">隐藏成就</span>
         </span>
 
@@ -62,8 +62,8 @@
            锁与真实图标**并存**：PRD §5.3 表 B 原意是"别让孩子误以为自己已经有了"，
            但 25 枚全换成 🔒 会让图鉴失去辨识度（与 §5.1"未获得的也能看"冲突），
            所以用"灰化真实图标 + 锁角标"同时满足两个意图。 -->
-      <span v-if="item.earned" class="ach-seal" aria-hidden="true">✓</span>
-      <span v-else-if="!item.silhouetted" class="ach-lock" aria-hidden="true">🔒</span>
+      <span v-if="item.earned" class="ach-seal" aria-hidden="true"><IconBase name="check" size="1em" /></span>
+      <span v-else-if="!item.silhouetted" class="ach-lock" aria-hidden="true"><IconBase name="lock" size="1em" /></span>
     </component>
   </li>
 </template>
@@ -105,8 +105,6 @@ function onActivate(): void {
   if (!clickable.value) return
   emit('select', props.item)
 }
-
-const stars = computed(() => '★'.repeat(props.item.stars))
 
 /**
  * 只在"真的能填"的时候画进度条：`target === 1` 的事件型成就画一条 0%/100% 的条
@@ -355,8 +353,8 @@ const ariaLabel = computed(() => {
 
   /* 原生 button 自带键盘可达，焦点环直接命中它，比之前挂在 li 上更自然 */
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   /* 右下角状态角标：脱离文档流，不再从正文里抢 26px 宽度 */

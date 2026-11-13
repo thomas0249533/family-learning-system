@@ -620,8 +620,8 @@ onBeforeUnmount(() => {
 }
 
 .ink-btn:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 1px;
+  outline: var(--focus-ring-w) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .ink-btn[aria-pressed='true'] {
@@ -657,8 +657,8 @@ onBeforeUnmount(() => {
 }
 
 .ink-swatch:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 1px;
+  outline: var(--focus-ring-w) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .ink-swatch[aria-pressed='true'] {

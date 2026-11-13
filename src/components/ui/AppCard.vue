@@ -11,7 +11,7 @@
     </template>
     <template v-else-if="title || icon" #header>
       <div class="app-card__header">
-        <span v-if="icon" class="app-card__icon" aria-hidden="true">{{ icon }}</span>
+        <span v-if="icon" class="app-card__icon" aria-hidden="true"><IconBase :name="icon" :size="20" /></span>
         <span class="app-card__title">{{ title }}</span>
       </div>
     </template>
@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import IconBase from './IconBase.vue'
 // =====================================================================
 // AppCard · 包 naive `n-card`（标题栏 / 动作区透传）
 // ---------------------------------------------------------------------

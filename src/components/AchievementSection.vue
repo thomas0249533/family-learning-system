@@ -2,7 +2,7 @@
   <section class="ach-section">
     <header class="ach-head">
       <div class="ach-head-left">
-        <span class="ach-head-icon" aria-hidden="true">🏅</span>
+        <span class="ach-head-icon" aria-hidden="true"><IconBase name="medal" size="1em" /></span>
         <h2 class="ach-head-name">成就图鉴</h2>
         <span class="ach-head-count" :class="{ done: view.complete }">{{ overallText }}</span>
       </div>
@@ -67,7 +67,7 @@
               :aria-controls="`ach-panel-${sec.key}-${g.category}`"
               @click="onToggleGroup(sec.key, g.category)"
             >
-              <span class="group-icon" aria-hidden="true">{{ g.icon }}</span>
+              <span class="group-icon" aria-hidden="true"><IconBase :name="g.icon" size="1em" /></span>
               <span class="group-main">
                 <span class="group-title">{{ g.label }}</span>
                 <span class="group-desc">{{ g.desc }}</span>
@@ -81,9 +81,9 @@
             <!-- 收起态也留一条线索：不展开也能知道"最接近哪一枚" -->
             <template v-if="isGroupCollapsed(sec.key, g.category)">
               <p v-if="g.closest" class="group-teaser">
-                最接近：{{ g.closest.icon }} {{ g.closest.title }} · {{ g.closest.hint }}
+                最接近：<IconBase :name="g.closest.icon" size="1em" /> {{ g.closest.title }} · {{ g.closest.hint }}
               </p>
-              <p v-else class="group-teaser done">本组已全部获得 🎉</p>
+              <p v-else class="group-teaser done">本组已全部获得</p>
             </template>
 
             <p v-if="g.guide" class="group-guide">{{ g.guide }}</p>
@@ -305,8 +305,8 @@ function onToggleAll(): void {
       text-decoration: underline;
     }
     &:focus-visible {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
   }
 
@@ -329,8 +329,8 @@ function onToggleAll(): void {
       border-color: $primary-color;
     }
     &:focus-visible {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
     }
   }
 }
@@ -401,8 +401,8 @@ function onToggleAll(): void {
     background: $bg-color-hover;
   }
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: -2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset-inset);
   }
 
   .part-chevron {
@@ -469,8 +469,8 @@ function onToggleAll(): void {
     background: $bg-color-hover;
   }
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: -2px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset-inset);
   }
 
   .group-icon {

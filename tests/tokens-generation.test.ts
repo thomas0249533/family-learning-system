@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { generateThemeScss, generatePaletteTs, BANNER } from '../scripts/tokens/emit'
-import { COMPONENT_TOKENS } from '../src/core/styles/tokens'
+import { COMPONENT_TOKENS, HUES, type ThemePreset, type ThemeMode, type HuePrimitives } from '../src/core/styles/tokens'
 import { findLiteralColors } from './helpers/colorLiterals'
 
 const ROOT = process.cwd()
@@ -157,5 +157,100 @@ describe('components.scss 声明作用域守卫（链式 var() 不得置于 :roo
       '// 不要写在 :root\n/* :root 会被提前求值 */\nbody { --x: var(--y); }',
     )
     expect(/:\s*root\b/.test(commentedOnly)).toBe(false)
+  })
+})
+
+// =====================================================================
+// 语义文字 token 对比度护栏（WCAG AA ≥ 4.5）（V4.0 · P1-3）
+// ---------------------------------------------------------------------
+// 把"贴线过 AA"的语义文字色锁死：未来任一度量调浅 / 字重变细都会让某组跌破
+// 4.5，本测试立即变红，而非静默退化。覆盖 6 组（3 学段 × 浅深）× 关键文字/背景对。
+// =====================================================================
+describe('语义文字 token 对比度护栏（WCAG AA ≥ 4.5）', () => {
+  const lin = (c: number): number => {
+    const x = c / 255
+    return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4
+  }
+  const lum = (hex: string): number => {
+    const h = hex.replace('#', '')
+    const r = parseInt(h.slice(0, 2), 16)
+    const g = parseInt(h.slice(2, 4), 16)
+    const b = parseInt(h.slice(4, 6), 16)
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+  }
+  const ratio = (a: string, b: string): number => {
+    const la = lum(a)
+    const lb = lum(b)
+    const hi = Math.max(la, lb)
+    const lo = Math.min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+  }
+
+  // (preset, mode, 文字语义色字段, 背景语义色字段)
+  const cases: Array<[ThemePreset, ThemeMode, keyof HuePrimitives, keyof HuePrimitives]> = [
+    ['primary', 'light', 'textMain', 'card'],
+    ['primary', 'light', 'textSub', 'card'],
+    ['primary', 'light', 'textMuted', 'card'],
+    ['primary', 'light', 'textMuted', 'surface2'],
+    ['primary', 'light', 'brandText', 'card'],
+    ['primary', 'light', 'successText', 'successLight'],
+    ['primary', 'light', 'warningText', 'warningLight'],
+    ['primary', 'light', 'dangerText', 'dangerLight'],
+    ['junior', 'light', 'textMain', 'card'],
+    ['junior', 'light', 'textSub', 'card'],
+    ['junior', 'light', 'textMuted', 'card'],
+    ['junior', 'light', 'textMuted', 'surface2'],
+    ['junior', 'light', 'brandText', 'card'],
+    ['junior', 'light', 'successText', 'successLight'],
+    ['junior', 'light', 'warningText', 'warningLight'],
+    ['junior', 'light', 'dangerText', 'dangerLight'],
+    ['senior', 'light', 'textMain', 'card'],
+    ['senior', 'light', 'textSub', 'card'],
+    ['senior', 'light', 'textMuted', 'card'],
+    ['senior', 'light', 'textMuted', 'surface2'],
+    ['senior', 'light', 'brandText', 'card'],
+    ['senior', 'light', 'successText', 'successLight'],
+    ['senior', 'light', 'warningText', 'warningLight'],
+    ['senior', 'light', 'dangerText', 'dangerLight'],
+    ['primary', 'dark', 'textMain', 'card'],
+    ['primary', 'dark', 'textSub', 'card'],
+    ['primary', 'dark', 'textMuted', 'card'],
+    ['primary', 'dark', 'textMuted', 'surface2'],
+    ['primary', 'dark', 'brandText', 'card'],
+    ['primary', 'dark', 'successText', 'successLight'],
+    ['primary', 'dark', 'warningText', 'warningLight'],
+    ['primary', 'dark', 'dangerText', 'dangerLight'],
+    ['junior', 'dark', 'textMain', 'card'],
+    ['junior', 'dark', 'textSub', 'card'],
+    ['junior', 'dark', 'textMuted', 'card'],
+    ['junior', 'dark', 'textMuted', 'surface2'],
+    ['junior', 'dark', 'brandText', 'card'],
+    ['junior', 'dark', 'successText', 'successLight'],
+    ['junior', 'dark', 'warningText', 'warningLight'],
+    ['junior', 'dark', 'dangerText', 'dangerLight'],
+    ['senior', 'dark', 'textMain', 'card'],
+    ['senior', 'dark', 'textSub', 'card'],
+    ['senior', 'dark', 'textMuted', 'card'],
+    ['senior', 'dark', 'textMuted', 'surface2'],
+    ['senior', 'dark', 'brandText', 'card'],
+    ['senior', 'dark', 'successText', 'successLight'],
+    ['senior', 'dark', 'warningText', 'warningLight'],
+    ['senior', 'dark', 'dangerText', 'dangerLight'],
+  ]
+
+  it('所有语义文字/背景对的对比度均 ≥ 4.5（WCAG AA）', () => {
+    const failures: string[] = []
+    for (const [preset, mode, fg, bg] of cases) {
+      const h = HUES[preset][mode]
+      const r = ratio(h[fg], h[bg])
+      if (r < 4.5) failures.push(`${preset}.${mode} ${String(fg)} on ${String(bg)} = ${r.toFixed(2)}`)
+    }
+    expect(failures, `对比度跌破 AA 的语义文字对：\n${failures.join('\n')}`).toEqual([])
+  })
+
+  it('护栏非空洞：warningText 故意调浅必被捕获', () => {
+    const base = HUES.primary.light
+    const shallow = '#b07a2a' // 明显比 #9a6308 浅
+    expect(ratio(shallow, base.warningLight)).toBeLessThan(4.5)
   })
 })

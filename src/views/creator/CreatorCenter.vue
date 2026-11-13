@@ -3,11 +3,11 @@
     <PageHeader title="创作者中心" subtitle="家长端 · 可视化建包与联网库同步" />
 
     <n-tabs type="line" animated class="creator-tabs" v-model:value="activeTab">
-      <n-tab-pane name="build" tab="📦 建包">
+      <n-tab-pane name="build" tab="建包">
         <div class="build-layout">
           <!-- 左：表单 -->
           <section class="form-col">
-            <n-card title="① 包信息" :bordered="false" class="block">
+            <AppCard title="① 包信息" class="block">
               <n-space vertical size="medium">
                 <div class="field">
                   <label>科目标题 *</label>
@@ -36,9 +36,9 @@
                   </div>
                 </div>
               </n-space>
-            </n-card>
+            </AppCard>
 
-            <n-card title="② 单元 / 知识点 / 题目" :bordered="false" class="block">
+            <AppCard title="② 单元 / 知识点 / 题目" class="block">
               <n-space vertical size="medium">
                 <div v-for="(unit, ui) in form.units" :key="ui" class="unit">
                   <div class="unit-head">
@@ -133,17 +133,17 @@
 
                 <n-button type="primary" dashed block @click="addUnit">+ 添加单元</n-button>
               </n-space>
-            </n-card>
+            </AppCard>
 
             <n-space class="actions">
-              <n-button type="primary" @click="runValidation">🔍 预览 / 校验</n-button>
-              <n-button type="success" @click="exportSet" :disabled="!canExport">⬇️ 导出 .lpkgset</n-button>
+              <n-button type="primary" @click="runValidation"><IconBase name="search" size="1em" /> 预览 / 校验</n-button>
+              <n-button type="success" @click="exportSet" :disabled="!canExport"><IconBase name="download" size="1em" /> 导出 .lpkgset</n-button>
             </n-space>
           </section>
 
           <!-- 右：实时预览 -->
           <section class="preview-col">
-            <n-card title="③ 实时预览与校验" :bordered="false" class="block preview-card">
+            <AppCard title="③ 实时预览与校验" class="block preview-card">
               <div class="summary">
                 <n-tag v-if="results.errors.length" type="error">
                   错误 {{ results.errors.length }}
@@ -179,12 +179,12 @@
                 <div class="json-title">包 JSON 结构预览</div>
                 <pre class="json">{{ previewJson }}</pre>
               </div>
-            </n-card>
+            </AppCard>
           </section>
         </div>
       </n-tab-pane>
 
-      <n-tab-pane name="sync" tab="🌐 库同步">
+      <n-tab-pane name="sync" tab="库同步">
         <CatalogSync />
       </n-tab-pane>
     </n-tabs>
@@ -193,8 +193,9 @@
 
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
-import { NCard, NSpace, NInput, NSelect, NInputNumber, NButton, NTag, NTabs, NTabPane } from 'naive-ui'
+import { NSpace, NInput, NSelect, NInputNumber, NButton, NTag, NTabs, NTabPane } from 'naive-ui'
 import PageHeader from '@/components/ui/PageHeader.vue'
+import AppCard from '@/components/ui/AppCard.vue'
 import CatalogSync from './CatalogSync.vue'
 import { buildPackageModel, buildSetFromForm, buildLpkgset, type CreatorForm } from '@core/importer/packSet'
 import { normalizePackage, type NormalizeIssue } from '@core/importer/normalizePackage'
@@ -350,19 +351,17 @@ runValidation()
 }
 .block {
   margin-bottom: 16px;
-  background: $card-bg;
-  border: 1px solid $border-color;
 }
 .field {
   display: flex;
   flex-direction: column;
   gap: 4px;
   label {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
   }
   .hint-sub {
-    font-size: 11px;
+    font-size: var(--font-2xs);
     color: $text-sub;
     margin: 2px 0 0;
     line-height: 1.4;
@@ -393,7 +392,7 @@ runValidation()
 }
 .kp-badge,
 .q-badge {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $primary-text;
   background: $primary-light;
   border-radius: 6px;
@@ -426,7 +425,7 @@ runValidation()
   grid-template-columns: auto 1fr auto;
   gap: 8px;
   align-items: start;
-  font-size: 12px;
+  font-size: var(--font-xs);
   padding: 6px 8px;
   border-radius: 6px;
   border: 1px solid $border-light;
@@ -451,14 +450,14 @@ runValidation()
 }
 .empty {
   color: $text-muted;
-  font-size: 13px;
+  font-size: var(--font-sm);
   padding: 8px 0;
 }
 .json-wrap {
   margin-top: 12px;
 }
 .json-title {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   margin-bottom: 4px;
 }
@@ -469,7 +468,7 @@ runValidation()
   border: 1px solid $border-color;
   border-radius: 8px;
   padding: 10px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.5;
   color: $text-main;
   white-space: pre-wrap;

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <n-spin v-if="!currentTopic" size="large" style="display: flex; justify-content: center; margin-top: 50px;" />
+    <!-- 加载态：详情页骨架（标题 + 说明块 + 两行） -->
+    <div v-if="!currentTopic" class="topic-detail-skeleton" aria-busy="true">
+      <Skeleton width="42%" height="22px" label="正在加载知识点" />
+      <Skeleton variant="rect" height="120px" />
+      <Skeleton width="82%" />
+      <Skeleton width="58%" />
+    </div>
 
     <div v-else>
       <h3 style="margin-bottom: 16px;">{{ currentTopic?.title }}</h3>
@@ -9,7 +15,7 @@
       <n-alert
         v-if="unmetPrerequisites.length > 0"
         type="warning"
-        title="📌 先热一下身，再学本主题会更顺"
+        title="先热一下身，再学本主题会更顺"
         style="margin-bottom: 16px;"
       >
         <div class="prereq-tip">这些前置知识点还没掌握，可以直接在这里练几道：</div>
@@ -27,13 +33,13 @@
             :disabled="warmupExercises.length === 0"
             @click="startWarmup"
           >
-            🔥 先做 {{ warmupExercises.length }} 道前置热身
+            <IconBase name="fire" size="1em" /> 先做 {{ warmupExercises.length }} 道前置热身
           </AppButton>
           <span class="prereq-actions-tip">做错也没关系，重点是先把思路找回来</span>
         </div>
       </n-alert>
 
-      <AppCard v-if="warmupOpen" title="🔥 前置热身" class="warmup-card">
+      <AppCard v-if="warmupOpen" title="前置热身" class="warmup-card">
         <div class="warmup-intro">
           这些都是本主题的前置知识。做完会自动回到本主题，不会打乱你原来的进度。
         </div>
@@ -55,7 +61,7 @@
       <AppCard v-if="topicMastery.length > 0 && isVocabTopic" class="mastery-card">
         <details class="mastery-details">
           <summary class="mastery-summary">
-            <span class="mastery-summary__title">📈 本主题掌握情况</span>
+            <span class="mastery-summary__title"><IconBase name="chart" size="1em" /> 本主题掌握情况</span>
             <span class="mastery-summary__hint">共 {{ topicMastery.length }} 个词 · 点击展开</span>
           </summary>
           <div class="mastery-body">
@@ -71,7 +77,7 @@
                 <span class="mastery-percent">
                   掌握度 <strong>{{ row.percent === null ? '—' : row.percent + '%' }}</strong>
                 </span>
-                <span v-if="row.nextReview" class="mastery-next">🔄 {{ row.nextReview }}</span>
+                <span v-if="row.nextReview" class="mastery-next"><IconBase name="refresh" size="1em" /> {{ row.nextReview }}</span>
                 <span class="mastery-count">对 {{ row.correctCount }} · 错 {{ row.wrongCount }}</span>
               </div>
             </div>
@@ -79,7 +85,7 @@
         </details>
       </AppCard>
 
-      <AppCard v-else-if="topicMastery.length > 0" title="📈 本主题掌握情况" class="mastery-card">
+      <AppCard v-else-if="topicMastery.length > 0" title="本主题掌握情况" class="mastery-card">
         <div v-for="row in topicMastery" :key="row.id" class="mastery-row">
           <div class="mastery-head">
             <span class="mastery-title">{{ row.title }}</span>
@@ -92,7 +98,7 @@
             <span class="mastery-percent">
               掌握度 <strong>{{ row.percent === null ? '—' : row.percent + '%' }}</strong>
             </span>
-            <span v-if="row.nextReview" class="mastery-next">🔄 {{ row.nextReview }}</span>
+            <span v-if="row.nextReview" class="mastery-next"><IconBase name="refresh" size="1em" /> {{ row.nextReview }}</span>
             <span class="mastery-count">对 {{ row.correctCount }} · 错 {{ row.wrongCount }}</span>
           </div>
         </div>
@@ -159,7 +165,7 @@
       <AppCard
         v-if="topicExercises.length > 0"
         ref="practiceRef"
-        title="🎮 同步练习"
+        title="同步练习"
         style="margin-top: 24px; border-radius: 14px;"
       >
         <!--
@@ -191,7 +197,7 @@
       <n-modal
         v-model:show="resumeOpen"
         preset="card"
-        title="🔄 继续上次练习"
+        title="继续上次练习"
         class="resume-modal"
         style="max-width: 420px;"
         :closable="false"
@@ -215,10 +221,11 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NSpin, NAlert, NModal, useMessage } from 'naive-ui'
+import { NAlert, NModal, useMessage } from 'naive-ui'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import Skeleton from '@/components/ui/Skeleton.vue'
 import MarkdownIt from 'markdown-it'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
@@ -1000,6 +1007,14 @@ async function finishSessionItem(total: number): Promise<void> {
 </script>
 
 <style scoped lang="scss">
+/* 加载骨架：标题 + 说明块 + 两行，与详情页正文同构 */
+.topic-detail-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
 /* V2.0 · 断点检查期间的占位（练习区不能整块消失，否则页面高度会跳一下） */
 .practice-loading {
   padding: 24px 0;
@@ -1011,7 +1026,7 @@ async function finishSessionItem(total: number): Promise<void> {
 /* V2.0 · 续传弹窗（全 token；文字色一律 -text） */
 .resume-tip {
   margin: 0 0 $space-4;
-  font-size: 15px;
+  font-size: var(--font-md);
   line-height: $leading-normal;
   color: $text-main;
 
@@ -1059,11 +1074,11 @@ async function finishSessionItem(total: number): Promise<void> {
   padding: 8px 0;
   border-bottom: 1px dashed $border-color;
   &:last-of-type { border-bottom: none; }
-  .prereq-title { font-size: 15px; font-weight: 600; }
+  .prereq-title { font-size: var(--font-md); font-weight: 600; }
 }
 
 .prereq-tip {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   margin-bottom: 4px;
 }
@@ -1078,7 +1093,7 @@ async function finishSessionItem(total: number): Promise<void> {
   border-top: 1px dashed $border-color;
 
   .prereq-actions-tip {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
   }
 }
@@ -1089,7 +1104,7 @@ async function finishSessionItem(total: number): Promise<void> {
   margin-bottom: 16px;
 
   .warmup-intro {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
     background: $primary-light;
     padding: 10px 14px;
@@ -1114,7 +1129,7 @@ async function finishSessionItem(total: number): Promise<void> {
     align-items: center;
     gap: 10px;
     list-style: none;
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 800;
     color: $text-main;
 
@@ -1123,11 +1138,11 @@ async function finishSessionItem(total: number): Promise<void> {
       content: '▸';
       display: inline-block;
       color: $text-sub;
-      transition: transform 0.15s ease;
+      transition: transform var(--duration-fast) var(--ease-standard);
     }
     &:focus-visible {
-      outline: 2px solid var(--primary-text);
-      outline-offset: 2px;
+      outline: var(--focus-ring-w) solid var(--focus-ring);
+      outline-offset: var(--focus-ring-offset);
       border-radius: 6px;
     }
   }
@@ -1136,7 +1151,7 @@ async function finishSessionItem(total: number): Promise<void> {
 
   .mastery-summary__title { flex-shrink: 0; }
   .mastery-summary__hint {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 600;
     color: $text-muted;
   }
@@ -1156,7 +1171,7 @@ async function finishSessionItem(total: number): Promise<void> {
     margin-bottom: 6px;
 
     .mastery-title {
-      font-size: 14px;
+      font-size: var(--font-base);
       font-weight: 700;
       color: $text-main;
       flex: 1;
@@ -1165,7 +1180,7 @@ async function finishSessionItem(total: number): Promise<void> {
 
     .mastery-status {
       flex-shrink: 0;
-      font-size: 11px;
+      font-size: var(--font-2xs);
       font-weight: 700;
       padding: 2px 10px;
       border-radius: 20px;
@@ -1189,7 +1204,7 @@ async function finishSessionItem(total: number): Promise<void> {
       width: 0;
       border-radius: 4px;
       background: $gradient-primary;
-      transition: width 0.4s ease;
+      transition: width var(--duration-slower) var(--ease-standard);
 
       &.mf-mastered { background: $gradient-success; }
       &.mf-review { background: $gradient-warm; }
@@ -1202,7 +1217,7 @@ async function finishSessionItem(total: number): Promise<void> {
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 6px;
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
 
     .mastery-percent strong { color: $primary-text; font-weight: 800; }
@@ -1221,7 +1236,7 @@ async function finishSessionItem(total: number): Promise<void> {
 
 /* ✅ 知识卡片正文：15→16，行高微调 */
 .kp-content {
-  font-size: 16px;
+  font-size: var(--font-lg);
   line-height: 1.85;
   color: $text-main;
 
@@ -1229,7 +1244,7 @@ async function finishSessionItem(total: number): Promise<void> {
   :deep(h1), :deep(h2), :deep(h3) {
     color: $text-main;
     margin: 14px 0 8px;
-    font-size: 17px;
+    font-size: var(--font-xl);
   }
   :deep(ul), :deep(ol) { padding-left: 26px; }
   :deep(li) { margin: 4px 0; }
@@ -1239,20 +1254,20 @@ async function finishSessionItem(total: number): Promise<void> {
     padding: 2px 6px;
     border-radius: 4px;
     color: $code-color;
-    font-size: 15px;
+    font-size: var(--font-md);
   }
 }
 
 /* ✅ 卡片内边距加大 */
 :deep(.n-card__content) {
   padding: 20px 24px;
-  font-size: 16px;
+  font-size: var(--font-lg);
   line-height: 1.85;
 }
 
 /* ✅ 卡片标题加大 */
 :deep(.n-card-header__main) {
-  font-size: 18px;
+  font-size: var(--font-xl);
   font-weight: 700;
 }
 :deep(.n-card-header) {
@@ -1261,7 +1276,7 @@ async function finishSessionItem(total: number): Promise<void> {
 
 /* ✅ 顶层标题（topic 标题） */
 div > h3 {
-  font-size: 22px;
+  font-size: var(--font-3xl);
   font-weight: 800;
   color: $text-main;
   line-height: 1.4;

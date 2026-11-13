@@ -99,6 +99,7 @@ $space-12: var(--space-12);
 $space-16: var(--space-16);
 
 // ========== 6. 字号 / 行高 ==========
+$font-3xs: var(--font-3xs);
 $font-2xs: var(--font-2xs);
 $font-xs: var(--font-xs);
 $font-sm: var(--font-sm);
@@ -110,6 +111,10 @@ $font-2xl: var(--font-2xl);
 $font-3xl: var(--font-3xl);
 $font-4xl: var(--font-4xl);
 $font-5xl: var(--font-5xl);
+$font-6xl: var(--font-6xl);
+$font-7xl: var(--font-7xl);
+$font-8xl: var(--font-8xl);
+$font-9xl: var(--font-9xl);
 
 $leading-tight: var(--leading-tight);
 $leading-snug: var(--leading-snug);
@@ -133,6 +138,7 @@ $duration-fast: var(--duration-fast);
 $duration-base: var(--duration-base);
 $duration-slow: var(--duration-slow);
 $duration-slower: var(--duration-slower);
+$duration-slowest: var(--duration-slowest);
 
 // ========== 9. 渐变（基于品牌色）==========
 $gradient-primary: var(--gradient-primary);

@@ -327,7 +327,7 @@ describe('index.md · 门禁顺序与基元索引', () => {
     ).toMatch(/pretest[\s\S]{0,120}prebuild|predev/)
   })
 
-  it('8 个基元都出现在 index.md 的索引里', () => {
+  it('9 个基元都出现在 index.md 的索引里', () => {
     const missing = primitiveNames().filter((n) => !docs.index.includes(n))
     expect(
       missing,

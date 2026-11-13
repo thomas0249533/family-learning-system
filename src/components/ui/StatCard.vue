@@ -12,7 +12,7 @@
     @keydown.enter="onKeyActivate"
     @keydown.space="onKeyActivate"
   >
-    <span v-if="icon" class="stat-card__icon" aria-hidden="true">{{ icon }}</span>
+    <span v-if="icon" class="stat-card__icon" aria-hidden="true"><IconBase :name="icon" :size="24" /></span>
     <span v-else-if="$slots.icon" class="stat-card__icon" aria-hidden="true">
       <slot name="icon" />
     </span>
@@ -31,6 +31,7 @@
 </template>
 
 <script setup lang="ts">
+import IconBase from './IconBase.vue'
 // =====================================================================
 // StatCard · 自建统计卡（统一 `.ov-card` / `.stat-box` / `.stat-item`）
 // ---------------------------------------------------------------------
@@ -133,7 +134,7 @@ function onKeyActivate(e: KeyboardEvent) {
 
 .stat-card__value {
   /* 30px：较既有 26px 提升一档数字层级（§8.4 不变量 7 常量尺寸）。 */
-  font-size: 30px;
+  font-size: var(--font-6xl);
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.01em;

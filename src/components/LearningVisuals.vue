@@ -2,7 +2,7 @@
   <div class="visuals">
     <!-- ========== 掌握热力图 ========== -->
     <section class="v-section">
-      <SectionTitle title="🟩 知识点掌握热力图" accent />
+      <SectionTitle title="知识点掌握热力图" accent />
       <p class="v-desc">每个色块是一个知识点，颜色代表掌握状态。点状分布越绿，整体越扎实。</p>
 
       <div v-if="loading" class="v-loading">正在统计…</div>
@@ -33,7 +33,7 @@
 
     <!-- ========== 学习日历热力图 ========== -->
     <section class="v-section">
-      <SectionTitle title="📅 学习日历" accent />
+      <SectionTitle title="学习日历" accent />
       <p class="v-desc">每天做题越多色块越深。连续打卡的小格子，是孩子坚持的证据。</p>
       <div v-if="loading" class="v-loading">正在统计…</div>
       <div v-else class="calendar">
@@ -63,7 +63,7 @@
 
     <!-- ========== 准确率趋势 ========== -->
     <section class="v-section">
-      <SectionTitle title="📈 练习准确率趋势" accent />
+      <SectionTitle title="练习准确率趋势" accent />
       <p class="v-desc">按「当日触及知识点」的累计正确率估算，反映近期练习的质量变化。</p>
       <div v-if="loading" class="v-loading">正在统计…</div>
       <div v-else-if="accuracySeries.length === 0" class="v-empty">还没有足够的学习记录</div>
@@ -241,14 +241,14 @@ onMounted(async () => {
 .visuals { display: flex; flex-direction: column; gap: 28px; }
 
 .v-section { }
-.v-desc { font-size: 12px; color: $text-sub; margin: -4px 0 14px; }
-.v-loading, .v-empty { font-size: 13px; color: $text-sub; padding: 16px 0; }
+.v-desc { font-size: var(--font-xs); color: $text-sub; margin: -4px 0 14px; }
+.v-loading, .v-empty { font-size: var(--font-sm); color: $text-sub; padding: 16px 0; }
 
 /* 掌握热力图 */
 .heat-by-subject { display: flex; flex-direction: column; gap: 16px; }
 .heat-group {
   &__title {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 700;
     color: $text-main;
     margin-bottom: 8px;
@@ -256,7 +256,7 @@ onMounted(async () => {
     align-items: baseline;
     gap: 8px;
   }
-  &__rate { font-size: 11px; color: $text-sub; font-weight: 500; }
+  &__rate { font-size: var(--font-2xs); color: $text-sub; font-weight: 500; }
 }
 .heat-grid {
   display: grid;
@@ -278,7 +278,7 @@ onMounted(async () => {
   display: flex;
   gap: 14px;
   margin-top: 14px;
-  font-size: 11px;
+  font-size: var(--font-2xs);
   color: $text-sub;
   &__item { display: inline-flex; align-items: center; gap: 5px; }
   &__swatch {
@@ -298,7 +298,7 @@ onMounted(async () => {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     color: $text-muted;
     margin-bottom: 6px;
     max-width: 720px;
@@ -322,7 +322,7 @@ onMounted(async () => {
     align-items: center;
     gap: 4px;
     margin-top: 10px;
-    font-size: 11px;
+    font-size: var(--font-2xs);
     color: $text-sub;
     max-width: 720px;
   }

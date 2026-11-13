@@ -1,5 +1,5 @@
 <template>
-  <AppCard class="math-concept-card" title="📖 概念精讲">
+  <AppCard class="math-concept-card" title="概念精讲">
     <template v-for="(kp, i) in kps" :key="i">
       <h3 class="concept-title">{{ kp.title }}</h3>
       <div class="concept-body" v-html="renderMarkdown(kp.content)"></div>
@@ -49,7 +49,7 @@ function renderMarkdown(s: string) {
 .math-concept-card { margin-bottom: 16px; }
 
 .concept-title {
-  font-size: 15px;
+  font-size: var(--font-md);
   font-weight: 700;
   /* 文字色必须走 -text 变体（check:text-color 门禁），不能引用 $primary-color */
   color: $primary-text;
@@ -59,7 +59,7 @@ function renderMarkdown(s: string) {
 }
 
 .concept-body {
-  font-size: 14px;
+  font-size: var(--font-base);
   line-height: 1.9;
   color: $text-main;
 
@@ -72,7 +72,7 @@ function renderMarkdown(s: string) {
     background: $bg-color-hover;
     border-radius: $radius-xs;
     padding: 1px 5px;
-    font-size: 13px;
+    font-size: var(--font-sm);
   }
 }
 </style>

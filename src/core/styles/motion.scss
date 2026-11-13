@@ -1,0 +1,26 @@
+// =====================================================================
+// 动效纪律 · 全局无障碍降级（V4.0 · D3）
+// ---------------------------------------------------------------------
+// 唯一职责：`prefers-reduced-motion: reduce` 时的**兜底网**。
+//
+// 为什么需要：组件内的同名 @media 块做的是「静态降级」（取消位移 / 去掉
+// hover 抬起），语义更精确，但它们只覆盖 16 个文件；其余仍带 transition
+// 的视图（PackageList / Report / Settings / TopicDetail …）没有兜底。
+// 这一层保证「任何我们漏掉的动效」在减弱动效偏好下也几乎瞬时报文。
+//
+// 时长压到 0.01ms 而非 0：0 会让部分浏览器跳过 transitionend 事件，
+// 依赖该事件收尾的组件（抽屉、折叠面板）可能卡在中途状态。
+//
+// 本文件受 check:motion 豁免（唯二允许写裸时长的地方之一）。
+// =====================================================================
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

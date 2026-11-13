@@ -2,7 +2,7 @@
   <div class="parent-page">
     <!-- 顶部标题 -->
     <PageHeader
-      icon="👨‍👩‍👧"
+      icon="family"
       title="家长视图"
       subtitle="查看孩子的学习情况 · 数据只读"
     />
@@ -13,7 +13,7 @@
       改名/新建/删除只在这里出现 —— 孩子端只能切换（AppShell），不能改。
     -->
     <section class="section">
-      <SectionTitle title="👧 档案管理" />
+      <SectionTitle title="档案管理" />
       <div class="profile-panel">
         <p class="profile-hint">
           每个档案的进度、错题、成就、打卡互相独立。最多 {{ MAX_PROFILES }} 个。
@@ -91,14 +91,14 @@
 
     <!-- 总览指标 -->
     <section class="section">
-      <SectionTitle title="📊 学习总览" />
+      <SectionTitle title="学习总览" />
       <div class="overview-grid">
-        <StatCard icon="📖" :value="stats.totalKp" label="知识点总数" />
-        <StatCard icon="✅" :value="stats.mastered" label="已掌握" tone="success" />
-        <StatCard icon="🔄" :value="stats.learning" label="学习中" tone="warning" />
-        <StatCard icon="❌" :value="stats.needReview" label="需复习" tone="danger" />
-        <StatCard icon="⏱️" :value="stats.studyMinutes" label="累计分钟" />
-        <StatCard icon="🔥" :value="stats.continuousDays" label="连续天数" />
+        <StatCard icon="book-open" :value="stats.totalKp" label="知识点总数" />
+        <StatCard icon="check-circle" :value="stats.mastered" label="已掌握" tone="success" />
+        <StatCard icon="refresh" :value="stats.learning" label="学习中" tone="warning" />
+        <StatCard icon="x-circle" :value="stats.needReview" label="需复习" tone="danger" />
+        <StatCard icon="clock" :value="stats.studyMinutes" label="累计分钟" />
+        <StatCard icon="fire" :value="stats.continuousDays" label="连续天数" />
       </div>
       <!-- V2.4 · 任务3 · 家长端口径安抚常驻提示（R2：虚拟复习掌握态统计短暂滞后，已与主理人确认可接受） -->
       <p class="stats-note">手动标记的复习，将在下次答题后正式计入掌握度统计。</p>
@@ -108,7 +108,7 @@
          家长端从"看数据"变成"做决定"的第一块：目标定多少、今天怎么排，
          都在这里改，孩子端下一次刷新立刻生效（同一份落盘设置，不是各算一遍）。 ========== -->
     <section class="section">
-      <SectionTitle title="🎯 每日目标" />
+      <SectionTitle title="每日目标" />
       <div class="goal-card">
         <div class="goal-row">
           <span class="goal-label">按什么算</span>
@@ -160,7 +160,7 @@
       不常驻占位：家长看不到这张卡，就说明没有需要补的事。
     -->
     <section class="section" v-if="repairVisible">
-      <SectionTitle title="🩹 补签" />
+      <SectionTitle title="补签" />
       <div class="repair-card">
         <div class="repair-text">
           <div class="repair-title">孩子昨天没有在学习记录里留下痕迹</div>
@@ -175,7 +175,7 @@
 
     <!-- 成就概览（只读） -->
     <section class="section">
-      <SectionTitle title="🏅 成就概览" />
+      <SectionTitle title="成就概览" />
       <div class="ach-overview-card">
         <div class="ach-total">
           <div class="ach-total-value">{{ achUnlockedCount }} / {{ achTotal }}</div>
@@ -186,7 +186,7 @@
         <div class="ach-row-label">按小组</div>
         <div class="ach-cats">
           <div v-for="c in achByCategory" :key="c.cat" class="ach-cat">
-            <span class="ach-cat-icon">{{ c.icon }}</span>
+            <span class="ach-cat-icon"><IconBase :name="c.icon" size="1em" /></span>
             <span class="ach-cat-name">{{ c.label }}</span>
             <span class="ach-cat-count">{{ c.unlocked }} / {{ c.total }}</span>
           </div>
@@ -204,7 +204,7 @@
           <div v-if="recentUnlocked.length === 0" class="ach-recent-empty">还没有解锁成就</div>
           <div v-else class="ach-recent-list">
             <div v-for="r in recentUnlocked" :key="r.id" class="ach-recent-item">
-              <span class="recent-icon">{{ r.def!.icon }}</span>
+              <span class="recent-icon"><IconBase :name="r.def!.icon" size="1em" /></span>
               <span class="recent-name">{{ r.def!.title }}</span>
               <span class="recent-date">{{ r.unlockedAt || '较早' }}</span>
             </div>
@@ -225,7 +225,7 @@
           <div class="ach-evidence-title">解锁证据</div>
           <ul class="ach-evidence-list">
             <li v-for="e in recentEvidence" :key="e.id" class="ach-evidence-item">
-              <span class="evidence-icon" aria-hidden="true">{{ e.icon }}</span>
+              <span class="evidence-icon" aria-hidden="true"><IconBase :name="e.icon" size="1em" /></span>
               <span class="evidence-text"><b>{{ e.title }}</b> · {{ e.evidence }}</span>
             </li>
           </ul>
@@ -235,7 +235,7 @@
 
     <!-- 学科分布 -->
     <section class="section" v-if="subjectStats.length > 0">
-      <SectionTitle title="📚 学科分布" />
+      <SectionTitle title="学科分布" />
       <div class="subject-list">
         <div v-for="s in subjectStats" :key="s.subject" class="subject-item">
           <div class="subject-head">
@@ -251,7 +251,7 @@
 
     <!-- 高频错题 Top 5 -->
     <section class="section" v-if="topMistakes.length > 0">
-      <SectionTitle title="❌ 高频错题 Top 5" />
+      <SectionTitle title="高频错题 Top 5" />
       <div class="top-list">
         <div v-for="(item, i) in topMistakes" :key="item.kpId" class="top-item">
           <div class="top-rank">{{ i + 1 }}</div>
@@ -270,7 +270,7 @@
       三级降级：DeepSeek → Ollama → 本地规则引擎（断网也有一份报告）。
     -->
     <section class="section">
-      <AppCard title="🧠 AI 学习诊断">
+      <AppCard title="AI 学习诊断">
         <div class="diag-entry">
           <div class="diag-entry-text">
             <div class="diag-entry-title">让 AI 读一读近期的错题统计，给一份整体诊断</div>
@@ -287,7 +287,7 @@
           >
             生成诊断报告
           </AppButton>
-          <AppButton v-else size="small" @click="stopDiagnosis">⏹ 停止</AppButton>
+          <AppButton v-else size="small" @click="stopDiagnosis"><IconBase name="stop" size="1em" /> 停止</AppButton>
         </div>
 
         <template v-if="diagnosisStarted">
@@ -303,7 +303,7 @@
           <div ref="diagnosisEl" class="diag-report" v-html="diagnosisHtml"></div>
           <div v-if="!diagnosing" class="diag-actions">
             <AppButton size="small" :loading="diagExporting" @click="handleExportDiagnosis">
-              ⬇️ 导出 PDF
+              <IconBase name="download" size="1em" /> 导出 PDF
             </AppButton>
           </div>
         </template>
@@ -312,7 +312,7 @@
 
     <!-- 近 7 天学习 -->
     <section class="section">
-      <SectionTitle title="📅 近 7 天学习" />
+      <SectionTitle title="近 7 天学习" />
       <div class="week-card">
         <div class="week-chart">
           <div v-for="d in weekDays" :key="d.date" class="day-col">
@@ -340,7 +340,7 @@
       -->
       <div class="weekly-actions">
         <AppButton size="small" :disabled="exporting" @click="handleGenerateCard">
-          📸 生成周报卡片
+          <IconBase name="camera" size="1em" /> 生成周报卡片
         </AppButton>
         <AppButton
           v-if="weeklyCard"
@@ -349,7 +349,7 @@
           :loading="exporting"
           @click="handleExportCard"
         >
-          ⬇️ 导出图片
+          <IconBase name="download" size="1em" /> 导出图片
         </AppButton>
       </div>
       <WeeklyReportCard v-if="weeklyCard" ref="cardEl" class="weekly-card-mount" :data="weeklyCard" />
@@ -360,7 +360,7 @@
       并排看几个孩子是**家长**的需求；孩子端只该看到自己那一墙（孩子之间不比较）。
     -->
     <section class="section">
-      <AppCard title="🏠 家庭成就墙">
+      <AppCard title="家庭成就墙">
         <div class="wall-entry">
           <div class="wall-entry-text">
             <div class="wall-entry-title">一屏看几个孩子走到哪了</div>
@@ -376,20 +376,20 @@
       "给孩子加一条我们家的家规"是家长的决定，不是技术设置。
     -->
     <section class="section">
-      <AppCard title="🧩 自定义成就包">
+      <AppCard title="自定义成就包">
         <CustomPackPanel />
       </AppCard>
     </section>
 
     <!-- 学习包管理 -->
     <section class="section">
-      <SectionTitle title="📦 学习包管理" />
+      <SectionTitle title="学习包管理" />
       <div class="pkg-card">
         <div class="pkg-info">
           <div class="pkg-title">已导入 {{ packageStore.packages.length }} 个学习包</div>
           <div class="pkg-desc">管理学习内容、导入新包、导出备份</div>
         </div>
-        <AppButton type="primary" @click="goToImport">📥 管理学习包</AppButton>
+        <AppButton type="primary" @click="goToImport"><IconBase name="inbox" size="1em" /> 管理学习包</AppButton>
       </div>
     </section>
 
@@ -402,6 +402,7 @@
     -->
     <teleport to="body">
       <div v-if="exporting" class="export-overlay">
+        <!-- check-loading-allow: 阻塞式导出的全屏遮罩，需要"正在转"的即时反馈，不是页面加载 -->
         <n-spin size="large" />
         <div class="export-overlay__text">正在生成图片，请稍候…</div>
       </div>
@@ -1255,7 +1256,7 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 .goal-label {
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   min-width: 56px;
 }
@@ -1269,7 +1270,7 @@ async function handleExportDiagnosis(): Promise<void> {
   border: 1px solid $border-color;
   background: transparent;
   color: $text-sub;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 700;
   padding: 5px 14px;
   border-radius: 999px;
@@ -1291,7 +1292,7 @@ async function handleExportDiagnosis(): Promise<void> {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
 
   input {
@@ -1301,7 +1302,7 @@ async function handleExportDiagnosis(): Promise<void> {
     border-radius: $radius-sm;
     background: $surface-2;
     color: $text-main;
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     text-align: center;
   }
@@ -1309,7 +1310,7 @@ async function handleExportDiagnosis(): Promise<void> {
 
 .goal-hint {
   margin: 0;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   line-height: $leading-normal;
 }
@@ -1320,7 +1321,7 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 .stats-note {
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.6;
   color: $text-sub;
   background: $bg-color-hover;
@@ -1354,7 +1355,7 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 .repair-title {
-  font-size: 14px;
+  font-size: var(--font-base);
   font-weight: 700;
   color: $text-main;
   margin-bottom: 4px;
@@ -1362,7 +1363,7 @@ async function handleExportDiagnosis(): Promise<void> {
 
 .repair-desc {
   margin: 0;
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.7;
   color: $text-sub;
 }
@@ -1484,13 +1485,13 @@ async function handleExportDiagnosis(): Promise<void> {
   gap: 10px;
 
   .ach-total-value {
-    font-size: 28px;
+    font-size: var(--font-5xl);
     font-weight: 800;
     color: $primary-text;
     line-height: 1;
   }
   .ach-total-label {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
     font-weight: 600;
   }
@@ -1512,20 +1513,20 @@ async function handleExportDiagnosis(): Promise<void> {
   background: $bg-color-hover;
   border-radius: $radius-md;
 
-  .ach-cat-icon { font-size: 16px; line-height: 1; }
-  .ach-cat-name { font-size: 12px; font-weight: 700; color: $text-main; flex: 1; }
-  .ach-cat-count { font-size: 12px; font-weight: 800; color: $primary-text; }
+  .ach-cat-icon { font-size: var(--font-lg); line-height: 1; }
+  .ach-cat-name { font-size: var(--font-xs); font-weight: 700; color: $text-main; flex: 1; }
+  .ach-cat-count { font-size: var(--font-xs); font-weight: 800; color: $primary-text; }
 }
 
 .ach-recent {
   .ach-recent-title {
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 800;
     color: $text-main;
     margin-bottom: 8px;
   }
   .ach-recent-empty {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
   }
   .ach-recent-list {
@@ -1541,9 +1542,9 @@ async function handleExportDiagnosis(): Promise<void> {
     border: 1px solid $border-light;
     border-radius: $radius-sm;
 
-    .recent-icon { font-size: 18px; line-height: 1; }
-    .recent-name { flex: 1; font-size: 13px; font-weight: 700; color: $text-main; }
-    .recent-date { font-size: 11px; color: $text-muted; font-weight: 600; }
+    .recent-icon { font-size: var(--font-xl); line-height: 1; }
+    .recent-name { flex: 1; font-size: var(--font-sm); font-weight: 700; color: $text-main; }
+    .recent-date { font-size: var(--font-2xs); color: $text-muted; font-weight: 600; }
   }
 }
 
@@ -1567,12 +1568,12 @@ async function handleExportDiagnosis(): Promise<void> {
     margin-bottom: 8px;
 
     .subject-name {
-      font-size: 14px;
+      font-size: var(--font-base);
       font-weight: 700;
       color: $text-main;
     }
     .subject-count {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $text-sub;
       font-weight: 600;
     }
@@ -1610,7 +1611,7 @@ async function handleExportDiagnosis(): Promise<void> {
     background: $bg-color-hover;
     color: $text-sub;
     font-weight: 800;
-    font-size: 13px;
+    font-size: var(--font-sm);
     flex-shrink: 0;
 
     &:first-child {
@@ -1628,7 +1629,7 @@ async function handleExportDiagnosis(): Promise<void> {
     gap: 12px;
 
     .top-title {
-      font-size: 14px;
+      font-size: var(--font-base);
       font-weight: 600;
       color: $text-main;
       white-space: nowrap;
@@ -1636,7 +1637,7 @@ async function handleExportDiagnosis(): Promise<void> {
       text-overflow: ellipsis;
     }
     .top-meta {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $danger-text;
       font-weight: 700;
       flex-shrink: 0;
@@ -1677,7 +1678,7 @@ async function handleExportDiagnosis(): Promise<void> {
           width: 100%;
           background: $bg-color-hover;
           border-radius: 6px 6px 0 0;
-          transition: height 0.4s;
+          transition: height var(--duration-slower) var(--ease-standard);
 
           &.active {
             background: $gradient-primary;
@@ -1685,13 +1686,13 @@ async function handleExportDiagnosis(): Promise<void> {
         }
       }
       .day-count {
-        font-size: 11px;
+        font-size: var(--font-2xs);
         color: $primary-text;
         font-weight: 700;
         margin-top: 4px;
       }
       .day-label {
-        font-size: 11px;
+        font-size: var(--font-2xs);
         color: $text-sub;
         margin-top: 4px;
       }
@@ -1699,7 +1700,7 @@ async function handleExportDiagnosis(): Promise<void> {
   }
 
   .week-summary {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: $text-sub;
     text-align: center;
     padding-top: 12px;
@@ -1707,7 +1708,7 @@ async function handleExportDiagnosis(): Promise<void> {
 
     b {
       color: $primary-text;
-      font-size: 16px;
+      font-size: var(--font-lg);
       margin: 0 3px;
     }
   }
@@ -1721,14 +1722,14 @@ async function handleExportDiagnosis(): Promise<void> {
   gap: 16px;
 
   .wall-entry-title {
-    font-size: 15px;
+    font-size: var(--font-md);
     font-weight: 700;
     color: $text-main;
     margin-bottom: 4px;
   }
 
   .wall-entry-desc {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-sub;
   }
 }
@@ -1747,13 +1748,13 @@ async function handleExportDiagnosis(): Promise<void> {
 
   .pkg-info {
     .pkg-title {
-      font-size: 15px;
+      font-size: var(--font-md);
       font-weight: 700;
       color: $text-main;
       margin-bottom: 4px;
     }
     .pkg-desc {
-      font-size: 12px;
+      font-size: var(--font-xs);
       color: $text-sub;
     }
   }
@@ -1768,7 +1769,7 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 .profile-hint {
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.7;
   color: $text-sub;
   margin: 0 0 12px;
@@ -1794,13 +1795,13 @@ async function handleExportDiagnosis(): Promise<void> {
   background: $bg-color-hover;
 
   &__name {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: $text-main;
   }
 
   &__badge {
-    font-size: 11px;
+    font-size: var(--font-2xs);
     font-weight: 700;
     padding: 2px 8px;
     border-radius: 999px;
@@ -1816,15 +1817,15 @@ async function handleExportDiagnosis(): Promise<void> {
   min-width: 0;
   height: 32px;
   padding: 0 10px;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: $text-main;
   background: $card-bg;
   border: 1px solid $border-color;
   border-radius: $radius-md;
 
   &:focus-visible {
-    outline: 2px solid var(--primary-text);
-    outline-offset: 1px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 }
 
@@ -1837,7 +1838,7 @@ async function handleExportDiagnosis(): Promise<void> {
 .profile-btn {
   height: 30px;
   padding: 0 12px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 700;
   color: $text-main;
   background: $card-bg;
@@ -1849,8 +1850,8 @@ async function handleExportDiagnosis(): Promise<void> {
   &:hover:not(:disabled) { background: $bg-color-hover; }
 
   &:focus-visible {
-    outline: 2px solid var(--primary-text);
-    outline-offset: 1px;
+    outline: var(--focus-ring-w) solid var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
   }
 
   &:disabled {
@@ -1887,14 +1888,14 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 .diag-entry-title {
-  font-size: 15px;
+  font-size: var(--font-md);
   font-weight: 700;
   color: $text-main;
   margin-bottom: 4px;
 }
 
 .diag-entry-desc {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
 
   b { color: $text-main; }
@@ -1911,7 +1912,7 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 .diag-notice {
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.7;
   color: $text-sub;
   background: $bg-color-hover;
@@ -1920,19 +1921,19 @@ async function handleExportDiagnosis(): Promise<void> {
 }
 
 .diag-report {
-  font-size: 13px;
+  font-size: var(--font-sm);
   line-height: 1.8;
   color: $text-main;
 
   :deep(h2) {
-    font-size: 16px;
+    font-size: var(--font-lg);
     font-weight: 800;
     color: $text-main;
     margin: 4px 0 8px;
   }
 
   :deep(h3) {
-    font-size: 14px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: $text-main;
     margin: 12px 0 6px;
@@ -1953,7 +1954,7 @@ async function handleExportDiagnosis(): Promise<void> {
   }
 
   :deep(code) {
-    font-size: 12px;
+    font-size: var(--font-xs);
     background: $bg-color-hover;
     border-radius: $radius-sm;
     padding: 1px 5px;

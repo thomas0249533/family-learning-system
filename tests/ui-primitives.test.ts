@@ -28,6 +28,7 @@ const PRIMITIVES = [
   'ProgressBar',
   'EmptyState',
   'PageHeader',
+  'Skeleton',
 ] as const
 
 function read(p: string): string {
@@ -174,7 +175,7 @@ describe('展示页与路由（DEV-only 防漂移）', () => {
     expect(literal).not.toContain('design-system')
   })
 
-  it('展示页覆盖全部 8 个基元（data-ds 区块）', () => {
+  it('展示页覆盖全部 10 个基元（data-ds 区块）', () => {
     const ds = read(join(ROOT, 'src/views/DesignSystem.vue'))
     const expected = [
       'app-button',
@@ -185,8 +186,10 @@ describe('展示页与路由（DEV-only 防漂移）', () => {
       'progress-bar',
       'empty-state',
       'page-header',
+      'icon-base',
+      'skeleton',
     ]
     for (const key of expected) expect(ds).toContain(`data-ds="${key}"`)
-    expect(readdirSync(UI_DIR).filter((f) => f.endsWith('.vue'))).toHaveLength(8)
+    expect(readdirSync(UI_DIR).filter((f) => f.endsWith('.vue'))).toHaveLength(10)
   })
 })

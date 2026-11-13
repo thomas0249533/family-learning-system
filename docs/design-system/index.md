@@ -1,9 +1,9 @@
 # 设计系统 · 入口
 
-> 状态：**V1.2 已落地**（8 基元 + 三层 token + 6 组主题）
+> 状态：**V1.2 已落地**（9 基元 + 三层 token + 6 组主题；V4.0 新增 `IconBase` 取代 emoji 图标）
 > 本文只做「怎么读、改哪里、先跑什么」。逐项细节见：
 > - [`tokens.md`](./tokens.md) —— token 分层、命名、全量组件级别名、新增白名单
-> - [`primitives.md`](./primitives.md) —— 8 个基元的 props / slots / events / token / a11y
+> - [`primitives.md`](./primitives.md) —— 10 个基元的 props / slots / events / token / a11y
 > - [`a11y.md`](./a11y.md) —— 对比度实测（6 组）、语义色分工、可见变化登记
 
 ---
@@ -24,7 +24,7 @@ tokens.ts  ──tokens:build──▶  theme.scss  (CSS 变量，6 组主题)
            variables.scss   (SCSS 门面 $x: var(--x)；组件只引它或直接 var())
                     │
                     ▼
-           src/components/ui/*.vue   (8 基元，零硬编码色)
+           src/components/ui/*.vue   (9 基元，零硬编码色)
 ```
 
 ## 2. 三层 token：各层能写什么、不能写什么
@@ -71,6 +71,11 @@ npm run tokens:check
   && npm run lint:styles
   && npm run check:hex
   && npm run check:text-color
+  && npm run check:font-size
+  && npm run check:motion
+  && npm run check:a11y
+  && npm run check:icon-contrast
+  && npm run check:primitives
   && npm run test
 ```
 
@@ -87,11 +92,16 @@ npm run tokens:check
 | `npm run tokens:build` | 由 `tokens.ts` 写回两个产物 | 是 |
 | `npm run check:hex` | 禁止 `src/{views,modules,components}` 出现字面量色 | 否 |
 | `npm run check:text-color` | 禁止裸 `color:` 引用 `--{tone}-color` | 否 |
+| `npm run check:font-size` | 禁止 `font-size: <数字>px`，一律走 `--font-*` 阶梯 | 否 |
+| `npm run check:motion` | 禁止 `transition`/`animation` 写裸时长与裸缓动，一律走 `--duration-*` / `--ease-*` | 否 |
+| `npm run check:a11y` | 焦点环只准走 `--focus-ring*` token；纯图标按钮必须有 `aria-label`；可点击容器必须能 Tab 到 | 否 |
+| `npm run check:icon-contrast` | 禁止「`-color`（图形色）当实心底 + `text-on-primary`/`on-strong` 前景」——实测 2.85:1，跌破 1.4.11 的 3:1 | 否 |
+| `npm run check:primitives` | 禁止视图里自绘卡片外观（card-bg + radius + shadow）；禁止直引 naive 的 NCard/NBadge/NEmpty/NSkeleton | 否 |
 | `npm run lint:styles` | stylelint（选择器/属性顺序等） | 否 |
 | `npm run typecheck` | `vue-tsc --noEmit` | 否 |
 | `npm run test` | vitest（含 `tests/design-system-docs.test.ts` 文档防漂移） | 只自愈 token 产物 |
 
-## 5. 8 个基元索引
+## 5. 10 个基元索引
 
 全部位于 `src/components/ui/`。「包」= 内部代理 naive-ui 同名组件（键盘/焦点/a11y 继承自 naive）；
 「自建」= 自己写的语义结构。
@@ -106,6 +116,8 @@ npm run tokens:check
 | `ProgressBar` | 自建 `div` | 掌握度 / 完成度条，`role="progressbar"` | `--progress-track-bg` `--progress-fill-bg` | [primitives.md#progressbar](./primitives.md#progressbar) |
 | `SectionTitle` | 自建 | 小节标题（可选左竖条 / 计数 / 右侧插槽） | `--text-main` `--badge-neutral-bg` | [primitives.md#sectiontitle](./primitives.md#sectiontitle) |
 | `StatCard` | 自建 `div` | 统计数字卡（竖排/横排、可交互） | `--stat-value-fg` `--card-bg` | [primitives.md#statcard](./primitives.md#statcard) |
+| `Skeleton` | 自建 `span` | 加载占位骨架（text / rect / circle），默认装饰隐藏、可 `label` 播报 | `--bg-color-hover` `--radius-*` | [primitives.md#skeleton](./primitives.md#skeleton) |
+| `IconBase` | 自建 `svg` | 统一 SVG 图标（V4.0 取代 emoji），`currentColor` 染色，随主题/状态跟随 | 跟随父级 `color`（无私有 token） | [primitives.md#iconbase](./primitives.md#iconbase) |
 
 > 展示页：`src/views/DesignSystem.vue`，路由 `/design-system`，**仅 `import.meta.env.DEV` 注册**
 > （生产构建里不存在）。改基元先在这里过一遍浅色/深色。
@@ -135,8 +147,12 @@ npm run tokens:check
 1. **`-color` 是图形色，`-text` 是文字色。**
    `--{primary,success,warning,danger,info}-color` 只能用于边框 / 描边 / 背景 / 渐变 / 图形填充；
    一切 `color:` 必须用 `-text`（对自身 `-light` 也 ≥4.5，6 组全过）。由 `npm run check:text-color` 强制。
+   **它同样不能当「承载前景的实心底」**：`-color` 上压 `text-on-primary` 实测 `primary.light` 只有
+   **2.85:1**，连非文本的 3.0 都不到。实心底一律 `-text`（→ 5.12:1），由 `npm run check:icon-contrast` 强制。
 2. **半透明一律 `rgba(var(--x-rgb), a)`，不用 `color-mix()`。**
-   例：焦点环 `rgba(var(--primary-rgb), 0.55)`。理由见 [`tokens.md`](./tokens.md#6-为什么不用-color-mix)。
+   例：`--primary-soft` 的 `rgba(var(--primary-rgb), α)`。理由见 [`tokens.md`](./tokens.md#6-为什么不用-color-mix)。
+   注意**焦点环不要用半透明**：α 会被底色稀释，实测 55% 主色压在浅底上只有 ~2.4:1，
+   达不到 WCAG 1.4.11 的 3:1（见 §4 的 `check:a11y`）。
 
 ## 8. 我要加东西，该改哪个文件？
 
@@ -148,6 +164,7 @@ npm run tokens:check
 | 加一个组件级别名 | `components.scss` + `tokens.ts` 的 `COMPONENT_TOKENS`（**双写**） | `tests/design-system-docs.test.ts` 会要求写进 `tokens.md` |
 | 加一个新基元 | `src/components/ui/`、展示页、`primitives.md` | 同上测试要求 `primitives.md` 出现该文件名 |
 | 新增一个可用变量到组件 | `variables.scss`（门面） | 只加 `$x: var(--x)`，不写值 |
+| 做一块「彩色底的图标 chip」 | `src/core/a11y/icon-spots.ts` **必须登记一行** | 发现门禁会扫模板，没登记就红（见 [`tokens.md`](./tokens.md) §12） |
 
 ## 9. 文档防漂移
 

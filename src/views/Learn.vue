@@ -10,6 +10,6 @@
 
 <style scoped>
 .learn-container { padding: 16px; }
-.fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
+.fade-enter-active, .fade-leave-active { transition: opacity var(--duration-base) var(--ease-standard); }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>

@@ -82,7 +82,16 @@
         </div>
       </template>
 
-      <div v-if="loading" class="loading">正在安排今天的任务…</div>
+      <div v-if="loading" class="loading" aria-busy="true">
+        <div v-for="n in 4" :key="n" class="skeleton-row">
+          <div class="sk-idx"></div>
+          <div class="sk-body">
+            <div class="sk-line sk-title"></div>
+            <div class="sk-line sk-sub"></div>
+          </div>
+          <div class="sk-cost"></div>
+        </div>
+      </div>
 
       <EmptyState
         v-else-if="!plan || plan.items.length === 0"
@@ -99,7 +108,7 @@
           :class="[`item--${item.kind}`, { done: isDone(item.id) }]"
           @click="startItem(item)"
         >
-          <span class="item-index" aria-hidden="true">{{ isDone(item.id) ? '✓' : idx + 1 }}</span>
+          <span class="item-index" aria-hidden="true"><IconBase v-if="isDone(item.id)" name="check" size="1em" /><template v-else>{{ idx + 1 }}</template></span>
           <span class="item-body">
             <span class="item-top">
               <AppBadge :tone="toneOf(item.kind)" size="sm">{{ kindLabel[item.kind] }}</AppBadge>
@@ -121,7 +130,7 @@
       <template #header>
         <div class="list-header">
           <span>今天的总结</span>
-          <AppBadge tone="success" size="sm" icon="✅">已完成</AppBadge>
+          <AppBadge tone="success" size="sm" icon="check-circle">已完成</AppBadge>
         </div>
       </template>
 
@@ -225,7 +234,7 @@ const dashOffset = computed(() => `${(CIRC * (1 - (progress.value?.ratio ?? 0)))
 const headerTitle = computed(() => {
   const p = progress.value
   if (!p) return '正在安排今天的学习'
-  if (p.finished) return '今天的任务全部完成 🎉'
+  if (p.finished) return '今天的任务全部完成'
   if (p.doneItems === 0) return `今天有 ${p.totalItems} 项，约 ${plan.value?.totals.minutes ?? 0} 分钟`
   return `还剩 ${p.totalItems - p.doneItems} 项`
 })
@@ -393,7 +402,7 @@ onMounted(load)
   stroke-width: 8;
   stroke-linecap: round;
   stroke-dasharray: 251.3;
-  transition: stroke-dashoffset 0.4s ease;
+  transition: stroke-dashoffset var(--duration-slower) var(--ease-standard);
 }
 
 .ring-text {
@@ -402,12 +411,12 @@ onMounted(load)
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: var(--font-3xl);
   font-weight: 800;
   color: $primary-text;
 
   .ring-unit {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     margin-left: 1px;
   }
@@ -419,7 +428,7 @@ onMounted(load)
 }
 
 .head-title {
-  font-size: 17px;
+  font-size: var(--font-xl);
   font-weight: 800;
   color: $text-main;
   line-height: 1.35;
@@ -427,7 +436,7 @@ onMounted(load)
 
 .head-sub {
   margin-top: 4px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
 }
 
@@ -438,7 +447,7 @@ onMounted(load)
   gap: 8px;
 
   .goal-label {
-    font-size: 12px;
+    font-size: var(--font-xs);
     color: $text-muted;
   }
 }
@@ -447,12 +456,12 @@ onMounted(load)
   border: 1px solid var(--border-color);
   background: transparent;
   color: $text-sub;
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 700;
   padding: 3px 10px;
   border-radius: 999px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--duration-fast) var(--ease-standard);
 
   &.active {
     border-color: var(--primary-color);
@@ -479,10 +488,51 @@ onMounted(load)
 }
 
 .loading {
-  padding: 28px 16px;
-  text-align: center;
-  color: $text-sub;
-  font-size: 14px;
+  padding: 8px 16px 24px;
+}
+
+/* V4.0 · 骨架屏：弱机/首屏等待时给"有内容在加载"的确定感，替代纯文本 */
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-child { border-bottom: none; }
+}
+
+.sk-idx,
+.sk-cost,
+.sk-line {
+  background: linear-gradient(90deg, $bg-color-hover 25%, $surface-2 37%, $bg-color-hover 63%);
+  background-size: 400% 100%;
+  border-radius: 6px;
+  animation: skeleton-shimmer 1.4s var(--ease-standard) infinite; /* check-motion-allow: 骨架屏微光循环 */
+}
+
+.sk-idx {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sk-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sk-title { height: 14px; width: 55%; }
+.sk-sub { height: 11px; width: 80%; }
+.sk-cost { width: 44px; height: 14px; flex-shrink: 0; }
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
 }
 
 .empty {
@@ -505,7 +555,7 @@ onMounted(load)
   border-bottom: 1px solid var(--border-color);
   text-align: left;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background var(--duration-fast) var(--ease-standard);
 
   &:last-child {
     border-bottom: none;
@@ -513,6 +563,11 @@ onMounted(load)
 
   &:hover {
     background: $bg-color-hover;
+  }
+
+  /* V4.0 · 完成正反馈：点亮瞬间 ✅ 弹一下，给孩子一个"我推进了"的节拍 */
+  &.done .item-index {
+    animation: item-done-pop var(--duration-slower) var(--ease-spring, var(--ease-spring));
   }
 
   &.done {
@@ -531,7 +586,7 @@ onMounted(load)
   border-radius: 50%;
   background: $primary-light;
   color: $primary-text;
-  font-size: 13px;
+  font-size: var(--font-sm);
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -569,7 +624,7 @@ onMounted(load)
 }
 
 .item-title {
-  font-size: 15px;
+  font-size: var(--font-md);
   font-weight: 700;
   color: $text-main;
   overflow: hidden;
@@ -581,7 +636,7 @@ onMounted(load)
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
   min-width: 0;
 }
@@ -600,7 +655,7 @@ onMounted(load)
 
 .item-cost {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 700;
   color: $text-muted;
 }
@@ -620,12 +675,12 @@ onMounted(load)
 }
 
 .summary-value {
-  font-size: 24px;
+  font-size: var(--font-4xl);
   font-weight: 800;
   color: $primary-text;
 
   .summary-unit {
-    font-size: 12px;
+    font-size: var(--font-xs);
     font-weight: 700;
     margin-left: 2px;
     color: $text-sub;
@@ -634,13 +689,13 @@ onMounted(load)
 
 .summary-label {
   margin-top: 2px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: $text-sub;
 }
 
 .summary-tip {
   margin: 0 0 14px;
-  font-size: 13px;
+  font-size: var(--font-sm);
   color: $text-sub;
   line-height: $leading-normal;
 }
@@ -657,7 +712,20 @@ onMounted(load)
 
 .hint-text {
   margin: 0 0 12px;
-  font-size: 14px;
+  font-size: var(--font-base);
   color: $text-sub;
+}
+
+@keyframes item-done-pop {
+  0% { transform: scale(0.5); }
+  55% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item.done .item-index { animation: none; }
+  .skeleton-row .sk-idx,
+  .skeleton-row .sk-cost,
+  .skeleton-row .sk-line { animation: none; }
 }
 </style>
