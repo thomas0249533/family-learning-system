@@ -20,6 +20,8 @@ import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, 'source')
 PKG_ID = 'daily-english-ket-pu3'
+# 内容版本：每次改内容必须升（content-dist 目录比对只认它）
+VERSION = '1.0.1'
 
 # 天 → (单元, 课本页码)。页码取 PDF 每天表格里的「学生书 Unit N – page X」，已核过：
 # 表内残值（`16-`、Day44 错行 76-77）按单元页序修正；复习日无新增页，留空。
@@ -251,8 +253,8 @@ def build():
         if not topics:
             raise SystemExit(f'Day {day} 没有任何板块，检查 source/')
 
-        unit_no_disp = 'Hello' if unit_no == '0' else unit_no
-        title = f'Day {day} · Unit {unit_no_disp}'
+        unit_disp = 'Unit 0（Hello）' if unit_no == '0' else f'Unit {unit_no}'
+        title = f'Day {day} · {unit_disp}'
         if pages:
             title += f'（P{pages}）'
         else:
@@ -291,7 +293,7 @@ def build():
             'author': '家庭学习系统',
             'language': 'en',
             'dependencies': [],
-            'version': '1.0.0',
+            'version': VERSION,
         },
         'knowledgePoints': kps,
         'units': units,

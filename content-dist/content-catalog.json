@@ -8,7 +8,7 @@
       "sha256": "19f292614d67a6d8321a3eb5c59a72dadccf5ee401f889941f9e9ae54faf7718",
       "assets": {
         "file": "assets/special-chinese-2-up-kantu/assets.zip",
-        "sha256": "14cecacf47a4011ed6176df274ee0805ac6ec8bfd98f2d93db344c62707125e5"
+        "sha256": "4ddfafd25c08797aa2e6449aeb3f77249127fbfdd7f193f068672acfcd97b4d1"
       }
     },
     {
@@ -54,7 +54,7 @@
       "sha256": "fd76adcb5a79d40e5800cf57ab9f19190e759d73a7487ebe450c2379f5f720f4",
       "assets": {
         "file": "assets/special-chinese-4-up-vocab/assets.zip",
-        "sha256": "5683ed7eb52fa05b60c8b14141609b64d7354160278c1b8806b948bee79bf237"
+        "sha256": "3948e4a493debf2be627494d01811dcd3353a85410164c885e6974500934edaa"
       }
     },
     {
@@ -124,7 +124,7 @@
       "sha256": "2699d8be3eca94ab1d042fdda9b23fda99353052a32df62ad2d05a453152f945",
       "assets": {
         "file": "assets/special-english-4-down-vocab/assets.zip",
-        "sha256": "45432d59bf0f7841a9a7f626fd5dd90e499afc9f3fb594f780066c3934e0db95"
+        "sha256": "a8164c39abcdb453b77d91947e35009f779478b7c4ff02e1bc3bbcb9a570b463"
       }
     },
     {
@@ -140,7 +140,7 @@
       "sha256": "46200ff12d64fce6d693fd0d3e63f4f7b1fb5bb9df5d2b4f71177efec08c5979",
       "assets": {
         "file": "assets/special-english-4-up-vocab/assets.zip",
-        "sha256": "1e957665d97041f5aba3a460e79c2c63c6c4380bf54fafc6f12f775756be3f7f"
+        "sha256": "419190f5cbc5bcc66b4df903d634b25468e09d0a26d5a018b4fd5c92a8c6f74a"
       }
     },
     {
@@ -270,7 +270,7 @@
       "sha256": "529bd641fabd277fd1eb9578ce3c05ec0905f7a38dda360fa9f6cd3a92506953",
       "assets": {
         "file": "assets/special-english-movers-mock/assets.zip",
-        "sha256": "019d0d2ebe28a9b6417eea9d017800b65fe9d1a794439a490d7056a1f6dd3ee1"
+        "sha256": "19629178ddc32fa92c3577e8fb5a504c8059d0260808a9d65176a4b8afaa0e42"
       }
     },
     {
@@ -286,14 +286,14 @@
       "sha256": "c1b6fcd44b6f574790ddfb01e6bce4dc612884d254f2721f95f7a07985c805a7",
       "assets": {
         "file": "assets/special-english-movers-unit/assets.zip",
-        "sha256": "f6eea04181b7d24a63290c4d78d2f1179bd4d1d19eb1fd3194ef5da132dc30ce"
+        "sha256": "790ca58240f8b5a91653cbbdf7f9fb61bea471b5cfe67a2b1c9f9799f22687f2"
       }
     },
     {
       "packageId": "daily-english-ket-pu3",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "KET 58 天打卡 · PU3 单词与句型",
-      "sha256": "63837f512f37d121a609544506d0973946b8f88a297356f42f2291896481172d"
+      "sha256": "ca23f43bb2e04d8e7b186940d48a5a5f9d5aa3fd2cca53eb077ffe377a1060cf"
     },
     {
       "packageId": "daily-math-2-up-rjb-45d",
@@ -392,7 +392,7 @@
       "sha256": "ed68ae4f2778513c55c3b93436331e9b7dcee31f26f0c9efea78bc6d72be8038",
       "assets": {
         "file": "assets/special-math-4-up-shape/assets.zip",
-        "sha256": "46b06dee5a2cb0237883b872e3d11fa17e85c1d64f6edce196c4678dfd58b6f7"
+        "sha256": "81eb1daec6104ddb48fd8cf11ae15d65a706d734e9fc1efb0aa9816cb7c1b96e"
       }
     },
     {

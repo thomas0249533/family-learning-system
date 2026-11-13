@@ -16,7 +16,7 @@
   "author": "家庭学习系统",
   "language": "en",
   "dependencies": [],
-  "version": "1.0.0"
+  "version": "1.0.1"
  },
  "knowledgePoints": [
   {
@@ -7664,7 +7664,7 @@
   {
    "id": "ket-d01",
    "name": "Day 1",
-   "title": "Day 1 · Unit Hello（P4-5）",
+   "title": "Day 1 · Unit 0（Hello）（P4-5）",
    "desc": "6 个单词 · 4 个句型",
    "knowledgePointIds": [
     "kp-d01-w01",
