@@ -118,6 +118,21 @@ export const GLOBAL_KEYS = [
    * keychain 插件，真 Keychain 需新增 Rust 插件 + 重新打包，已单开任务，不在 F1。
    */
   'ai:config',
+  /**
+   * P0-1 · 隐藏学习包（`{ v: 1, items: { [packageId]: { hidden, at } } }`）。
+   *
+   * **设备级（global）**：隐藏的是书架上的包，不是某个孩子的进度 ——
+   * 判据见本文件顶部「这个值换了孩子还成立吗」，成立。若按档案分片，
+   * 在老大档案里藏掉的旧包切到老二又会出现。
+   *
+   * 读写入口只有 `src/core/settings/hiddenPackages.ts`；合并**不能**走通用全局键的
+   * 「本机存在即保留」（两台设备各隐藏不同的包会丢一边），专用逐项 LWW 分支见
+   * `mergeBundle.ts` 的 `planMerge` 第 4 段。
+   *
+   * 必须登记在这里：漏登记会让 `classifyKey()` 判 unknown，
+   * `mergeBundle.ts` 就会静默跳过备份里的值 —— 用户以为隐藏同步了，其实没有。
+   */
+  'packages:hidden',
 ] as const
 
 export type ProfileScopedBase = (typeof PROFILE_SCOPED_KEYS)[number]

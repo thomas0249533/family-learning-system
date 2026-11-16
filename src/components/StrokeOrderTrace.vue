@@ -19,14 +19,22 @@
     </div>
 
     <div class="stroke-trace__foot">
-      <span class="stroke-trace__hint">在虚线大字上描红，练习汉字书写</span>
-      <span v-if="coverage > 0" class="stroke-trace__coverage">描红覆盖 {{ coverage }}%</span>
+      <span class="stroke-trace__hint" aria-live="polite">{{ hintText }}</span>
+      <span v-if="tier.label" class="stroke-trace__coverage" :class="`is-${tier.key}`">
+        描红覆盖 {{ tier.label }}
+      </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import {
+  coverageTier,
+  isOutsideFrame,
+  traceFrameInset,
+  traceHintOf,
+} from '@core/handwriting/trace'
 
 const props = defineProps<{
   /** 要练习的汉字 */
@@ -40,6 +48,15 @@ const props = defineProps<{
 const size = props.size ?? 300
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const coverage = ref(0)
+/** 这一遍有没有笔画落在田字格之外（写飞了）；每次清除重描复位 */
+const overflow = ref(false)
+
+/** 覆盖度档位：徽标文案 + 建议文案都出自纯函数，见 `core/handwriting/trace.ts` */
+const tier = computed(() => coverageTier(coverage.value))
+/** 底部提示：溢出优先于覆盖度建议（写飞了是当下就能改的动作问题） */
+const hintText = computed(
+  () => traceHintOf({ coverage: coverage.value, overflow: overflow.value }) || '在田字格里描红，先描满再求准'
+)
 
 const GUIDE_COLOR = 'rgba(150, 160, 175, 0.32)' // check-hex-allow  canvas 描红引导色
 const INK_COLOR = '#2d6a4f' // check-hex-allow  主色（与 tokens.ts #2d6a4f 同值），canvas 墨迹
@@ -63,21 +80,39 @@ function setupCanvas(): void {
   drawGuide()
 }
 
-/** 描红引导：米字格 + 淡色大字（让孩子的笔顺有参照） */
+/**
+ * 描红引导：**田字格 + 淡色大字**（外加更淡的米字对角线作辅助）。
+ *
+ * 为什么把中线改成虚线：实线十字会和孩子的笔画抢视觉，虚线读起来是"参考线"，
+ * 而笔迹是实色 —— 一眼能分出"哪些是我写的"。对角线再淡一档，
+ * 因为米字格的四条斜线在描红场景里只是辅助定位，不该抢中线的位置。
+ */
 function drawGuide(): void {
   const canvas = canvasRef.value
   if (!canvas || !ctx) return
+  const inset = traceFrameInset(size)
   ctx.clearRect(0, 0, size, size)
-  // 米字格
+
+  // 米字格对角线（最淡，先画，会被后画的线压住）
   ctx.strokeStyle = GRID_COLOR
   ctx.lineWidth = 1
-  ctx.strokeRect(8, 8, size - 16, size - 16)
   ctx.beginPath()
-  ctx.moveTo(8, 8); ctx.lineTo(size - 8, size - 8)
-  ctx.moveTo(size - 8, 8); ctx.lineTo(8, size - 8)
-  ctx.moveTo(size / 2, 8); ctx.lineTo(size / 2, size - 8)
-  ctx.moveTo(8, size / 2); ctx.lineTo(size - 8, size / 2)
+  ctx.moveTo(inset, inset); ctx.lineTo(size - inset, size - inset)
+  ctx.moveTo(size - inset, inset); ctx.lineTo(inset, size - inset)
   ctx.stroke()
+
+  // 田字格：外框（实线）+ 十字中线（虚线）
+  ctx.strokeStyle = GRID_COLOR
+  ctx.lineWidth = 1.5
+  ctx.setLineDash([])
+  ctx.strokeRect(inset, inset, size - inset * 2, size - inset * 2)
+  ctx.setLineDash([4, 4])
+  ctx.beginPath()
+  ctx.moveTo(size / 2, inset); ctx.lineTo(size / 2, size - inset)
+  ctx.moveTo(inset, size / 2); ctx.lineTo(size - inset, size / 2)
+  ctx.stroke()
+  ctx.setLineDash([])
+
   // 引导大字
   ctx.fillStyle = GUIDE_COLOR
   ctx.font = `bold ${Math.floor(size * 0.62)}px "KaiTi", "STKaiti", "楷体", "SimSun", serif`
@@ -85,6 +120,7 @@ function drawGuide(): void {
   ctx.textBaseline = 'middle'
   ctx.fillText(props.char, size / 2, size / 2 + size * 0.02)
   coverage.value = 0
+  overflow.value = false
 }
 
 function pointPos(e: PointerEvent): { x: number; y: number } {
@@ -100,6 +136,7 @@ function onDown(e: PointerEvent): void {
   if (!ctx) return
   drawing = true
   const p = pointPos(e)
+  markOverflow(p)
   lastX = p.x; lastY = p.y
   // 起笔点
   ctx.fillStyle = INK_COLOR
@@ -112,6 +149,7 @@ function onDown(e: PointerEvent): void {
 function onMove(e: PointerEvent): void {
   if (!drawing || !ctx) return
   const p = pointPos(e)
+  markOverflow(p)
   ctx.strokeStyle = INK_COLOR
   ctx.lineWidth = Math.max(4, size * 0.02)
   ctx.lineCap = 'round'
@@ -121,6 +159,17 @@ function onMove(e: PointerEvent): void {
   ctx.lineTo(p.x, p.y)
   ctx.stroke()
   lastX = p.x; lastY = p.y
+}
+
+/**
+ * 记一次"写出格"。
+ *
+ * 只在**第一次**出去时置位（`if (overflow.value) return`）：一路拖出画面会
+ * 触发几十次 pointermove，每次都写一遍 ref 只会让底部那句提示反复重排。
+ */
+function markOverflow(p: { x: number; y: number }): void {
+  if (overflow.value) return
+  if (isOutsideFrame(p.x, p.y, size)) overflow.value = true
 }
 
 function onUp(): void {
@@ -211,10 +260,15 @@ watch(() => props.char, () => drawGuide())
   }
   &__coverage {
     font-weight: 700;
-    color: $primary-text;
-    background: $primary-light;
     padding: 2px 10px;
     border-radius: 20px;
+    color: $primary-text;
+    background: $primary-light;
+
+    /* 档位只换色相，不改字号与结构：徽标长度稳定，孩子不会觉得"页面在变" */
+    &.is-light { color: $text-sub; background: $bg-color-hover; }
+    &.is-good,
+    &.is-full { color: $success-text; background: $success-light; }
   }
 }
 </style>

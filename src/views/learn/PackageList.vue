@@ -80,6 +80,22 @@
         </button>
       </div>
 
+      <!--
+        隐藏包的主列表开关：只在真有隐藏包时出现，且状态放在组件内 ref ——
+        「显示已隐藏」是一次性查看动作，不是长期偏好；持久化会让家长某天
+        发现书架突然多了几个旧包却想不起来为什么。
+      -->
+      <button
+        v-if="hiddenPackageCount(hiddenState) > 0"
+        class="hidden-toggle"
+        type="button"
+        :aria-pressed="showHidden"
+        @click="showHidden = !showHidden"
+      >
+        <IconBase name="eye" size="1em" />
+        显示已隐藏 ({{ hiddenPackageCount(hiddenState) }})
+      </button>
+
       <!-- V4.0 · 工具快捷入口：底栏收敛为 5 后，搜索/笔顺/报告在此保留可达 -->
       <div class="tool-links">
         <router-link class="tool-link" to="/search">
@@ -162,13 +178,15 @@
                     <span class="week-chevron" aria-hidden="true">▾</span>
                   </button>
                   <div v-show="!b.showHead || !isWeekCollapsed(`${g.subject}:${b.label}`)" class="package-grid">
-                    <PackageCard
+                    <PackageCardCell
                       v-for="row in b.items"
                       :key="row.pkg.packageId"
                       :pkg="row.pkg"
                       mode="daily"
                       :status="pkgStatus(row.pkg)"
+                      :hidden="isPackageHidden(hiddenState, row.pkg.packageId)"
                       @share="openShare"
+                      @toggle-hidden="toggleHidden"
                     />
                   </div>
                 </div>
@@ -176,13 +194,15 @@
 
               <!-- 其余类型：直接卡片网格 -->
               <div v-else class="package-grid">
-                <PackageCard
+                <PackageCardCell
                   v-for="pkg in blk.items"
                   :key="pkg.packageId"
                   :pkg="pkg"
                   :mode="blk.mode"
                   :status="pkgStatus(pkg)"
+                  :hidden="isPackageHidden(hiddenState, pkg.packageId)"
                   @share="openShare"
+                  @toggle-hidden="toggleHidden"
                 />
               </div>
             </div>
@@ -192,7 +212,9 @@
 
       <AppCard v-if="totalVisible === 0" paddingless class="empty-card">
         <EmptyState
-          :description="searching ? `没有匹配「${search.trim()}」的学习包` : '暂无学习包，请先导入'"
+          :description="emptyDescription"
+          :action-text="allHidden.description"
+          @action="allHidden.action"
         />
       </AppCard>
     </template>
@@ -318,6 +340,15 @@
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { NCheckbox, NCheckboxGroup, NModal, NSpace, useMessage } from 'naive-ui'
 import {
+  emptyHiddenPackages,
+  hiddenPackageCount,
+  isPackageHidden,
+  loadHiddenPackages,
+  savePackageHidden,
+  type HiddenPackagesState,
+} from '@core/settings/hiddenPackages'
+import { invalidateDailyPlan } from '@core/plan/dailyPlanService'
+import {
   checkForUpdates,
   applyAllUpdates,
   installNewPackages,
@@ -330,7 +361,7 @@ import AppCard from '@/components/ui/AppCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import Skeleton from '@/components/ui/Skeleton.vue'
 import AppButton from '@/components/ui/AppButton.vue'
-import PackageCard from './PackageCard.vue'
+import PackageCardCell from './PackageCardCell.vue'
 import IconBase from '@/components/ui/IconBase.vue'
 import { usePackageStore } from '@core/stores/package'
 import { useUserDataStore } from '@core/stores/userData'
@@ -344,6 +375,15 @@ import type { LearningPackageRecord } from '@/db'
 const packageStore = usePackageStore()
 const userDataStore = useUserDataStore()
 const loading = ref(true)
+
+// ==================== 隐藏学习包 ====================
+/**
+ * `showHidden` 刻意只是组件内 ref：刷新页面回到默认收起。
+ * 「显示已隐藏」是一次性查看动作，不是长期偏好 —— 持久化会让家长某天
+ * 发现书架突然多了几个旧包，却想不起来为什么。
+ */
+const showHidden = ref(false)
+const hiddenState = ref<HiddenPackagesState>(emptyHiddenPackages())
 
 // ==================== V3.1 · 题库在线更新（仅手动触发） ====================
 const message = useMessage()
@@ -669,7 +709,14 @@ watch(showShareModal, (show) => {
 })
 
 onMounted(async () => {
-  await Promise.all([packageStore.loadPackages(), userDataStore.loadUserData()])
+  await Promise.all([
+    packageStore.loadPackages(),
+    userDataStore.loadUserData(),
+    // 隐藏状态读失败不该拦住整个书架：空状态等价于"没有隐藏包"
+    loadHiddenPackages().then((s) => { hiddenState.value = s }).catch((e) =>
+      console.warn('[PackageList] 读取隐藏包设置失败（按未隐藏处理）', e)
+    ),
+  ])
   loading.value = false
 })
 
@@ -793,6 +840,9 @@ const bySubject = computed<SubjectGroup[]>(() => {
 
   for (const pkg of packageStore.packages) {
     if (isInternal(pkg)) continue
+    // 过滤只在渲染层。下面的 `ownerIndex` / `statusByPackageId` 仍旧吃全量包 ——
+    // 归属索引漏一个包，那个包的进度在导入/迁移时就会被判成孤儿。
+    if (!showHidden.value && isPackageHidden(hiddenState.value, pkg.packageId)) continue
     if (!matchesSearch(pkg)) continue
     const subj = (pkg.manifest as any).subject as string | undefined
     const key: string = subj && (SUBJECT_ORDER as readonly string[]).includes(subj) ? subj : 'other'
@@ -837,6 +887,55 @@ function subjectBlocks(g: SubjectGroup) {
 }
 
 const totalVisible = computed(() => subjectCounts.value.all)
+
+/** 空态文案：全部被隐藏时不能说"暂无学习包，请先导入"——包就在库里，只是被藏了 */
+const emptyDescription = computed(() => {
+  if (searching.value) return `没有匹配「${search.value.trim()}」的学习包`
+  const n = hiddenPackageCount(hiddenState.value)
+  if (n > 0 && !showHidden.value) return `书架上有 ${n} 个包已隐藏`
+  return '暂无学习包，请先导入'
+})
+
+/** 空态动作：只有"全被隐藏"这一种情形需要「显示出来」按钮 */
+const allHidden = computed(() => {
+  const n = hiddenPackageCount(hiddenState.value)
+  const canShow = n > 0 && !showHidden.value && !searching.value
+  return {
+    description: canShow ? '显示出来' : '',
+    action: () => { if (canShow) showHidden.value = true },
+  }
+})
+
+/**
+ * 隐藏 / 取消隐藏。
+ *
+ * `invalidateDailyPlan()` 必须在写库成功之后调：隐藏的语义是**退役**，
+ * 不再参与今日计划与复习排期，但进度/错题/统计全保留。当天队列可能已经
+ * 排进了这个包的项，不重算会继续推给孩子。
+ *
+ * 失败分两层：写库失败给可见错误（用户能重试）；计划重算失败只 warn ——
+ * 隐藏本身已经成功，不该让家长以为没改成。
+ */
+async function toggleHidden(packageId: string): Promise<void> {
+  const next = !isPackageHidden(hiddenState.value, packageId)
+  try {
+    hiddenState.value = await savePackageHidden(packageId, next)
+  } catch (e) {
+    console.warn('[PackageList] 改隐藏状态失败', e)
+    message.error('没能改隐藏状态，请再点一次')
+    return
+  }
+  try {
+    await invalidateDailyPlan()
+  } catch (e) {
+    console.warn('[PackageList] 今日计划重算失败（隐藏已生效）', e)
+  }
+  message.success(
+    next
+      ? '已隐藏，可在顶部「显示已隐藏」找回'
+      : '已取消隐藏，书架和今日计划都会重新出现'
+  )
+}
 
 interface DailyRow {
   pkg: LearningPackageRecord
@@ -1063,6 +1162,29 @@ function dailyBucketsOf(pkgs: LearningPackageRecord[]) {
 
   &::-webkit-scrollbar { height: 6px; }
   &::-webkit-scrollbar-thumb { background: $border-color; border-radius: 999px; }
+}
+
+/* 「显示已隐藏」开关：只在真有隐藏包时出现，组件内 ref，刷新即收起 */
+.hidden-toggle {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  background: $card-bg;
+  color: $text-sub;
+  font-size: var(--font-sm);
+  font-family: inherit;
+  cursor: pointer;
+
+  &[aria-pressed='true'] { color: $primary-text; border-color: $primary-color; }
+  &:hover { border-color: $primary-color; }
+  &:focus-visible {
+    outline: var(--focus-ring-w) solid var(--btn-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
 }
 
 /* V4.0 · 工具快捷入口（底栏收敛后的兜底可达） */

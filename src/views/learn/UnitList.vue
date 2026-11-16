@@ -38,7 +38,7 @@
             :class="cardStatusClass(unitStatus(ru))"
             @click="selectUnit(ru)"
           >
-            <div class="unit-card-index">{{ idx + 1 }}</div>
+            <div class="unit-card-index">{{ unitBadge(ru, idx) }}</div>
             <div class="unit-card-body">
               <h3 class="unit-card-title">{{ ru.unit.title }}</h3>
               <p v-if="ru.unit.desc" class="unit-card-desc">{{ ru.unit.desc }}</p>
@@ -169,6 +169,24 @@ const statusByUnitId = computed<Map<string, CardStatus>>(() => {
 
 function unitStatus(ru: ResolvedUnit): CardStatus {
   return statusByUnitId.value.get(ru.unit.id) ?? 'none'
+}
+
+/**
+ * 角标文字：**优先用内容包给的课次号**，没有再退回序号。
+ *
+ * 为什么不能直接用 `idx + 1`：课次包的课本编号是断档的（四年级上册词语表只有
+ * 第 1/2/4/5/6/9/10/11/13/15/16/17/18/20/21/24/25 课有词表，略读课文没有）。
+ * 直接 `idx+1` 会让第 3 张卡显示"3"、而它其实是第 4 课 —— 家长对着课本找不到。
+ *
+ * 语文园地也是一个 unit，但没有课次号，用「园」占位（44px 宽的条放不下"园地一"，
+ * 完整名称在标题里）。
+ */
+function unitBadge(ru: ResolvedUnit, idx: number): string {
+  const unit = ru.unit as unknown as { lessonNo?: unknown; isGarden?: unknown }
+  const lessonNo = Number(unit?.lessonNo)
+  if (Number.isFinite(lessonNo) && lessonNo > 0) return String(Math.floor(lessonNo))
+  if (unit?.isGarden === true) return '园'
+  return String(idx + 1)
 }
 
 /**

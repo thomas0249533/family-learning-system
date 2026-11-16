@@ -43,6 +43,11 @@ import { mergeMistakes, mistakeKey } from './mergeMistakes'
 import { mergeSessions, sessionKey } from './mergeSessions'
 import { markKey, mergeCardCompletions } from './mergeCardCompletions'
 import { isSkippedBase, mergeSettingValue, mergeSettings } from './mergeSettings'
+import {
+  HIDDEN_PACKAGES_KEY,
+  mergeHiddenPackages,
+  normalizeHiddenPackages,
+} from '@core/settings/hiddenPackages'
 
 /**
  * 全局键里**绝不合并**的两个：
@@ -290,7 +295,7 @@ export function planMerge(
     plan.stats.achievementsAdded += settings.achievementsAdded
   }
 
-  // ---- 4. 全局键：本机存在即保留，本机缺失才写入 ----
+  // ---- 4. 全局键：本机存在即保留，本机缺失才写入（隐藏包是唯一例外，见 4a）----
   for (const [key, value] of Object.entries(remoteGlobals)) {
     if (value === undefined) continue
     if (GLOBAL_NEVER_MERGE.has(key)) continue
@@ -298,6 +303,28 @@ export function planMerge(
     // 前者该走 mergeSettings 才能拼出 `<base>:<pid>`，后者可能来自别的版本，
     // 盲目写进去等于往库里塞一个当前代码不认识的东西。
     if (classifyKey(key).kind !== 'global') continue
+
+    // ---- 4a. `packages:hidden`：逐项 LWW，**不能**套用"本机存在即保留" ----
+    // 反例：本机隐藏了 p_a、备份隐藏了 p_b。整体本机优先会丢掉 p_b；整体远端
+    // 优先会丢掉 p_a —— 两台设备各藏各的是常态，只有逐项比 `at` 才两头都保住。
+    // 也不能并集：并集会让"取消隐藏"的墓碑输给旧的 hidden:true，包自己复活。
+    //
+    // 与分片键的规则一样，**合并结果与本机现值逐字节相同就不写**：
+    // 归一化会按 packageId 排序键，所以 JSON 比较稳定；否则每次导入都重写一遍，
+    // 预览永远显示"发现新数据"（幂等性失效）。
+    if (key === HIDDEN_PACKAGES_KEY) {
+      const localRaw = (local.globalSettings ?? {})[key]
+      const merged = mergeHiddenPackages(localRaw, value)
+      const before = normalizeHiddenPackages(localRaw)
+      if (JSON.stringify(merged) === JSON.stringify(before)) {
+        plan.stats.settingsKeptLocal++
+        continue
+      }
+      plan.settingUpserts.push({ key, value: merged })
+      plan.stats.settingsChanged++
+      continue
+    }
+
     if ((local.globalSettings ?? {})[key] !== undefined) {
       plan.stats.settingsKeptLocal++
       continue

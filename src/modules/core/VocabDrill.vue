@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <div class="config-block" v-if="mode === 'dictation' || mode === 'paper'">
+      <div class="config-block" v-if="mode === 'dictation' || mode === 'paper' || mode === 'ink'">
         <div class="config-label">听写设置</div>
         <label class="dictation-toggle">
           <input v-model="showPromptInDictation" type="checkbox" />
@@ -62,6 +62,9 @@
         </label>
         <div v-if="mode === 'paper'" class="mode-note">
           <IconBase name="pen" size="1em" /> 孩子在纸上书写，写完对照答案自评；无需打字。
+        </div>
+        <div v-if="mode === 'ink'" class="mode-note">
+          <IconBase name="pen" size="1em" /> 孩子在书写板上写，笔迹直接上屏；提交后由家长逐份批改，批改结果才计入掌握度。
         </div>
       </div>
 
@@ -172,6 +175,25 @@
         </div>
       </div>
 
+      <!-- 手写板：看拼音写 → 逐格笔迹上屏 → 提交给家长批改（不判对错） -->
+      <div v-else-if="mode === 'ink'" class="input-area ink-area">
+        <div v-if="showPromptInDictation" class="prompt-block">
+          <div class="prompt-label">中文提示</div>
+          <div class="prompt-content">{{ currentAnswer }}</div>
+        </div>
+        <HandwritingPad
+          :key="currentIndex"
+          :answer="currentAnswer"
+          :pinyin="currentPrompt"
+          :disabled="inkSubmitting"
+          :submit-text="currentIndex === sessionWords.length - 1 ? '提交并完成' : '提交并下一题'"
+          @submit="submitInk"
+        />
+        <p v-if="inkError" class="ink-error" role="status">
+          <IconBase name="warning" size="1em" /> {{ inkError }}
+        </p>
+      </div>
+
       <!-- 拼字块：点选偏旁/词根块，按顺序拼出整个词（全程零打字） -->
       <div v-else-if="mode === 'chunks'" class="input-area chunk-area">
         <div class="prompt-block">
@@ -221,8 +243,8 @@
         </template>
       </div>
 
-      <!-- 底部按钮 -->
-      <div class="drill-actions">
+      <!-- 底部按钮。手写板自带提交按钮（它要知道"写到第几格"），这里整块隐藏 -->
+      <div v-if="mode !== 'ink'" class="drill-actions">
         <template v-if="mode === 'flip'">
           <AppButton size="large" @click="markWrong"><IconBase name="refresh" size="1em" /> 再练练</AppButton>
           <AppButton type="success" size="large" @click="markCorrect"><IconBase name="check-circle" size="1em" /> 我记住了</AppButton>
@@ -266,12 +288,23 @@
     <div v-else-if="phase === 'done'" class="done-screen">
       <div class="done-icon">{{ doneIcon }}</div>
       <div class="done-title">{{ doneTitle }}</div>
-      <div class="done-score">
-        <span class="done-num">{{ correctCount }}</span>
-        <span class="done-div">/</span>
-        <span class="done-total">{{ sessionWords.length }}</span>
-      </div>
-      <div class="done-rate">正确率 {{ doneRate }}%</div>
+      <template v-if="mode === 'ink'">
+        <!-- 手写轮次没有对错可报：判定权在家长，这里只报"交了几份" -->
+        <div class="done-score">
+          <span class="done-num">{{ inkSubmittedCount }}</span>
+          <span class="done-div">/</span>
+          <span class="done-total">{{ sessionWords.length }}</span>
+        </div>
+        <div class="done-rate">已提交，等家长批改</div>
+      </template>
+      <template v-else>
+        <div class="done-score">
+          <span class="done-num">{{ correctCount }}</span>
+          <span class="done-div">/</span>
+          <span class="done-total">{{ sessionWords.length }}</span>
+        </div>
+        <div class="done-rate">正确率 {{ doneRate }}%</div>
+      </template>
       <div class="done-unit" v-if="totalCount > 0">本单元已掌握 <b>{{ masteredCount }}</b> / {{ totalCount }} 词</div>
       <div class="done-time">用时 {{ formatDuration(elapsedSeconds) }}</div>
 
@@ -354,10 +387,13 @@ import { speak } from '@core/audio/speechService'
 import { gradeDictation } from '@core/quiz/dictationGrade'
 import { chunksOf, buildChunkChoices, joinedChunks, chunksEqual, gradeSelfAssessed } from '@core/quiz/wordChunks'
 import { useUserDataStore } from '@core/stores/userData'
+import { submitHandwriting } from '@core/stores/handwriting'
+import { cellCountOf, inkPromptOf } from '@core/handwriting/pad'
 import AppButton from '@/components/ui/AppButton.vue'
 import IconBase from '@/components/ui/IconBase.vue'
+import HandwritingPad from '@/components/HandwritingPad.vue'
 
-type Mode = 'flip' | 'input' | 'listen' | 'choice' | 'dictation' | 'paper' | 'chunks'
+type Mode = 'flip' | 'input' | 'listen' | 'choice' | 'dictation' | 'paper' | 'chunks' | 'ink'
 type Phase = 'intro' | 'drilling' | 'done' | 'review'
 /** 一题的判据来源：键入 / 纸上自评 / 拼字块 */
 type AnswerSource = 'typed' | 'self' | 'chunks'
@@ -425,6 +461,17 @@ const dictationAnswers = ref<DictationAnswer[]>([])
 const showPromptInDictation = ref(false)
 /** 纸笔听写：是否已亮出答案（亮出后才允许自评） */
 const paperRevealed = ref(false)
+/**
+ * 手写板模式（P1）· 本轮已提交的份数。
+ *
+ * 与 `dictationAnswers` **分开放**是刻意的：手写题没有对错可记，
+ * 混进去会让 `doneRate` / `wrongAnswers` / "只重练这几个"三处都把它当错题。
+ */
+const inkSubmittedCount = ref(0)
+/** 提交中（锁住提交按钮，防连点产生两行 pending） */
+const inkSubmitting = ref(false)
+/** 提交失败提示；**不清空笔迹** —— 孩子写的那一版还在组件里，重试即可 */
+const inkError = ref('')
 /** 拼字块模式：当前题的候选块与已选块 */
 const chunkChoices = ref<string[]>([])
 const selectedChunks = ref<string[]>([])
@@ -470,6 +517,7 @@ const MODE_DEFS: ReadonlyArray<{ value: Mode; icon: string; label: string; desc:
   { value: 'input', icon: 'pen', label: '输入', desc: '看中文写', group: 'write' },
   { value: 'dictation', icon: 'headphones', label: '听写', desc: '连写后批改', group: 'write' },
   { value: 'paper', icon: 'paper', label: '纸笔听写', desc: '纸上写·自评', group: 'write' },
+  { value: 'ink', icon: 'pen', label: '手写板', desc: '板上写·家长批改', group: 'write' },
   { value: 'chunks', icon: 'puzzle', label: '拼字块', desc: '点选偏旁/词根', group: 'write' },
 ]
 
@@ -529,6 +577,7 @@ const doneRate = computed(() => {
 })
 
 const doneIcon = computed(() => {
+  if (mode.value === 'ink') return 'pen'
   const r = doneRate.value
   if (r >= 90) return 'trophy'
   if (r >= 75) return 'celebrate'
@@ -537,6 +586,12 @@ const doneIcon = computed(() => {
 })
 
 const doneTitle = computed(() => {
+  // 手写轮次没有"正确率"可夸：不说"表现出色"，只说"写完了、等批改"
+  if (mode.value === 'ink') {
+    return inkSubmittedCount.value >= sessionWords.value.length
+      ? '这一轮都写完了，等家长批改'
+      : '这一轮先写到这儿'
+  }
   const r = doneRate.value
   if (r >= 90) return '出色表现！'
   if (r >= 75) return '表现良好！'
@@ -596,6 +651,16 @@ function undoChunk(): void {
 /** ✅ 写进度：不熟的词进"需复习"，熟悉的词累积升级 */
 async function writeProgress(word: any, isCorrect: boolean) {
   if (!word?.id || !props.packageId) return
+  // 手写第四态（`pending`）**永远不走这条路**：它的笔迹由 `submitHandwriting`
+  // 落库，判定权在家长，回流只发生在 `gradeHandwriting`。这里再挡一道 ——
+  // 只要 `isCorrect` 不是严格布尔（`undefined` / `null` / `NaN` 都算），一律不写：
+  // 下游把假值当"答错"处理，一次误传就会让 220 个词当场全进错题本、
+  // FSRS 把整包排到明天。宁可少记一题的进度，也不要在库里留下一批假错题。
+  // pending 分支当前无生产者（见 AnswerPayload.pending 注释），保留是为了接线时不必再动消费方
+  if (typeof isCorrect !== 'boolean') {
+    console.warn('[VocabDrill] writeProgress 收到非布尔判定，已忽略', word?.id)
+    return
+  }
   try {
     // 题目级埋点（每题一次）：每日题量 + 题型
     userDataStore.recordAnswerEvent({ exerciseId: word.id, questionType: 'spelling' })
@@ -648,6 +713,9 @@ function beginSession(words: any[]) {
   showFeedback.value = false
   dictationAnswers.value = []
   paperRevealed.value = false
+  inkSubmittedCount.value = 0
+  inkSubmitting.value = false
+  inkError.value = ''
   selectedChunks.value = []
   chunkChoices.value = []
   phase.value = 'drilling'
@@ -735,6 +803,52 @@ async function submitPaper(verdict: 'correct' | 'wrong') {
     correct: gradeSelfAssessed(verdict),
     source: 'self',
   })
+}
+
+/**
+ * 手写板：提交一格串 → 落库 pending → 下一题。
+ *
+ * 三条刻意的选择：
+ * 1. **不写 `writeProgress`**：手写没有对错，一旦按 false 写进度，220 道题会当场
+ *    全进错题本、FSRS 全排到明天。判定权在家长，批改时才由 store 回流。
+ * 2. **失败不清空**：提交抛错时 `currentIndex` 不动、组件不重挂，孩子写的那一版
+ *    还在画布上，点一次重试即可。清空等于逼他重写一遍（还会留下两份 pending）。
+ * 3. **不 emit `finished`**：那个事件是"今日任务记一笔"的语义，而"写了但没批"
+ *    不该算完成 —— 真正的记账发生在家长批改（`recordProgress`）那一刻。
+ */
+async function submitInk(cells: string[]) {
+  const w = currentWord.value
+  if (!w || inkSubmitting.value) return
+  inkSubmitting.value = true
+  inkError.value = ''
+  try {
+    await submitHandwriting({
+      packageId: props.packageId,
+      exerciseId: w.id ?? `drill:${currentIndex.value}`,
+      knowledgePointIds: w.id ? [w.id] : [],
+      prompt: inkPromptOf(currentPrompt.value, currentAnswer.value),
+      correctAnswer: currentAnswer.value.trim(),
+      cells,
+      cellCount: cellCountOf(currentAnswer.value),
+    })
+  } catch (e) {
+    console.warn('[VocabDrill] 手写提交失败', e)
+    inkError.value = '提交没成功，笔迹还在，再点一次就好'
+    inkSubmitting.value = false
+    return
+  }
+  inkSubmittedCount.value++
+  inkSubmitting.value = false
+  if (currentIndex.value < sessionWords.value.length - 1) {
+    currentIndex.value++
+  } else {
+    finishInk()
+  }
+}
+
+function finishInk() {
+  stopTimer()
+  phase.value = 'done'
 }
 
 /**
@@ -1150,6 +1264,23 @@ onUnmounted(() => {
   color: $text-sub;
   border: 1px dashed $border-color;
   border-radius: 12px;
+}
+
+/* P1 · 手写板：笔迹区自己带上下间距，这里只补失败提示 */
+.ink-area {
+  align-items: stretch;
+}
+
+.ink-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-xs);
+  color: $danger-text;
+  background: $danger-light;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 0;
 }
 
 .paper-answer {

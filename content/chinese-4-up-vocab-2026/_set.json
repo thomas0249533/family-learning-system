@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "setId": "chinese-4-up-vocab-2026-set",
+  "root": "special-chinese-4-up-vocab-2026",
+  "title": "四上语文 · 词语表默写（新版 · 按课次）",
+  "subject": "chinese",
+  "grade": 4,
+  "term": "up",
+  "edition": "人教版",
+  "importOrder": [
+    "special-chinese-4-up-vocab-2026"
+  ],
+  "packages": [
+    {
+      "file": "special-chinese-4-up-vocab-2026.json",
+      "packageId": "special-chinese-4-up-vocab-2026",
+      "type": "unit",
+      "visible": true,
+      "examMode": false,
+      "dependencies": []
+    }
+  ]
+}

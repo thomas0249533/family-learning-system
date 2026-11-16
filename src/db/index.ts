@@ -231,6 +231,105 @@ export interface CardCompletionRecord {
    * `customSounds`（设备资产）、`packageAssets`（图片二进制，太大且随包走）。
    */
 }
+/**
+ * V4.1 · 「手写作答」的一次作答（题目级随手练）。
+ *
+ * ## 场景边界：**题目级**，不是整批听写
+ * 用户的原话是「手写板填答案」——在**一道题**里手写填格子，写完就地批改。
+ * 所以这里按 `exerciseId` 归档，一次一行；**不做**「一次听写 N 个词 = 一个批次」
+ * 那种会话级模型（那会让「待批改」变成「待批一整卷」，交互完全不同）。
+ *
+ * ## `status` 为什么必须有 `pending` 通道
+ * 手写是"先写完、再批改"的两段式：孩子写完关掉页面，家长晚上回来批。
+ * 若只有对/错两态，中间那一刻就没有合法的落库形态 —— 要么丢掉（孩子白写），
+ * 要么默认判对（污染掌握度统计）。`pending` 就是这个中间态，且它是
+ * **待批改队列**：`retention` 永不清理它（见 `core/handwriting/retention.ts`）。
+ *
+ * ## 判定方向：人判，机器只记账
+ * `cells` 是孩子写下的内容（**逐格序列化笔迹**，`serializeStrokes()` 的产物，
+ * 没写的格是 `'[]'`），`correctAnswer` 是参考答案的**快照**（包可能被删/被更新，
+ * 批改时不该再去库里反查）。对错由 `gradeHandwriting(id, verdict)` 显式传入，
+ * 本表**不做自动判分** —— 手写的"形近字/笔顺"误判代价太高，自动判错会把孩子的
+ * 信心和统计一起搞坏。
+ *
+ * ## 为什么有 `partial` 而不只是对/错
+ * 「犬/大」「人/入」这类字形差异肉眼都难分。只给对/错二选一时，家长面对
+ * "差不多但有一笔不对"只能二选一：判对 → 错题本漏收；判错 → 错题本被"其实
+ * 会写"的字污染。`partial` 让结论落在中间，并把"哪几格不对"记在 `wrongCells`
+ * 里（**只给展示用，不进 `mistakes`** —— 那张表是题目粒度，逐字信息没有下游消费者）。
+ *
+ * ## 归属边界：**档案级，设备本地**
+ * - 按 `profileId` 分片（V1.4 · B1 规则：必填，取值只有 `currentProfileId()`）；
+ * - **不进备份、不进合并、不进 FSRS**。理由与 `topicSessions` 同源：手写内容
+ *   是"这一台设备上的一次书写痕迹"，搬到另一台机器没有意义（那边没有对应的
+ *   格子布局，回放出来只会错位）；而 `cells` 的对错结论已经在 `gradeHandwriting`
+ *   里回流进 `progress` / `mistakes` —— 那两张表进备份，结论就不会丢。
+ *   所以丢掉的只是"原笔迹"，不是"学习结果"。
+ *
+ * ## 索引说明（4 条，每条都有唯一查询对应）
+ * - `[profileId+exerciseId]`：按题回看历史（同一题允许留多份，见 retention 的 K=2）；
+ * - `[profileId+packageId]`：包被删除/重导入时的整包清理；
+ * - `[profileId+status]`：待批改队列（`pending`）的唯一查询入口。`status` 是
+ *   **必填**的，所以这一行永远建得进索引 —— 若做成可选的 `verdict?`，
+ *   未批改时值是 `undefined`，IndexedDB **不会为 key path 为 undefined 的行建索引**，
+ *   待批改列表就只能 `toArray()` 全量读（每行还带着几十 KB 的笔迹串）再内存筛；
+ * - 单列 `profileId`：`purgeOldHandwriting` 先 `count()` 判阈值、超了才 `toArray()`。
+ *   漏了它就会退化成全表扫（跨档案），正是 `check:profile-scope` 要拦的形态。
+ *
+ * 刻意**不建** `[profileId+createdAt]`：它的唯一用途是"不读行按时间排序"，那需要
+ * `.between()`（本仓 fakeDexie 不支持，真库也没人这么写）；实际排序都在内存里做。
+ * 一个没有查询会用的索引就是死索引 —— 与架构评审里要清理的那类技术债是同一种东西。
+ */
+export interface HandwritingRecord {
+  /** 自增主键（Dexie 生成） */
+  id?: number;
+  /** 归属档案（V1.4 · B1 规则：必填，取值只有 `currentProfileId()` 一个来源） */
+  profileId: string;
+  /** 入口包 id（与 `recordProgress` 的第 1 参数同口径） */
+  packageId: string;
+  /** 题目 id：一题一行，不是一批一行 */
+  exerciseId: string;
+  /** 本题触达的知识点（批改回流时喂给 `recordProgress` / `addMistake`） */
+  knowledgePointIds: string[];
+  /** 题干快照（批改时原包可能已更新，题干以**作答那一刻**看到的为准） */
+  prompt: string;
+  /** 参考答案快照（人判时的对照；不参与自动判分） */
+  correctAnswer: string;
+  /**
+   * 逐格**序列化笔迹**：`cells[i]` 是第 i 格的 `serializeStrokes()` 产物。
+   *
+   * 三条约定：
+   * 1. **不是文本**。这里是笔迹 JSON，回放用 `deserializeStrokes(cells[i])`；
+   *    数据层不解析它（解析是渲染组件的事，否则同一条轨迹会有两处口径）。
+   * 2. **没写的格是 `'[]'`**，不是缺席 —— `cells` 的长度恒等于格子数，
+   *    "第 2 格空着"本身就是给家长的信息。
+   * 3. **永不修改**。擦掉重写 = append 新行：旧行是"孩子当时写了什么"的事实，
+   *    改写它等于编辑历史，K=2 保留策略的唯一价值（这次 vs 上次的进步）当场作废。
+   */
+  cells: string[];
+  /** 格子总数（等于 `cells.length`；单独存是为了回放时不依赖数组长度） */
+  cellCount: number;
+  /**
+   * 批改结论：
+   *   `pending` 待批改（**永不自动清理**，它是队列不是历史）
+   *   `correct` 全对
+   *   `wrong`   全错（进错题本）
+   *   `partial` 部分对（同样进错题本 —— 与 `wrong` 在统计上完全同构，
+   *              差别只在 `wrongCells` 的展示）
+   */
+  status: 'pending' | 'correct' | 'wrong' | 'partial';
+  createdAt: string;
+  /** 批改时间（`pending` 时为 undefined） */
+  reviewedAt?: string;
+  /**
+   * 写错的格子下标（0-based，指向 `cells`）。**仅 `status === 'partial'` 时有意义**。
+   *
+   * 为什么不塞进 `mistakes`：那张表是**题目级**的，有三级掌握状态机与 `wrongCount`
+   * 语义；逐字错误没有下游消费者，硬塞进去会把它的口径搞脏。
+   * 读取侧容错：非 `partial` 的行即使带着它，也当脏数据忽略（不报错）。
+   */
+  wrongCells?: number[];
+}
 export class FamilyLearningDB extends Dexie {
   packages!: Table<LearningPackageRecord, string>;
   progress!: Table<ProgressRecord, number>;
@@ -241,6 +340,7 @@ export class FamilyLearningDB extends Dexie {
   customSounds!: Table<CustomSoundRecord, number>;
   packageAssets!: Table<PackageAssetRecord, number>;
   cardCompletions!: Table<CardCompletionRecord, number>;
+  handwritings!: Table<HandwritingRecord, number>;
 
   constructor() {
     super('FamilyLearningDB');
@@ -356,6 +456,33 @@ export class FamilyLearningDB extends Dexie {
       customSounds: '++id, [profileId+soundId], profileId, createdAt',
       packageAssets: '++id, [packageId+path], packageId',
       cardCompletions: '++id, [profileId+kind+targetId], profileId, kind'
+    });
+    // V4.1 · 「手写作答」（题目级随手练）—— 纯新增表，无存量数据要搬 →
+    // **不写 upgrade 钩子**，与 v5 加 topicSessions、v6 加 customSounds、
+    // v7 加 packageAssets、v8 加 cardCompletions 的处理一致：
+    // 没有数据要搬时，加钩子只会多一条「迁移失败」的失败路径。
+    //
+    // ★★★ 维护者注意（唯一一处抄漏就毁数据的点）★★★
+    // 上面 9 行必须与 `version(8)` **逐字一致**。Dexie 的语义是：`version(n)` 的
+    // `.stores()` 是**该版本的完整表清单**，不是增量。少抄一行 = 升级到 v9 时
+    // 那张表被判定为"已删除" → 用户数据消失，且**不会报错**。
+    // 唯一的防线是 `tests/fakeDexie-guard.test.ts` 与人工逐行核对。
+    //
+    // 索引选择见 `HandwritingRecord` 的注释。刻意**不建** `[profileId+createdAt]`：
+    // 没有查询会用到它（排序在内存里做），死索引是技术债。
+    this.version(9).stores({
+      packages: 'packageId, manifest.subject, manifest.grade',
+      progress:
+        '++id, [profileId+packageId+knowledgePointId], [profileId+packageId], profileId, status',
+      mistakes: '++id, [profileId+exerciseId], packageId, profileId, mastered',
+      settings: 'key',
+      examSessions: '++id, [profileId+packageId], profileId, status, startedAt',
+      topicSessions: '++id, [profileId+topicId], profileId, packageId, updatedAt',
+      customSounds: '++id, [profileId+soundId], profileId, createdAt',
+      packageAssets: '++id, [packageId+path], packageId',
+      cardCompletions: '++id, [profileId+kind+targetId], profileId, kind',
+      handwritings:
+        '++id, [profileId+exerciseId], [profileId+packageId], [profileId+status], profileId'
     });
   }
 }

@@ -237,6 +237,7 @@ import QuestionText from '@/components/QuestionText.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import QuizEngine, { type AnswerPayload, type ExamDetailItem, type ExamDetailPayload } from '@modules/core/QuizEngine.vue'
 import { useUserDataStore } from '@core/stores/userData'
+import { submitHandwriting } from '@core/stores/handwriting'
 import { useExamStore } from '@core/stores/exam'
 import { db } from '@/db'
 import { currentProfileId, onProfileChange, type ProfilesState } from '@core/profile/currentProfile'
@@ -450,9 +451,43 @@ async function continueSession() {
   phase.value = 'running'
 }
 
+/**
+ * 手写第四态的落库（卷子里的手写题）：只存笔迹，不判对错。
+ *
+ * `cellCount` 取 `cells.length`（格子数 = 提交上来的格子数），
+ * `prompt` 用题干快照（批改时原包可能已被更新/替换）。
+ * 失败只 warn：交卷流程不能被一次笔迹写入打断，断点里这一题仍记成"待批改"。
+ */
+async function persistPendingInk(payload: AnswerPayload, prompt: string): Promise<void> {
+  const cells = Array.isArray(payload.cells) ? payload.cells : []
+  try {
+    await submitHandwriting({
+      packageId: entryPackageId.value,
+      exerciseId: payload.exerciseId,
+      knowledgePointIds: Array.isArray(payload.knowledgePointIds) ? payload.knowledgePointIds : [],
+      prompt,
+      correctAnswer: payload.correctAnswer ?? '',
+      cells,
+      cellCount: cells.length,
+    })
+  } catch (err) {
+    console.warn('[ExamPanel] 手写笔迹落库失败（交卷继续）', err)
+  }
+}
+
 async function handleAnswer(payload: AnswerPayload) {
   const question = currentSessionQuestions.value.find(q => q.id === payload.exerciseId)
   const kpIds = payload.knowledgePointIds ?? []
+
+  // 手写第四态：卷子里出现手写题时，交卷这一刻**只存笔迹**，不判对错。
+  // 考试是"交卷后统一判"的场景，手写题的判定比练习更晚（家长肉眼批改），
+  // 这里一旦按 `isCorrect: false` 记进 `recordProgress` / `addMistake`，
+  // 整张卷子的手写题会全部变成错题。
+  // pending 分支当前无生产者（见 AnswerPayload.pending 注释），保留是为了接线时不必再动消费方
+  if (payload.pending === true) {
+    await persistPendingInk(payload, question?.question ?? '')
+    return
+  }
 
   // 题目级埋点（每题一次）：每日题量 + 题型
   userDataStore.recordAnswerEvent({ exerciseId: payload.exerciseId, questionType: question?.type })

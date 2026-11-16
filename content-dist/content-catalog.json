@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-13",
+  "updatedAt": "2026-11-16",
   "packages": [
     {
       "packageId": "special-chinese-2-up-kantu",
@@ -8,7 +8,7 @@
       "sha256": "19f292614d67a6d8321a3eb5c59a72dadccf5ee401f889941f9e9ae54faf7718",
       "assets": {
         "file": "assets/special-chinese-2-up-kantu/assets.zip",
-        "sha256": "4ddfafd25c08797aa2e6449aeb3f77249127fbfdd7f193f068672acfcd97b4d1"
+        "sha256": "11e4babecdf724ba2b26ce195a240eab35af05a0ce6113f38fa37cf624030f11"
       }
     },
     {
@@ -54,7 +54,7 @@
       "sha256": "fd76adcb5a79d40e5800cf57ab9f19190e759d73a7487ebe450c2379f5f720f4",
       "assets": {
         "file": "assets/special-chinese-4-up-vocab/assets.zip",
-        "sha256": "3948e4a493debf2be627494d01811dcd3353a85410164c885e6974500934edaa"
+        "sha256": "60437778d0c442238d2468803f04838d56ae6e4dce5eef0655df4ebecc4466a5"
       }
     },
     {
@@ -112,6 +112,16 @@
       "sha256": "4f650bfe1a4c4f948933b7e0f8e1ea76d21f172d9526785d3cbb79fb143bd706"
     },
     {
+      "packageId": "special-chinese-4-up-vocab-2026",
+      "version": "1.0.0",
+      "title": "四上语文 · 词语表默写（新版 · 按课次）",
+      "sha256": "1f79f49beaef0f9f1b042fa88731146ceb16e32a35604cebd3594b03a440433b",
+      "assets": {
+        "file": "assets/special-chinese-4-up-vocab-2026/assets.zip",
+        "sha256": "11f5e7516e640c6d8d3a615175a473814d8c23ac4c442b60a97e8c1d6e5de940"
+      }
+    },
+    {
       "packageId": "daily-chinese-5-up-rjb-midterm",
       "version": "1.0.0",
       "title": "语文期中冲刺 打卡（五年级上·部编版）",
@@ -124,7 +134,7 @@
       "sha256": "2699d8be3eca94ab1d042fdda9b23fda99353052a32df62ad2d05a453152f945",
       "assets": {
         "file": "assets/special-english-4-down-vocab/assets.zip",
-        "sha256": "a8164c39abcdb453b77d91947e35009f779478b7c4ff02e1bc3bbcb9a570b463"
+        "sha256": "3c27e3916da82d914846dee67846433788698e8f643ce1743be8d6da58f0dbcf"
       }
     },
     {
@@ -140,7 +150,7 @@
       "sha256": "46200ff12d64fce6d693fd0d3e63f4f7b1fb5bb9df5d2b4f71177efec08c5979",
       "assets": {
         "file": "assets/special-english-4-up-vocab/assets.zip",
-        "sha256": "419190f5cbc5bcc66b4df903d634b25468e09d0a26d5a018b4fd5c92a8c6f74a"
+        "sha256": "905e0eb1d7e1a9013ba454c05b481652d8d2314f864807cf9b3f334b36e0da84"
       }
     },
     {
@@ -270,7 +280,7 @@
       "sha256": "529bd641fabd277fd1eb9578ce3c05ec0905f7a38dda360fa9f6cd3a92506953",
       "assets": {
         "file": "assets/special-english-movers-mock/assets.zip",
-        "sha256": "19629178ddc32fa92c3577e8fb5a504c8059d0260808a9d65176a4b8afaa0e42"
+        "sha256": "9e520038cc54a00747e672c54cf891eb7e88eac6fbd62ac1b4212511c6485afe"
       }
     },
     {
@@ -286,7 +296,7 @@
       "sha256": "c1b6fcd44b6f574790ddfb01e6bce4dc612884d254f2721f95f7a07985c805a7",
       "assets": {
         "file": "assets/special-english-movers-unit/assets.zip",
-        "sha256": "790ca58240f8b5a91653cbbdf7f9fb61bea471b5cfe67a2b1c9f9799f22687f2"
+        "sha256": "12c17f85300ae1e37366c111f19290646aea6470914d0650d151641005e033e9"
       }
     },
     {
@@ -392,7 +402,7 @@
       "sha256": "ed68ae4f2778513c55c3b93436331e9b7dcee31f26f0c9efea78bc6d72be8038",
       "assets": {
         "file": "assets/special-math-4-up-shape/assets.zip",
-        "sha256": "81eb1daec6104ddb48fd8cf11ae15d65a706d734e9fc1efb0aa9816cb7c1b96e"
+        "sha256": "1464480a33459175056ad48d7a814b13690178b650821fbe69499a0e16973755"
       }
     },
     {

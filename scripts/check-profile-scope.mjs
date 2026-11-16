@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /**
- * 门禁：三张"按档案分片"的表，任何访问点都必须带 `profileId`（V1.4 · B1）。
+ * 门禁：所有"按档案分片"的表，任何访问点都必须带 `profileId`（V1.4 · B1）。
+ *
+ * 当前扫描：`progress` / `mistakes` / `examSessions` / `handwritings`（V4.1 起）。
+ * 包级资产（`packages` / `packageAssets`）刻意不在范围内 —— 见 `TARGET` 的注释。
  *
  * ## 为什么需要这条门禁
  * 加 `profileId` 之后最危险的 bug 不是"报错"，而是**不报错**：
@@ -35,7 +38,18 @@ import { join, relative } from 'node:path'
 
 const ROOT = process.cwd()
 const SRC = join(ROOT, 'src')
-const TARGET = /db\.(progress|mistakes|examSessions)\b/
+/**
+ * 要扫描的表：所有**按档案分片**的表。
+ *
+ * 加表时务必同步 —— 不在正则里的表等于**裸奔**：`db.handwritings.toArray()`
+ * 漏了档案过滤会让老二看到老大的手写作业，而这条门禁是唯一的防线
+ * （`tsc` 对读操作完全无能为力，见文件头"只管读，不管写"）。
+ *
+ * 刻意**不**包括 `packages` / `packageAssets`：那两张是**包级**资产，
+ * 全档案共用是正确行为（见 db/index.ts 的 PackageAssetRecord 注释），
+ * 把它们纳进来只会逼出一堆 `profile-scope-ok` 豁免，反而削弱门禁。
+ */
+const TARGET = /db\.(progress|mistakes|examSessions|handwritings)\b/
 /**
  * "读"操作白名单。写入不在此列 —— 它们由 `tsc` 的必填字段兜（见文件头）。
  * `where` 也算读：`where('packageId')` 漏掉档案就是跨档案查询。
@@ -72,7 +86,7 @@ function isComment(line) {
 /** 事务里列举表、或单独成行的表名：不是访问点 */
 function isTableList(line) {
   if (line.includes('db.transaction(')) return true
-  return /^db\.(progress|mistakes|examSessions),?$/.test(line.trim())
+  return /^db\.(progress|mistakes|examSessions|handwritings),?$/.test(line.trim())
 }
 
 const problems = []

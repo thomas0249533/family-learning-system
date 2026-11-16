@@ -236,12 +236,14 @@ import { currentProfileId } from '@core/profile/currentProfile'
 import {
   accumulateAnswer,
   buildSnapshot,
+  gradedScoreOf,
   progressOf as topicProgressOf,
   validateSnapshot,
   type TopicAnswers,
 } from '@core/session/topicSession'
 import { db, type MasteryStatus, type TopicSessionRecord } from '@/db'
 import { completePlanItem } from '@core/plan/dailyPlanService'
+import { submitHandwriting } from '@core/stores/handwriting'
 import { levelOf, selectSessionQuestions, filterByKnowledgePoint, DIFFICULTY_LABEL, type Difficulty } from '@core/plan/adaptive'
 import QuizEngine, { type AnswerPayload } from '@modules/core/QuizEngine.vue'
 import { useUiStore } from '@core/stores/ui'
@@ -916,16 +918,62 @@ function goToPrerequisite(kpId: string) {
   }
 }
 
+/**
+ * 手写第四态的落库：只存笔迹，不判对错、不碰掌握度。
+ *
+ * 三点刻意的选择：
+ * 1. **`cellCount` 取 `cells.length`**：格子数就是提交上来的格子数，
+ *    不从 `correctAnswer` 重新推算 —— 题库答案可能是 `"关心|qí guān"` 这类
+ *    带拼音/分隔符的形态，再推一次只会推出比孩子看到的更多的格子。
+ * 2. **`prompt` 用题干快照**：批改时原包可能已更新甚至被替换，家长批的是
+ *    "孩子当时看到的那道题"，不是"现在库里的那道题"。
+ * 3. **失败只 warn 不打断**：笔迹丢了还能重写，页面弹错把整轮练习打断更亏；
+ *    且此时断点已记，孩子重进页面会看到这一题是"待批改"（不是"没做"）。
+ */
+async function persistPendingInk(payload: AnswerPayload): Promise<void> {
+  const cells = Array.isArray(payload.cells) ? payload.cells : []
+  const question = topicExercises.value.find((ex: any) => ex.id === payload.exerciseId)
+  try {
+    await submitHandwriting({
+      packageId: currentPackageId.value,
+      exerciseId: payload.exerciseId,
+      knowledgePointIds: Array.isArray(payload.knowledgePointIds) ? payload.knowledgePointIds : [],
+      prompt: question?.question ?? '',
+      correctAnswer: payload.correctAnswer ?? '',
+      cells,
+      cellCount: cells.length,
+    })
+  } catch (err) {
+    console.warn('[TopicDetail] 手写笔迹落库失败（练习继续）', err)
+  }
+}
+
 async function handleAnswer(payload: AnswerPayload) {
   const { exerciseId, knowledgePointIds, isCorrect, userAnswer, elapsedMs } = payload
 
   // ① 断点先记：**必须在 KP 早退之前**。没有知识点的题（合法的自测题）
   //    在掌握度链路里会被跳过，但它照样该出现在答题卡上、照样该能被续传。
+  //    `pending` 一并记：手写题在断点里若退化成"未答"，重进页面会被当成空白题
+  //    让孩子再写一遍（同一题留两份待批改笔迹，家长要批两次）。
   sessionAnswers.value = accumulateAnswer(sessionAnswers.value, exerciseId, {
     userAnswer,
     isCorrect,
+    pending: payload.pending === true,
   })
   scheduleSave(pendingIndex.value)
+
+  // ② 手写第四态：题已交、对错还没人判。**只落笔迹，然后立刻返回** ——
+  //    不能往下走 `recordProgress` / `addMistake`：
+  //    - 手写没有自动判分，`isCorrect` 是占位 false，按 false 记等于把"还没人看"
+  //      判成"错了"：掌握度被拖低、错题本被灌满、FSRS 把这一题排到明天；
+  //    - 真正的回流发生在家长批改那一刻（`gradeHandwriting` → `recordProgress`），
+  //      那条路才是唯一入口。这里提前写一笔就是双计。
+  //    也不能跳过断点记录（上面已做）—— 答题卡要把它显示成第四态而不是空白。
+  //    pending 分支当前无生产者（见 AnswerPayload.pending 注释），保留是为了接线时不必再动消费方
+  if (payload.pending === true) {
+    await persistPendingInk(payload)
+    return
+  }
 
   if (!knowledgePointIds || knowledgePointIds.length === 0) {
     console.warn('[handleAnswer] 题目无知识点，状态机跳过', exerciseId)
@@ -967,9 +1015,18 @@ async function handleAnswer(payload: AnswerPayload) {
 
 function handleQuizFinish(correctCount: number) {
   const total = topicExercises.value.length
-  const fb = finishFeedback(correctCount, total)
-  message[fb.type](fb.text, { duration: 4000 })
-  console.log(`🎉 练习结束，答对 ${correctCount} / ${total} 题`)
+  // 分母 = 总题数 − **本次会话**里的待批改题数（`gradedScoreOf` 里减，不在这里减）。
+  // pending 从 `sessionAnswers` 数而不是从 `handwritings` 表数：表里按 K=2 留着
+  // 同一题的历史尝试，重做过的题会多算，分母会被减多甚至减成负数。
+  const score = gradedScoreOf(sessionAnswers.value, total)
+  if (score.graded > 0) {
+    const fb = finishFeedback(correctCount, score.graded)
+    message[fb.type](fb.text, { duration: 4000 })
+  } else {
+    // 分母被减到 0（整轮都是手写）：正确率是"还没有读数"，不是 0% 也不是 100%
+    message.info('这一轮的题都是手写作答，等家长批改后才有对错', { duration: 4000 })
+  }
+  console.log(`🎉 练习结束，答对 ${score.label}（${score.pending} 题待批改 / 共 ${total} 题）`)
 
   // V2.0 · 断点收尾：标记 finished 并停止后续写入。
   // 不这样做的后果很具体：QuizEngine 卸载时还会发一次 `save-progress`，

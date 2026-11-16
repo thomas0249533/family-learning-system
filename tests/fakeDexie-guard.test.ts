@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { createFakeDexie, V3_INDICES, V4_INDICES, V5_INDICES } from './helpers/fakeDexie'
+import {
+  createFakeDexie,
+  POST_V5_INDICES,
+  V3_INDICES,
+  V4_INDICES,
+  V5_INDICES,
+} from './helpers/fakeDexie'
 
 /**
  * 假 Dexie 自身的防线（V1.6 · Stage A · A6）。
@@ -80,6 +86,40 @@ describe('fakeDexie 索引清单与 src/db/index.ts 逐字一致', () => {
   // 或者更糟 —— 有人为了不炸把它改成 `.toArray()` 过滤，于是索引契约静默消失。
   it('V5_INDICES ≡ version(5)', () => {
     expect(storesOfVersion(5)).toEqual({ ...V5_INDICES })
+  })
+
+  /**
+   * V4.1 · 手写表起加的两条。
+   *
+   * ## 为什么现在才补
+   * 上面三条只钉住 v3/v4/v5 —— v5 之后每加一张表（`cardCompletions`、`packageAssets`、
+   * `handwritings`）都只有"人工记得去 `POST_V5_INDICES` 同步"这一层防线。漏了不报错：
+   * 替身里那张表**存在但没有索引**，任何 `where('...')` 直接炸「未知索引」，
+   * 或者更糟 —— 有人为了不炸改成 `toArray()` 过滤，索引契约就静默消失了。
+   */
+  it('★ version(9) 的表清单 = version(8) + handwritings（漏一张 = Dexie 删表 = 删数据）', () => {
+    const v8 = storesOfVersion(8)
+    const v9 = storesOfVersion(9)
+
+    // Dexie 的 `.stores()` 是**该版本的完整表清单**，不是增量。少抄一行，
+    // 升级到 v9 时那张表会被当作"已删除"——用户数据消失且不报错。
+    expect(Object.keys(v9).sort()).toEqual([...Object.keys(v8), 'handwritings'].sort())
+
+    // 存量表的索引字符串也必须逐字一致：改索引会触发重建（慢），且极易漏改
+    for (const [table, indices] of Object.entries(v8)) {
+      expect(v9[table], `version(9) 丢了 ${table}`).toEqual(indices)
+    }
+  })
+
+  it('POST_V5_INDICES ≡ version(9) 里那几张新表', () => {
+    const v9 = storesOfVersion(9)
+    for (const [table, indices] of Object.entries(POST_V5_INDICES)) {
+      expect(v9[table], `version(9) 应包含 ${table}`).toBeDefined()
+      // 顺序无关，集合一致即可（`storesOfVersion` 已剔掉 `++id`）
+      expect([...v9[table]].sort(), `${table} 的索引清单与替身不一致`).toEqual(
+        [...indices].sort()
+      )
+    }
   })
 })
 

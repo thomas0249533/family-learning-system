@@ -19,9 +19,11 @@
  * 2. **事务是手写快照**：提交前备份涉及表的 `rows`，抛错时整张还原。
  *    这近似而非等价于 Dexie 的 ACID（不处理并发与部分失败），
  *    但对"apply 中途抛错不能留下半截数据"这类断言足够。
- * 3. **`where` 只支持 `.equals(v).first()/toArray()`**。
+ * 3. **`where` 只支持 `.equals(v).first()/.toArray()/.count()/.delete()`**。
  *    生产代码用到的 `.reverse()/.sortBy()/.and()/.modify()` 一概没有 ——
  *    真用到了会让测试**炸**，而不是安静地换一条语义，这正是想要的效果。
+ *    （`.count()` 是 V4.1 手写表补的：家长页角标与保留策略的阈值判断都靠它
+ *    避免"为了一个数字把整表笔迹串 materialize"。）
  * 4. **`equals()` 的形参校验比真库严**（V1.6 · A6 补牙，专抓"少传 profileId"）：
  *    - 复合索引必须传**长度等于元数的数组**。真库对短数组是"静默空结果"
  *      （查询永远查不到、不报错），对传标量更是直接空 —— 这里一律抛错。
@@ -132,6 +134,8 @@ const TABLE_NAMES = [
   // V2.12 · 学习包图片/音频资产（db v7 才有）。与 cardCompletions 同理：历史预设里没有，
   // 索引放 POST_V5_INDICES；contentUpdater 的「更新顺带分发离线资产」路径要读写它。
   'packageAssets',
+  // V4.1 · 手写作答（db v9 才有）。同样不属于任何历史预设形态 → 索引放 POST_V5_INDICES。
+  'handwritings',
 ] as const
 export type TableName = (typeof TABLE_NAMES)[number]
 
@@ -142,10 +146,22 @@ export type TableName = (typeof TABLE_NAMES)[number]
  * `tests/fakeDexie-guard.test.ts` 会拿它们与 `src/db/index.ts` 的 `version(n)` 原文逐字比对。
  * 把 v8 的表塞进去会让"v5 快照"变成谎言。这里只补"任何形态下都存在的行为需求"：
  * 跑合并/备份路径的用例需要这张表存在（否则 `where('profileId')` 会抛未知索引）。
+ *
+ * **导出的原因**：`tests/fakeDexie-guard.test.ts` 要拿它与 `version(9)` 原文比对 ——
+ * 这三张表不在任何历史预设里，没有别的机制能发现"src/db 加了索引、替身没加"
+ * 这种漂移（表现是替身里那张表的查询静默走不到索引，测试照样全绿）。
  */
-const POST_V5_INDICES: Record<string, readonly string[]> = {
+export const POST_V5_INDICES: Record<string, readonly string[]> = {
   cardCompletions: ['[profileId+kind+targetId]', 'profileId', 'kind'],
   packageAssets: ['[packageId+path]', 'packageId'],
+  // V4.1 · 手写作答（db v9）。逐字对应 `version(9)` 的 `handwritings` 行：
+  // 按题回看 / 整包清理 / 待批改队列 / 全库上限淘汰 / 单列档案过滤。
+  handwritings: [
+    '[profileId+exerciseId]',
+    '[profileId+packageId]',
+    '[profileId+status]',
+    'profileId',
+  ],
 }
 
 /** 每张表的默认主键（与 schema 的 `++id` / `key` 对应） */
@@ -158,6 +174,7 @@ const DEFAULT_KEY: Record<TableName, (r: Row) => any> = {
   topicSessions: (r) => r.id,
   cardCompletions: (r) => r.id,
   packageAssets: (r) => r.id,
+  handwritings: (r) => r.id,
 }
 
 /** 哪些表是自增主键 */
@@ -170,6 +187,7 @@ const AUTO_ID: Record<TableName, boolean> = {
   topicSessions: true,
   cardCompletions: true,
   packageAssets: true,
+  handwritings: true,
 }
 
 export interface TableOpts {
@@ -193,6 +211,15 @@ export interface WhereChain {
   equals(value: any): {
     first(): Promise<Row | undefined>
     toArray(): Promise<Row[]>
+    /**
+     * 真 Dexie 的 `Collection.count()`：数命中行数，**不 materialize 行**。
+     *
+     * 手上必须有它：`countPendingHandwriting()`（家长页角标）与
+     * `purgeOldHandwriting()` 的阈值判断都靠它避免"为了一个数字把整表
+     * 笔迹串读进内存"。若替身不实现，生产代码只能退回 `toArray().length`，
+     * 那条性能约束就在测试里永远看不见了。
+     */
+    count(): Promise<number>
     delete(): Promise<void>
   }
 }
@@ -211,7 +238,8 @@ export interface FakeTable {
   add(r: Row): Promise<any>
   bulkPut(rs: Row[]): Promise<void>
   bulkDelete(ids: any[]): Promise<void>
-  update(id: any, patch: Row): Promise<void>
+  /** 真 Dexie 返回被更新的行数（行不存在 → 0） */
+  update(id: any, patch: Row): Promise<number>
   delete(k: any): Promise<void>
   where(index: string): WhereChain
 }
@@ -225,6 +253,8 @@ export interface FakeDexie {
   topicSessions: FakeTable
   cardCompletions: FakeTable
   packageAssets: FakeTable
+  /** V4.1 · 手写作答（db v9 才有；索引见 POST_V5_INDICES） */
+  handwritings: FakeTable
   /** 喂给 `vi.mock('@/db', () => ({ db: fake.db }))` 的对象 */
   db: {
     packages: FakeTable
@@ -235,6 +265,7 @@ export interface FakeDexie {
     topicSessions: FakeTable
     cardCompletions: FakeTable
     packageAssets: FakeTable
+    handwritings: FakeTable
     transaction(mode: any, ...args: any[]): Promise<any>
   }
   /**
@@ -391,11 +422,19 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
         for (const id of ids) await table.delete(id)
       },
 
-      async update(id: any, patch: Row) {
+      /**
+       * 真 Dexie 的 `Table.update(id, patch)` 返回**被更新的行数**（行不存在 → `0`，
+       * 不抛错）。替身以前返回 `void`，于是"行已被删/已被替换"这条真实可达的路径
+       * （家长开着批改页时孩子重答同一题）在测试里永远看不见 —— 生产代码就算
+       * 判了返回值也测不到。所以这里照真库返回 1/0。
+       */
+      async update(id: any, patch: Row): Promise<number> {
         writes.push(`update:${name}`)
         if (failOn.has(`update:${name}`)) throw new Error(`fake db: ${name}.update 失败`)
         const i = rows.findIndex((r) => keyOf(r) === id)
-        if (i >= 0) rows[i] = { ...rows[i], ...patch }
+        if (i < 0) return 0
+        rows[i] = { ...rows[i], ...patch }
+        return 1
       },
 
       async delete(k: any) {
@@ -450,6 +489,9 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
               async toArray() {
                 return rows.filter((r) => matches(r, value)).map((r) => ({ ...r }))
               },
+              async count() {
+                return rows.filter((r) => matches(r, value)).length
+              },
               async delete() {
                 // 真 Dexie 的 Collection.delete()：删掉所有命中的行
                 const matched = rows.filter((r) => matches(r, value))
@@ -480,6 +522,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     topicSessions: tables.topicSessions,
     cardCompletions: tables.cardCompletions,
     packageAssets: tables.packageAssets,
+    handwritings: tables.handwritings,
 
     /**
      * 手写事务：提交前快照涉及的表，抛错时整张还原。
@@ -515,6 +558,7 @@ export function createFakeDexie(opts: FakeDexieOpts = {}): FakeDexie {
     topicSessions: tables.topicSessions,
     cardCompletions: tables.cardCompletions,
     packageAssets: tables.packageAssets,
+    handwritings: tables.handwritings,
     db,
     failOn,
     writes,

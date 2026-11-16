@@ -37,6 +37,9 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/AchievementsPrint.vue')
   },
   { path: '/parent', name: 'Parent', component: () => import('@/views/Parent.vue') },
+  // 手写批改（P1）：孩子在书写板上写的作业排在这里，家长逐份判定。
+  // 家长端页面（与 /parent 同约定：桌面侧栏入口，不进孩子底部 tab），无独立角色守卫。
+  { path: '/handwriting', name: 'HandwritingReview', component: () => import('@/views/HandwritingReview.vue') },
   // 创作者中心（V2.2 · 轨道 I）。家长端页面：复用 /parent 约定（桌面侧栏入口，
   // 不进孩子底部 tab），无独立角色守卫（项目无 isParent 概念，详见 settingsScope）。
   { path: '/creator', name: 'Creator', component: () => import('@/views/creator/CreatorCenter.vue') },

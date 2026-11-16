@@ -229,8 +229,20 @@ export async function withPreClearSnapshot(
  *
  * 3.1.2 及更早这里是 `db.settings.clear()`，把存在 settings 里的每日快照
  * 一起删了 —— 这正是 2026-11-04 事故拿不回进度的直接原因。
- * 现在先把快照读出来，清完 4 张表再写回；快照损坏/读失败时读出来是空表，
+ * 现在先把快照读出来，清完表再写回；快照损坏/读失败时读出来是空表，
  * 但那种情况下前面 `capturePreClearSnapshot` 也会失败并中止清空，不会走到这里。
+ *
+ * ## V4.1 补 `handwritings`
+ * 不补的话，家长点完「清空所有数据」后待批改角标还在、点进去还能看到已删包的笔迹
+ * —— 是**用户可见**的错误（而不是"留着无害的历史"）。手写表没有设备级/包级的
+ * 额外语义（纯档案级、不进备份/合并），所以能和 progress/mistakes 同一口径整表清。
+ *
+ * TODO(债) 以下表同样未被本函数清理，需独立评估语义后再决定：
+ *   · `examSessions`  —— 未完成卷子的"继续考试"入口会指向已删除的包；
+ *   · `topicSessions` —— 设备级断点，清了等于丢掉"做到一半"；
+ *   · `cardCompletions` —— 已进备份契约（合并语义是并集），清空要不要清需与合并对齐；
+ *   · `packageAssets` —— 包级二进制资产，随包删除走 contentUpdater 那条路径。
+ *   这四张表语义各不相同，一起改会牵动合并与备份的既有测试，属独立决策。
  */
 export async function clearAllUserDataExceptSnapshots(): Promise<void> {
   const rec = await db.settings.get(SNAPSHOTS_KEY).catch(() => undefined)
@@ -242,6 +254,8 @@ export async function clearAllUserDataExceptSnapshots(): Promise<void> {
     db.progress.clear(),
     // profile-scope-ok: 同上，整库重置按设计删除所有档案的错题。
     db.mistakes.clear(),
+    // profile-scope-ok: 同上，整库重置按设计删除所有档案的手写笔迹（见上方 V4.1 说明）。
+    db.handwritings.clear(),
     db.settings.clear(),
   ])
   // 快照属于"这台设备的回滚点"，不是业务数据，必须留着

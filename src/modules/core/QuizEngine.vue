@@ -269,6 +269,8 @@
         <div class="sheet-legend">
           <span class="legend-item legend-correct"><IconBase name="check-circle" size="1em" /> 正确 {{ sheetStats.correct }}</span>
           <span class="legend-item legend-wrong"><IconBase name="x-circle" size="1em" /> 错误 {{ sheetStats.wrong }}</span>
+          <!-- 第四态：只在真有手写待批改时才出现，没手写题的包不该看到一条恒为 0 的图例 -->
+          <span v-if="sheetStats.pending > 0" class="legend-item legend-pending"><IconBase name="clock" size="1em" /> 待批改 {{ sheetStats.pending }}</span>
           <span class="legend-item legend-todo"> 未做 {{ sheetStats.todo }}</span>
         </div>
         <div class="sheet-grid">
@@ -284,12 +286,26 @@
             {{ i + 1 }}
           </button>
         </div>
-        <p class="sheet-hint">点击已作答的题回看解析，点击未作答的题直接跳过去。</p>
+        <p class="sheet-hint">
+          点击已作答的题回看解析，点击未作答的题直接跳过去。
+          <template v-if="sheetStats.pending > 0">手写题在家长批改前是「待批改」，还没有对错。</template>
+        </p>
       </n-modal>
 
       <div class="quiz-actions">
         <template v-if="!examMode">
-          <AppButton v-if="!showFeedback" type="primary" block size="large" @click="submitAnswer" :disabled="!canSubmit">
+          <!--
+            答题卡第四态：手写已交、等家长批改。
+            此时不出「提交答案」（再交一次会覆盖掉待批改的结论），只给「下一题」，
+            并说明为什么这一题没有对错 —— 否则孩子会以为自己答错了。
+          -->
+          <p v-if="currentIsPending" class="pending-note">
+            <IconBase name="clock" size="1em" /> 这题是手写作答，等家长批改后才有对错。
+          </p>
+          <AppButton v-if="currentIsPending" type="primary" block size="large" @click="nextQuestion">
+            <IconBase :name="currentIndex === questions.length - 1 ? 'flag' : 'target'" size="1em" /> {{ currentIndex === questions.length - 1 ? '完成练习' : '下一题' }}
+          </AppButton>
+          <AppButton v-else-if="!showFeedback" type="primary" block size="large" @click="submitAnswer" :disabled="!canSubmit">
             提交答案
           </AppButton>
           <AppButton v-else type="success" block size="large" @click="nextQuestion">
@@ -385,6 +401,27 @@ export interface AnswerPayload {
   correctAnswer: string
   /** P0 · 本题作答耗时（毫秒）：用于 FSRS「轻松 / 记得」的自动推断 */
   elapsedMs?: number
+  /**
+   * 手写作答才有的**第四态**：题已作答，但对错还没人判（家长肉眼批改）。
+   *
+   * 一旦为 `true`，`isCorrect` 只是占位（恒 `false`），**不是判错**。
+   * 三个消费方（`TopicDetail` / `ExamPanel` / `VocabDrill`）看到它必须：
+   * 先落笔迹 → 然后**立刻返回**，不 `recordProgress`、不进错题本、
+   * 不推进 FSRS、不 `resolveMistake`。判定权在家长批改那一刻
+   * （`gradeHandwriting`），这里提前判一次等于把"还没人看"当成"错了"，
+   * 220 个词会当场全进错题本、复习计划全排到明天。
+   *
+   * 预留：QuizEngine 尚未接手写输入，当前只有 VocabDrill 直连 submitHandwriting；接线时在此置 true
+   */
+  pending?: boolean
+  /**
+   * 逐格笔迹（`serializeStrokes()` 的产物，一格一个串，`''` = 这一格没写）。
+   *
+   * 只在 `pending` 时携带；长度即格子数。消费方原样转给
+   * `submitHandwriting({ cells })`，**不要**在这里做任何解析 —— 解析只发生在
+   * `deserializeStrokes()`（那里对脏数据零抛）。
+   */
+  cells?: string[]
 }
 
 /** ✅ 新增：考试详情 */
@@ -416,7 +453,7 @@ const props = withDefaults(defineProps<{
   questions: QuizQuestion[]
   packageId: string
   examMode?: boolean
-  initialAnswers?: Record<string, { userAnswer: any; isCorrect: boolean }>
+  initialAnswers?: Record<string, { userAnswer: any; isCorrect: boolean; pending?: boolean }>
   initialIndex?: number
   startedAt?: number
   timeLimit?: number
@@ -488,7 +525,7 @@ const examAnswers = ref<Record<string, any>>({})
  *
  * 续传时由 `props.initialAnswers` 播种（与 `answeredSet` / `correctCount` 同源）。
  */
-const practiceAnswers = ref<Record<string, { userAnswer: any; isCorrect: boolean }>>({})
+const practiceAnswers = ref<Record<string, { userAnswer: any; isCorrect: boolean; pending?: boolean }>>({})
 
 /** 答题卡弹窗 */
 const sheetOpen = ref(false)
@@ -753,9 +790,22 @@ const rightOptions = computed(() => {
   return right.map((text, idx) => ({ label: text, value: idx }))
 })
 
+/**
+ * 当前题是不是"手写已交、等家长批改"（答题卡第四态）。
+ *
+ * 是的话这一题**不允许再提交**：手写没有自动判分，再 submit 一次只会
+ * 让 `practiceAnswers` 里那条 `pending` 被一次真实判分覆盖，而孩子以为
+ * "我重答了一遍"，家长那边却还挂着一条待批改的笔迹。
+ */
+const currentIsPending = computed(() => {
+  const q = currentQuestion.value
+  return !!q && practiceAnswers.value[q.id]?.pending === true
+})
+
 const canSubmit = computed(() => {
   const q = currentQuestion.value
   if (!q) return false
+  if (currentIsPending.value) return false
   switch (q.type) {
     case 'single':
     case 'blank':
@@ -873,25 +923,40 @@ function coerceAnswer(q: QuizQuestion, v: any): any {
   }
 }
 
-/** 答题卡三态计数（图例用） */
+/**
+ * 答题卡**四态**计数（图例用）。
+ *
+ * 第四态 `pending`（手写作答、等家长批改）不能并进"未做"：孩子明明写了、
+ * 笔迹也落库了，算成空题他会以为白写了；也不能并进"错误"：还没人看呢。
+ * 所以它单独一档，并且**只在总数里扣它自己的份额**。
+ *
+ * 预留：QuizEngine 尚未接手写输入（见 `AnswerPayload.pending` 注释），
+ * 这一档目前线上走不到；保留是为了接线时不必再动渲染与计数。
+ */
 const sheetStats = computed(() => {
   let correct = 0
   let wrong = 0
+  let pending = 0
   for (const q of props.questions) {
     const rec = practiceAnswers.value[q.id]
     if (!rec) continue
-    if (rec.isCorrect) correct++
+    // 先看 pending 再看 isCorrect：pending 行的 isCorrect 恒 false，
+    // 顺序反了就会把它算成"错"（这正是这个字段最容易踩的坑）
+    if (rec.pending === true) pending++
+    else if (rec.isCorrect) correct++
     else wrong++
   }
-  return { correct, wrong, todo: props.questions.length - correct - wrong }
+  return { correct, wrong, pending, todo: props.questions.length - correct - wrong - pending }
 })
 
 function sheetCellClass(i: number): Record<string, boolean> {
   const q = props.questions[i]
   const rec = q ? practiceAnswers.value[q.id] : undefined
+  const isPending = !!rec && rec.pending === true
   return {
-    'is-correct': !!rec && rec.isCorrect,
-    'is-wrong': !!rec && !rec.isCorrect,
+    'is-correct': !!rec && !isPending && rec.isCorrect,
+    'is-wrong': !!rec && !isPending && !rec.isCorrect,
+    'is-pending': isPending,
     'is-todo': !rec,
     'is-current': i === currentIndex.value,
   }
@@ -914,6 +979,17 @@ function openFromSheet(i: number): void {
   if (i !== currentIndex.value) currentIndex.value = i
 
   if (!rec) {
+    afterQuestionMoved()
+    return
+  }
+
+  // 第四态：手写已交、还没人判。**不能当"已作答"展开解析** ——
+  // rec.isCorrect 恒 false，按原路走会把这一题显示成"回答错误"加一段
+  // 正确答案对照，孩子会以为家长判他错了。这里只跳题，由 `.pending-note`
+  // 说明状态，`canSubmit` 已经挡住重复提交。
+  if (rec.pending === true) {
+    showFeedback.value = false
+    essayOverride.value = null
     afterQuestionMoved()
     return
   }
@@ -1594,6 +1670,8 @@ function handleExit() {
   /* 三态文字色只走 -text（`--{tone}-color` 是图形色，check:text-color 会抓） */
   .legend-correct { color: $success-text; }
   .legend-wrong { color: $danger-text; }
+  /* 第四态「待批改」用橙色：既不是对（绿）也不是错（红），也不是没做（灰） */
+  .legend-pending { color: $warning-text; }
   /* 未做：本仓没有 `--text-tertiary`，三级文字语义统一由 `--text-muted` 承担 */
   .legend-todo { color: $text-muted; }
 }
@@ -1631,6 +1709,13 @@ function handleExit() {
     border-color: $danger-color;
     color: $danger-text;
   }
+  /* 第四态：待批改（手写作答）。刻意与 is-wrong 拉开色相 ——
+     "还没人看"和"判错了"在孩子的理解里是两件完全不同的事 */
+  &.is-pending {
+    background: var(--badge-warning-bg);
+    border-color: $warning-color;
+    color: $warning-text;
+  }
   /* 当前题：只加描边，不改变三态的底色语义 */
   &.is-current { box-shadow: 0 0 0 2px $primary-color; }
 }
@@ -1640,6 +1725,25 @@ function handleExit() {
   font-size: var(--font-xs);
   line-height: $leading-normal;
   color: $text-sub;
+}
+
+/*
+ * 第四态提示条（手写已交、等家长批改）。
+ *
+ * 为什么需要一整条而不是只在按钮上禁用：孩子看到「提交答案」变灰的第一反应是
+ * "我做错了什么"，必须有一句话解释"这题没有对错，等家长看"。
+ */
+.pending-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: $space-2;
+  padding: $space-2 $space-3;
+  border-radius: 10px;
+  background: var(--badge-warning-bg);
+  color: $warning-text;
+  font-size: var(--font-sm);
+  line-height: $leading-normal;
 }
 
 .judge-hint { font-size: var(--font-base); color: $text-sub; margin-bottom: 6px; }

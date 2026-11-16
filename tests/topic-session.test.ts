@@ -19,7 +19,7 @@ import { createFakeDexie } from './helpers/fakeDexie'
 const fake = createFakeDexie()
 vi.mock('@/db', () => ({ db: fake.db }))
 
-const { buildSnapshot, validateSnapshot, accumulateAnswer, progressOf } = await import(
+const { buildSnapshot, validateSnapshot, accumulateAnswer, progressOf, gradedScoreOf } = await import(
   '@core/session/topicSession'
 )
 const { buildBackupV2, readLocalSnapshot } = await import('@core/backup/bundleIO')
@@ -240,9 +240,66 @@ describe('accumulateAnswer', () => {
 })
 
 // ===========================================================================
-// 4. progressOf
+// 3.5 手写第四态 pending：三处透传（accumulateAnswer / buildSnapshot / validateSnapshot）
+//
+// 为什么不钉住会出事：pending 行的 `isCorrect` 恒为 false。任何一处透传丢了
+// `pending`，这一题就会从"等家长批改"退化成"答错了" —— 答题卡变红、
+// 正确率被拖低、孩子以为家长判他错。反过来 dirty 值（`1` / `'true'`）被当成
+// 真时，答题卡会凭空冒出一个没人提交过的"待批改"。
 // ===========================================================================
 
+describe('手写第四态 pending 的透传', () => {
+  it('accumulateAnswer 保留 pending，且 isCorrect 仍是 false（占位语义）', () => {
+    const out = accumulateAnswer({}, 'q1', { userAnswer: '', isCorrect: false, pending: true })
+    expect(out.q1).toEqual({ userAnswer: '', isCorrect: false, pending: true })
+  })
+
+  it('accumulateAnswer 对 pending 只认严格 true，其它值不写这个键', () => {
+    for (const v of [false, 1, 'true', null, undefined] as any[]) {
+      const out = accumulateAnswer({}, 'q1', { userAnswer: 'A', isCorrect: true, pending: v })
+      expect(Object.prototype.hasOwnProperty.call(out.q1, 'pending'), String(v)).toBe(false)
+      expect(out.q1.isCorrect).toBe(true)
+    }
+  })
+
+  it('buildSnapshot 把 pending 写进快照（重进页面才知道这题不是空白）', () => {
+    const snap = buildSnapshot(
+      baseInput({
+        answers: {
+          q1: { userAnswer: '', isCorrect: false, pending: true },
+          q2: { userAnswer: 'C', isCorrect: false },
+        },
+      })
+    )
+    expect(snap.answers.q1).toEqual({ userAnswer: '', isCorrect: false, pending: true })
+    // 普通答错的行不能被顺手加上 pending
+    expect(snap.answers.q2).toEqual({ userAnswer: 'C', isCorrect: false })
+  })
+
+  it('validateSnapshot 读出 pending（续传后答题卡仍是第四态）', () => {
+    const row = buildSnapshot(
+      baseInput({ answers: { q1: { userAnswer: '', isCorrect: false, pending: true } } })
+    )
+    const ok = validateSnapshot(row, QIDS)
+    expect(ok).not.toBeNull()
+    expect(ok!.answers.q1).toEqual({ userAnswer: '', isCorrect: false, pending: true })
+  })
+
+  it('validateSnapshot 把脏 pending（1 / "true" / 对象）降级成普通已答，不报错', () => {
+    for (const v of [1, 'true', {}, []] as any[]) {
+      const row = buildSnapshot(baseInput())
+      row.answers = { q1: { userAnswer: 'A', isCorrect: true, pending: v } } as any
+      const ok = validateSnapshot(row, QIDS)
+      expect(ok, String(v)).not.toBeNull()
+      expect(Object.prototype.hasOwnProperty.call(ok!.answers.q1, 'pending'), String(v)).toBe(false)
+      expect(ok!.answers.q1.isCorrect).toBe(true)
+    }
+  })
+})
+
+// ===========================================================================
+// 4. progressOf
+// ===========================================================================
 describe('progressOf', () => {
   it('answered 数答案条数（不是 currentIndex+1）', () => {
     const row = buildSnapshot(
@@ -265,6 +322,90 @@ describe('progressOf', () => {
   it('题号越界的行也不会给出越界的 currentIndex', () => {
     const row = { ...buildSnapshot(baseInput()), currentIndex: 99 }
     expect(progressOf(row).currentIndex).toBe(3)
+  })
+
+  it('待批改（pending）算"已作答"：孩子写了，不能算空白', () => {
+    const row = buildSnapshot(
+      baseInput({
+        answers: {
+          q1: { userAnswer: 'A', isCorrect: true },
+          q2: { userAnswer: '', isCorrect: false, pending: true },
+        },
+      })
+    )
+    expect(progressOf(row).answered).toBe(2)
+  })
+})
+
+// ===========================================================================
+// 4.5 gradedScoreOf —— 正确率的分母要减掉待批改
+//
+// 这一节挡的是"孩子刚写完 10 个词、家长还没批，结算就说答对 0/10"。
+// 手写题的 isCorrect 是占位 false，混进分母就等于把"还没人看"当"答错"。
+// ===========================================================================
+
+describe('gradedScoreOf（正确率分母减掉待批改）', () => {
+  /** 造一条会话答案表：只给"对/错/待批改"三种，省掉无关字段 */
+  function answersOf(spec: Array<'correct' | 'wrong' | 'pending'>) {
+    const out: Record<string, { userAnswer: any; isCorrect: boolean; pending?: boolean }> = {}
+    spec.forEach((kind, i) => {
+      if (kind === 'pending') out[`q${i + 1}`] = { userAnswer: '', isCorrect: false, pending: true }
+      else out[`q${i + 1}`] = { userAnswer: 'A', isCorrect: kind === 'correct' }
+    })
+    return out
+  }
+
+  it('3 题里 1 题 pending、答对 1 题 → 分母 2，显示 1 / 2', () => {
+    const score = gradedScoreOf(answersOf(['correct', 'wrong', 'pending']), 3)
+    expect(score).toEqual({
+      correct: 1,
+      pending: 1,
+      graded: 2,
+      percent: 50,
+      label: '1 / 2',
+    })
+  })
+
+  it('3 题全 pending → 分母 0，显示「—」而不是 0% / 100%', () => {
+    const score = gradedScoreOf(answersOf(['pending', 'pending', 'pending']), 3)
+    expect(score.graded).toBe(0)
+    expect(score.percent).toBeNull()
+    expect(score.label).toBe('—')
+  })
+
+  it('没有 pending 时与 correct/total 完全一致（不改变原有口径）', () => {
+    const score = gradedScoreOf(answersOf(['correct', 'correct', 'wrong']), 4)
+    expect(score.graded).toBe(4)
+    expect(score.label).toBe('2 / 4')
+    expect(score.percent).toBe(50)
+  })
+
+  it('pending 只认严格 true（脏值按普通已答处理，不偷偷改分母）', () => {
+    const dirty = { q1: { userAnswer: 'A', isCorrect: true, pending: 1 } } as any
+    const score = gradedScoreOf(dirty, 1)
+    expect(score.pending).toBe(0)
+    expect(score.graded).toBe(1)
+    expect(score.label).toBe('1 / 1')
+  })
+
+  it('答案表条数多于总题数 / 少于总题数都不炸，分母不为负', () => {
+    // 脏库：5 条 pending，但这次会话只有 2 题
+    const many = answersOf(['pending', 'pending', 'pending', 'pending', 'pending'])
+    expect(gradedScoreOf(many, 2).graded).toBe(0)
+    // 只答了 1 题，还没做的题仍在分母里
+    expect(gradedScoreOf(answersOf(['correct']), 4).label).toBe('1 / 4')
+  })
+
+  it('空表 / 畸形入参不炸：一道没做就是 0 / N（分母仍是题数），总数为 0 才是「—」', () => {
+    for (const v of [null, undefined, {}, { q1: null }, 'junk'] as any[]) {
+      const score = gradedScoreOf(v, 3)
+      expect(score.label, String(v)).toBe('0 / 3')
+      expect(score.correct).toBe(0)
+      expect(score.pending).toBe(0)
+      expect(score.percent).toBe(0)
+    }
+    expect(gradedScoreOf(answersOf(['correct']), 0).label).toBe('—')
+    expect(gradedScoreOf(answersOf(['correct']), NaN).label).toBe('—')
   })
 })
 

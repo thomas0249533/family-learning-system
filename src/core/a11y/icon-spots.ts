@@ -315,6 +315,19 @@ export const ICON_SPOTS: IconSpot[] = [
     kind: 'must',
   },
   {
+    // P2 手写待批改第四态：与 `unit-card-suggest` 同一组 warning 配色，
+    // 只是这里包的是整条说明文字而非角标。发现门禁按「彩色底 + IconBase」扫描，
+    // 不登记会让全量 verify 的红留在一条既有功能上（8fdc8bf 引入时漏登）。
+    file: 'src/modules/core/QuizEngine.vue',
+    cls: 'pending-note',
+    where: '答题区「手写作答，等家长批改」第四态提示条（clock 图标）',
+    fgLabel: 'warning-text',
+    fg: fgOf('warning-text'),
+    bgLabel: 'badge-warning-bg',
+    bg: bgOf('badge-warning-bg'),
+    kind: 'must',
+  },
+  {
     file: 'src/views/learn/ExamPanel.vue',
     cls: 'exam-badge',
     where: '考试类型徽标（target 图标）',

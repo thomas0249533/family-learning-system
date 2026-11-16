@@ -21,6 +21,7 @@
 import { db, type LearningPackageRecord } from '@/db'
 import { currentProfileId } from '@core/profile/currentProfile'
 import { scopedKey } from '@core/profile/settingsScope'
+import { isPackageHidden, loadHiddenPackages } from '@core/settings/hiddenPackages'
 import { isDueForReview } from '@core/review/reviewScheduler'
 import { mistakeLevel, needsReview } from '@core/mistake/mistakeRules'
 import { resolvePackageUnits } from '@core/importer/resolvePackageUnits'
@@ -147,7 +148,12 @@ async function buildIndex(packages: LearningPackageRecord[]): Promise<PlanIndex>
   }
   for (const [short, n] of shortSeen) if (n > 1) idx.titleShort.delete(short)
 
-  const visible = packages.filter((p) => (p.manifest as any)?.isInternal !== true)
+  // 隐藏 = 退役：不再进今日计划 / 复习排期，但**标题索引在上面仍然吃全量 packages**，
+  // 否则隐藏包里的 kp 在错题本里只会显示一串 id（隐藏不是"这个包不存在"）。
+  const hidden = await loadHiddenPackages()
+  const visible = packages.filter(
+    (p) => (p.manifest as any)?.isInternal !== true && !isPackageHidden(hidden, p.packageId)
+  )
   const unitSeen = new Set<string>()
   let order = 0
 

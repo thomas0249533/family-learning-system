@@ -651,8 +651,11 @@ describe('A3 · settings 键分片静态扫描', () => {
     //   autoSnapshot.ts 里 capturePreClearSnapshot、clearAllUserDataExceptSnapshots、
     //   deleteSnapshot、clearSnapshots（改写后多了 get）新增的 get/put/clear。
     // 逐条核对：都是设备级、值仍是 SnapshotFile 结构 = 67。
+    // P0-1 新增 2 个访问点，全部落在同一个新登记的 global 键 `packages:hidden` 上：
+    //   hiddenPackages.ts 的 loadHiddenPackages.get / writeHiddenPackages.put
+    // 读写都集中在真源模块里（没有散落到 .vue），静态扫描两个都解析到常量字面量 = 69。
     // 改这个数字等于承认"我看过每一个新访问点"。
-    expect(r.points.length).toBe(67)
+    expect(r.points.length).toBe(69)
     expect(r.exempts.length).toBe(2)
   })
 

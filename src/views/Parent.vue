@@ -381,6 +381,33 @@
       </AppCard>
     </section>
 
+    <!-- 手写批改（P1）：孩子用书写板写的作业在这里等判定。
+         放家长端而不是孩子端：判定权在家长，孩子端只该看到"已提交等批改"。 -->
+    <section class="section">
+      <SectionTitle title="手写批改" />
+      <AppCard>
+        <div class="hw-entry">
+          <div class="hw-entry__text">
+            <p class="hw-entry__title">
+              <IconBase name="pen" size="1em" />
+              待批改 <b>{{ pendingHandwriting }}</b> 份
+            </p>
+            <p class="hw-entry__hint">
+              孩子在背记里选「手写板」写完提交，作业就会排到这里。批改结果会计入掌握度和错题本
+              —— 没批的不会污染统计。
+            </p>
+          </div>
+          <AppButton
+            type="primary"
+            :disabled="pendingHandwriting === 0"
+            @click="router.push('/handwriting')"
+          >
+            <IconBase name="pen" size="1em" /> 去批改
+          </AppButton>
+        </div>
+      </AppCard>
+    </section>
+
     <!-- 学习包管理 -->
     <section class="section">
       <SectionTitle title="学习包管理" />
@@ -428,6 +455,7 @@ import {
 import { planProgress, type DailyGoal, type GoalMode } from '@core/plan/dailyPlan'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppCard from '@/components/ui/AppCard.vue'
+import { countPendingHandwriting } from '@core/stores/handwriting'
 import CustomPackPanel from '@/components/CustomPackPanel.vue'
 import WeeklyReportCard from '@/components/WeeklyReportCard.vue'
 import {
@@ -806,6 +834,7 @@ onMounted(async () => {
   discoveryEnabled.value = await loadDiscoveryEnabled()
   await refreshStreakState()
   await loadGoalCard()
+  await loadPendingHandwriting()
 })
 
 onUnmounted(() => {
@@ -814,6 +843,20 @@ onUnmounted(() => {
   diagAbort?.abort()
   stopDiagTypewriter(false)
 })
+
+/** ===== 手写批改入口（P1）=====
+ * 只读一个计数：入口卡的角标。真正的批改在 `/handwriting` 页做。
+ * 读失败**不弹错**（家长页的主线是看学习情况，不该被一个可选入口的读失败打断），
+ * 只是角标停在 0 —— 点进去的页面自己有错误态与重试。 */
+const pendingHandwriting = ref(0)
+
+async function loadPendingHandwriting(): Promise<void> {
+  try {
+    pendingHandwriting.value = await countPendingHandwriting()
+  } catch (e) {
+    console.warn('[家长视图] 读取待批改条数失败，已忽略', e)
+  }
+}
 
 /** ===== 成就概览（A2-5，只读 + V1.6 · C6 可收集口径）===== */
 // 分类元数据与 Home 的成就图鉴共用同一份定义（避免标签/图标漂移）
@@ -1224,6 +1267,42 @@ async function handleExportDiagnosis(): Promise<void> {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+/* ========== 手写批改入口（P1） ==========
+   一行两列：左边文案、右边按钮。窄屏纵向堆叠（按钮要能整块点到）。 */
+.hw-entry {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  &__text {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 4px;
+    font-size: var(--font-md);
+    font-weight: 700;
+    color: $text-main;
+
+    b {
+      font-size: var(--font-xl);
+      color: $primary-text;
+    }
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: var(--font-xs);
+    line-height: 1.6;
+    color: $text-sub;
+  }
 }
 
 /* ========== 总览 ========== */
