@@ -47,3 +47,13 @@
 - 书架出现该包 → 单元列表按课次（第1/2/4/5…25课 + 语文园地），每课可单独进入练习。
 - 词语表下拉按课切换（`units.length > 1` 才显示）。
 - 旧包 `special-chinese-4-up-vocab` 在书架卡片「⋯」→「隐藏」，顶部「显示已隐藏(N)」可找回。
+
+## 发版 4.1.0（2026-11-16 17:20 完成）
+- 版本 7 处 4.0.0→4.1.0（`6343f90`），`check-version.mjs` 通过。downloadUrl 沿用 ghproxy 代理 + GitHub 直链。
+- 发版链（顺序）：`npx tauri build`（完整构建，产 NSIS+sig，6m10s）→ `gen-latest.mjs`（签名自证通过）→ 归档提交 `74bdb75`（latest.json + updates/4.1.0/ + 发版记录）→ `push-to-github.mjs` 两次（代码 `592e9ede`、归档 `b93ecafe`）→ `publish-release.mjs`（tag v4.1.0 挂 b93ecaf2 + 4 资产）→ `check-remote.mjs`（🎉 全环通过）。
+- Release: https://github.com/thomas0249533/family-learning-system/releases/tag/v4.1.0
+- 资产 4 个：NSIS exe 6.39MB / sig / latest.json / version.json，均自证通过。
+- 内容包随远程 main 分发：catalog 73 包含 `special-chinese-4-up-vocab-2026` + assets.zip，用户「检查题库更新」可安装。
+- **私钥实际位置**：`C:/Users/Administrator/.tauri/family-learning.key`（旧记录 G 盘已失效）——已更正 system-dev.md。
+- **发版必须完整 `npx tauri build`**，不能 `--no-bundle`（后者只出 app.exe，gen-latest 要 NSIS+sig）——已更正 system-dev.md。
+- check-remote 报「本机 DNS 受限、所有源不可达」是本机网络限制（raw.githubusercontent 被墙），它自动回退校验仓库内 latest.json/安装包 blob 并通过，不代表家庭端不可达。
