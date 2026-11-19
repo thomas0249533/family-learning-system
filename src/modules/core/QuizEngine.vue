@@ -1772,6 +1772,21 @@ function handleExit() {
   &:hover { border-color: $primary-color; background: $primary-light; }
 }
 
+/* ---------- V4.1.1 · 选项积木厚度（与 AppButton 同构） ----------
+ * 只给「未判分且可点击」的选项加厚度：判分后 --correct/--wrong 有自己的
+ * opt-pop / opt-shake，不该再被按压位移干扰；disabled 的选项也不能显得能按。
+ * naive 的禁用标记在根节点是 .n-radio--disabled / .n-checkbox--disabled
+ * （根节点是 label/div，不是原生 :disabled），故用类名排除。
+ * 按压位移 4px 必须严格等于 --shadow-3d 的 y 偏移，否则会「穿模」。 */
+.opt-item:not(.opt-item--correct):not(.opt-item--wrong):not(.n-radio--disabled):not(.n-checkbox--disabled) {
+  box-shadow: var(--shadow-3d);
+
+  &:active {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+}
+
 /* ---------- V2.11 · 提交后选项染色 + 物理反馈 ----------
  * 用**双类选择器**（.opt-item.opt-item--x）而不是单类：上面 `&:hover` 编译成
  * `.opt-item:hover`（特异性 0,2,0），单类 .opt-item--correct 只有 0,1,0，
@@ -2096,6 +2111,13 @@ body.dark-mode {
   .feedback-box.correct,
   .feedback-box.wrong {
     animation: none;
+  }
+  /* 按压位移取消，但保留厚度阴影与「按下即无阴影」的静态对比 */
+  .opt-item:not(.opt-item--correct):not(.opt-item--wrong):not(.n-radio--disabled):not(.n-checkbox--disabled) {
+    transition: none;
+  }
+  .opt-item:not(.opt-item--correct):not(.opt-item--wrong):not(.n-radio--disabled):not(.n-checkbox--disabled):active {
+    transform: none;
   }
 }
 </style>

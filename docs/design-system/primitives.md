@@ -372,6 +372,7 @@
 | `size` | `'sm' \| 'md'` | `'md'` | 6px / 10px 高 |
 | `gradient` | `boolean` | `false` | 用主色渐变填充（`--progress-fill-bg`） |
 | `showLabel` | `boolean` | `false` | 右侧显示整数百分比 |
+| `celebrate` | `boolean` | `false` | 答对扫光：在填充上叠加一道高光带，从左 `-0.6` 扫到 `1.2`；纯装饰，不改变量纲。`:key="pct"` 保证连续答对时重播 |
 
 ### Slots / Events
 
@@ -394,8 +395,10 @@ pct     = max <= 0 || clamped === 0 ? 0 : Math.round(clamped / max * 100)
 | `--primary-color` | 默认填充（图形色，合法） |
 | `--success-color` / `--warning-color` / `--danger-color` | tone 填充 |
 | `--progress-fill-bg` | `gradient` 填充 |
+| `--progress-gloss` | 顶部内高光 + `celebrate` 扫光（白色半透明，明暗各一套；组件层禁写字面色） |
 | `--radius-full` | 轨道与填充圆角 |
 | `--duration-slow` / `--ease-decelerate` | 宽度过渡 |
+| `--duration-slowest` | `celebrate` 扫光（600ms，`linear`） |
 | `--font-xs` / `--text-sub` | 右侧百分比 |
 | `--space-2` | 条与标签间隙 |
 
@@ -406,7 +409,7 @@ pct     = max <= 0 || clamped === 0 ? 0 : Math.round(clamped / max * 100)
   在**内层** `.progress` 上 → 直接写 `<ProgressBar aria-label="数学掌握度" />` 名称不会挂到进度条元素。
   需要读屏可读时，请用可见文字标签包一层 + `aria-labelledby` 指向它；
 - 非交互元素，**不需要**焦点环（这是刻意的，不是遗漏）；
-- 动效降级：`prefers-reduced-motion` 下取消宽度过渡。
+- 动效降级：`prefers-reduced-motion` 下取消宽度过渡，且 `celebrate` 扫光整条不渲染（只保留进度数值变化）。
 
 ### 示例
 

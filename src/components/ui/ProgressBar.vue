@@ -14,7 +14,11 @@
       :aria-valuenow="pct"
       :aria-valuetext="valuetext"
     >
-      <div class="progress__fill" :style="{ width: `${pct}%` }" />
+      <div class="progress__fill" :style="{ width: `${pct}%` }">
+        <!-- 答对扫光：key 绑 pct，连续答对时随数值变化重挂载 → 动画重播。
+             纯装饰，不给读屏增加节点。 -->
+        <span v-if="celebrate" :key="pct" class="progress__sheen" aria-hidden="true" />
+      </div>
     </div>
     <span v-if="showLabel" class="progress-wrap__label">{{ pct }}%</span>
   </div>
@@ -42,6 +46,8 @@ interface ProgressBarProps {
   size?: 'sm' | 'md'
   gradient?: boolean
   showLabel?: boolean
+  /** 答对庆祝：在填充上叠加一道扫光；纯装饰，不改变进度量纲 */
+  celebrate?: boolean
   /** 进度条的人类可读名称（aria-valuetext 前缀，如「今日进度」） */
   label?: string
 }
@@ -52,6 +58,7 @@ const props = withDefaults(defineProps<ProgressBarProps>(), {
   size: 'md',
   gradient: false,
   showLabel: false,
+  celebrate: false,
   label: undefined,
 })
 
@@ -122,6 +129,25 @@ const valuetext = computed(() => {
   pointer-events: none;
 }
 
+/* V4.1.1 · 答对扫光（celebrate）
+ * 一道高光带相对自身宽度从 -0.6 扫到 1.2（translateX(-60%) → translateX(120%)）。
+ * 高光取 --progress-gloss：白色半透明，明暗两套预生成；组件层不写字面色。
+ * transparent 是 CSS 关键字而非色值字面量，配合 var() 满足零硬编码色。 */
+.progress__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(100deg, transparent 40%, var(--progress-gloss) 50%, transparent 60%);
+  transform: translateX(-60%);
+  animation: progress-sheen var(--duration-slowest) linear;
+  pointer-events: none;
+}
+
+@keyframes progress-sheen {
+  from { transform: translateX(-60%); }
+  to { transform: translateX(120%); }
+}
+
 .progress--gradient .progress__fill {
   background: var(--progress-fill-bg);
 }
@@ -151,6 +177,10 @@ const valuetext = computed(() => {
 @media (prefers-reduced-motion: reduce) {
   .progress__fill {
     transition: none;
+  }
+  /* 扫光整条不出现：只保留进度数值/宽度的变化，不产生横向移动 */
+  .progress__sheen {
+    display: none;
   }
 }
 </style>
