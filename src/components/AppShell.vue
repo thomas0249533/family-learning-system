@@ -76,7 +76,7 @@
         class="update-banner"
         :class="bannerClass"
       >
-        <span class="update-banner__icon" aria-hidden="true">{{ bannerIcon }}</span>
+        <span class="update-banner__icon" aria-hidden="true"><IconBase :name="bannerIcon" size="1em" /></span>
         <span class="update-banner__text">
           <template v-if="autoState.phase === 'checking'">正在检查更新…</template>
           <template v-else-if="autoState.phase === 'latest'">已是最新版本（v{{ autoState.version }}）</template>

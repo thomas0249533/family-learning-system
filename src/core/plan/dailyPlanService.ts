@@ -530,6 +530,10 @@ export async function ensureDailyPlan(force = false): Promise<EnsurePlanResult> 
 
   const candidates = await buildPlanCandidates()
   const built = buildDailyPlan({ date: today, goal, candidates, builtAt: Date.now() })
+  // 「候选总数」的口径要和队列一致：关掉的内容源不再算候选（不改 buildPlanCandidates）
+  const candidateCount = goal.disabledSources?.includes('vocab')
+    ? candidates.filter((c) => c.kind !== 'vocab').length
+    : candidates.length
 
   // 重新生成时**同一日内不清零"今天已经做了多少"**：
   // 日中途改目标 / 点「再练一组」都不该把今日完成量打回 0（那会让结算页与打卡
@@ -542,7 +546,7 @@ export async function ensureDailyPlan(force = false): Promise<EnsurePlanResult> 
   }
 
   await writePlan(built)
-  return { plan: built, rebuilt: true, candidateCount: candidates.length }
+  return { plan: built, rebuilt: true, candidateCount }
 }
 
 /** 标记某项完成（幂等）。返回更新后的队列。 */

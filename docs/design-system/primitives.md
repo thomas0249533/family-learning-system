@@ -362,6 +362,14 @@
 
 **定位**：掌握度 / 完成度条。**关系**：自建 `div`，`role="progressbar"`。
 
+**接入现状（V4.1.2）**：已在答题页接入答对扫光——实际接入位置是 `src/modules/core/QuizEngine.vue`
+反馈框内的 `.feedback-fx > .feedback-sheen`，复用同一个 `--progress-gloss` 与
+`100deg` 光带、`-60% → 120%` 位移。答题区没有「本次练习进度」的进度条可接：
+`src/modules/core/VocabDrill.vue` 的条只在入口屏、口径是单元累计掌握度；
+`src/views/learn/TopicDetail.vue` 自身不渲染进度条，只在里面挂 QuizEngine ——
+因此没有硬塞 `ProgressBar`，而是让调用处用递增的本地 key
+重播扫光（不依赖百分比变化）。
+
 ### Props
 
 | prop | 类型 | 默认 | 说明 |

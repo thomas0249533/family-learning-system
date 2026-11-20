@@ -15,6 +15,7 @@ import {
   KIND_LABEL,
   type PlanCandidate,
   type PlanItemKind,
+  type DailyGoal,
 } from '@core/plan/dailyPlan'
 
 // ---------------------------------------------------------------------------
@@ -75,6 +76,24 @@ describe('normalizeGoal', () => {
   it('非数字（字符串 / NaN）回落默认值而不是 0', () => {
     expect(normalizeGoal({ questions: 'abc' as never }).questions).toBe(DEFAULT_GOAL.questions)
     expect(normalizeGoal({ minutes: Number.NaN }).minutes).toBe(DEFAULT_GOAL.minutes)
+  })
+
+  it('disabledSources 不丢：去重、排序、丢非法值', () => {
+    const g = normalizeGoal({
+      mode: 'questions',
+      questions: 20,
+      minutes: 20,
+      disabledSources: ['vocab', 'vocab', 'bogus' as never],
+    })
+    expect(g.disabledSources).toEqual(['vocab'])
+    // 归一化后 JSON 稳定（同一份设置落盘不抖动）
+    expect(JSON.stringify(g)).toBe(JSON.stringify(normalizeGoal(g)))
+  })
+
+  it('disabledSources 全非法 → 空数组；非数组 / 缺省 → 不写该字段', () => {
+    expect(normalizeGoal({ disabledSources: ['bogus' as never] }).disabledSources).toEqual([])
+    expect(normalizeGoal({ disabledSources: 'vocab' as never }).disabledSources).toBeUndefined()
+    expect(normalizeGoal(null)).not.toHaveProperty('disabledSources')
   })
 })
 
@@ -387,6 +406,26 @@ describe('isPlanStale', () => {
     expect(isPlanStale(null, DATE)).toBe(true)
     expect(isPlanStale({ ...plan, version: 2 as never }, DATE)).toBe(true)
   })
+
+  it('disabledSources 变化 → 重算（同日、目标数字没变也要立刻生效）', () => {
+    const withVocab = buildDailyPlan({
+      date: DATE,
+      goal: { ...plan.goal, disabledSources: ['vocab'] },
+      candidates: [mk('review')],
+    })
+    expect(isPlanStale(withVocab, DATE, withVocab.goal)).toBe(false)
+    // 关 → 开
+    expect(isPlanStale(withVocab, DATE, { ...withVocab.goal, disabledSources: [] })).toBe(true)
+    // 开 → 关（老目标没有字段）
+    expect(isPlanStale(plan, DATE, { ...plan.goal, disabledSources: ['vocab'] })).toBe(true)
+  })
+
+  it('老计划无 disabledSources 视为 []（不同引用不误判为变化）', () => {
+    const legacy = { ...plan, goal: { ...plan.goal } }
+    delete legacy.goal.disabledSources
+    expect(isPlanStale(legacy, DATE, { ...legacy.goal, disabledSources: [] })).toBe(false)
+    expect(isPlanStale(legacy, DATE, { ...legacy.goal, disabledSources: ['vocab'] })).toBe(true)
+  })
 })
 
 describe('KIND_COST 契约', () => {
@@ -402,6 +441,90 @@ describe('KIND_LABEL / reasonOf · vocab', () => {
   it('vocab 标签是「背记」且理由可核对', () => {
     expect(KIND_LABEL.vocab).toBe('背记')
     expect(reasonOf(mk('vocab', { itemId: 'v', knowledgePointIds: ['a'] }))).toContain('背记')
+  })
+})
+
+describe('buildDailyPlan · 内容源开关（vocab 可关，其它四源不动）', () => {
+  /** 五类各一项、固定数据：同一批候选分别用开/关目标编排，差异只应出现在 vocab */
+  const baseCandidates = (): PlanCandidate[] => [
+    mk('review', {
+      title: '复习卡', overdueDays: 2,
+      packageId: 'p', unitId: 'u-review', topicId: 't-review', knowledgePointId: 'kp-review',
+    }),
+    mk('mistake', {
+      title: '错题组', pendingMistakes: 4,
+      packageId: 'p', unitId: 'u-mistake', topicId: 't-mistake', knowledgePointId: 'kp-mistake',
+    }),
+    mk('weak', {
+      title: '弱项点', mastery: 0.32,
+      packageId: 'p', unitId: 'u-weak', topicId: 't-weak', knowledgePointId: 'kp-weak',
+    }),
+    mk('new', {
+      title: '新单元', order: 1,
+      packageId: 'p', unitId: 'u-new', topicId: 't-new', knowledgePointId: 'kp-new',
+    }),
+    mk('vocab', {
+      title: '词语背记（10 词）', itemId: 'vocab\0p\0a,b',
+      knowledgePointIds: ['a', 'b'], availableQuestions: 10,
+      packageId: 'p', unitId: 'u-vocab', topicId: 't-vocab',
+    }),
+  ]
+
+  const build = (goal: Partial<DailyGoal>, candidates: PlanCandidate[]) =>
+    buildDailyPlan({ date: DATE, goal, candidates })
+
+  it('关闭 vocab → 无背记项；开启 → 有（同一批候选）', () => {
+    const candidates = baseCandidates()
+    const goal = { mode: 'questions' as const, questions: 40, minutes: 30 }
+    const on = build(goal, candidates)
+    const off = build({ ...goal, disabledSources: ['vocab'] }, candidates)
+    expect(on.items.filter((i) => i.kind === 'vocab')).toHaveLength(1)
+    expect(off.items.filter((i) => i.kind === 'vocab')).toHaveLength(0)
+    expect(off.items).toHaveLength(on.items.length - 1)
+  })
+
+  it.each(['questions', 'minutes'] as const)(
+    '回归 S4 · %s 口径：关闭前后四类题源逐项一致',
+    (mode) => {
+      const candidates = baseCandidates()
+      const goal = { mode, questions: 40, minutes: 30 }
+      const on = build(goal, candidates)
+      const off = build({ ...goal, disabledSources: ['vocab'] }, candidates)
+
+      type Plan = ReturnType<typeof buildDailyPlan>
+      const core = (p: Plan) => p.items.filter((i) => i.kind !== 'vocab')
+      // 逐项深比：id / 标题 / kind / 题量 / 分钟，任一项漂移都算回归
+      expect(core(off)).toEqual(core(on))
+
+      const coreKinds: PlanItemKind[] = ['review', 'mistake', 'weak', 'new']
+      const signature = (p: Plan) =>
+        coreKinds.map((kind) => {
+          const items = p.items.filter((i) => i.kind === kind)
+          return {
+            kind,
+            count: items.length,
+            questions: items.reduce((sum, i) => sum + i.questions, 0),
+            minutes: items.reduce((sum, i) => sum + i.minutes, 0),
+          }
+        })
+      // 先看逐项签名（失败时一眼看出是哪类漂移），再钉死具体数值
+      expect(signature(off)).toEqual(signature(on))
+      expect(signature(off)).toEqual([
+        { kind: 'review', count: 1, questions: 3, minutes: 2 },
+        { kind: 'mistake', count: 1, questions: 3, minutes: 3 },
+        { kind: 'weak', count: 1, questions: 4, minutes: 3 },
+        { kind: 'new', count: 1, questions: 6, minutes: 5 },
+      ])
+    },
+  )
+
+  it('只有 vocab 候选且已禁用 → 空队列（兜底「至少一项」也不捡禁用源）', () => {
+    const plan = build(
+      { mode: 'questions', questions: 15, minutes: 15, disabledSources: ['vocab'] },
+      [mk('vocab', { itemId: 'v', knowledgePointIds: ['a'], availableQuestions: 3 })],
+    )
+    expect(plan.items).toEqual([])
+    expect(plan.totals).toEqual({ questions: 0, minutes: 0 })
   })
 })
 

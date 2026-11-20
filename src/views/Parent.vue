@@ -147,6 +147,27 @@
           <span v-else>（按时长算，允许略微超出）</span>
         </p>
 
+        <!--
+          内容源可插拔的第一块：只暴露词汇开关（review / mistake / weak / new 本期不给 UI）。
+          关掉后今日队列立刻重排，词汇改按课程页进度自学；题量/时长目标一行不动。
+        -->
+        <div class="goal-source">
+          <div class="goal-source__text">
+            <span id="vocab-source-title" class="goal-source__title">词语背记</span>
+            <p id="vocab-source-desc" class="goal-hint">
+              关闭后，每日一练不再安排词语背记；词汇可按课程进度在单元/课程页自行学习
+            </p>
+            <p class="goal-hint">每日题量/时长目标不受影响</p>
+          </div>
+          <n-switch
+            :value="vocabEnabled"
+            :disabled="vocabSwitchBusy"
+            aria-label="词语背记开关"
+            aria-describedby="vocab-source-desc"
+            @update:value="toggleVocabSource"
+          />
+        </div>
+
         <div class="goal-actions">
           <AppButton size="small" @click="redoToday">重新安排今天</AppButton>
         </div>
@@ -452,7 +473,7 @@ import {
   saveDailyGoal,
   setGoalMode,
 } from '@core/plan/dailyPlanService'
-import { planProgress, type DailyGoal, type GoalMode } from '@core/plan/dailyPlan'
+import { planProgress, type DailyGoal, type GoalMode, type PlanSource } from '@core/plan/dailyPlan'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import { countPendingHandwriting } from '@core/stores/handwriting'
@@ -540,13 +561,26 @@ const todayTotalItems = ref(0)
 const todayDoneQuestions = ref(0)
 
 /**
+ * 内容源开关（本期只有词汇）：缺省视为开启，与 `normalizeGoal` 的缺省口径一致。
+ * 开关状态不另存 settings —— 它就是当前档案 goal 的 disabledSources 投影。
+ */
+const vocabEnabled = ref(true)
+const vocabSwitchBusy = ref(false)
+
+function syncSourceToggles(goal: DailyGoal): void {
+  vocabEnabled.value = !goal.disabledSources?.includes('vocab')
+}
+
+/**
  * 读目标 + 今日进度。
  * 两件事都**失败可忽略**：这块是家长端的附加卡，读不到不该把整页拖白
  * （页面主体还有总览 / 成就 / 错题 Top5）。
  */
 async function loadGoalCard(): Promise<void> {
   try {
-    goalForm.value = await loadDailyGoal()
+    const goal = await loadDailyGoal()
+    goalForm.value = goal
+    syncSourceToggles(goal)
   } catch {
     /* 保留默认值 */
   }
@@ -576,6 +610,47 @@ async function saveGoalNumbers(): Promise<void> {
     })),
   }
   message.success('目标已保存，孩子端下次打开即按新目标排队')
+}
+
+/**
+ * 词语背记开关：读当前 goal → 改 disabledSources → 落盘 → 立即重排今天。
+ *
+ * 为什么必须重排：同日冻结是默认行为，光改 goal 今天的队列还挂着背记项，
+ * 家长会以为开关没生效。`isPlanStale` 也已感知该字段，所以即使重排失败，
+ * 下次进入今日页仍会自动按新设置重建。
+ */
+async function toggleVocabSource(enabled: boolean): Promise<void> {
+  if (vocabSwitchBusy.value || vocabEnabled.value === enabled) return
+  const before = vocabEnabled.value
+  vocabEnabled.value = enabled // 先拨开关，失败再回滚，避免点击后像没反应
+  vocabSwitchBusy.value = true
+  try {
+    const current = await loadDailyGoal()
+    const sources = new Set<PlanSource>(current.disabledSources ?? [])
+    if (enabled) sources.delete('vocab')
+    else sources.add('vocab')
+    const saved = await saveDailyGoal({ disabledSources: [...sources].sort() })
+    goalForm.value = saved
+    syncSourceToggles(saved)
+    try {
+      await rebuildDailyPlan()
+      await loadGoalCard()
+      message.success(enabled ? '已开启词语背记，今日任务已重排' : '已关闭词语背记，今日任务已重排')
+    } catch {
+      // 目标已落盘，只是这次重排没成功：下次 ensureDailyPlan 会因 isPlanStale 自动重排
+      message.warning('设置已保存，今天的任务下次打开今日页时会自动更新')
+    }
+  } catch (e) {
+    // 保存失败：拨回真实值，绝不留一个"看起来关了、其实还开着"的开关
+    try {
+      syncSourceToggles(await loadDailyGoal())
+    } catch {
+      vocabEnabled.value = before
+    }
+    message.error('保存失败：' + (e as Error).message)
+  } finally {
+    vocabSwitchBusy.value = false
+  }
 }
 
 /** 重排今天：不改变已完成的记账，只换剩下的任务 */
@@ -827,6 +902,9 @@ async function toggleDiscovery(enabled: boolean): Promise<void> {
 onMounted(async () => {
   offProfileChange = onProfileChange((next) => {
     profileState.value = next
+    // 目标与内容源开关都按档案分片（dailyGoalKey(pid)）：切档案必须跟着变，
+    // 否则本页开关还停在另一个孩子的设置上。
+    void loadGoalCard()
   })
   await userDataStore.loadUserData()
   await packageStore.loadPackages()
@@ -1392,6 +1470,29 @@ async function handleExportDiagnosis(): Promise<void> {
   font-size: var(--font-xs);
   color: $text-sub;
   line-height: $leading-normal;
+}
+
+/* 内容源开关（词语背记）：文案 + 开关同排；窄屏换行后仍是整行可读的说明（全 token） */
+.goal-source {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed $border-light;
+
+  &__text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    display: block;
+    font-size: var(--font-sm);
+    font-weight: 700;
+    color: $text-main;
+    margin-bottom: 2px;
+  }
 }
 
 .goal-actions {

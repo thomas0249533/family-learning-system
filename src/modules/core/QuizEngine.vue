@@ -221,8 +221,20 @@
         -->
         <div class="quiz-live" aria-live="polite" aria-atomic="true">
           <div v-if="!examMode && showFeedback" class="feedback-box" :class="feedbackClass">
+            <!--
+              V4.1.2 · 答对扫光：与 ProgressBar 的 celebrate 同构（同一 `--progress-gloss`
+              + 100deg 光带 + -60% → 120% 位移）。`:key` 绑本地递增的 sheenKey，
+              最后一题答对时百分比已不再变化也能重播；纯装饰，不进读屏。
+            -->
+            <span class="feedback-fx" aria-hidden="true">
+              <span v-if="isCorrect" :key="sheenKey" class="feedback-sheen" />
+              <span v-else class="feedback-wash" />
+            </span>
             <p class="sr-only">{{ announceHead }}</p>
-            <p class="feedback-title">{{ feedbackTitle }}</p>
+            <p class="feedback-title" :class="{ 'has-combo': combo >= 3 }">{{ feedbackTitle }}</p>
+            <!-- 连对标记：combo≥3 才出现；`:key="combo"` 每次连对都重放轻脉冲。
+                 不是礼花、不抢占正文，避免高频庆祝变成小学生的干扰源。 -->
+            <span v-if="isCorrect && combo >= 3" :key="combo" class="feedback-combo">连对 {{ combo }} 次</span>
             <p v-if="!isCorrect || isSubjectiveQ" class="user-answer">你的答案：{{ userAnswerDisplay || '（未作答）' }}</p>
             <p class="correct-answer">{{ isSubjectiveQ ? '参考答案' : '正确答案' }}：{{ correctAnswerDisplay }}</p>
 
@@ -511,6 +523,20 @@ const userAnswer = ref<any>('')
 const showFeedback = ref(false)
 const isCorrect = ref(false)
 const correctCount = ref(0)
+/**
+ * V4.1.2 · 答对扫光的重播计数。
+ * ProgressBar.celebrate 靠 `:key="pct"` 重挂载来重播；答题页没有可绑的进度量纲
+ * （且最后一题答对时进度已满），改用本地递增 key —— 每次答对都换 key，
+ * 即使连续答对、进度值不变，光带也会重新扫一遍。切题时不必重置：feedback-box
+ * 本身随 showFeedback 逐题卸载重建，节点是新的。
+ */
+const sheenKey = ref(0)
+/**
+ * V4.1.2 · 连击计数：连续答对 +1，答错归零；只在 submitAnswer 里推进。
+ * 切题**不**重置（合法连对要能跨题累计），离开页面随组件一起销毁；
+ * 主观题手动纠错不改写它 —— 那是人工改判，不该被算进"连对"。
+ */
+const combo = ref(0)
 const answeredSet = ref<Set<number>>(new Set())
 const examAnswers = ref<Record<string, any>>({})
 
@@ -1260,7 +1286,13 @@ function submitAnswer() {
     ? gradeEssay(String(userAnswer.value ?? ''), String(q.answer ?? ''), q.keyPoints).correct
     : gradeWith(q, userAnswer.value)
   if (subj) essayOverride.value = null
-  if (isCorrect.value) correctCount.value++
+  if (isCorrect.value) {
+    correctCount.value++
+    sheenKey.value++ // 每次答对都重挂扫光节点，连续答对也重播
+    combo.value++
+  } else {
+    combo.value = 0
+  }
 
   // V2.0 · 答题卡留档（每次提交都更新，允许改了再提交覆盖旧值）
   if (!props.examMode) {
@@ -1933,6 +1965,7 @@ function handleExit() {
 }
 
 .feedback-box {
+  position: relative; /* V4.1.2：装饰层（扫光 / 红 wash）的定位上下文 */
   margin-top: 16px;
   padding: 14px 18px;
   border-radius: var(--radius-lg);
@@ -1940,6 +1973,78 @@ function handleExit() {
   line-height: 1.65;
   /* V2.11：判定结果要"浮"在页面上（多邻国的高调奖励），不能只靠换底色 */
   box-shadow: var(--shadow-sm);
+}
+
+/* V4.1.2 · 反馈装饰层：与 ProgressBar 的 `.progress` 同职责 —— 把光带裁在圆角内。
+   刻意不给 .feedback-box 设 overflow:hidden：里面「判错了？可手动纠正」按钮的
+   焦点环会被裁掉。装饰层自己裁剪，正文照常浮在上层。 */
+.feedback-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.feedback-box > :not(.feedback-fx):not(.feedback-combo) {
+  position: relative;
+  z-index: 1;
+}
+
+/* V4.1.2 · 答对扫光：几何与动效同构于 ProgressBar `.progress__sheen`，
+   高光走 --progress-gloss（明暗两套预生成），组件层不写字面色。 */
+.feedback-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 40%, var(--progress-gloss) 50%, transparent 60%);
+  transform: translateX(-60%);
+  animation: feedback-sheen var(--duration-slowest) linear;
+}
+
+@keyframes feedback-sheen {
+  from { transform: translateX(-60%); }
+  to { transform: translateX(120%); }
+}
+
+/* V4.1.2 · 答错 wash：红色语义图形色 + opacity 0.12 → 0 表达"轻轻泛红后散去"。
+   --danger-soft 自带 0.10/0.14 alpha，再乘 0.12 会弱到看不见，故用 opacity
+   而非叠加半透明 token；不写裸 rgba，时长/曲线沿用现有档位。 */
+.feedback-wash {
+  position: absolute;
+  inset: 0;
+  background: var(--danger-color);
+  opacity: 0;
+  animation: feedback-wash var(--duration-slow) var(--ease-standard);
+}
+
+@keyframes feedback-wash {
+  from { opacity: 0.12; }
+  to { opacity: 0; }
+}
+
+/* V4.1.2 · 连对标记：只在连对 ≥3 时出现，角落小胶囊 + 很轻的 scale 脉冲。
+   不用礼花/新依赖，避免高频庆祝变成干扰；easeSpring 复用现有曲线。 */
+.feedback-combo {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-3);
+  z-index: 2;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--success-soft);
+  color: var(--success-text);
+  font-size: var(--font-xs);
+  font-weight: 700;
+  white-space: nowrap;
+  animation: combo-pulse var(--duration-slow) var(--ease-spring);
+}
+/* 标题给标记让位，窄屏也不压字 */
+.feedback-title.has-combo { padding-right: 7em; }
+
+@keyframes combo-pulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.06); }
+  100% { transform: scale(1); }
 }
 /* 判定类反馈才弹入；reference / review 是"参考答案 / 需复习"的静态说明，不该抢戏 */
 .feedback-box.correct {
@@ -2118,6 +2223,17 @@ body.dark-mode {
   }
   .opt-item:not(.opt-item--correct):not(.opt-item--wrong):not(.n-radio--disabled):not(.n-checkbox--disabled):active {
     transform: none;
+  }
+  /* 只在减弱动效时去掉"移动"：文案与判定色一个不少 */
+  .feedback-sheen {
+    display: none; /* 扫光整条不出现 */
+  }
+  .feedback-wash {
+    animation: none;
+    opacity: 0.12; /* 红色 wash 只留静态颜色，不淡出 */
+  }
+  .feedback-combo {
+    animation: none; /* 连对标记照常显示，不脉冲 */
   }
 }
 </style>

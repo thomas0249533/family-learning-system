@@ -39,6 +39,12 @@
 /** 任务类型：与「为什么排它」一一对应 */
 export type PlanItemKind = 'review' | 'mistake' | 'weak' | 'new' | 'vocab'
 
+/**
+ * 可插拔的**内容源**。本期只有 vocab 一个开关（家长端不暴露其它四类），
+ * 类型先留一位：将来给 review / mistake 等做同类开关时不必改 DailyGoal 的形状。
+ */
+export type PlanSource = 'vocab'
+
 /** 每日目标口径（V3.0 · M1：两种都要，设置里可切换） */
 export type GoalMode = 'questions' | 'minutes'
 
@@ -48,6 +54,13 @@ export interface DailyGoal {
   questions: number
   /** 时长口径下的目标分钟数 */
   minutes: number
+  /**
+   * 已禁用的内容源（缺省 / [] = 全部启用）。
+   *
+   * 放在 DailyGoal 里而不是新开 settings 键：`dailyGoal` 已在 PROFILE_SCOPED_KEYS
+   * 登记，天然按档案隔离、随备份携带、走跨设备合并；新键则要同步改三处登记表。
+   */
+  disabledSources?: PlanSource[]
 }
 
 /** 编排候选：由 IO 层从 progress / mistakes / 包结构拼出来 */
@@ -203,14 +216,34 @@ function clampInt(v: unknown, min: number, max: number, fallback: number): numbe
   return Math.min(max, Math.max(min, Math.round(n)))
 }
 
+/** 合法内容源白名单：老数据 / 外部备份里的未知值必须丢弃，不能让禁用集合无限膨胀 */
+const VALID_PLAN_SOURCES: readonly PlanSource[] = ['vocab']
+
+/**
+ * 归一化禁用源：只留合法值、去重、排序（JSON 稳定）。
+ * 非数组 = 老目标没这个字段，返回 undefined 以保持原来的三字段形状。
+ */
+function normalizeDisabledSources(raw: unknown): PlanSource[] | undefined {
+  if (!Array.isArray(raw)) return undefined
+  const out = new Set<PlanSource>()
+  for (const v of raw) {
+    if (typeof v === 'string' && (VALID_PLAN_SOURCES as readonly string[]).includes(v)) {
+      out.add(v as PlanSource)
+    }
+  }
+  return [...out].sort()
+}
+
 /**
  * 归一化目标（设置页 / 老数据 / 备份导入都走这里）。
  *
  * 非法 `mode` 回落到 `questions`：题量口径不依赖设备快慢，是更稳的默认值。
  * 两个数字**都保留**——切换口径时不至于把另一个清零。
+ * `disabledSources` 同样必须保留：这里丢掉，家长关掉的开关下次读目标就"自动开了"。
  */
 export function normalizeGoal(raw?: Partial<DailyGoal> | null): DailyGoal {
   const mode: GoalMode = raw?.mode === 'minutes' ? 'minutes' : 'questions'
+  const disabledSources = normalizeDisabledSources(raw?.disabledSources)
   return {
     mode,
     questions: clampInt(
@@ -225,6 +258,8 @@ export function normalizeGoal(raw?: Partial<DailyGoal> | null): DailyGoal {
       GOAL_LIMITS.minutes.max,
       DEFAULT_GOAL.minutes
     ),
+    // 只在调用方带了数组时才写回字段：缺省目标与老数据仍是三字段形状
+    ...(disabledSources ? { disabledSources } : {}),
   }
 }
 
@@ -354,6 +389,9 @@ export interface BuildPlanInput {
  */
 export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
   const goal = normalizeGoal(input.goal)
+  // 内容源开关只影响它自己的那一轮：vocab 关掉时第四轮整体跳过，
+  // 前三轮的候选、配额、预算计算一概不动（回归安全的边界就在这里）。
+  const vocabDisabled = goal.disabledSources?.includes('vocab') ?? false
   const { unit, value } = budgetOf(goal)
   const maxItems = input.maxItems ?? 12
 
@@ -490,7 +528,8 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
   // 为什么是独立一轮、且不算进预算：听写是「每天顺手练 15 个词」的增量习惯，
   // 不应该把本就紧张的 24 题额度再分走一块；它是"附加项"，做完计入总数但不参与裁剪。
   // 每天最多一项（候选里本来也只生成一项），即使前面习题已排满，也尽量保留这一项。
-  {
+  // 家长关掉该内容源时整轮跳过 —— 包括"兜底至少一项"也不许把它捡回来。
+  if (!vocabDisabled) {
     let guard = 0
     while (guard++ < 5 && tryPushVocab()) {
       /* 每天最多一项 vocab */
@@ -499,7 +538,10 @@ export function buildDailyPlan(input: BuildPlanInput): DailyPlan {
 
   // ---- 兜底：至少一项 ----
   if (picked.length === 0 && usable.length > 0) {
-    const first = KIND_ORDER.map((k) => (byKind.get(k) ?? [])[0]).find(Boolean)
+    const first = KIND_ORDER
+      .filter((k) => !(vocabDisabled && k === 'vocab'))
+      .map((k) => (byKind.get(k) ?? [])[0])
+      .find(Boolean)
     if (first) picked.push(toItem(first))
   }
 
@@ -535,15 +577,23 @@ function firstCostOf(list: PlanCandidate[], unit: GoalMode): number {
 // ===========================================================================
 
 /**
- * 计划是否已过期（跨天 / 目标数字被改）。IO 层据此决定重算。
+ * 计划是否已过期（跨天 / 目标数字被改 / 内容源开关被改）。IO 层据此决定重算。
  *
  * **切换口径不重算**：队列内容与目标数字都没变，变的只是"进度分母用哪个"，
  * 重算等于把已经完成的项清空 —— 那是数据丢失，不是刷新。
+ * 但**开关变化必须重算**：否则家长关了 vocab，今天的队列还挂着背记项，
+ * 要等到明天才生效 —— 用户会认为开关坏了。
  */
 export function isPlanStale(plan: DailyPlan | null | undefined, today: string, goal?: DailyGoal): boolean {
   if (!plan || plan.version !== 1) return true
   if (plan.date !== today) return true
-  if (goal && (plan.goal.questions !== goal.questions || plan.goal.minutes !== goal.minutes)) return true
+  if (goal) {
+    if (plan.goal.questions !== goal.questions || plan.goal.minutes !== goal.minutes) return true
+    // 老计划没有 disabledSources → 视为 []；按内容比较，引用不同不算变化
+    const before = [...(plan.goal.disabledSources ?? [])].sort()
+    const after = [...(goal.disabledSources ?? [])].sort()
+    if (before.length !== after.length || before.some((s, i) => s !== after[i])) return true
+  }
   return false
 }
 

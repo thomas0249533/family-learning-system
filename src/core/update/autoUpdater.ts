@@ -12,7 +12,7 @@
  */
 import { check } from '@tauri-apps/plugin-updater'
 import { relaunch } from '@tauri-apps/plugin-process'
-import { checkUpdate, type UpdateCheckResult } from './checkUpdate'
+import { checkUpdate, UPDATE_CHECK_CANDIDATES, type UpdateCheckResult } from './checkUpdate'
 import { manualDownloadUrls, type DownloadSource } from './downloadSources'
 
 export interface AutoUpdateProgress {
@@ -47,6 +47,29 @@ export interface AutoUpdateState {
 }
 
 /**
+ * 插件 check() 报「没有更新」时的裁定逻辑 —— 纯函数，便于单测。
+ * ---------------------------------------------------------------------
+ * tauri-plugin-updater 的 check() 读 `releases/latest/download/latest.json`，
+ * 插件内部带 HTTP 缓存：刚发版几分钟内仍可能读到上一版清单 → 返回 null →
+ * 误报「已是最新版本」。此处用无插件缓存的 D-1 路径（version.json）结果交叉验证：
+ *   · fallback.ok && hasUpdate  → 缓存骗了我们：透传 fallback，UI 显示下载链接；
+ *   · fallback.ok && !hasUpdate → 确认真最新，与旧行为一致；
+ *   · fallback 失败（离线等）   → 仍报 latest（保持离线可用），不卡用户、不白屏。
+ *
+ * @param fallback 交叉验证结果（类型化，绝不抛异常）
+ * @param appVersion 当前应用版本（latest 分支回显用）
+ */
+export function resolveLatestVerdict(
+  fallback: UpdateCheckResult,
+  appVersion: string
+): AutoUpdateState {
+  if (fallback.ok && fallback.hasUpdate) {
+    return { phase: 'fallback', fallback }
+  }
+  return { phase: 'latest', version: appVersion }
+}
+
+/**
  * 执行一次「检查 + 下载 + 安装 + 重启」全流程。
  * @param appVersion 当前应用版本（来自 __APP_VERSION__）
  * @param onState 每个阶段的状态回调（用于 UI 实时刷新）
@@ -68,7 +91,18 @@ export async function runAutoUpdate(
   }
 
   if (!update) {
-    onState({ phase: 'latest', version: appVersion })
+    // 插件 check() 返回 null 不等于真最新：它的 latest.json 带 HTTP 缓存，
+    // 刚发版时可能仍读到旧清单（用户 4.1.1 发版 7 分钟后被误报 4.1.0 已最新）。
+    // 用无插件缓存的 D-1 主源交叉验证；只请求 1 个 candidate（动态重定向、
+    // 无 CDN 长缓存），正常 ~1s、最坏 8s，不走 4 源 × 8s 的慢路径。
+    // checkUpdate 契约上不抛异常；这里再兜一层，确保交叉验证绝不影响主流程。
+    let fallback: UpdateCheckResult
+    try {
+      fallback = await checkUpdate(appVersion, fetch, [UPDATE_CHECK_CANDIDATES[0]])
+    } catch {
+      fallback = { ok: false, kind: 'network', message: '交叉验证失败' }
+    }
+    onState(resolveLatestVerdict(fallback, appVersion))
     return
   }
 
